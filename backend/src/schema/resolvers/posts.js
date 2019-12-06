@@ -57,17 +57,20 @@ export default {
     PostsEmotionsCountByEmotion: async (object, params, context, resolveInfo) => {
       const { postId, data } = params
       const session = context.driver.session()
-      try {
-        const transactionRes = await session.run(
-          `MATCH (post:Post {id: $postId})<-[emoted:EMOTED {emotion: $data.emotion}]-()
-        RETURN COUNT(DISTINCT emoted) as emotionsCount
-        `,
+      const readTxResultPromise = session.readTransaction(async transaction => {
+        const emotionsCountTransactionResponse = await transaction.run(
+          `
+            MATCH (post:Post {id: $postId})<-[emoted:EMOTED {emotion: $data.emotion}]-()
+            RETURN COUNT(DISTINCT emoted) as emotionsCount
+          `,
           { postId, data },
         )
-
-        const [emotionsCount] = transactionRes.records.map(record => {
-          return record.get('emotionsCount').low
-        })
+        return emotionsCountTransactionResponse.records.map(
+          record => record.get('emotionsCount').low,
+        )
+      })
+      try {
+        const [emotionsCount] = await readTxResultPromise
         return emotionsCount
       } finally {
         session.close()
@@ -76,16 +79,18 @@ export default {
     PostsEmotionsByCurrentUser: async (object, params, context, resolveInfo) => {
       const { postId } = params
       const session = context.driver.session()
-      try {
-        const transactionRes = await session.run(
-          `MATCH (user:User {id: $userId})-[emoted:EMOTED]->(post:Post {id: $postId})
-        RETURN collect(emoted.emotion) as emotion`,
+      const readTxResultPromise = session.readTransaction(async transaction => {
+        const emotionsTransactionResponse = await transaction.run(
+          `
+            MATCH (user:User {id: $userId})-[emoted:EMOTED]->(post:Post {id: $postId})
+            RETURN collect(emoted.emotion) as emotion
+          `,
           { userId: context.user.id, postId },
         )
-
-        const [emotions] = transactionRes.records.map(record => {
-          return record.get('emotion')
-        })
+        return emotionsTransactionResponse.records.map(record => record.get('emotion'))
+      })
+      try {
+        const [emotions] = await readTxResultPromise
         return emotions
       } finally {
         session.close()
@@ -98,25 +103,29 @@ export default {
       delete params.categoryIds
       params = await fileUpload(params, { file: 'imageUpload', url: 'image' })
       params.id = params.id || uuid()
-      const createPostCypher = `CREATE (post:Post {params})
-        SET post.createdAt = toString(datetime())
-        SET post.updatedAt = toString(datetime())
-        WITH post
-        MATCH (author:User {id: $userId})
-        MERGE (post)<-[:WROTE]-(author)
-        WITH post
-        UNWIND $categoryIds AS categoryId
-        MATCH (category:Category {id: categoryId})
-        MERGE (post)-[:CATEGORIZED]->(category)
-        RETURN post`
-
-      const createPostVariables = { userId: context.user.id, categoryIds, params }
-
       const session = context.driver.session()
+      const writeTxResultPromise = session.writeTransaction(async transaction => {
+        const createPostTransactionResponse = await transaction.run(
+          `
+            CREATE (post:Post {params})
+            SET post.createdAt = toString(datetime())
+            SET post.updatedAt = toString(datetime())
+            WITH post
+            MATCH (author:User {id: $userId})
+            MERGE (post)<-[:WROTE]-(author)
+            WITH post
+            UNWIND $categoryIds AS categoryId
+            MATCH (category:Category {id: categoryId})
+            MERGE (post)-[:CATEGORIZED]->(category)
+            RETURN post
+          `,
+          { userId: context.user.id, categoryIds, params },
+        )
+        return createPostTransactionResponse.records.map(record => record.get('post').properties)
+      })
       try {
-        const transactionRes = await session.run(createPostCypher, createPostVariables)
-        const posts = transactionRes.records.map(record => record.get('post').properties)
-        return posts[0]
+        const [posts] = await writeTxResultPromise
+        return posts
       } catch (e) {
         if (e.code === 'Neo.ClientError.Schema.ConstraintValidationFailed')
           throw new UserInputError('Post with this slug already exists!')
@@ -129,38 +138,44 @@ export default {
       const { categoryIds } = params
       delete params.categoryIds
       params = await fileUpload(params, { file: 'imageUpload', url: 'image' })
-      let updatePostCypher = `MATCH (post:Post {id: $params.id})
-      SET post += $params
-      SET post.updatedAt = toString(datetime())
-      WITH post
-      `
-
       const session = context.driver.session()
-      try {
-        if (categoryIds && categoryIds.length) {
-          const cypherDeletePreviousRelations = `
+      let updatePostCypher = `
+                                MATCH (post:Post {id: $params.id})
+                                SET post += $params
+                                SET post.updatedAt = toString(datetime())
+                                WITH post
+                              `
+
+      if (categoryIds && categoryIds.length) {
+        const cypherDeletePreviousRelations = `
           MATCH (post:Post { id: $params.id })-[previousRelations:CATEGORIZED]->(category:Category)
           DELETE previousRelations
           RETURN post, category
-        `
+          `
 
-          await session.run(cypherDeletePreviousRelations, { params })
+        await session.writeTransaction(transaction => {
+          return transaction.run(cypherDeletePreviousRelations, { params })
+        })
 
-          updatePostCypher += `
+        updatePostCypher += `
           UNWIND $categoryIds AS categoryId
           MATCH (category:Category {id: categoryId})
           MERGE (post)-[:CATEGORIZED]->(category)
           WITH post
         `
-        }
+      }
 
-        updatePostCypher += `RETURN post`
-        const updatePostVariables = { categoryIds, params }
-
-        const transactionRes = await session.run(updatePostCypher, updatePostVariables)
-        const [post] = transactionRes.records.map(record => {
-          return record.get('post').properties
+      updatePostCypher += `RETURN post`
+      const updatePostVariables = { categoryIds, params }
+      try {
+        const writeTxResultPromise = session.writeTransaction(async transaction => {
+          const updatePostTransactionResponse = await transaction.run(
+            updatePostCypher,
+            updatePostVariables,
+          )
+          return updatePostTransactionResponse.records.map(record => record.get('post').properties)
         })
+        const [post] = await writeTxResultPromise
         return post
       } finally {
         session.close()
