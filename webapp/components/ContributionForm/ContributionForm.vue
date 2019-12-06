@@ -11,6 +11,7 @@
         :contribution="contribution"
         @addTeaserImage="addTeaserImage"
         :class="{ 'images-set-blur': checkedBlur }"
+        @addImageAspectRatio="addImageAspectRatio"
       >
         <img
           v-if="contribution"
@@ -172,6 +173,7 @@ export default {
       title: '',
       content: '',
       teaserImage: null,
+      imageAspectRatio: null,
       image: null,
       language: null,
       categoryIds: [],
@@ -251,6 +253,7 @@ export default {
         content,
         image,
         teaserImage,
+        imageAspectRatio,
         categoryIds,
       } = this.form
       this.loading = true
@@ -266,6 +269,7 @@ export default {
             image,
             imageUpload: teaserImage,
             blurImage: this.form.checkbox,
+            imageAspectRatio,
           },
         })
         .then(({ data }) => {
@@ -288,6 +292,9 @@ export default {
     },
     addTeaserImage(file) {
       this.form.teaserImage = file
+    },
+    addImageAspectRatio(aspectRatio) {
+      this.form.imageAspectRatio = aspectRatio
     },
     categoryIds(categories) {
       return categories.map(c => c.id)

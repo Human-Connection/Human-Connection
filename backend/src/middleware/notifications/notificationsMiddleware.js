@@ -1,15 +1,19 @@
 import extractMentionedUsers from './mentions/extractMentionedUsers'
 
 const postAuthorOfComment = async (comment, { context }) => {
-  const session = context.driver.session()
   const cypherFindUser = `
     MATCH (user: User)-[:WROTE]->(:Post)<-[:COMMENTS]-(:Comment { id: $commentId })
     RETURN user { .id }
     `
-  const result = await session.run(cypherFindUser, {
-    commentId: comment.id,
-  })
-  session.close()
+  const session = context.driver.session()
+  let result
+  try {
+    result = await session.run(cypherFindUser, {
+      commentId: comment.id,
+    })
+  } finally {
+    session.close()
+  }
   const [postAuthor] = await result.records.map(record => {
     return record.get('user')
   })
@@ -31,7 +35,6 @@ const notifyUsers = async (label, id, idsOfUsers, reason, context) => {
     throw new Error('Notification does not fit the reason!')
   }
 
-  const session = context.driver.session()
   let cypher
   switch (reason) {
     case 'mentioned_in_post': {
@@ -85,12 +88,16 @@ const notifyUsers = async (label, id, idsOfUsers, reason, context) => {
       break
     }
   }
-  await session.run(cypher, {
-    id,
-    idsOfUsers,
-    reason,
-  })
-  session.close()
+  const session = context.driver.session()
+  try {
+    await session.run(cypher, {
+      id,
+      idsOfUsers,
+      reason,
+    })
+  } finally {
+    session.close()
+  }
 }
 
 const handleContentDataOfPost = async (resolve, root, args, context, resolveInfo) => {
@@ -123,15 +130,19 @@ const handleCreateComment = async (resolve, root, args, context, resolveInfo) =>
   const comment = await handleContentDataOfComment(resolve, root, args, context, resolveInfo)
 
   if (comment) {
-    const session = context.driver.session()
     const cypherFindUser = `
     MATCH (user: User)-[:WROTE]->(:Post)<-[:COMMENTS]-(:Comment { id: $commentId })
     RETURN user { .id }
     `
-    const result = await session.run(cypherFindUser, {
-      commentId: comment.id,
-    })
-    session.close()
+    const session = context.driver.session()
+    let result
+    try {
+      result = await session.run(cypherFindUser, {
+        commentId: comment.id,
+      })
+    } finally {
+      session.close()
+    }
     const [postAuthor] = await result.records.map(record => {
       return record.get('user')
     })

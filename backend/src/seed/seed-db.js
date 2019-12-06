@@ -350,17 +350,19 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         author: peterLustig,
         id: 'p0',
         language: sample(languages),
-        image: faker.image.unsplash.food(),
+        image: faker.image.unsplash.food(300, 169),
         categoryIds: ['cat16'],
         blurImage: true,
+        imageAspectRatio: 300 / 169,
       }),
       factory.create('Post', {
         author: bobDerBaumeister,
         id: 'p1',
         language: sample(languages),
-        image: faker.image.unsplash.technology(),
+        image: faker.image.unsplash.technology(300, 1500),
         categoryIds: ['cat1'],
         blurImage: false,
+        imageAspectRatio: 300 / 1500,
       }),
       factory.create('Post', {
         author: huey,
@@ -387,9 +389,10 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         authorId: 'u1',
         id: 'p6',
         language: sample(languages),
-        image: faker.image.unsplash.buildings(),
+        image: faker.image.unsplash.buildings(300, 857),
         categoryIds: ['cat6'],
         blurImage: false,
+        imageAspectRatio: 300 / 857,
       }),
       factory.create('Post', {
         author: huey,
@@ -408,9 +411,10 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         author: louie,
         id: 'p11',
         language: sample(languages),
-        image: faker.image.unsplash.people(),
+        image: faker.image.unsplash.people(300, 901),
         categoryIds: ['cat11'],
         blurImage: false,
+        imageAspectRatio: 300 / 901,
       }),
       factory.create('Post', {
         author: bobDerBaumeister,
@@ -423,9 +427,10 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         author: jennyRostock,
         id: 'p14',
         language: sample(languages),
-        image: faker.image.unsplash.objects(),
+        image: faker.image.unsplash.objects(300, 200),
         categoryIds: ['cat14'],
         blurImage: false,
+        imageAspectRatio: 300 / 450,
       }),
       factory.create('Post', {
         author: huey,
@@ -452,6 +457,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         $content: String!
         $categoryIds: [ID]
         $blurImage: Boolean
+        $imageAspectRatio: Float
       ) {
         CreatePost(
           id: $id
@@ -459,6 +465,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           content: $content
           categoryIds: $categoryIds
           blurImage: $blurImage
+          imageAspectRatio: $imageAspectRatio
         ) {
           id
         }
@@ -474,6 +481,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           content: hashtag1,
           categoryIds: ['cat2'],
           blurImage: false,
+          imageAspectRatio: 300 / 200,
         },
       }),
       mutate({
@@ -484,6 +492,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           content: `${mention1} ${faker.lorem.paragraph()}`,
           categoryIds: ['cat7'],
           blurImage: false,
+          imageAspectRatio: 300 / 180,
         },
       }),
       mutate({
@@ -495,6 +504,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           content: hashtagAndMention1,
           categoryIds: ['cat8'],
           blurImage: false,
+          imageAspectRatio: 300 / 900,
         },
       }),
       mutate({
@@ -505,6 +515,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           content: `${mention2} ${faker.lorem.paragraph()}`,
           categoryIds: ['cat12'],
           blurImage: false,
+          imageAspectRatio: 300 / 200,
         },
       }),
     ])
@@ -552,7 +563,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
     ])
     authenticatedUser = null
 
-    await Promise.all([
+    const comments = await Promise.all([
       factory.create('Comment', {
         author: jennyRostock,
         id: 'c1',
@@ -569,7 +580,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         postId: 'p3',
       }),
       factory.create('Comment', {
-        author: bobDerBaumeister,
+        author: jennyRostock,
         id: 'c5',
         postId: 'p3',
       }),
@@ -609,6 +620,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         postId: 'p15',
       }),
     ])
+    const trollingComment = comments[0]
 
     await Promise.all([
       democracy.relateTo(p3, 'post'),
@@ -672,68 +684,107 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       louie.relateTo(p10, 'shouted'),
     ])
 
-    const disableMutation = gql`
-      mutation($id: ID!) {
-        disable(id: $id)
-      }
-    `
-    authenticatedUser = await bobDerBaumeister.toJson()
-    await Promise.all([
-      mutate({
-        mutation: disableMutation,
-        variables: {
-          id: 'p11',
-        },
-      }),
-      mutate({
-        mutation: disableMutation,
-        variables: {
-          id: 'c5',
-        },
-      }),
+    const reports = await Promise.all([
+      factory.create('Report'),
+      factory.create('Report'),
+      factory.create('Report'),
     ])
-    authenticatedUser = null
+    const reportAgainstDagobert = reports[0]
+    const reportAgainstTrollingPost = reports[1]
+    const reportAgainstTrollingComment = reports[2]
 
-    // There is no error logged or the 'try' fails if this mutation is wrong. Why?
-    const reportMutation = gql`
-      mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
-        report(
-          resourceId: $resourceId
-          reasonCategory: $reasonCategory
-          reasonDescription: $reasonDescription
-        ) {
-          type
-        }
-      }
-    `
-    authenticatedUser = await huey.toJson()
+    // report resource first time
     await Promise.all([
-      mutate({
-        mutation: reportMutation,
-        variables: {
-          resourceId: 'c1',
-          reasonCategory: 'other',
-          reasonDescription: 'This comment is bigoted',
-        },
+      reportAgainstDagobert.relateTo(jennyRostock, 'filed', {
+        resourceId: 'u7',
+        reasonCategory: 'discrimination_etc',
+        reasonDescription: 'This user is harassing me with bigoted remarks!',
       }),
-      mutate({
-        mutation: reportMutation,
-        variables: {
-          resourceId: 'p1',
-          reasonCategory: 'discrimination_etc',
-          reasonDescription: 'This post is bigoted',
-        },
+      reportAgainstDagobert.relateTo(dagobert, 'belongsTo'),
+      reportAgainstTrollingPost.relateTo(jennyRostock, 'filed', {
+        resourceId: 'p2',
+        reasonCategory: 'doxing',
+        reasonDescription: "This shouldn't be shown to anybody else! It's my private thing!",
       }),
-      mutate({
-        mutation: reportMutation,
-        variables: {
-          resourceId: 'u1',
-          reasonCategory: 'doxing',
-          reasonDescription: 'This user is harassing me with bigoted remarks',
-        },
+      reportAgainstTrollingPost.relateTo(p2, 'belongsTo'),
+      reportAgainstTrollingComment.relateTo(huey, 'filed', {
+        resourceId: 'c1',
+        reasonCategory: 'other',
+        reasonDescription: 'This comment is bigoted',
       }),
+      reportAgainstTrollingComment.relateTo(trollingComment, 'belongsTo'),
     ])
-    authenticatedUser = null
+
+    // report resource a second time
+    await Promise.all([
+      reportAgainstDagobert.relateTo(louie, 'filed', {
+        resourceId: 'u7',
+        reasonCategory: 'discrimination_etc',
+        reasonDescription: 'this user is attacking me for who I am!',
+      }),
+      reportAgainstDagobert.relateTo(dagobert, 'belongsTo'),
+      reportAgainstTrollingPost.relateTo(peterLustig, 'filed', {
+        resourceId: 'p2',
+        reasonCategory: 'discrimination_etc',
+        reasonDescription: 'This post is bigoted',
+      }),
+      reportAgainstTrollingPost.relateTo(p2, 'belongsTo'),
+
+      reportAgainstTrollingComment.relateTo(bobDerBaumeister, 'filed', {
+        resourceId: 'c1',
+        reasonCategory: 'pornographic_content_links',
+        reasonDescription: 'This comment is porno!!!',
+      }),
+      reportAgainstTrollingComment.relateTo(trollingComment, 'belongsTo'),
+    ])
+
+    const disableVariables = {
+      resourceId: 'undefined-resource',
+      disable: true,
+      closed: false,
+    }
+
+    // review resource first time
+    await Promise.all([
+      reportAgainstDagobert.relateTo(bobDerBaumeister, 'reviewed', {
+        ...disableVariables,
+        resourceId: 'u7',
+      }),
+      dagobert.update({ disabled: true, updatedAt: new Date().toISOString() }),
+      reportAgainstTrollingPost.relateTo(peterLustig, 'reviewed', {
+        ...disableVariables,
+        resourceId: 'p2',
+      }),
+      p2.update({ disabled: true, updatedAt: new Date().toISOString() }),
+      reportAgainstTrollingComment.relateTo(bobDerBaumeister, 'reviewed', {
+        ...disableVariables,
+        resourceId: 'c1',
+      }),
+      trollingComment.update({ disabled: true, updatedAt: new Date().toISOString() }),
+    ])
+
+    // second review of resource and close report
+    await Promise.all([
+      reportAgainstDagobert.relateTo(peterLustig, 'reviewed', {
+        resourceId: 'u7',
+        disable: false,
+        closed: true,
+      }),
+      dagobert.update({ disabled: false, updatedAt: new Date().toISOString(), closed: true }),
+      reportAgainstTrollingPost.relateTo(bobDerBaumeister, 'reviewed', {
+        resourceId: 'p2',
+        disable: true,
+        closed: true,
+      }),
+      p2.update({ disabled: true, updatedAt: new Date().toISOString(), closed: true }),
+      reportAgainstTrollingComment.relateTo(peterLustig, 'reviewed', {
+        ...disableVariables,
+        resourceId: 'c1',
+        disable: true,
+        closed: true,
+      }),
+      trollingComment.update({ disabled: true, updatedAt: new Date().toISOString(), closed: true }),
+    ])
 
     await Promise.all(
       [...Array(30).keys()].map(i => {

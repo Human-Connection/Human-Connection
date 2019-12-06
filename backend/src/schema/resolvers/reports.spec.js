@@ -8,31 +8,41 @@ const factory = Factory()
 const instance = getNeode()
 const driver = getDriver()
 
-describe('report resources', () => {
-  let authenticatedUser, currentUser, mutate, query, moderator, abusiveUser
+describe('file a report on a resource', () => {
+  let authenticatedUser, currentUser, mutate, query, moderator, abusiveUser, otherReportingUser
   const categoryIds = ['cat9']
   const reportMutation = gql`
     mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
-      report(
+      fileReport(
         resourceId: $resourceId
         reasonCategory: $reasonCategory
         reasonDescription: $reasonDescription
       ) {
+        id
         createdAt
-        reasonCategory
-        reasonDescription
-        type
-        submitter {
-          email
+        updatedAt
+        disable
+        closed
+        rule
+        resource {
+          __typename
+          ... on User {
+            name
+          }
+          ... on Post {
+            title
+          }
+          ... on Comment {
+            content
+          }
         }
-        user {
-          name
-        }
-        post {
-          title
-        }
-        comment {
-          content
+        filed {
+          submitter {
+            id
+          }
+          createdAt
+          reasonCategory
+          reasonDescription
         }
       }
     }
@@ -67,7 +77,7 @@ describe('report resources', () => {
       it('throws authorization error', async () => {
         authenticatedUser = null
         await expect(mutate({ mutation: reportMutation, variables })).resolves.toMatchObject({
-          data: { report: null },
+          data: { fileReport: null },
           errors: [{ message: 'Not Authorised!' }],
         })
       })
@@ -79,6 +89,12 @@ describe('report resources', () => {
           id: 'current-user-id',
           role: 'user',
           email: 'test@example.org',
+          password: '1234',
+        })
+        otherReportingUser = await factory.create('User', {
+          id: 'other-reporting-user-id',
+          role: 'user',
+          email: 'reporting@example.org',
           password: '1234',
         })
         await factory.create('User', {
@@ -99,15 +115,15 @@ describe('report resources', () => {
       describe('invalid resource id', () => {
         it('returns null', async () => {
           await expect(mutate({ mutation: reportMutation, variables })).resolves.toMatchObject({
-            data: { report: null },
+            data: { fileReport: null },
             errors: undefined,
           })
         })
       })
 
       describe('valid resource', () => {
-        describe('reported resource is a user', () => {
-          it('returns type "User"', async () => {
+        describe('creates report', () => {
+          it('which belongs to resource', async () => {
             await expect(
               mutate({
                 mutation: reportMutation,
@@ -115,15 +131,28 @@ describe('report resources', () => {
               }),
             ).resolves.toMatchObject({
               data: {
-                report: {
-                  type: 'User',
+                fileReport: {
+                  id: expect.any(String),
                 },
               },
               errors: undefined,
             })
           })
 
-          it('returns resource in user attribute', async () => {
+          it('creates only one report for multiple reports on the same resource', async () => {
+            const firstReport = await mutate({
+              mutation: reportMutation,
+              variables: { ...variables, resourceId: 'abusive-user-id' },
+            })
+            authenticatedUser = await otherReportingUser.toJson()
+            const secondReport = await mutate({
+              mutation: reportMutation,
+              variables: { ...variables, resourceId: 'abusive-user-id' },
+            })
+            expect(firstReport.data.fileReport.id).toEqual(secondReport.data.fileReport.id)
+          })
+
+          it('returns the rule for how the report was decided', async () => {
             await expect(
               mutate({
                 mutation: reportMutation,
@@ -131,8 +160,46 @@ describe('report resources', () => {
               }),
             ).resolves.toMatchObject({
               data: {
-                report: {
-                  user: {
+                fileReport: {
+                  rule: 'latestReviewUpdatedAtRules',
+                },
+              },
+              errors: undefined,
+            })
+          })
+          it.todo('creates multiple filed reports')
+        })
+
+        describe('reported resource is a user', () => {
+          it('returns __typename "User"', async () => {
+            await expect(
+              mutate({
+                mutation: reportMutation,
+                variables: { ...variables, resourceId: 'abusive-user-id' },
+              }),
+            ).resolves.toMatchObject({
+              data: {
+                fileReport: {
+                  resource: {
+                    __typename: 'User',
+                  },
+                },
+              },
+              errors: undefined,
+            })
+          })
+
+          it('returns user attribute info', async () => {
+            await expect(
+              mutate({
+                mutation: reportMutation,
+                variables: { ...variables, resourceId: 'abusive-user-id' },
+              }),
+            ).resolves.toMatchObject({
+              data: {
+                fileReport: {
+                  resource: {
+                    __typename: 'User',
                     name: 'abusive-user',
                   },
                 },
@@ -149,10 +216,14 @@ describe('report resources', () => {
               }),
             ).resolves.toMatchObject({
               data: {
-                report: {
-                  submitter: {
-                    email: 'test@example.org',
-                  },
+                fileReport: {
+                  filed: [
+                    {
+                      submitter: {
+                        id: 'current-user-id',
+                      },
+                    },
+                  ],
                 },
               },
               errors: undefined,
@@ -167,7 +238,7 @@ describe('report resources', () => {
               }),
             ).resolves.toMatchObject({
               data: {
-                report: {
+                fileReport: {
                   createdAt: expect.any(String),
                 },
               },
@@ -187,8 +258,12 @@ describe('report resources', () => {
               }),
             ).resolves.toMatchObject({
               data: {
-                report: {
-                  reasonCategory: 'criminal_behavior_violation_german_law',
+                fileReport: {
+                  filed: [
+                    {
+                      reasonCategory: 'criminal_behavior_violation_german_law',
+                    },
+                  ],
                 },
               },
               errors: undefined,
@@ -228,15 +303,19 @@ describe('report resources', () => {
               }),
             ).resolves.toMatchObject({
               data: {
-                report: {
-                  reasonDescription: 'My reason!',
+                fileReport: {
+                  filed: [
+                    {
+                      reasonDescription: 'My reason!',
+                    },
+                  ],
                 },
               },
               errors: undefined,
             })
           })
 
-          it('sanitize the reason description', async () => {
+          it('sanitizes the reason description', async () => {
             await expect(
               mutate({
                 mutation: reportMutation,
@@ -248,8 +327,12 @@ describe('report resources', () => {
               }),
             ).resolves.toMatchObject({
               data: {
-                report: {
-                  reasonDescription: 'My reason !',
+                fileReport: {
+                  filed: [
+                    {
+                      reasonDescription: 'My reason !',
+                    },
+                  ],
                 },
               },
               errors: undefined,
@@ -278,8 +361,10 @@ describe('report resources', () => {
               }),
             ).resolves.toMatchObject({
               data: {
-                report: {
-                  type: 'Post',
+                fileReport: {
+                  resource: {
+                    __typename: 'Post',
+                  },
                 },
               },
               errors: undefined,
@@ -297,29 +382,11 @@ describe('report resources', () => {
               }),
             ).resolves.toMatchObject({
               data: {
-                report: {
-                  post: {
+                fileReport: {
+                  resource: {
+                    __typename: 'Post',
                     title: 'This is a post that is going to be reported',
                   },
-                },
-              },
-              errors: undefined,
-            })
-          })
-
-          it('returns null in user attribute', async () => {
-            await expect(
-              mutate({
-                mutation: reportMutation,
-                variables: {
-                  ...variables,
-                  resourceId: 'post-to-report-id',
-                },
-              }),
-            ).resolves.toMatchObject({
-              data: {
-                report: {
-                  user: null,
                 },
               },
               errors: undefined,
@@ -356,8 +423,10 @@ describe('report resources', () => {
               }),
             ).resolves.toMatchObject({
               data: {
-                report: {
-                  type: 'Comment',
+                fileReport: {
+                  resource: {
+                    __typename: 'Comment',
+                  },
                 },
               },
               errors: undefined,
@@ -375,8 +444,9 @@ describe('report resources', () => {
               }),
             ).resolves.toMatchObject({
               data: {
-                report: {
-                  comment: {
+                fileReport: {
+                  resource: {
+                    __typename: 'Comment',
                     content: 'Post comment to be reported.',
                   },
                 },
@@ -403,7 +473,7 @@ describe('report resources', () => {
                 },
               }),
             ).resolves.toMatchObject({
-              data: { report: null },
+              data: { fileReport: null },
               errors: undefined,
             })
           })
@@ -411,25 +481,35 @@ describe('report resources', () => {
       })
     })
   })
+
   describe('query for reported resource', () => {
     const reportsQuery = gql`
       query {
         reports(orderBy: createdAt_desc) {
+          id
           createdAt
-          reasonCategory
-          reasonDescription
-          submitter {
-            id
+          updatedAt
+          disable
+          closed
+          resource {
+            __typename
+            ... on User {
+              id
+            }
+            ... on Post {
+              id
+            }
+            ... on Comment {
+              id
+            }
           }
-          type
-          user {
-            id
-          }
-          post {
-            id
-          }
-          comment {
-            id
+          filed {
+            submitter {
+              id
+            }
+            createdAt
+            reasonCategory
+            reasonDescription
           }
         }
       }
@@ -437,7 +517,6 @@ describe('report resources', () => {
 
     beforeEach(async () => {
       authenticatedUser = null
-
       moderator = await factory.create('User', {
         id: 'moderator-1',
         role: 'moderator',
@@ -518,6 +597,7 @@ describe('report resources', () => {
       ])
       authenticatedUser = null
     })
+
     describe('unauthenticated', () => {
       it('throws authorization error', async () => {
         authenticatedUser = null
@@ -527,6 +607,7 @@ describe('report resources', () => {
         })
       })
     })
+
     describe('authenticated', () => {
       it('role "user" gets no reports', async () => {
         authenticatedUser = await currentUser.toJson()
@@ -538,49 +619,69 @@ describe('report resources', () => {
 
       it('role "moderator" gets reports', async () => {
         const expected = {
-          // to check 'orderBy: createdAt_desc' is not possible here, because 'createdAt' does not differ
           reports: expect.arrayContaining([
             expect.objectContaining({
+              id: expect.any(String),
               createdAt: expect.any(String),
-              reasonCategory: 'doxing',
-              reasonDescription: 'This user is harassing me with bigoted remarks',
-              submitter: expect.objectContaining({
-                id: 'current-user-id',
-              }),
-              type: 'User',
-              user: expect.objectContaining({
+              updatedAt: expect.any(String),
+              disable: false,
+              closed: false,
+              resource: {
+                __typename: 'User',
                 id: 'abusive-user-1',
-              }),
-              post: null,
-              comment: null,
+              },
+              filed: expect.arrayContaining([
+                expect.objectContaining({
+                  submitter: expect.objectContaining({
+                    id: 'current-user-id',
+                  }),
+                  createdAt: expect.any(String),
+                  reasonCategory: 'doxing',
+                  reasonDescription: 'This user is harassing me with bigoted remarks',
+                }),
+              ]),
             }),
             expect.objectContaining({
+              id: expect.any(String),
               createdAt: expect.any(String),
-              reasonCategory: 'other',
-              reasonDescription: 'This comment is bigoted',
-              submitter: expect.objectContaining({
-                id: 'current-user-id',
-              }),
-              type: 'Post',
-              user: null,
-              post: expect.objectContaining({
+              updatedAt: expect.any(String),
+              disable: false,
+              closed: false,
+              resource: {
+                __typename: 'Post',
                 id: 'abusive-post-1',
-              }),
-              comment: null,
+              },
+              filed: expect.arrayContaining([
+                expect.objectContaining({
+                  submitter: expect.objectContaining({
+                    id: 'current-user-id',
+                  }),
+                  createdAt: expect.any(String),
+                  reasonCategory: 'other',
+                  reasonDescription: 'This comment is bigoted',
+                }),
+              ]),
             }),
             expect.objectContaining({
+              id: expect.any(String),
               createdAt: expect.any(String),
-              reasonCategory: 'discrimination_etc',
-              reasonDescription: 'This post is bigoted',
-              submitter: expect.objectContaining({
-                id: 'current-user-id',
-              }),
-              type: 'Comment',
-              user: null,
-              post: null,
-              comment: expect.objectContaining({
+              updatedAt: expect.any(String),
+              disable: false,
+              closed: false,
+              resource: {
+                __typename: 'Comment',
                 id: 'abusive-comment-1',
-              }),
+              },
+              filed: expect.arrayContaining([
+                expect.objectContaining({
+                  submitter: expect.objectContaining({
+                    id: 'current-user-id',
+                  }),
+                  createdAt: expect.any(String),
+                  reasonCategory: 'discrimination_etc',
+                  reasonDescription: 'This post is bigoted',
+                }),
+              ]),
             }),
           ]),
         }

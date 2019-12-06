@@ -1,0 +1,15 @@
+type REVIEWED {
+  createdAt: String!
+  updatedAt: String!
+  disable: Boolean!
+  closed: Boolean!
+  report: Report
+    # @cypher(statement: "MATCH (report:Report)<-[this:REVIEWED]-(:User) RETURN report")
+  moderator: User
+  resource: ReviewedResource
+}
+union ReviewedResource = User | Post | Comment
+
+type Mutation {
+  review(resourceId: ID!, disable: Boolean, closed: Boolean): REVIEWED
+}

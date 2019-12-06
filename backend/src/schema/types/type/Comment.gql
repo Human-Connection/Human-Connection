@@ -47,7 +47,6 @@ type Comment {
   updatedAt: String
   deleted: Boolean
   disabled: Boolean
-  disabledBy: User @relation(name: "DISABLED", direction: "IN")
 }
 
 type Query {

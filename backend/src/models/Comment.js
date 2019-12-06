@@ -25,12 +25,6 @@ module.exports = {
     target: 'User',
     direction: 'in',
   },
-  disabledBy: {
-    type: 'relationship',
-    relationship: 'DISABLED',
-    target: 'User',
-    direction: 'in',
-  },
   notified: {
     type: 'relationship',
     relationship: 'NOTIFIED',

@@ -10,6 +10,7 @@ import createLocation from './locations.js'
 import createEmailAddress from './emailAddresses.js'
 import createDonations from './donations.js'
 import createUnverifiedEmailAddresss from './unverifiedEmailAddresses.js'
+import createReport from './reports.js'
 
 const factories = {
   Badge: createBadge,
@@ -23,12 +24,13 @@ const factories = {
   EmailAddress: createEmailAddress,
   UnverifiedEmailAddress: createUnverifiedEmailAddresss,
   Donations: createDonations,
+  Report: createReport,
 }
 
 export const cleanDatabase = async (options = {}) => {
   const { driver = getDriver() } = options
-  const session = driver.session()
   const cypher = 'MATCH (n) DETACH DELETE n'
+  const session = driver.session()
   try {
     return await session.run(cypher)
   } finally {

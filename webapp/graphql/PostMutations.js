@@ -10,6 +10,7 @@ export default () => {
         $categoryIds: [ID]
         $imageUpload: Upload
         $blurImage: Boolean
+        $imageAspectRatio: Float
       ) {
         CreatePost(
           title: $title
@@ -18,6 +19,7 @@ export default () => {
           categoryIds: $categoryIds
           imageUpload: $imageUpload
           blurImage: $blurImage
+          imageAspectRatio: $imageAspectRatio
         ) {
           title
           slug
@@ -38,6 +40,7 @@ export default () => {
         $categoryIds: [ID]
         $image: String
         $blurImage: Boolean
+        $imageAspectRatio: Float
       ) {
         UpdatePost(
           id: $id
@@ -48,6 +51,7 @@ export default () => {
           categoryIds: $categoryIds
           image: $image
           blurImage: $blurImage
+          imageAspectRatio: $imageAspectRatio
         ) {
           id
           title
@@ -61,6 +65,7 @@ export default () => {
             name
             role
           }
+          imageAspectRatio
         }
       }
     `,

@@ -45,8 +45,8 @@ const isAuthor = rule({
   cache: 'no_cache',
 })(async (_parent, args, { user, driver }) => {
   if (!user) return false
-  const session = driver.session()
   const { id: resourceId } = args
+  const session = driver.session()
   try {
     const result = await session.run(
       `
@@ -112,7 +112,7 @@ export default shield(
       CreatePost: isAuthenticated,
       UpdatePost: isAuthor,
       DeletePost: isAuthor,
-      report: isAuthenticated,
+      fileReport: isAuthenticated,
       CreateSocialMedia: isAuthenticated,
       UpdateSocialMedia: isMySocialMedia,
       DeleteSocialMedia: isMySocialMedia,
@@ -125,8 +125,7 @@ export default shield(
       shout: isAuthenticated,
       unshout: isAuthenticated,
       changePassword: isAuthenticated,
-      enable: isModerator,
-      disable: isModerator,
+      review: isModerator,
       CreateComment: isAuthenticated,
       UpdateComment: isAuthor,
       DeleteComment: isAuthor,
