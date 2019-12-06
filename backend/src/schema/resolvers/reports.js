@@ -66,14 +66,17 @@ export default {
       const reportReadTxPromise = session.readTransaction(async tx => {
         const allReportsTransactionResponse = await tx.run(
           `
-          MATCH (submitter:User)-[filed:FILED]->(report:Report)-[:BELONGS_TO]->(resource)
+          MATCH (report:Report)-[:BELONGS_TO]->(resource)
           WHERE resource:User OR resource:Post OR resource:Comment
-          RETURN DISTINCT report, resource, labels(resource)[0] as type
+          WITH report, resource,
+          [(submitter:User)-[filed:FILED]->(report) |  filed {.*, submitter: properties(submitter)} ] as filed,
+          [(moderator:User)-[reviewed:REVIEWED]->(report) |  reviewed {.*, moderator: properties(moderator)} ] as reviewed,
+          resource {.*, __typename: labels(resource)[0] } as resourceWithType
+          RETURN report {.*, resource: resourceWithType, filed: filed, reviewed: reviewed}
           ${orderByClause}
           `,
-          {},
         )
-        return allReportsTransactionResponse.records.map(transformReturnType)
+        return allReportsTransactionResponse.records.map(record => record.get('report'))
       })
       try {
         const txResult = await reportReadTxPromise
@@ -141,7 +144,6 @@ export default {
       })
       try {
         const txResult = await readTxPromise
-        if (!txResult[0]) return null
         reviewed = txResult.map(reportedRecord => {
           const { review, moderator } = reportedRecord
           const relationshipWithNestedAttributes = {
