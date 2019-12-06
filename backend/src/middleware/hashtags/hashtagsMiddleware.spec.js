@@ -36,7 +36,7 @@ beforeAll(() => {
     context: () => {
       return {
         user: authenticatedUser,
-        neode: neode,
+        neode,
         driver,
       }
     },
