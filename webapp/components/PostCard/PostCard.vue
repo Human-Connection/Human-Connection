@@ -149,7 +149,7 @@ export default {
   mounted() {
     const width = this.$el.offsetWidth
     const height = Math.min(width / this.post.imageAspectRatio, 2000)
-    const imageElement = this.$el.querySelector('.ds-card-image')
+    const imageElement = this.$el.querySelector('.ds-card-imag')
 
     if (imageElement) {
       imageElement.style.height = `${height}px`
@@ -174,7 +174,6 @@ export default {
 </style>
 
 <style lang="scss" scoped>
-
 .ds-card-image {
   width: 100%;
   max-height: 2000px;

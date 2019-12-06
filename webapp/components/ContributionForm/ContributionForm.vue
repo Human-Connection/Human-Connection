@@ -10,7 +10,7 @@
       <hc-teaser-image
         :contribution="contribution"
         @addTeaserImage="addTeaserImage"
-        :class="{ 'images-set-blur': checkedBlur }"
+        :class="{ 'images-set-blur': blurImage }"
         @addImageAspectRatio="addImageAspectRatio"
       >
         <img
@@ -20,20 +20,13 @@
         />
       </hc-teaser-image>
       <ds-text align="right" class="blurBox">
-        <div v-show="checkedBlur">
-          <ds-button
-            v-if="contribution"
-            class="bluricon-post"
-            icon="ban"
-            primary
-            @click.prevent="unBlur"
-          ></ds-button>
+        <div v-show="blurImage">
           <img
-            v-if="contribution"
             :src="contribution.image | proxyApiUrl"
             class="blurImgPreview"
             @click.prevent="unBlur"
           />
+          <ds-button class="bluricon-post" icon="ban" primary @click.prevent="unBlur"></ds-button>
         </div>
       </ds-text>
       <div style="clear: both" />
@@ -45,8 +38,8 @@
             class="blurImageCheckbox"
             type="checkbox"
             id="blur_img"
-            v-model="checkedBlur"
-            @change="form.checkbox = checkedBlur"
+            v-model="blurImage"
+            @change="form.checkbox = blurImage"
           />
 
           <label for="blur_img"><span class=""></span></label>
@@ -223,13 +216,13 @@ export default {
       contentMin: 3,
       hashtags: [],
       elem: null,
-      checkedBlur: false,
+      blurImage: false,
     }
   },
   created() {},
   mounted() {
     if (this.contribution && this.contribution.blurImage === true) {
-      this.checkedBlur = true
+      this.blurImage = true
     }
   },
   computed: {
@@ -242,8 +235,8 @@ export default {
   },
   methods: {
     unBlur() {
-      if (this.checkedBlur) {
-        this.checkedBlur = false
+      if (this.blurImage) {
+        this.blurImage = false
       }
     },
     submit() {
@@ -335,18 +328,6 @@ export default {
 </script>
 
 <style lang="scss">
-.img-blur-in {
-  -webkit-filter: blur(32px);
-  -moz-filter: blur(32px);
-  -ms-filter: blur(32px);
-  -o-filter: blur(32px);
-  filter: blur(32px);
-  -webkit-transition: all ease 0.2s;
-  -moz-transition: all ease 0.2s;
-  -ms-transition: all ease 0.2s;
-  -o-transition: all ease 0.2s;
-  transition: all ease 0.2s;
-}
 .images-set-blur img {
   -webkit-filter: blur(32px);
   -moz-filter: blur(32px);

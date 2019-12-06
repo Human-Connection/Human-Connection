@@ -10,27 +10,27 @@
         'images-set-blur': post.blurImage,
       }"
     >
-      <ds-text align="right" class="blurBox">
-        <ds-button
-          v-if="post.blurImage"
-          class="bluricon-post"
-          icon="eye"
-          primary
+      <ds-text v-show="post.blurImage" align="right" class="blurBox">
+        <img
+          v-show="!blurred"
+          :src="post.image | proxyApiUrl"
+          class="blurImgPreview"
           @click.prevent="unBlur"
-        ></ds-button>
+        />
         <ds-button
-          v-if="blur"
+          v-if="blurred"
           class="bluricon-post"
           icon="eye-slash"
           primary
           @click.prevent="setBlur"
         ></ds-button>
-        <img
-          v-if="post.blurImage"
-          :src="post.image | proxyApiUrl"
-          class="blurImgPreview"
+        <ds-button
+          v-else
+          class="bluricon-post"
+          icon="eye"
+          primary
           @click.prevent="unBlur"
-        />
+        ></ds-button>
       </ds-text>
       <div style="clear: both" />
       <hc-user :user="post.author" :date-time="post.createdAt">
@@ -151,7 +151,7 @@ export default {
       ready: false,
       title: 'loading',
       showNewCommentForm: true,
-      blur: false,
+      blurred: false,
     }
   },
   watch: {
@@ -180,13 +180,13 @@ export default {
     unBlur() {
       if (this.post.blurImage) {
         this.post.blurImage = false
-        this.blur = true
+        this.blurred = true
       }
     },
     setBlur() {
       if (!this.post.blurImage) {
         this.post.blurImage = true
-        this.blur = false
+        this.blurred = false
       }
     },
     isAuthor(id) {
