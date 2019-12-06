@@ -7,14 +7,14 @@
       :class="{
         'post-card': true,
         'disabled-content': post.disabled,
-        'images-set-blur': post.blurImage,
+        'images-set-blur': blurred,
       }"
     >
       <ds-text v-show="post.blurImage" align="right" class="blurBox">
         <img
-          v-show="!blurred"
+          v-show="blurred"
           :src="post.image | proxyApiUrl"
-          class="blurImgPreview"
+          class="blur-img-preview"
           @click.prevent="unBlur"
         />
         <ds-button
@@ -22,14 +22,14 @@
           class="bluricon-post"
           icon="eye-slash"
           primary
-          @click.prevent="setBlur"
+          @click.prevent="blurred = false"
         ></ds-button>
         <ds-button
           v-else
           class="bluricon-post"
           icon="eye"
           primary
-          @click.prevent="unBlur"
+          @click.prevent="blurred = true"
         ></ds-button>
       </ds-text>
       <div style="clear: both" />
@@ -158,6 +158,7 @@ export default {
     Post(post) {
       this.post = post[0] || {}
       this.title = this.post.title
+      this.blurred = this.post.blurImage
     },
   },
   mounted() {
@@ -177,18 +178,6 @@ export default {
     },
   },
   methods: {
-    unBlur() {
-      if (this.post.blurImage) {
-        this.post.blurImage = false
-        this.blurred = true
-      }
-    },
-    setBlur() {
-      if (!this.post.blurImage) {
-        this.post.blurImage = true
-        this.blurred = false
-      }
-    },
     isAuthor(id) {
       return this.$store.getters['auth/user'].id === id
     },
@@ -265,7 +254,7 @@ export default {
   top: -70px;
   float: right;
 }
-.blurImgPreview {
+.blur-img-preview {
   width: 100px;
 }
 

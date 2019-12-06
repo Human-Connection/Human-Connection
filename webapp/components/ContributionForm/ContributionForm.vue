@@ -19,11 +19,11 @@
           :src="contribution.image | proxyApiUrl"
         />
       </hc-teaser-image>
-      <ds-text align="right" class="blurBox">
+      <ds-text align="right" class="blur-box">
         <div v-show="blurImage">
           <img
             :src="contribution.image | proxyApiUrl"
-            class="blurImgPreview"
+            class="blur-img-preview"
             @click.prevent="unBlur"
           />
           <ds-button class="bluricon-post" icon="ban" primary @click.prevent="unBlur"></ds-button>
@@ -32,17 +32,17 @@
       <div style="clear: both" />
       <ds-card>
         <ds-text align="right">
-          <label for="blur_img">{{ $t('contribution.shockingPicture') }}</label>
+          <label for="blur-img">{{ $t('contribution.shockingPicture') }}</label>
           <input
             name="checkbox"
             class="blurImageCheckbox"
             type="checkbox"
-            id="blur_img"
+            id="blur-img"
             v-model="blurImage"
             @change="form.checkbox = blurImage"
           />
 
-          <label for="blur_img"><span class=""></span></label>
+          <label for="blur-img"><span class=""></span></label>
           <div>
             <a href="https://faq.human-connection.org/" target="_blank">
               <small>
@@ -340,13 +340,13 @@ export default {
   -o-transition: all ease 0.2s;
   transition: all ease 0.2s;
 }
-.blurBox {
+.blur-box {
   text-align: right;
   position: relative;
   top: -70px;
   float: right;
 }
-.blurImgPreview {
+.blur-img-preview {
   width: 100px;
 }
 
