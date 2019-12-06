@@ -13,8 +13,8 @@ export default async (driver, authorizationHeader) => {
   }
   const session = driver.session()
 
-  const writeTxResultPromise = session.writeTransaction(async txc => {
-    const updateUserLastActiveTransactionResponse = await txc.run(
+  const writeTxResultPromise = session.writeTransaction(async transaction => {
+    const updateUserLastActiveTransactionResponse = await transaction.run(
       ` 
         MATCH (user:User {id: $id, deleted: false, disabled: false })
         SET user.lastActiveAt = toString(datetime())
