@@ -20,7 +20,7 @@ beforeEach(() => {
       return {
         user: authenticatedUser,
         driver,
-        neode: neode,
+        neode,
         cypherParams: {
           currentUserId: authenticatedUser ? authenticatedUser.id : null,
         },
