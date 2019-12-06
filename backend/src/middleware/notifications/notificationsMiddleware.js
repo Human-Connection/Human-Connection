@@ -9,20 +9,17 @@ const handleContentDataOfPost = async (resolve, root, args, context, resolveInfo
   return post
 }
 
-const handleCreateComment = async (resolve, root, args, context, resolveInfo) => {
-  const comment = await resolve(root, args, context, resolveInfo)
-  if (comment) return handleContentDataOfComment(resolve, root, args, context, resolveInfo)
-}
-
 const handleContentDataOfComment = async (resolve, root, args, context, resolveInfo) => {
-  const { content, id: commentId } = args
+  const { content } = args
   let idsOfUsers = extractMentionedUsers(content)
-  const [postAuthor] = await postAuthorOfComment(commentId, { context })
+  const comment = await resolve(root, args, context, resolveInfo)
+  const [postAuthor] = await postAuthorOfComment(comment.id, { context })
   idsOfUsers = idsOfUsers.filter(id => id !== postAuthor.id)
   if (idsOfUsers && idsOfUsers.length)
-    await notifyUsersOfMention('Comment', commentId, idsOfUsers, 'mentioned_in_comment', context)
+    await notifyUsersOfMention('Comment', comment.id, idsOfUsers, 'mentioned_in_comment', context)
   if (context.user.id !== postAuthor.id)
-    await notifyUsersOfComment('Comment', commentId, postAuthor.id, 'commented_on_post', context)
+    await notifyUsersOfComment('Comment', comment.id, postAuthor.id, 'commented_on_post', context)
+  return comment
 }
 
 const postAuthorOfComment = async (commentId, { context }) => {
@@ -93,7 +90,7 @@ const notifyUsersOfComment = async (label, commentId, postAuthorId, reason, cont
   const session = context.driver.session()
 
   try {
-    return session.writeTransaction(async transaction => {
+    await session.writeTransaction(async transaction => {
       await transaction.run(
         `
         MATCH (postAuthor:User {id: $postAuthorId})-[:WROTE]->(post:Post)<-[:COMMENTS]-(comment:Comment { id: $commentId })<-[:WROTE]-(commenter:User)
@@ -118,7 +115,7 @@ export default {
   Mutation: {
     CreatePost: handleContentDataOfPost,
     UpdatePost: handleContentDataOfPost,
-    CreateComment: handleCreateComment,
+    CreateComment: handleContentDataOfComment,
     UpdateComment: handleContentDataOfComment,
   },
 }
