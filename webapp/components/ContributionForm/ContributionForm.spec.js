@@ -243,8 +243,6 @@ describe('ContributionForm.vue', () => {
           expect(mocks.$apollo.mutate).toHaveBeenCalledTimes(1)
         })
 
-         
-
         it("pushes the user to the post's page", async () => {
           wrapper.find('form').trigger('submit')
           await mocks.$apollo.mutate

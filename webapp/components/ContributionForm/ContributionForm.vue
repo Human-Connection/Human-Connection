@@ -20,13 +20,12 @@
         />
       </hc-teaser-image>
       <ds-text align="right" class="blur-box">
-        <div v-show="blurImage">
-          <img
-            :src="contribution.image | proxyApiUrl"
-            class="blur-img-preview"
-            @click.prevent="unBlur"
-          />
-          <ds-button class="bluricon-post" icon="ban" primary @click.prevent="unBlur"></ds-button>
+        <div
+          v-if="contribution && contribution.blurImage"
+          @click.stop.prevent="blurImage = !blurImage"
+        >
+          <img :src="contribution.image | proxyApiUrl" class="blur-img-preview" />
+          <ds-button class="bluricon-post" icon="ban" primary></ds-button>
         </div>
       </ds-text>
       <div style="clear: both" />
@@ -41,7 +40,6 @@
             v-model="blurImage"
             @change="form.checkbox = blurImage"
           />
-
           <label for="blur-img"><span class=""></span></label>
           <div>
             <a href="https://faq.human-connection.org/" target="_blank">
@@ -219,7 +217,6 @@ export default {
       blurImage: false,
     }
   },
-  created() {},
   mounted() {
     if (this.contribution && this.contribution.blurImage === true) {
       this.blurImage = true
@@ -234,11 +231,6 @@ export default {
     }),
   },
   methods: {
-    unBlur() {
-      if (this.blurImage) {
-        this.blurImage = false
-      }
-    },
     submit() {
       const {
         language: { value: language },
