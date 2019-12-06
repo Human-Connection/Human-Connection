@@ -100,7 +100,8 @@ const notifyUsers = async (label, id, idsOfUsers, reason, context) => {
 const handleContentDataOfPost = async (resolve, root, args, context, resolveInfo) => {
   const idsOfUsers = extractMentionedUsers(args.content)
   const post = await resolve(root, args, context, resolveInfo)
-  if (post) return notifyUsers('Post', post.id, idsOfUsers, 'mentioned_in_post', context)
+  if (post) await notifyUsers('Post', post.id, idsOfUsers, 'mentioned_in_post', context)
+  return post
 }
 
 const handleContentDataOfComment = async (resolve, root, args, context, resolveInfo) => {
