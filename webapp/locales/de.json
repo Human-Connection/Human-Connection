@@ -113,11 +113,9 @@
             }
         },
         "deleteUserAccount": {
-            "name": "Daten löschen",
-            "contributionsCount": "Meine {count} Beiträge löschen",
-            "commentedCount": "Meine {count} Kommentare löschen",
-            "accountDescription": "Sei dir bewusst, dass deine Beiträge und Kommentare für unsere Community wichtig sind. Wenn du sie trotzdem löschen möchtest, musst du sie unten markieren.",
-            "accountWarning": "Dein Konto, deine Beiträge oder Kommentare kannst du nach dem Löschen <b>WEDER VERWALTEN NOCH WIEDERHERSTELLEN!<\/b>",
+            "name": "Benutzerkonto löschen",
+            "accountDescription": "Sei dir bewusst, dass deine Beiträge und Kommentare für unsere Community wichtig sind. Wenn du dein Benutzerkonto löschst, ist alles für immer weg - und das wäre doch schade!",
+            "accountWarning": "Warnung! Dein Konto, deine Beiträge oder Kommentare kannst du nach dem Löschen <b>WEDER VERWALTEN NOCH WIEDERHERSTELLEN!<\/b>",
             "success": "Konto erfolgreich gelöscht!",
             "pleaseConfirm": "<b class='is-danger'>Zerstörerische Aktion!<\/b> Gib <b>{confirm}<\/b> ein, um zu bestätigen."
         },
