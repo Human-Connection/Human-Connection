@@ -113,11 +113,9 @@
             }
         },
         "deleteUserAccount": {
-            "name": "Effacer les données",
-            "contributionsCount": "Supprimer mes {count} postes",
-            "commentedCount": "Supprimer mes {count} commentaires",
-            "accountDescription": "Sachez que vos postes et commentaires sont importants pour notre communauté. Si vous voulez quand même les supprimer, vous devez les marquer ci-dessous.",
-            "accountWarning": "Vous <b>NE POUVEZ PAS GÉRER<\/b> et <b>NE POUVEZ PAS RECOUVRIR<\/b> votre compte, vos messages ou vos commentaires après avoir supprimé votre compte !",
+            "name": "Supprimer un compte utilisateur",
+            "accountDescription": "Sachez que vos postes et commentaires sont importants pour notre communauté. Si vous supprimez votre compte utilisateur, tout disparaîtra à jamais - et ce serait dommage!",
+            "accountWarning": "Attention! Vous <b>NE POUVEZ PAS GÉRER<\/b> et <b>NE POUVEZ PAS RECOUVRIR<\/b> votre compte, vos messages ou vos commentaires après avoir supprimé votre compte !",
             "success": "Compte supprimer avec succès!",
             "pleaseConfirm": "<b class='is-danger'> Action destructive! <\/b> Saisissez <b> {confirm} <\/b> pour confirmer"
         },
