@@ -113,11 +113,9 @@
             }
         },
         "deleteUserAccount": {
-            "name": "Borrar datos",
-            "contributionsCount": "Eliminar mis {count} contribuciones",
-            "commentedCount": "Eliminar mis {count} comentarios",
-            "accountDescription": "Tenga en cuenta que su contribución y sus comentarios son importantes para nuestra comunidad. Si aún decide borrarlos, debe marcarlos a continuación.",
-            "accountWarning": "¡<b> NO PUEDE GESTIONAR <\/b> y <b> NO PUEDE RECUPERAR <\/b> su cuenta, contribuciones o comentarios después de eliminar su cuenta!",
+            "name": "Eliminar cuenta de usuario",
+            "accountDescription": "Tenga en cuenta que su contribución y sus comentarios son importantes para nuestra comunidad. Si borras tu cuenta de usuario, todo desaparecerá para siempre - ¡y eso sería una lástima!",
+            "accountWarning": "Advertencia!¡<b> NO PUEDE GESTIONAR <\/b> y <b> NO PUEDE RECUPERAR <\/b> su cuenta, contribuciones o comentarios después de eliminar su cuenta!",
             "success": "¡Cuenta eliminada con éxito!",
             "pleaseConfirm": "<b class='is-danger'> ¡Acción destructiva! <\/b> Escriba <b> {confirm} <\/b> para confirmar"
         },
