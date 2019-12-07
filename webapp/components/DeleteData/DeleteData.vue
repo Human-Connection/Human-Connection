@@ -20,25 +20,6 @@
       <ds-container>
         <transition name="slide-up">
           <div v-if="deleteEnabled">
-            <label v-if="currentUser.contributionsCount" class="checkbox-container">
-              <input type="checkbox" v-model="deleteContributions" />
-              <span class="checkmark"></span>
-              {{
-                $t('settings.deleteUserAccount.contributionsCount', {
-                  count: currentUser.contributionsCount,
-                })
-              }}
-            </label>
-            <ds-space margin-bottom="small" />
-            <label v-if="currentUser.commentedCount" class="checkbox-container">
-              <input type="checkbox" v-model="deleteComments" />
-              <span class="checkmark"></span>
-              {{
-                $t('settings.deleteUserAccount.commentedCount', {
-                  count: currentUser.commentedCount,
-                })
-              }}
-            </label>
             <ds-space margin-bottom="small" />
             <ds-section id="delete-user-account-warning">
               <div v-html="$t('settings.deleteUserAccount.accountWarning')"></div>
