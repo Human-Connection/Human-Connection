@@ -1,3 +1,5 @@
+import log from './helpers/databaseLogger'
+
 const transformReturnType = record => {
   return {
     ...record.get('report').properties,
@@ -16,8 +18,7 @@ export default {
       const { driver, user } = context
       const session = driver.session()
       const reportWriteTxResultPromise = session.writeTransaction(async txc => {
-        const reportTransactionResponse = await txc.run(
-          `
+        const cypher = `
             MATCH (submitter:User {id: $submitterId})
             MATCH (resource {id: $resourceId})
             WHERE resource:User OR resource:Post OR resource:Comment
@@ -27,15 +28,16 @@ export default {
             CREATE (report)<-[filed:FILED {createdAt: $createdAt, reasonCategory: $reasonCategory, reasonDescription: $reasonDescription}]-(submitter)
 
             RETURN report, resource, labels(resource)[0] AS type
-          `,
-          {
-            resourceId,
-            submitterId: user.id,
-            createdAt: new Date().toISOString(),
-            reasonCategory,
-            reasonDescription,
-          },
-        )
+          `
+        const params = {
+          resourceId,
+          submitterId: user.id,
+          createdAt: new Date().toISOString(),
+          reasonCategory,
+          reasonDescription,
+        }
+        const reportTransactionResponse = await txc.run(cypher, params)
+        log(reportTransactionResponse)
         return reportTransactionResponse.records.map(transformReturnType)
       })
       try {
@@ -82,24 +84,24 @@ export default {
       const limit = params.first && typeof params.first === 'number' ? `LIMIT ${params.first}` : ''
 
       const reportReadTxPromise = session.readTransaction(async tx => {
-        const allReportsTransactionResponse = await tx.run(
-          `
-            MATCH (report:Report)-[:BELONGS_TO]->(resource)
-            WHERE (resource:User OR resource:Post OR resource:Comment)
-            ${filterClause}
-            WITH report, resource,
-            [(submitter:User)-[filed:FILED]->(report) |  filed {.*, submitter: properties(submitter)} ] as filed,
-            [(moderator:User)-[reviewed:REVIEWED]->(report) |  reviewed {.*, moderator: properties(moderator)} ] as reviewed,
-            [(resource)<-[:WROTE]-(author:User) | author {.*} ] as optionalAuthors,
-            [(resource)-[:COMMENTS]->(post:Post) | post {.*} ] as optionalCommentedPosts,
-            resource {.*, __typename: labels(resource)[0] } as resourceWithType
-            WITH report, optionalAuthors, optionalCommentedPosts, reviewed, filed,
-            resourceWithType {.*, post: optionalCommentedPosts[0], author: optionalAuthors[0] } as finalResource
-            RETURN report {.*, resource: finalResource, filed: filed, reviewed: reviewed }
-            ${orderByClause}
-            ${offset} ${limit}
-          `,
-        )
+        const cypher = `
+          MATCH (report:Report)-[:BELONGS_TO]->(resource)
+          WHERE (resource:User OR resource:Post OR resource:Comment)
+          ${filterClause}
+          WITH report, resource,
+          [(submitter:User)-[filed:FILED]->(report) |  filed {.*, submitter: properties(submitter)} ] as filed,
+          [(moderator:User)-[reviewed:REVIEWED]->(report) |  reviewed {.*, moderator: properties(moderator)} ] as reviewed,
+          [(resource)<-[:WROTE]-(author:User) | author {.*} ] as optionalAuthors,
+          [(resource)-[:COMMENTS]->(post:Post) | post {.*} ] as optionalCommentedPosts,
+          resource {.*, __typename: labels(resource)[0] } as resourceWithType
+          WITH report, optionalAuthors, optionalCommentedPosts, reviewed, filed,
+          resourceWithType {.*, post: optionalCommentedPosts[0], author: optionalAuthors[0] } as finalResource
+          RETURN report {.*, resource: finalResource, filed: filed, reviewed: reviewed }
+          ${orderByClause}
+          ${offset} ${limit}
+        `
+        const allReportsTransactionResponse = await tx.run(cypher)
+        log(allReportsTransactionResponse)
         return allReportsTransactionResponse.records.map(record => record.get('report'))
       })
       try {
@@ -119,13 +121,13 @@ export default {
       const { id } = parent
       let filed
       const readTxPromise = session.readTransaction(async tx => {
-        const allReportsTransactionResponse = await tx.run(
-          `
+        const cypher = `
           MATCH (submitter:User)-[filed:FILED]->(report:Report {id: $id})
           RETURN filed, submitter
-          `,
-          { id },
-        )
+        `
+        const params = { id }
+        const allReportsTransactionResponse = await tx.run(cypher, params)
+        log(allReportsTransactionResponse)
         return allReportsTransactionResponse.records.map(record => ({
           submitter: record.get('submitter').properties,
           filed: record.get('filed').properties,
@@ -153,14 +155,14 @@ export default {
       const { id } = parent
       let reviewed
       const readTxPromise = session.readTransaction(async tx => {
-        const allReportsTransactionResponse = await tx.run(
-          `
-            MATCH (resource)<-[:BELONGS_TO]-(report:Report {id: $id})<-[review:REVIEWED]-(moderator:User)
-            RETURN moderator, review
-            ORDER BY report.updatedAt DESC, review.updatedAt DESC
-          `,
-          { id },
-        )
+        const cypher = `
+          MATCH (resource)<-[:BELONGS_TO]-(report:Report {id: $id})<-[review:REVIEWED]-(moderator:User)
+          RETURN moderator, review
+          ORDER BY report.updatedAt DESC, review.updatedAt DESC
+        `
+        const params = { id }
+        const allReportsTransactionResponse = await tx.run(cypher, params)
+        log(allReportsTransactionResponse)
         return allReportsTransactionResponse.records.map(record => ({
           review: record.get('review').properties,
           moderator: record.get('moderator').properties,
