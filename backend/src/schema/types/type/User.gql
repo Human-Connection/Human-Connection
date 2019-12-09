@@ -165,11 +165,13 @@ type Query {
     findUsers(query: String!,limit: Int = 10, filter: _UserFilter): [User]!
     @cypher(
 	statement: """
-        MATCH (user:User)
-        WHERE (user.name =~ $query OR user.slug =~ $query)
-        AND NOT user.deleted = true AND NOT user.disabled = true
-        RETURN user
-        LIMIT $limit
+      CALL db.index.fulltext.queryNodes('user_fulltext_search', $query)
+      YIELD node as post, score
+      MATCH (user)
+      WHERE score >= 0.2
+      AND NOT user.deleted = true AND NOT user.disabled = true
+      RETURN user
+      LIMIT $limit
         """
     )
 }

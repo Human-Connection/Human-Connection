@@ -83,9 +83,9 @@ export default shield(
   {
     Query: {
       '*': deny,
-	findPosts: allow,
-	findUsers: allow,
-	findAnything: allow,
+      findPosts: allow,
+      findUsers: allow,
+      findAnything: allow,
       embed: allow,
       Category: allow,
       Tag: allow,

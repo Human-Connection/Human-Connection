@@ -1,5 +1,5 @@
 union SearchResult = Post | User
 
 type Query {
-  findAnything(query: String!, limit: Int = 10): [Post]
+  findAnything(query: String!, limit: Int = 5): [SearchResult]!
 }
