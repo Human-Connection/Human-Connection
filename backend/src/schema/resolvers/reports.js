@@ -90,8 +90,12 @@ export default {
             WITH report, resource,
             [(submitter:User)-[filed:FILED]->(report) |  filed {.*, submitter: properties(submitter)} ] as filed,
             [(moderator:User)-[reviewed:REVIEWED]->(report) |  reviewed {.*, moderator: properties(moderator)} ] as reviewed,
+            [(resource)<-[:WROTE]-(author:User) | author {.*} ] as optionalAuthors,
+            [(resource)-[:COMMENTS]->(post:Post) | post {.*} ] as optionalCommentedPosts,
             resource {.*, __typename: labels(resource)[0] } as resourceWithType
-            RETURN report {.*, resource: resourceWithType, filed: filed, reviewed: reviewed}
+            WITH report, optionalAuthors, optionalCommentedPosts, reviewed, filed,
+            resourceWithType {.*, post: optionalCommentedPosts[0], author: optionalAuthors[0] } as finalResource
+            RETURN report {.*, resource: finalResource, filed: filed, reviewed: reviewed }
             ${orderByClause}
             ${offset} ${limit}
           `,
