@@ -16,8 +16,3 @@ enum ReasonCategory {
   advert_products_services_commercial
   criminal_behavior_violation_german_law
 }
-
-enum ReportOrdering {
-  createdAt_asc
-  createdAt_desc
-}

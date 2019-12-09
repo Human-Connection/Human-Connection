@@ -1731,7 +1731,7 @@ apollo-server-caching@^0.5.0:
   dependencies:
     lru-cache "^5.0.0"
 
-apollo-server-core@^2.9.12, apollo-server-core@^2.9.13:
+apollo-server-core@^2.9.13:
   version "2.9.13"
   resolved "https://registry.yarnpkg.com/apollo-server-core/-/apollo-server-core-2.9.13.tgz#29fee69be56d30605b0a06cd755fd39e0409915f"
   integrity sha512-iXTGNCtouB0Xe37ySovuZO69NBYOByJlZfUc87gj0pdcz0WbdfUp7qUtNzy3onp63Zo60TFkHWhGNcBJYFluzw==
@@ -7452,11 +7452,6 @@ serve-static@1.14.1:
   version "1.14.1"
   resolved "https://registry.yarnpkg.com/serve-static/-/serve-static-1.14.1.tgz#666e636dc4f010f7ef29970a88a674320898b2f9"
   integrity sha512-JMrvUwE54emCYWlTI+hGrGv5I8dEwmco/00EvkzIIsR7MqrHonbD9pO2MOfFnpFntl7ecpZs+3mW+XbQZu9QCg==
-  dependencies:
-    encodeurl "~1.0.2"
-    escape-html "~1.0.3"
-    parseurl "~1.3.3"
-    send "0.17.1"
 
 set-blocking@^2.0.0, set-blocking@~2.0.0:
   version "2.0.0"

@@ -3,8 +3,20 @@ import gql from 'graphql-tag'
 export const reportsListQuery = () => {
   // no limit for the moment like before: "reports(first: 20, orderBy: createdAt_desc)"
   return gql`
-    query {
-      reports(orderBy: createdAt_desc) {
+    query(
+      $orderBy: ReportOrdering
+      $first: Int
+      $offset: Int
+      $reviewed: Boolean
+      $closed: Boolean
+    ) {
+      reports(
+        orderBy: $orderBy
+        first: $first
+        offset: $offset
+        reviewed: $reviewed
+        closed: $closed
+      ) {
         id
         createdAt
         updatedAt
@@ -114,7 +126,6 @@ export const reviewMutation = () => {
     mutation($resourceId: ID!, $disable: Boolean, $closed: Boolean) {
       review(resourceId: $resourceId, disable: $disable, closed: $closed) {
         disable
-        closed
       }
     }
   `
