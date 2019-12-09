@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.7.2",
-    "@babel/preset-env": "^7.7.4",
+    "@babel/preset-env": "^7.7.6",
     "@babel/register": "^7.7.4",
     "auto-changelog": "^1.16.2",
     "bcryptjs": "^2.4.3",
