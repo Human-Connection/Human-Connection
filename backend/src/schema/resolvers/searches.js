@@ -1,13 +1,11 @@
 export default {
   SearchResult: {
     __resolveType(obj, context, info) {
-      console.log('----', obj.keys)
-      if (obj.keys.includes('user')) {
-        return info.schema.getType('User')
+      if (obj.encryptedPassword) {
+        return 'User'
       }
-
-      if (obj.keys.includes('post')) {
-        return info.schema.getType('Post')
+      if (obj.content) {
+        return 'Post'
       }
       return null
     },
@@ -39,7 +37,7 @@ export default {
       session.close()
       const userCypher = `
       CALL db.index.fulltext.queryNodes('user_fulltext_search', $query)
-      YIELD node as post, score
+      YIELD node as user, score
       MATCH (user)
       WHERE score >= 0.2
       AND NOT user.deleted = true AND NOT user.disabled = true
@@ -53,8 +51,11 @@ export default {
       })
 
       session.close()
-      console.log(postResults.records.concat(userResults.records))
-      return postResults.records.concat(userResults.records)
+      const result = []
+      postResults.records
+        .concat(userResults.records)
+        .forEach(record => result.push(record._fields[0].properties))
+      return result
     },
   },
 }
