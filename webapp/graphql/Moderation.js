@@ -29,9 +29,6 @@ export const reportsListQuery = () => {
             id
             slug
             name
-            followedByCount
-            contributionsCount
-            commentedCount
           }
         }
         resource {
@@ -42,9 +39,6 @@ export const reportsListQuery = () => {
             name
             disabled
             deleted
-            followedByCount
-            contributionsCount
-            commentedCount
           }
           ... on Comment {
             id
@@ -57,9 +51,6 @@ export const reportsListQuery = () => {
               name
               disabled
               deleted
-              followedByCount
-              contributionsCount
-              commentedCount
             }
             post {
               id
@@ -81,9 +72,6 @@ export const reportsListQuery = () => {
               name
               disabled
               deleted
-              followedByCount
-              contributionsCount
-              commentedCount
             }
           }
         }
@@ -94,9 +82,6 @@ export const reportsListQuery = () => {
             name
             disabled
             deleted
-            followedByCount
-            contributionsCount
-            commentedCount
           }
           createdAt
           reasonCategory
