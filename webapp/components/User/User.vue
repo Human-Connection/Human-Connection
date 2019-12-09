@@ -8,7 +8,7 @@
   <dropdown v-else :class="{ 'disabled-content': user.disabled }" placement="top-start" offset="0">
     <template slot="default" slot-scope="{ openMenu, closeMenu, isOpen }">
       <nuxt-link :to="userLink" :class="['user', isOpen && 'active']">
-        <div @mouseover="openMenu(true)" @mouseleave="closeMenu(true)">
+        <div @mouseover="openInfoMenu" @mouseleave="closeMenu(true)">
           <hc-avatar v-if="showAvatar" class="avatar" :user="user" />
           <div>
             <ds-text class="userinfo">
@@ -26,7 +26,7 @@
         </div>
       </nuxt-link>
     </template>
-    <template slot="popover">
+    <template slot="popover" v-if="showCounts">
       <div style="min-width: 250px">
         <hc-badges v-if="user.badges && user.badges.length" :badges="user.badges" />
         <ds-text
@@ -106,6 +106,7 @@ export default {
     showAvatar: { type: Boolean, default: true },
     trunc: { type: Number, default: 18 }, // "-1" is no trunc
     dateTime: { type: [Date, String], default: null },
+    showCounts: { type: Boolean, default: true },
   },
   computed: {
     ...mapGetters({
@@ -141,6 +142,9 @@ export default {
     updateFollow({ followedByCurrentUser, followedByCount }) {
       this.user.followedByCount = followedByCount
       this.user.followedByCurrentUser = followedByCurrentUser
+    },
+    openInfoMenu() {
+      if (this.showCounts) this.openMenu(true)
     },
   },
 }
