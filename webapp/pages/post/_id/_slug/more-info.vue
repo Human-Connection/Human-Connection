@@ -19,11 +19,7 @@
     <h3>{{ $t('post.moreInfo.titleOfRelatedContributionsSection') }}</h3>
     <ds-section>
       <masonry-grid v-if="post.relatedContributions && post.relatedContributions.length">
-        <masonry-grid-item
-          v-for="relatedPost in post.relatedContributions"
-          :key="relatedPost.id"
-          :imageAspectRatio="relatedPost.imageAspectRatio"
-        >
+        <masonry-grid-item v-for="relatedPost in post.relatedContributions" :key="relatedPost.id">
           <hc-post-card
             :post="relatedPost"
             :width="{ base: '100%', lg: 1 }"

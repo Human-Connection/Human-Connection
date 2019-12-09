@@ -232,11 +232,7 @@
           </ds-grid-item>
 
           <template v-if="posts.length">
-            <masonry-grid-item
-              v-for="post in posts"
-              :key="post.id"
-              :imageAspectRatio="post.imageAspectRatio"
-            >
+            <masonry-grid-item v-for="post in posts" :key="post.id">
               <hc-post-card
                 :post="post"
                 :width="{ base: '100%', md: '100%', xl: '50%' }"
