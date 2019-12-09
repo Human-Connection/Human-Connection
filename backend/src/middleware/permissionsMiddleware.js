@@ -85,7 +85,7 @@ export default shield(
       '*': deny,
       findPosts: allow,
       findUsers: allow,
-      findAnything: allow,
+      findResources: allow,
       embed: allow,
       Category: allow,
       Tag: allow,

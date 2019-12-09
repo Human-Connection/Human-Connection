@@ -11,7 +11,7 @@ export default {
     },
   },
   Query: {
-    findAnything: async (_parent, args, context, _resolveInfo) => {
+    findResources: async (_parent, args, context, _resolveInfo) => {
       const query = args.query
       const filter = {}
       const limit = args.limit

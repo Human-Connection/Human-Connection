@@ -28,7 +28,7 @@
                   :results="quickSearchResults"
                   @clear="quickSearchClear"
                   @search="value => quickSearch({ value })"
-                  @select="goToPost"
+                  @select="goToResource"
                 />
               </div>
             </ds-flex-item>
@@ -140,12 +140,24 @@ export default {
       quickSearchClear: 'search/quickClear',
       quickSearch: 'search/quickSearch',
     }),
-    goToPost(item) {
+    goToResource(item) {
       this.$nextTick(() => {
-        this.$router.push({
-          name: 'post-id-slug',
-          params: { id: item.id, slug: item.slug },
-        })
+        switch (item.__typename) {
+          case 'Post':
+            this.$router.push({
+              name: 'post-id-slug',
+              params: { id: item.id, slug: item.slug },
+            })
+            break
+          case 'User':
+            this.$router.push({
+              name: 'profile-id-slug',
+              params: { id: item.id, slug: item.slug },
+            })
+            break
+          default:
+            break
+        }
       })
     },
     toggleMobileMenuView() {

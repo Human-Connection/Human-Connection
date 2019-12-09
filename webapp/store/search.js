@@ -46,29 +46,35 @@ export const actions = {
     await this.app.apolloProvider.defaultClient
       .query({
         query: gql`
-          query findPosts($query: String!, $filter: _PostFilter) {
-            findPosts(query: $query, limit: 10, filter: $filter) {
-              id
-              slug
-              label: title
-              value: title
-              shoutedCount
-              createdAt
-              author {
+          query findResources($query: String!) {
+            findResources(query: $query, limit: 5) {
+              __typename
+              ... on Post {
+                id
+                title
+                slug
+                commentsCount
+                shoutedCount
+                createdAt
+                author {
+                  name
+                }
+              }
+              ... on User {
                 id
                 name
                 slug
+                avatar
               }
             }
           }
         `,
         variables: {
-          query: value.replace(/\s/g, '~ ') + '~',
-          filter: {},
+          query: value,
         },
       })
       .then(res => {
-        commit('SET_QUICK_RESULTS', res.data.findPosts || [])
+        commit('SET_QUICK_RESULTS', res.data.findResources || [])
       })
       .catch(() => {
         commit('SET_QUICK_RESULTS', [])
