@@ -1,0 +1,5 @@
+union SearchResult = Post | User
+
+type Query {
+  findAnything(query: String!, limit: Int = 10): [Post]
+}

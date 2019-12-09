@@ -46,6 +46,13 @@ export default {
         throw new UserInputError(e.message)
       }
     },
+      findUsers: async (object, params, context, resolveInfo) => {
+	  console.log('params', params)
+	  //const blockedUsers = await getBlockedUsers(context)
+	  const debug = await neo4jgraphql(object, params, context, resolveInfo, true)
+	  console.log('debug', debug)
+      return debug
+    },
     User: async (object, args, context, resolveInfo) => {
       const { email } = args
       if (email) {

@@ -161,7 +161,17 @@ type Query {
   ): [User]
 
   blockedUsers: [User]
-  currentUser: User
+    currentUser: User
+    findUsers(query: String!,limit: Int = 10, filter: _UserFilter): [User]!
+    @cypher(
+	statement: """
+        MATCH (user:User)
+        WHERE (user.name =~ $query OR user.slug =~ $query)
+        AND NOT user.deleted = true AND NOT user.disabled = true
+        RETURN user
+        LIMIT $limit
+        """
+    )
 }
 
 type Mutation {
