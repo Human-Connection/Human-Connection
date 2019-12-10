@@ -106,7 +106,6 @@ export default {
       })
       try {
         const reports = await reportReadTxPromise
-        if (!reports) return []
         return reports
       } finally {
         session.close()
@@ -135,7 +134,6 @@ export default {
       })
       try {
         const filedReports = await readTxPromise
-        if (!filedReports) return []
         filed = filedReports.map(reportedRecord => {
           const { submitter, filed } = reportedRecord
           const relationshipWithNestedAttributes = {
