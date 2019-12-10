@@ -10,7 +10,7 @@
       <hc-user
         :user="scope.row.submitter"
         :showAvatar="false"
-        :showCounts="false"
+        :showPopover="false"
         :trunc="30"
         data-test="filing-user"
       />
