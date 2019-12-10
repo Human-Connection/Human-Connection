@@ -153,7 +153,18 @@ export default {
   object-fit: cover;
   -o-object-position: center;
   object-position: center;
-}
+ <script type="text/javascript" src="./libgif.js"></script>
+ <script>
+    $$('ds-card-image img').each(function (img_tag) {
+        if (/.*\.gif/.test(img_tag.src)) {
+            var rub = new SuperGif({ gif: img_tag } );
+            rub.load(function(){
+                console.log('gif');
+            });
+        }
+    });
+ </script>
+ }
 
 .post-card {
   cursor: pointer;
