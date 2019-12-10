@@ -489,7 +489,6 @@ describe('file a report on a resource', () => {
           id
           createdAt
           updatedAt
-          disable
           closed
           resource {
             __typename
