@@ -281,9 +281,9 @@ export default {
       ctx.loaders.vue.compilerOptions = {
         modules: [
           {
-            preTransformNode(astEl) {
+            preTransformNode(abstractSyntaxTreeElement) {
               if (!ctx.isDev) {
-                const { attrsMap, attrsList } = astEl
+                const { attrsMap, attrsList } = abstractSyntaxTreeElement
                 tagAttributesForTesting.forEach(attribute => {
                   if (attrsMap[attribute]) {
                     delete attrsMap[attribute]
@@ -292,7 +292,7 @@ export default {
                   }
                 })
               }
-              return astEl
+              return abstractSyntaxTreeElement
             },
           },
         ],
