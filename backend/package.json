@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "@hapi/joi": "^16.1.8",
-    "@sentry/node": "^5.10.1",
+    "@sentry/node": "^5.10.2",
     "apollo-cache-inmemory": "~1.6.3",
     "apollo-client": "~2.6.4",
     "apollo-link-context": "~1.0.19",
@@ -97,11 +97,11 @@
     "xregexp": "^4.2.4"
   },
   "devDependencies": {
-    "@babel/cli": "~7.7.4",
+    "@babel/cli": "~7.7.5",
     "@babel/core": "~7.7.5",
     "@babel/node": "~7.7.4",
     "@babel/plugin-proposal-throw-expressions": "^7.7.4",
-    "@babel/preset-env": "~7.7.4",
+    "@babel/preset-env": "~7.7.6",
     "@babel/register": "~7.7.0",
     "apollo-server-testing": "~2.9.13",
     "babel-core": "~7.0.0-0",
@@ -112,7 +112,7 @@
     "eslint": "~6.7.2",
     "eslint-config-prettier": "~6.7.0",
     "eslint-config-standard": "~14.1.0",
-    "eslint-plugin-import": "~2.18.2",
+    "eslint-plugin-import": "~2.19.1",
     "eslint-plugin-jest": "~23.1.1",
     "eslint-plugin-node": "~10.0.0",
     "eslint-plugin-prettier": "~3.1.1",

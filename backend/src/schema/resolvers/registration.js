@@ -1,12 +1,12 @@
 import { UserInputError } from 'apollo-server'
-import { neode } from '../../bootstrap/neo4j'
+import { getNeode } from '../../bootstrap/neo4j'
 import fileUpload from './fileUpload'
 import encryptPassword from '../../helpers/encryptPassword'
 import generateNonce from './helpers/generateNonce'
 import existingEmailAddress from './helpers/existingEmailAddress'
 import normalizeEmail from './helpers/normalizeEmail'
 
-const instance = neode()
+const neode = getNeode()
 
 export default {
   Mutation: {
@@ -16,7 +16,7 @@ export default {
       let emailAddress = await existingEmailAddress({ args, context })
       if (emailAddress) return emailAddress
       try {
-        emailAddress = await instance.create('EmailAddress', args)
+        emailAddress = await neode.create('EmailAddress', args)
         return emailAddress.toJson()
       } catch (e) {
         throw new UserInputError(e.message)
@@ -32,7 +32,7 @@ export default {
 
       let { nonce, email } = args
       email = normalizeEmail(email)
-      const result = await instance.cypher(
+      const result = await neode.cypher(
         `
       MATCH(email:EmailAddress {nonce: {nonce}, email: {email}})
       WHERE NOT (email)-[:BELONGS_TO]->()
@@ -40,12 +40,12 @@ export default {
       `,
         { nonce, email },
       )
-      const emailAddress = await instance.hydrateFirst(result, 'email', instance.model('Email'))
+      const emailAddress = await neode.hydrateFirst(result, 'email', neode.model('Email'))
       if (!emailAddress) throw new UserInputError('Invalid email or nonce')
       args = await fileUpload(args, { file: 'avatarUpload', url: 'avatar' })
       args = await encryptPassword(args)
       try {
-        const user = await instance.create('User', args)
+        const user = await neode.create('User', args)
         await Promise.all([
           user.relateTo(emailAddress, 'primaryEmail'),
           emailAddress.relateTo(user, 'belongsTo'),

@@ -1,14 +1,14 @@
-import { neode } from '../../bootstrap/neo4j'
+import { getNeode } from '../../bootstrap/neo4j'
 import Resolver from './helpers/Resolver'
 
-const instance = neode()
+const neode = getNeode()
 
 export default {
   Mutation: {
     CreateSocialMedia: async (object, params, context, resolveInfo) => {
       const [user, socialMedia] = await Promise.all([
-        instance.find('User', context.user.id),
-        instance.create('SocialMedia', params),
+        neode.find('User', context.user.id),
+        neode.create('SocialMedia', params),
       ])
       await socialMedia.relateTo(user, 'ownedBy')
       const response = await socialMedia.toJson()
@@ -16,14 +16,14 @@ export default {
       return response
     },
     UpdateSocialMedia: async (object, params, context, resolveInfo) => {
-      const socialMedia = await instance.find('SocialMedia', params.id)
+      const socialMedia = await neode.find('SocialMedia', params.id)
       await socialMedia.update({ url: params.url })
       const response = await socialMedia.toJson()
 
       return response
     },
     DeleteSocialMedia: async (object, { id }, context, resolveInfo) => {
-      const socialMedia = await instance.find('SocialMedia', id)
+      const socialMedia = await neode.find('SocialMedia', id)
       if (!socialMedia) return null
       await socialMedia.delete()
       return socialMedia.toJson()

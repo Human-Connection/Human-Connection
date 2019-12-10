@@ -1,15 +1,17 @@
 import { v1 as neo4j } from 'neo4j-driver'
 import CONFIG from './../config'
-import setupNeode from './neode'
+import Neode from 'neode'
+import models from '../models'
 
 let driver
+const defaultOptions = {
+  uri: CONFIG.NEO4J_URI,
+  username: CONFIG.NEO4J_USERNAME,
+  password: CONFIG.NEO4J_PASSWORD,
+}
 
 export function getDriver(options = {}) {
-  const {
-    uri = CONFIG.NEO4J_URI,
-    username = CONFIG.NEO4J_USERNAME,
-    password = CONFIG.NEO4J_PASSWORD,
-  } = options
+  const { uri, username, password } = { ...defaultOptions, ...options }
   if (!driver) {
     driver = neo4j.driver(uri, neo4j.auth.basic(username, password))
   }
@@ -17,10 +19,11 @@ export function getDriver(options = {}) {
 }
 
 let neodeInstance
-export function neode() {
+export function getNeode(options = {}) {
   if (!neodeInstance) {
-    const { NEO4J_URI: uri, NEO4J_USERNAME: username, NEO4J_PASSWORD: password } = CONFIG
-    neodeInstance = setupNeode({ uri, username, password })
+    const { uri, username, password } = { ...defaultOptions, ...options }
+    neodeInstance = new Neode(uri, username, password).with(models)
+    return neodeInstance
   }
   return neodeInstance
 }

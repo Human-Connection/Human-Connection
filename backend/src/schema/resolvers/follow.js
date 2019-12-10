@@ -1,4 +1,4 @@
-import { neode as getNeode } from '../../bootstrap/neo4j'
+import { getNeode } from '../../bootstrap/neo4j'
 
 const neode = getNeode()
 

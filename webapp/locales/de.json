@@ -550,6 +550,8 @@
                     "terms-and-condition": "Ich stimme den <a href=\"\/terms-and-conditions\"><ds-text bold color=\"primary\" > Nutzungsbedingungen<\/ds-text><\/a>zu.",
                     "data-privacy": "Ich habe die  <a href=\"https:\/\/human-connection.org\/datenschutz\/\" target=\"_blank\"><ds-text bold color=\"primary\" >Datenschutzerklärung<\/ds-text><\/a> gelesen und verstanden",
                     "minimum-age": "Ich bin 18 Jahre oder älter.",
+                    "no-commercial": "Ich habe keine kommerziellen Absichten und ich repräsentiere kein kommerzielles Unternehmen oder Organisation.",
+                    "no-political": "Ich bin nicht im Auftrag einer Partei oder politischen Organisation im Netzwerk. ",
                     "invitation-code": "Dein Einladungscode lautet: <b>{code}<\/b>",
                     "errors": {
                         "email-exists": "Es gibt schon ein Benutzerkonto mit dieser E-Mail Adresse!",

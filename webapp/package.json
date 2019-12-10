@@ -57,7 +57,7 @@
     ]
   },
   "dependencies": {
-    "@human-connection/styleguide": "0.5.21",
+    "@human-connection/styleguide": "0.5.22",
     "@nuxtjs/apollo": "^4.0.0-rc18",
     "@nuxtjs/axios": "~5.8.0",
     "@nuxtjs/dotenv": "~1.4.1",
@@ -116,12 +116,12 @@
     "babel-plugin-require-context-hook": "^1.0.0",
     "babel-preset-vue": "~2.0.2",
     "core-js": "~2.6.10",
-    "css-loader": "~3.2.1",
+    "css-loader": "~3.3.0",
     "eslint": "~6.7.2",
     "eslint-config-prettier": "~6.7.0",
     "eslint-config-standard": "~14.1.0",
     "eslint-loader": "~3.0.3",
-    "eslint-plugin-import": "~2.18.2",
+    "eslint-plugin-import": "~2.19.1",
     "eslint-plugin-jest": "~23.1.1",
     "eslint-plugin-node": "~10.0.0",
     "eslint-plugin-prettier": "~3.1.1",
