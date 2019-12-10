@@ -2,6 +2,7 @@ import { addParameters, configure } from '@storybook/vue'
 import Vue from 'vue'
 import Vuex from 'vuex'
 import { action } from '@storybook/addon-actions'
+import '!style-loader!css-loader!sass-loader!../assets/_new/styles/resets.scss'
 
 Vue.use(Vuex)
 Vue.component('nuxt-link', {

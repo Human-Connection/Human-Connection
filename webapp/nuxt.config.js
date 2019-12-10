@@ -94,7 +94,10 @@ export default {
   /*
    ** Global CSS
    */
-  css: ['~assets/styles/main.scss'],
+  css: [
+    '~assets/_new/styles/resets.scss',
+    '~assets/styles/main.scss',
+  ],
 
   /*
    ** Global processed styles
