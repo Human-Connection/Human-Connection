@@ -1,7 +1,7 @@
 import { gql } from '../../helpers/jest'
 import Factory from '../../seed/factories'
 import { createTestClient } from 'apollo-server-testing'
-import { neode, getDriver } from '../../bootstrap/neo4j'
+import { getNeode, getDriver } from '../../bootstrap/neo4j'
 import createServer from '../../server'
 
 let server
@@ -11,7 +11,7 @@ let notifiedUser
 let authenticatedUser
 const factory = Factory()
 const driver = getDriver()
-const instance = neode()
+const neode = getNeode()
 const categoryIds = ['cat9']
 const createPostMutation = gql`
   mutation($id: ID, $title: String!, $postContent: String!, $categoryIds: [ID]!) {
@@ -44,7 +44,7 @@ beforeAll(() => {
     context: () => {
       return {
         user: authenticatedUser,
-        neode: instance,
+        neode: neode,
         driver,
       }
     },
@@ -56,14 +56,14 @@ beforeAll(() => {
 })
 
 beforeEach(async () => {
-  notifiedUser = await instance.create('User', {
+  notifiedUser = await neode.create('User', {
     id: 'you',
     name: 'Al Capone',
     slug: 'al-capone',
     email: 'test@example.org',
     password: '1234',
   })
-  await instance.create('Category', {
+  await neode.create('Category', {
     id: 'cat9',
     name: 'Democracy & Politics',
     icon: 'university',
@@ -146,7 +146,7 @@ describe('notifications', () => {
         describe('commenter is not me', () => {
           beforeEach(async () => {
             commentContent = 'Commenters comment.'
-            commentAuthor = await instance.create('User', {
+            commentAuthor = await neode.create('User', {
               id: 'commentAuthor',
               name: 'Mrs Comment',
               slug: 'mrs-comment',
@@ -228,7 +228,7 @@ describe('notifications', () => {
       })
 
       beforeEach(async () => {
-        postAuthor = await instance.create('User', {
+        postAuthor = await neode.create('User', {
           id: 'postAuthor',
           name: 'Mrs Post',
           slug: 'mrs-post',
@@ -432,7 +432,7 @@ describe('notifications', () => {
           beforeEach(async () => {
             commentContent =
               'One mention about me with <a data-mention-id="you" class="mention" href="/profile/you" target="_blank">@al-capone</a>.'
-            commentAuthor = await instance.create('User', {
+            commentAuthor = await neode.create('User', {
               id: 'commentAuthor',
               name: 'Mrs Comment',
               slug: 'mrs-comment',
@@ -442,7 +442,7 @@ describe('notifications', () => {
           })
 
           it('sends only one notification with reason mentioned_in_comment', async () => {
-            postAuthor = await instance.create('User', {
+            postAuthor = await neode.create('User', {
               id: 'MrPostAuthor',
               name: 'Mr Author',
               slug: 'mr-author',
@@ -518,7 +518,7 @@ describe('notifications', () => {
             await postAuthor.relateTo(notifiedUser, 'blocked')
             commentContent =
               'One mention about me with <a data-mention-id="you" class="mention" href="/profile/you" target="_blank">@al-capone</a>.'
-            commentAuthor = await instance.create('User', {
+            commentAuthor = await neode.create('User', {
               id: 'commentAuthor',
               name: 'Mrs Comment',
               slug: 'mrs-comment',
