@@ -19,7 +19,7 @@
       <!-- Content Column -->
       <td class="ds-table-col" data-test="report-content">
         <client-only v-if="isUser">
-          <hc-user :user="report.resource" :showAvatar="false" :trunc="30" :showCounts="false" />
+          <hc-user :user="report.resource" :showAvatar="false" :trunc="30" :showPopover="false" />
         </client-only>
         <nuxt-link v-else class="title" :to="linkTarget">
           {{ linkText | truncate(50) }}
@@ -33,7 +33,7 @@
             :user="report.resource.author"
             :showAvatar="false"
             :trunc="30"
-            :showCounts="false"
+            :showPopover="false"
           />
         </client-only>
         <span v-else>—</span>
@@ -51,7 +51,7 @@
             :showAvatar="false"
             :trunc="30"
             :date-time="report.updatedAt"
-            :showCounts="false"
+            :showPopover="false"
           />
         </client-only>
       </td>
