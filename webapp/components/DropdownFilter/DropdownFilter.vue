@@ -25,7 +25,7 @@
         class="dropdown-menu-item"
         :route="item.route"
         :parents="item.parents"
-        @click.stop.prevent="filterNotifications(item.route, toggleMenu)"
+        @click.stop.prevent="filter(item.route, toggleMenu)"
       >
         {{ item.route.label }}
       </ds-menu-item>
@@ -44,8 +44,8 @@ export default {
     filterOptions: { type: Array, default: () => [] },
   },
   methods: {
-    filterNotifications(option, toggleMenu) {
-      this.$emit('filterNotifications', option)
+    filter(option, toggleMenu) {
+      this.$emit('filter', option)
       toggleMenu()
     },
   },

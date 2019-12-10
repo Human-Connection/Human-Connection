@@ -5,29 +5,29 @@ import { gql } from '../../helpers/jest'
 import { createTestClient } from 'apollo-server-testing'
 import createServer, { context } from '../../server'
 import encode from '../../jwt/encode'
-import { neode as getNeode } from '../../bootstrap/neo4j'
+import { getNeode } from '../../bootstrap/neo4j'
 
 const factory = Factory()
 const neode = getNeode()
-let query
-let mutate
-let variables
-let req
-let user
+let query, mutate, variables, req, user
 
 const disable = async id => {
-  await factory.create('User', { id: 'u2', role: 'moderator' })
-  const moderatorBearerToken = encode({ id: 'u2' })
-  req = { headers: { authorization: `Bearer ${moderatorBearerToken}` } }
-  await mutate({
-    mutation: gql`
-      mutation($id: ID!) {
-        disable(id: $id)
-      }
-    `,
-    variables: { id },
-  })
-  req = { headers: {} }
+  const moderator = await factory.create('User', { id: 'u2', role: 'moderator' })
+  const user = await neode.find('User', id)
+  const reportAgainstUser = await factory.create('Report')
+  await Promise.all([
+    reportAgainstUser.relateTo(moderator, 'filed', {
+      resourceId: id,
+      reasonCategory: 'discrimination_etc',
+      reasonDescription: 'This user is harassing me with bigoted remarks!',
+    }),
+    reportAgainstUser.relateTo(user, 'belongsTo'),
+  ])
+  const disableVariables = { resourceId: user.id, disable: true, closed: false }
+  await Promise.all([
+    reportAgainstUser.relateTo(moderator, 'reviewed', disableVariables),
+    user.update({ disabled: true, updatedAt: new Date().toISOString() }),
+  ])
 }
 
 beforeEach(() => {

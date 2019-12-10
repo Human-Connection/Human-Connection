@@ -5,7 +5,12 @@
         <filter-menu :hashtag="hashtag" @clearSearch="clearSearch" />
       </ds-grid-item>
       <ds-grid-item :row-span="2" column-span="fullWidth" class="top-info-bar">
-        <donation-info />
+        <!--<donation-info /> -->
+        <div>
+          <a target="_blank" href="https://human-connection.org/spenden/">
+            <ds-button primary>{{ $t('donations.donate-now') }}</ds-button>
+          </a>
+        </div>
         <div class="sorting-dropdown">
           <ds-select
             v-model="selected"
@@ -16,10 +21,13 @@
         </div>
       </ds-grid-item>
       <template v-if="hasResults">
-        <masonry-grid-item v-for="post in posts" :key="post.id">
+        <masonry-grid-item
+          v-for="post in posts"
+          :key="post.id"
+          :imageAspectRatio="post.imageAspectRatio"
+        >
           <hc-post-card
             :post="post"
-            :width="{ base: '100%', xs: '100%', md: '50%', xl: '33%' }"
             @removePostFromList="deletePost"
             @pinPost="pinPost"
             @unpinPost="unpinPost"
@@ -53,7 +61,7 @@
 </template>
 
 <script>
-import DonationInfo from '~/components/DonationInfo/DonationInfo.vue'
+// import DonationInfo from '~/components/DonationInfo/DonationInfo.vue'
 import FilterMenu from '~/components/FilterMenu/FilterMenu.vue'
 import HcEmpty from '~/components/Empty/Empty'
 import HcPostCard from '~/components/PostCard/PostCard.vue'
@@ -66,7 +74,7 @@ import PostMutations from '~/graphql/PostMutations'
 
 export default {
   components: {
-    DonationInfo,
+    // DonationInfo,
     FilterMenu,
     HcPostCard,
     HcLoadMore,

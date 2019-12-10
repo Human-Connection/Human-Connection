@@ -57,7 +57,7 @@
     ]
   },
   "dependencies": {
-    "@human-connection/styleguide": "0.5.21",
+    "@human-connection/styleguide": "0.5.22",
     "@nuxtjs/apollo": "^4.0.0-rc18",
     "@nuxtjs/axios": "~5.8.0",
     "@nuxtjs/dotenv": "~1.4.1",
@@ -97,9 +97,9 @@
     "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
-    "@babel/core": "~7.7.4",
+    "@babel/core": "~7.7.5",
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
-    "@babel/preset-env": "~7.7.4",
+    "@babel/preset-env": "~7.7.6",
     "@storybook/addon-a11y": "^5.2.8",
     "@storybook/addon-actions": "^5.2.8",
     "@storybook/addon-notes": "^5.2.8",
@@ -108,7 +108,7 @@
     "@vue/eslint-config-prettier": "~6.0.0",
     "@vue/server-test-utils": "~1.0.0-beta.30",
     "@vue/test-utils": "~1.0.0-beta.29",
-    "async-validator": "^3.2.2",
+    "async-validator": "^3.2.3",
     "babel-core": "~7.0.0-bridge.0",
     "babel-eslint": "~10.0.3",
     "babel-jest": "~24.9.0",
@@ -120,7 +120,7 @@
     "eslint": "~6.7.2",
     "eslint-config-prettier": "~6.7.0",
     "eslint-config-standard": "~14.1.0",
-    "eslint-loader": "~3.0.2",
+    "eslint-loader": "~3.0.3",
     "eslint-plugin-import": "~2.18.2",
     "eslint-plugin-jest": "~23.1.1",
     "eslint-plugin-node": "~10.0.0",

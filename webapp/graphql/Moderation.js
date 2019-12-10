@@ -1,80 +1,91 @@
 import gql from 'graphql-tag'
 
-export const reportListQuery = () => {
-  // no limit vor the moment like before: "reports(first: 20, orderBy: createdAt_desc)"
+export const reportsListQuery = () => {
+  // no limit for the moment like before: "reports(first: 20, orderBy: createdAt_desc)"
   return gql`
-    query {
-      reports(orderBy: createdAt_desc) {
+    query(
+      $orderBy: ReportOrdering
+      $first: Int
+      $offset: Int
+      $reviewed: Boolean
+      $closed: Boolean
+    ) {
+      reports(
+        orderBy: $orderBy
+        first: $first
+        offset: $offset
+        reviewed: $reviewed
+        closed: $closed
+      ) {
+        id
         createdAt
-        reasonCategory
-        reasonDescription
-        type
-        submitter {
-          id
-          slug
-          name
-          disabled
-          deleted
+        updatedAt
+        closed
+        reviewed {
+          createdAt
+          updatedAt
+          disable
+          moderator {
+            id
+            slug
+            name
+          }
         }
-        user {
-          id
-          slug
-          name
-          disabled
-          deleted
-          disabledBy {
+        resource {
+          __typename
+          ... on User {
             id
             slug
             name
             disabled
             deleted
           }
-        }
-        comment {
-          id
-          contentExcerpt
-          author {
+          ... on Comment {
             id
-            slug
-            name
+            contentExcerpt
             disabled
             deleted
+            author {
+              id
+              slug
+              name
+              disabled
+              deleted
+            }
+            post {
+              id
+              slug
+              title
+              disabled
+              deleted
+            }
           }
-          post {
+          ... on Post {
             id
             slug
             title
             disabled
             deleted
-          }
-          disabledBy {
-            id
-            slug
-            name
-            disabled
-            deleted
+            author {
+              id
+              slug
+              name
+              disabled
+              deleted
+            }
           }
         }
-        post {
-          id
-          slug
-          title
-          disabled
-          deleted
-          author {
+        filed {
+          submitter {
             id
             slug
             name
             disabled
             deleted
           }
-          disabledBy {
-            id
-            slug
-            name
-            disabled
-            deleted
-          }
+          createdAt
+          reasonCategory
+          reasonDescription
         }
       }
     }
@@ -84,12 +95,22 @@ export const reportListQuery = () => {
 export const reportMutation = () => {
   return gql`
     mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
-      report(
+      fileReport(
         resourceId: $resourceId
         reasonCategory: $reasonCategory
         reasonDescription: $reasonDescription
       ) {
-        type
+        id
+      }
+    }
+  `
+}
+
+export const reviewMutation = () => {
+  return gql`
+    mutation($resourceId: ID!, $disable: Boolean, $closed: Boolean) {
+      review(resourceId: $resourceId, disable: $disable, closed: $closed) {
+        disable
       }
     }
   `

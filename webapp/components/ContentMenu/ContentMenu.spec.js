@@ -85,7 +85,7 @@ describe('ContentMenu.vue', () => {
           .filter(item => item.text() === 'post.menu.delete')
           .at(0)
           .trigger('click')
-        expect(openModalSpy).toHaveBeenCalledWith('delete')
+        expect(openModalSpy).toHaveBeenCalledWith('confirm', 'delete')
       })
     })
 
@@ -166,7 +166,7 @@ describe('ContentMenu.vue', () => {
           .filter(item => item.text() === 'comment.menu.delete')
           .at(0)
           .trigger('click')
-        expect(openModalSpy).toHaveBeenCalledWith('delete')
+        expect(openModalSpy).toHaveBeenCalledWith('confirm', 'delete')
       })
     })
 
@@ -332,7 +332,7 @@ describe('ContentMenu.vue', () => {
           .filter(item => item.text() === 'release.contribution.title')
           .at(0)
           .trigger('click')
-        expect(openModalSpy).toHaveBeenCalledWith('release', 'd23a4265-f5f7-4e17-9f86-85f714b4b9f8')
+        expect(openModalSpy).toHaveBeenCalledWith('release')
       })
 
       it('can release comments', () => {
@@ -350,7 +350,7 @@ describe('ContentMenu.vue', () => {
           .filter(item => item.text() === 'release.comment.title')
           .at(0)
           .trigger('click')
-        expect(openModalSpy).toHaveBeenCalledWith('release', 'd23a4265-f5f7-4e17-9f86-85f714b4b9f8')
+        expect(openModalSpy).toHaveBeenCalledWith('release')
       })
 
       it('can release users', () => {
@@ -368,7 +368,7 @@ describe('ContentMenu.vue', () => {
           .filter(item => item.text() === 'release.user.title')
           .at(0)
           .trigger('click')
-        expect(openModalSpy).toHaveBeenCalledWith('release', 'd23a4265-f5f7-4e17-9f86-85f714b4b9f8')
+        expect(openModalSpy).toHaveBeenCalledWith('release')
       })
 
       it('can release organizations', () => {
@@ -386,7 +386,7 @@ describe('ContentMenu.vue', () => {
           .filter(item => item.text() === 'release.organization.title')
           .at(0)
           .trigger('click')
-        expect(openModalSpy).toHaveBeenCalledWith('release', 'd23a4265-f5f7-4e17-9f86-85f714b4b9f8')
+        expect(openModalSpy).toHaveBeenCalledWith('release')
       })
     })
 

@@ -1,5 +1,4 @@
-import { config, shallowMount } from '@vue/test-utils'
-
+import { config, mount } from '@vue/test-utils'
 import MasonryGridItem from './MasonryGridItem'
 
 const localVue = global.localVue
@@ -9,24 +8,41 @@ config.stubs['ds-grid-item'] = '<span><slot /></span>'
 describe('MasonryGridItem', () => {
   let wrapper
 
-  beforeEach(() => {
-    wrapper = shallowMount(MasonryGridItem, { localVue })
-    wrapper.vm.$parent.$emit = jest.fn()
+  describe('given an imageAspectRatio', () => {
+    it('sets the initial rowSpan to 13 when the ratio is higher than 1.3', () => {
+      const propsData = { imageAspectRatio: 2 }
+      wrapper = mount(MasonryGridItem, { localVue, propsData })
+
+      expect(wrapper.vm.rowSpan).toBe(13)
+    })
+
+    it('sets the initial rowSpan to 15 when the ratio is between 1.3 and 1', () => {
+      const propsData = { imageAspectRatio: 1.1 }
+      wrapper = mount(MasonryGridItem, { localVue, propsData })
+
+      expect(wrapper.vm.rowSpan).toBe(15)
+    })
+
+    it('sets the initial rowSpan to 18 when the ratio is between 1 and 0.7', () => {
+      const propsData = { imageAspectRatio: 0.7 }
+      wrapper = mount(MasonryGridItem, { localVue, propsData })
+
+      expect(wrapper.vm.rowSpan).toBe(18)
+    })
+
+    it('sets the initial rowSpan to 25 when the ratio is lower than 0.7', () => {
+      const propsData = { imageAspectRatio: 0.3 }
+      wrapper = mount(MasonryGridItem, { localVue, propsData })
+
+      expect(wrapper.vm.rowSpan).toBe(25)
+    })
   })
 
-  it('emits "calculating-item-height" when starting calculation', async () => {
-    wrapper.vm.calculateItemHeight()
-    await wrapper.vm.$nextTick()
+  describe('given no aspect ratio', () => {
+    it('sets the initial rowSpan to 8 when not given an imageAspectRatio', () => {
+      wrapper = mount(MasonryGridItem, { localVue })
 
-    const firstCallArgument = wrapper.vm.$parent.$emit.mock.calls[0][0]
-    expect(firstCallArgument).toBe('calculating-item-height')
-  })
-
-  it('emits "finished-calculating-item-height" after the calculation', async () => {
-    wrapper.vm.calculateItemHeight()
-    await wrapper.vm.$nextTick()
-
-    const secondCallArgument = wrapper.vm.$parent.$emit.mock.calls[1][0]
-    expect(secondCallArgument).toBe('finished-calculating-item-height')
+      expect(wrapper.vm.rowSpan).toBe(8)
+    })
   })
 })

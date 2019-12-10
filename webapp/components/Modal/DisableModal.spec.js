@@ -26,9 +26,7 @@ describe('DisableModal.vue', () => {
       $apollo: {
         mutate: jest
           .fn()
-          .mockResolvedValueOnce({
-            enable: 'u4711',
-          })
+          .mockResolvedValueOnce()
           .mockRejectedValue({
             message: 'Not Authorised!',
           }),
@@ -159,11 +157,13 @@ describe('DisableModal.vue', () => {
           expect(mocks.$apollo.mutate).toHaveBeenCalled()
         })
 
-        it('passes id to mutation', () => {
+        it('passes parameters to mutation', () => {
           const calls = mocks.$apollo.mutate.mock.calls
           const [[{ variables }]] = calls
-          expect(variables).toEqual({
-            id: 'u4711',
+          expect(variables).toMatchObject({
+            resourceId: 'u4711',
+            disable: true,
+            closed: false,
           })
         })
 

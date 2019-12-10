@@ -112,10 +112,12 @@ export default {
       this.showCropper = false
       const canvas = this.cropper.getCroppedCanvas()
       canvas.toBlob(blob => {
+        const imageAspectRatio = canvas.width / canvas.height
         this.setupPreview(canvas)
         this.removeCropper()
-        const croppedImageFile = new File([blob], this.file.name, { type: 'image/jpeg' })
+        const croppedImageFile = new File([blob], this.file.name, { type: this.file.type })
         this.$emit('addTeaserImage', croppedImageFile)
+        this.$emit('addImageAspectRatio', imageAspectRatio)
       }, 'image/jpeg')
     },
     setupPreview(canvas) {

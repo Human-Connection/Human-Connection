@@ -149,6 +149,7 @@ export default {
             default:
               this.$toast.error(err.message)
           }
+          this.isOpen = false
           this.loading = false
         })
     },

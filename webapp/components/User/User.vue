@@ -1,6 +1,6 @@
 <template>
   <div class="user" v-if="displayAnonymous">
-    <hc-avatar class="avatar" />
+    <hc-avatar v-if="showAvatar" class="avatar" />
     <div>
       <b class="username">{{ $t('profile.userAnonym') }}</b>
     </div>
@@ -8,8 +8,8 @@
   <dropdown v-else :class="{ 'disabled-content': user.disabled }" placement="top-start" offset="0">
     <template slot="default" slot-scope="{ openMenu, closeMenu, isOpen }">
       <nuxt-link :to="userLink" :class="['user', isOpen && 'active']">
-        <div @mouseover="openMenu(true)" @mouseleave="closeMenu(true)">
-          <hc-avatar class="avatar" :user="user" />
+        <div @mouseover="openInfoMenu" @mouseleave="closeMenu(true)">
+          <hc-avatar v-if="showAvatar" class="avatar" :user="user" />
           <div>
             <ds-text class="userinfo">
               <b>{{ userSlug }}</b>
@@ -17,8 +17,8 @@
           </div>
           <ds-text class="username" align="left" size="small" color="soft">
             {{ userName | truncate(18) }}
-            <base-icon name="clock" />
             <template v-if="dateTime">
+              <base-icon name="clock" />
               <hc-relative-date-time :date-time="dateTime" />
               <slot name="dateTime"></slot>
             </template>
@@ -26,7 +26,7 @@
         </div>
       </nuxt-link>
     </template>
-    <template slot="popover">
+    <template slot="popover" v-if="showCounts">
       <div style="min-width: 250px">
         <hc-badges v-if="user.badges && user.badges.length" :badges="user.badges" />
         <ds-text
@@ -103,8 +103,10 @@ export default {
   },
   props: {
     user: { type: Object, default: null },
-    trunc: { type: Number, default: null },
+    showAvatar: { type: Boolean, default: true },
+    trunc: { type: Number, default: 18 }, // "-1" is no trunc
     dateTime: { type: [Date, String], default: null },
+    showCounts: { type: Boolean, default: true },
   },
   computed: {
     ...mapGetters({
@@ -141,13 +143,15 @@ export default {
       this.user.followedByCount = followedByCount
       this.user.followedByCurrentUser = followedByCurrentUser
     },
+    openInfoMenu() {
+      if (this.showCounts) this.openMenu(true)
+    },
   },
 }
 </script>
 
 <style scoped lang="scss">
 .avatar {
-  display: inline-block;
   float: left;
   margin-right: 4px;
   height: 100%;
@@ -175,5 +179,9 @@ export default {
   &.active {
     z-index: 999;
   }
+}
+
+.user-slug {
+  margin-bottom: $space-xx-small;
 }
 </style>

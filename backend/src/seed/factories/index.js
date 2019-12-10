@@ -1,4 +1,4 @@
-import { getDriver, neode } from '../../bootstrap/neo4j'
+import { getDriver, getNeode } from '../../bootstrap/neo4j'
 import createBadge from './badges.js'
 import createUser from './users.js'
 import createPost from './posts.js'
@@ -10,6 +10,7 @@ import createLocation from './locations.js'
 import createEmailAddress from './emailAddresses.js'
 import createDonations from './donations.js'
 import createUnverifiedEmailAddresss from './unverifiedEmailAddresses.js'
+import createReport from './reports.js'
 
 const factories = {
   Badge: createBadge,
@@ -23,6 +24,7 @@ const factories = {
   EmailAddress: createEmailAddress,
   UnverifiedEmailAddress: createUnverifiedEmailAddresss,
   Donations: createDonations,
+  Report: createReport,
 }
 
 export const cleanDatabase = async (options = {}) => {
@@ -37,7 +39,7 @@ export const cleanDatabase = async (options = {}) => {
 }
 
 export default function Factory(options = {}) {
-  const { neo4jDriver = getDriver(), neodeInstance = neode() } = options
+  const { neo4jDriver = getDriver(), neodeInstance = getNeode() } = options
 
   const result = {
     neo4jDriver,

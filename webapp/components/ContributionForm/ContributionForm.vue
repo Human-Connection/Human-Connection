@@ -7,7 +7,11 @@
     @submit="submit"
   >
     <template slot-scope="{ errors }">
-      <hc-teaser-image :contribution="contribution" @addTeaserImage="addTeaserImage">
+      <hc-teaser-image
+        :contribution="contribution"
+        @addTeaserImage="addTeaserImage"
+        @addImageAspectRatio="addImageAspectRatio"
+      >
         <img
           v-if="contribution"
           class="contribution-image"
@@ -128,6 +132,7 @@ export default {
       title: '',
       content: '',
       teaserImage: null,
+      imageAspectRatio: null,
       image: null,
       language: null,
       categoryIds: [],
@@ -190,6 +195,7 @@ export default {
         content,
         image,
         teaserImage,
+        imageAspectRatio,
         categoryIds,
       } = this.form
       this.loading = true
@@ -204,6 +210,7 @@ export default {
             language,
             image,
             imageUpload: teaserImage,
+            imageAspectRatio,
           },
         })
         .then(({ data }) => {
@@ -226,6 +233,9 @@ export default {
     },
     addTeaserImage(file) {
       this.form.teaserImage = file
+    },
+    addImageAspectRatio(aspectRatio) {
+      this.form.imageAspectRatio = aspectRatio
     },
     categoryIds(categories) {
       return categories.map(c => c.id)

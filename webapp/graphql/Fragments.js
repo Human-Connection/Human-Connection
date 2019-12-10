@@ -64,6 +64,7 @@ export const postFragment = lang => gql`
       role
     }
     pinnedAt
+    imageAspectRatio
   }
 `
 export const commentFragment = lang => gql`
