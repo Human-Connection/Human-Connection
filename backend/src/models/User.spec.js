@@ -1,8 +1,8 @@
 import Factory from '../seed/factories'
-import { neode } from '../bootstrap/neo4j'
+import { getNeode } from '../bootstrap/neo4j'
 
 const factory = Factory()
-const instance = neode()
+const neode = getNeode()
 
 afterEach(async () => {
   await factory.cleanDatabase()
@@ -10,7 +10,7 @@ afterEach(async () => {
 
 describe('role', () => {
   it('defaults to `user`', async () => {
-    const user = await instance.create('User', { name: 'John' })
+    const user = await neode.create('User', { name: 'John' })
     await expect(user.toJson()).resolves.toEqual(
       expect.objectContaining({
         role: 'user',
@@ -21,7 +21,7 @@ describe('role', () => {
 
 describe('slug', () => {
   it('normalizes to lowercase letters', async () => {
-    const user = await instance.create('User', { slug: 'Matt' })
+    const user = await neode.create('User', { slug: 'Matt' })
     await expect(user.toJson()).resolves.toEqual(
       expect.objectContaining({
         slug: 'matt',
@@ -30,9 +30,9 @@ describe('slug', () => {
   })
 
   it('must be unique', async done => {
-    await instance.create('User', { slug: 'Matt' })
+    await neode.create('User', { slug: 'Matt' })
     try {
-      await expect(instance.create('User', { slug: 'Matt' })).rejects.toThrow('already exists')
+      await expect(neode.create('User', { slug: 'Matt' })).rejects.toThrow('already exists')
       done()
     } catch (error) {
       throw new Error(`
@@ -54,7 +54,7 @@ describe('slug', () => {
 
   describe('characters', () => {
     const createUser = attrs => {
-      return instance.create('User', attrs).then(user => user.toJson())
+      return neode.create('User', attrs).then(user => user.toJson())
     }
 
     it('-', async () => {

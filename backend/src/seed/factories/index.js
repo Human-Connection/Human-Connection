@@ -1,4 +1,4 @@
-import { getDriver, neode } from '../../bootstrap/neo4j'
+import { getDriver, getNeode } from '../../bootstrap/neo4j'
 import createBadge from './badges.js'
 import createUser from './users.js'
 import createPost from './posts.js'
@@ -39,7 +39,7 @@ export const cleanDatabase = async (options = {}) => {
 }
 
 export default function Factory(options = {}) {
-  const { neo4jDriver = getDriver(), neodeInstance = neode() } = options
+  const { neo4jDriver = getDriver(), neodeInstance = getNeode() } = options
 
   const result = {
     neo4jDriver,

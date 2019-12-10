@@ -1,10 +1,10 @@
 import encode from '../../jwt/encode'
 import bcrypt from 'bcryptjs'
 import { AuthenticationError } from 'apollo-server'
-import { neode } from '../../bootstrap/neo4j'
+import { getNeode } from '../../bootstrap/neo4j'
 import normalizeEmail from './helpers/normalizeEmail'
 
-const instance = neode()
+const neode = getNeode()
 
 export default {
   Query: {
@@ -13,7 +13,7 @@ export default {
     },
     currentUser: async (object, params, ctx, resolveInfo) => {
       if (!ctx.user) return null
-      const user = await instance.find('User', ctx.user.id)
+      const user = await neode.find('User', ctx.user.id)
       return user.toJson()
     },
   },
@@ -53,7 +53,7 @@ export default {
       }
     },
     changePassword: async (_, { oldPassword, newPassword }, { driver, user }) => {
-      const currentUser = await instance.find('User', user.id)
+      const currentUser = await neode.find('User', user.id)
 
       const encryptedPassword = currentUser.get('encryptedPassword')
       if (!(await bcrypt.compareSync(oldPassword, encryptedPassword))) {

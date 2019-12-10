@@ -1,4 +1,4 @@
-import { neode } from '../../../bootstrap/neo4j'
+import { getNeode } from '../../../bootstrap/neo4j'
 
 export const undefinedToNullResolver = list => {
   const resolvers = {}
@@ -11,7 +11,7 @@ export const undefinedToNullResolver = list => {
 }
 
 export default function Resolver(type, options = {}) {
-  const instance = neode()
+  const instance = getNeode()
   const {
     idAttribute = 'id',
     undefinedToNull = [],

@@ -2,11 +2,11 @@ import { createTestClient } from 'apollo-server-testing'
 import createServer from '../../../server'
 import Factory from '../../../seed/factories'
 import { gql } from '../../../helpers/jest'
-import { neode, getDriver } from '../../../bootstrap/neo4j'
+import { getNeode, getDriver } from '../../../bootstrap/neo4j'
 
 const driver = getDriver()
 const factory = Factory()
-const instance = neode()
+const neode = getNeode()
 
 let currentUser
 let blockedUser
@@ -20,7 +20,7 @@ beforeEach(() => {
       return {
         user: authenticatedUser,
         driver,
-        neode: instance,
+        neode,
         cypherParams: {
           currentUserId: authenticatedUser ? authenticatedUser.id : null,
         },
@@ -55,11 +55,11 @@ describe('blockedUsers', () => {
 
   describe('authenticated and given a blocked user', () => {
     beforeEach(async () => {
-      currentUser = await instance.create('User', {
+      currentUser = await neode.create('User', {
         name: 'Current User',
         id: 'u1',
       })
-      blockedUser = await instance.create('User', {
+      blockedUser = await neode.create('User', {
         name: 'Blocked User',
         id: 'u2',
       })
@@ -113,7 +113,7 @@ describe('block', () => {
 
   describe('authenticated', () => {
     beforeEach(async () => {
-      currentUser = await instance.create('User', {
+      currentUser = await neode.create('User', {
         name: 'Current User',
         id: 'u1',
       })
@@ -138,7 +138,7 @@ describe('block', () => {
 
     describe('given a to-be-blocked user', () => {
       beforeEach(async () => {
-        blockedUser = await instance.create('User', {
+        blockedUser = await neode.create('User', {
           name: 'Blocked User',
           id: 'u2',
         })
@@ -181,11 +181,11 @@ describe('block', () => {
         let postQuery
 
         beforeEach(async () => {
-          const post1 = await instance.create('Post', {
+          const post1 = await neode.create('Post', {
             id: 'p12',
             title: 'A post written by the current user',
           })
-          const post2 = await instance.create('Post', {
+          const post2 = await neode.create('Post', {
             id: 'p23',
             title: 'A post written by the blocked user',
           })
@@ -323,7 +323,7 @@ describe('unblock', () => {
 
   describe('authenticated', () => {
     beforeEach(async () => {
-      currentUser = await instance.create('User', {
+      currentUser = await neode.create('User', {
         name: 'Current User',
         id: 'u1',
       })
@@ -348,7 +348,7 @@ describe('unblock', () => {
 
     describe('given another user', () => {
       beforeEach(async () => {
-        blockedUser = await instance.create('User', {
+        blockedUser = await neode.create('User', {
           name: 'Blocked User',
           id: 'u2',
         })

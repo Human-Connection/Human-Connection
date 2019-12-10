@@ -5,7 +5,7 @@ import { gql } from '../../helpers/jest'
 import { createTestClient } from 'apollo-server-testing'
 import createServer, { context } from '../../server'
 import encode from '../../jwt/encode'
-import { neode as getNeode } from '../../bootstrap/neo4j'
+import { getNeode } from '../../bootstrap/neo4j'
 
 const factory = Factory()
 const neode = getNeode()
