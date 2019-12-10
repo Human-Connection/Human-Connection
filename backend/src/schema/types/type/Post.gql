@@ -226,8 +226,6 @@ type Query {
   PostsEmotionsCountByEmotion(postId: ID!, data: _EMOTEDInput!): Int!
   PostsEmotionsByCurrentUser(postId: ID!): [String]
   profilePagePosts(filter: _PostFilter, first: Int, offset: Int, orderBy: [_PostOrdering]): [Post]
-  isLoggedIn: Boolean!
-  currentUser: User
   findPosts(query: String!, limit: Int = 10, filter: _PostFilter): [Post]!
     @cypher(
       statement: """

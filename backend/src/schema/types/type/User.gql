@@ -161,6 +161,7 @@ type Query {
   ): [User]
 
   blockedUsers: [User]
+  isLoggedIn: Boolean!
     currentUser: User
     findUsers(query: String!,limit: Int = 10, filter: _UserFilter): [User]!
     @cypher(

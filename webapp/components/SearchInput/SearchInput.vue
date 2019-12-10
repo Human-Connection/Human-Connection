@@ -44,8 +44,8 @@
                 </ds-heading>
               </ds-flex-item>
             </ds-flex>
-            <ds-flex v-else-if="option.__typename === 'User'">
-              <ds-flex-item class="search-option">
+            <ds-flex v-if="option.__typename === 'User'">
+	      <ds-flex-item class="search-option" :class="{'extra-space': isFirstOfType(option)}">
                 <ds-avatar class="avatar" name="option.name" image="option.avatar" />
                 <div>
                   <ds-text class="userinfo">
@@ -57,7 +57,7 @@
                 </ds-text>
               </ds-flex-item>
             </ds-flex>
-            <ds-flex v-else>
+            <ds-flex v-if="option.__typename === 'Post'">
               <ds-flex-item class="search-option-label">
                 <ds-text>{{ option.title | truncate(70) }}</ds-text>
               </ds-flex-item>
@@ -136,11 +136,11 @@ export default {
     },
   },
   methods: {
-    async query(value) {
-      if (isEmpty(value) || value.length < 3) {
-        this.clear()
-        return
-      }
+      async query(value) {
+	if (isEmpty(value) || value.length < 3) {
+          this.clear()
+          return
+        }
       this.$emit('search', value)
     },
     handleInput(e) {
@@ -211,105 +211,109 @@ export default {
 </script>
 
 <style lang="scss">
-.search {
-  display: flex;
-  align-self: center;
-  width: 100%;
-  position: relative;
-  $padding-left: $space-x-small;
-  .search-option-label {
-    align-self: center;
-    padding-left: $padding-left;
-  }
-  .search-option-meta {
-    align-self: center;
-    .ds-flex {
-      flex-direction: column;
-    }
-  }
-  &,
-  .ds-select-dropdown {
-    transition: box-shadow 100ms;
-    max-height: 70vh;
-  }
-  &.is-open {
-    .ds-select-dropdown {
-      box-shadow: $box-shadow-x-large;
-    }
-  }
-  .ds-select-dropdown-message {
-    opacity: 0.5;
-    padding-left: $padding-left;
-  }
-  .search-clear-btn {
-    right: 0;
-    z-index: 10;
-    position: absolute;
-    height: 100%;
-    width: 36px;
-    cursor: pointer;
-  }
-  .search-meta {
-    float: right;
-    padding-top: 2px;
-    white-space: nowrap;
-    word-wrap: none;
-    .base-icon {
-      vertical-align: sub;
-    }
-  }
-  .ds-select {
-    z-index: $z-index-dropdown + 1;
-  }
-  .ds-select-option-hover {
-    .ds-text-size-small,
-    .ds-text-size-small-x {
-      color: $text-color-soft;
-    }
-  }
-  .field {
-    width: 100%;
-    display: flex;
-    align-items: center;
-  }
-  .control {
-    width: 100%;
-  }
-  .search-option-heading {
-    font-weight: bold;
-    cursor: default;
-    background-color: white;
-    margin: -8px;
-    padding: 8px;
-  }
-  .avatar {
-    display: inline-block;
-    float: left;
-    margin-right: 4px;
-    height: 100%;
-    vertical-align: middle;
-  }
-  .userinfo {
-    display: flex;
-    align-items: center;
-    > .ds-text {
-      display: flex;
-      align-items: center;
-      margin-left: $space-xx-small;
-    }
-  }
-  .user {
-    white-space: nowrap;
-    position: relative;
-    display: flex;
-    align-items: center;
-    &:hover,
-    &.active {
-      z-index: 999;
-    }
-  }
-  .username {
-    color: #17b53f;
-  }
-}
+ .search {
+     display: flex;
+     align-self: center;
+     width: 100%;
+     position: relative;
+     $padding-left: $space-x-small;
+     .search-option-label {
+	 align-self: center;
+	 padding-left: $padding-left;
+     }
+     .search-option-meta {
+	 align-self: center;
+	 .ds-flex {
+	     flex-direction: column;
+	 }
+     }
+     &,
+     .ds-select-dropdown {
+	 transition: box-shadow 100ms;
+	 max-height: 70vh;
+     }
+     &.is-open {
+	 .ds-select-dropdown {
+	     box-shadow: $box-shadow-x-large;
+	 }
+     }
+     .ds-select-dropdown-message {
+	 opacity: 0.5;
+	 padding-left: $padding-left;
+     }
+     .search-clear-btn {
+	 right: 0;
+	 z-index: 10;
+	 position: absolute;
+	 height: 100%;
+	 width: 36px;
+	 cursor: pointer;
+     }
+     .search-meta {
+	 float: right;
+	 padding-top: 2px;
+	 white-space: nowrap;
+	 word-wrap: none;
+	 .base-icon {
+	     vertical-align: sub;
+	 }
+     }
+     .ds-select {
+	 z-index: $z-index-dropdown + 1;
+     }
+     .ds-select-option-hover {
+	 .ds-text-size-small,
+	 .ds-text-size-small-x {
+	     color: $text-color-soft;
+	 }
+     }
+     .field {
+	 width: 100%;
+	 display: flex;
+	 align-items: center;
+     }
+     .control {
+	 width: 100%;
+     }
+     .search-option-heading {
+	 font-weight: bold;
+	 cursor: default;
+	 background-color: white;
+	 margin: -8px;
+	 padding: 8px;
+     }
+     .avatar {
+	 display: inline-block;
+	 float: left;
+	 margin-right: 4px;
+	 height: 100%;
+	 vertical-align: middle;
+     }
+     .userinfo {
+	 display: flex;
+	 align-items: center;
+	 > .ds-text {
+	     display: flex;
+	     align-items: center;
+	     margin-left: $space-xx-small;
+	 }
+     }
+     .user {
+	 white-space: nowrap;
+	 position: relative;
+	 display: flex;
+	 align-items: center;
+	 &:hover,
+	 &.active {
+	     z-index: 999;
+	 }
+     }
+     .username {
+	 color: #17b53f;
+     }
+     .extra-space {
+	 margin-top: 8px;
+	 padding-top: 4px;
+     }
+ }
 </style>

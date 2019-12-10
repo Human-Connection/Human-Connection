@@ -48,7 +48,7 @@ export default {
     },
     findPosts: async (object, params, context, resolveInfo) => {
       params = await filterForBlockedUsers(params, context)
-      return neo4jgraphql(object, params, context, resolveInfo, true)
+      return neo4jgraphql(object, params, context, resolveInfo)
     },
     profilePagePosts: async (object, params, context, resolveInfo) => {
       params = await filterForBlockedUsers(params, context)
