@@ -1,32 +1,31 @@
 <template>
-  <div class="user" v-if="displayAnonymous">
-    <hc-avatar v-if="showAvatar" class="avatar" />
+  <div class="hc-user" v-if="displayAnonymous">
+    <hc-avatar v-if="showAvatar" class="user-preview-avatar" />
     <div>
       <b class="username">{{ $t('profile.userAnonym') }}</b>
     </div>
   </div>
+  <nuxt-link v-else-if="!showCounts" :to="userLink" class="hc-user">
+    <user-preview
+      :user="user"
+      :dateTime="dateTime"
+      :showAvatar="showAvatar"
+      :class="{ 'disabled-content': user.disabled }"
+    />
+  </nuxt-link>
   <dropdown v-else :class="{ 'disabled-content': user.disabled }" placement="top-start" offset="0">
     <template slot="default" slot-scope="{ openMenu, closeMenu, isOpen }">
-      <nuxt-link :to="userLink" :class="['user', isOpen && 'active']">
-        <div @mouseover="openInfoMenu" @mouseleave="closeMenu(true)">
-          <hc-avatar v-if="showAvatar" class="avatar" :user="user" />
-          <div>
-            <ds-text class="userinfo">
-              <b>{{ userSlug }}</b>
-            </ds-text>
-          </div>
-          <ds-text class="username" align="left" size="small" color="soft">
-            {{ userName | truncate(18) }}
-            <template v-if="dateTime">
-              <base-icon name="clock" />
-              <hc-relative-date-time :date-time="dateTime" />
-              <slot name="dateTime"></slot>
-            </template>
-          </ds-text>
-        </div>
+      <nuxt-link :to="userLink" :class="['hc-user', isOpen && 'active']">
+        <user-preview
+          :user="user"
+          :dateTime="dateTime"
+          :showAvatar="showAvatar"
+          @mouseover="openMenu(true)"
+          @mouseleave="closeMenu(true)"
+        />
       </nuxt-link>
     </template>
-    <template slot="popover" v-if="showCounts">
+    <template slot="popover">
       <div style="min-width: 250px">
         <hc-badges v-if="user.badges && user.badges.length" :badges="user.badges" />
         <ds-text
@@ -86,20 +85,20 @@
 <script>
 import { mapGetters } from 'vuex'
 
-import HcRelativeDateTime from '~/components/RelativeDateTime'
 import HcFollowButton from '~/components/FollowButton'
 import HcBadges from '~/components/Badges'
 import HcAvatar from '~/components/Avatar/Avatar.vue'
 import Dropdown from '~/components/Dropdown'
+import UserPreview from './UserPreview.vue'
 
 export default {
   name: 'HcUser',
   components: {
-    HcRelativeDateTime,
     HcFollowButton,
     HcAvatar,
     HcBadges,
     Dropdown,
+    UserPreview,
   },
   props: {
     user: { type: Object, default: null },
@@ -124,14 +123,6 @@ export default {
       if (!(id && slug)) return ''
       return { name: 'profile-id-slug', params: { slug, id } }
     },
-    userSlug() {
-      const { slug } = this.user || {}
-      return slug && `@${slug}`
-    },
-    userName() {
-      const { name } = this.user || {}
-      return name || this.$t('profile.userAnonym')
-    },
   },
   methods: {
     optimisticFollow({ followedByCurrentUser }) {
@@ -143,33 +134,12 @@ export default {
       this.user.followedByCount = followedByCount
       this.user.followedByCurrentUser = followedByCurrentUser
     },
-    openInfoMenu() {
-      if (this.showCounts) this.openMenu(true)
-    },
   },
 }
 </script>
 
-<style scoped lang="scss">
-.avatar {
-  float: left;
-  margin-right: 4px;
-  height: 100%;
-  vertical-align: middle;
-}
-
-.userinfo {
-  display: flex;
-  align-items: center;
-
-  > .ds-text {
-    display: flex;
-    align-items: center;
-    margin-left: $space-xx-small;
-  }
-}
-
-.user {
+<style lang="scss">
+.hc-user {
   white-space: nowrap;
   position: relative;
   display: flex;
@@ -179,9 +149,5 @@ export default {
   &.active {
     z-index: 999;
   }
-}
-
-.user-slug {
-  margin-bottom: $space-xx-small;
 }
 </style>

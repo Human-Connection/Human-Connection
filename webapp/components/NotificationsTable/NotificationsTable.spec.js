@@ -89,7 +89,7 @@ describe('NotificationsTable.vue', () => {
         })
 
         it('renders the author', () => {
-          const username = firstRowNotification.find('.username')
+          const username = firstRowNotification.find('[data-test="username"]')
           expect(username.text()).toEqual(postNotification.from.author.name)
         })
 
@@ -122,7 +122,7 @@ describe('NotificationsTable.vue', () => {
         })
 
         it('renders the author', () => {
-          const username = secondRowNotification.find('.username')
+          const username = secondRowNotification.find('[data-test="username"]')
           expect(username.text()).toEqual(commentNotification.from.author.name)
         })
 
