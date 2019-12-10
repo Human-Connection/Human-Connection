@@ -160,10 +160,11 @@ export default {
             $state.complete()
           }
 
+          const { Post = [] } = previousResult
           const result = {
             ...previousResult,
             Post: [
-              ...previousResult.Post.filter(prevPost => {
+              ...Post.filter(prevPost => {
                 return (
                   fetchMoreResult.Post.filter(newPost => newPost.id === prevPost.id).length === 0
                 )

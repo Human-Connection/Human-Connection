@@ -394,10 +394,11 @@ export default {
             this.hasMore = false
             $state.complete()
           }
+          const { profilePagePosts = [] } = previousResult
           const result = {
             ...previousResult,
             profilePagePosts: [
-              ...previousResult.profilePagePosts.filter(prevPost => {
+              ...profilePagePosts.filter(prevPost => {
                 return (
                   fetchMoreResult.profilePagePosts.filter(newPost => newPost.id === prevPost.id)
                     .length === 0
