@@ -13,12 +13,12 @@ const transformReturnType = record => {
 export default {
   Mutation: {
     fileReport: async (_parent, params, context, _resolveInfo) => {
-      let createdRelationshipWithNestedAttributes
       const { resourceId, reasonCategory, reasonDescription } = params
       const { driver, user } = context
       const session = driver.session()
-      const reportWriteTxResultPromise = session.writeTransaction(async txc => {
-        const cypher = `
+      const reportWriteTxResultPromise = session.writeTransaction(async transaction => {
+        const reportTransactionResponse = await transaction.run(
+          `
             MATCH (submitter:User {id: $submitterId})
             MATCH (resource {id: $resourceId})
             WHERE resource:User OR resource:Post OR resource:Comment
@@ -28,33 +28,32 @@ export default {
             CREATE (report)<-[filed:FILED {createdAt: $createdAt, reasonCategory: $reasonCategory, reasonDescription: $reasonDescription}]-(submitter)
 
             RETURN report, resource, labels(resource)[0] AS type
-          `
-        const params = {
-          resourceId,
-          submitterId: user.id,
-          createdAt: new Date().toISOString(),
-          reasonCategory,
-          reasonDescription,
-        }
-        const reportTransactionResponse = await txc.run(cypher, params)
+          `,
+          {
+            resourceId,
+            submitterId: user.id,
+            createdAt: new Date().toISOString(),
+            reasonCategory,
+            reasonDescription,
+          },
+        )
         log(reportTransactionResponse)
         return reportTransactionResponse.records.map(transformReturnType)
       })
       try {
-        const txResult = await reportWriteTxResultPromise
-        if (!txResult[0]) return null
-        createdRelationshipWithNestedAttributes = txResult[0]
+        const [createdRelationshipWithNestedAttributes] = await reportWriteTxResultPromise
+        if (!createdRelationshipWithNestedAttributes) return null
+        return createdRelationshipWithNestedAttributes
       } finally {
         session.close()
       }
-      return createdRelationshipWithNestedAttributes
     },
   },
   Query: {
     reports: async (_parent, params, context, _resolveInfo) => {
       const { driver } = context
       const session = driver.session()
-      let reports, orderByClause, filterClause
+      let orderByClause, filterClause
       switch (params.orderBy) {
         case 'createdAt_asc':
           orderByClause = 'ORDER BY report.createdAt ASC'
@@ -83,35 +82,35 @@ export default {
         params.offset && typeof params.offset === 'number' ? `SKIP ${params.offset}` : ''
       const limit = params.first && typeof params.first === 'number' ? `LIMIT ${params.first}` : ''
 
-      const reportReadTxPromise = session.readTransaction(async tx => {
-        const cypher = `
-          MATCH (report:Report)-[:BELONGS_TO]->(resource)
-          WHERE (resource:User OR resource:Post OR resource:Comment)
-          ${filterClause}
-          WITH report, resource,
-          [(submitter:User)-[filed:FILED]->(report) |  filed {.*, submitter: properties(submitter)} ] as filed,
-          [(moderator:User)-[reviewed:REVIEWED]->(report) |  reviewed {.*, moderator: properties(moderator)} ] as reviewed,
-          [(resource)<-[:WROTE]-(author:User) | author {.*} ] as optionalAuthors,
-          [(resource)-[:COMMENTS]->(post:Post) | post {.*} ] as optionalCommentedPosts,
-          resource {.*, __typename: labels(resource)[0] } as resourceWithType
-          WITH report, optionalAuthors, optionalCommentedPosts, reviewed, filed,
-          resourceWithType {.*, post: optionalCommentedPosts[0], author: optionalAuthors[0] } as finalResource
-          RETURN report {.*, resource: finalResource, filed: filed, reviewed: reviewed }
-          ${orderByClause}
-          ${offset} ${limit}
-        `
-        const allReportsTransactionResponse = await tx.run(cypher)
+      const reportReadTxPromise = session.readTransaction(async transaction => {
+        const allReportsTransactionResponse = await transaction.run(
+          `
+            MATCH (report:Report)-[:BELONGS_TO]->(resource)
+            WHERE (resource:User OR resource:Post OR resource:Comment)
+            ${filterClause}
+            WITH report, resource,
+            [(submitter:User)-[filed:FILED]->(report) |  filed {.*, submitter: properties(submitter)} ] as filed,
+            [(moderator:User)-[reviewed:REVIEWED]->(report) |  reviewed {.*, moderator: properties(moderator)} ] as reviewed,
+            [(resource)<-[:WROTE]-(author:User) | author {.*} ] as optionalAuthors,
+            [(resource)-[:COMMENTS]->(post:Post) | post {.*} ] as optionalCommentedPosts,
+            resource {.*, __typename: labels(resource)[0] } as resourceWithType
+            WITH report, optionalAuthors, optionalCommentedPosts, reviewed, filed,
+            resourceWithType {.*, post: optionalCommentedPosts[0], author: optionalAuthors[0] } as finalResource
+            RETURN report {.*, resource: finalResource, filed: filed, reviewed: reviewed }
+            ${orderByClause}
+            ${offset} ${limit}
+          `,
+        )
         log(allReportsTransactionResponse)
         return allReportsTransactionResponse.records.map(record => record.get('report'))
       })
       try {
-        const txResult = await reportReadTxPromise
-        if (!txResult[0]) return null
-        reports = txResult
+        const reports = await reportReadTxPromise
+        if (!reports) return []
+        return reports
       } finally {
         session.close()
       }
-      return reports
     },
   },
   Report: {
@@ -120,23 +119,24 @@ export default {
       const session = context.driver.session()
       const { id } = parent
       let filed
-      const readTxPromise = session.readTransaction(async tx => {
-        const cypher = `
-          MATCH (submitter:User)-[filed:FILED]->(report:Report {id: $id})
-          RETURN filed, submitter
-        `
-        const params = { id }
-        const allReportsTransactionResponse = await tx.run(cypher, params)
-        log(allReportsTransactionResponse)
-        return allReportsTransactionResponse.records.map(record => ({
+      const readTxPromise = session.readTransaction(async transaction => {
+        const filedReportsTransactionResponse = await transaction.run(
+          `
+            MATCH (submitter:User)-[filed:FILED]->(report:Report {id: $id})
+            RETURN filed, submitter
+          `,
+          { id },
+        )
+        log(filedReportsTransactionResponse)
+        return filedReportsTransactionResponse.records.map(record => ({
           submitter: record.get('submitter').properties,
           filed: record.get('filed').properties,
         }))
       })
       try {
-        const txResult = await readTxPromise
-        if (!txResult[0]) return null
-        filed = txResult.map(reportedRecord => {
+        const filedReports = await readTxPromise
+        if (!filedReports) return []
+        filed = filedReports.map(reportedRecord => {
           const { submitter, filed } = reportedRecord
           const relationshipWithNestedAttributes = {
             ...filed,
@@ -154,23 +154,24 @@ export default {
       const session = context.driver.session()
       const { id } = parent
       let reviewed
-      const readTxPromise = session.readTransaction(async tx => {
-        const cypher = `
-          MATCH (resource)<-[:BELONGS_TO]-(report:Report {id: $id})<-[review:REVIEWED]-(moderator:User)
-          RETURN moderator, review
-          ORDER BY report.updatedAt DESC, review.updatedAt DESC
-        `
-        const params = { id }
-        const allReportsTransactionResponse = await tx.run(cypher, params)
-        log(allReportsTransactionResponse)
-        return allReportsTransactionResponse.records.map(record => ({
+      const readTxPromise = session.readTransaction(async transaction => {
+        const reviewedReportsTransactionResponse = await transaction.run(
+          `
+            MATCH (resource)<-[:BELONGS_TO]-(report:Report {id: $id})<-[review:REVIEWED]-(moderator:User)
+            RETURN moderator, review
+            ORDER BY report.updatedAt DESC, review.updatedAt DESC
+          `,
+          { id },
+        )
+        log(reviewedReportsTransactionResponse)
+        return reviewedReportsTransactionResponse.records.map(record => ({
           review: record.get('review').properties,
           moderator: record.get('moderator').properties,
         }))
       })
       try {
-        const txResult = await readTxPromise
-        reviewed = txResult.map(reportedRecord => {
+        const reviewedReports = await readTxPromise
+        reviewed = reviewedReports.map(reportedRecord => {
           const { review, moderator } = reportedRecord
           const relationshipWithNestedAttributes = {
             ...review,

@@ -44,22 +44,29 @@ export default {
       }
       const offset = args.offset && typeof args.offset === 'number' ? `SKIP ${args.offset}` : ''
       const limit = args.first && typeof args.first === 'number' ? `LIMIT ${args.first}` : ''
-      const cypher = `
-        MATCH (resource {deleted: false, disabled: false})-[notification:NOTIFIED]->(user:User {id:$id})
-        ${whereClause}
-        WITH user, notification, resource,
-        [(resource)<-[:WROTE]-(author:User) | author {.*}] as authors,
-        [(resource)-[:COMMENTS]->(post:Post)<-[:WROTE]-(author:User) | post{.*, author: properties(author)} ] as posts
-        WITH resource, user, notification, authors, posts,
-        resource {.*, __typename: labels(resource)[0], author: authors[0], post: posts[0]} as finalResource
-        RETURN notification {.*, from: finalResource, to: properties(user)}
-        ${orderByClause}
-        ${offset} ${limit}
-        `
+
+      const readTxResultPromise = session.readTransaction(async transaction => {
+        const notificationsTransactionResponse = await transaction.run(
+          ` 
+          MATCH (resource {deleted: false, disabled: false})-[notification:NOTIFIED]->(user:User {id:$id})
+          ${whereClause}
+          WITH user, notification, resource,
+          [(resource)<-[:WROTE]-(author:User) | author {.*}] as authors,
+          [(resource)-[:COMMENTS]->(post:Post)<-[:WROTE]-(author:User) | post{.*, author: properties(author)} ] as posts
+          WITH resource, user, notification, authors, posts,
+          resource {.*, __typename: labels(resource)[0], author: authors[0], post: posts[0]} as finalResource
+          RETURN notification {.*, from: finalResource, to: properties(user)}
+          ${orderByClause}
+          ${offset} ${limit}
+          `,
+          { id: currentUser.id },
+        )
+        log(notificationsTransactionResponse)
+        return notificationsTransactionResponse.records.map(record => record.get('notification'))
+      })
       try {
-        const result = await session.run(cypher, { id: currentUser.id })
-        log(result)
-        return result.records.map(r => r.get('notification'))
+        const notifications = await readTxResultPromise
+        return notifications
       } finally {
         session.close()
       }
