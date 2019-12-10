@@ -1,3 +1,5 @@
+import log from './helpers/databaseLogger'
+
 const resourceTypes = ['Post', 'Comment']
 
 const transformReturnType = record => {
@@ -45,13 +47,19 @@ export default {
       const cypher = `
         MATCH (resource {deleted: false, disabled: false})-[notification:NOTIFIED]->(user:User {id:$id})
         ${whereClause}
-        RETURN resource, notification, user
+        WITH user, notification, resource,
+        [(resource)<-[:WROTE]-(author:User) | author {.*}] as authors,
+        [(resource)-[:COMMENTS]->(post:Post)<-[:WROTE]-(author:User) | post{.*, author: properties(author)} ] as posts
+        WITH resource, user, notification, authors, posts,
+        resource {.*, __typename: labels(resource)[0], author: authors[0], post: posts[0]} as finalResource
+        RETURN notification {.*, from: finalResource, to: properties(user)}
         ${orderByClause}
         ${offset} ${limit}
         `
       try {
         const result = await session.run(cypher, { id: currentUser.id })
-        return result.records.map(transformReturnType)
+        log(result)
+        return result.records.map(r => r.get('notification'))
       } finally {
         session.close()
       }
@@ -68,6 +76,7 @@ export default {
         RETURN resource, notification, user
         `
         const result = await session.run(cypher, { resourceId: args.id, id: currentUser.id })
+        log(result)
         const notifications = await result.records.map(transformReturnType)
         return notifications[0]
       } finally {
