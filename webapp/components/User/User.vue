@@ -8,7 +8,7 @@
   <dropdown v-else :class="{ 'disabled-content': user.disabled }" placement="top-start" offset="0">
     <template slot="default" slot-scope="{ openMenu, closeMenu, isOpen }">
       <nuxt-link :to="userLink" :class="['user', isOpen && 'active']">
-        <div @mouseover="openInfoMenu" @mouseleave="closeMenu(true)">
+        <div @mouseover="showCounts ? openMenu(true) : () => {}" @mouseleave="closeMenu(true)">
           <hc-avatar v-if="showAvatar" class="avatar" :user="user" />
           <div>
             <ds-text class="userinfo">
@@ -142,9 +142,6 @@ export default {
     updateFollow({ followedByCurrentUser, followedByCount }) {
       this.user.followedByCount = followedByCount
       this.user.followedByCurrentUser = followedByCurrentUser
-    },
-    openInfoMenu() {
-      if (this.showCounts) this.openMenu(true)
     },
   },
 }
