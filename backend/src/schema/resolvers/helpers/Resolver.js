@@ -1,9 +1,9 @@
-import { getNeode } from '../../../bootstrap/neo4j'
+import log from './databaseLogger'
 
 export const undefinedToNullResolver = list => {
   const resolvers = {}
   list.forEach(key => {
-    resolvers[key] = async (parent, params, context, resolveInfo) => {
+    resolvers[key] = async parent => {
       return typeof parent[key] === 'undefined' ? null : parent[key]
     }
   })
@@ -11,7 +11,6 @@ export const undefinedToNullResolver = list => {
 }
 
 export default function Resolver(type, options = {}) {
-  const instance = getNeode()
   const {
     idAttribute = 'id',
     undefinedToNull = [],
@@ -22,32 +21,49 @@ export default function Resolver(type, options = {}) {
   } = options
 
   const _hasResolver = (resolvers, { key, connection }, { returnType }) => {
-    return async (parent, params, context, resolveInfo) => {
+    return async (parent, params, { driver, cypherParams }, resolveInfo) => {
       if (typeof parent[key] !== 'undefined') return parent[key]
       const id = parent[idAttribute]
-      const statement = `MATCH(:${type} {${idAttribute}: {id}})${connection} RETURN related`
-      const result = await instance.cypher(statement, { id })
-      let response = result.records.map(r => r.get('related').properties)
-      if (returnType === 'object') response = response[0] || null
-      return response
+      const session = driver.session()
+      const readTxResultPromise = session.readTransaction(async txc => {
+        const cypher = `
+        MATCH(:${type} {${idAttribute}: $id})${connection}
+        RETURN related {.*} as related
+        `
+        const result = await txc.run(cypher, { id, cypherParams })
+        log(result)
+        return result.records.map(r => r.get('related'))
+      })
+      try {
+        let response = await readTxResultPromise
+        if (returnType === 'object') response = response[0] || null
+        return response
+      } finally {
+        session.close()
+      }
     }
   }
 
   const booleanResolver = obj => {
     const resolvers = {}
     for (const [key, condition] of Object.entries(obj)) {
-      resolvers[key] = async (parent, params, { cypherParams }, resolveInfo) => {
+      resolvers[key] = async (parent, params, { cypherParams, driver }, resolveInfo) => {
         if (typeof parent[key] !== 'undefined') return parent[key]
-        const result = await instance.cypher(
-          `
-        ${condition.replace('this', 'this {id: $parent.id}')} as ${key}`,
-          {
-            parent,
-            cypherParams,
-          },
-        )
-        const [record] = result.records
-        return record.get(key)
+        const id = parent[idAttribute]
+        const session = driver.session()
+        const readTxResultPromise = session.readTransaction(async txc => {
+          const nodeCondition = condition.replace('this', 'this {id: $id}')
+          const cypher = `${nodeCondition} as ${key}`
+          const result = await txc.run(cypher, { id, cypherParams })
+          log(result)
+          const [response] = result.records.map(r => r.get(key))
+          return response
+        })
+        try {
+          return await readTxResultPromise
+        } finally {
+          session.close()
+        }
       }
     }
     return resolvers
@@ -56,16 +72,25 @@ export default function Resolver(type, options = {}) {
   const countResolver = obj => {
     const resolvers = {}
     for (const [key, connection] of Object.entries(obj)) {
-      resolvers[key] = async (parent, params, context, resolveInfo) => {
+      resolvers[key] = async (parent, params, { driver, cypherParams }, resolveInfo) => {
         if (typeof parent[key] !== 'undefined') return parent[key]
-        const id = parent[idAttribute]
-        const statement = `
-          MATCH(u:${type} {${idAttribute}: {id}})${connection}
-          RETURN COUNT(DISTINCT(related)) as count
-        `
-        const result = await instance.cypher(statement, { id })
-        const [response] = result.records.map(r => r.get('count').toNumber())
-        return response
+        const session = driver.session()
+        const readTxResultPromise = session.readTransaction(async txc => {
+          const id = parent[idAttribute]
+          const cypher = `
+            MATCH(u:${type} {${idAttribute}: $id})${connection}
+            RETURN COUNT(DISTINCT(related)) as count
+          `
+          const result = await txc.run(cypher, { id, cypherParams })
+          log(result)
+          const [response] = result.records.map(r => r.get('count').toNumber())
+          return response
+        })
+        try {
+          return await readTxResultPromise
+        } finally {
+          session.close()
+        }
       }
     }
     return resolvers

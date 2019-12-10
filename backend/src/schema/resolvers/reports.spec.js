@@ -21,7 +21,6 @@ describe('file a report on a resource', () => {
         id
         createdAt
         updatedAt
-        disable
         closed
         rule
         resource {
@@ -489,7 +488,6 @@ describe('file a report on a resource', () => {
           id
           createdAt
           updatedAt
-          disable
           closed
           resource {
             __typename
@@ -624,7 +622,6 @@ describe('file a report on a resource', () => {
               id: expect.any(String),
               createdAt: expect.any(String),
               updatedAt: expect.any(String),
-              disable: false,
               closed: false,
               resource: {
                 __typename: 'User',
@@ -645,7 +642,6 @@ describe('file a report on a resource', () => {
               id: expect.any(String),
               createdAt: expect.any(String),
               updatedAt: expect.any(String),
-              disable: false,
               closed: false,
               resource: {
                 __typename: 'Post',
@@ -666,7 +662,6 @@ describe('file a report on a resource', () => {
               id: expect.any(String),
               createdAt: expect.any(String),
               updatedAt: expect.any(String),
-              disable: false,
               closed: false,
               resource: {
                 __typename: 'Comment',
