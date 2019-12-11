@@ -15,6 +15,8 @@ export default {
       const query = args.query
       const filter = {}
       const limit = args.limit
+      const { user } = context
+      const thisUserId = user.id
       const postQuery = query.replace(/\s/g, '~ ') + '~'
       const userQuery = query.replace(/\s/g, '~ ') + '~'
       const postCypher = `
@@ -25,6 +27,7 @@ export default {
       AND NOT user.deleted = true AND NOT user.disabled = true
       AND NOT post.deleted = true AND NOT post.disabled = true
       AND NOT user.id in COALESCE($filter.author_not.id_in, [])
+      AND NOT (:User { id: $thisUserId })-[:BLOCKED]->(user)
       RETURN post
       LIMIT $limit
       `
@@ -33,6 +36,7 @@ export default {
         query: postQuery,
         filter: filter,
         limit: limit,
+        thisUserId: thisUserId,
       })
       session.close()
       const userCypher = `
@@ -41,6 +45,7 @@ export default {
       MATCH (user)
       WHERE score >= 0.2
       AND NOT user.deleted = true AND NOT user.disabled = true
+      AND NOT (:User { id: $thisUserId })-[:BLOCKED]->(user)
       RETURN user
       LIMIT $limit
       `
@@ -48,6 +53,7 @@ export default {
         query: userQuery,
         filter: filter,
         limit: limit,
+        thisUserId: thisUserId,
       })
 
       session.close()
