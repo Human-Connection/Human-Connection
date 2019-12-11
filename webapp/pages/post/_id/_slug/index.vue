@@ -235,7 +235,6 @@ export default {
 }
 </script>
 <style lang="scss">
- 
 .images-set-blur .ds-card-image {
   -webkit-filter: blur(22px);
   -moz-filter: blur(22px);
@@ -248,7 +247,6 @@ export default {
   -o-transition: all ease 0.2s;
   transition: all ease 0.2s;
 }
- 
 
 .blurBox {
   text-align: right;
@@ -262,10 +260,7 @@ export default {
 
 .bluricon-post {
   font-size: xx-large;
-  /* padding: 13px; */
-  /* position: absolute; */
   background-color: green;
-  /* top: 131px; */
 }
 
 .page-name-post-id-slug {
