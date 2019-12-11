@@ -1,5 +1,4 @@
 import { config, shallowMount } from '@vue/test-utils'
-
 import MasonryGridItem from './MasonryGridItem'
 
 const localVue = global.localVue

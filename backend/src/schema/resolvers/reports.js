@@ -1,3 +1,5 @@
+import log from './helpers/databaseLogger'
+
 const transformReturnType = record => {
   return {
     ...record.get('report').properties,
@@ -11,12 +13,11 @@ const transformReturnType = record => {
 export default {
   Mutation: {
     fileReport: async (_parent, params, context, _resolveInfo) => {
-      let createdRelationshipWithNestedAttributes
       const { resourceId, reasonCategory, reasonDescription } = params
       const { driver, user } = context
       const session = driver.session()
-      const reportWriteTxResultPromise = session.writeTransaction(async txc => {
-        const reportTransactionResponse = await txc.run(
+      const reportWriteTxResultPromise = session.writeTransaction(async transaction => {
+        const reportTransactionResponse = await transaction.run(
           `
             MATCH (submitter:User {id: $submitterId})
             MATCH (resource {id: $resourceId})
@@ -36,23 +37,23 @@ export default {
             reasonDescription,
           },
         )
+        log(reportTransactionResponse)
         return reportTransactionResponse.records.map(transformReturnType)
       })
       try {
-        const txResult = await reportWriteTxResultPromise
-        if (!txResult[0]) return null
-        createdRelationshipWithNestedAttributes = txResult[0]
+        const [createdRelationshipWithNestedAttributes] = await reportWriteTxResultPromise
+        if (!createdRelationshipWithNestedAttributes) return null
+        return createdRelationshipWithNestedAttributes
       } finally {
         session.close()
       }
-      return createdRelationshipWithNestedAttributes
     },
   },
   Query: {
     reports: async (_parent, params, context, _resolveInfo) => {
       const { driver } = context
       const session = driver.session()
-      let reports, orderByClause
+      let orderByClause, filterClause
       switch (params.orderBy) {
         case 'createdAt_asc':
           orderByClause = 'ORDER BY report.createdAt ASC'
@@ -63,26 +64,52 @@ export default {
         default:
           orderByClause = ''
       }
-      const reportReadTxPromise = session.readTransaction(async tx => {
-        const allReportsTransactionResponse = await tx.run(
+
+      switch (params.reviewed) {
+        case true:
+          filterClause = 'AND ((report)<-[:REVIEWED]-(:User))'
+          break
+        case false:
+          filterClause = 'AND NOT ((report)<-[:REVIEWED]-(:User))'
+          break
+        default:
+          filterClause = ''
+      }
+
+      if (params.closed) filterClause = 'AND report.closed = true'
+
+      const offset =
+        params.offset && typeof params.offset === 'number' ? `SKIP ${params.offset}` : ''
+      const limit = params.first && typeof params.first === 'number' ? `LIMIT ${params.first}` : ''
+
+      const reportReadTxPromise = session.readTransaction(async transaction => {
+        const allReportsTransactionResponse = await transaction.run(
           `
-          MATCH (submitter:User)-[filed:FILED]->(report:Report)-[:BELONGS_TO]->(resource)
-          WHERE resource:User OR resource:Post OR resource:Comment
-          RETURN DISTINCT report, resource, labels(resource)[0] as type
-          ${orderByClause}
+            MATCH (report:Report)-[:BELONGS_TO]->(resource)
+            WHERE (resource:User OR resource:Post OR resource:Comment)
+            ${filterClause}
+            WITH report, resource,
+            [(submitter:User)-[filed:FILED]->(report) |  filed {.*, submitter: properties(submitter)} ] as filed,
+            [(moderator:User)-[reviewed:REVIEWED]->(report) |  reviewed {.*, moderator: properties(moderator)} ] as reviewed,
+            [(resource)<-[:WROTE]-(author:User) | author {.*} ] as optionalAuthors,
+            [(resource)-[:COMMENTS]->(post:Post) | post {.*} ] as optionalCommentedPosts,
+            resource {.*, __typename: labels(resource)[0] } as resourceWithType
+            WITH report, optionalAuthors, optionalCommentedPosts, reviewed, filed,
+            resourceWithType {.*, post: optionalCommentedPosts[0], author: optionalAuthors[0] } as finalResource
+            RETURN report {.*, resource: finalResource, filed: filed, reviewed: reviewed }
+            ${orderByClause}
+            ${offset} ${limit}
           `,
-          {},
         )
-        return allReportsTransactionResponse.records.map(transformReturnType)
+        log(allReportsTransactionResponse)
+        return allReportsTransactionResponse.records.map(record => record.get('report'))
       })
       try {
-        const txResult = await reportReadTxPromise
-        if (!txResult[0]) return null
-        reports = txResult
+        const reports = await reportReadTxPromise
+        return reports
       } finally {
         session.close()
       }
-      return reports
     },
   },
   Report: {
@@ -91,23 +118,23 @@ export default {
       const session = context.driver.session()
       const { id } = parent
       let filed
-      const readTxPromise = session.readTransaction(async tx => {
-        const allReportsTransactionResponse = await tx.run(
+      const readTxPromise = session.readTransaction(async transaction => {
+        const filedReportsTransactionResponse = await transaction.run(
           `
-          MATCH (submitter:User)-[filed:FILED]->(report:Report {id: $id})
-          RETURN filed, submitter
+            MATCH (submitter:User)-[filed:FILED]->(report:Report {id: $id})
+            RETURN filed, submitter
           `,
           { id },
         )
-        return allReportsTransactionResponse.records.map(record => ({
+        log(filedReportsTransactionResponse)
+        return filedReportsTransactionResponse.records.map(record => ({
           submitter: record.get('submitter').properties,
           filed: record.get('filed').properties,
         }))
       })
       try {
-        const txResult = await readTxPromise
-        if (!txResult[0]) return null
-        filed = txResult.map(reportedRecord => {
+        const filedReports = await readTxPromise
+        filed = filedReports.map(reportedRecord => {
           const { submitter, filed } = reportedRecord
           const relationshipWithNestedAttributes = {
             ...filed,
@@ -125,8 +152,8 @@ export default {
       const session = context.driver.session()
       const { id } = parent
       let reviewed
-      const readTxPromise = session.readTransaction(async tx => {
-        const allReportsTransactionResponse = await tx.run(
+      const readTxPromise = session.readTransaction(async transaction => {
+        const reviewedReportsTransactionResponse = await transaction.run(
           `
             MATCH (resource)<-[:BELONGS_TO]-(report:Report {id: $id})<-[review:REVIEWED]-(moderator:User)
             RETURN moderator, review
@@ -134,15 +161,15 @@ export default {
           `,
           { id },
         )
-        return allReportsTransactionResponse.records.map(record => ({
+        log(reviewedReportsTransactionResponse)
+        return reviewedReportsTransactionResponse.records.map(record => ({
           review: record.get('review').properties,
           moderator: record.get('moderator').properties,
         }))
       })
       try {
-        const txResult = await readTxPromise
-        if (!txResult[0]) return null
-        reviewed = txResult.map(reportedRecord => {
+        const reviewedReports = await readTxPromise
+        reviewed = reviewedReports.map(reportedRecord => {
           const { review, moderator } = reportedRecord
           const relationshipWithNestedAttributes = {
             ...review,

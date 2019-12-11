@@ -168,7 +168,7 @@
       </ds-flex-item>
 
       <ds-flex-item :width="{ base: '100%', sm: 3, md: 5, lg: 3 }">
-        <masonry-grid class="user-profile-posts-list">
+        <masonry-grid>
           <ds-grid-item class="profile-top-navigation" :row-span="3" column-span="fullWidth">
             <ds-card class="ds-tab-nav">
               <ul class="Tabs">
@@ -390,10 +390,11 @@ export default {
             this.hasMore = false
             $state.complete()
           }
+          const { profilePagePosts = [] } = previousResult
           const result = {
             ...previousResult,
             profilePagePosts: [
-              ...previousResult.profilePagePosts.filter(prevPost => {
+              ...profilePagePosts.filter(prevPost => {
                 return (
                   fetchMoreResult.profilePagePosts.filter(newPost => newPost.id === prevPost.id)
                     .length === 0

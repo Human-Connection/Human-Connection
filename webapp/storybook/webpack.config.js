@@ -41,19 +41,24 @@ module.exports = async ({ config, mode }) => {
 
   config.module.rules.push({
     test: /\.svg$/,
-    loader: 'vue-svg-loader',
-    options: {
-      svgo: {
-        plugins: [
-          {
-            removeViewBox: false,
+    use: [
+      'babel-loader',
+      {
+        loader: 'vue-svg-loader',
+        options: {
+          svgo: {
+            plugins: [
+              {
+                removeViewBox: false,
+              },
+              {
+                removeDimensions: true,
+              },
+            ],
           },
-          {
-            removeDimensions: true,
-          },
-        ],
+        },
       },
-    },
+    ],
   })
 
   config.resolve.alias = {

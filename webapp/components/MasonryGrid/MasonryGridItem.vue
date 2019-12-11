@@ -6,6 +6,12 @@
 
 <script>
 export default {
+  props: {
+    imageAspectRatio: {
+      type: Number,
+      default: null,
+    },
+  },
   data() {
     return {
       rowSpan: 10,
@@ -14,6 +20,7 @@ export default {
   methods: {
     calculateItemHeight() {
       this.$parent.$emit('calculating-item-height')
+
       this.$nextTick(() => {
         const gridStyle = this.$parent.$el.style
         const rowHeight = parseInt(gridStyle.gridAutoRows)

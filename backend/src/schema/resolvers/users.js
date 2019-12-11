@@ -1,10 +1,10 @@
 import { neo4jgraphql } from 'neo4j-graphql-js'
 import fileUpload from './fileUpload'
-import { neode } from '../../bootstrap/neo4j'
+import { getNeode } from '../../bootstrap/neo4j'
 import { UserInputError, ForbiddenError } from 'apollo-server'
 import Resolver from './helpers/Resolver'
 
-const instance = neode()
+const neode = getNeode()
 
 export const getBlockedUsers = async context => {
   const { neode } = context
@@ -73,7 +73,7 @@ export default {
     block: async (object, args, context, resolveInfo) => {
       const { user: currentUser } = context
       if (currentUser.id === args.id) return null
-      await instance.cypher(
+      await neode.cypher(
         `
       MATCH(u:User {id: $currentUser.id})-[r:FOLLOWS]->(b:User {id: $args.id})
       DELETE r
@@ -81,8 +81,8 @@ export default {
         { currentUser, args },
       )
       const [user, blockedUser] = await Promise.all([
-        instance.find('User', currentUser.id),
-        instance.find('User', args.id),
+        neode.find('User', currentUser.id),
+        neode.find('User', args.id),
       ])
       await user.relateTo(blockedUser, 'blocked')
       return blockedUser.toJson()
@@ -90,14 +90,14 @@ export default {
     unblock: async (object, args, context, resolveInfo) => {
       const { user: currentUser } = context
       if (currentUser.id === args.id) return null
-      await instance.cypher(
+      await neode.cypher(
         `
       MATCH(u:User {id: $currentUser.id})-[r:BLOCKED]->(b:User {id: $args.id})
       DELETE r
       `,
         { currentUser, args },
       )
-      const blockedUser = await instance.find('User', args.id)
+      const blockedUser = await neode.find('User', args.id)
       return blockedUser.toJson()
     },
     UpdateUser: async (object, args, context, resolveInfo) => {
@@ -111,7 +111,7 @@ export default {
       }
       args = await fileUpload(args, { file: 'avatarUpload', url: 'avatar' })
       try {
-        const user = await instance.find('User', args.id)
+        const user = await neode.find('User', args.id)
         if (!user) return null
         await user.update({ ...args, updatedAt: new Date().toISOString() })
         return user.toJson()
@@ -173,7 +173,7 @@ export default {
       if (typeof parent.email !== 'undefined') return parent.email
       const { id } = parent
       const statement = `MATCH(u:User {id: {id}})-[:PRIMARY_EMAIL]->(e:EmailAddress) RETURN e`
-      const result = await instance.cypher(statement, { id })
+      const result = await neode.cypher(statement, { id })
       const [{ email }] = result.records.map(r => r.get('e').properties)
       return email
     },
