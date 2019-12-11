@@ -372,6 +372,7 @@ describe('DeleteUser', () => {
                 ],
               },
             },
+            errors: undefined,
           }
           await expect(mutate({ mutation: deleteUserMutation, variables })).resolves.toMatchObject(
             expectedResponse,
@@ -418,6 +419,7 @@ describe('DeleteUser', () => {
                     ],
                   },
                 },
+                errors: undefined,
               }
               await expect(
                 mutate({ mutation: deleteUserMutation, variables }),
@@ -465,6 +467,7 @@ describe('DeleteUser', () => {
                   ],
                 },
               },
+              errors: undefined,
             }
             await expect(
               mutate({ mutation: deleteUserMutation, variables }),
@@ -511,6 +514,7 @@ describe('DeleteUser', () => {
                   ],
                 },
               },
+              errors: undefined,
             }
             await expect(
               mutate({ mutation: deleteUserMutation, variables }),
