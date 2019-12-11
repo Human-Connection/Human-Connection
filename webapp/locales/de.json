@@ -113,7 +113,7 @@
             }
         },
         "deleteUserAccount": {
-            "name": "Daten löschen",
+            "name": "Benutzerkonto löschen",
             "contributionsCount": "Meine {count} Beiträge löschen",
             "commentedCount": "Meine {count} Kommentare löschen",
             "accountDescription": "Sei dir bewusst, dass deine Beiträge und Kommentare für unsere Community wichtig sind. Wenn du sie trotzdem löschen möchtest, musst du sie unten markieren.",
