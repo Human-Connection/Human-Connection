@@ -157,8 +157,8 @@ export default {
   },
 }
 </script>
-<style lang="scss" scoped>
-.ds-card-image {
+<style scoped lang="scss">
+.ds-card-image img {
   width: 100%;
   max-height: 2000px;
   object-fit: contain;

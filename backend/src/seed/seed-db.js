@@ -3,7 +3,7 @@ import sample from 'lodash/sample'
 import { createTestClient } from 'apollo-server-testing'
 import createServer from '../server'
 import Factory from './factories'
-import { neode as getNeode, getDriver } from '../bootstrap/neo4j'
+import { getNeode, getDriver } from '../bootstrap/neo4j'
 import { gql } from '../helpers/jest'
 
 const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
@@ -688,10 +688,12 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       factory.create('Report'),
       factory.create('Report'),
       factory.create('Report'),
+      factory.create('Report'),
     ])
     const reportAgainstDagobert = reports[0]
     const reportAgainstTrollingPost = reports[1]
     const reportAgainstTrollingComment = reports[2]
+    const reportAgainstDewey = reports[3]
 
     // report resource first time
     await Promise.all([
@@ -713,6 +715,12 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         reasonDescription: 'This comment is bigoted',
       }),
       reportAgainstTrollingComment.relateTo(trollingComment, 'belongsTo'),
+      reportAgainstDewey.relateTo(dagobert, 'filed', {
+        resourceId: 'u5',
+        reasonCategory: 'discrimination_etc',
+        reasonDescription: 'This user is harassing me!',
+      }),
+      reportAgainstDewey.relateTo(dewey, 'belongsTo'),
     ])
 
     // report resource a second time

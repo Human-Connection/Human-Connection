@@ -232,11 +232,7 @@
           </ds-grid-item>
 
           <template v-if="posts.length">
-            <masonry-grid-item
-              v-for="post in posts"
-              :key="post.id"
-              :imageAspectRatio="post.imageAspectRatio"
-            >
+            <masonry-grid-item v-for="post in posts" :key="post.id">
               <hc-post-card
                 :post="post"
                 :width="{ base: '100%', md: '100%', xl: '50%' }"
@@ -394,10 +390,11 @@ export default {
             this.hasMore = false
             $state.complete()
           }
+          const { profilePagePosts = [] } = previousResult
           const result = {
             ...previousResult,
             profilePagePosts: [
-              ...previousResult.profilePagePosts.filter(prevPost => {
+              ...profilePagePosts.filter(prevPost => {
                 return (
                   fetchMoreResult.profilePagePosts.filter(newPost => newPost.id === prevPost.id)
                     .length === 0

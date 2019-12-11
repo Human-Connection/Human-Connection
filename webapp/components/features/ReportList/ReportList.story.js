@@ -101,7 +101,7 @@ export const reports = [
       slug: 'bigoted-post',
       title: "I'm a bigoted post!",
     },
-    reviewed: null,
+    reviewed: [],
   },
   {
     __typename: 'Report',

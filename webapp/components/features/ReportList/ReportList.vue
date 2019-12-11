@@ -7,6 +7,7 @@
       </client-only>
     </div>
     <reports-table :reports="reports" @confirm="openModal" />
+    <paginate :hasNext="hasNext" :hasPrevious="hasPrevious" @back="back" @next="next" />
   </ds-card>
 </template>
 <script>
@@ -14,32 +15,41 @@ import { mapMutations } from 'vuex'
 import DropdownFilter from '~/components/DropdownFilter/DropdownFilter'
 import ReportsTable from '~/components/features/ReportsTable/ReportsTable'
 import { reportsListQuery, reviewMutation } from '~/graphql/Moderation.js'
+import Paginate from '~/components/Paginate/Paginate'
 
 export default {
   components: {
     DropdownFilter,
     ReportsTable,
+    Paginate,
   },
   data() {
+    const pageSize = 25
     return {
       reports: [],
       allReports: [],
       unreviewedReports: [],
       reviewedReports: [],
       closedReports: [],
+      pageSize,
+      first: pageSize,
+      offset: 0,
+      reviewed: null,
+      closed: null,
+      hasNext: false,
       selected: this.$t('moderation.reports.filterLabel.all'),
     }
   },
   computed: {
     filterOptions() {
       return [
-        { label: this.$t('moderation.reports.filterLabel.all'), value: this.allReports },
+        { label: this.$t('moderation.reports.filterLabel.all'), value: { reviewed: null } },
         {
           label: this.$t('moderation.reports.filterLabel.unreviewed'),
-          value: this.unreviewedReports,
+          value: { reviewed: false },
         },
-        { label: this.$t('moderation.reports.filterLabel.reviewed'), value: this.reviewedReports },
-        { label: this.$t('moderation.reports.filterLabel.closed'), value: this.closedReports },
+        { label: this.$t('moderation.reports.filterLabel.reviewed'), value: { reviewed: true } },
+        { label: this.$t('moderation.reports.filterLabel.closed'), value: { closed: true } },
       ]
     },
     modalData() {
@@ -86,14 +96,24 @@ export default {
         }
       }
     },
+    hasPrevious() {
+      return this.offset > 0
+    },
   },
   methods: {
     ...mapMutations({
       commitModalData: 'modal/SET_OPEN',
     }),
     filter(option) {
-      this.reports = option.value
       this.selected = option.label
+      this.offset = 0
+      if (option.value.closed) {
+        this.closed = option.value.closed
+        this.reviewed = null
+        return
+      }
+      this.closed = null
+      this.reviewed = option.value.reviewed
     },
     async confirmCallback(resource) {
       const { disabled: disable, id: resourceId } = resource
@@ -111,16 +131,30 @@ export default {
     openModal(report) {
       this.commitModalData(this.modalData(report))
     },
+    back() {
+      this.offset = Math.max(this.offset - this.pageSize, 0)
+    },
+    next() {
+      this.offset += this.pageSize
+    },
   },
   apollo: {
     reportsList: {
       query: reportsListQuery(),
+      variables() {
+        const { first, offset, reviewed, closed } = this
+        return {
+          orderBy: 'createdAt_desc',
+          reviewed,
+          closed,
+          first,
+          offset,
+        }
+      },
       update({ reports }) {
+        if (!reports) return []
+        this.hasNext = reports.length >= this.pageSize
         this.reports = reports
-        this.allReports = reports
-        this.unreviewedReports = reports.filter(report => !report.reviewed)
-        this.reviewedReports = reports.filter(report => report.reviewed)
-        this.closedReports = reports.filter(report => report.closed)
       },
       fetchPolicy: 'cache-and-network',
     },

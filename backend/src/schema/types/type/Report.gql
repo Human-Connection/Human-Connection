@@ -6,7 +6,7 @@ type Report {
   disable: Boolean!
   closed: Boolean!
   filed: [FILED]
-  reviewed: [REVIEWED]
+  reviewed: [REVIEWED]!
   resource: ReportedResource
 }
 
@@ -21,5 +21,10 @@ type Mutation {
 }
 
 type Query {
-  reports(orderBy: ReportOrdering): [Report]
+  reports(orderBy: ReportOrdering, first: Int, offset: Int, reviewed: Boolean, closed: Boolean): [Report]
+}
+
+enum ReportOrdering {
+  createdAt_asc
+  createdAt_desc
 }

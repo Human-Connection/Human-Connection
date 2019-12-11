@@ -34,6 +34,8 @@
           "terms-and-condition": "I confirm to the <a href=\"/terms-and-conditions\"><ds-text bold color=\"primary\" > Terms and conditions</ds-text></a>.",
           "data-privacy": " I have read and understood the <a href=\"https://human-connection.org/datenschutz/\" target=\"_blank\"><ds-text bold color=\"primary\" >Privacy Statement</ds-text></a> ",
           "minimum-age": "I'm 18 years or older.",
+          "no-commercial": "I have no commercial interests and I am not representing a company or any other commercial organisation on the network.",
+          "no-political": "I am not on behalf of a party or political organization in the network.",
           "invitation-code": "Your invitation code is: <b>{code}</b>",
           "errors": {
             "email-exists": "There is already a user account with this e-mail address!",

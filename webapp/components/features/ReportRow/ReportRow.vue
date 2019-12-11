@@ -19,7 +19,7 @@
       <!-- Content Column -->
       <td class="ds-table-col" data-test="report-content">
         <client-only v-if="isUser">
-          <hc-user :user="report.resource" :showAvatar="false" :trunc="30" />
+          <hc-user :user="report.resource" :showAvatar="false" :trunc="30" :showPopover="false" />
         </client-only>
         <nuxt-link v-else class="title" :to="linkTarget">
           {{ linkText | truncate(50) }}
@@ -29,7 +29,12 @@
       <!-- Author Column -->
       <td class="ds-table-col" data-test="report-author">
         <client-only v-if="!isUser">
-          <hc-user :user="report.resource.author" :showAvatar="false" :trunc="30" />
+          <hc-user
+            :user="report.resource.author"
+            :showAvatar="false"
+            :trunc="30"
+            :showPopover="false"
+          />
         </client-only>
         <span v-else>—</span>
       </td>
@@ -40,12 +45,13 @@
           <base-icon :name="statusIconName" :class="isDisabled ? '--disabled' : '--enabled'" />
           {{ statusText }}
         </span>
-        <client-only v-if="report.reviewed">
+        <client-only v-if="isReviewed">
           <hc-user
             :user="moderatorOfLatestReview"
             :showAvatar="false"
             :trunc="30"
             :date-time="report.updatedAt"
+            :showPopover="false"
           />
         </client-only>
       </td>
@@ -109,6 +115,10 @@ export default {
     isDisabled() {
       return this.report.resource.disabled
     },
+    isReviewed() {
+      const { reviewed } = this.report
+      return reviewed && reviewed.length
+    },
     iconName() {
       if (this.isPost) return 'bookmark'
       else if (this.isComment) return 'comments'
@@ -138,12 +148,13 @@ export default {
       return this.isDisabled ? 'eye-slash' : 'eye'
     },
     statusText() {
-      if (!this.report.reviewed) return this.$t('moderation.reports.enabled')
+      if (!this.isReviewed) return this.$t('moderation.reports.enabled')
       else if (this.isDisabled) return this.$t('moderation.reports.disabledBy')
       else return this.$t('moderation.reports.enabledBy')
     },
     moderatorOfLatestReview() {
-      return this.report.reviewed[0].moderator
+      const [latestReview] = this.report.reviewed
+      return latestReview && latestReview.moderator
     },
   },
 }

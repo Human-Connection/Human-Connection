@@ -1,5 +1,15 @@
 import gql from 'graphql-tag'
 
+export const linkableUserFragment = lang => gql`
+  fragment user on User {
+    id
+    slug
+    name
+    avatar
+    disabled
+    deleted
+  }
+`
 export const userFragment = lang => gql`
   fragment user on User {
     id
@@ -32,8 +42,6 @@ export const postCountsFragment = gql`
   }
 `
 export const postFragment = lang => gql`
-  ${userFragment(lang)}
-
   fragment post on Post {
     id
     title
@@ -69,8 +77,6 @@ export const postFragment = lang => gql`
   }
 `
 export const commentFragment = lang => gql`
-  ${userFragment(lang)}
-
   fragment comment on Comment {
     id
     createdAt
