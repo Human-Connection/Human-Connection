@@ -5,24 +5,29 @@ export default async function createPasswordReset(options) {
   const normalizedEmail = normalizeEmail(email)
   const session = driver.session()
   try {
-    const cypher = `
-      MATCH (u:User)-[:PRIMARY_EMAIL]->(e:EmailAddress {email:$email})
-      CREATE(pr:PasswordReset {nonce: $nonce, issuedAt: datetime($issuedAt), usedAt: NULL})
-      MERGE (u)-[:REQUESTED]->(pr)
-      RETURN e, pr, u
-      `
-    const transactionRes = await session.run(cypher, {
-      issuedAt: issuedAt.toISOString(),
-      nonce,
-      email: normalizedEmail,
+    const createPasswordResetTxPromise = session.writeTransaction(async transaction => {
+      const createPasswordResetTransactionResponse = await transaction.run(
+        `
+          MATCH (user:User)-[:PRIMARY_EMAIL]->(email:EmailAddress {email:$email})
+          CREATE(passwordReset:PasswordReset {nonce: $nonce, issuedAt: datetime($issuedAt), usedAt: NULL})
+          MERGE (user)-[:REQUESTED]->(passwordReset)
+          RETURN email, passwordReset, user
+        `,
+        {
+          issuedAt: issuedAt.toISOString(),
+          nonce,
+          email: normalizedEmail,
+        },
+      )
+      return createPasswordResetTransactionResponse.records.map(record => {
+        const { email } = record.get('email').properties
+        const { nonce } = record.get('passwordReset').properties
+        const { name } = record.get('user').properties
+        return { email, nonce, name }
+      })
     })
-    const records = transactionRes.records.map(record => {
-      const { email } = record.get('e').properties
-      const { nonce } = record.get('pr').properties
-      const { name } = record.get('u').properties
-      return { email, nonce, name }
-    })
-    return records[0] || {}
+    const [records] = await createPasswordResetTxPromise
+    return records || {}
   } finally {
     session.close()
   }

@@ -10,10 +10,12 @@ describe('createPasswordReset', () => {
     beforeEach(() => {
       mockSession = {
         close() {},
-        run: jest.fn().mockReturnValue({
-          records: {
-            map: jest.fn(() => []),
-          },
+        writeTransaction: jest.fn().mockReturnValue({
+          run: jest.fn().mockReturnValue({
+            records: {
+              map: jest.fn(() => []),
+            },
+          }),
         }),
       }
       driver = { session: () => mockSession }
@@ -22,7 +24,7 @@ describe('createPasswordReset', () => {
     it('lowercases email address', async () => {
       const email = 'stRaNGeCaSiNG@ExAmplE.ORG'
       await createPasswordReset({ driver, email, issuedAt, nonce })
-      expect(mockSession.run.mock.calls).toEqual([
+      expect(mockSession.writeTransaction.run.mock.calls).toEqual([
         [
           expect.any(String),
           expect.objectContaining({
