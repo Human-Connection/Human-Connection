@@ -157,24 +157,6 @@ export default {
   },
 }
 </script>
-
-<style lang="scss">
-/*
-.images-set-blur ~.ds-card-image img {
-  -webkit-filter: blur(32px);
-  -moz-filter: blur(32px);
-  -ms-filter: blur(32px);
-  -o-filter: blur(32px);
-  filter: blur(32px);
-  -webkit-transition: all ease 0.2s;
-  -moz-transition: all ease 0.2s;
-  -ms-transition: all ease 0.2s;
-  -o-transition: all ease 0.2s;
-  transition: all ease 0.2s;
-}
-*/
-</style>
-
 <style lang="scss" scoped>
 .ds-card-image {
   width: 100%;
