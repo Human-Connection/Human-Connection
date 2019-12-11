@@ -14,14 +14,15 @@ const validateCreateComment = async (resolve, root, args, context, info) => {
   }
   const session = context.driver.session()
   try {
-    const postQueryRes = await session.run(
-      `
-    MATCH (post:Post {id: $postId})
-    RETURN post`,
-      {
-        postId,
-      },
-    )
+    const postQueryRes = await session.readTransaction(transaction => {
+      return transaction.run(
+        `
+          MATCH (post:Post {id: $postId})
+          RETURN post
+        `,
+        { postId },
+      )
+    })
     const [post] = postQueryRes.records.map(record => {
       return record.get('post')
     })
@@ -72,8 +73,8 @@ const validateReview = async (resolve, root, args, context, info) => {
   const { user, driver } = context
   if (resourceId === user.id) throw new Error('You cannot review yourself!')
   const session = driver.session()
-  const reportReadTxPromise = session.readTransaction(async txc => {
-    const validateReviewTransactionResponse = await txc.run(
+  const reportReadTxPromise = session.readTransaction(async transaction => {
+    const validateReviewTransactionResponse = await transaction.run(
       `
         MATCH (resource {id: $resourceId})
         WHERE resource:User OR resource:Post OR resource:Comment
