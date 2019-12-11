@@ -235,7 +235,8 @@ export default {
 }
 </script>
 <style lang="scss">
-.images-set-blur .ds-card-image img {
+ 
+.images-set-blur .ds-card-image {
   -webkit-filter: blur(22px);
   -moz-filter: blur(22px);
   -ms-filter: blur(22px);
@@ -247,6 +248,7 @@ export default {
   -o-transition: all ease 0.2s;
   transition: all ease 0.2s;
 }
+ 
 
 .blurBox {
   text-align: right;

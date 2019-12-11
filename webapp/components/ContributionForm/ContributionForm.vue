@@ -7,6 +7,15 @@
     @submit="submit"
   >
     <template slot-scope="{ errors }">
+          <ds-text  v-show="blurImage" class="blur-box" align="right" >
+        <div
+          v-if="contribution && contribution.blurImage"
+          @click.stop.prevent="blurImage = !blurImage"
+        >
+          <img :src="contribution.image | proxyApiUrl" class="blur-img-preview"/>
+          <ds-button class="bluricon-post" icon="ban" primary></ds-button>
+        </div>
+      </ds-text>
       <hc-teaser-image
         :contribution="contribution"
         @addTeaserImage="addTeaserImage"
@@ -19,15 +28,7 @@
           :src="contribution.image | proxyApiUrl"
         />
       </hc-teaser-image>
-      <ds-text align="right" class="blur-box">
-        <div
-          v-if="contribution && contribution.blurImage"
-          @click.stop.prevent="blurImage = !blurImage"
-        >
-          <img :src="contribution.image | proxyApiUrl" class="blur-img-preview" />
-          <ds-button class="bluricon-post" icon="ban" primary></ds-button>
-        </div>
-      </ds-text>
+  
       <div style="clear: both" />
       <ds-card>
         <ds-text align="right">
@@ -40,7 +41,7 @@
             v-model="blurImage"
             @change="form.checkbox = blurImage"
           />
-          <label for="blur-img"><span class=""></span></label>
+        
           <div>
             <a href="https://faq.human-connection.org/" target="_blank">
               <small>
@@ -320,7 +321,8 @@ export default {
 </script>
 
 <style lang="scss">
-.images-set-blur img {
+ 
+.images-set-blur.ds-card-image img{
   -webkit-filter: blur(32px);
   -moz-filter: blur(32px);
   -ms-filter: blur(32px);
@@ -332,11 +334,13 @@ export default {
   -o-transition: all ease 0.2s;
   transition: all ease 0.2s;
 }
+ 
 .blur-box {
-  text-align: right;
-  position: relative;
-  top: -70px;
-  float: right;
+     position: absolute;
+    /* top: -70px; */
+    /* float: right; */
+    z-index: 1000;
+    padding: 20px;
 }
 .blur-img-preview {
   width: 100px;
