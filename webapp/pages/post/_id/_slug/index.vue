@@ -5,34 +5,15 @@
       v-if="post && ready"
       :image="post.image | proxyApiUrl"
       :class="{
-        'post-card': true,
+        'post-page': true,
         'disabled-content': post.disabled,
-        'images-set-blur': blurred,
+        '--blur-image': blurred,
       }"
     >
-      <ds-text v-show="post.blurImage" align="right" class="blurBox">
-        <img
-          v-show="blurred"
-          :src="post.image | proxyApiUrl"
-          class="blur-img-preview"
-          @click.prevent="unBlur"
-        />
-        <ds-button
-          v-if="blurred"
-          class="bluricon-post"
-          icon="eye-slash"
-          primary
-          @click.prevent="blurred = false"
-        ></ds-button>
-        <ds-button
-          v-else
-          class="bluricon-post"
-          icon="eye"
-          primary
-          @click.prevent="blurred = true"
-        ></ds-button>
-      </ds-text>
-      <div style="clear: both" />
+      <aside v-show="post.blurImage" class="blur-toggle">
+        <img v-show="blurred" :src="post.image | proxyApiUrl" class="preview" />
+        <ds-button :icon="blurred ? 'eye' : 'eye-slash'" primary @click="blurred = !blurred" />
+      </aside>
       <hc-user :user="post.author" :date-time="post.createdAt">
         <template v-slot:dateTime>
           <ds-text v-if="post.createdAt !== post.updatedAt">({{ $t('post.edited') }})</ds-text>
@@ -235,75 +216,69 @@ export default {
 }
 </script>
 <style lang="scss">
-.images-set-blur .ds-card-image {
-  -webkit-filter: blur(22px);
-  -moz-filter: blur(22px);
-  -ms-filter: blur(22px);
-  -o-filter: blur(22px);
-  filter: blur(22px);
-  -webkit-transition: all ease 0.2s;
-  -moz-transition: all ease 0.2s;
-  -ms-transition: all ease 0.2s;
-  -o-transition: all ease 0.2s;
-  transition: all ease 0.2s;
-}
+.post-page {
+  &.--blur-image > .ds-card-image img {
+    filter: blur(22px);
+  }
 
-.blurBox {
-  text-align: right;
-  position: relative;
-  top: -70px;
-  float: right;
-}
-.blur-img-preview {
-  width: 100px;
-}
+  .ds-card-content {
+    position: relative;
+    padding-top: 24px;
+  }
 
-.bluricon-post {
-  font-size: xx-large;
-  background-color: green;
-}
+  .blur-toggle {
+    position: absolute;
+    top: -80px;
+    right: 0;
 
-.page-name-post-id-slug {
+    display: flex;
+    align-items: center;
+
+    height: 80px;
+    padding: 12px;
+
+    .preview {
+      height: 100%;
+      margin-right: 12px;
+    }
+  }
+
   .content-menu {
     float: right;
     margin-right: -$space-x-small;
     margin-top: -$space-large;
   }
 
-  .post-card {
-    margin: auto;
-    cursor: auto;
+  .comments {
+    margin-top: $space-small;
 
-    .comments {
+    .comment {
       margin-top: $space-small;
-
-      .comment {
-        margin-top: $space-small;
-        position: relative;
-      }
-
-      .ProseMirror {
-        min-height: 0px;
-      }
+      position: relative;
     }
 
-    .ds-card-image {
-      img {
-        max-height: 2000px;
-        object-fit: contain;
-        object-position: center;
-      }
+    .ProseMirror {
+      min-height: 0px;
     }
+  }
 
-    .ds-card-footer {
-      padding: 0;
+  .ds-card-image {
+    img {
+      max-height: 2000px;
+      object-fit: contain;
+      object-position: center;
+    }
+  }
 
-      .ds-section {
-        padding: $space-base;
-      }
+  .ds-card-footer {
+    padding: 0;
+
+    .ds-section {
+      padding: $space-base;
     }
   }
 }
+
 @media only screen and (max-width: 960px) {
   .shout-button {
     float: left;

@@ -10,7 +10,7 @@
       <hc-teaser-image
         :contribution="contribution"
         @addTeaserImage="addTeaserImage"
-        :class="{ 'images-set-blur': blurImage }"
+        :class="{ '--blur-image': blurImage }"
         @addImageAspectRatio="addImageAspectRatio"
       >
         <img
@@ -20,9 +20,8 @@
         />
       </hc-teaser-image>
 
-      <div style="clear: both" />
       <ds-card>
-        <ds-text align="right">
+        <div class="blur-toggle">
           <label for="blur-img">{{ $t('contribution.shockingPicture') }}</label>
           <input
             name="checkbox"
@@ -32,16 +31,12 @@
             v-model="blurImage"
             @change="form.checkbox = blurImage"
           />
+          <a href="https://faq.human-connection.org/" target="_blank" class="link">
+            {{ $t('contribution.shockingPicture-text') }}
+            <ds-icon name="question-circle" />
+          </a>
+        </div>
 
-          <div>
-            <a href="https://faq.human-connection.org/" target="_blank">
-              <small>
-                {{ $t('contribution.shockingPicture-text') }}
-                <ds-icon name="question-circle" />
-              </small>
-            </a>
-          </div>
-        </ds-text>
         <ds-space />
         <client-only>
           <hc-user :user="currentUser" :trunc="35" />
@@ -312,42 +307,34 @@ export default {
 </script>
 
 <style lang="scss">
-.images-set-blur.ds-card-image img {
-  -webkit-filter: blur(32px);
-  -moz-filter: blur(32px);
-  -ms-filter: blur(32px);
-  -o-filter: blur(32px);
-  filter: blur(32px);
-  -webkit-transition: all ease 0.2s;
-  -moz-transition: all ease 0.2s;
-  -ms-transition: all ease 0.2s;
-  -o-transition: all ease 0.2s;
-  transition: all ease 0.2s;
-}
-</style>
-
-<style lang="scss" scoped>
-.smallTag {
-  width: 100%;
-  position: relative;
-  left: 90%;
-}
-.post-title {
-  margin-top: $space-x-small;
-  margin-bottom: $space-xx-small;
-
-  input {
-    border: 0;
-    font-size: $font-size-x-large;
-    font-weight: bold;
-    padding-left: 0;
-    padding-right: 0;
-  }
-}
-
 .contribution-form {
+  .ds-card-image.--blur-image img {
+    filter: blur(32px);
+  }
+
+  .blur-toggle {
+    text-align: right;
+
+    > .link {
+      display: block;
+    }
+  }
+
   .ds-chip {
     cursor: default;
+  }
+
+  .post-title {
+    margin-top: $space-x-small;
+    margin-bottom: $space-xx-small;
+
+    input {
+      border: 0;
+      font-size: $font-size-x-large;
+      font-weight: bold;
+      padding-left: 0;
+      padding-right: 0;
+    }
   }
 }
 </style>

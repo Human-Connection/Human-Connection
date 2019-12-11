@@ -5,8 +5,8 @@
     :class="{
       'post-card': true,
       'disabled-content': post.disabled,
-      'post--pinned': isPinned,
-      'images-set-blur': post.blurImage,
+      '--pinned': isPinned,
+      '--blur-image': post.blurImage,
     }"
   >
     <!-- Post Link Target -->
@@ -157,22 +157,26 @@ export default {
   },
 }
 </script>
-<style scoped lang="scss">
-.ds-card-image img {
-  width: 100%;
-  max-height: 2000px;
-  object-fit: contain;
-  -o-object-fit: cover;
-  object-fit: cover;
-  -o-object-position: center;
-  object-position: center;
-}
-
+<style lang="scss">
 .post-card {
-  cursor: pointer;
+  justify-content: space-between;
   position: relative;
   z-index: 1;
-  justify-content: space-between;
+  cursor: pointer;
+
+  &.--pinned {
+    border: 1px solid $color-warning;
+  }
+
+  &.--blur-image > .ds-card-image img {
+    filter: blur(22px);
+  }
+
+  > .ds-card-image img {
+    width: 100%;
+    max-height: 2000px;
+    object-fit: contain;
+  }
 
   > .ds-card-content {
     flex-grow: 0;
@@ -204,9 +208,5 @@ export default {
     height: 100%;
     text-indent: -999999px;
   }
-}
-
-.post--pinned {
-  border: 1px solid $color-warning;
 }
 </style>

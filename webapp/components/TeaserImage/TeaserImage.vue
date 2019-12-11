@@ -142,7 +142,7 @@ export default {
 <style lang="scss">
 #postdropzone {
   width: 100%;
-  min-height: 500px;
+  min-height: 400px;
   background-color: $background-color-softest;
 }
 
