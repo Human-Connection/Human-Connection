@@ -19,3 +19,16 @@ storiesOf('BaseButton', module)
     components: { BaseButton },
     template: '<base-button icon="trash" />',
   }))
+
+  .add('Styles and States', () => ({
+    components: { BaseButton },
+    template: `
+      <span>
+        <base-button>Default</base-button>
+        <base-button primary>Primary</base-button>
+        <base-button danger>Danger</base-button>
+        <base-button disabled>Disabled</base-button>
+        <base-button loading>Loading</base-button>
+      </span>
+    `,
+  }))

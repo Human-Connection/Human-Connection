@@ -1,6 +1,7 @@
 <template>
-  <button class="base-button">
-    <base-icon v-if="icon" :name="icon" :class="iconClass" />
+  <button :class="buttonClass" :disabled="loading">
+    <ds-spinner v-if="loading" />
+    <base-icon v-if="icon" :name="icon" />
     <slot />
   </button>
 </template>
@@ -11,10 +12,28 @@ export default {
     icon: {
       type: String,
     },
+    primary: {
+      type: Boolean,
+      default: false,
+    },
+    danger: {
+      type: Boolean,
+      default: false,
+    },
+    loading: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
-    iconClass() {
-      return this.$slots.default == null ? '--icon-only' : ''
+    buttonClass() {
+      let buttonClass = 'base-button'
+
+      if (this.$slots.default == null) buttonClass += ' --icon-only'
+      if (this.primary) buttonClass += ' --primary'
+      else if (this.danger) buttonClass += ' --danger'
+
+      return buttonClass
     }
   }
 }
@@ -33,7 +52,49 @@ export default {
   font-weight: $font-weight-bold;
   cursor: pointer;
 
-  > .base-icon:not(.--icon-only) {
+  &:focus {
+    outline: 1px dashed $color-primary;
+    outline-offset: 2px;
+  }
+
+  &:hover {
+    color: $color-neutral-100;
+    background-color: $color-primary;
+  }
+
+  &:active {
+    color: $color-neutral-100;
+    background-color: $color-primary-active;
+  }
+
+  &:disabled {
+    color: $color-neutral-60;
+    border-color: $color-neutral-60;
+    background-color: $color-neutral-90;
+    cursor: default;
+  }
+
+  &.--primary {
+    border: none;
+    color: $color-neutral-100;
+    background-color: $color-primary;
+
+    &:hover {
+      background-color: $color-primary-active;
+    }
+  }
+
+  &.--danger {
+    border: none;
+    color: $color-neutral-100;
+    background-color: $color-danger;
+
+    &:hover {
+      background-color: $color-danger-active;
+    }
+  }
+
+  &:not(.--icon-only) > .base-icon {
     margin-right: 6px;
   }
 }
