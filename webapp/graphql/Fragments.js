@@ -54,7 +54,7 @@ export const postFragment = lang => gql`
     slug
     image
     language
-    blurImage
+    imageBlurred
     author {
       ...user
     }

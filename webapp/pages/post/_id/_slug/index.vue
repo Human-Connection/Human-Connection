@@ -10,7 +10,7 @@
         '--blur-image': blurred,
       }"
     >
-      <aside v-show="post.blurImage" class="blur-toggle">
+      <aside v-show="post.imageBlurred" class="blur-toggle">
         <img v-show="blurred" :src="post.image | proxyApiUrl" class="preview" />
         <ds-button :icon="blurred ? 'eye' : 'eye-slash'" primary @click="blurred = !blurred" />
       </aside>
@@ -139,7 +139,7 @@ export default {
     Post(post) {
       this.post = post[0] || {}
       this.title = this.post.title
-      this.blurred = this.post.blurImage
+      this.blurred = this.post.imageBlurred
     },
   },
   mounted() {

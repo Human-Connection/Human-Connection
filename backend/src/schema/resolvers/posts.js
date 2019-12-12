@@ -316,7 +316,7 @@ export default {
         'language',
         'pinnedAt',
         'pinned',
-        'blurImage',
+        'imageBlurred',
         'imageAspectRatio',
       ],
       hasMany: {

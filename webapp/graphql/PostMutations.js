@@ -9,7 +9,7 @@ export default () => {
         $language: String
         $categoryIds: [ID]
         $imageUpload: Upload
-        $blurImage: Boolean
+        $imageBlurred: Boolean
         $imageAspectRatio: Float
       ) {
         CreatePost(
@@ -18,7 +18,7 @@ export default () => {
           language: $language
           categoryIds: $categoryIds
           imageUpload: $imageUpload
-          blurImage: $blurImage
+          imageBlurred: $imageBlurred
           imageAspectRatio: $imageAspectRatio
         ) {
           title
@@ -26,7 +26,7 @@ export default () => {
           content
           contentExcerpt
           language
-          blurImage
+          imageBlurred
         }
       }
     `,
@@ -39,7 +39,7 @@ export default () => {
         $imageUpload: Upload
         $categoryIds: [ID]
         $image: String
-        $blurImage: Boolean
+        $imageBlurred: Boolean
         $imageAspectRatio: Float
       ) {
         UpdatePost(
@@ -50,7 +50,7 @@ export default () => {
           imageUpload: $imageUpload
           categoryIds: $categoryIds
           image: $image
-          blurImage: $blurImage
+          imageBlurred: $imageBlurred
           imageAspectRatio: $imageAspectRatio
         ) {
           id
@@ -59,7 +59,7 @@ export default () => {
           content
           contentExcerpt
           language
-          blurImage
+          imageBlurred
           pinnedBy {
             id
             name

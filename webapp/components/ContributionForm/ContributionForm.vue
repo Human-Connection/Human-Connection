@@ -170,7 +170,7 @@ export default {
           ? languageOptions.find(o => this.contribution.language === o.value)
           : null
       form.categoryIds = this.categoryIds(this.contribution.categories)
-      form.checkbox = this.contribution.blurImage
+      form.checkbox = this.contribution.imageBlurred
     }
 
     return {
@@ -234,7 +234,7 @@ export default {
             language,
             image,
             imageUpload: teaserImage,
-            blurImage: this.blurImage,
+            imageBlurred: this.blurImage,
             imageAspectRatio,
           },
         })
