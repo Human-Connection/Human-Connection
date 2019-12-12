@@ -58,7 +58,7 @@
               </ds-flex-item>
             </ds-flex>
             <ds-flex v-if="option.__typename === 'Post'">
-              <ds-flex-item class="search-option-label">
+		<ds-flex-item class="search-option-label" :class="{'extra-space': isFirstOfType(option)}">
                 <ds-text>{{ option.title | truncate(70) }}</ds-text>
               </ds-flex-item>
               <ds-flex-item class="search-option-meta" width="280px">
