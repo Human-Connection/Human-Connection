@@ -81,7 +81,7 @@
     "minimatch": "^3.0.4",
     "mustache": "^3.1.0",
     "neo4j-driver": "~1.7.6",
-    "neo4j-graphql-js": "^2.10.0",
+    "neo4j-graphql-js": "^2.10.1",
     "neode": "^0.3.3",
     "node-fetch": "~2.6.0",
     "nodemailer": "^6.4.1",
