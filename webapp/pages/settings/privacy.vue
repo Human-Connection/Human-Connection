@@ -10,7 +10,7 @@
 
 <script>
 import { mapGetters, mapMutations } from 'vuex'
-import { showShoutsPubliclyMutation } from '~/graphql/User'
+import { updateUserMutation } from '~/graphql/User'
 
 export default {
   data() {
@@ -36,9 +36,10 @@ export default {
     async submit() {
       try {
         await this.$apollo.mutate({
-          mutation: showShoutsPubliclyMutation(),
+          mutation: updateUserMutation(),
           variables: {
             id: this.currentUser.id,
+            name: this.currentUser.name,
             showShoutsPublicly: this.shoutsAllowed,
           },
           update: (_, { data: { UpdateUser } }) => {

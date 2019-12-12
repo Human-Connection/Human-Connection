@@ -46,7 +46,7 @@
 
 <script>
 import { mapGetters, mapMutations } from 'vuex'
-import { allowEmbedIframesMutation } from '~/graphql/User.js'
+import { updateUserMutation } from '~/graphql/User.js'
 
 export default {
   name: 'embed-component',
@@ -129,9 +129,10 @@ export default {
     async updateEmbedSettings(allowEmbedIframes) {
       try {
         await this.$apollo.mutate({
-          mutation: allowEmbedIframesMutation(),
+          mutation: updateUserMutation(),
           variables: {
             id: this.currentUser.id,
+            name: this.currentUser.name,
             allowEmbedIframes,
           },
           update: (store, { data: { UpdateUser } }) => {

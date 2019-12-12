@@ -128,9 +128,11 @@ export const validateNotifyUsers = async (label, reason) => {
 }
 
 const validateUpdateUser = async (resolve, root, params, context, info) => {
-  if (!params.name || params.name.length < USERNAME_MIN_LENGTH)
+  const { name } = params
+  if (typeof name === 'string' && name.trim().length > USERNAME_MIN_LENGTH)
+    return resolve(root, params, context, info)
+  if (typeof name !== 'string' || name.trim().length < USERNAME_MIN_LENGTH)
     throw new UserInputError(`Username must be at least ${USERNAME_MIN_LENGTH} character long!`)
-  return resolve(root, params, context, info)
 }
 
 export default {

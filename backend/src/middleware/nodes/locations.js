@@ -70,7 +70,6 @@ const createOrUpdateLocations = async (userId, locationName, driver) => {
   if (isEmpty(locationName)) {
     return
   }
-
   const res = await fetch(
     `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
       locationName,
@@ -111,33 +110,44 @@ const createOrUpdateLocations = async (userId, locationName, driver) => {
   if (data.context) {
     await asyncForEach(data.context, async ctx => {
       await createLocation(session, ctx)
-
-      await session.run(
-        'MATCH (parent:Location {id: $parentId}), (child:Location {id: $childId}) ' +
-          'MERGE (child)<-[:IS_IN]-(parent) ' +
-          'RETURN child.id, parent.id',
-        {
-          parentId: parent.id,
-          childId: ctx.id,
-        },
-      )
-
-      parent = ctx
+      try {
+        await session.writeTransaction(transaction => {
+          return transaction.run(
+            `
+              MATCH (parent:Location {id: $parentId}), (child:Location {id: $childId})
+              MERGE (child)<-[:IS_IN]-(parent)
+              RETURN child.id, parent.id
+            `,
+            {
+              parentId: parent.id,
+              childId: ctx.id,
+            },
+          )
+        })
+        parent = ctx
+      } finally {
+        session.close()
+      }
     })
   }
-  // delete all current locations from user
-  await session.run('MATCH (u:User {id: $userId})-[r:IS_IN]->(l:Location) DETACH DELETE r', {
-    userId: userId,
-  })
-  // connect user with location
-  await session.run(
-    'MATCH (u:User {id: $userId}), (l:Location {id: $locationId}) MERGE (u)-[:IS_IN]->(l) RETURN l.id, u.id',
-    {
-      userId: userId,
-      locationId: data.id,
-    },
-  )
-  session.close()
+  // delete all current locations from user and add new location
+  try {
+    await session.writeTransaction(transaction => {
+      return transaction.run(
+        `
+          MATCH (user:User {id: $userId})-[relationship:IS_IN]->(location:Location)
+          DETACH DELETE relationship
+          WITH user
+          MATCH (location:Location {id: $locationId}) 
+          MERGE (user)-[:IS_IN]->(location) 
+          RETURN location.id, user.id
+        `,
+        { userId: userId, locationId: data.id },
+      )
+    })
+  } finally {
+    session.close()
+  }
 }
 
 export default createOrUpdateLocations
