@@ -85,6 +85,16 @@ export default {
     },
     transformImage(file) {
       this.file = file
+      this.thumbnailElement = document.querySelectorAll('#postdropzone')[0]
+      if (this.file.type === 'image/svg+xml') {
+        console.log(this.file)
+        this.image = new Image()
+        this.image.src = this.file.dataURL
+        this.image.classList.add('thumbnail-preview')
+        this.thumbnailElement.appendChild(this.image)
+        this.$emit('addTeaserImage', this.file)
+        return
+      }
       this.showCropper = true
       this.initEditor()
       this.initCropper()
@@ -95,7 +105,7 @@ export default {
       this.thumbnailElement.appendChild(this.editor)
     },
     clearImages() {
-      this.thumbnailElement = document.querySelectorAll('#postdropzone')[0]
+      //this.thumbnailElement = document.querySelectorAll('#postdropzone')[0]
       const thumbnailPreview = document.querySelectorAll('.thumbnail-preview')[0]
       if (thumbnailPreview) thumbnailPreview.remove()
       const contributionImage = document.querySelectorAll('.contribution-image')[0]
@@ -118,7 +128,7 @@ export default {
         const croppedImageFile = new File([blob], this.file.name, { type: this.file.type })
         this.$emit('addTeaserImage', croppedImageFile)
         this.$emit('addImageAspectRatio', imageAspectRatio)
-      }, 'image/jpeg')
+      }, this.file.type)
     },
     setupPreview(canvas) {
       this.image = new Image()

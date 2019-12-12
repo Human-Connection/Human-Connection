@@ -198,6 +198,7 @@ export default {
         imageAspectRatio,
         categoryIds,
       } = this.form
+      console.log(teaserImage)
       this.loading = true
       this.$apollo
         .mutate({
