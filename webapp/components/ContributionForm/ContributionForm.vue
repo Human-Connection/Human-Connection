@@ -29,7 +29,6 @@
             type="checkbox"
             id="blur-img"
             v-model="blurImage"
-            @change="form.checkbox = blurImage"
           />
           <a href="https://faq.human-connection.org/" target="_blank" class="link">
             {{ $t('contribution.shockingPicture-text') }}
@@ -201,12 +200,7 @@ export default {
       contentMin: 3,
       hashtags: [],
       elem: null,
-      blurImage: false,
-    }
-  },
-  mounted() {
-    if (this.contribution && this.contribution.blurImage === true) {
-      this.blurImage = true
+      blurImage: form.checkbox,
     }
   },
   computed: {
@@ -240,7 +234,7 @@ export default {
             language,
             image,
             imageUpload: teaserImage,
-            blurImage: this.form.checkbox,
+            blurImage: this.blurImage,
             imageAspectRatio,
           },
         })
