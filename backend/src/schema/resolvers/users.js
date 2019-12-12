@@ -101,23 +101,37 @@ export default {
       const blockedUser = await neode.find('User', args.id)
       return blockedUser.toJson()
     },
-    UpdateUser: async (object, args, context, resolveInfo) => {
-      const { termsAndConditionsAgreedVersion } = args
+    UpdateUser: async (_parent, params, context, _resolveInfo) => {
+      const { termsAndConditionsAgreedVersion } = params
       if (termsAndConditionsAgreedVersion) {
         const regEx = new RegExp(/^[0-9]+\.[0-9]+\.[0-9]+$/g)
         if (!regEx.test(termsAndConditionsAgreedVersion)) {
           throw new ForbiddenError('Invalid version format!')
         }
-        args.termsAndConditionsAgreedAt = new Date().toISOString()
+        params.termsAndConditionsAgreedAt = new Date().toISOString()
       }
-      args = await fileUpload(args, { file: 'avatarUpload', url: 'avatar' })
+      params = await fileUpload(params, { file: 'avatarUpload', url: 'avatar' })
+      const session = context.driver.session()
+
+      const writeTxResultPromise = session.writeTransaction(async transaction => {
+        const updateUserTransactionResponse = await transaction.run(
+          `
+            MATCH (user:User {id: $params.id})
+            SET user += $params
+            SET user.updatedAt = toString(datetime())
+            RETURN user
+          `,
+          { params },
+        )
+        return updateUserTransactionResponse.records.map(record => record.get('user').properties)
+      })
       try {
-        const user = await neode.find('User', args.id)
-        if (!user) return null
-        await user.update({ ...args, updatedAt: new Date().toISOString() })
-        return user.toJson()
-      } catch (e) {
-        throw new UserInputError(e.message)
+        const [user] = await writeTxResultPromise
+        return user
+      } catch (error) {
+        throw new UserInputError(error.message)
+      } finally {
+        session.close()
       }
     },
     DeleteUser: async (object, params, context, resolveInfo) => {
