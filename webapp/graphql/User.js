@@ -149,7 +149,10 @@ export const updateUserMutation = () => {
       $locationName: String
       $about: String
       $allowEmbedIframes: Boolean
+      $showShoutsPublicly: Boolean
       $locale: String
+      $termsAndConditionsAgreedVersion: String
+      $avatarUpload: Upload
     ) {
       UpdateUser(
         id: $id
@@ -160,6 +163,8 @@ export const updateUserMutation = () => {
         allowEmbedIframes: $allowEmbedIframes
         showShoutsPublicly: $showShoutsPublicly
         locale: $locale
+        termsAndConditionsAgreedVersion: $termsAndConditionsAgreedVersion
+        avatarUpload: $avatarUpload
       ) {
         id
         slug
@@ -169,6 +174,8 @@ export const updateUserMutation = () => {
         allowEmbedIframes
         showShoutsPublicly
         locale
+        termsAndConditionsAgreedVersion
+        avatar
       }
     }
   `

@@ -33,12 +33,12 @@
 </template>
 
 <script>
-import gql from 'graphql-tag'
 import Dropdown from '~/components/Dropdown'
 import find from 'lodash/find'
 import orderBy from 'lodash/orderBy'
 import locales from '~/locales'
 import { mapGetters, mapMutations } from 'vuex'
+import { updateUserMutation } from '~/graphql/User.js'
 
 export default {
   components: {
@@ -87,16 +87,10 @@ export default {
       if (!this.currentUser || !this.currentUser.id) return null
       try {
         await this.$apollo.mutate({
-          mutation: gql`
-            mutation($id: ID!, $locale: String) {
-              UpdateUser(id: $id, locale: $locale) {
-                id
-                locale
-              }
-            }
-          `,
+          mutation: updateUserMutation(),
           variables: {
             id: this.currentUser.id,
+            name: this.currentUser.name,
             locale: this.$i18n.locale(),
           },
           update: (store, { data: { UpdateUser } }) => {

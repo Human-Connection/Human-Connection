@@ -24,17 +24,10 @@
 </template>
 
 <script>
-import gql from 'graphql-tag'
 import { mapGetters, mapMutations } from 'vuex'
 import { VERSION } from '~/constants/terms-and-conditions-version.js'
-const mutation = gql`
-  mutation($id: ID!, $termsAndConditionsAgreedVersion: String) {
-    UpdateUser(id: $id, termsAndConditionsAgreedVersion: $termsAndConditionsAgreedVersion) {
-      id
-      termsAndConditionsAgreedVersion
-    }
-  }
-`
+import { updateUserMutation } from '~/graphql/User.js'
+
 export default {
   layout: 'default',
   head() {
@@ -74,9 +67,10 @@ export default {
     async submit() {
       try {
         await this.$apollo.mutate({
-          mutation,
+          mutation: updateUserMutation(),
           variables: {
             id: this.currentUser.id,
+            name: this.currentUser.name,
             termsAndConditionsAgreedVersion: VERSION,
           },
           update: (store, { data: { UpdateUser } }) => {
