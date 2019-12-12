@@ -68,6 +68,7 @@ describe('User', () => {
       it('is permitted', async () => {
         await expect(query({ query: userQuery, variables })).resolves.toMatchObject({
           data: { User: [{ name: 'Johnny' }] },
+          errors: undefined,
         })
       })
 
@@ -90,8 +91,7 @@ describe('User', () => {
 })
 
 describe('UpdateUser', () => {
-  let userParams
-  let variables
+  let userParams, variables
 
   beforeEach(async () => {
     userParams = {
@@ -111,16 +111,23 @@ describe('UpdateUser', () => {
   })
 
   const updateUserMutation = gql`
-    mutation($id: ID!, $name: String, $termsAndConditionsAgreedVersion: String) {
+    mutation(
+      $id: ID!
+      $name: String
+      $termsAndConditionsAgreedVersion: String
+      $locationName: String
+    ) {
       UpdateUser(
         id: $id
         name: $name
         termsAndConditionsAgreedVersion: $termsAndConditionsAgreedVersion
+        locationName: $locationName
       ) {
         id
         name
         termsAndConditionsAgreedVersion
         termsAndConditionsAgreedAt
+        locationName
       }
     }
   `
@@ -152,7 +159,7 @@ describe('UpdateUser', () => {
       authenticatedUser = await user.toJson()
     })
 
-    it('name within specifications', async () => {
+    it('updates the name', async () => {
       const expected = {
         data: {
           UpdateUser: {
@@ -160,33 +167,10 @@ describe('UpdateUser', () => {
             name: 'John Doughnut',
           },
         },
+        errors: undefined,
       }
       await expect(mutate({ mutation: updateUserMutation, variables })).resolves.toMatchObject(
         expected,
-      )
-    })
-
-    it('with `null` as name', async () => {
-      const variables = {
-        id: 'u47',
-        name: null,
-      }
-      const { errors } = await mutate({ mutation: updateUserMutation, variables })
-      expect(errors[0]).toHaveProperty(
-        'message',
-        'child "name" fails because ["name" contains an invalid value, "name" must be a string]',
-      )
-    })
-
-    it('with too short name', async () => {
-      const variables = {
-        id: 'u47',
-        name: '  ',
-      }
-      const { errors } = await mutate({ mutation: updateUserMutation, variables })
-      expect(errors[0]).toHaveProperty(
-        'message',
-        'child "name" fails because ["name" length must be at least 3 characters long]',
       )
     })
 
@@ -202,6 +186,7 @@ describe('UpdateUser', () => {
               termsAndConditionsAgreedAt: expect.any(String),
             }),
           },
+          errors: undefined,
         }
 
         await expect(mutate({ mutation: updateUserMutation, variables })).resolves.toMatchObject(
@@ -222,6 +207,7 @@ describe('UpdateUser', () => {
               termsAndConditionsAgreedAt: null,
             }),
           },
+          errors: undefined,
         }
 
         await expect(mutate({ mutation: updateUserMutation, variables })).resolves.toMatchObject(
@@ -237,6 +223,14 @@ describe('UpdateUser', () => {
       }
       const { errors } = await mutate({ mutation: updateUserMutation, variables })
       expect(errors[0]).toHaveProperty('message', 'Invalid version format!')
+    })
+
+    it('supports updating location', async () => {
+      variables = { ...variables, locationName: 'Hamburg, New Jersey, United States of America' }
+      await expect(mutate({ mutation: updateUserMutation, variables })).resolves.toMatchObject({
+        data: { UpdateUser: { locationName: 'Hamburg, New Jersey, United States of America' } },
+        errors: undefined,
+      })
     })
   })
 })

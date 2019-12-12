@@ -4,7 +4,7 @@ const COMMENT_MIN_LENGTH = 1
 const NO_POST_ERR_MESSAGE = 'Comment cannot be created without a post!'
 const NO_CATEGORIES_ERR_MESSAGE =
   'You cannot save a post without at least one category or more than three'
-
+const USERNAME_MIN_LENGTH = 3
 const validateCreateComment = async (resolve, root, args, context, info) => {
   const content = args.content.replace(/<(?:.|\n)*?>/gm, '').trim()
   const { postId } = args
@@ -127,12 +127,19 @@ export const validateNotifyUsers = async (label, reason) => {
   }
 }
 
+const validateUpdateUser = async (resolve, root, params, context, info) => {
+  if (!params.name || params.name.length < USERNAME_MIN_LENGTH)
+    throw new UserInputError(`Username must be at least ${USERNAME_MIN_LENGTH} character long!`)
+  return resolve(root, params, context, info)
+}
+
 export default {
   Mutation: {
     CreateComment: validateCreateComment,
     UpdateComment: validateUpdateComment,
     CreatePost: validatePost,
     UpdatePost: validateUpdatePost,
+    UpdateUser: validateUpdateUser,
     fileReport: validateReport,
     review: validateReview,
   },
