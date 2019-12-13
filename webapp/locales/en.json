@@ -703,8 +703,8 @@
     "teaserImage": {
       "cropperConfirm": "Confirm"
     },
-    "shockingPicture" : "This image may be inappropriate for some people.",
-    "shockingPicture-text" : "Contribution picture is blurred"
+    "inappropriatePicture" : "This image may be inappropriate for some people.",
+    "inappropriatePictureText" : "Contribution picture is blurred"
   },
   "code-of-conduct": {
     "subheader": "for the social network of the Human Connection gGmbH",

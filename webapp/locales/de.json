@@ -486,8 +486,8 @@
         "teaserImage": {
             "cropperConfirm": "Bestätigen"
         },        
-        "shockingPicture" : "Dieses Bild kann für einige Menschen unangemessen sein.",
-        "shockingPicture-text" : "Beitragsbild wird Verschwommen dargestellt"
+        "inappropriatePicture" : "Dieses Bild kann für einige Menschen unangemessen sein.",
+        "inappropriatePictureText" : "Beitragsbild wird Verschwommen dargestellt"
     },
     "comment": {
         "edit": "Kommentar bearbeiten",
