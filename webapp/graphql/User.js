@@ -1,5 +1,5 @@
 import gql from 'graphql-tag'
-import { userFragment, postFragment, commentFragment } from './Fragments'
+import { linkableUserFragment, userFragment, postFragment, commentFragment } from './Fragments'
 
 export default i18n => {
   const lang = i18n.locale().toUpperCase()
@@ -49,6 +49,7 @@ export const minimisedUserQuery = () => {
 export const notificationQuery = i18n => {
   const lang = i18n.locale().toUpperCase()
   return gql`
+    ${linkableUserFragment()}
     ${commentFragment(lang)}
     ${postFragment(lang)}
 
@@ -78,6 +79,7 @@ export const notificationQuery = i18n => {
 export const markAsReadMutation = i18n => {
   const lang = i18n.locale().toUpperCase()
   return gql`
+    ${linkableUserFragment()}
     ${commentFragment(lang)}
     ${postFragment(lang)}
 

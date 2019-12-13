@@ -16,12 +16,7 @@ First, you have to tell cypress how to connect to your local neo4j database
 among other things. You can copy our template configuration and change the new
 file according to your needs.
 
-Make sure you are at the root level of the project. Then:
-```bash
-# in the top level folder Human-Connection/
-$ cp cypress.env.template.json cypress.env.json
-```
-To start the services that are required for cypress testing, run this:
+To start the services that are required for cypress testing, run:
 
 ```bash
 # in the top level folder Human-Connection/

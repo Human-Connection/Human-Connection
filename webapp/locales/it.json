@@ -114,6 +114,8 @@
         },
         "deleteUserAccount": {
             "name": "Cancellare l'account utente",
+            "contributionsCount": "Cancellare i miei {count} messaggi",
+            "commentedCount": "Cancella i miei {count} commenti",
             "accountDescription": "Essere consapevoli che i tuoi post e commenti sono importanti per la nostra comunità. Se cancelli il tuo account utente, tutto scomparirà per sempre - e sarebbe un vero peccato!",
             "accountWarning": "Attenzione!Tu <b>Non puoi gestire</b> e <b>Non puoi recuperare il tuo account, i tuoi messaggi o commenti dopo aver cancellato il tuo account!",
             "success": "Account eliminato con successo!",

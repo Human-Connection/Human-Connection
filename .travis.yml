@@ -12,7 +12,7 @@ install:
   - yarn global add wait-on
   # Install Codecov
   - yarn install
-  - cp cypress.env.template.json cypress.env.json
+  - cp backend/.env.template backend/.env
 
 before_script:
   - docker-compose -f docker-compose.yml build --parallel
@@ -63,14 +63,14 @@ before_deploy:
 
 deploy:
   - provider: script
-    script: scripts/docker_push.sh
+    script: bash scripts/docker_push.sh
     on:
       branch: master
   - provider: script
-    script: scripts/deploy.sh
+    script: bash scripts/deploy.sh
     on:
       branch: master
   - provider: script
-    script: scripts/github_release.sh
+    script: bash scripts/github_release.sh
     on:
       branch: master
