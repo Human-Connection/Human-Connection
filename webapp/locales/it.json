@@ -238,10 +238,10 @@
             "description": ""
         },
         "donations": {
-            "name": "",
-            "goal": "",
-            "progress": "",
-            "successfulUpdate": ""
+            "name": "Info donazioni",
+            "goal": "Donazioni mensili necessarie",
+            "progress": "Donazioni raccolte finora",
+            "successfulUpdate": "Informazioni sulle donazioni aggiornate con successo!"
         }
     },
     "post": {
@@ -745,8 +745,8 @@
         }
     },
     "donations": {
-        "donations-for": "",
-        "donate-now": "",
-        "amount-of-total": ""
+        "donations-for": "Donazioni per",
+        "donate-now": "Dona ora",
+        "amount-of-total": "{amount} of {total} € collezionato"
     }
 }
