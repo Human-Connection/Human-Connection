@@ -82,7 +82,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 import LocaleSwitch from '~/components/LocaleSwitch/LocaleSwitch'
 import SearchInput from '~/components/SearchInput/SearchInput.vue'
 import Modal from '~/components/Modal'
@@ -126,10 +126,6 @@ export default {
     },
   },
   methods: {
-    ...mapActions({
-      quickSearchClear: 'search/quickClear',
-      quickSearch: 'search/quickSearch',
-    }),
     goToResource(item) {
       this.$nextTick(() => {
         switch (item.__typename) {

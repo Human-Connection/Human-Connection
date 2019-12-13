@@ -150,8 +150,7 @@ export default {
             query: value,
           },
         })
-        const searchResults = findResources.map(searchResult => searchResult.searchResults)
-        this.searchResults = searchResults
+        this.searchResults = findResources
       } catch (error) {
         this.searchResults = []
       } finally {
