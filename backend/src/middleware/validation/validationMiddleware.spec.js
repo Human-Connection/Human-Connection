@@ -423,17 +423,6 @@ describe('validateReview', () => {
       authenticatedUser = await updatingUser.toJson()
     })
 
-    it('with `null` as name', async () => {
-      variables = {
-        ...variables,
-        name: null,
-      }
-      await expect(mutate({ mutation: updateUserMutation, variables })).resolves.toMatchObject({
-        data: { UpdateUser: null },
-        errors: [{ message: 'Username must be at least 3 character long!' }],
-      })
-    })
-
     it('with name too short', async () => {
       variables = {
         ...variables,
