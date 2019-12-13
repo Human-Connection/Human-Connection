@@ -22,18 +22,14 @@
 
       <ds-card>
         <div class="blur-toggle">
-          <label for="blur-img">{{ $t('contribution.shockingPicture') }}</label>
-          <input
-            name="checkbox"
-            class="blurImageCheckbox"
-            type="checkbox"
-            id="blur-img"
-            v-model="blurImage"
-          />
-          <a href="https://faq.human-connection.org/" target="_blank" class="link">
-            {{ $t('contribution.shockingPicture-text') }}
-            <ds-icon name="question-circle" />
-          </a>
+          <label for="blur-img">{{ $t('contribution.inappropriatePicture') }}</label>
+          <input name="checkbox" type="checkbox" id="blur-img" v-model="blurImage" />
+          <p>
+            <a href="https://faq.human-connection.org/" target="_blank" class="link">
+              {{ $t('contribution.inappropriatePictureText') }}
+              <ds-icon name="question-circle" />
+            </a>
+          </p>
         </div>
 
         <ds-space />
