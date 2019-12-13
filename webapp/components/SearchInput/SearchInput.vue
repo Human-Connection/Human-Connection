@@ -211,7 +211,7 @@ export default {
       this.pending = false
       this.searchResults = []
       this.quickValue = ''
-      this.clearTimeout(this.searchProcess)
+      clearTimeout(this.searchProcess)
       this.isOpen = false
       this.unprocessedSearchInput = ''
       this.lastSearchTerm = ''
