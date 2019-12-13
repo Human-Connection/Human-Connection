@@ -38,6 +38,17 @@ const createCommentMutation = gql`
     }
   }
 `
+const fileReportMutation = gql `
+  mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
+    fileReport(
+      resourceId: $resourceId
+      reasonCategory: $reasonCategory
+      reasonDescription: $reasonDescription
+    ) {
+      id
+    }
+  }
+`
 
 beforeAll(() => {
   const createServerResult = createServer({
@@ -96,46 +107,45 @@ describe('notifications', () => {
     }
   `
 
+  let title
+  let postContent
+  let postAuthor
+  const createPostAction = async () => {
+    authenticatedUser = await postAuthor.toJson()
+    await mutate({
+      mutation: createPostMutation,
+      variables: {
+        id: 'p47',
+        title,
+        postContent,
+        categoryIds,
+      },
+    })
+    authenticatedUser = await notifiedUser.toJson()
+  }
+
+  let commentContent
+  let commentAuthor
+  const createCommentOnPostAction = async () => {
+    await createPostAction()
+    authenticatedUser = await commentAuthor.toJson()
+    await mutate({
+      mutation: createCommentMutation,
+      variables: {
+        id: 'c47',
+        postId: 'p47',
+        commentContent,
+      },
+    })
+    authenticatedUser = await notifiedUser.toJson()
+  }
+
   describe('authenticated', () => {
     beforeEach(async () => {
       authenticatedUser = await notifiedUser.toJson()
     })
 
     describe('given another user', () => {
-      let title
-      let postContent
-      let postAuthor
-
-      const createPostAction = async () => {
-        authenticatedUser = await postAuthor.toJson()
-        await mutate({
-          mutation: createPostMutation,
-          variables: {
-            id: 'p47',
-            title,
-            postContent,
-            categoryIds,
-          },
-        })
-        authenticatedUser = await notifiedUser.toJson()
-      }
-
-      let commentContent
-      let commentAuthor
-      const createCommentOnPostAction = async () => {
-        await createPostAction()
-        authenticatedUser = await commentAuthor.toJson()
-        await mutate({
-          mutation: createCommentMutation,
-          variables: {
-            id: 'c47',
-            postId: 'p47',
-            commentContent,
-          },
-        })
-        authenticatedUser = await notifiedUser.toJson()
-      }
-
       describe('comments on my post', () => {
         beforeEach(async () => {
           title = 'My post'
@@ -542,6 +552,89 @@ describe('notifications', () => {
               }),
             ).resolves.toEqual(expected)
           })
+        })
+      })
+    })
+
+    describe('given me filing a report of a', () => {
+      let resourceId
+      let reasonCategory
+      let reasonDescription
+      let reportFiler
+      const fileReportAction = async () => {
+        authenticatedUser = await reportFiler.toJson()
+        await mutate({
+          mutation: fileReportMutation,
+          variables: {
+            resourceId,
+            reasonCategory,
+            reasonDescription,
+          },
+        })
+        authenticatedUser = await notifiedUser.toJson()
+      }
+
+      describe('user', () => {
+      })
+
+      describe('post', () => {
+      })
+
+      describe('comment', () => {
+        beforeEach(async () => {
+          title = 'My post'
+          postContent = 'My post content.'
+          postAuthor = await neode.create('User', {
+            id: 'postAuthor',
+            name: 'Mrs Post',
+            slug: 'mrs-post',
+            email: 'post-author@example.org',
+            password: '1234',
+          })
+
+          commentContent = 'Commenters comment.'
+          commentAuthor = await neode.create('User', {
+            id: 'commentAuthor',
+            name: 'Mrs Comment',
+            slug: 'mrs-comment',
+            email: 'commentauthor@example.org',
+            password: '1234',
+          })
+        })
+
+        it.only('sends me a notification', async () => {
+          await createCommentOnPostAction()
+          resourceId = 'c47'
+          reasonCategory = 'discrimination_etc'
+          reasonDescription = 'I am free to be gay !!!'
+          reportFiler = notifiedUser
+          await fileReportAction()
+          
+          const expected = expect.objectContaining({
+            data: {
+              notifications: [
+                {
+                  read: false,
+                  createdAt: expect.any(String),
+                  reason: 'filed_report_on_resource',
+                  from: {
+                    __typename: 'Comment',
+                    id: 'c47',
+                    content: commentContent,
+                  },
+                },
+              ],
+            },
+          })
+          const { query } = createTestClient(server)
+          await expect(
+            query({
+              query: notificationQuery,
+              variables: {
+                read: false,
+              },
+            }),
+          ).resolves.toEqual(expected)
         })
       })
     })

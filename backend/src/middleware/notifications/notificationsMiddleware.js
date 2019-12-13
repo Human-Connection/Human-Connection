@@ -45,10 +45,7 @@ const notifyUsers = async (label, id, idsOfUsers, reason, context) => {
         AND NOT (user)<-[:BLOCKED]-(author)
         MERGE (post)-[notification:NOTIFIED {reason: $reason}]->(user)
         SET notification.read = FALSE
-        SET (
-        CASE
-        WHEN notification.createdAt IS NULL
-        THEN notification END ).createdAt = toString(datetime())
+        SET ( CASE WHEN notification.createdAt IS NULL THEN notification END ).createdAt = toString(datetime())
         SET notification.updatedAt = toString(datetime())
       `
       break
@@ -62,10 +59,7 @@ const notifyUsers = async (label, id, idsOfUsers, reason, context) => {
         AND NOT (user)<-[:BLOCKED]-(postAuthor)
         MERGE (comment)-[notification:NOTIFIED {reason: $reason}]->(user)
         SET notification.read = FALSE
-        SET (
-        CASE
-        WHEN notification.createdAt IS NULL
-        THEN notification END ).createdAt = toString(datetime())
+        SET ( CASE WHEN notification.createdAt IS NULL THEN notification END ).createdAt = toString(datetime())
         SET notification.updatedAt = toString(datetime())
       `
       break
@@ -79,10 +73,7 @@ const notifyUsers = async (label, id, idsOfUsers, reason, context) => {
         AND NOT (author)<-[:BLOCKED]-(user)
         MERGE (comment)-[notification:NOTIFIED {reason: $reason}]->(user)
         SET notification.read = FALSE
-        SET (
-        CASE
-        WHEN notification.createdAt IS NULL
-        THEN notification END ).createdAt = toString(datetime())
+        SET ( CASE WHEN notification.createdAt IS NULL THEN notification END ).createdAt = toString(datetime())
         SET notification.updatedAt = toString(datetime())
       `
       break
@@ -154,11 +145,63 @@ const handleCreateComment = async (resolve, root, args, context, resolveInfo) =>
   return comment
 }
 
+const notifyReportFiler = async (resolve, root, args, context, resolveInfo) => {
+  // const comment = await handleContentDataOfComment(resolve, root, args, context, resolveInfo)
+  const report = await resolve(root, args, context, resolveInfo)
+
+  if (report) {
+    console.log('If report !!!')
+    console.log('report: ', report)
+    console.log('args: ', args)
+    const { resourceId/* Wolle , reasonCategory, reasonDescription */ } = args
+    const { driver, user } = context
+    const { id: reportId } = report
+    console.log('resourceId: ', resourceId)
+    console.log('user.id: ', user.id)
+    console.log('reportId: ', reportId)
+    // Wolle await notifyUsers(report.resource.__typename, resourceId, [user.id], 'filed_report_on_resource', context)
+    const session = driver.session()
+    const notificationWriteTxResultPromise = session.writeTransaction(async transaction => {
+      const notificationTransactionResponse = await transaction.run(
+        `
+          MATCH (resource {id: $resourceId})<-[:BELONGS_TO]-(:Report {id: $reportId})<-[:FILED]-(submitter:User {id: $submitterId})
+          WHERE resource: User OR resource: Post OR resource: Comment
+          MERGE (resource)-[notification:NOTIFIED {reason: $reason, reportId: $reportId}]->(submitter)
+          ON CREATE SET notification.createdAt = toString(datetime()), notification.updatedAt = notification.createdAt
+          ON MERGE SET notification.updatedAt = toString(datetime())
+          SET notification.read = FALSE
+        `,
+        {
+          reportId,
+          resourceId,
+          submitterId: user.id,
+          reason: 'filed_report_on_resource',
+          // Wolle reasonCategory,
+          // Wolle reasonDescription,
+        },
+      )
+      console.log('notificationTransactionResponse: ', notificationTransactionResponse)
+      log(notificationTransactionResponse)
+      // Wolle return notificationTransactionResponse.records.map(transformReturnType)
+    })
+    try {
+      await notificationWriteTxResultPromise
+      // Wolle if (!createdRelationshipWithNestedAttributes) return null
+      // Wolle return createdRelationshipWithNestedAttributes
+    } finally {
+      session.close()
+    }
+  }
+
+  return report
+}
+
 export default {
   Mutation: {
     CreatePost: handleContentDataOfPost,
     UpdatePost: handleContentDataOfPost,
     CreateComment: handleCreateComment,
     UpdateComment: handleContentDataOfComment,
+    fileReport: notifyReportFiler,
   },
 }

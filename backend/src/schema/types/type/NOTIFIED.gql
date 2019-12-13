@@ -18,9 +18,10 @@ enum NotificationOrdering {
 }
 
 enum NotificationReason {
+  commented_on_post
+  filed_report_on_resource
   mentioned_in_post
   mentioned_in_comment
-  commented_on_post
 }
 
 type Query {
