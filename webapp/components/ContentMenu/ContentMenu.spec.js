@@ -22,10 +22,6 @@ describe('ContentMenu.vue', () => {
         locale: () => 'en',
       },
       $router: {
-        resolve: jest.fn(obj => {
-          obj.href = '/post/edit/d23a4265-f5f7-4e17-9f86-85f714b4b9f8'
-          return obj
-        }),
         push: jest.fn(),
       },
     }
@@ -76,7 +72,7 @@ describe('ContentMenu.vue', () => {
             .at(0)
             .find('span.ds-menu-item-link')
             .attributes('to'),
-        ).toBe('/post/edit/d23a4265-f5f7-4e17-9f86-85f714b4b9f8')
+        ).toBe('/post-edit-id')
       })
 
       it('can delete the contribution', () => {
