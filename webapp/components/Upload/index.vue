@@ -66,7 +66,6 @@ export default {
           variables: {
             avatarUpload,
             id: this.user.id,
-            name: this.user.name,
           },
         })
         .then(() => {

@@ -132,7 +132,6 @@ export default {
           mutation: updateUserMutation(),
           variables: {
             id: this.currentUser.id,
-            name: this.currentUser.name,
             allowEmbedIframes,
           },
           update: (store, { data: { UpdateUser } }) => {

@@ -90,7 +90,6 @@ export default {
           mutation: updateUserMutation(),
           variables: {
             id: this.currentUser.id,
-            name: this.currentUser.name,
             locale: this.$i18n.locale(),
           },
           update: (store, { data: { UpdateUser } }) => {

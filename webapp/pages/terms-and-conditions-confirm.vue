@@ -70,7 +70,6 @@ export default {
           mutation: updateUserMutation(),
           variables: {
             id: this.currentUser.id,
-            name: this.currentUser.name,
             termsAndConditionsAgreedVersion: VERSION,
           },
           update: (store, { data: { UpdateUser } }) => {

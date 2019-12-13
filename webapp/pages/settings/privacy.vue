@@ -39,7 +39,6 @@ export default {
           mutation: updateUserMutation(),
           variables: {
             id: this.currentUser.id,
-            name: this.currentUser.name,
             showShoutsPublicly: this.shoutsAllowed,
           },
           update: (_, { data: { UpdateUser } }) => {
