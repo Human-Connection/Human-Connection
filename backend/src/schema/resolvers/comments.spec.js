@@ -10,7 +10,8 @@ const factory = Factory()
 
 let variables, mutate, authenticatedUser, commentAuthor, newlyCreatedComment
 
-beforeAll(() => {
+beforeAll(async () => {
+  await factory.cleanDatabase()
   const { server } = createServer({
     context: () => {
       return {
@@ -19,8 +20,7 @@ beforeAll(() => {
       }
     },
   })
-  const client = createTestClient(server)
-  mutate = client.mutate
+  mutate = createTestClient(server).mutate
 })
 
 beforeEach(async () => {
@@ -100,6 +100,7 @@ describe('CreateComment', () => {
         await expect(mutate({ mutation: createCommentMutation, variables })).resolves.toMatchObject(
           {
             data: { CreateComment: { content: "I'm authorised to comment" } },
+            errors: undefined,
           },
         )
       })
@@ -108,6 +109,7 @@ describe('CreateComment', () => {
         await expect(mutate({ mutation: createCommentMutation, variables })).resolves.toMatchObject(
           {
             data: { CreateComment: { author: { name: 'Author' } } },
+            errors: undefined,
           },
         )
       })
@@ -157,6 +159,7 @@ describe('UpdateComment', () => {
       it('updates the comment', async () => {
         const expected = {
           data: { UpdateComment: { id: 'c456', content: 'The comment is updated' } },
+          errors: undefined,
         }
         await expect(mutate({ mutation: updateCommentMutation, variables })).resolves.toMatchObject(
           expected,
@@ -172,6 +175,7 @@ describe('UpdateComment', () => {
               createdAt: expect.any(String),
             },
           },
+          errors: undefined,
         }
         await expect(mutate({ mutation: updateCommentMutation, variables })).resolves.toMatchObject(
           expected,

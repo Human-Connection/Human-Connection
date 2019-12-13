@@ -140,23 +140,42 @@ export const unfollowUserMutation = i18n => {
   `
 }
 
-export const allowEmbedIframesMutation = () => {
+export const updateUserMutation = () => {
   return gql`
-    mutation($id: ID!, $allowEmbedIframes: Boolean) {
-      UpdateUser(id: $id, allowEmbedIframes: $allowEmbedIframes) {
+    mutation(
+      $id: ID!
+      $slug: String
+      $name: String
+      $locationName: String
+      $about: String
+      $allowEmbedIframes: Boolean
+      $showShoutsPublicly: Boolean
+      $locale: String
+      $termsAndConditionsAgreedVersion: String
+      $avatarUpload: Upload
+    ) {
+      UpdateUser(
+        id: $id
+        slug: $slug
+        name: $name
+        locationName: $locationName
+        about: $about
+        allowEmbedIframes: $allowEmbedIframes
+        showShoutsPublicly: $showShoutsPublicly
+        locale: $locale
+        termsAndConditionsAgreedVersion: $termsAndConditionsAgreedVersion
+        avatarUpload: $avatarUpload
+      ) {
         id
+        slug
+        name
+        locationName
+        about
         allowEmbedIframes
-      }
-    }
-  `
-}
-
-export const showShoutsPubliclyMutation = () => {
-  return gql`
-    mutation($id: ID!, $showShoutsPublicly: Boolean) {
-      UpdateUser(id: $id, showShoutsPublicly: $showShoutsPublicly) {
-        id
         showShoutsPublicly
+        locale
+        termsAndConditionsAgreedVersion
+        avatar
       }
     }
   `
@@ -169,14 +188,3 @@ export const checkSlugAvailableQuery = gql`
     }
   }
 `
-
-export const localeMutation = () => {
-  return gql`
-    mutation($id: ID!, $locale: String) {
-      UpdateUser(id: $id, locale: $locale) {
-        id
-        locale
-      }
-    }
-  `
-}

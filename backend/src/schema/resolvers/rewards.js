@@ -24,18 +24,19 @@ export default {
       const { user } = await getUserAndBadge(params)
       const session = context.driver.session()
       try {
-        // silly neode cannot remove relationships
-        await session.run(
-          `
-          MATCH (badge:Badge {id: $badgeKey})-[reward:REWARDED]->(rewardedUser:User {id: $userId})
-          DELETE reward
-          RETURN rewardedUser
-          `,
-          {
-            badgeKey,
-            userId,
-          },
-        )
+        await session.writeTransaction(transaction => {
+          return transaction.run(
+            `
+              MATCH (badge:Badge {id: $badgeKey})-[reward:REWARDED]->(rewardedUser:User {id: $userId})
+              DELETE reward
+              RETURN rewardedUser
+            `,
+            {
+              badgeKey,
+              userId,
+            },
+          )
+        })
       } finally {
         session.close()
       }

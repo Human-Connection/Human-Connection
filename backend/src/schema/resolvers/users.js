@@ -3,6 +3,7 @@ import fileUpload from './fileUpload'
 import { getNeode } from '../../bootstrap/neo4j'
 import { UserInputError, ForbiddenError } from 'apollo-server'
 import Resolver from './helpers/Resolver'
+import log from './helpers/databaseLogger'
 
 const neode = getNeode()
 
@@ -100,72 +101,89 @@ export default {
       const blockedUser = await neode.find('User', args.id)
       return blockedUser.toJson()
     },
-    UpdateUser: async (object, args, context, resolveInfo) => {
-      const { termsAndConditionsAgreedVersion } = args
+    UpdateUser: async (_parent, params, context, _resolveInfo) => {
+      const { termsAndConditionsAgreedVersion } = params
       if (termsAndConditionsAgreedVersion) {
         const regEx = new RegExp(/^[0-9]+\.[0-9]+\.[0-9]+$/g)
         if (!regEx.test(termsAndConditionsAgreedVersion)) {
           throw new ForbiddenError('Invalid version format!')
         }
-        args.termsAndConditionsAgreedAt = new Date().toISOString()
+        params.termsAndConditionsAgreedAt = new Date().toISOString()
       }
-      args = await fileUpload(args, { file: 'avatarUpload', url: 'avatar' })
+      params = await fileUpload(params, { file: 'avatarUpload', url: 'avatar' })
+      const session = context.driver.session()
+
+      const writeTxResultPromise = session.writeTransaction(async transaction => {
+        const updateUserTransactionResponse = await transaction.run(
+          `
+            MATCH (user:User {id: $params.id})
+            SET user += $params
+            SET user.updatedAt = toString(datetime())
+            RETURN user
+          `,
+          { params },
+        )
+        return updateUserTransactionResponse.records.map(record => record.get('user').properties)
+      })
       try {
-        const user = await neode.find('User', args.id)
-        if (!user) return null
-        await user.update({ ...args, updatedAt: new Date().toISOString() })
-        return user.toJson()
-      } catch (e) {
-        throw new UserInputError(e.message)
+        const [user] = await writeTxResultPromise
+        return user
+      } catch (error) {
+        throw new UserInputError(error.message)
+      } finally {
+        session.close()
       }
     },
     DeleteUser: async (object, params, context, resolveInfo) => {
       const { resource } = params
       const session = context.driver.session()
-
-      let user
       try {
         if (resource && resource.length) {
-          await Promise.all(
-            resource.map(async node => {
-              await session.run(
+          await session.writeTransaction(transaction => {
+            resource.map(node => {
+              return transaction.run(
                 `
-            MATCH (resource:${node})<-[:WROTE]-(author:User {id: $userId})
-            OPTIONAL MATCH (resource)<-[:COMMENTS]-(comment:Comment)
-            SET resource.deleted = true
-            SET resource.content = 'UNAVAILABLE'
-            SET resource.contentExcerpt = 'UNAVAILABLE'
-            SET comment.deleted = true
-            RETURN author`,
+                    MATCH (resource:${node})<-[:WROTE]-(author:User {id: $userId})
+                    OPTIONAL MATCH (resource)<-[:COMMENTS]-(comment:Comment)
+                    SET resource.deleted = true
+                    SET resource.content = 'UNAVAILABLE'
+                    SET resource.contentExcerpt = 'UNAVAILABLE'
+                    SET comment.deleted = true
+                    RETURN author
+                  `,
                 {
                   userId: context.user.id,
                 },
               )
-            }),
-          )
+            })
+          })
         }
 
-        // we cannot set slug to 'UNAVAILABE' because of unique constraints
-        const transactionResult = await session.run(
-          `
-          MATCH (user:User {id: $userId})
-          SET user.deleted = true
-          SET user.name = 'UNAVAILABLE'
-          SET user.about = 'UNAVAILABLE'
-          WITH user
-          OPTIONAL MATCH (user)<-[:BELONGS_TO]-(email:EmailAddress)
-          DETACH DELETE email
-          WITH user
-          OPTIONAL MATCH (user)<-[:OWNED_BY]-(socialMedia:SocialMedia)
-          DETACH DELETE socialMedia
-          RETURN user`,
-          { userId: context.user.id },
-        )
-        user = transactionResult.records.map(r => r.get('user').properties)[0]
+        const deleteUserTxResultPromise = session.writeTransaction(async transaction => {
+          const deleteUserTransactionResponse = await transaction.run(
+            `
+              MATCH (user:User {id: $userId})
+              SET user.deleted = true
+              SET user.name = 'UNAVAILABLE'
+              SET user.about = 'UNAVAILABLE'
+              WITH user
+              OPTIONAL MATCH (user)<-[:BELONGS_TO]-(email:EmailAddress)
+              DETACH DELETE email
+              WITH user
+              OPTIONAL MATCH (user)<-[:OWNED_BY]-(socialMedia:SocialMedia)
+              DETACH DELETE socialMedia
+              RETURN user
+            `,
+            { userId: context.user.id },
+          )
+          log(deleteUserTransactionResponse)
+          return deleteUserTransactionResponse.records.map(record => record.get('user').properties)
+        })
+        const [user] = await deleteUserTxResultPromise
+        return user
       } finally {
         session.close()
       }
-      return user
     },
   },
   User: {
