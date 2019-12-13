@@ -283,6 +283,7 @@ import { profilePagePosts } from '~/graphql/PostQuery'
 import UserQuery from '~/graphql/User'
 import { Block, Unblock } from '~/graphql/settings/BlockedUsers'
 import PostMutations from '~/graphql/PostMutations'
+import UpdateQuery from '~/components/utils/UpdateQuery'
 
 const tabToFilterMapping = ({ tab, id }) => {
   return {
@@ -385,27 +386,7 @@ export default {
           first: this.pageSize,
           orderBy: 'createdAt_desc',
         },
-        updateQuery: (previousResult, { fetchMoreResult }) => {
-          if (!fetchMoreResult || fetchMoreResult.profilePagePosts.length < this.pageSize) {
-            this.hasMore = false
-            $state.complete()
-          }
-          const { profilePagePosts = [] } = previousResult
-          const result = {
-            ...previousResult,
-            profilePagePosts: [
-              ...profilePagePosts.filter(prevPost => {
-                return (
-                  fetchMoreResult.profilePagePosts.filter(newPost => newPost.id === prevPost.id)
-                    .length === 0
-                )
-              }),
-              ...fetchMoreResult.profilePagePosts,
-            ],
-          }
-          $state.loaded()
-          return result
-        },
+        updateQuery: UpdateQuery(this, { $state, pageKey: 'profilePagePosts' }),
       })
     },
     resetPostList() {
