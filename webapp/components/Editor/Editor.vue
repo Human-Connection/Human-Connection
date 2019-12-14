@@ -24,7 +24,6 @@
 import { Editor, EditorContent } from 'tiptap'
 import { History } from 'tiptap-extensions'
 import linkify from 'linkify-it'
-import stringHash from 'string-hash'
 import { replace, build } from 'xregexp/xregexp-all.js'
 
 import * as key from '../../constants/keycodes'
@@ -107,29 +106,7 @@ export default {
       return extensions
     },
   },
-  watch: {
-    value: {
-      immediate: true,
-      handler: function(content, old) {
-        const contentHash = stringHash(content)
-        if (!content || contentHash === this.lastValueHash) {
-          return
-        }
-        this.lastValueHash = contentHash
-        this.$nextTick(() => this.editor.setContent(content))
-      },
-    },
-    placeholder: {
-      immediate: true,
-      handler: function(val) {
-        if (!val || !this.editor) {
-          return
-        }
-        this.editor.extensions.options.placeholder.emptyNodeText = val
-      },
-    },
-  },
-  created() {
+  mounted() {
     this.editor = new Editor({
       content: this.value || '',
       doc: this.doc,
@@ -247,11 +224,7 @@ export default {
     },
     onUpdate(e) {
       const content = e.getHTML()
-      const contentHash = stringHash(content)
-      if (contentHash !== this.lastValueHash) {
-        this.lastValueHash = contentHash
-        this.$emit('input', content)
-      }
+      this.$emit('input', content)
     },
     toggleLinkInput(attrs, element) {
       if (!this.isLinkInputActive && attrs && element) {
