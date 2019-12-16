@@ -68,6 +68,7 @@ import MasonryGridItem from '~/components/MasonryGrid/MasonryGridItem.vue'
 import { mapGetters, mapMutations } from 'vuex'
 import { filterPosts } from '~/graphql/PostQuery.js'
 import PostMutations from '~/graphql/PostMutations'
+import UpdateQuery from '~/components/utils/UpdateQuery'
 
 export default {
   components: {
@@ -151,27 +152,7 @@ export default {
           first: this.pageSize,
           orderBy: ['pinned_asc', this.orderBy],
         },
-        updateQuery: (previousResult, { fetchMoreResult }) => {
-          if (!fetchMoreResult || fetchMoreResult.Post.length < this.pageSize) {
-            this.hasMore = false
-            $state.complete()
-          }
-
-          const { Post = [] } = previousResult
-          const result = {
-            ...previousResult,
-            Post: [
-              ...Post.filter(prevPost => {
-                return (
-                  fetchMoreResult.Post.filter(newPost => newPost.id === prevPost.id).length === 0
-                )
-              }),
-              ...fetchMoreResult.Post,
-            ],
-          }
-          $state.loaded()
-          return result
-        },
+        updateQuery: UpdateQuery(this, { $state, pageKey: 'Post' }),
       })
     },
     deletePost(deletedPost) {

@@ -76,16 +76,21 @@ export default {
     markAsRead: async (parent, args, context, resolveInfo) => {
       const { user: currentUser } = context
       const session = context.driver.session()
+      const writeTxResultPromise = session.writeTransaction(async transaction => {
+        const markNotificationAsReadTransactionResponse = await transaction.run(
+          ` 
+            MATCH (resource {id: $resourceId})-[notification:NOTIFIED {read: FALSE}]->(user:User {id:$id})
+            SET notification.read = TRUE
+            RETURN resource, notification, user
+          `,
+          { resourceId: args.id, id: currentUser.id },
+        )
+        log(markNotificationAsReadTransactionResponse)
+        return markNotificationAsReadTransactionResponse.records.map(transformReturnType)
+      })
       try {
-        const cypher = `
-        MATCH (resource {id: $resourceId})-[notification:NOTIFIED {read: FALSE}]->(user:User {id:$id})
-        SET notification.read = TRUE
-        RETURN resource, notification, user
-        `
-        const result = await session.run(cypher, { resourceId: args.id, id: currentUser.id })
-        log(result)
-        const notifications = await result.records.map(transformReturnType)
-        return notifications[0]
+        const [notifications] = await writeTxResultPromise
+        return notifications
       } finally {
         session.close()
       }

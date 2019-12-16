@@ -4,10 +4,16 @@ const isUniqueFor = (context, type) => {
   return async slug => {
     const session = context.driver.session()
     try {
-      const response = await session.run(`MATCH(p:${type} {slug: $slug }) return p.slug`, {
-        slug,
+      const existingSlug = await session.readTransaction(transaction => {
+        return transaction.run(
+          `
+            MATCH(p:${type} {slug: $slug }) 
+            RETURN p.slug
+          `,
+          { slug },
+        )
       })
-      return response.records.length === 0
+      return existingSlug.records.length === 0
     } finally {
       session.close()
     }

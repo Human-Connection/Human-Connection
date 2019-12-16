@@ -37,7 +37,7 @@
 <script>
 import axios from 'axios'
 import { mapGetters, mapMutations } from 'vuex'
-import { allowEmbedIframesMutation } from '~/graphql/User.js'
+import { updateUserMutation } from '~/graphql/User.js'
 
 export default {
   head() {
@@ -69,7 +69,7 @@ export default {
     async submit() {
       try {
         await this.$apollo.mutate({
-          mutation: allowEmbedIframesMutation(),
+          mutation: updateUserMutation(),
           variables: {
             id: this.currentUser.id,
             allowEmbedIframes: !this.disabled,

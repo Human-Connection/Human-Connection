@@ -41,39 +41,13 @@
 </template>
 
 <script>
-import gql from 'graphql-tag'
-
 import { mapGetters, mapMutations } from 'vuex'
 import { CancelToken } from 'axios'
 import UniqueSlugForm from '~/components/utils/UniqueSlugForm'
+import { updateUserMutation } from '~/graphql/User'
 
 let timeout
 const mapboxToken = process.env.MAPBOX_TOKEN
-
-/*
-const query = gql`
-  query getUser($id: ID) {
-    User(id: $id) {
-      id
-      name
-      locationName
-      about
-    }
-  }
-`
-*/
-
-const mutation = gql`
-  mutation($id: ID!, $slug: String, $name: String, $locationName: String, $about: String) {
-    UpdateUser(id: $id, slug: $slug, name: $name, locationName: $locationName, about: $about) {
-      id
-      slug
-      name
-      locationName
-      about
-    }
-  }
-`
 
 export default {
   data() {
@@ -120,7 +94,7 @@ export default {
       locationName = locationName && (locationName.label || locationName)
       try {
         await this.$apollo.mutate({
-          mutation,
+          mutation: updateUserMutation(),
           variables: {
             id: this.currentUser.id,
             name,

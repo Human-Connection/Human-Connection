@@ -116,7 +116,7 @@
     "babel-plugin-require-context-hook": "^1.0.0",
     "babel-preset-vue": "~2.0.2",
     "core-js": "~2.6.10",
-    "css-loader": "~3.3.0",
+    "css-loader": "~3.3.2",
     "eslint": "~6.7.2",
     "eslint-config-prettier": "~6.7.0",
     "eslint-config-standard": "~14.1.0",
