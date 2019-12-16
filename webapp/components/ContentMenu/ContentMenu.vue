@@ -17,7 +17,7 @@
           @click.stop.prevent="openItem(item.route, toggleMenu)"
         >
           <base-icon :name="item.route.icon" />
-          {{ item.route.name }}
+          {{ item.route.label }}
         </ds-menu-item>
       </ds-menu>
     </div>
@@ -58,17 +58,15 @@ export default {
       if (this.resourceType === 'contribution') {
         if (this.isOwner) {
           routes.push({
-            name: this.$t(`post.menu.edit`),
-            path: this.$router.resolve({
-              name: 'post-edit-id',
-              params: {
-                id: this.resource.id,
-              },
-            }).href,
+            label: this.$t(`post.menu.edit`),
+            name: 'post-edit-id',
+            params: {
+              id: this.resource.id,
+            },
             icon: 'edit',
           })
           routes.push({
-            name: this.$t(`post.menu.delete`),
+            label: this.$t(`post.menu.delete`),
             callback: () => {
               this.openModal('confirm', 'delete')
             },
@@ -79,7 +77,7 @@ export default {
         if (this.isAdmin) {
           if (!this.resource.pinnedBy) {
             routes.push({
-              name: this.$t(`post.menu.pin`),
+              label: this.$t(`post.menu.pin`),
               callback: () => {
                 this.$emit('pinPost', this.resource)
               },
@@ -87,7 +85,7 @@ export default {
             })
           } else {
             routes.push({
-              name: this.$t(`post.menu.unpin`),
+              label: this.$t(`post.menu.unpin`),
               callback: () => {
                 this.$emit('unpinPost', this.resource)
               },
@@ -99,14 +97,14 @@ export default {
 
       if (this.isOwner && this.resourceType === 'comment') {
         routes.push({
-          name: this.$t(`comment.menu.edit`),
+          label: this.$t(`comment.menu.edit`),
           callback: () => {
             this.$emit('showEditCommentMenu', true)
           },
           icon: 'edit',
         })
         routes.push({
-          name: this.$t(`comment.menu.delete`),
+          label: this.$t(`comment.menu.delete`),
           callback: () => {
             this.openModal('confirm', 'delete')
           },
@@ -116,7 +114,7 @@ export default {
 
       if (!this.isOwner) {
         routes.push({
-          name: this.$t(`report.${this.resourceType}.title`),
+          label: this.$t(`report.${this.resourceType}.title`),
           callback: () => {
             this.openModal('report')
           },
@@ -127,7 +125,7 @@ export default {
       if (!this.isOwner && this.isModerator) {
         if (!this.resource.disabled) {
           routes.push({
-            name: this.$t(`disable.${this.resourceType}.title`),
+            label: this.$t(`disable.${this.resourceType}.title`),
             callback: () => {
               this.openModal('disable')
             },
@@ -135,7 +133,7 @@ export default {
           })
         } else {
           routes.push({
-            name: this.$t(`release.${this.resourceType}.title`),
+            label: this.$t(`release.${this.resourceType}.title`),
             callback: () => {
               this.openModal('release')
             },
@@ -147,14 +145,14 @@ export default {
       if (this.resourceType === 'user') {
         if (this.isOwner) {
           routes.push({
-            name: this.$t(`settings.name`),
+            label: this.$t(`settings.name`),
             path: '/settings',
             icon: 'edit',
           })
         } else {
           if (this.resource.isBlocked) {
             routes.push({
-              name: this.$t(`settings.blocked-users.unblock`),
+              label: this.$t(`settings.blocked-users.unblock`),
               callback: () => {
                 this.$emit('unblock', this.resource)
               },
@@ -162,7 +160,7 @@ export default {
             })
           } else {
             routes.push({
-              name: this.$t(`settings.blocked-users.block`),
+              label: this.$t(`settings.blocked-users.block`),
               callback: () => {
                 this.$emit('block', this.resource)
               },
@@ -186,7 +184,7 @@ export default {
       if (route.callback) {
         route.callback()
       } else {
-        this.$router.push(route.path)
+        this.$router.push(route)
       }
       toggleMenu()
     },
