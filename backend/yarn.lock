@@ -1034,10 +1034,10 @@
     url-regex "~4.1.1"
     video-extensions "~1.1.0"
 
-"@metascraper/helpers@^5.8.7":
-  version "5.8.7"
-  resolved "https://registry.yarnpkg.com/@metascraper/helpers/-/helpers-5.8.7.tgz#b05f83f2a90001f7753c18a8b1bb978bd7c2f9d9"
-  integrity sha512-gDErMAA3d1CdkGxvAG4cDi7D2+fReZpD6lzYNJ/gsq45U3Pdz7ltsAvbp4amK92bGKYYPZtnUq85Wrr+Q+e06Q==
+"@metascraper/helpers@^5.8.10", "@metascraper/helpers@^5.8.7":
+  version "5.8.10"
+  resolved "https://registry.yarnpkg.com/@metascraper/helpers/-/helpers-5.8.10.tgz#efaae1d57afca6db1f0846852fe88d1608601f13"
+  integrity sha512-o7vrlNC+wzfArTkQcQfHKT4iHUYEQYs6hoORTWN7A1dj5v8P1wl5oOs0oAc7MNGJ3nWnex3/bq/5SUWV301Arg==
   dependencies:
     audio-extensions "0.0.0"
     chrono-node "~1.3.11"
@@ -5810,12 +5810,12 @@ merge-stream@^2.0.0:
   resolved "https://registry.yarnpkg.com/merge-stream/-/merge-stream-2.0.0.tgz#52823629a14dd00c9770fb6ad47dc6310f2c1f60"
   integrity sha512-abv/qOcuPfk3URPfDzmZU1LKmuw8kT+0nIHvKrKgFrwifol/doWcdA4ZqsWQ8ENrFKkd67Mfpo/LovbIUsbt3w==
 
-metascraper-audio@^5.8.7:
-  version "5.8.7"
-  resolved "https://registry.yarnpkg.com/metascraper-audio/-/metascraper-audio-5.8.7.tgz#ce27b1f4056c1d1cbaa2cec0e819c3704f38fff4"
-  integrity sha512-ew9KZKOIl3u0500j7qIR/ZNiVtSohuyyiIWSxJVEeeguEOwAhMpOrpYAEkvKRo5CB89F2PNBIsXJIzMC4BWFrw==
+metascraper-audio@^5.8.10:
+  version "5.8.10"
+  resolved "https://registry.yarnpkg.com/metascraper-audio/-/metascraper-audio-5.8.10.tgz#bc7bc0471ee178ab747baec4fb9bf7443078980d"
+  integrity sha512-uR4PCG7mxz7GLZ3I3x83sTCAaD/+MMTSf5rtP+shfdGJCm6h3mNmUpZm6hlBunmBx/PpDpwdI34rkl2A8SUjnQ==
   dependencies:
-    "@metascraper/helpers" "^5.8.7"
+    "@metascraper/helpers" "^5.8.10"
 
 metascraper-author@^5.8.7:
   version "5.8.7"
