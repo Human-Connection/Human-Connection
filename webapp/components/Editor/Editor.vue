@@ -129,7 +129,7 @@ export default {
       },
     },
   },
-  created() {
+  mounted() {
     this.editor = new Editor({
       content: this.value || '',
       doc: this.doc,
