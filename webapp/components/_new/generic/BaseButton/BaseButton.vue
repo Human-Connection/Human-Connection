@@ -1,13 +1,18 @@
 <template>
   <button :class="buttonClass" :disabled="loading">
-    <ds-spinner size="small" v-if="loading" />
+    <loading-spinner v-if="loading" />
     <base-icon v-if="icon" :name="icon" />
     <slot />
   </button>
 </template>
 
 <script>
+import LoadingSpinner from '~/components/_new/generic/LoadingSpinner/LoadingSpinner'
+
 export default {
+  components: {
+    LoadingSpinner,
+  },
   props: {
     circle: {
       type: Boolean,
@@ -35,6 +40,7 @@ export default {
 
       if (this.$slots.default == null) buttonClass += ' --icon-only'
       if (this.circle) buttonClass += ' --circle'
+      if (this.loading) buttonClass += ' --loading'
       if (this.primary) buttonClass += ' --primary'
       else if (this.danger) buttonClass += ' --danger'
 
@@ -51,6 +57,7 @@ export default {
   justify-content: center;
   height: 36px;
   padding: 0 12px;
+  vertical-align: bottom;
   color: $color-primary;
   background-color: $color-neutral-90;
   border: 1px solid $color-primary;
@@ -125,6 +132,21 @@ export default {
 
   &:not(.--icon-only) > .base-icon {
     margin-right: 6px;
+  }
+
+  > .loading-spinner {
+    position: absolute;
+    height: 26px;
+    color: $color-neutral-60;
+  }
+
+  &.--loading {
+    color: $color-neutral-80;
+
+    &.--primary > .loading-spinner,
+    &.--danger > .loading-spinner {
+      color: $color-neutral-100;
+    }
   }
 }
 </style>
