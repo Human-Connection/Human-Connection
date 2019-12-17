@@ -1,6 +1,6 @@
 <template>
   <button :class="buttonClass" :disabled="loading">
-    <ds-spinner v-if="loading" />
+    <ds-spinner size="small" v-if="loading" />
     <base-icon v-if="icon" :name="icon" />
     <slot />
   </button>
