@@ -7,7 +7,6 @@ import sluggify from './sluggifyMiddleware'
 import excerpt from './excerptMiddleware'
 import xss from './xssMiddleware'
 import permissions from './permissionsMiddleware'
-import user from './user/userMiddleware'
 import includedFields from './includedFieldsMiddleware'
 import orderBy from './orderByMiddleware'
 import validation from './validation/validationMiddleware'
@@ -28,7 +27,6 @@ export default schema => {
     hashtags,
     xss,
     softDelete,
-    user,
     includedFields,
     orderBy,
     email,
@@ -46,7 +44,6 @@ export default schema => {
     'hashtags',
     'xss',
     'softDelete',
-    'user',
     'includedFields',
     'orderBy',
   ]
