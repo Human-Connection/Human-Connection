@@ -180,7 +180,6 @@ export const updateUserMutation = () => {
       $about: String
       $allowEmbedIframes: Boolean
       $showShoutsPublicly: Boolean
-      $locale: String
       $termsAndConditionsAgreedVersion: String
       $avatarUpload: Upload
     ) {
@@ -192,7 +191,6 @@ export const updateUserMutation = () => {
         about: $about
         allowEmbedIframes: $allowEmbedIframes
         showShoutsPublicly: $showShoutsPublicly
-        locale: $locale
         termsAndConditionsAgreedVersion: $termsAndConditionsAgreedVersion
         avatarUpload: $avatarUpload
       ) {
