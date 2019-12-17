@@ -38,6 +38,12 @@ const createServer = options => {
     schema: middleware(schema),
     debug: !!CONFIG.DEBUG,
     tracing: !!CONFIG.DEBUG,
+    formatError: error => {
+      if (error.message === 'ERROR_VALIDATION') {
+        return new Error(error.originalError.details.map(d => d.message))
+      }
+      return error
+    },
   }
   const server = new ApolloServer(Object.assign({}, defaults, options))
 
