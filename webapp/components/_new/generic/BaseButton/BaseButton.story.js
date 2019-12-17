@@ -21,9 +21,21 @@ storiesOf('Generic/BaseButton', module)
     template: `
       <div>
         <base-button icon="edit">With Text</base-button>
-        <base-button icon="trash" />
+        <base-button icon="bullhorn" />
         <base-button icon="trash" disabled />
         <base-button icon="trash" loading />
+      </div>
+    `,
+  }))
+
+  .add('circle', () => ({
+    components: { BaseButton },
+    template: `
+      <div>
+        <base-button circle icon="eye" />
+        <base-button circle>EN</base-button>
+        <base-button circle disabled icon="eye-slash" />
+        <base-button circle loading icon="eye-slash" />
       </div>
     `,
   }))
@@ -46,18 +58,6 @@ storiesOf('Generic/BaseButton', module)
         <base-button danger>Danger</base-button>
         <base-button danger disabled>Disabled</base-button>
         <base-button danger loading>Loading</base-button>
-      </div>
-    `,
-  }))
-
-  .add('circle', () => ({
-    components: { BaseButton },
-    template: `
-      <div>
-        <base-button circle icon="eye" />
-        <base-button circle>EN</base-button>
-        <base-button circle disabled icon="eye-slash" />
-        <base-button circle loading icon="eye-slash" />
       </div>
     `,
   }))
