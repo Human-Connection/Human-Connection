@@ -2,33 +2,62 @@ import { storiesOf } from '@storybook/vue'
 import helpers from '~/storybook/helpers'
 import BaseButton from './BaseButton.vue'
 
-storiesOf('BaseButton', module)
+storiesOf('Generic/BaseButton', module)
   .addDecorator(helpers.layout)
 
-  .add('Default', () => ({
-    components: { BaseButton },
-    template: '<base-button>Click me</base-button>',
-  }))
-
-  .add('With Icon', () => ({
-    components: { BaseButton },
-    template: '<base-button icon="edit">With Icon</base-button>',
-  }))
-
-  .add('Icon Only', () => ({
-    components: { BaseButton },
-    template: '<base-button icon="trash" />',
-  }))
-
-  .add('Styles and States', () => ({
+  .add('default', () => ({
     components: { BaseButton },
     template: `
-      <span>
-        <base-button>Default</base-button>
-        <base-button primary>Primary</base-button>
-        <base-button danger>Danger</base-button>
+      <div>
+        <base-button>Click me</base-button>
         <base-button disabled>Disabled</base-button>
         <base-button loading>Loading</base-button>
-      </span>
+      </div>
+    `,
+  }))
+
+  .add('icon', () => ({
+    components: { BaseButton },
+    template: `
+      <div>
+        <base-button icon="edit">With Text</base-button>
+        <base-button icon="trash" />
+        <base-button icon="trash" disabled />
+        <base-button icon="trash" loading />
+      </div>
+    `,
+  }))
+
+  .add('primary', () => ({
+    components: { BaseButton },
+    template: `
+      <div>
+        <base-button primary>Primary</base-button>
+        <base-button primary disabled>Disabled</base-button>
+        <base-button primary loading>Loading</base-button>
+      </div>
+    `,
+  }))
+
+  .add('danger', () => ({
+    components: { BaseButton },
+    template: `
+      <div>
+        <base-button danger>Danger</base-button>
+        <base-button danger disabled>Disabled</base-button>
+        <base-button danger loading>Loading</base-button>
+      </div>
+    `,
+  }))
+
+  .add('circle', () => ({
+    components: { BaseButton },
+    template: `
+      <div>
+        <base-button circle icon="flag" />
+        <base-button circle>EN</base-button>
+        <base-button circle disabled icon="eye-slash" />
+        <base-button circle loading icon="eye-slash" />
+      </div>
     `,
   }))
