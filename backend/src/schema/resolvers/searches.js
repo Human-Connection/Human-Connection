@@ -10,8 +10,8 @@ export default {
       const { query, limit } = args
       const filter = {}
       const { id: thisUserId } = context.user
-      // const postQuery = query.replace(/\s/g, '~ ') + '~'
-      // const userQuery = query.replace(/\s/g, '~ ') + '~'
+      // see http://lucene.apache.org/core/8_3_1/queryparser/org/apache/lucene/queryparser/classic/package-summary.html#package.description
+      const myQuery = query.replace(/\s/g, '* ') + '*'
       const postCypher = `
       CALL db.index.fulltext.queryNodes('post_fulltext_search', $query)
       YIELD node as resource, score
@@ -25,13 +25,22 @@ export default {
       LIMIT $limit
       `
       const session = context.driver.session()
-      const postResults = await session.run(postCypher, {
-        query,
-        filter,
-        limit,
-        thisUserId,
+      let postResults, userResults
+      const readPostTxResultPromise = session.readTransaction(async transaction => {
+        const postTransactionResponse = transaction.run(postCypher, {
+          query: myQuery,
+          filter,
+          limit,
+          thisUserId,
+        })
+        return postTransactionResponse
       })
-      session.close()
+      try {
+        postResults = await readPostTxResultPromise
+      } finally {
+        session.close()
+      }
+
       const userCypher = `
       CALL db.index.fulltext.queryNodes('user_fulltext_search', $query)
       YIELD node as resource, score
@@ -42,13 +51,20 @@ export default {
       RETURN resource, labels(resource)[0] AS type
       LIMIT $limit
       `
-      const userResults = await session.run(userCypher, {
-        query,
-        filter,
-        limit,
-        thisUserId,
+      const readUserTxResultPromise = session.readTransaction(async transaction => {
+        const userTransactionResponse = transaction.run(userCypher, {
+          query: myQuery,
+          filter,
+          limit,
+          thisUserId,
+        })
+        return userTransactionResponse
       })
-      session.close()
+      try {
+        userResults = await readUserTxResultPromise
+      } finally {
+        session.close()
+      }
       let result = [...postResults.records, ...userResults.records]
       result = result.map(transformReturnType)
       return result
