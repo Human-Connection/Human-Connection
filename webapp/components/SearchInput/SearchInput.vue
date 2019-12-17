@@ -38,51 +38,19 @@
         >
           <template slot="option" slot-scope="{ option }">
             <ds-flex v-if="isFirstOfType(option)" class="search-option-heading">
-              <ds-flex-item>
-                <ds-heading soft size="h5">
-                  {{ $t(`search.heading.${option.__typename}`) }}
-                </ds-heading>
-              </ds-flex-item>
+              <search-heading :resource-type="option.__typename" />
             </ds-flex>
-            <ds-flex v-if="option.__typename === 'User'">
-              <ds-flex-item class="search-option" :class="{ 'extra-space': isFirstOfType(option) }">
-                <ds-avatar class="avatar" name="option.name" image="option.avatar" />
-                <div>
-                  <ds-text class="userinfo">
-                    <b class="username">{{ option.name | truncate(70) }}</b>
-                  </ds-text>
-                </div>
-                <ds-text align="left" size="small" color="soft">
-                  @{{ option.slug | truncate(70) }}
-                </ds-text>
-              </ds-flex-item>
+            <ds-flex
+              v-if="option.__typename === 'User'"
+              :class="{ 'extra-space': isFirstOfType(option) }"
+            >
+              <search-user :option="option" />
             </ds-flex>
-            <ds-flex v-if="option.__typename === 'Post'">
-		<ds-flex-item class="search-option-label" :class="{'extra-space': isFirstOfType(option)}">
-                <ds-text>{{ option.title | truncate(70) }}</ds-text>
-              </ds-flex-item>
-              <ds-flex-item class="search-option-meta" width="280px">
-                <ds-flex>
-                  <ds-flex-item>
-                    <ds-text size="small" color="softer" class="search-meta">
-                      <span style="text-align: right;">
-                        <b>{{ option.commentsCount }}</b>
-                        <base-icon name="comments" />
-                      </span>
-                      <span style="width: 36px; display: inline-block; text-align: right;">
-                        <b>{{ option.shoutedCount }}</b>
-                        <base-icon name="bullhorn" />
-                      </span>
-                    </ds-text>
-                  </ds-flex-item>
-                  <ds-flex-item>
-                    <ds-text size="small" color="softer" align="right">
-                      {{ option.author.name | truncate(32) }} -
-                      {{ option.createdAt | dateTime('dd.MM.yyyy') }}
-                    </ds-text>
-                  </ds-flex-item>
-                </ds-flex>
-              </ds-flex-item>
+            <ds-flex
+              v-if="option.__typename === 'Post'"
+              :class="{ 'extra-space': isFirstOfType(option) }"
+            >
+              <search-post :option="option" />
             </ds-flex>
           </template>
         </ds-select>
@@ -94,8 +62,16 @@
 <script>
 import { isEmpty } from 'lodash'
 import { findResourcesQuery } from '~/graphql/Search.js'
+import SearchHeading from './SearchHeading.vue'
+import SearchPost from './SearchPost.vue'
+import SearchUser from './SearchUser.vue'
 
 export default {
+  components: {
+    SearchHeading,
+    SearchPost,
+    SearchUser,
+  },
   name: 'SearchInput',
   props: {
     id: {
@@ -297,35 +273,6 @@ export default {
     background-color: white;
     margin: -8px;
     padding: 8px;
-  }
-  .avatar {
-    display: inline-block;
-    float: left;
-    margin-right: 4px;
-    height: 100%;
-    vertical-align: middle;
-  }
-  .userinfo {
-    display: flex;
-    align-items: center;
-    > .ds-text {
-      display: flex;
-      align-items: center;
-      margin-left: $space-xx-small;
-    }
-  }
-  .user {
-    white-space: nowrap;
-    position: relative;
-    display: flex;
-    align-items: center;
-    &:hover,
-    &.active {
-      z-index: 999;
-    }
-  }
-  .username {
-    color: #17b53f;
   }
   .extra-space {
     margin-top: 8px;
