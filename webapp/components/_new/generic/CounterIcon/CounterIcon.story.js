@@ -4,16 +4,17 @@ import CounterIcon from './CounterIcon.vue'
 
 storiesOf('CounterIcon', module)
   .addDecorator(helpers.layout)
-  .add('flag icon with button in slot position', () => ({
+
+  .add('default', () => ({
     components: { CounterIcon },
-    data() {
-      return { icon: 'flag', count: 3 }
-    },
     template: `
-      <counter-icon icon="pizza" :count="count">
-        <ds-button ghost primary>
-          Report Details
-        </ds-button>
-      </counter-icon>
+      <counter-icon icon="flag" :count="3" />
+    `,
+  }))
+
+  .add('high count', () => ({
+    components: { CounterIcon },
+    template: `
+      <counter-icon icon="bell" :count="150" />
     `,
   }))
