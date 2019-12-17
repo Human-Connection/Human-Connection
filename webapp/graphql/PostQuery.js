@@ -1,9 +1,10 @@
 import gql from 'graphql-tag'
-import { postFragment, commentFragment, postCountsFragment } from './Fragments'
+import { userFragment, postFragment, commentFragment, postCountsFragment } from './Fragments'
 
 export default i18n => {
   const lang = i18n.locale().toUpperCase()
   return gql`
+    ${userFragment(lang)}
     ${postFragment(lang)}
     ${postCountsFragment}
     ${commentFragment(lang)}
@@ -23,6 +24,7 @@ export default i18n => {
 export const filterPosts = i18n => {
   const lang = i18n.locale().toUpperCase()
   return gql`
+    ${userFragment(lang)}
     ${postFragment(lang)}
     ${postCountsFragment}
 
@@ -38,6 +40,7 @@ export const filterPosts = i18n => {
 export const profilePagePosts = i18n => {
   const lang = i18n.locale().toUpperCase()
   return gql`
+    ${userFragment(lang)}
     ${postFragment(lang)}
     ${postCountsFragment}
 
@@ -66,6 +69,7 @@ export const PostsEmotionsByCurrentUser = () => {
 export const relatedContributions = i18n => {
   const lang = i18n.locale().toUpperCase()
   return gql`
+    ${userFragment(lang)}
     ${postFragment(lang)}
     ${postCountsFragment}
 

@@ -21,15 +21,7 @@
               :class="{ 'hide-mobile-menu': !toggleMobileMenu }"
             >
               <div id="nav-search-box" v-if="isLoggedIn">
-                <search-input
-                  id="nav-search"
-                  :delay="300"
-                  :pending="quickSearchPending"
-                  :results="quickSearchResults"
-                  @clear="quickSearchClear"
-                  @search="value => quickSearch({ value })"
-                  @select="goToResource"
-                />
+                <search-input id="nav-search" :delay="300" @select="goToResource" />
               </div>
             </ds-flex-item>
             <ds-flex-item
@@ -90,7 +82,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 import LocaleSwitch from '~/components/LocaleSwitch/LocaleSwitch'
 import SearchInput from '~/components/SearchInput/SearchInput.vue'
 import Modal from '~/components/Modal'
@@ -122,8 +114,6 @@ export default {
   computed: {
     ...mapGetters({
       isLoggedIn: 'auth/isLoggedIn',
-      quickSearchResults: 'search/quickResults',
-      quickSearchPending: 'search/quickPending',
     }),
     showFilterPostsDropdown() {
       const [firstRoute] = this.$route.matched
@@ -136,10 +126,6 @@ export default {
     },
   },
   methods: {
-    ...mapActions({
-      quickSearchClear: 'search/quickClear',
-      quickSearch: 'search/quickSearch',
-    }),
     goToResource(item) {
       this.$nextTick(() => {
         switch (item.__typename) {

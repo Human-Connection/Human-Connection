@@ -113,7 +113,7 @@
             }
         },
         "deleteUserAccount": {
-            "name": "Borrar datos",
+            "name": "Eliminar cuenta de usuario",
             "contributionsCount": "Eliminar mis {count} contribuciones",
             "commentedCount": "Eliminar mis {count} comentarios",
             "accountDescription": "Tenga en cuenta que su contribución y sus comentarios son importantes para nuestra comunidad. Si aún decide borrarlos, debe marcarlos a continuación.",

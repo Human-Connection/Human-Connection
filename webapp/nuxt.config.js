@@ -277,6 +277,26 @@ export default {
           },
         ],
       })
+      const tagAttributesForTesting = ['data-test', ':data-test', 'v-bind:data-test']
+      ctx.loaders.vue.compilerOptions = {
+        modules: [
+          {
+            preTransformNode(abstractSyntaxTreeElement) {
+              if (!ctx.isDev) {
+                const { attrsMap, attrsList } = abstractSyntaxTreeElement
+                tagAttributesForTesting.forEach(attribute => {
+                  if (attrsMap[attribute]) {
+                    delete attrsMap[attribute]
+                    const index = attrsList.findIndex(attr => attr.name === attribute)
+                    attrsList.splice(index, 1)
+                  }
+                })
+              }
+              return abstractSyntaxTreeElement
+            },
+          },
+        ],
+      }
     },
   },
 }

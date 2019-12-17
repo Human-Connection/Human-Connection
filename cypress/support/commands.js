@@ -18,8 +18,8 @@ import helpers from "./helpers";
 import users from "../fixtures/users.json";
 import { GraphQLClient, request } from 'graphql-request'
 import { gql } from '../../backend/src/helpers/jest'
+import config from '../../backend/src/config'
 
-const backendHost = Cypress.env('BACKEND_HOST')
 const switchLang = name => {
   cy.get(".locale-menu").click();
   cy.contains(".locale-menu-popover a", name).click();
@@ -31,7 +31,7 @@ const authenticatedHeaders = async (variables) => {
       login(email: $email, password: $password)
     }
   `
-  const response = await request(backendHost, mutation, variables)
+  const response = await request(config.GRAPHQL_URI, mutation, variables)
   return { authorization: `Bearer ${response.login}` }
 }
 
@@ -100,8 +100,7 @@ Cypress.Commands.add(
   'authenticateAs',
   async ({email, password}) => {
     const headers = await authenticatedHeaders({ email, password })
-    console.log(headers)
-    return new GraphQLClient(backendHost, { headers })
+    return new GraphQLClient(config.GRAPHQL_URI, { headers })
   }
 )
 

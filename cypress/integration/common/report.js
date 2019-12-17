@@ -1,5 +1,6 @@
 import { Given, When, Then } from 'cypress-cucumber-preprocessor/steps'
 import { VERSION } from '../../constants/terms-and-conditions-version.js'
+import { gql } from '../../../backend/src/helpers/jest'
 
 /* global cy  */
 
@@ -128,7 +129,7 @@ Given('somebody reported the following posts:', table => {
     cy.factory()
       .create('User', submitter)
       .authenticateAs(submitter)
-      .mutate(`mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
+      .mutate(gql`mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
         fileReport(resourceId: $resourceId, reasonCategory: $reasonCategory, reasonDescription: $reasonDescription) {
           id
         }
