@@ -9,6 +9,10 @@
 <script>
 export default {
   props: {
+    circle: {
+      type: Boolean,
+      default: false,
+    },
     icon: {
       type: String,
     },
@@ -30,6 +34,7 @@ export default {
       let buttonClass = 'base-button'
 
       if (this.$slots.default == null) buttonClass += ' --icon-only'
+      if (this.circle) buttonClass += ' --circle'
       if (this.primary) buttonClass += ' --primary'
       else if (this.danger) buttonClass += ' --danger'
 
@@ -43,18 +48,20 @@ export default {
 .base-button {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   height: 36px;
   padding: 0 12px;
   color: $color-primary;
   background-color: $color-neutral-90;
   border: 1px solid $color-primary;
   border-radius: 6px;
+  overflow: hidden;
   font-weight: $font-weight-bold;
   cursor: pointer;
+  transition: background-color .1s;
 
   &:focus {
     outline: 1px dashed $color-primary;
-    outline-offset: 2px;
   }
 
   &:hover {
@@ -64,7 +71,8 @@ export default {
 
   &:active {
     color: $color-neutral-100;
-    background-color: $color-primary-active;
+    border-color: $color-primary-dark;
+    background-color: $color-primary-dark;
   }
 
   &:disabled {
@@ -80,7 +88,15 @@ export default {
     background-color: $color-primary;
 
     &:hover {
-      background-color: $color-primary-active;
+      background-color: $color-primary-light;
+    }
+
+    &:active {
+      background-color: $color-primary-dark;
+    }
+
+    &:disabled {
+      background-color: $color-neutral-60;
     }
   }
 
@@ -90,8 +106,21 @@ export default {
     background-color: $color-danger;
 
     &:hover {
-      background-color: $color-danger-active;
+      background-color: $color-danger-light;
     }
+
+    &:active {
+      background-color: $color-danger-dark;
+    }
+
+    &:disabled {
+      background-color: $color-neutral-60;
+    }
+  }
+
+  &.--circle {
+    width: 36px;
+    border-radius: 50%;
   }
 
   &:not(.--icon-only) > .base-icon {

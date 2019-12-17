@@ -54,7 +54,7 @@ storiesOf('Generic/BaseButton', module)
     components: { BaseButton },
     template: `
       <div>
-        <base-button circle icon="flag" />
+        <base-button circle icon="eye" />
         <base-button circle>EN</base-button>
         <base-button circle disabled icon="eye-slash" />
         <base-button circle loading icon="eye-slash" />
