@@ -5906,12 +5906,12 @@ metascraper-url@^5.8.7:
   dependencies:
     "@metascraper/helpers" "^5.8.7"
 
-metascraper-video@^5.8.9:
-  version "5.8.9"
-  resolved "https://registry.yarnpkg.com/metascraper-video/-/metascraper-video-5.8.9.tgz#23c0fe71fae5088bc8e11bfa537eff80658aa6d9"
-  integrity sha512-xaimkGz1Txsd9qHUN2U5HyFMP8tkrb5LuW8bCo+0kdTu5c00HGurvs0/BpWrTW/CzUQBNl/uEybeDXm8J++03g==
+metascraper-video@^5.8.10:
+  version "5.8.10"
+  resolved "https://registry.yarnpkg.com/metascraper-video/-/metascraper-video-5.8.10.tgz#c43bdc3d4dc7ff97b94d45e0050fb50091da27be"
+  integrity sha512-ofO7OLt73iMZM6IkA3iHtD1EzbEeiTYJK/xKBp+Awyl/dLUWKfsFjOAjkz9XDzLANRT+7+rwzqQmc+a2/rBVVg==
   dependencies:
-    "@metascraper/helpers" "^5.8.7"
+    "@metascraper/helpers" "^5.8.10"
     lodash "~4.17.15"
 
 metascraper-youtube@^5.8.9:
