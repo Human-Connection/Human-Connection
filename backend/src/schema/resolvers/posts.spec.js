@@ -383,7 +383,10 @@ describe('UpdatePost', () => {
     })
 
     it('updates a post', async () => {
-      const expected = { data: { UpdatePost: { id: 'p9876', content: 'New content' } } }
+      const expected = {
+        data: { UpdatePost: { id: 'p9876', content: 'New content' } },
+        errors: undefined,
+      }
       await expect(mutate({ mutation: updatePostMutation, variables })).resolves.toMatchObject(
         expected,
       )
@@ -394,6 +397,7 @@ describe('UpdatePost', () => {
         data: {
           UpdatePost: { id: 'p9876', content: 'New content', createdAt: expect.any(String) },
         },
+        errors: undefined,
       }
       await expect(mutate({ mutation: updatePostMutation, variables })).resolves.toMatchObject(
         expected,
@@ -421,6 +425,7 @@ describe('UpdatePost', () => {
               categories: expect.arrayContaining([{ id: 'cat9' }, { id: 'cat4' }, { id: 'cat15' }]),
             },
           },
+          errors: undefined,
         }
         await expect(mutate({ mutation: updatePostMutation, variables })).resolves.toMatchObject(
           expected,
@@ -441,6 +446,7 @@ describe('UpdatePost', () => {
               categories: expect.arrayContaining([{ id: 'cat27' }]),
             },
           },
+          errors: undefined,
         }
         await expect(mutate({ mutation: updatePostMutation, variables })).resolves.toMatchObject(
           expected,
@@ -722,6 +728,7 @@ describe('UpdatePost', () => {
                 },
               ],
             },
+            errors: undefined,
           }
           variables = { orderBy: ['pinned_desc', 'createdAt_desc'] }
           await expect(query({ query: postOrderingQuery, variables })).resolves.toMatchObject(

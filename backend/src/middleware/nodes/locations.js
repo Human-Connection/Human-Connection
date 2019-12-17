@@ -38,7 +38,7 @@ const createLocation = async (session, mapboxData) => {
     lng: mapboxData.center && mapboxData.center.length ? mapboxData.center[1] : null,
   }
 
-  let query =
+  let mutation =
     'MERGE (l:Location {id: $id}) ' +
     'SET l.name = $nameEN, ' +
     'l.nameEN = $nameEN, ' +
@@ -53,19 +53,23 @@ const createLocation = async (session, mapboxData) => {
     'l.type = $type'
 
   if (data.lat && data.lng) {
-    query += ', l.lat = $lat, l.lng = $lng'
+    mutation += ', l.lat = $lat, l.lng = $lng'
   }
-  query += ' RETURN l.id'
+  mutation += ' RETURN l.id'
 
-  await session.run(query, data)
-  session.close()
+  try {
+    await session.writeTransaction(transaction => {
+      return transaction.run(mutation, data)
+    })
+  } finally {
+    session.close()
+  }
 }
 
 const createOrUpdateLocations = async (userId, locationName, driver) => {
   if (isEmpty(locationName)) {
     return
   }
-
   const res = await fetch(
     `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
       locationName,
@@ -106,33 +110,44 @@ const createOrUpdateLocations = async (userId, locationName, driver) => {
   if (data.context) {
     await asyncForEach(data.context, async ctx => {
       await createLocation(session, ctx)
-
-      await session.run(
-        'MATCH (parent:Location {id: $parentId}), (child:Location {id: $childId}) ' +
-          'MERGE (child)<-[:IS_IN]-(parent) ' +
-          'RETURN child.id, parent.id',
-        {
-          parentId: parent.id,
-          childId: ctx.id,
-        },
-      )
-
-      parent = ctx
+      try {
+        await session.writeTransaction(transaction => {
+          return transaction.run(
+            `
+              MATCH (parent:Location {id: $parentId}), (child:Location {id: $childId})
+              MERGE (child)<-[:IS_IN]-(parent)
+              RETURN child.id, parent.id
+            `,
+            {
+              parentId: parent.id,
+              childId: ctx.id,
+            },
+          )
+        })
+        parent = ctx
+      } finally {
+        session.close()
+      }
     })
   }
-  // delete all current locations from user
-  await session.run('MATCH (u:User {id: $userId})-[r:IS_IN]->(l:Location) DETACH DELETE r', {
-    userId: userId,
-  })
-  // connect user with location
-  await session.run(
-    'MATCH (u:User {id: $userId}), (l:Location {id: $locationId}) MERGE (u)-[:IS_IN]->(l) RETURN l.id, u.id',
-    {
-      userId: userId,
-      locationId: data.id,
-    },
-  )
-  session.close()
+  // delete all current locations from user and add new location
+  try {
+    await session.writeTransaction(transaction => {
+      return transaction.run(
+        `
+          MATCH (user:User {id: $userId})-[relationship:IS_IN]->(location:Location)
+          DETACH DELETE relationship
+          WITH user
+          MATCH (location:Location {id: $locationId}) 
+          MERGE (user)-[:IS_IN]->(location) 
+          RETURN location.id, user.id
+        `,
+        { userId: userId, locationId: data.id },
+      )
+    })
+  } finally {
+    session.close()
+  }
 }
 
 export default createOrUpdateLocations

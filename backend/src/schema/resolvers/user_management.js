@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs'
 import { AuthenticationError } from 'apollo-server'
 import { getNeode } from '../../bootstrap/neo4j'
 import normalizeEmail from './helpers/normalizeEmail'
+import log from './helpers/databaseLogger'
 
 const neode = getNeode()
 
@@ -25,17 +26,18 @@ export default {
       email = normalizeEmail(email)
       const session = driver.session()
       try {
-        const result = await session.run(
-          `
-        MATCH (user:User {deleted: false})-[:PRIMARY_EMAIL]->(e:EmailAddress {email: $userEmail})
-        RETURN user {.id, .slug, .name, .avatar, .encryptedPassword, .role, .disabled, email:e.email} as user LIMIT 1
-      `,
-          { userEmail: email },
-        )
-        const [currentUser] = await result.records.map(record => {
-          return record.get('user')
+        const loginReadTxResultPromise = session.readTransaction(async transaction => {
+          const loginTransactionResponse = await transaction.run(
+            `
+              MATCH (user:User {deleted: false})-[:PRIMARY_EMAIL]->(e:EmailAddress {email: $userEmail})
+              RETURN user {.id, .slug, .name, .avatar, .encryptedPassword, .role, .disabled, email:e.email} as user LIMIT 1
+            `,
+            { userEmail: email },
+          )
+          log(loginTransactionResponse)
+          return loginTransactionResponse.records.map(record => record.get('user'))
         })
-
+        const [currentUser] = await loginReadTxResultPromise
         if (
           currentUser &&
           (await bcrypt.compareSync(password, currentUser.encryptedPassword)) &&

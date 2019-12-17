@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 ROOT_DIR=$(dirname "$0")/..
-DOCKER_CLI_EXPERIMENTAL=enabled
 # BUILD_COMMIT=${TRAVIS_COMMIT:-$(git rev-parse HEAD)}
 
 IFS='.' read -r major minor patch < $ROOT_DIR/VERSION
@@ -24,7 +23,7 @@ do
   for tag in "${tags[@]}"
   do
     TARGET="humanconnection/${app}:${tag}"
-    if docker manifest inspect $TARGET >/dev/null; then
+    if DOCKER_CLI_EXPERIMENTAL=enabled docker manifest inspect $TARGET >/dev/null; then
       echo "docker image ${TARGET} already present, skipping ..."
     else
       echo -e "docker tag $SOURCE $TARGET\ndocker push $TARGET"

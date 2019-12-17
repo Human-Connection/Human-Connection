@@ -4,7 +4,7 @@ const COMMENT_MIN_LENGTH = 1
 const NO_POST_ERR_MESSAGE = 'Comment cannot be created without a post!'
 const NO_CATEGORIES_ERR_MESSAGE =
   'You cannot save a post without at least one category or more than three'
-
+const USERNAME_MIN_LENGTH = 3
 const validateCreateComment = async (resolve, root, args, context, info) => {
   const content = args.content.replace(/<(?:.|\n)*?>/gm, '').trim()
   const { postId } = args
@@ -14,14 +14,15 @@ const validateCreateComment = async (resolve, root, args, context, info) => {
   }
   const session = context.driver.session()
   try {
-    const postQueryRes = await session.run(
-      `
-    MATCH (post:Post {id: $postId})
-    RETURN post`,
-      {
-        postId,
-      },
-    )
+    const postQueryRes = await session.readTransaction(transaction => {
+      return transaction.run(
+        `
+          MATCH (post:Post {id: $postId})
+          RETURN post
+        `,
+        { postId },
+      )
+    })
     const [post] = postQueryRes.records.map(record => {
       return record.get('post')
     })
@@ -72,8 +73,8 @@ const validateReview = async (resolve, root, args, context, info) => {
   const { user, driver } = context
   if (resourceId === user.id) throw new Error('You cannot review yourself!')
   const session = driver.session()
-  const reportReadTxPromise = session.writeTransaction(async txc => {
-    const validateReviewTransactionResponse = await txc.run(
+  const reportReadTxPromise = session.readTransaction(async transaction => {
+    const validateReviewTransactionResponse = await transaction.run(
       `
         MATCH (resource {id: $resourceId})
         WHERE resource:User OR resource:Post OR resource:Comment
@@ -115,12 +116,31 @@ const validateReview = async (resolve, root, args, context, info) => {
   return resolve(root, args, context, info)
 }
 
+export const validateNotifyUsers = async (label, reason) => {
+  const reasonsAllowed = ['mentioned_in_post', 'mentioned_in_comment', 'commented_on_post']
+  if (!reasonsAllowed.includes(reason)) throw new Error('Notification reason is not allowed!')
+  if (
+    (label === 'Post' && reason !== 'mentioned_in_post') ||
+    (label === 'Comment' && !['mentioned_in_comment', 'commented_on_post'].includes(reason))
+  ) {
+    throw new Error('Notification does not fit the reason!')
+  }
+}
+
+const validateUpdateUser = async (resolve, root, params, context, info) => {
+  const { name } = params
+  if (typeof name === 'string' && name.trim().length < USERNAME_MIN_LENGTH)
+    throw new UserInputError(`Username must be at least ${USERNAME_MIN_LENGTH} character long!`)
+  return resolve(root, params, context, info)
+}
+
 export default {
   Mutation: {
     CreateComment: validateCreateComment,
     UpdateComment: validateUpdateComment,
     CreatePost: validatePost,
     UpdatePost: validateUpdatePost,
+    UpdateUser: validateUpdateUser,
     fileReport: validateReport,
     review: validateReview,
   },

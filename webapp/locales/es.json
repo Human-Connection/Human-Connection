@@ -113,7 +113,7 @@
             }
         },
         "deleteUserAccount": {
-            "name": "Borrar datos",
+            "name": "Eliminar cuenta de usuario",
             "contributionsCount": "Eliminar mis {count} contribuciones",
             "commentedCount": "Eliminar mis {count} comentarios",
             "accountDescription": "Tenga en cuenta que su contribución y sus comentarios son importantes para nuestra comunidad. Si aún decide borrarlos, debe marcarlos a continuación.",
@@ -321,7 +321,63 @@
             "disabledBy": "desactivado por",
             "reasonCategory": "Categoría",
             "reasonDescription": "Descripción",
-            "createdAt": "Fecha"
+            "status": "Estado actual",
+            "content": "Contenido",
+            "author": "Autor",
+            "decision": "Decisión",
+            "enabled": "Habilitado",
+            "disabled": "Deshabilitado",
+            "decided": "Decidido",
+            "noDecision": "¡No hay decisión!",
+            "decideButton": "Confirmar",
+            "DecisionSuccess": "Decidido con éxito!",
+            "enabledBy": "Habilitado por",
+            "previousDecision": "Decisión previa:",
+            "enabledAt": "Habilitado el",
+            "disabledAt": "Deshabilitado el",
+            "numberOfUsers": "{count} usuarios",
+            "filterLabel": {
+                "all": "Todos",
+                "unreviewed": "Sin revisar",
+                "reviewed": "Revisado",
+                "closed": "Cerrado"
+            },
+            "reportedOn": "Fecha",
+            "moreDetails": "Ver Detalles",
+            "decideModal": {
+                "submit": "Confirmar decisión",
+                "cancel": "Cancelar",
+                "User": {
+                    "disable": {
+                        "title": "Finalmente Deshabilitar Usuario",
+                        "message": "¿Realmente quiere que el usuario \"<b>{nombre}<\/b>\" permanezca <b>desactivado<\/b>?"
+                    },
+                    "enable": {
+                        "title": "Finalmente Habilitar Usuario",
+                        "message": "¿Realmente quiere que el usuario \"<b>{nombre}<\/b>\" permanezca <b>habilitado<\/b>?"
+                    }
+                },
+                "Post": {
+                    "disable": {
+                        "title": "Finalmente Desactivar Contribución",
+                        "message": "¿Realmente quiere que la entrada \"<b>{nombre}<\/b>\" permanezca <b>desactivada<\/b>?"
+                    },
+                    "enable": {
+                        "title": "Finalmente Habilitar Contribución",
+                        "message": "¿Realmente quiere que la contribución \"<b>{nombre}<\/b>\" permanezca <b>activada<\/b>?"
+                    }
+                },
+                "Comment": {
+                    "disable": {
+                        "title": "Desactivar finalmente Comentario",
+                        "message": "¿Realmente quiere que el comentario \"<b>{nombre}<\/b>\" permanezca <b>desactivado<\/b>?"
+                    },
+                    "enable": {
+                        "title": "Finalmente Habilitar Comentario",
+                        "message": "¿Realmente quiere que el comentario \"<b>{nombre}<\/b>\" permanezca <b>habilitado<\/b>?"
+                    }
+                }
+            }
         }
     },
     "disable": {
@@ -501,7 +557,9 @@
                         "invalid-invitation-token": "Parece que el código de invitación ya ha sido canjeado. Cada código sólo se puede utilizar una vez."
                     },
                     "submit": "Crear una cuenta",
-                    "success": "Se ha enviado un correo electrónico con un enlace de confirmación para el registro a <b>{email}<\/b>."
+                    "success": "Se ha enviado un correo electrónico con un enlace de confirmación para el registro a <b>{email}<\/b>.",
+                    "no-commercial": "No tengo intensiones comerciales y no represento una empresa u organización comercial.",
+                    "no-political": "No estoy en la red en nombre de un partido o una organización política."
                 }
             },
             "create-user-account": {
@@ -742,6 +800,10 @@
         "addition": {
             "title": "Además, regularmente celebramos eventos donde también puede dar impresiones y hacer preguntas. Puede encontrar un resumen actualizado aquí:",
             "description": "<a href=\"https:\/\/human-connection.org\/events\/\" target=\"_blank\" > https:\/\/human-connection.org\/events\/ <\/a>"
+        },
+        "no-commercial-use": {
+            "title": "Sin uso comercial",
+            "description": "El uso de la red Human Connection no está permitido para fines comerciales. Esto incluye, pero no se limita a, publicitar productos con intención comercial, publicar enlaces de afiliados, solicitar donaciones directamente o brindar apoyo financiero para fines que no se reconocen como caritativos para fines fiscales."
         }
     },
     "donations": {

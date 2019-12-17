@@ -21,7 +21,7 @@
 </template>
 <script>
 import vueDropzone from 'nuxt-dropzone'
-import gql from 'graphql-tag'
+import { updateUserMutation } from '~/graphql/User.js'
 
 export default {
   components: {
@@ -62,14 +62,7 @@ export default {
       const avatarUpload = file[0]
       this.$apollo
         .mutate({
-          mutation: gql`
-            mutation($id: ID!, $avatarUpload: Upload) {
-              UpdateUser(id: $id, avatarUpload: $avatarUpload) {
-                id
-                avatar
-              }
-            }
-          `,
+          mutation: updateUserMutation(),
           variables: {
             avatarUpload,
             id: this.user.id,
