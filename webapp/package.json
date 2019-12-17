@@ -65,7 +65,7 @@
     "@nuxtjs/sentry": "^3.0.1",
     "@nuxtjs/style-resources": "~1.0.0",
     "accounting": "~0.4.1",
-    "apollo-cache-inmemory": "~1.6.3",
+    "apollo-cache-inmemory": "~1.6.5",
     "apollo-client": "~2.6.4",
     "cookie-universal-nuxt": "~2.1.0",
     "cropperjs": "^1.5.5",
