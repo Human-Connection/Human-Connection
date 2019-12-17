@@ -3989,6 +3989,16 @@ neo4j-driver@^1.7.6:
     text-encoding-utf-8 "^1.0.2"
     uri-js "^4.2.2"
 
+neo4j-driver@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/neo4j-driver/-/neo4j-driver-4.0.1.tgz#b25ffde0f16602e94c46d097e16a8bacbd773d5a"
+  integrity sha512-SqBhXyyyayVs5gV/6BrgdKbcmU5AsYQXkFAiYO74XAE8XPLJ1HVR/Hu4wjonAX7+70DsalkWEiFN1c6UaCVzlQ==
+  dependencies:
+    "@babel/runtime" "^7.5.5"
+    rxjs "^6.5.2"
+    text-encoding-utf-8 "^1.0.2"
+    uri-js "^4.2.2"
+
 neode@^0.3.6:
   version "0.3.6"
   resolved "https://registry.yarnpkg.com/neode/-/neode-0.3.6.tgz#7daf791eff6d170e52c338ea2e5cca6fdc6bfbe3"
@@ -4777,6 +4787,13 @@ rxjs@^5.0.0-beta.11:
   dependencies:
     symbol-observable "1.0.1"
 
+rxjs@^6.5.2:
+  version "6.5.3"
+  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.5.3.tgz#510e26317f4db91a7eb1de77d9dd9ba0a4899a3a"
+  integrity sha512-wuYsAYYFdWTAnAaPoKGNhfpWwKZbJW+HgAJ+mImp+Epl7BG8oNWBCTyRM8gba9k4lk8BgWdoYm21Mo/RYhhbgA==
+  dependencies:
+    tslib "^1.9.0"
+
 safe-buffer@^5.0.1, safe-buffer@^5.1.0, safe-buffer@^5.1.1, safe-buffer@^5.1.2, safe-buffer@~5.1.0, safe-buffer@~5.1.1:
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.1.2.tgz#991ec69d296e0313747d59bdfd2b745c35f8828d"
@@ -5367,6 +5384,11 @@ tough-cookie@~2.4.3:
   dependencies:
     psl "^1.1.24"
     punycode "^1.4.1"
+
+tslib@^1.9.0:
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.10.0.tgz#c3c19f95973fb0a62973fb09d90d961ee43e5c8a"
+  integrity sha512-qOebF53frne81cf0S9B41ByenJ3/IuH8yJKngAX35CmiZySA0khhkovshKK+jGCaMnVomla7gVlIcc3EvKPbTQ==
 
 tty-browserify@0.0.1:
   version "0.0.1"

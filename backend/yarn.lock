@@ -1035,7 +1035,7 @@
     url-regex "~4.1.1"
     video-extensions "~1.1.0"
 
-"@metascraper/helpers@^5.8.10", "@metascraper/helpers@^5.8.12":
+"@metascraper/helpers@^5.8.12":
   version "5.8.12"
   resolved "https://registry.yarnpkg.com/@metascraper/helpers/-/helpers-5.8.12.tgz#c4c1375a90ee9b674f8fb4d5a65cce6f5c6ce30d"
   integrity sha512-hmaIRXWcLGFWAXFKBHECHhf3VhHrbz/iV6spPtTeYyxCVO1TX62qYigqbizZwHk4dGeU1cTtbT2YN8/RCr1RiQ==
@@ -6148,7 +6148,7 @@ neo-async@^2.6.0:
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.1.tgz#ac27ada66167fa8849a6addd837f6b189ad2081c"
   integrity sha512-iyam8fBuCUpWeKPGpaNMetEocMt364qkCsfL9JuhjXX6dRnguRVOfk2GZaDpPjcOKiiXCPINZC1GczQ7iTq3Zw==
 
-neo4j-driver@^1.7.6, neo4j-driver@~1.7.6:
+neo4j-driver@^1.7.6:
   version "1.7.6"
   resolved "https://registry.yarnpkg.com/neo4j-driver/-/neo4j-driver-1.7.6.tgz#eccb135a71eba9048c68717444593a6424cffc49"
   integrity sha512-6c3ALO3vYDfUqNoCy8OFzq+fQ7q/ab3LCuJrmm8P04M7RmyRCCnUtJ8IzSTGbiZvyhcehGK+azNDAEJhxPV/hA==
