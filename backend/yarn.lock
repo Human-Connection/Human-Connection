@@ -5862,12 +5862,12 @@ metascraper-lang-detector@^4.10.2:
     franc "~4.0.0"
     iso-639-3 "~1.1.0"
 
-metascraper-lang@^5.8.9:
-  version "5.8.9"
-  resolved "https://registry.yarnpkg.com/metascraper-lang/-/metascraper-lang-5.8.9.tgz#589bac0fdc523b5b6e6317a7b6295474eedfb872"
-  integrity sha512-VMiU+T9LFsra/bBc0w0+fw6lk8Snb/ULoIvHUF0+5wvkv4KzQicc0z1lTAL/28Et2Xa+R5Km5A9Ts7LYuQRqVw==
+metascraper-lang@^5.8.10:
+  version "5.8.10"
+  resolved "https://registry.yarnpkg.com/metascraper-lang/-/metascraper-lang-5.8.10.tgz#b8827282dea500b68e49ebbe8b0081fb6b6584d5"
+  integrity sha512-qydko4UkLGqTimKzT+AkcIaXOo7/GkHGtclGiLae80lHeKzI5NG7kYN4eMv1r4BfBkcluSNeJ/P532T6ZD2Y1Q==
   dependencies:
-    "@metascraper/helpers" "^5.8.7"
+    "@metascraper/helpers" "^5.8.10"
 
 metascraper-logo@^5.8.10:
   version "5.8.10"
