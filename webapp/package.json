@@ -143,6 +143,6 @@
     "vue-jest": "~3.0.5",
     "vue-loader": "~15.8.3",
     "vue-svg-loader": "~0.15.0",
-    "vue-template-compiler": "^2.6.10"
+    "vue-template-compiler": "^2.6.11"
   }
 }
