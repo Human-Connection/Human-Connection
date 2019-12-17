@@ -6152,7 +6152,7 @@ neo-async@^2.6.0:
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.1.tgz#ac27ada66167fa8849a6addd837f6b189ad2081c"
   integrity sha512-iyam8fBuCUpWeKPGpaNMetEocMt364qkCsfL9JuhjXX6dRnguRVOfk2GZaDpPjcOKiiXCPINZC1GczQ7iTq3Zw==
 
-neo4j-driver@^1.7.3, neo4j-driver@^1.7.5, neo4j-driver@~1.7.6:
+neo4j-driver@^1.7.3, neo4j-driver@^1.7.6, neo4j-driver@~1.7.6:
   version "1.7.6"
   resolved "https://registry.yarnpkg.com/neo4j-driver/-/neo4j-driver-1.7.6.tgz#eccb135a71eba9048c68717444593a6424cffc49"
   integrity sha512-6c3ALO3vYDfUqNoCy8OFzq+fQ7q/ab3LCuJrmm8P04M7RmyRCCnUtJ8IzSTGbiZvyhcehGK+azNDAEJhxPV/hA==
@@ -6174,14 +6174,14 @@ neo4j-graphql-js@^2.10.2:
     lodash "^4.17.15"
     neo4j-driver "^1.7.3"
 
-neode@^0.3.3:
-  version "0.3.3"
-  resolved "https://registry.yarnpkg.com/neode/-/neode-0.3.3.tgz#a539830cce6f6e4825462f6cb03f2969a0003f1b"
-  integrity sha512-pArHG1hD2kVwrzLlz6B1+IgdOJRQj/BgR6KzH6DlVzSA6geoZRe68fbpvmOJtzyPU7iuUYxXVk87PpPM1A7dlg==
+neode@^0.3.6:
+  version "0.3.6"
+  resolved "https://registry.yarnpkg.com/neode/-/neode-0.3.6.tgz#7daf791eff6d170e52c338ea2e5cca6fdc6bfbe3"
+  integrity sha512-jCskCPobtHpsIIYQD72h5lRjMJEX70KwIeqgpt1VOLI+d1zJZvUlDkcOKgarAW0fmwtHIrPOP6mLPe5G/ZG9+g==
   dependencies:
     "@hapi/joi" "^15.1.0"
     dotenv "^4.0.0"
-    neo4j-driver "^1.7.5"
+    neo4j-driver "^1.7.6"
     uuid "^3.3.2"
 
 next-tick@^1.0.0:
@@ -7509,6 +7509,11 @@ serve-static@1.14.1:
   version "1.14.1"
   resolved "https://registry.yarnpkg.com/serve-static/-/serve-static-1.14.1.tgz#666e636dc4f010f7ef29970a88a674320898b2f9"
   integrity sha512-JMrvUwE54emCYWlTI+hGrGv5I8dEwmco/00EvkzIIsR7MqrHonbD9pO2MOfFnpFntl7ecpZs+3mW+XbQZu9QCg==
+  dependencies:
+    encodeurl "~1.0.2"
+    escape-html "~1.0.3"
+    parseurl "~1.3.3"
+    send "0.17.1"
 
 set-blocking@^2.0.0, set-blocking@~2.0.0:
   version "2.0.0"
