@@ -25,7 +25,11 @@
           <label for="blur-img">{{ $t('contribution.inappropriatePicture') }}</label>
           <input name="checkbox" type="checkbox" id="blur-img" v-model="blurImage" />
           <p>
-            <a href="https://support.human-connection.org/kb/faq.php?id=113" target="_blank" class="link">
+            <a
+              href="https://support.human-connection.org/kb/faq.php?id=113"
+              target="_blank"
+              class="link"
+            >
               {{ $t('contribution.inappropriatePictureText') }}
               <ds-icon name="question-circle" />
             </a>
