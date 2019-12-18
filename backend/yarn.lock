@@ -2485,15 +2485,10 @@ class-utils@^0.3.5:
     isobject "^3.0.0"
     static-extend "^0.1.1"
 
-clean-stack@^2.0.0:
+clean-stack@^2.0.0, clean-stack@~2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/clean-stack/-/clean-stack-2.2.0.tgz#ee8472dbb129e727b31e8a10a427dee9dfe4008b"
   integrity sha512-4diC9HaTE+KRAMWhDhrGOECgWZxoevMc5TlkObMqNSsVU62PYzXZ/SMTjzyGAFF1YusgxGcSWTEXBhp0CPwQ1A==
-
-clean-stack@~2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/clean-stack/-/clean-stack-2.0.0.tgz#301bfa9e8dd2d3d984c0e542f7aa67b996f63e0a"
-  integrity sha512-VEoL9Qh7I8s8iHnV53DaeWSt8NJ0g3khMfK6NiCPB7H657juhro+cSw2O88uo3bo0c0X5usamtXk0/Of0wXa5A==
 
 cli-boxes@^1.0.0:
   version "1.0.0"
@@ -5924,17 +5919,17 @@ metascraper-youtube@^5.8.10:
     is-reachable "~4.0.0"
     p-locate "~4.1.0"
 
-metascraper@^5.8.9:
-  version "5.8.9"
-  resolved "https://registry.yarnpkg.com/metascraper/-/metascraper-5.8.9.tgz#7bb468f9660bd86be8dd774cab3457d098b87e61"
-  integrity sha512-vuOwnSaGIG8346ZAQCE+YqvpzFVXfaMvCUdLbb8spobz7BG3945WNa43NjSl2HK5iH1WYOibvSYRZdL6wQsRJg==
+metascraper@^5.8.12:
+  version "5.8.12"
+  resolved "https://registry.yarnpkg.com/metascraper/-/metascraper-5.8.12.tgz#3ee41b14864cd82a6f3cd9389c359b255ee3c2ac"
+  integrity sha512-EUKSva/cEl99/XxGEvdbTAG/hlG6/te/wWXM0Tqy3hX0MHjbZI569MBOjIf+mR6mj37XD817LUkrl99RgWMItw==
   dependencies:
-    "@metascraper/helpers" "^5.8.7"
+    "@metascraper/helpers" "^5.8.12"
     cheerio "~1.0.0-rc.2"
     cheerio-advanced-selectors "~2.0.1"
     lodash "~4.17.15"
     map-values-deep "~1.0.2"
-    whoops "~4.0.2"
+    whoops "~4.1.0"
     xss "~1.0.6"
 
 methods@^1.1.1, methods@^1.1.2, methods@~1.1.2:
@@ -5995,10 +5990,10 @@ mimic-fn@^2.1.0:
   resolved "https://registry.yarnpkg.com/mimic-fn/-/mimic-fn-2.1.0.tgz#7ed2c2ccccaf84d3ffcb7a69b57711fc2083401b"
   integrity sha512-OqbOk5oEQeAZ8WXWydlu9HJjz9WVdEIvamMCcXmuqUYjTknH/sqsWvhQ3vgwKFRR1HpjvNBKQ37nbJgYzGqGcg==
 
-mimic-fn@~2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/mimic-fn/-/mimic-fn-2.0.0.tgz#0913ff0b121db44ef5848242c38bbb35d44cabde"
-  integrity sha512-jbex9Yd/3lmICXwYT6gA/j2mNQGU48wCh/VzRd+/Y/PjYQtlg1gLMdZqvu9s/xH7qKvngxRObl56XZR609IMbA==
+mimic-fn@~3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/mimic-fn/-/mimic-fn-3.0.0.tgz#76044cfa8818bbf6999c5c9acadf2d3649b14b4b"
+  integrity sha512-PiVO95TKvhiwgSwg1IdLYlCTdul38yZxZMIcnDSFIBUm4BNZha2qpQ4GpJ++15bHoKDtrW2D69lMfFwdFYtNZQ==
 
 mimic-response@^1.0.0, mimic-response@^1.0.1:
   version "1.0.1"
@@ -8617,13 +8612,13 @@ which@^1.2.9, which@^1.3.0:
   dependencies:
     isexe "^2.0.0"
 
-whoops@~4.0.2:
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/whoops/-/whoops-4.0.2.tgz#60e1281d47a1600f5f5013059afaad369d83e9d4"
-  integrity sha512-b1ofth7xMOAkukgzMhAPKBrgieGJAgKVMyu54DXAOVLmkhpQEfNKe4wS0R7LbdxIsm6FD2CFUjBOdN7Sj+zLSg==
+whoops@~4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/whoops/-/whoops-4.1.0.tgz#f42e51514c7af19a9491a44cabf2712292c6a8e1"
+  integrity sha512-42soctqvFs9FaU1r4ZadCy2F6A9dUc4SN3ud+tbDEdmyZDTeYBgKKqtIdo6NiQlnZnJegWRCyKLk2edYH9DsHA==
   dependencies:
-    clean-stack "~2.0.0"
-    mimic-fn "~2.0.0"
+    clean-stack "~2.2.0"
+    mimic-fn "~3.0.0"
 
 wide-align@^1.1.0:
   version "1.1.3"
