@@ -704,7 +704,7 @@
       "cropperConfirm": "Confirm"
     },
     "inappropriatePicture" : "This image may be inappropriate for some people.",
-    "inappropriatePictureText" : "Contribution picture is blurred"
+    "inappropriatePictureText" : "When should my picture be blurred"
   },
   "code-of-conduct": {
     "subheader": "for the social network of the Human Connection gGmbH",
@@ -801,7 +801,6 @@
     }
   }
 }
-
 
 
 
