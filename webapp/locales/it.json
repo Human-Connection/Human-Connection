@@ -7,13 +7,13 @@
         "password": "La tua password",
         "moreInfo": "Che cosa è Human Connection?",
         "hello": "Ciao",
-        "forgotPassword": "",
-        "no-account": "",
-        "register": "",
-        "moreInfoURL": "",
-        "moreInfoHint": "",
-        "success": "",
-        "failure": ""
+        "forgotPassword": "Password dimenticata?",
+        "no-account": "Non hai un account?",
+        "register": "Iscriviti",
+        "moreInfoURL": "https://human-connection.org/en/",
+        "moreInfoHint": "alla pagina di presentazione",
+        "success": "Hai effettuato il login!",
+        "failure": "Indirizzo e-mail o password errati."
     },
     "profile": {
         "name": "Il mio profilo",
@@ -24,19 +24,19 @@
         "shouted": "Gridato",
         "commented": "Commentato",
         "userAnonym": "Anonymous",
-        "socialMedia": "",
+        "socialMedia": "Dove altro posso trovare",
         "network": {
-            "title": "",
-            "following": "",
-            "followingNobody": "",
-            "followedBy": "",
-            "followedByNobody": "",
-            "andMore": ""
+            "title": "La rete",
+            "following": "è la seguente:",
+            "followingNobody": "non segue nessuno.",
+            "followedBy": "è seguito da:",
+            "followedByNobody": "non è seguito da nessuno.",
+            "andMore": "e {number} altro ...."
         },
         "invites": {
-            "title": "",
-            "description": "",
-            "emailPlaceholder": ""
+            "title": "Invita qualcuno a Human Connection!",
+            "description": "Inserisci il loro indirizzo e-mail per l'invito.",
+            "emailPlaceholder": "Invia un'e-mail per invitare"
         }
     },
     "settings": {
@@ -46,28 +46,28 @@
             "labelName": "Nome",
             "labelCity": "La tua città o regione",
             "labelBio": "Su di te",
-            "labelSlug": "",
+            "labelSlug": "Il tuo nome utente unico",
             "namePlaceholder": "Anonymous",
-            "success": ""
+            "success": "I tuoi dati sono stati aggiornati con successo!"
         },
         "security": {
             "name": "Sicurezza",
             "change-password": {
-                "button": "",
-                "success": "",
-                "label-old-password": "",
-                "label-new-password": "",
-                "label-new-password-confirm": "",
-                "message-old-password-required": "",
-                "message-new-password-required": "",
-                "message-new-password-confirm-required": "",
-                "message-new-password-missmatch": "",
-                "passwordSecurity": "",
-                "passwordStrength0": "",
-                "passwordStrength1": "",
-                "passwordStrength2": "",
-                "passwordStrength3": "",
-                "passwordStrength4": ""
+                "button": "Cambiare la password",
+                "success": "La password è stata cambiata con successo!",
+                "label-old-password": "La tua vecchia password",
+                "label-new-password": "La tua nuova password",
+                "label-new-password-confirm": "Conferma nuova password",
+                "message-old-password-required": "Inserisci la tua vecchia password",
+                "message-new-password-required": "Inserisci una nuova password",
+                "message-new-password-confirm-required": "Conferma la tua nuova password",
+                "message-new-password-missmatch": "Digitare nuovamente la stessa password",
+                "passwordSecurity": "Sicurezza della password",
+                "passwordStrength0": "Password molto insicura",
+                "passwordStrength1": "Password insicura",
+                "passwordStrength2": "Password mediocre",
+                "passwordStrength3": "Password forte",
+                "passwordStrength4": "Password molto forte"
             }
         },
         "invites": {
@@ -87,29 +87,29 @@
         },
         "email": {
             "validation": {
-                "same-email": ""
+                "same-email": "Questo è il tuo attuale indirizzo e-mail"
             },
-            "name": "",
-            "labelEmail": "",
-            "labelNewEmail": "",
-            "labelNonce": "",
-            "success": "",
-            "submitted": "",
-            "change-successful": "",
+            "name": "Il tuo indirizzo e-mail",
+            "labelEmail": "Cambia il tuo indirizzo e-mail",
+            "labelNewEmail": "Nuovo indirizzo e-mail",
+            "labelNonce": "Inserisci il tuo codice",
+            "success": "È stato registrato un nuovo indirizzo e-mail.",
+            "submitted": "Un'e-mail per verificare il tuo indirizzo è stata inviata a <b>{email}</b>.",
+            "change-successful": "Il tuo indirizzo e-mail è stato modificato con successo.",
             "verification-error": {
-                "message": "",
-                "explanation": "",
+                "message": "La tua e-mail non può essere cambiata.",
+                "explanation": "Questo può avere cause diverse:",
                 "reason": {
-                    "invalid-nonce": "",
-                    "no-email-request": ""
+                    "invalid-nonce": "Il codice di conferma non è valido?",
+                    "no-email-request": "Sei sicuro di aver richiesto una modifica del tuo indirizzo e-mail?"
                 },
-                "support": ""
+                "support": "Se il problema persiste, vi preghiamo di contattarci via e-mail all'indirizzo"
             }
         },
         "validation": {
             "slug": {
-                "regex": "",
-                "alreadyTaken": ""
+                "regex": "I caratteri consentiti sono solo lettere minuscole, numeri e trattini.",
+                "alreadyTaken": "Questo nome utente è già stato preso."
             }
         },
         "deleteUserAccount": {
@@ -122,54 +122,54 @@
             "pleaseConfirm": "<b class='is-danger'>Azione distruttiva! </b> Digita <b>{conferma}</b> per confermare"
         },
         "embeds": {
-            "name": "",
+            "name": "Fornitori terzi",
             "info-description": "Ecco l'elenco dei fornitori di terze parti i cui contenuti possono essere visualizzati come codice di terze parti, ad esempio sotto forma di video incorporati.",
             "status": {
-                "description": "",
+                "description": "Come impostazione predefinita per voi, il codice incorporato di fornitori di terze parti è",
                 "disabled": {
-                    "off": "",
-                    "on": ""
+                    "off": "inizialmente non visualizzato",
+                    "on": "visualizzato immediatamente"
                 },
                 "change": {
-                    "question": "",
-                    "allow": "",
-                    "deny": ""
+                    "question": "Should embedded source code from third parties always be displayed to you?",
+                    "allow": "Certo",
+                    "deny": "No grazie"
                 }
             }
         },
         "social-media": {
-            "name": "",
-            "placeholder": "",
-            "requireUnique": "",
-            "submit": "",
-            "successAdd": "Social media aggiunti. \nProfilo utente aggiornato ",
-            "successDelete": "Social media cancellati. Profilo utente aggiornato!"
+            "name": "I social media",
+            "placeholder": "L'url dei social media",
+            "requireUnique": "Hai già aggiunto questo url",
+            "submit": "Aggiungi link",
+            "successAdd": "Aggiunto i social media. Profilo utente aggiornato!",
+            "successDelete": "Soppresso i social media. Profilo utente aggiornato!"
         },
         "blocked-users": {
-            "name": "",
+            "name": "Utenti bloccati",
             "explanation": {
-                "intro": "",
-                "your-perspective": "",
-                "their-perspective": "",
-                "search": "",
-                "notifications": "",
-                "closing": ""
+                "intro": "Se un altro utente è stato bloccato da voi, ecco cosa succede:",
+                "your-perspective": "I messaggi della persona bloccata non appariranno più nel tuo news feed.",
+                "their-perspective": "Viceversa: anche la persona bloccata non vedrà più i tuoi post nel loro news feed.",
+                "search": "I messaggi di persone bloccate scompaiono dai risultati della ricerca.",
+                "notifications": "Gli utenti bloccati non riceveranno più notifiche se sono menzionati nei tuoi messaggi.",
+                "closing": "Questo dovrebbe essere sufficiente per il momento, in modo che gli utenti bloccati non possano più disturbarvi."
             },
             "columns": {
-                "name": "",
-                "slug": "",
-                "unblock": ""
+                "name": "Nome",
+                "slug": "Lumacca",
+                "unblock": "Sbloccare"
             },
-            "empty": "",
-            "how-to": "",
-            "block": "",
-            "unblock": "",
-            "unblocked": ""
+            "empty": "Finora, non hai bloccato nessuno.",
+            "how-to": "Puoi bloccare altri utenti nella pagina del loro profilo tramite il menu dei contenuti.",
+            "block": "Blocca utente",
+            "unblock": "Sblocca utente",
+            "unblocked": "{name} viene sbloccato di nuovo"
         },
         "privacy": {
-            "name": "",
-            "make-shouts-public": "",
-            "success-update": ""
+            "name": "Privacy",
+            "make-shouts-public": "Condividi articoli che ho urlato sul mio profilo pubblico",
+            "success-update": "Impostazioni sulla privacy salvate"
         }
     },
     "admin": {
@@ -192,19 +192,19 @@
         "users": {
             "name": "Utenti",
             "form": {
-                "placeholder": ""
+                "placeholder": "e-mail, nome o descrizione"
             },
             "table": {
                 "columns": {
-                    "number": "",
-                    "name": "",
-                    "email": "",
-                    "slug": "",
-                    "role": "",
-                    "createdAt": ""
+                    "number": "Numero",
+                    "name": "Nome",
+                    "email": "Indirizzo e-mail",
+                    "slug": "Lumaca",
+                    "role": "Ruolo",
+                    "createdAt": "Creato a"
                 }
             },
-            "empty": ""
+            "empty": "Nessun utente trovato"
         },
         "pages": {
             "name": "Pagine"
@@ -226,16 +226,16 @@
             "name": "Impostazioni"
         },
         "hashtags": {
-            "name": "",
-            "number": "",
-            "nameOfHashtag": "",
-            "tagCountUnique": "",
-            "tagCount": ""
+            "name": "Hashtags",
+            "number": "Numero",
+            "nameOfHashtag": "Nome",
+            "tagCountUnique": "Utenti",
+            "tagCount": "Messaggi"
         },
         "invites": {
-            "name": "",
-            "title": "",
-            "description": ""
+            "name": "Invitare gli utenti",
+            "title": "Invitare le persone",
+            "description": "Gli inviti sono un modo meraviglioso per avere i tuoi amici nella tua rete....."
         },
         "donations": {
             "name": "Info donazioni",
@@ -248,30 +248,30 @@
         "name": "Messaggio",
         "moreInfo": {
             "name": "Ulteriori informazioni",
-            "title": "",
-            "description": "",
-            "titleOfCategoriesSection": "",
-            "titleOfHashtagsSection": "",
-            "titleOfRelatedContributionsSection": ""
+            "title": "Maggiori informazioni",
+            "description": "Qui potete trovare ulteriori informazioni su questo argomento.",
+            "titleOfCategoriesSection": "Categorie",
+            "titleOfHashtagsSection": "Hashtags",
+            "titleOfRelatedContributionsSection": "Messaggi correlati"
         },
         "takeAction": {
             "name": "Agire"
         },
-        "pinned": "",
+        "pinned": "Annuncio",
         "menu": {
-            "edit": "",
-            "delete": "",
-            "pin": "",
-            "pinnedSuccessfully": "",
-            "unpin": "",
-            "unpinnedSuccessfully": ""
+            "edit": "Modifica messaggio",
+            "delete": "Elimina messaggio",
+            "pin": "Pin Post",
+            "pinnedSuccessfully": "Messaggio appuntato con successo",
+            "unpin": "Unpin Post",
+            "unpinnedSuccessfully": "Pubblicare senza pinnato con successo"
         },
         "comment": {
-            "submit": "",
-            "submitted": "",
-            "updated": ""
+            "submit": "Commento",
+            "submitted": "Commento Presentato",
+            "updated": "Modifiche salvate"
         },
-        "edited": ""
+        "edited": "redatto"
     },
     "quotes": {
         "african": {
@@ -295,11 +295,11 @@
         "name": "Nome",
         "loadMore": "Caricare di più",
         "loading": "Caricamento in corso",
-        "reportContent": "",
+        "reportContent": "Segnala",
         "validations": {
-            "email": "",
-            "url": "",
-            "categories": ""
+            "email": "deve essere un indirizzo e-mail valido",
+            "url": "deve essere un URL valido",
+            "categories": "devono essere selezionate almeno una e al massimo tre categorie"
         }
     },
     "actions": {
@@ -309,206 +309,204 @@
         "save": "Salva",
         "edit": "Modifica",
         "delete": "Cancella",
-        "cancel": ""
+        "cancel": "Annulla"
     },
     "moderation": {
-        "name": "",
+        "name": "La moderazione",
         "reports": {
-            "empty": "",
-            "name": "",
+            "empty": "Congratulazioni, niente di moderato.",
+            "name": "Rapporti",
             "reporter": "",
-            "submitter": "",
-            "disabledBy": "",
-            "reasonCategory": "",
-            "reasonDescription": "",
+            "submitter": "Segnalato da",
+            "disabledBy": "Disabilitato da",
+            "reasonCategory": "Categoria",
+            "reasonDescription": "Descrizione",
             "createdAt": ""
         }
     },
     "disable": {
         "user": {
-            "title": "",
-            "type": "",
-            "message": ""
+            "title": "Disattivare Utente",
+            "type": "Utente",
+            "message": "Vuoi davvero disabilitare l'utente \"<b>{name}</b>\"?"
         },
         "contribution": {
-            "title": "",
-            "type": "",
-            "message": ""
+            "title": "Contributo per disabili",
+            "type": "Contributo",
+            "message": "Volete davvero disabilitare il contributo \"<b>{name}</b>\"?"
         },
         "comment": {
-            "title": "",
-            "type": "",
-            "message": ""
+            "title": "Disattivare Come",
+            "type": "Disattivare Come",
+            "message": "Vuoi davvero disabilitare il commento di \"<b>{name}</b>\"?"
         },
-        "submit": "",
-        "cancel": "",
-        "success": ""
+        "submit": "Disattivare",
+        "cancel": "Annulla",
+        "success": "Disabili con successo!"
     },
     "report": {
-        "submit": "",
-        "cancel": "",
+        "submit": "Segnala",
+        "cancel": "Annulla",
         "user": {
-            "title": "",
-            "type": "",
-            "message": "",
-            "error": ""
+            "title": "Segnala Utente",
+            "type": "Utente",
+            "message": "Vuoi davvero segnalare l'utente \"<b>{name}</b>\"?",
+            "error": "Hai già segnalato l'utente!"
         },
         "contribution": {
-            "title": "",
-            "type": "",
-            "message": "",
-            "error": ""
+            "title": "Segnala Post",
+            "type": "Contributo",
+            "message": "Volete davvero segnalare il contributo \"<b>{name}</b>\"?",
+            "error": "Hai già segnalato il contributo!"
         },
         "comment": {
-            "title": "",
-            "type": "",
-            "message": "",
-            "error": ""
+            "title": "Segnala Commento",
+            "type": "Commento",
+            "message": "Vuoi davvero riportare il commento di \"<b>{name}</b>\"?",
+            "error": "Hai già segnalato il commento!"
         },
-        "success": "",
+        "success": "Grazie per la segnalazione!",
         "reason": {
             "category": {
-                "label": "",
-                "placeholder": "",
+                "label": "Selezionare una categoria:",
+                "placeholder": "Categoria ....",
                 "options": {
-                    "discrimination_etc": "",
-                    "pornographic_content_links": "",
-                    "glorific_trivia_of_cruel_inhuman_acts": "",
-                    "doxing": "",
-                    "intentional_intimidation_stalking_persecution": "",
-                    "advert_products_services_commercial": "",
-                    "criminal_behavior_violation_german_law": "",
-                    "other": ""
+                    "discrimination_etc": "Messaggi discriminatori, commenti, dichiarazioni o insulti.",
+                    "pornographic_content_links": "Invio o collegamento di materiale chiaramente pornografico.",
+                    "glorific_trivia_of_cruel_inhuman_acts": "Glorificazione o banalizzazione di atti di violenza crudele o disumana.",
+                    "doxing": "La divulgazione dei dati personali altrui senza il loro consenso o minaccia di (\"doxing\").",
+                    "intentional_intimidation_stalking_persecution": "Intimidazione intenzionale, stalking o persecuzione.",
+                    "advert_products_services_commercial": "Pubblicità di prodotti e servizi a fini commerciali.",
+                    "criminal_behavior_violation_german_law": "Comportamento criminale o violazione del diritto tedesco.",
+                    "other": "Altro ...."
                 },
-                "invalid": ""
+                "invalid": "Selezionare una categoria valida"
             },
             "description": {
-                "label": "",
-                "placeholder": ""
+                "label": "Per favore, spiega: Perché ti piace segnalare questo?",
+                "placeholder": "Ulteriori informazioni ...."
             }
         }
     },
     "contribution": {
-        "edit": "",
-        "delete": "",
-        "title": "",
-        "newPost": "",
-        "filterFollow": "",
-        "filterALL": "",
-        "success": "",
-        "languageSelectLabel": "",
+        "title": "Titolo",
+        "newPost": "Creare un nuovo messaggio",
+        "filterFollow": "Filtrare i contributi degli utenti che seguo",
+        "filterALL": "Visualizza tutti i contributi",
+        "success": "Salvato!",
+        "languageSelectLabel": "Lingua del tuo contributo",
+        "languageSelectText": "Selezionare la lingua",
         "categories": {
-            "infoSelectedNoOfMaxCategories": ""
+            "infoSelectedNoOfMaxCategories": "{chosen} di {max} categorie selezionate"
         },
         "emotions-label": {
-            "funny": "",
-            "happy": "",
-            "surprised": "",
-            "cry": "",
-            "angry": ""
+            "funny": "Divertente",
+            "happy": "Felice",
+            "surprised": "Sorpreso",
+            "cry": "Piangere",
+            "angry": "Arrabbiato"
         },
         "category": {
             "name": {
-                "freedom-of-speech": "",
-                "consumption-sustainability": "",
-                "global-peace-nonviolence": "",
-                "just-for-fun": "",
-                "happiness-values": "",
-                "health-wellbeing": "",
-                "environment-nature": "",
-                "animal-protection": "",
-                "human-rights-justice": "",
-                "education-sciences": "",
-                "cooperation-development": "",
-                "democracy-politics": "",
-                "economy-finances": "",
-                "energy-technology": "",
-                "it-internet-data-privacy": "",
-                "art-culture-sport": ""
+                "freedom-of-speech": "Libertà di parola",
+                "consumption-sustainability": "Consumo e sostenibilità",
+                "global-peace-nonviolence": "Pace globale e nonviolenza",
+                "just-for-fun": "Solo per divertimento",
+                "happiness-values": "Felicità e valori",
+                "health-wellbeing": "Salute & Benessere",
+                "environment-nature": "Ambiente e natura",
+                "animal-protection": "Animal Protection",
+                "human-rights-justice": "Diritti umani e giustizia",
+                "education-sciences": "Educazione & Scienze",
+                "cooperation-development": "Cooperazione e sviluppo",
+                "democracy-politics": "Democrazia e politica",
+                "economy-finances": "Economia & Finanze",
+                "energy-technology": "Energia e tecnologia",
+                "it-internet-data-privacy": "IT, Internet & Data Privacy",
+                "art-culture-sport": "Arte, cultura e sport"
             }
         },
         "teaserImage": {
             "cropperConfirm": "Confermare"
-        },
-        "languageSelectText": ""
+        }
     },
     "comment": {
-        "edit": "",
-        "delete": "",
         "content": {
-            "unavailable-placeholder": ""
+            "unavailable-placeholder": ".... questo commento non è più disponibile"
         },
         "menu": {
-            "edit": "",
-            "delete": ""
+            "edit": "Modifica commento",
+            "delete": "Elimina come si fa"
         },
         "show": {
-            "more": "",
-            "less": ""
+            "more": "mostra di più",
+            "less": "mostra meno"
         },
-        "edited": ""
+        "edited": "redatto"
     },
     "followButton": {
-        "follow": "",
-        "following": ""
+        "follow": "Segui",
+        "following": "Di seguito"
     },
     "shoutButton": {
-        "shouted": ""
+        "shouted": "gridato"
     },
     "search": {
-        "placeholder": "",
-        "hint": "",
-        "failed": ""
+        "placeholder": "Ricerca",
+        "hint": "Cosa stai cercando?",
+        "failed": "Niente trovato"
     },
     "components": {
         "password-reset": {
             "request": {
-                "title": "",
+                "title": "Reimpostare la password",
                 "form": {
-                    "description": "",
-                    "submit": "",
-                    "submitted": ""
+                    "description": "Una e-mail di reset della password verrà inviata all'indirizzo e-mail indicato.",
+                    "submit": "Richiesta e-mail",
+                    "submitted": "Un'e-mail con ulteriori istruzioni è stata inviata a <b>{email}</b>"
                 }
             },
             "change-password": {
-                "success": "",
-                "error": "Modifica della password non riuscita. Forse il codice di sicurezza non era corretto?",
-                "help": ""
+                "success": "Cambiare la password è stato un successo!",
+                "error": "La modifica della password non è riuscita. Forse il codice di sicurezza non era corretto?",
+                "help": "In caso di problemi, sentitevi liberi di chiedere aiuto inviandoci una mail:"
             }
         },
         "enter-nonce": {
             "form": {
-                "nonce": "",
-                "description": "",
-                "next": "",
+                "nonce": "Inserisci il tuo codice",
+                "description": "Apri la tua casella di posta e inserisci il codice che ti abbiamo inviato.",
+                "next": "Continua",
                 "validations": {
-                    "length": ""
+                    "length": "deve essere lungo 6 caratteri"
                 }
             }
         },
         "registration": {
             "signup": {
-                "unavailable": "",
-                "title": "",
+                "unavailable": "Purtroppo, la registrazione pubblica degli account utente non è attualmente disponibile su questo server.",
+                "title": "Unisciti a Human Connection!",
                 "form": {
-                    "description": "",
-                    "terms-and-condition": "",
-                    "data-privacy": "",
-                    "minimum-age": "",
-                    "invitation-code": "",
+                    "description": "Per iniziare, inserisci il tuo indirizzo e-mail:",
+                    "terms-and-condition": "Confermo al <a href=\"/terms-and-conditions\"><ds-text bold color=\"primary\" > Termini e condizioni</ds-text></a>.",
+                    "data-privacy": "Ho letto e compreso il <a href=\"https://human-connection.org/datenschutz/\" target=\"_blank\"><ds-text bold color=\"primary\" > Informativa sulla privacy</ds-text></a>. ",
+                    "minimum-age": "Ho almeno 18 anni o piu'.",
+                    "no-commercial": "Non ho interessi commerciali e non rappresento un'azienda o un'altra organizzazione commerciale sulla rete.",
+                    "no-political": "Non sono a nome di un partito o di un'organizzazione politica della rete.",
+                    "invitation-code": "Il tuo codice invito è: <b>{code}</b>.",
                     "errors": {
-                        "email-exists": "",
-                        "invalid-invitation-token": "Sembra che l'invito sia già stato utilizzato. I link di invito possono essere utilizzati una sola volta."
+                        "email-exists": "C'è già un account utente con questo indirizzo e-mail!",
+                        "invalid-invitation-token": "Sembra che l'invito sia gia' stato usato. I link degli inviti possono essere utilizzati una sola volta."
                     },
-                    "submit": "",
-                    "success": ""
+                    "submit": "Crea un account",
+                    "success": "Una mail con un link per completare la registrazione è stata inviata a <b>{email}</b>"
                 }
             },
             "create-user-account": {
-                "title": "",
-                "success": "",
-                "error": "",
-                "help": ""
+                "title": "Creare un account utente",
+                "success": "Il tuo account è stato creato!",
+                "error": "Non è stato possibile creare un account utente!",
+                "help": "Forse la conferma non era valida? In caso di problemi, sentitevi liberi di chiedere aiuto inviandoci una mail:"
             }
         }
     },
@@ -516,50 +514,50 @@
         "posts": {
             "orderBy": {
                 "newest": {
-                    "label": ""
+                    "label": "Più recente"
                 },
                 "oldest": {
-                    "label": ""
+                    "label": "Più vecchio"
                 }
             }
         }
     },
     "maintenance": {
-        "title": "",
-        "explanation": "",
-        "questions": ""
+        "title": "Human Connection è in manutenzione",
+        "explanation": "Al momento stiamo effettuando alcuni interventi di manutenzione programmata, si prega di riprovare più tardi.",
+        "questions": "Per qualsiasi domanda o dubbio, inviare un'e-mail a"
     },
     "index": {
-        "no-results": "",
-        "change-filter-settings": ""
+        "no-results": "Nessun contributo trovato.",
+        "change-filter-settings": "Modificare le impostazioni del filtro per ottenere maggiori risultati."
     },
     "filter-menu": {
-        "title": "",
-        "hashtag-search": "",
-        "clearSearch": ""
+        "title": "Il tuo filtro a bolla",
+        "hashtag-search": "Ricerca di #{hashtag}",
+        "clearSearch": "Cancella la ricerca"
     },
     "filter-posts": {
         "categories": {
-            "header": "",
-            "all": ""
+            "header": "Categorie di contenuto",
+            "all": "Tutti"
         },
         "general": {
-            "header": ""
+            "header": "Filtrare per ...."
         },
         "followers": {
-            "label": ""
+            "label": "Utenti che seguo"
         },
         "language": {
-            "header": "",
-            "all": ""
+            "header": "Lingue",
+            "all": "Tutti"
         }
     },
     "site": {
-        "thanks": "",
-        "error-occurred": "",
+        "thanks": "Grazie!",
+        "error-occurred": "Si è verificato un errore.",
         "made": "Con &#10084; fatto",
         "imprint": "Impressum",
-        "termsAndConditions": "",
+        "termsAndConditions": "Termini e condizioni",
         "data-privacy": "protezione dei dati",
         "changelog": "Cambiamenti e storia",
         "contact": "Contatto",
@@ -570,113 +568,113 @@
         "responsible": "Responsabile ai sensi del § 55 Abs. 2 RStV (Germania)",
         "bank": "conto bancario",
         "germany": "Germania",
-        "code-of-conduct": "",
-        "back-to-login": "",
-        "faq": ""
+        "code-of-conduct": "Codice di condotta",
+        "back-to-login": "Torna alla pagina di login",
+        "faq": "FAQ"
     },
     "editor": {
-        "placeholder": "",
+        "placeholder": "Lascia i tuoi pensieri ispiratori ....",
         "mention": {
-            "noUsersFound": ""
+            "noUsersFound": "Nessun utente trovato"
         },
         "hashtag": {
-            "noHashtagsFound": "",
-            "addHashtag": "",
-            "addLetter": ""
+            "noHashtagsFound": "Nessun hashtag trovato",
+            "addHashtag": "Nuovo hashtag",
+            "addLetter": "Digitare una lettera"
         },
         "embed": {
-            "data_privacy_warning": "",
+            "data_privacy_warning": "Avviso sulla privacy dei dati!",
             "data_privacy_info": "I tuoi dati non sono ancora stati condivisi con fornitori terzi. Se continui a guardare questo video, il seguente fornitore probabilmente raccoglierà i dati dell'utente:",
-            "play_now": "",
-            "always_allow": ""
+            "play_now": "Guarda ora",
+            "always_allow": "Consentire sempre contenuti incorporati da fornitori terzi (questa impostazione può essere modificata in qualsiasi momento)."
         }
     },
     "notifications": {
         "reason": {
-            "mentioned_in_post": "",
-            "mentioned_in_comment": "",
-            "commented_on_post": ""
+            "mentioned_in_post": "Ti ha accennato in un post ....",
+            "mentioned_in_comment": "Ti ha accennato in un commento ....",
+            "commented_on_post": "Commentato il tuo post ...."
         },
-        "comment": "",
-        "title": "",
-        "pageLink": "",
-        "post": "",
-        "user": "",
-        "content": "",
+        "comment": "Commento",
+        "title": "Notifiche",
+        "pageLink": "Tutte le notifiche",
+        "post": "Messaggio",
+        "user": "Utente",
+        "content": "Contenuto",
         "filterLabel": {
-            "all": "",
-            "read": "",
-            "unread": ""
+            "all": "Tutti",
+            "read": "Leggi",
+            "unread": "Non letto"
         },
-        "empty": ""
+        "empty": "Mi spiace, al momento non hai nessuna notifica."
     },
     "delete": {
-        "submit": "",
-        "cancel": "",
+        "submit": "Cancellare",
+        "cancel": "Annulla",
         "contribution": {
-            "title": "",
-            "type": "",
-            "message": "",
-            "success": ""
+            "title": "Elimina messaggio",
+            "type": "Contributo",
+            "message": "Vuoi davvero cancellare il messaggio \"<b>{name}</b>\"?",
+            "success": "Messaggio eliminato con successo!"
         },
         "comment": {
-            "title": "",
-            "type": "",
-            "message": "",
-            "success": ""
+            "title": "Cancella commento",
+            "type": "Commento",
+            "message": "Vuoi davvero cancellare il commento \"<b>{name}</b>\"?",
+            "success": "Commento eliminato con successo!"
         }
     },
     "release": {
-        "submit": "",
-        "cancel": "",
-        "success": "",
+        "submit": "Rilasciare",
+        "cancel": "Annulla",
+        "success": "Rilasciato con successo!",
         "user": {
-            "title": "",
-            "type": "",
-            "message": "",
-            "error": ""
+            "title": "Rilasciare l'utente",
+            "type": "Utente",
+            "message": "Vuoi davvero rilasciare l'utente \"<b>{name}</b>\"?",
+            "error": "Hai già segnalato l'utente!"
         },
         "contribution": {
-            "title": "",
-            "type": "",
-            "message": "",
-            "error": ""
+            "title": "Rilascio Contributo",
+            "type": "Contributo",
+            "message": "Volete davvero rilasciare il contributo \"<b>{name}</b>\"?",
+            "error": "Hai già segnalato il contributo!"
         },
         "comment": {
-            "title": "",
-            "type": "",
-            "message": "",
-            "error": ""
+            "title": "Commento al rilascio",
+            "type": "Commento",
+            "message": "Vuoi davvero rilasciare il commento di \"<b>{name}</b>\"?",
+            "error": "Hai già segnalato il commento!"
         }
     },
     "user": {
         "avatar": {
-            "submitted": ""
+            "submitted": "Carica con successo!"
         }
     },
     "code-of-conduct": {
-        "subheader": "",
+        "subheader": "per il social network della Human Connection gGmbH",
         "preamble": {
-            "title": "",
+            "title": "Preambolo",
             "description": "Human Connection è una rete di conoscenza e azione sociale senza scopo di lucro della prossima generazione. Dalle persone - per le persone. Open Source, equo e trasparente. Per un cambiamento locale e globale positivo in tutte le aree della vita. Ridisegniamo completamente lo scambio pubblico di conoscenze, idee e progetti. Le funzioni di Human Connection riuniscono le persone - offline e online - in modo che possiamo rendere il mondo un posto migliore."
         },
         "purpose": {
-            "title": "",
+            "title": "copo",
             "description": "Con questo codice di condotta regoliamo i principi essenziali di comportamento nel nostro social network. La Carta dei diritti umani delle Nazioni Unite è il nostro orientamento e costituisce il cuore della nostra comprensione dei valori. Il codice di condotta funge da principio guida per il nostro aspetto personale e l'interazione reciproca. Chiunque sia attivo come utente nella rete di connessione umana, scrive articoli, commenti o contatta altri utenti, compresi quelli esterni alla rete, riconosce queste regole di condotta come vincolanti."
         },
         "expected-behaviour": {
-            "title": "",
-            "description": "",
+            "title": "Comportamento atteso",
+            "description": "I seguenti comportamenti sono attesi e richiesti a tutti i membri della comunità:",
             "list": {
-                "0": "",
-                "1": "",
-                "2": "",
-                "3": "Fai attenzione a ciò che ti circonda e ai tuoi compagni partecipanti. Avvisare i leader della comunità se si nota una situazione pericolosa, qualcuno in difficoltà o violazioni del presente Codice di condotta, anche se sembrano insignificanti."
+                "0": "Esercitare considerazione e rispetto nel suo discorso e nelle sue azioni.",
+                "1": "Tentativo di collaborazione prima del conflitto.",
+                "2": "Evitare comportamenti e discorsi avvilenti, discriminatori o molestie.,
+                "3": "Siate consapevoli di ciò che vi circonda e dei vostri colleghi partecipanti. Allertate i leader della comunità se notate una situazione pericolosa, qualcuno in difficoltà, o violazioni di questo Codice di condotta, anche se sembrano irrilevanti."
             }
         },
         "unacceptable-behaviour": {
-            "title": "",
-            "description": "",
+            "title": "Comportamento inaccettabile",
+            "description": "I seguenti comportamenti sono inaccettabili all'interno della nostra comunità:",
             "list": {
                 "0": "Posti discriminatori, commenti, dichiarazioni o insulti, in particolare quelli relativi a genere, orientamento sessuale, razza, religione, orientamento politico o filosofico o disabilità.",
                 "1": "Pubblicazione o collegamento di materiale chiaramente pornografico.",
@@ -741,7 +739,7 @@
         },
         "addition": {
             "title": "Inoltre, teniamo regolarmente eventi in cui puoi anche condividere le tue impressioni e porre domande. Puoi trovare una panoramica attuale qui:",
-            "description": "Https:\/\/human-connection. org\/eventi\/"
+            "description": "Https:\/\/human-connection.org\/eventi\/"
         }
     },
     "donations": {
