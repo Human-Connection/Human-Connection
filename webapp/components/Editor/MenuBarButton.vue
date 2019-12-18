@@ -1,7 +1,7 @@
 <template>
-  <ds-button size="small" :ghost="!isActive" @click.prevent="onClick" :icon="icon">
+  <base-button size="small" circle :ghost="!isActive" @click="onClick" :icon="icon">
     <span v-if="label">{{ label }}</span>
-  </ds-button>
+  </base-button>
 </template>
 
 <script>

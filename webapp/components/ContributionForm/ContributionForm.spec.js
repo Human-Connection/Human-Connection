@@ -257,7 +257,7 @@ describe('ContributionForm.vue', () => {
 
       describe('cancel', () => {
         it('calls $router.back() when cancel button clicked', () => {
-          cancelBtn = wrapper.find('.cancel-button')
+          cancelBtn = wrapper.find('[data-test="cancel-button"]')
           cancelBtn.trigger('click')
           expect(mocks.$router.back).toHaveBeenCalledTimes(1)
         })
