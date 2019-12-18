@@ -5,6 +5,16 @@
 </template>
 
 <script>
+const landscapeRatio = 1.3
+const squareRatio = 1
+const portraitRatio = 0.7
+const getRowSpan = aspectRatio => {
+  if (aspectRatio >= landscapeRatio) return 13
+  else if (aspectRatio >= squareRatio) return 15
+  else if (aspectRatio >= portraitRatio) return 18
+  else return 25
+}
+
 export default {
   props: {
     imageAspectRatio: {
@@ -14,7 +24,7 @@ export default {
   },
   data() {
     return {
-      rowSpan: 10,
+      rowSpan: this.imageAspectRatio ? getRowSpan(this.imageAspectRatio) : 8,
     }
   },
   methods: {
@@ -34,13 +44,7 @@ export default {
     },
   },
   mounted() {
-    const image = this.$el.querySelector('img')
-    if (image) {
-      image.onload = () => this.calculateItemHeight()
-    } else {
-      // use timeout to make sure layout is set up before calculation
-      setTimeout(() => this.calculateItemHeight(), 0)
-    }
+    this.calculateItemHeight()
   },
 }
 </script>
