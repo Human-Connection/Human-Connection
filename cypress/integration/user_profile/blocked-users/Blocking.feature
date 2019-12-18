@@ -37,7 +37,7 @@ Feature: Block a User
     And I refresh the page
     And I search for "Spam"
     Then the search has no results
-    But I search for "not blocked"
+    But I search for "blocked"
     Then I should see the following posts in the select dropdown:
       | title                    |
       | Post that should be seen |

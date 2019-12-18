@@ -8,10 +8,8 @@ const transformReturnType = record => {
 }
 export default {
   Query: {
-    findResources: async (_parent, params, context, _resolveInfo) => {
-      params = await filterForBlockedUsers(params, context)
-      const { query, limit } = params
-      const filter = { ...params.filter }
+    findResources: async (_parent, args, context, _resolveInfo) => {
+      const { query, limit } = args
       const { id: thisUserId } = context.user
       // see http://lucene.apache.org/core/8_3_1/queryparser/org/apache/lucene/queryparser/classic/package-summary.html#package.description
       const myQuery = query.replace(/\s/g, '* ') + '*'
@@ -20,9 +18,8 @@ export default {
       YIELD node as resource, score
       MATCH (resource)<-[:WROTE]-(user:User)
       WHERE score >= 0.5
-      AND NOT (user.deleted = true AND NOT user.disabled = true
-      OR resource.deleted = true AND NOT resource.disabled = true
-      OR user.id in COALESCE($filter.author_not.id_in, [])
+      AND NOT (user.deleted = true OR user.disabled = true
+      OR resource.deleted = true OR resource.disabled = true
       OR (:User { id: $thisUserId })-[:BLOCKED]-(user))
       RETURN resource, labels(resource)[0] AS type
       LIMIT $limit
@@ -32,7 +29,6 @@ export default {
       const readPostTxResultPromise = session.readTransaction(async transaction => {
         const postTransactionResponse = transaction.run(postCypher, {
           query: myQuery,
-          filter,
           limit,
           thisUserId,
         })
@@ -49,7 +45,7 @@ export default {
       YIELD node as resource, score
       MATCH (resource)
       WHERE score >= 0.5
-      AND NOT (resource.deleted = true AND NOT resource.disabled = true 
+      AND NOT (resource.deleted = true OR resource.disabled = true
       OR (:User { id: $thisUserId })-[:BLOCKED]-(resource))
       RETURN resource, labels(resource)[0] AS type
       LIMIT $limit
@@ -57,7 +53,6 @@ export default {
       const readUserTxResultPromise = session.readTransaction(async transaction => {
         const userTransactionResponse = transaction.run(userCypher, {
           query: myQuery,
-          filter,
           limit,
           thisUserId,
         })
