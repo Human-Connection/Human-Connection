@@ -5832,12 +5832,12 @@ metascraper-clearbit-logo@^5.3.0:
   dependencies:
     got "~9.6.0"
 
-metascraper-date@^5.8.7:
-  version "5.8.7"
-  resolved "https://registry.yarnpkg.com/metascraper-date/-/metascraper-date-5.8.7.tgz#146733ecce34f8d4a53c7c6ddcfc51c033287757"
-  integrity sha512-9+IslaGg+J+4cwPU5qu/MEexkoWj7sBxycmCA6vgfuCQCqNwlQ68vk2a/UVDw8OJOYjwX81JGrzxOqrQP0/kXw==
+metascraper-date@^5.8.12:
+  version "5.8.12"
+  resolved "https://registry.yarnpkg.com/metascraper-date/-/metascraper-date-5.8.12.tgz#c2b0c584932bb93072001753e2bf86ba87f0a0e8"
+  integrity sha512-+84JVWRv9wgjpqmIZ0OxKU/Uighxmf+mDuZk2m/bQ4pyQ0bvqlpeCa5JxQOPgQLKyZ+hgkEskdxeGaRk/Bi46g==
   dependencies:
-    "@metascraper/helpers" "^5.8.7"
+    "@metascraper/helpers" "^5.8.12"
 
 metascraper-description@^5.8.10:
   version "5.8.10"
