@@ -1,12 +1,12 @@
 import { mount } from '@vue/test-utils'
-import SearchInput from './SearchInput.vue'
+import SearchResources from './SearchResources.vue'
 
 const localVue = global.localVue
 
 localVue.filter('truncate', () => 'truncated string')
 localVue.filter('dateTime', () => Date.now)
 
-describe('SearchInput.vue', () => {
+describe('SearchResources.vue', () => {
   let mocks
   let propsData
 
@@ -19,7 +19,7 @@ describe('SearchInput.vue', () => {
       mocks = {
         $t: () => {},
       }
-      return mount(SearchInput, { mocks, localVue, propsData })
+      return mount(SearchResources, { mocks, localVue, propsData })
     }
 
     it('renders', () => {
@@ -27,7 +27,7 @@ describe('SearchInput.vue', () => {
     })
 
     it('has id "nav-search"', () => {
-      expect(Wrapper().contains('#nav-search')).toBe(true)
+      expect(Wrapper().contains('[data-test="search-resources"]')).toBe(true)
     })
 
     it('defaults to an empty value', () => {
@@ -82,9 +82,9 @@ describe('SearchInput.vue', () => {
         expect(wrapper.emitted().clear.length).toBe(1)
       })
 
-      it('changes the unprocessedSearchInput as the value changes', () => {
+      it('changes the unprocessedSearchResources as the value changes', () => {
         select.trigger('input')
-        expect(wrapper.vm.unprocessedSearchInput).toBe('abcd')
+        expect(wrapper.vm.unprocessedSearchResources).toBe('abcd')
       })
 
       it('searches for the term when enter is pressed', async () => {

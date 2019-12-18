@@ -1,5 +1,5 @@
 <template>
-  <ds-flex class="post-search-item">
+  <ds-flex class="search-post">
     <ds-flex-item class="search-option-label">
       <ds-text>{{ option.title | truncate(70) }}</ds-text>
     </ds-flex-item>
@@ -35,8 +35,27 @@ export default {
   },
 }
 </script>
-<style>
-.post-search-item {
+<style lang="scss">
+.search-post {
   width: 100%;
+}
+.search-option-label {
+  align-self: center;
+  padding-left: $space-x-small;
+}
+.search-option-meta {
+  align-self: center;
+  .ds-flex {
+    flex-direction: column;
+  }
+}
+.search-meta {
+  float: right;
+  padding-top: 2px;
+  white-space: nowrap;
+  word-wrap: none;
+  .base-icon {
+    vertical-align: sub;
+  }
 }
 </style>
