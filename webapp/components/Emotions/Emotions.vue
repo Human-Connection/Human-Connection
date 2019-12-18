@@ -1,15 +1,17 @@
 <template>
   <ds-flex :gutter="{ lg: 'large' }" class="emotions-flex">
-    <div v-for="emotion in Object.keys(PostsEmotionsCountByEmotion)" :key="emotion">
-      <ds-flex-item :width="{ lg: '100%' }">
-        <hc-emotions-button
-          @toggleEmotion="toggleEmotion"
-          :PostsEmotionsCountByEmotion="PostsEmotionsCountByEmotion"
-          :iconPath="iconPath(emotion)"
-          :emotion="emotion"
-        />
-      </ds-flex-item>
-    </div>
+    <ds-flex-item
+      v-for="emotion in Object.keys(PostsEmotionsCountByEmotion)"
+      :key="emotion"
+      :width="{ lg: '100%' }"
+    >
+      <hc-emotions-button
+        @toggleEmotion="toggleEmotion"
+        :PostsEmotionsCountByEmotion="PostsEmotionsCountByEmotion"
+        :iconPath="iconPath(emotion)"
+        :emotion="emotion"
+      />
+    </ds-flex-item>
   </ds-flex>
 </template>
 <script>

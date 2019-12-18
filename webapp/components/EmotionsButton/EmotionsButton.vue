@@ -1,8 +1,8 @@
 <template>
-  <div>
-    <ds-button size="large" ghost @click="toggleEmotion(emotion)" class="emotions-buttons">
-      <img :src="iconPath" width="40" />
-    </ds-button>
+  <div class="emotions-button">
+    <base-button circle ghost @click="toggleEmotion(emotion)">
+      <img :src="iconPath" />
+    </base-button>
     <ds-space margin-bottom="xx-small" />
     <div class="emotions-mobile-space">
       <p class="emotions-label">{{ $t(`contribution.emotions-label.${emotion}`) }}</p>
@@ -27,7 +27,18 @@ export default {
 }
 </script>
 <style lang="scss">
+.emotions-button {
+  > .base-button {
+    padding: 0;
+
+    &:hover {
+      padding: 2px;
+    }
+  }
+}
+
 .emotions-flex {
+  width: 100%;
   justify-content: space-evenly;
   text-align: center;
 }
@@ -36,11 +47,6 @@ export default {
   font-size: $font-size-small;
 }
 
-.emotions-buttons {
-  &:hover {
-    background-color: $background-color-base;
-  }
-}
 @media only screen and (max-width: 960px) {
   .emotions-mobile-space {
     margin-bottom: 32px;

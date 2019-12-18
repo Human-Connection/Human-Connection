@@ -48,7 +48,7 @@
       <ds-space margin-top="x-large">
         <ds-flex :gutter="{ lg: 'small' }">
           <ds-flex-item
-            :width="{ lg: '75%', md: '75%', sm: '75%' }"
+            :width="{ lg: '75%', md: '75%', sm: '75%', base: '100%' }"
             class="emotions-buttons-mobile"
           >
             <hc-emotions :post="post" />
