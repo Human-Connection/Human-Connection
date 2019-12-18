@@ -1,5 +1,5 @@
 <template>
-  <button :class="buttonClass" :disabled="loading" @click="$emit('click')">
+  <button :type="type" :class="buttonClass" :disabled="loading" @click="$emit('click')">
     <loading-spinner v-if="loading" />
     <base-icon v-if="icon" :name="icon" />
     <slot />
@@ -38,6 +38,13 @@ export default {
       default: 'regular',
       validator(value) {
         return value.match(/(small|regular|large)/)
+      },
+    },
+    type: {
+      type: String,
+      default: 'button',
+      validator(value) {
+        return value.match(/(button|submit)/)
       },
     },
   },
