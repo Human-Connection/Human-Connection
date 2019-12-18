@@ -2,11 +2,11 @@ import { createTestClient } from 'apollo-server-testing'
 import createServer from '../../server'
 import Factory from '../../seed/factories'
 import { gql } from '../../helpers/jest'
-import { neode, getDriver } from '../../bootstrap/neo4j'
+import { getNeode, getDriver } from '../../bootstrap/neo4j'
 
 const driver = getDriver()
 const factory = Factory()
-const instance = neode()
+const neode = getNeode()
 
 describe('SocialMedia', () => {
   let socialMediaAction, someUser, ownerNode, owner
@@ -27,15 +27,15 @@ describe('SocialMedia', () => {
   const newUrl = 'https://twitter.com/bullerby'
 
   const setUpSocialMedia = async () => {
-    const socialMediaNode = await instance.create('SocialMedia', { url })
+    const socialMediaNode = await neode.create('SocialMedia', { url })
     await socialMediaNode.relateTo(ownerNode, 'ownedBy')
     return socialMediaNode.toJson()
   }
 
   beforeEach(async () => {
-    const someUserNode = await instance.create('User', userParams)
+    const someUserNode = await neode.create('User', userParams)
     someUser = await someUserNode.toJson()
-    ownerNode = await instance.create('User', ownerParams)
+    ownerNode = await neode.create('User', ownerParams)
     owner = await ownerNode.toJson()
 
     socialMediaAction = async (user, mutation, variables) => {

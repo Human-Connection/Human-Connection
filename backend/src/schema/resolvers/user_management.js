@@ -1,10 +1,11 @@
 import encode from '../../jwt/encode'
 import bcrypt from 'bcryptjs'
 import { AuthenticationError } from 'apollo-server'
-import { neode } from '../../bootstrap/neo4j'
+import { getNeode } from '../../bootstrap/neo4j'
 import normalizeEmail from './helpers/normalizeEmail'
+import log from './helpers/databaseLogger'
 
-const instance = neode()
+const neode = getNeode()
 
 export default {
   Query: {
@@ -13,7 +14,7 @@ export default {
     },
     currentUser: async (object, params, ctx, resolveInfo) => {
       if (!ctx.user) return null
-      const user = await instance.find('User', ctx.user.id)
+      const user = await neode.find('User', ctx.user.id)
       return user.toJson()
     },
   },
@@ -25,17 +26,18 @@ export default {
       email = normalizeEmail(email)
       const session = driver.session()
       try {
-        const result = await session.run(
-          `
-        MATCH (user:User {deleted: false})-[:PRIMARY_EMAIL]->(e:EmailAddress {email: $userEmail})
-        RETURN user {.id, .slug, .name, .avatar, .encryptedPassword, .role, .disabled, email:e.email} as user LIMIT 1
-      `,
-          { userEmail: email },
-        )
-        const [currentUser] = await result.records.map(record => {
-          return record.get('user')
+        const loginReadTxResultPromise = session.readTransaction(async transaction => {
+          const loginTransactionResponse = await transaction.run(
+            `
+              MATCH (user:User {deleted: false})-[:PRIMARY_EMAIL]->(e:EmailAddress {email: $userEmail})
+              RETURN user {.id, .slug, .name, .avatar, .encryptedPassword, .role, .disabled, email:e.email} as user LIMIT 1
+            `,
+            { userEmail: email },
+          )
+          log(loginTransactionResponse)
+          return loginTransactionResponse.records.map(record => record.get('user'))
         })
-
+        const [currentUser] = await loginReadTxResultPromise
         if (
           currentUser &&
           (await bcrypt.compareSync(password, currentUser.encryptedPassword)) &&
@@ -53,7 +55,7 @@ export default {
       }
     },
     changePassword: async (_, { oldPassword, newPassword }, { driver, user }) => {
-      const currentUser = await instance.find('User', user.id)
+      const currentUser = await neode.find('User', user.id)
 
       const encryptedPassword = currentUser.get('encryptedPassword')
       if (!(await bcrypt.compareSync(oldPassword, encryptedPassword))) {

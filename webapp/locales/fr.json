@@ -113,7 +113,7 @@
             }
         },
         "deleteUserAccount": {
-            "name": "Effacer les données",
+            "name": "Supprimer un compte utilisateur",
             "contributionsCount": "Supprimer mes {count} postes",
             "commentedCount": "Supprimer mes {count} commentaires",
             "accountDescription": "Sachez que vos postes et commentaires sont importants pour notre communauté. Si vous voulez quand même les supprimer, vous devez les marquer ci-dessous.",

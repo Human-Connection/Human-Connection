@@ -38,23 +38,21 @@
           </ds-chip>
           <ds-chip v-else size="base">{{ form.title.length }}/{{ formSchema.title.max }}</ds-chip>
         </ds-text>
-        <client-only>
-          <hc-editor
-            :users="users"
-            :value="form.content"
-            :hashtags="hashtags"
-            @input="updateEditorContent"
-          />
-          <ds-text align="right">
-            <ds-chip v-if="errors && errors.content" color="danger" size="base">
-              {{ contentLength }}
-              <ds-icon name="warning"></ds-icon>
-            </ds-chip>
-            <ds-chip v-else size="base">
-              {{ contentLength }}
-            </ds-chip>
-          </ds-text>
-        </client-only>
+        <hc-editor
+          :users="users"
+          :value="form.content"
+          :hashtags="hashtags"
+          @input="updateEditorContent"
+        />
+        <ds-text align="right">
+          <ds-chip v-if="errors && errors.content" color="danger" size="base">
+            {{ contentLength }}
+            <ds-icon name="warning"></ds-icon>
+          </ds-chip>
+          <ds-chip v-else size="base">
+            {{ contentLength }}
+          </ds-chip>
+        </ds-text>
         <ds-space margin-bottom="small" />
         <hc-categories-select model="categoryIds" :existingCategoryIds="form.categoryIds" />
         <ds-text align="right">

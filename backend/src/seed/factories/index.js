@@ -1,4 +1,4 @@
-import { getDriver, neode } from '../../bootstrap/neo4j'
+import { getDriver, getNeode } from '../../bootstrap/neo4j'
 import createBadge from './badges.js'
 import createUser from './users.js'
 import createPost from './posts.js'
@@ -29,17 +29,23 @@ const factories = {
 
 export const cleanDatabase = async (options = {}) => {
   const { driver = getDriver() } = options
-  const cypher = 'MATCH (n) DETACH DELETE n'
   const session = driver.session()
   try {
-    return await session.run(cypher)
+    await session.writeTransaction(transaction => {
+      return transaction.run(
+        `
+          MATCH (everything) 
+          DETACH DELETE everything
+        `,
+      )
+    })
   } finally {
     session.close()
   }
 }
 
 export default function Factory(options = {}) {
-  const { neo4jDriver = getDriver(), neodeInstance = neode() } = options
+  const { neo4jDriver = getDriver(), neodeInstance = getNeode() } = options
 
   const result = {
     neo4jDriver,

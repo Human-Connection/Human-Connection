@@ -1,17 +1,13 @@
 import { gql } from '../../helpers/jest'
 import Factory from '../../seed/factories'
 import { createTestClient } from 'apollo-server-testing'
-import { neode, getDriver } from '../../bootstrap/neo4j'
+import { getNeode, getDriver } from '../../bootstrap/neo4j'
 import createServer from '../../server'
 
-let server
-let query
-let mutate
-let notifiedUser
-let authenticatedUser
+let server, query, mutate, notifiedUser, authenticatedUser
 const factory = Factory()
 const driver = getDriver()
-const instance = neode()
+const neode = getNeode()
 const categoryIds = ['cat9']
 const createPostMutation = gql`
   mutation($id: ID, $title: String!, $postContent: String!, $categoryIds: [ID]!) {
@@ -39,12 +35,13 @@ const createCommentMutation = gql`
   }
 `
 
-beforeAll(() => {
+beforeAll(async () => {
+  await factory.cleanDatabase()
   const createServerResult = createServer({
     context: () => {
       return {
         user: authenticatedUser,
-        neode: instance,
+        neode: neode,
         driver,
       }
     },
@@ -56,14 +53,14 @@ beforeAll(() => {
 })
 
 beforeEach(async () => {
-  notifiedUser = await instance.create('User', {
+  notifiedUser = await neode.create('User', {
     id: 'you',
     name: 'Al Capone',
     slug: 'al-capone',
     email: 'test@example.org',
     password: '1234',
   })
-  await instance.create('Category', {
+  await neode.create('Category', {
     id: 'cat9',
     name: 'Democracy & Politics',
     icon: 'university',
@@ -146,7 +143,7 @@ describe('notifications', () => {
         describe('commenter is not me', () => {
           beforeEach(async () => {
             commentContent = 'Commenters comment.'
-            commentAuthor = await instance.create('User', {
+            commentAuthor = await neode.create('User', {
               id: 'commentAuthor',
               name: 'Mrs Comment',
               slug: 'mrs-comment',
@@ -173,7 +170,6 @@ describe('notifications', () => {
                 ],
               },
             })
-            const { query } = createTestClient(server)
             await expect(
               query({
                 query: notificationQuery,
@@ -190,7 +186,7 @@ describe('notifications', () => {
             const expected = expect.objectContaining({
               data: { notifications: [] },
             })
-            const { query } = createTestClient(server)
+
             await expect(
               query({
                 query: notificationQuery,
@@ -214,7 +210,7 @@ describe('notifications', () => {
             const expected = expect.objectContaining({
               data: { notifications: [] },
             })
-            const { query } = createTestClient(server)
+
             await expect(
               query({
                 query: notificationQuery,
@@ -228,7 +224,7 @@ describe('notifications', () => {
       })
 
       beforeEach(async () => {
-        postAuthor = await instance.create('User', {
+        postAuthor = await neode.create('User', {
           id: 'postAuthor',
           name: 'Mrs Post',
           slug: 'mrs-post',
@@ -265,7 +261,7 @@ describe('notifications', () => {
               ],
             },
           })
-          const { query } = createTestClient(server)
+
           await expect(
             query({
               query: notificationQuery,
@@ -409,7 +405,7 @@ describe('notifications', () => {
             const expected = expect.objectContaining({
               data: { notifications: [] },
             })
-            const { query } = createTestClient(server)
+
             await expect(
               query({
                 query: notificationQuery,
@@ -432,7 +428,7 @@ describe('notifications', () => {
           beforeEach(async () => {
             commentContent =
               'One mention about me with <a data-mention-id="you" class="mention" href="/profile/you" target="_blank">@al-capone</a>.'
-            commentAuthor = await instance.create('User', {
+            commentAuthor = await neode.create('User', {
               id: 'commentAuthor',
               name: 'Mrs Comment',
               slug: 'mrs-comment',
@@ -442,7 +438,7 @@ describe('notifications', () => {
           })
 
           it('sends only one notification with reason mentioned_in_comment', async () => {
-            postAuthor = await instance.create('User', {
+            postAuthor = await neode.create('User', {
               id: 'MrPostAuthor',
               name: 'Mr Author',
               slug: 'mr-author',
@@ -467,7 +463,7 @@ describe('notifications', () => {
                 ],
               },
             })
-            const { query } = createTestClient(server)
+
             await expect(
               query({
                 query: notificationQuery,
@@ -501,7 +497,7 @@ describe('notifications', () => {
                 ],
               },
             })
-            const { query } = createTestClient(server)
+
             await expect(
               query({
                 query: notificationQuery,
@@ -518,7 +514,7 @@ describe('notifications', () => {
             await postAuthor.relateTo(notifiedUser, 'blocked')
             commentContent =
               'One mention about me with <a data-mention-id="you" class="mention" href="/profile/you" target="_blank">@al-capone</a>.'
-            commentAuthor = await instance.create('User', {
+            commentAuthor = await neode.create('User', {
               id: 'commentAuthor',
               name: 'Mrs Comment',
               slug: 'mrs-comment',
@@ -532,7 +528,7 @@ describe('notifications', () => {
             const expected = expect.objectContaining({
               data: { notifications: [] },
             })
-            const { query } = createTestClient(server)
+
             await expect(
               query({
                 query: notificationQuery,

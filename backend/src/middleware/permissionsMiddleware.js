@@ -1,11 +1,11 @@
 import { rule, shield, deny, allow, or } from 'graphql-shield'
-import { neode } from '../bootstrap/neo4j'
+import { getNeode } from '../bootstrap/neo4j'
 import CONFIG from '../config'
 
 const debug = !!CONFIG.DEBUG
 const allowExternalErrors = true
 
-const instance = neode()
+const neode = getNeode()
 
 const isAuthenticated = rule({
   cache: 'contextual',
@@ -36,7 +36,7 @@ const isMyOwn = rule({
 const isMySocialMedia = rule({
   cache: 'no_cache',
 })(async (_, args, { user }) => {
-  let socialMedia = await instance.find('SocialMedia', args.id)
+  let socialMedia = await neode.find('SocialMedia', args.id)
   socialMedia = await socialMedia.toJson()
   return socialMedia.ownedBy.node.id === user.id
 })
@@ -47,17 +47,18 @@ const isAuthor = rule({
   if (!user) return false
   const { id: resourceId } = args
   const session = driver.session()
-  try {
-    const result = await session.run(
+  const authorReadTxPromise = session.readTransaction(async transaction => {
+    const authorTransactionResponse = await transaction.run(
       `
-      MATCH (resource {id: $resourceId})<-[:WROTE]-(author {id: $userId})
-      RETURN author
-    `,
+        MATCH (resource {id: $resourceId})<-[:WROTE]-(author {id: $userId})
+        RETURN author
+      `,
       { resourceId, userId: user.id },
     )
-    const [author] = result.records.map(record => {
-      return record.get('author')
-    })
+    return authorTransactionResponse.records.map(record => record.get('author'))
+  })
+  try {
+    const [author] = await authorReadTxPromise
     return !!author
   } finally {
     session.close()

@@ -3,7 +3,7 @@ import helmet from 'helmet'
 import { ApolloServer } from 'apollo-server-express'
 import CONFIG, { requiredConfigs } from './config'
 import middleware from './middleware'
-import { neode as getNeode, getDriver } from './bootstrap/neo4j'
+import { getNeode, getDriver } from './bootstrap/neo4j'
 import decode from './jwt/decode'
 import schema from './schema'
 import webfinger from './activitypub/routes/webfinger'
@@ -38,6 +38,12 @@ const createServer = options => {
     schema: middleware(schema),
     debug: !!CONFIG.DEBUG,
     tracing: !!CONFIG.DEBUG,
+    formatError: error => {
+      if (error.message === 'ERROR_VALIDATION') {
+        return new Error(error.originalError.details.map(d => d.message))
+      }
+      return error
+    },
   }
   const server = new ApolloServer(Object.assign({}, defaults, options))
 
