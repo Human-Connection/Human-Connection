@@ -8,7 +8,7 @@ type NOTIFIED {
   reason: NotificationReason
 }
 
-union NotificationSource = Post | Comment
+union NotificationSource = Post | Comment | Report
 
 enum NotificationOrdering {
   createdAt_asc

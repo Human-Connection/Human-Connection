@@ -49,6 +49,7 @@ export default {
         const notificationsTransactionResponse = await transaction.run(
           ` 
           MATCH (resource {deleted: false, disabled: false})-[notification:NOTIFIED]->(user:User {id:$id})
+          WHERE (labels(resource)[0] in [Post, Comment] AND NOT resource.deleted AND NOT resource.disabled) OR labels(resource)[0] in [Report]
           ${whereClause}
           WITH user, notification, resource,
           [(resource)<-[:WROTE]-(author:User) | author {.*}] as authors,

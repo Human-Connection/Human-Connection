@@ -1,6 +1,8 @@
 import extractMentionedUsers from './mentions/extractMentionedUsers'
 import { validateNotifyUsers } from '../validation/validationMiddleware'
 
+const debug = require('debug')('backend:notificationsMiddleware')
+
 const handleContentDataOfPost = async (resolve, root, args, context, resolveInfo) => {
   const idsOfUsers = extractMentionedUsers(args.content)
   const post = await resolve(root, args, context, resolveInfo)
@@ -36,6 +38,8 @@ const postAuthorOfComment = async (commentId, { context }) => {
       )
     })
     return postAuthorId.records.map(record => record.get('authorId'))
+  } catch (error) {
+    debug(error)
   } finally {
     session.close()
   }
@@ -77,6 +81,8 @@ const notifyUsersOfMention = async (label, id, idsOfUsers, reason, context) => {
     await session.writeTransaction(transaction => {
       return transaction.run(mentionedCypher, { id, idsOfUsers, reason })
     })
+  } catch (error) {
+    debug(error)
   } finally {
     session.close()
   }
@@ -100,6 +106,8 @@ const notifyUsersOfComment = async (label, commentId, postAuthorId, reason, cont
         { commentId, postAuthorId, reason },
       )
     })
+  } catch (error) {
+    debug(error)
   } finally {
     session.close()
   }
@@ -123,11 +131,20 @@ const notifyReportFiler = async (resolve, root, args, context, resolveInfo) => {
     try {
       await session.writeTransaction(async transaction => {
         await transaction.run(
-          `
+          /* Wolle`
             MATCH (resource {id: $resourceId})<-[:BELONGS_TO]-(:Report {id: $reportId})<-[:FILED]-(submitter:User {id: $submitterId})
             WHERE resource: User OR resource: Post OR resource: Comment
             // Wolle MERGE (resource)-[notification:NOTIFIED {reason: $reason, reportId: $reportId}]->(submitter)
             MERGE (resource)-[notification:NOTIFIED {reason: $reason}]->(submitter)
+            ON CREATE SET notification.createdAt = toString(datetime()), notification.updatedAt = notification.createdAt
+            ON MATCH SET notification.updatedAt = toString(datetime())
+            SET notification.read = FALSE
+          `,*/
+          `
+            MATCH (resource {id: $resourceId})<-[:BELONGS_TO]-(report:Report {id: $reportId})<-[:FILED]-(submitter:User {id: $submitterId})
+            WHERE resource: User OR resource: Post OR resource: Comment
+            // Wolle MERGE (resource)-[notification:NOTIFIED {reason: $reason, reportId: $reportId}]->(submitter)
+            MERGE (report)-[notification:NOTIFIED {reason: $reason}]->(submitter)
             ON CREATE SET notification.createdAt = toString(datetime()), notification.updatedAt = notification.createdAt
             ON MATCH SET notification.updatedAt = toString(datetime())
             SET notification.read = FALSE
@@ -143,7 +160,9 @@ const notifyReportFiler = async (resolve, root, args, context, resolveInfo) => {
         )
         console.log('success !!!')
       })
-    } finally {
+  } catch (error) {
+    debug(error)
+  } finally {
       session.close()
     }
   }
