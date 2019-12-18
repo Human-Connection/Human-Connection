@@ -7,13 +7,13 @@
         "password": "La tua password",
         "moreInfo": "Che cosa è Human Connection?",
         "hello": "Ciao",
-        "forgotPassword": "",
-        "no-account": "",
-        "register": "",
-        "moreInfoURL": "",
-        "moreInfoHint": "",
-        "success": "",
-        "failure": ""
+        "forgotPassword": "Password dimenticata?",
+        "no-account": "Non hai un account?",
+        "register": "Iscriviti",
+        "moreInfoURL": "https://human-connection.org/en/",
+        "moreInfoHint": "alla pagina di presentazione",
+        "success": "Hai effettuato il login!",
+        "failure": "Indirizzo e-mail o password errati."
     },
     "profile": {
         "name": "Il mio profilo",
@@ -24,19 +24,19 @@
         "shouted": "Gridato",
         "commented": "Commentato",
         "userAnonym": "Anonymous",
-        "socialMedia": "",
+        "socialMedia": "Dove altro posso trovare",
         "network": {
-            "title": "",
-            "following": "",
-            "followingNobody": "",
-            "followedBy": "",
-            "followedByNobody": "",
-            "andMore": ""
+            "title": "La rete",
+            "following": "è la seguente:",
+            "followingNobody": "non segue nessuno.",
+            "followedBy": "è seguito da:",
+            "followedByNobody": "non è seguito da nessuno.",
+            "andMore": "e {number} altro ...."
         },
         "invites": {
-            "title": "",
-            "description": "",
-            "emailPlaceholder": ""
+            "title": "Invita qualcuno a Human Connection!",
+            "description": "Inserisci il loro indirizzo e-mail per l'invito.",
+            "emailPlaceholder": "Invia un'e-mail per invitare"
         }
     },
     "settings": {
@@ -46,28 +46,28 @@
             "labelName": "Nome",
             "labelCity": "La tua città o regione",
             "labelBio": "Su di te",
-            "labelSlug": "",
+            "labelSlug": "Il tuo nome utente unico",
             "namePlaceholder": "Anonymous",
-            "success": ""
+            "success": "I tuoi dati sono stati aggiornati con successo!"
         },
         "security": {
             "name": "Sicurezza",
             "change-password": {
-                "button": "",
-                "success": "",
-                "label-old-password": "",
-                "label-new-password": "",
-                "label-new-password-confirm": "",
-                "message-old-password-required": "",
-                "message-new-password-required": "",
-                "message-new-password-confirm-required": "",
-                "message-new-password-missmatch": "",
-                "passwordSecurity": "",
-                "passwordStrength0": "",
-                "passwordStrength1": "",
-                "passwordStrength2": "",
-                "passwordStrength3": "",
-                "passwordStrength4": ""
+                "button": "Cambiare la password",
+                "success": "La password è stata cambiata con successo!",
+                "label-old-password": "La tua vecchia password",
+                "label-new-password": "La tua nuova password",
+                "label-new-password-confirm": "Conferma nuova password",
+                "message-old-password-required": "Inserisci la tua vecchia password",
+                "message-new-password-required": "Inserisci una nuova password",
+                "message-new-password-confirm-required": "Conferma la tua nuova password",
+                "message-new-password-missmatch": "Digitare nuovamente la stessa password",
+                "passwordSecurity": "Sicurezza della password",
+                "passwordStrength0": "Password molto insicura",
+                "passwordStrength1": "Password insicura",
+                "passwordStrength2": "Password mediocre",
+                "passwordStrength3": "Password forte",
+                "passwordStrength4": "Password molto forte"
             }
         },
         "invites": {
@@ -87,29 +87,29 @@
         },
         "email": {
             "validation": {
-                "same-email": ""
+                "same-email": "Questo è il tuo attuale indirizzo e-mail"
             },
-            "name": "",
-            "labelEmail": "",
-            "labelNewEmail": "",
-            "labelNonce": "",
-            "success": "",
-            "submitted": "",
-            "change-successful": "",
+            "name": "Il tuo indirizzo e-mail",
+            "labelEmail": "Cambia il tuo indirizzo e-mail",
+            "labelNewEmail": "Nuovo indirizzo e-mail",
+            "labelNonce": "Inserisci il tuo codice",
+            "success": "È stato registrato un nuovo indirizzo e-mail.",
+            "submitted": "Un'e-mail per verificare il tuo indirizzo è stata inviata a <b>{email}</b>.",
+            "change-successful": "Il tuo indirizzo e-mail è stato modificato con successo.",
             "verification-error": {
-                "message": "",
-                "explanation": "",
+                "message": "La tua e-mail non può essere cambiata.",
+                "explanation": "Questo può avere cause diverse:",
                 "reason": {
-                    "invalid-nonce": "",
-                    "no-email-request": ""
+                    "invalid-nonce": "Il codice di conferma non è valido?",
+                    "no-email-request": "Sei sicuro di aver richiesto una modifica del tuo indirizzo e-mail?"
                 },
-                "support": ""
+                "support": "Se il problema persiste, vi preghiamo di contattarci via e-mail all'indirizzo"
             }
         },
         "validation": {
             "slug": {
-                "regex": "",
-                "alreadyTaken": ""
+                "regex": "I caratteri consentiti sono solo lettere minuscole, numeri e trattini.",
+                "alreadyTaken": "Questo nome utente è già stato preso."
             }
         },
         "deleteUserAccount": {
@@ -122,54 +122,54 @@
             "pleaseConfirm": "<b class='is-danger'>Azione distruttiva! </b> Digita <b>{conferma}</b> per confermare"
         },
         "embeds": {
-            "name": "",
+            "name": "Fornitori terzi",
             "info-description": "Ecco l'elenco dei fornitori di terze parti i cui contenuti possono essere visualizzati come codice di terze parti, ad esempio sotto forma di video incorporati.",
             "status": {
-                "description": "",
+                "description": "Come impostazione predefinita per voi, il codice incorporato di fornitori di terze parti è",
                 "disabled": {
-                    "off": "",
-                    "on": ""
+                    "off": "inizialmente non visualizzato",
+                    "on": "visualizzato immediatamente"
                 },
                 "change": {
-                    "question": "",
-                    "allow": "",
-                    "deny": ""
+                    "question": "Should embedded source code from third parties always be displayed to you?",
+                    "allow": "Certo",
+                    "deny": "No grazie"
                 }
             }
         },
         "social-media": {
-            "name": "",
-            "placeholder": "",
-            "requireUnique": "",
-            "submit": "",
-            "successAdd": "Social media aggiunti. \nProfilo utente aggiornato ",
-            "successDelete": "Social media cancellati. Profilo utente aggiornato!"
+            "name": "I social media",
+            "placeholder": "L'url dei social media",
+            "requireUnique": "Hai già aggiunto questo url",
+            "submit": "Aggiungi link",
+            "successAdd": "Aggiunto i social media. Profilo utente aggiornato!",
+            "successDelete": "Soppresso i social media. Profilo utente aggiornato!"
         },
         "blocked-users": {
-            "name": "",
+            "name": "Utenti bloccati",
             "explanation": {
-                "intro": "",
-                "your-perspective": "",
-                "their-perspective": "",
-                "search": "",
-                "notifications": "",
-                "closing": ""
+                "intro": "Se un altro utente è stato bloccato da voi, ecco cosa succede:",
+                "your-perspective": "I messaggi della persona bloccata non appariranno più nel tuo news feed.",
+                "their-perspective": "Viceversa: anche la persona bloccata non vedrà più i tuoi post nel loro news feed.",
+                "search": "I messaggi di persone bloccate scompaiono dai risultati della ricerca.",
+                "notifications": "Gli utenti bloccati non riceveranno più notifiche se sono menzionati nei tuoi messaggi.",
+                "closing": "Questo dovrebbe essere sufficiente per il momento, in modo che gli utenti bloccati non possano più disturbarvi."
             },
             "columns": {
-                "name": "",
-                "slug": "",
-                "unblock": ""
+                "name": "Nome",
+                "slug": "Lumacca",
+                "unblock": "Sbloccare"
             },
-            "empty": "",
-            "how-to": "",
-            "block": "",
-            "unblock": "",
-            "unblocked": ""
+            "empty": "Finora, non hai bloccato nessuno.",
+            "how-to": "Puoi bloccare altri utenti nella pagina del loro profilo tramite il menu dei contenuti.",
+            "block": "Blocca utente",
+            "unblock": "Sblocca utente",
+            "unblocked": "{name} viene sbloccato di nuovo"
         },
         "privacy": {
-            "name": "",
-            "make-shouts-public": "",
-            "success-update": ""
+            "name": "Privacy",
+            "make-shouts-public": "Condividi articoli che ho urlato sul mio profilo pubblico",
+            "success-update": "Impostazioni sulla privacy salvate"
         }
     },
     "admin": {
@@ -192,19 +192,19 @@
         "users": {
             "name": "Utenti",
             "form": {
-                "placeholder": ""
+                "placeholder": "e-mail, nome o descrizione"
             },
             "table": {
                 "columns": {
-                    "number": "",
-                    "name": "",
-                    "email": "",
-                    "slug": "",
-                    "role": "",
-                    "createdAt": ""
+                    "number": "Numero",
+                    "name": "Nome",
+                    "email": "Indirizzo e-mail",
+                    "slug": "Lumaca",
+                    "role": "Ruolo",
+                    "createdAt": "Creato a"
                 }
             },
-            "empty": ""
+            "empty": "Nessun utente trovato"
         },
         "pages": {
             "name": "Pagine"
@@ -226,16 +226,16 @@
             "name": "Impostazioni"
         },
         "hashtags": {
-            "name": "",
-            "number": "",
-            "nameOfHashtag": "",
-            "tagCountUnique": "",
-            "tagCount": ""
+            "name": "Hashtags",
+            "number": "Numero",
+            "nameOfHashtag": "Nome",
+            "tagCountUnique": "Utenti",
+            "tagCount": "Messaggi"
         },
         "invites": {
-            "name": "",
-            "title": "",
-            "description": ""
+            "name": "Invitare gli utenti",
+            "title": "Invitare le persone",
+            "description": "Gli inviti sono un modo meraviglioso per avere i tuoi amici nella tua rete....."
         },
         "donations": {
             "name": "Info donazioni",
@@ -248,30 +248,30 @@
         "name": "Messaggio",
         "moreInfo": {
             "name": "Ulteriori informazioni",
-            "title": "",
-            "description": "",
-            "titleOfCategoriesSection": "",
-            "titleOfHashtagsSection": "",
-            "titleOfRelatedContributionsSection": ""
+            "title": "Maggiori informazioni",
+            "description": "Qui potete trovare ulteriori informazioni su questo argomento.",
+            "titleOfCategoriesSection": "Categorie",
+            "titleOfHashtagsSection": "Hashtags",
+            "titleOfRelatedContributionsSection": "Messaggi correlati"
         },
         "takeAction": {
             "name": "Agire"
         },
-        "pinned": "",
+        "pinned": "Annuncio",
         "menu": {
-            "edit": "",
-            "delete": "",
-            "pin": "",
-            "pinnedSuccessfully": "",
-            "unpin": "",
-            "unpinnedSuccessfully": ""
+            "edit": "Modifica messaggio",
+            "delete": "Elimina messaggio",
+            "pin": "Pin Post",
+            "pinnedSuccessfully": "Messaggio appuntato con successo",
+            "unpin": "Unpin Post",
+            "unpinnedSuccessfully": "Pubblicare senza pinnato con successo"
         },
         "comment": {
-            "submit": "",
-            "submitted": "",
-            "updated": ""
+            "submit": "Commento",
+            "submitted": "Commento Presentato",
+            "updated": "Modifiche salvate"
         },
-        "edited": ""
+        "edited": "redatto"
     },
     "quotes": {
         "african": {
@@ -433,27 +433,25 @@
         "languageSelectText": ""
     },
     "comment": {
-        "edit": "",
-        "delete": "",
         "content": {
-            "unavailable-placeholder": ""
+            "unavailable-placeholder": ".... questo commento non è più disponibile"
         },
         "menu": {
-            "edit": "",
-            "delete": ""
+            "edit": "Modifica commento",
+            "delete": "Elimina come si fa"
         },
         "show": {
-            "more": "",
-            "less": ""
+            "more": "mostra di più",
+            "less": "mostra meno"
         },
-        "edited": ""
+        "edited": "redatto"
     },
     "followButton": {
-        "follow": "",
-        "following": ""
+        "follow": "Segui",
+        "following": "Di seguito"
     },
     "shoutButton": {
-        "shouted": ""
+        "shouted": "gridato"
     },
     "search": {
         "placeholder": "",
