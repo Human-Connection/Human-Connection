@@ -57,22 +57,19 @@ const notifyUsersOfMention = async (label, id, idsOfUsers, reason, context) => {
     }
     case 'mentioned_in_comment': {
       mentionedCypher = `
-      MATCH (postAuthor: User)-[:WROTE]->(post: Post)<-[:COMMENTS]-(comment: Comment { id: $id })<-[:WROTE]-(author: User)
-      MATCH (user: User)
-      WHERE user.id in $idsOfUsers
-      AND NOT (user)<-[:BLOCKED]-(author)
-      AND NOT (user)<-[:BLOCKED]-(postAuthor)
-      MERGE (comment)-[notification:NOTIFIED {reason: $reason}]->(user)
+        MATCH (postAuthor: User)-[:WROTE]->(post: Post)<-[:COMMENTS]-(comment: Comment { id: $id })<-[:WROTE]-(author: User)
+        MATCH (user: User)
+        WHERE user.id in $idsOfUsers
+        AND NOT (user)<-[:BLOCKED]-(author)
+        AND NOT (user)<-[:BLOCKED]-(postAuthor)
+        MERGE (comment)-[notification:NOTIFIED {reason: $reason}]->(user)
       `
       break
     }
   }
   mentionedCypher += `
     SET notification.read = FALSE
-    SET (
-    CASE
-    WHEN notification.createdAt IS NULL
-    THEN notification END ).createdAt = toString(datetime())
+    SET ( CASE WHEN notification.createdAt IS NULL THEN notification END ).createdAt = toString(datetime())
     SET notification.updatedAt = toString(datetime())
   `
   const session = context.driver.session()
@@ -93,16 +90,13 @@ const notifyUsersOfComment = async (label, commentId, postAuthorId, reason, cont
     await session.writeTransaction(async transaction => {
       await transaction.run(
         `
-        MATCH (postAuthor:User {id: $postAuthorId})-[:WROTE]->(post:Post)<-[:COMMENTS]-(comment:Comment { id: $commentId })<-[:WROTE]-(commenter:User)
-        WHERE NOT (postAuthor)-[:BLOCKED]-(commenter)
-        MERGE (comment)-[notification:NOTIFIED {reason: $reason}]->(postAuthor)
-        SET notification.read = FALSE
-        SET (
-        CASE
-        WHEN notification.createdAt IS NULL
-        THEN notification END ).createdAt = toString(datetime())
-        SET notification.updatedAt = toString(datetime())
-      `,
+          MATCH (postAuthor:User {id: $postAuthorId})-[:WROTE]->(post:Post)<-[:COMMENTS]-(comment:Comment { id: $commentId })<-[:WROTE]-(commenter:User)
+          WHERE NOT (postAuthor)-[:BLOCKED]-(commenter)
+          MERGE (comment)-[notification:NOTIFIED {reason: $reason}]->(postAuthor)
+          SET notification.read = FALSE
+          SET ( CASE WHEN notification.createdAt IS NULL THEN notification END ).createdAt = toString(datetime())
+          SET notification.updatedAt = toString(datetime())
+        `,
         { commentId, postAuthorId, reason },
       )
     })
@@ -125,35 +119,30 @@ const notifyReportFiler = async (resolve, root, args, context, resolveInfo) => {
     console.log('resourceId: ', resourceId)
     console.log('user.id: ', user.id)
     console.log('reportId: ', reportId)
-    // Wolle await notifyUsers(report.resource.__typename, resourceId, [user.id], 'filed_report_on_resource', context)
     const session = driver.session()
-    const notificationWriteTxResultPromise = session.writeTransaction(async transaction => {
-      const notificationTransactionResponse = await transaction.run(
-        `
-          MATCH (resource {id: $resourceId})<-[:BELONGS_TO]-(:Report {id: $reportId})<-[:FILED]-(submitter:User {id: $submitterId})
-          WHERE resource: User OR resource: Post OR resource: Comment
-          MERGE (resource)-[notification:NOTIFIED {reason: $reason, reportId: $reportId}]->(submitter)
-          ON CREATE SET notification.createdAt = toString(datetime()), notification.updatedAt = notification.createdAt
-          ON MERGE SET notification.updatedAt = toString(datetime())
-          SET notification.read = FALSE
-        `,
-        {
-          reportId,
-          resourceId,
-          submitterId: user.id,
-          reason: 'filed_report_on_resource',
-          // Wolle reasonCategory,
-          // Wolle reasonDescription,
-        },
-      )
-      console.log('notificationTransactionResponse: ', notificationTransactionResponse)
-      log(notificationTransactionResponse)
-      // Wolle return notificationTransactionResponse.records.map(transformReturnType)
-    })
     try {
-      await notificationWriteTxResultPromise
-      // Wolle if (!createdRelationshipWithNestedAttributes) return null
-      // Wolle return createdRelationshipWithNestedAttributes
+      await session.writeTransaction(async transaction => {
+        await transaction.run(
+          `
+            MATCH (resource {id: $resourceId})<-[:BELONGS_TO]-(:Report {id: $reportId})<-[:FILED]-(submitter:User {id: $submitterId})
+            WHERE resource: User OR resource: Post OR resource: Comment
+            // Wolle MERGE (resource)-[notification:NOTIFIED {reason: $reason, reportId: $reportId}]->(submitter)
+            MERGE (resource)-[notification:NOTIFIED {reason: $reason}]->(submitter)
+            ON CREATE SET notification.createdAt = toString(datetime()), notification.updatedAt = notification.createdAt
+            ON MATCH SET notification.updatedAt = toString(datetime())
+            SET notification.read = FALSE
+          `,
+          {
+            reportId,
+            resourceId,
+            submitterId: user.id,
+            reason: 'filed_report_on_resource',
+            // Wolle reasonCategory,
+            // Wolle reasonDescription,
+          },
+        )
+        console.log('success !!!')
+      })
     } finally {
       session.close()
     }
