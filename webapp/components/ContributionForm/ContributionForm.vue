@@ -10,7 +10,7 @@
       <hc-teaser-image
         :contribution="contribution"
         @addTeaserImage="addTeaserImage"
-        :class="{ '--blur-image': blurImage }"
+        :class="{ '--blur-image': form.blurImage }"
         @addImageAspectRatio="addImageAspectRatio"
       >
         <img
@@ -23,7 +23,7 @@
       <ds-card>
         <div class="blur-toggle">
           <label for="blur-img">{{ $t('contribution.inappropriatePicture') }}</label>
-          <input name="checkbox" type="checkbox" id="blur-img" v-model="blurImage" />
+          <input type="checkbox" id="blur-img" v-model="form.blurImage" />
           <p>
             <a
               href="https://support.human-connection.org/kb/faq.php?id=113"
@@ -152,8 +152,9 @@ export default {
       image: null,
       language: null,
       categoryIds: [],
-      checkbox: false,
+      blurImage: false,
     }
+
     let id = null
     let slug = null
     const form = { ...formDefaults }
@@ -168,7 +169,7 @@ export default {
           ? languageOptions.find(o => this.contribution.language === o.value)
           : null
       form.categoryIds = this.categoryIds(this.contribution.categories)
-      form.checkbox = this.contribution.imageBlurred
+      form.blurImage = this.contribution.imageBlurred
     }
 
     return {
@@ -188,7 +189,7 @@ export default {
           },
         },
         language: { required: true },
-        checkbox: { required: false },
+        blurImage: { required: false },
       },
       languageOptions,
       id,
@@ -198,7 +199,6 @@ export default {
       contentMin: 3,
       hashtags: [],
       elem: null,
-      blurImage: form.checkbox,
     }
   },
   computed: {
@@ -219,6 +219,7 @@ export default {
         teaserImage,
         imageAspectRatio,
         categoryIds,
+        blurImage,
       } = this.form
       this.loading = true
       this.$apollo
@@ -232,7 +233,7 @@ export default {
             language,
             image,
             imageUpload: teaserImage,
-            imageBlurred: this.blurImage,
+            imageBlurred: blurImage,
             imageAspectRatio,
           },
         })
