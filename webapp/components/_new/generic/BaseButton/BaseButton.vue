@@ -1,5 +1,10 @@
 <template>
-  <button :type="type" :class="buttonClass" :disabled="loading" @click="$emit('click')">
+  <button
+    :type="type"
+    :class="buttonClass"
+    :disabled="loading"
+    @click.capture="(event) => $emit('click', event)"
+  >
     <loading-spinner v-if="loading" />
     <base-icon v-if="icon" :name="icon" />
     <slot />
@@ -20,6 +25,10 @@ export default {
     },
     icon: {
       type: String,
+    },
+    ghost: {
+      type: Boolean,
+      default: false,
     },
     primary: {
       type: Boolean,
@@ -54,6 +63,7 @@ export default {
 
       if (this.$slots.default == null) buttonClass += ' --icon-only'
       if (this.circle) buttonClass += ' --circle'
+      if (this.ghost) buttonClass += ' --ghost'
       if (this.loading) buttonClass += ' --loading'
 
       if (this.primary) buttonClass += ' --primary'
@@ -164,6 +174,10 @@ export default {
   &.--circle {
     width: 36px;
     border-radius: 50%;
+  }
+
+  &.--ghost {
+    border: none;
   }
 
   &:not(.--icon-only) > .base-icon {

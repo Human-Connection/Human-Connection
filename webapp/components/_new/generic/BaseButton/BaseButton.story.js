@@ -71,3 +71,14 @@ storiesOf('Generic/BaseButton', module)
       </div>
     `,
   }))
+
+  .add('ghost', () => ({
+    // TODO: add documentation --> ghost button should only be used for very special occasions
+    // e.g. for the ContentMenu + for the EditorMenuBarButtons
+    components: { BaseButton },
+    template: `
+      <div>
+        <base-button size="small" icon="ellipsis-v" circle ghost />
+      </div>
+    `
+  }))
