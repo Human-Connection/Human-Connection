@@ -40,6 +40,16 @@ storiesOf('Generic/BaseButton', module)
     `,
   }))
 
+  .add('small', () => ({
+    components: { BaseButton },
+    template: `
+      <div>
+        <base-button size="small">Small</base-button>
+        <base-button size="small" circle>S</base-button>
+      </div>
+    `
+  }))
+
   .add('primary', () => ({
     components: { BaseButton },
     template: `

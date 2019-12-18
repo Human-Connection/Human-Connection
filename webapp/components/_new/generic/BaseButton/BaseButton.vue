@@ -1,5 +1,5 @@
 <template>
-  <button :class="buttonClass" :disabled="loading">
+  <button :class="buttonClass" :disabled="loading" @click="$emit('click')">
     <loading-spinner v-if="loading" />
     <base-icon v-if="icon" :name="icon" />
     <slot />
@@ -33,6 +33,13 @@ export default {
       type: Boolean,
       default: false,
     },
+    size: {
+      type: String,
+      default: 'regular',
+      validator(value) {
+        return value.match(/(small|regular|large)/)
+      },
+    },
   },
   computed: {
     buttonClass() {
@@ -41,8 +48,12 @@ export default {
       if (this.$slots.default == null) buttonClass += ' --icon-only'
       if (this.circle) buttonClass += ' --circle'
       if (this.loading) buttonClass += ' --loading'
+
       if (this.primary) buttonClass += ' --primary'
       else if (this.danger) buttonClass += ' --danger'
+
+      if (this.size === 'small') buttonClass += ' --small'
+      else if (this.size === 'large') buttonClass += ' --large'
 
       return buttonClass
     }
@@ -59,7 +70,7 @@ export default {
   padding: 0 12px;
   vertical-align: bottom;
   color: $color-primary;
-  background-color: $color-neutral-90;
+  background-color: transparent;
   border: 1px solid $color-primary;
   border-radius: 6px;
   overflow: hidden;
@@ -85,44 +96,62 @@ export default {
   &:disabled {
     color: $color-neutral-60;
     border-color: $color-neutral-60;
-    background-color: $color-neutral-90;
+    background-color: transparent;
     cursor: default;
   }
 
   &.--primary {
-    border: none;
     color: $color-neutral-100;
     background-color: $color-primary;
 
     &:hover {
       background-color: $color-primary-light;
+      border-color: $color-primary-light;
     }
 
     &:active {
       background-color: $color-primary-dark;
+      border-color: $color-primary-dark;
     }
 
     &:disabled {
       background-color: $color-neutral-60;
+      border-color: $color-neutral-60;
     }
   }
 
   &.--danger {
-    border: none;
     color: $color-neutral-100;
     background-color: $color-danger;
+    border-color: $color-danger;
 
     &:hover {
       background-color: $color-danger-light;
+      border-color: $color-danger-light;
     }
 
     &:active {
       background-color: $color-danger-dark;
+      border-color: $color-danger-dark;
     }
 
     &:disabled {
       background-color: $color-neutral-60;
+      border-color: $color-neutral-60;
     }
+  }
+
+  &.--small {
+    height: 26px;
+    font-size: $font-size-small;
+
+    &.--circle {
+      width: 26px;
+    }
+  }
+
+  &.--large {
+
   }
 
   &.--circle {
