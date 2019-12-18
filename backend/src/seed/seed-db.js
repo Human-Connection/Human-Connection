@@ -361,7 +361,6 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         language: sample(languages),
         image: faker.image.unsplash.technology(300, 1500),
         categoryIds: ['cat1'],
-        imageBlurred: false,
         imageAspectRatio: 300 / 1500,
       }),
       factory.create('Post', {
@@ -369,21 +368,18 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         id: 'p3',
         language: sample(languages),
         categoryIds: ['cat3'],
-        imageBlurred: false,
       }),
       factory.create('Post', {
         author: dewey,
         id: 'p4',
         language: sample(languages),
         categoryIds: ['cat4'],
-        imageBlurred: false,
       }),
       factory.create('Post', {
         author: louie,
         id: 'p5',
         language: sample(languages),
         categoryIds: ['cat5'],
-        imageBlurred: false,
       }),
       factory.create('Post', {
         authorId: 'u1',
@@ -391,7 +387,6 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         language: sample(languages),
         image: faker.image.unsplash.buildings(300, 857),
         categoryIds: ['cat6'],
-        imageBlurred: false,
         imageAspectRatio: 300 / 857,
       }),
       factory.create('Post', {
@@ -399,7 +394,6 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         id: 'p9',
         language: sample(languages),
         categoryIds: ['cat9'],
-        imageBlurred: false,
       }),
       factory.create('Post', {
         author: dewey,
@@ -413,7 +407,6 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         language: sample(languages),
         image: faker.image.unsplash.people(300, 901),
         categoryIds: ['cat11'],
-        imageBlurred: false,
         imageAspectRatio: 300 / 901,
       }),
       factory.create('Post', {
@@ -421,7 +414,6 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         id: 'p13',
         language: sample(languages),
         categoryIds: ['cat13'],
-        imageBlurred: false,
       }),
       factory.create('Post', {
         author: jennyRostock,
@@ -429,7 +421,6 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         language: sample(languages),
         image: faker.image.unsplash.objects(300, 200),
         categoryIds: ['cat14'],
-        imageBlurred: false,
         imageAspectRatio: 300 / 450,
       }),
       factory.create('Post', {
@@ -437,7 +428,6 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         id: 'p15',
         language: sample(languages),
         categoryIds: ['cat15'],
-        imageBlurred: false,
       }),
     ])
 
@@ -480,7 +470,6 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           title: `Nature Philosophy Yoga`,
           content: hashtag1,
           categoryIds: ['cat2'],
-          imageBlurred: false,
           imageAspectRatio: 300 / 200,
         },
       }),
@@ -491,7 +480,6 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           title: 'This is post #7',
           content: `${mention1} ${faker.lorem.paragraph()}`,
           categoryIds: ['cat7'],
-          imageBlurred: false,
           imageAspectRatio: 300 / 180,
         },
       }),
@@ -503,7 +491,6 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           title: `Quantum Flow Theory explains Quantum Gravity`,
           content: hashtagAndMention1,
           categoryIds: ['cat8'],
-          imageBlurred: false,
           imageAspectRatio: 300 / 900,
         },
       }),
@@ -514,7 +501,6 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           title: 'This is post #12',
           content: `${mention2} ${faker.lorem.paragraph()}`,
           categoryIds: ['cat12'],
-          imageBlurred: false,
           imageAspectRatio: 300 / 200,
         },
       }),
