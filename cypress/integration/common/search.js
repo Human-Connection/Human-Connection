@@ -1,6 +1,6 @@
 import { When, Then } from "cypress-cucumber-preprocessor/steps";
 When("I search for {string}", value => {
-  cy.get("#nav-search")
+  cy.get("#search-resources")
     .focus()
     .type(value);
 });
@@ -25,21 +25,21 @@ Then("I should see the following posts in the select dropdown:", table => {
 });
 
 When("I type {string} and press Enter", value => {
-  cy.get("#nav-search")
+  cy.get("#search-resources")
     .focus()
     .type(value)
     .type("{enter}", { force: true });
 });
 
 When("I type {string} and press escape", value => {
-  cy.get("#nav-search")
+  cy.get("#search-resources")
     .focus()
     .type(value)
     .type("{esc}");
 });
 
 Then("the search field should clear", () => {
-  cy.get("#nav-search").should("have.text", "");
+  cy.get("#search-resources").should("have.text", "");
 });
 
 When("I select an entry", () => {

@@ -1,3 +1,5 @@
+import { filterForBlockedUsers } from './helpers/filterForBlockedUsers'
+
 const transformReturnType = record => {
   return {
     __typename: record.get('type'),
@@ -6,9 +8,10 @@ const transformReturnType = record => {
 }
 export default {
   Query: {
-    findResources: async (_parent, args, context, _resolveInfo) => {
-      const { query, limit } = args
-      const filter = {}
+    findResources: async (_parent, params, context, _resolveInfo) => {
+      params = await filterForBlockedUsers(params, context)
+      const { query, limit } = params
+      const filter = { ...params.filter }
       const { id: thisUserId } = context.user
       // see http://lucene.apache.org/core/8_3_1/queryparser/org/apache/lucene/queryparser/classic/package-summary.html#package.description
       const myQuery = query.replace(/\s/g, '* ') + '*'
@@ -17,10 +20,10 @@ export default {
       YIELD node as resource, score
       MATCH (resource)<-[:WROTE]-(user:User)
       WHERE score >= 0.5
-      AND NOT user.deleted = true AND NOT user.disabled = true
-      AND NOT resource.deleted = true AND NOT resource.disabled = true
-      AND NOT user.id in COALESCE($filter.author_not.id_in, [])
-      AND NOT (:User { id: $thisUserId })-[:BLOCKED]-(user)
+      AND NOT (user.deleted = true AND NOT user.disabled = true
+      OR resource.deleted = true AND NOT resource.disabled = true
+      OR user.id in COALESCE($filter.author_not.id_in, [])
+      OR (:User { id: $thisUserId })-[:BLOCKED]-(user))
       RETURN resource, labels(resource)[0] AS type
       LIMIT $limit
       `
@@ -46,8 +49,8 @@ export default {
       YIELD node as resource, score
       MATCH (resource)
       WHERE score >= 0.5
-      AND NOT resource.deleted = true AND NOT resource.disabled = true
-      AND NOT (:User { id: $thisUserId })-[:BLOCKED]-(resource)
+      AND NOT (resource.deleted = true AND NOT resource.disabled = true 
+      OR (:User { id: $thisUserId })-[:BLOCKED]-(resource))
       RETURN resource, labels(resource)[0] AS type
       LIMIT $limit
       `
