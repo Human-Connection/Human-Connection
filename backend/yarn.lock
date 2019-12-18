@@ -5878,12 +5878,12 @@ metascraper-publisher@^5.8.7:
   dependencies:
     "@metascraper/helpers" "^5.8.7"
 
-metascraper-soundcloud@^5.8.10:
-  version "5.8.10"
-  resolved "https://registry.yarnpkg.com/metascraper-soundcloud/-/metascraper-soundcloud-5.8.10.tgz#c281a35e2e7289006bd304dfb4074f01451e7f26"
-  integrity sha512-IBGGBFrzRiS1bTyR9+eJwv+fPvC8KoggpAZnGPABep4ZhfajblI3B+8U1kIXHMaFR4b1BaD4d+tWh3gNLZCjwQ==
+metascraper-soundcloud@^5.8.12:
+  version "5.8.12"
+  resolved "https://registry.yarnpkg.com/metascraper-soundcloud/-/metascraper-soundcloud-5.8.12.tgz#6cfc2b0d317da4ac1836153cad9c9ce674b327ec"
+  integrity sha512-4P8HBCKh//ej3jNv33/6rLPXug51JT3DmkwUouXGfWc++MXaNmUdN+BC2oYGJhYoJCADWitNHTjgzysd3kjZ7w==
   dependencies:
-    "@metascraper/helpers" "^5.8.10"
+    "@metascraper/helpers" "^5.8.12"
     tldts "~5.6.2"
 
 metascraper-title@^5.8.10:
