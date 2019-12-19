@@ -7,7 +7,7 @@ helpers.init()
 
 export const results = [
   {
-    id: 'de100841-2336-4b01-a574-f1bd2c0b262a',
+    id: 'post-by-jenny',
     __typename: 'Post',
     slug: 'user-post-by-jenny',
     title: 'User Post by Jenny',
