@@ -23,13 +23,13 @@ describe('Paginate.vue', () => {
       beforeEach(() => {
         propsData.hasNext = true
         wrapper = Wrapper()
-        nextButton = wrapper.findAll('.ds-button').at(0)
+        nextButton = wrapper.findAll('.base-button').at(0)
       })
 
       it('is disabled by default', () => {
         propsData = {}
         wrapper = Wrapper()
-        nextButton = wrapper.findAll('.ds-button').at(0)
+        nextButton = wrapper.findAll('.base-button').at(0)
         expect(nextButton.attributes().disabled).toEqual('disabled')
       })
 
@@ -47,13 +47,13 @@ describe('Paginate.vue', () => {
       beforeEach(() => {
         propsData.hasPrevious = true
         wrapper = Wrapper()
-        backButton = wrapper.findAll('.ds-button').at(1)
+        backButton = wrapper.findAll('.base-button').at(1)
       })
 
       it('is disabled by default', () => {
         propsData = {}
         wrapper = Wrapper()
-        backButton = wrapper.findAll('.ds-button').at(1)
+        backButton = wrapper.findAll('.base-button').at(1)
         expect(backButton.attributes().disabled).toEqual('disabled')
       })
 

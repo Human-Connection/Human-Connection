@@ -1,13 +1,10 @@
 <template>
-  <ds-flex direction="row-reverse">
-    <ds-flex-item width="50px">
-      <ds-button @click="next" :disabled="!hasNext" icon="arrow-right" primary />
-    </ds-flex-item>
-    <ds-flex-item width="50px">
-      <ds-button @click="back" :disabled="!hasPrevious" icon="arrow-left" primary />
-    </ds-flex-item>
-  </ds-flex>
+  <div class="paginate">
+    <base-button @click="back" :disabled="!hasPrevious" icon="arrow-left" circle />
+    <base-button @click="next" :disabled="!hasNext" icon="arrow-right" circle />
+  </div>
 </template>
+
 <script>
 export default {
   props: {
@@ -24,3 +21,12 @@ export default {
   },
 }
 </script>
+
+<style lang="scss">
+.paginate {
+  display: flex;
+  justify-content: space-around;
+  width: 100px;
+  margin: $space-x-small auto;
+}
+</style>
