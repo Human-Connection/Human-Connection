@@ -15,6 +15,7 @@ import notifications from './notifications/notificationsMiddleware'
 import hashtags from './hashtags/hashtagsMiddleware'
 import email from './email/emailMiddleware'
 import sentry from './sentryMiddleware'
+import demoMiddleware from './demoMiddleware'
 
 export default schema => {
   const middlewares = {
@@ -32,6 +33,7 @@ export default schema => {
     includedFields,
     orderBy,
     email,
+    demoMiddleware,
   }
 
   let order = [
@@ -49,6 +51,7 @@ export default schema => {
     'user',
     'includedFields',
     'orderBy',
+    'demoMiddleware',
   ]
 
   // add permisions middleware at the first position (unless we're seeding)

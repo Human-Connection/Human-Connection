@@ -1,4 +1,5 @@
 type Query {
+  listCategories: [Category]
   isLoggedIn: Boolean!
   # Get the currently logged in User based on the given JWT Token
   currentUser: User
