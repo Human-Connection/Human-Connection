@@ -341,6 +341,7 @@ export default {
         'language',
         'pinnedAt',
         'pinned',
+        'imageBlurred',
         'imageAspectRatio',
       ],
       hasMany: {

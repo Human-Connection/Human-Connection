@@ -452,6 +452,7 @@
         "filterALL": "Alle Beiträge anzeigen",
         "success": "Gespeichert!",
         "languageSelectLabel": "Sprache",
+        "languageSelectText": "Sprache wählen",
         "categories": {
             "infoSelectedNoOfMaxCategories": "{chosen} von {max} Kategorien ausgewählt"
         },
@@ -484,8 +485,9 @@
         },
         "teaserImage": {
             "cropperConfirm": "Bestätigen"
-        },
-        "languageSelectText": "Sprache wählen"
+        },        
+        "inappropriatePicture" : "Dieses Bild kann für einige Menschen unangemessen sein.",
+        "inappropriatePictureText" : "Wann soll ein Foto versteckt werden"
     },
     "comment": {
         "edit": "Kommentar bearbeiten",

@@ -200,6 +200,7 @@ describe('ContributionForm.vue', () => {
               imageUpload: null,
               imageAspectRatio: null,
               image: null,
+              imageBlurred: false,
             },
           }
           postTitleInput = wrapper.find('.ds-input')
