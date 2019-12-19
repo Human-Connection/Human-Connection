@@ -50,13 +50,7 @@
             <ds-space margin-bottom="large">
               <nuxt-link to="/password-reset/request">{{ $t('login.forgotPassword') }}</nuxt-link>
             </ds-space>
-            <base-button
-              :loading="pending"
-              primary
-              name="submit"
-              type="submit"
-              icon="sign-in"
-            >
+            <base-button :loading="pending" primary name="submit" type="submit" icon="sign-in">
               {{ $t('login.login') }}
             </base-button>
             <ds-space margin-top="large" margin-bottom="x-small">

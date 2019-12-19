@@ -45,7 +45,7 @@ export default {
     border-radius: 50%;
     transform: translateX(50%);
 
-    color:$color-neutral-100;
+    color: $color-neutral-100;
     background-color: $color-primary;
     font-size: 10px;
     line-height: 1;

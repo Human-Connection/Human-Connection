@@ -3,7 +3,7 @@
     :type="type"
     :class="buttonClass"
     :disabled="loading"
-    @click.capture="(event) => $emit('click', event)"
+    @click.capture="event => $emit('click', event)"
   >
     <loading-spinner v-if="loading" />
     <base-icon v-if="icon" :name="icon" />
@@ -73,8 +73,8 @@ export default {
       else if (this.size === 'large') buttonClass += ' --large'
 
       return buttonClass
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -93,7 +93,7 @@ export default {
   overflow: hidden;
   font-weight: $font-weight-bold;
   cursor: pointer;
-  transition: background-color .1s;
+  transition: background-color 0.1s;
 
   &:focus {
     outline: 1px dashed $color-primary;
@@ -168,7 +168,6 @@ export default {
   }
 
   &.--large {
-
   }
 
   &.--circle {

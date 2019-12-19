@@ -42,7 +42,11 @@
     <client-only>
       <nuxt-link :to="{ name: 'post-create' }">
         <base-button
-          v-tooltip="{ content: $t('contribution.newPost'), placement: 'left', delay: { show: 500 } }"
+          v-tooltip="{
+            content: $t('contribution.newPost'),
+            placement: 'left',
+            delay: { show: 500 },
+          }"
           class="post-add-button"
           icon="plus"
           primary

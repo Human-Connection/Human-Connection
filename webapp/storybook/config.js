@@ -2,6 +2,7 @@ import { addParameters, configure } from '@storybook/vue'
 import Vue from 'vue'
 import Vuex from 'vuex'
 import { action } from '@storybook/addon-actions'
+// eslint-disable-next-line import/no-webpack-loader-syntax
 import '!style-loader!css-loader!sass-loader!../assets/_new/styles/resets.scss'
 
 Vue.use(Vuex)
@@ -60,7 +61,7 @@ addParameters({
   options: {
     storySort: (a, b) =>
       a[1].kind === b[1].kind ? 0 : a[1].id.localeCompare(b[1].id, { numeric: true }),
-  }
+  },
 })
 
 configure(loadStories, module)

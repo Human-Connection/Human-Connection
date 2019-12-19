@@ -37,11 +37,7 @@
       </ds-flex-item>
       <div v-for="emotion in emotionsArray" :key="emotion">
         <ds-flex-item :width="{ lg: '100%' }">
-          <base-button
-            @click="toogleFilteredByEmotions(emotion)"
-            class="emotions-buttons"
-            circle
-          >
+          <base-button @click="toogleFilteredByEmotions(emotion)" class="emotions-buttons" circle>
             <img :src="iconPath(emotion)" width="40" />
           </base-button>
           <ds-space margin-bottom="x-small" />

@@ -47,7 +47,7 @@ storiesOf('Generic/BaseButton', module)
         <base-button size="small">Small</base-button>
         <base-button size="small" circle>S</base-button>
       </div>
-    `
+    `,
   }))
 
   .add('primary', () => ({
@@ -80,5 +80,5 @@ storiesOf('Generic/BaseButton', module)
       <div>
         <base-button size="small" icon="ellipsis-v" circle ghost />
       </div>
-    `
+    `,
   }))
