@@ -4,11 +4,7 @@ import { createTestClient } from 'apollo-server-testing'
 import { getNeode, getDriver } from '../../bootstrap/neo4j'
 import createServer from '../../server'
 
-let server
-let query
-let mutate
-let notifiedUser
-let authenticatedUser
+let server, query, mutate, notifiedUser, authenticatedUser
 const factory = Factory()
 const driver = getDriver()
 const neode = getNeode()
@@ -39,7 +35,8 @@ const createCommentMutation = gql`
   }
 `
 
-beforeAll(() => {
+beforeAll(async () => {
+  await factory.cleanDatabase()
   const createServerResult = createServer({
     context: () => {
       return {
@@ -173,7 +170,6 @@ describe('notifications', () => {
                 ],
               },
             })
-            const { query } = createTestClient(server)
             await expect(
               query({
                 query: notificationQuery,
@@ -190,7 +186,7 @@ describe('notifications', () => {
             const expected = expect.objectContaining({
               data: { notifications: [] },
             })
-            const { query } = createTestClient(server)
+
             await expect(
               query({
                 query: notificationQuery,
@@ -214,7 +210,7 @@ describe('notifications', () => {
             const expected = expect.objectContaining({
               data: { notifications: [] },
             })
-            const { query } = createTestClient(server)
+
             await expect(
               query({
                 query: notificationQuery,
@@ -265,7 +261,7 @@ describe('notifications', () => {
               ],
             },
           })
-          const { query } = createTestClient(server)
+
           await expect(
             query({
               query: notificationQuery,
@@ -409,7 +405,7 @@ describe('notifications', () => {
             const expected = expect.objectContaining({
               data: { notifications: [] },
             })
-            const { query } = createTestClient(server)
+
             await expect(
               query({
                 query: notificationQuery,
@@ -467,7 +463,7 @@ describe('notifications', () => {
                 ],
               },
             })
-            const { query } = createTestClient(server)
+
             await expect(
               query({
                 query: notificationQuery,
@@ -501,7 +497,7 @@ describe('notifications', () => {
                 ],
               },
             })
-            const { query } = createTestClient(server)
+
             await expect(
               query({
                 query: notificationQuery,
@@ -532,7 +528,7 @@ describe('notifications', () => {
             const expected = expect.objectContaining({
               data: { notifications: [] },
             })
-            const { query } = createTestClient(server)
+
             await expect(
               query({
                 query: notificationQuery,

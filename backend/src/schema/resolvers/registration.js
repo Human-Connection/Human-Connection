@@ -40,7 +40,7 @@ export default {
       `,
         { nonce, email },
       )
-      const emailAddress = await neode.hydrateFirst(result, 'email', neode.model('Email'))
+      const emailAddress = await neode.hydrateFirst(result, 'email', neode.model('EmailAddress'))
       if (!emailAddress) throw new UserInputError('Invalid email or nonce')
       args = await fileUpload(args, { file: 'avatarUpload', url: 'avatar' })
       args = await encryptPassword(args)

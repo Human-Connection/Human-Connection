@@ -70,15 +70,11 @@ describe('slug', () => {
     })
 
     it(' ', async () => {
-      await expect(createUser({ slug: 'matt rider' })).rejects.toThrow(
-        /fails to match the required pattern/,
-      )
+      await expect(createUser({ slug: 'matt rider' })).rejects.toThrow('ERROR_VALIDATION')
     })
 
     it('ä', async () => {
-      await expect(createUser({ slug: 'mätt' })).rejects.toThrow(
-        /fails to match the required pattern/,
-      )
+      await expect(createUser({ slug: 'mätt' })).rejects.toThrow('ERROR_VALIDATION')
     })
   })
 })

@@ -47,17 +47,18 @@ const isAuthor = rule({
   if (!user) return false
   const { id: resourceId } = args
   const session = driver.session()
-  try {
-    const result = await session.run(
+  const authorReadTxPromise = session.readTransaction(async transaction => {
+    const authorTransactionResponse = await transaction.run(
       `
-      MATCH (resource {id: $resourceId})<-[:WROTE]-(author {id: $userId})
-      RETURN author
-    `,
+        MATCH (resource {id: $resourceId})<-[:WROTE]-(author {id: $userId})
+        RETURN author
+      `,
       { resourceId, userId: user.id },
     )
-    const [author] = result.records.map(record => {
-      return record.get('author')
-    })
+    return authorTransactionResponse.records.map(record => record.get('author'))
+  })
+  try {
+    const [author] = await authorReadTxPromise
     return !!author
   } finally {
     session.close()
