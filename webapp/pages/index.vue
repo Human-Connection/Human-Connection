@@ -8,7 +8,7 @@
         <!--<donation-info /> -->
         <div>
           <a target="_blank" href="https://human-connection.org/spenden/">
-            <ds-button primary>{{ $t('donations.donate-now') }}</ds-button>
+            <base-button primary>{{ $t('donations.donate-now') }}</base-button>
           </a>
         </div>
         <div class="sorting-dropdown">
@@ -40,14 +40,15 @@
       </template>
     </masonry-grid>
     <client-only>
-      <ds-button
-        v-tooltip="{ content: $t('contribution.newPost'), placement: 'left', delay: { show: 500 } }"
-        :path="{ name: 'post-create' }"
-        class="post-add-button"
-        icon="plus"
-        size="x-large"
-        primary
-      />
+      <nuxt-link :to="{ name: 'post-create' }">
+        <base-button
+          v-tooltip="{ content: $t('contribution.newPost'), placement: 'left', delay: { show: 500 } }"
+          class="post-add-button"
+          icon="plus"
+          primary
+          circle
+        />
+      </nuxt-link>
     </client-only>
     <client-only>
       <infinite-loading v-if="hasMore" @infinite="showMoreContributions">
@@ -235,7 +236,10 @@ export default {
   }
 }
 
-.post-add-button {
+.base-button.--circle.post-add-button {
+  height: 54px;
+  width: 54px;
+  font-size: 26px;
   z-index: 100;
   position: fixed;
   bottom: -5px;

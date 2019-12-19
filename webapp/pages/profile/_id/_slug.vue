@@ -73,9 +73,9 @@
                 @optimistic="optimisticFollow"
                 @update="updateFollow"
               />
-              <ds-button v-else fullwidth @click="unblock(user)">
+              <base-button v-else @click="unblock(user)" class="unblock-user-button">
                 {{ $t('settings.blocked-users.unblock') }}
-              </ds-button>
+              </base-button>
             </template>
           </ds-space>
           <template v-if="user.about">
@@ -215,7 +215,7 @@
 
           <ds-grid-item :row-span="2" column-span="fullWidth">
             <ds-space centered>
-              <ds-button
+              <base-button
                 v-if="myProfile"
                 v-tooltip="{
                   content: $t('contribution.newPost'),
@@ -225,7 +225,7 @@
                 :path="{ name: 'post-create' }"
                 class="profile-post-add-button"
                 icon="plus"
-                size="large"
+                circle
                 primary
               />
             </ds-space>
@@ -549,5 +549,9 @@ export default {
 }
 .profile-post-add-button {
   box-shadow: $box-shadow-x-large;
+}
+.unblock-user-button {
+  display: block;
+  width: 100%;
 }
 </style>

@@ -4,7 +4,7 @@
       <input id="allow-shouts" type="checkbox" v-model="shoutsAllowed" />
       <label for="allow-shouts">{{ $t('settings.privacy.make-shouts-public') }}</label>
     </ds-space>
-    <ds-button primary @click="submit" :disabled="disabled">{{ $t('actions.save') }}</ds-button>
+    <base-button primary @click="submit" :disabled="disabled">{{ $t('actions.save') }}</base-button>
   </ds-card>
 </template>
 

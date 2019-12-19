@@ -19,9 +19,9 @@
           <ds-space class="backendErrors" v-if="backendErrors">
             <ds-text align="center" bold color="danger">{{ backendErrors.message }}</ds-text>
           </ds-space>
-          <ds-button icon="check" :disabled="errors" type="submit" primary>
+          <base-button icon="check" :disabled="errors" type="submit" primary>
             {{ $t('actions.save') }}
-          </ds-button>
+          </base-button>
         </template>
       </ds-card>
     </template>

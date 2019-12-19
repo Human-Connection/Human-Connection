@@ -8,9 +8,9 @@
         placeholder="1200"
         icon="money"
       />
-      <ds-button primary type="submit" :disabled="!formData.goal || !formData.progress">
+      <base-button primary type="submit" :disabled="!formData.goal || !formData.progress">
         {{ $t('actions.save') }}
-      </ds-button>
+      </base-button>
     </ds-form>
   </ds-card>
 </template>
