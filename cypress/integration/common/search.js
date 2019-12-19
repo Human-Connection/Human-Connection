@@ -5,22 +5,30 @@ When("I search for {string}", value => {
     .type(value);
 });
 
-Then("I should have one post in the select dropdown", () => {
-  cy.get(".input .ds-select-dropdown").should($li => {
+Then("I should have one item in the select dropdown", () => {
+  cy.get(".searchable-input .ds-select-dropdown").should($li => {
     expect($li).to.have.length(1);
   });
 });
 
 Then("the search has no results", () => {
-  cy.get(".input .ds-select-dropdown").should($li => {
+  cy.get(".searchable-input .ds-select-dropdown").should($li => {
     expect($li).to.have.length(1);
   });
   cy.get(".ds-select-dropdown").should("contain", 'Nothing found');
+  cy.get(".search-clear-btn").trigger("click");
 });
 
 Then("I should see the following posts in the select dropdown:", table => {
   table.hashes().forEach(({ title }) => {
     cy.get(".ds-select-dropdown").should("contain", title);
+  });
+});
+
+Then("I should see the following users in the select dropdown:", table => {
+  cy.get(".ds-heading").should("contain", "Users");
+  table.hashes().forEach(({ slug }) => {
+    cy.get(".ds-select-dropdown").should("contain", slug);
   });
 });
 
@@ -42,8 +50,8 @@ Then("the search field should clear", () => {
   cy.get("#search-resources").should("have.text", "");
 });
 
-When("I select an entry", () => {
-  cy.get(".input .ds-select-dropdown ul li")
+When("I select a post entry", () => {
+  cy.get(".searchable-input .search-post")
     .first()
     .trigger("click");
 });
@@ -75,3 +83,13 @@ Then(
     );
   }
 );
+
+Then("I select a user entry", () => {
+  cy.get(".searchable-input .userinfo")
+    .first()
+    .trigger("click");
+})
+
+Then("I should be on the user's profile", () => {
+  cy.location("pathname").should("eq", "/profile/user-for-search/search-for-me")
+})
