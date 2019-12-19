@@ -1,5 +1,3 @@
-import { filterForBlockedUsers } from './helpers/filterForBlockedUsers'
-
 const transformReturnType = record => {
   return {
     __typename: record.get('type'),
@@ -12,7 +10,7 @@ export default {
       const { query, limit } = args
       const { id: thisUserId } = context.user
       // see http://lucene.apache.org/core/8_3_1/queryparser/org/apache/lucene/queryparser/classic/package-summary.html#package.description
-      const myQuery = query.replace(/\s/g, '* ') + '*'
+      const myQuery = query + '*'
       const postCypher = `
       CALL db.index.fulltext.queryNodes('post_fulltext_search', $query)
       YIELD node as resource, score
@@ -63,9 +61,9 @@ export default {
       } finally {
         session.close()
       }
-      let result = [...postResults.records, ...userResults.records]
-      result = result.map(transformReturnType)
-      return result
+      let searchResults = [...postResults.records, ...userResults.records]
+      searchResults = searchResults.map(transformReturnType)
+      return searchResults
     },
   },
 }
