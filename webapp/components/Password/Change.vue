@@ -24,9 +24,9 @@
       />
       <password-strength :password="formData.password" />
       <ds-space margin-top="base">
-        <ds-button :loading="loading" :disabled="errors" primary>
+        <base-button :loading="loading" :disabled="errors" primary type="submit">
           {{ $t('settings.security.change-password.button') }}
-        </ds-button>
+        </base-button>
       </ds-space>
     </template>
   </ds-form>

@@ -33,7 +33,7 @@ describe('NotificationMenu.vue', () => {
 
     it('counter displays 0', () => {
       wrapper = Wrapper()
-      expect(wrapper.find('ds-button-stub').text()).toEqual('0')
+      expect(wrapper.find('base-button-stub').text()).toEqual('0')
     })
 
     it('no dropdown is rendered', () => {
@@ -67,12 +67,12 @@ describe('NotificationMenu.vue', () => {
 
       it('counter displays 0', () => {
         wrapper = Wrapper()
-        expect(wrapper.find('ds-button-stub').text()).toEqual('0')
+        expect(wrapper.find('base-button-stub').text()).toEqual('0')
       })
 
       it('button is not primary', () => {
         wrapper = Wrapper()
-        expect(wrapper.find('ds-button-stub').props('primary')).toBe(false)
+        expect(wrapper.find('base-button-stub').props('primary')).toBe(false)
       })
     })
 
@@ -130,12 +130,12 @@ describe('NotificationMenu.vue', () => {
 
       it('displays the number of unread notifications', () => {
         wrapper = Wrapper()
-        expect(wrapper.find('ds-button-stub').text()).toEqual('2')
+        expect(wrapper.find('base-button-stub').text()).toEqual('2')
       })
 
       it('renders primary button', () => {
         wrapper = Wrapper()
-        expect(wrapper.find('ds-button-stub').props('primary')).toBe(true)
+        expect(wrapper.find('base-button-stub').props('primary')).toBe(true)
       })
     })
   })

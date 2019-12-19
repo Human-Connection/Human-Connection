@@ -10,11 +10,11 @@
     <p v-html="message" />
 
     <template slot="footer">
-      <ds-button class="cancel" :icon="modalData.buttons.cancel.icon" @click="cancel">
+      <base-button class="cancel" :icon="modalData.buttons.cancel.icon" @click="cancel">
         {{ $t(modalData.buttons.cancel.textIdent) }}
-      </ds-button>
+      </base-button>
 
-      <ds-button
+      <base-button
         :danger="modalData.buttons.confirm.danger"
         class="confirm"
         :icon="modalData.buttons.confirm.icon"
@@ -22,7 +22,7 @@
         @click="confirm"
       >
         {{ $t(modalData.buttons.confirm.textIdent) }}
-      </ds-button>
+      </base-button>
     </template>
   </ds-modal>
 </template>

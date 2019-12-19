@@ -102,7 +102,7 @@
             v-html="$t('components.registration.signup.form.no-political')"
           ></label>
         </ds-text>
-        <ds-button
+        <base-button
           style="float: right;"
           icon="check"
           type="submit"
@@ -118,7 +118,7 @@
           primary
         >
           {{ $t('actions.save') }}
-        </ds-button>
+        </base-button>
       </template>
     </ds-form>
   </div>

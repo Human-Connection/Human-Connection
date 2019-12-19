@@ -1,12 +1,12 @@
 <template>
-  <ds-button v-if="!notifications.length" class="notifications-menu" disabled icon="bell">
-    {{ unreadNotificationsCount }}
-  </ds-button>
+  <base-button v-if="!notifications.length" class="notifications-menu" disabled ghost circle>
+    <counter-icon icon="bell" :count="unreadNotificationsCount" danger />
+  </base-button>
   <dropdown v-else class="notifications-menu" offset="8" :placement="placement">
     <template slot="default" slot-scope="{ toggleMenu }">
-      <ds-button :primary="!!unreadNotificationsCount" icon="bell" @click.prevent="toggleMenu">
-        {{ unreadNotificationsCount }}
-      </ds-button>
+      <base-button @click="toggleMenu" ghost circle>
+        <counter-icon icon="bell" :count="unreadNotificationsCount" danger />
+      </base-button>
     </template>
     <template slot="popover">
       <div class="notifications-menu-popover">
@@ -22,17 +22,20 @@
 </template>
 
 <script>
-import Dropdown from '~/components/Dropdown'
 import { NOTIFICATIONS_POLL_INTERVAL } from '~/constants/notifications'
 import { notificationQuery, markAsReadMutation } from '~/graphql/User'
-import NotificationList from '../NotificationList/NotificationList'
 import unionBy from 'lodash/unionBy'
+
+import CounterIcon from '~/components/_new/generic/CounterIcon/CounterIcon'
+import Dropdown from '~/components/Dropdown'
+import NotificationList from '../NotificationList/NotificationList'
 
 export default {
   name: 'NotificationMenu',
   components: {
-    NotificationList,
+    CounterIcon,
     Dropdown,
+    NotificationList,
   },
   data() {
     return {
@@ -90,6 +93,7 @@ export default {
 
 <style lang="scss">
 .notifications-menu {
+  flex-shrink: 0;
   display: flex;
   align-items: center;
 }

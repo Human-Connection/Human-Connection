@@ -29,11 +29,11 @@
     </small>
     <ds-space />
     <template #footer>
-      <ds-button class="cancel" icon="close" @click="cancel">
+      <base-button class="cancel" icon="close" @click="cancel">
         {{ $t('report.cancel') }}
-      </ds-button>
+      </base-button>
 
-      <ds-button
+      <base-button
         danger
         class="confirm"
         icon="exclamation-circle"
@@ -42,7 +42,7 @@
         @click="confirm"
       >
         {{ $t('report.submit') }}
-      </ds-button>
+      </base-button>
     </template>
   </ds-modal>
 </template>
@@ -161,7 +161,7 @@ export default {
 .ds-modal {
   max-width: 600px !important;
 }
-.ds-radio-option:not(.ds-button) {
+.ds-radio-option {
   width: 100% !important;
 }
 .ds-radio-option-label {
