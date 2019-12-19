@@ -11,7 +11,7 @@
               <b>{{ option.commentsCount }}</b>
               <base-icon name="comments" />
             </span>
-            <span style="width: 36px; display: inline-block; text-align: right;">
+            <span class="post-shouted">
               <b>{{ option.shoutedCount }}</b>
               <base-icon name="bullhorn" />
             </span>
@@ -57,5 +57,10 @@ export default {
   .base-icon {
     vertical-align: sub;
   }
+}
+.post-shouted {
+  width: 36px;
+  display: inline-block;
+  text-align: right;
 }
 </style>

@@ -10,11 +10,8 @@
   >
     <div class="field">
       <div class="control">
-        <a v-if="isActive" class="search-clear-btn" @click="clear">&nbsp;</a>
+        <ds-button v-if="isActive" icon="close" ghost class="search-clear-btn" @click="clear" />
         <ds-select
-          ref="input"
-          class="input"
-          name="search"
           type="search"
           icon="search"
           v-model="searchValue"
@@ -36,7 +33,7 @@
           @blur.capture.native="onBlur"
           @input.exact="onSelect"
         >
-          <template slot="option" slot-scope="{ option }">
+          <template #option="{ option }">
             <span v-if="isFirstOfType(option)" class="search-heading">
               <search-heading :resource-type="option.__typename" />
             </span>
@@ -82,7 +79,7 @@ export default {
       value: '',
       unprocessedSearchInput: '',
       searchProcess: null,
-      lastSearchTerm: '',
+      previousSearchTerm: '',
       delay: 300,
     }
   },
@@ -91,16 +88,18 @@ export default {
       return this.isActive && !this.pending ? this.$t('search.failed') : this.$t('search.hint')
     },
     isActive() {
-      return !isEmpty(this.lastSearchTerm)
+      return !isEmpty(this.previousSearchTerm)
+    },
+    isFirstOfType() {
+      return function(option) {
+        return (
+          this.options.findIndex(o => o === option) ===
+          this.options.findIndex(o => o.__typename === option.__typename)
+        )
+      }
     },
   },
   methods: {
-    isFirstOfType(option) {
-      return (
-        this.options.findIndex(o => o === option) ===
-        this.options.findIndex(o => o.__typename === option.__typename)
-      )
-    },
     onFocus(event) {
       clearTimeout(this.searchProcess)
       this.isOpen = true
@@ -114,7 +113,7 @@ export default {
         return
       }
       this.searchProcess = setTimeout(() => {
-        this.lastSearchTerm = this.value
+        this.previousSearchTerm = this.value
         this.$emit('query', this.value)
       }, this.delay)
     },
@@ -125,7 +124,7 @@ export default {
       this.isOpen = false
       clearTimeout(this.searchProcess)
       if (!this.pending) {
-        this.lastSearchTerm = this.unprocessedSearchInput
+        this.previousSearchTerm = this.unprocessedSearchInput
         this.$emit('query', this.unprocessedSearchInput)
       }
     },
@@ -141,16 +140,13 @@ export default {
     clear() {
       this.isOpen = false
       this.unprocessedSearchInput = ''
-      this.lastSearchTerm = ''
+      this.previousSearchTerm = ''
       this.searchValue = ''
       this.$emit('clearSearch')
       clearTimeout(this.searchProcess)
     },
     onBlur(event) {
-      this.searchValue = this.lastSearchTerm
-      // this.$nextTick(() => {
-      //   this.searchValue = this.lastSearchTerm
-      // })
+      this.searchValue = this.previousSearchTerm
       this.isOpen = false
       clearTimeout(this.searchProcess)
     },
@@ -158,33 +154,24 @@ export default {
       this.isOpen = false
       this.goToResource(item)
       this.$nextTick(() => {
-        this.searchValue = this.lastSearchTerm
+        this.searchValue = this.previousSearchTerm
       })
+    },
+    isPost(item) {
+      return item.__typename === 'Post'
     },
     goToResource(item) {
       this.$nextTick(() => {
-        switch (item.__typename) {
-          case 'Post':
-            this.$router.push({
-              name: 'post-id-slug',
-              params: { id: item.id, slug: item.slug },
-            })
-            break
-          case 'User':
-            this.$router.push({
-              name: 'profile-id-slug',
-              params: { id: item.id, slug: item.slug },
-            })
-            break
-          default:
-            break
-        }
+        this.$router.push({
+          name: this.isPost(item) ? 'post-id-slug' : 'profile-id-slug',
+          params: { id: item.id, slug: item.slug },
+        })
       })
     },
   },
 }
 </script>
-<style lang="scss">
+<style lang="scss" `>
 .searchable-input {
   display: flex;
   align-self: center;
