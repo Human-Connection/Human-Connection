@@ -30,6 +30,7 @@
                 ghost
                 @click="handleEditSocialMedia(link)"
                 :title="$t('actions.edit')"
+                data-test="edit-button"
               />
               <base-button
                 icon="trash"
@@ -37,6 +38,7 @@
                 ghost
                 @click="handleDeleteSocialMedia(link)"
                 :title="$t('actions.delete')"
+                data-test="delete-button"
               />
             </template>
           </ds-list-item>

@@ -92,7 +92,7 @@ describe('FilterPosts.vue', () => {
     it('starts with all categories button active', () => {
       const wrapper = openFilterPosts()
       allCategoriesButton = wrapper.findAll('button').at(1)
-      expect(allCategoriesButton.attributes().class).toContain('.base-button.--primary')
+      expect(allCategoriesButton.attributes().class).toContain('--primary')
     })
 
     it('calls TOGGLE_CATEGORY when clicked', () => {
@@ -115,7 +115,7 @@ describe('FilterPosts.vue', () => {
       getters['posts/filteredCategoryIds'] = jest.fn(() => ['cat9'])
       const wrapper = openFilterPosts()
       democracyAndPoliticsButton = wrapper.findAll('button').at(4)
-      expect(democracyAndPoliticsButton.attributes().class).toContain('base-button.--primary')
+      expect(democracyAndPoliticsButton.attributes().class).toContain('--primary')
     })
 
     it('sets language button attribute `primary` when corresponding language is filtered', () => {
@@ -124,14 +124,14 @@ describe('FilterPosts.vue', () => {
       spanishButton = wrapper
         .findAll('button.language-buttons')
         .at(languages.findIndex(l => l.code === 'es'))
-      expect(spanishButton.attributes().class).toContain('base-button.--primary')
+      expect(spanishButton.attributes().class).toContain('--primary')
     })
 
     it('sets "filter-by-followed-authors-only" button attribute `primary`', () => {
       getters['posts/filteredByUsersFollowed'] = jest.fn(() => true)
       const wrapper = openFilterPosts()
       expect(
-        wrapper.find({ name: 'filter-by-followed-authors-only' }).classes('base-button.--primary'),
+        wrapper.find('.base-button[name="filter-by-followed-authors-only"]').classes('--primary'),
       ).toBe(true)
     })
 
@@ -139,7 +139,7 @@ describe('FilterPosts.vue', () => {
       let wrapper
       beforeEach(() => {
         wrapper = openFilterPosts()
-        wrapper.find({ name: 'filter-by-followed-authors-only' }).trigger('click')
+        wrapper.find('.base-button[name="filter-by-followed-authors-only"]').trigger('click')
       })
 
       it('calls TOGGLE_FILTER_BY_FOLLOWED', () => {

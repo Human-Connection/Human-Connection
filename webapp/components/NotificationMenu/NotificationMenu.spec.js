@@ -1,4 +1,4 @@
-import { config, shallowMount } from '@vue/test-utils'
+import { config, mount } from '@vue/test-utils'
 import NotificationMenu from './NotificationMenu'
 
 const localVue = global.localVue
@@ -22,9 +22,9 @@ describe('NotificationMenu.vue', () => {
     }
   })
 
-  describe('shallowMount', () => {
+  describe('mount', () => {
     const Wrapper = () => {
-      return shallowMount(NotificationMenu, {
+      return mount(NotificationMenu, {
         data,
         mocks,
         localVue,
@@ -33,7 +33,7 @@ describe('NotificationMenu.vue', () => {
 
     it('counter displays 0', () => {
       wrapper = Wrapper()
-      expect(wrapper.find('base-button-stub').text()).toEqual('0')
+      expect(wrapper.find('.count').text()).toEqual('0')
     })
 
     it('no dropdown is rendered', () => {
@@ -67,12 +67,12 @@ describe('NotificationMenu.vue', () => {
 
       it('counter displays 0', () => {
         wrapper = Wrapper()
-        expect(wrapper.find('base-button-stub').text()).toEqual('0')
+        expect(wrapper.find('.count').text()).toEqual('0')
       })
 
-      it('button is not primary', () => {
+      it('counter is not colored', () => {
         wrapper = Wrapper()
-        expect(wrapper.find('base-button-stub').props('primary')).toBe(false)
+        expect(wrapper.find('.count').classes()).toContain('--inactive')
       })
     })
 
@@ -130,12 +130,12 @@ describe('NotificationMenu.vue', () => {
 
       it('displays the number of unread notifications', () => {
         wrapper = Wrapper()
-        expect(wrapper.find('base-button-stub').text()).toEqual('2')
+        expect(wrapper.find('.count').text()).toEqual('2')
       })
 
-      it('renders primary button', () => {
+      it('renders the counter in red', () => {
         wrapper = Wrapper()
-        expect(wrapper.find('base-button-stub').props('primary')).toBe(true)
+        expect(wrapper.find('.count').classes()).toContain('--danger')
       })
     })
   })

@@ -5,7 +5,7 @@
         <!-- with client-only the content is not shown -->
         <hc-editor ref="editor" :users="users" :value="form.content" @input="updateEditorContent" />
         <div class="buttons">
-          <base-button :disabled="disabled && !update" @click="handleCancel">
+          <base-button :disabled="disabled && !update" @click="handleCancel" data-test="cancel-button">
             {{ $t('actions.cancel') }}
           </base-button>
           <base-button type="submit" :loading="loading" :disabled="disabled || errors" primary>
