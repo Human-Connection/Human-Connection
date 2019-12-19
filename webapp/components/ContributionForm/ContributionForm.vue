@@ -7,6 +7,12 @@
     @submit="submit"
   >
     <template slot-scope="{ errors }">
+      <ds-button
+        @click.prevent="deleteImage"
+        icon="close"
+        v-show="showDeleteButton != ''"
+        class="delete-image"
+      ></ds-button>
       <hc-teaser-image
         :contribution="contribution"
         @addTeaserImage="addTeaserImage"
@@ -175,6 +181,7 @@ export default {
       users: [],
       contentMin: 3,
       hashtags: [],
+      showDeleteButton: this.contribution ? this.contribution.image : false,
     }
   },
   computed: {
@@ -238,6 +245,11 @@ export default {
     categoryIds(categories) {
       return categories.map(c => c.id)
     },
+    deleteImage() {
+      this.form.image = ''
+      this.contribution.image = ''
+      this.showDeleteButton = ''
+    },
   },
   apollo: {
     User: {
@@ -296,5 +308,12 @@ export default {
   .ds-chip {
     cursor: default;
   }
+}
+.delete-image {
+  right: 3px;
+  position: relative;
+  z-index: 1;
+  float: right;
+  top: 42px;
 }
 </style>

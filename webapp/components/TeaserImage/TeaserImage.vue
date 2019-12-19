@@ -12,7 +12,7 @@
       <ds-button @click.stop.prevent="cropImage" class="crop-confirm" primary>
         {{ $t('contribution.teaserImage.cropperConfirm') }}
       </ds-button>
-      <ds-button @click="cancelCrop" class="crop-cancel" icon="close"></ds-button>
+      <ds-button @click.prevent="cancelCrop" class="crop-cancel" icon="close"></ds-button>
     </div>
     <div
       :class="{
@@ -118,6 +118,7 @@ export default {
         const croppedImageFile = new File([blob], this.file.name, { type: this.file.type })
         this.$emit('addTeaserImage', croppedImageFile)
         this.$emit('addImageAspectRatio', imageAspectRatio)
+        this.$emit('showDeleteButton', this.file.name)
       }, 'image/jpeg')
     },
     setupPreview(canvas) {
