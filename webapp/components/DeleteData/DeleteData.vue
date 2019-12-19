@@ -55,10 +55,7 @@
           <ds-space margin-bottom="xx-small" />
           <ds-flex :gutter="{ base: 'xx-small', md: 'small', lg: 'large' }">
             <ds-flex-item :width="{ base: '100%', sm: '100%', md: '100%', lg: 1.75 }">
-              <ds-input
-                v-model="enableDeletionValue"
-                class="enable-deletion-input"
-              />
+              <ds-input v-model="enableDeletionValue" class="enable-deletion-input" />
             </ds-flex-item>
             <ds-flex-item :width="{ base: '100%', sm: '100%', md: '100%', lg: 1 }">
               <base-button

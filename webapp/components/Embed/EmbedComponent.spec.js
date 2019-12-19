@@ -65,13 +65,13 @@ describe('EmbedComponent.vue', () => {
     })
 
     it('shows the description', () => {
-      expect(wrapper.find('.embed-content p').text()).toBe(
+      expect(wrapper.find('.content p').text()).toBe(
         'Salut tout le monde ! Aujourd’hui, une vidéo sur le scepticisme, nous allons parler médiumnité avec le cas de Bruno CHARVET : « Bruno, un nouveau message ». Merci de rester respectueux dans les commentaires : SOURCES : Les sources des vi...',
       )
     })
 
     it('shows preview Images for link', () => {
-      expect(wrapper.find('.embed-preview-image').exists()).toBe(true)
+      expect(wrapper.find('.preview').exists()).toBe(true)
     })
   })
 
@@ -92,7 +92,7 @@ describe('EmbedComponent.vue', () => {
       })
 
       it('show the desciption', () => {
-        expect(wrapper.find('.embed-content p').text()).toBe(
+        expect(wrapper.find('.content p').text()).toBe(
           'She’s incapable of controlling her limbs when her kitty is around. The obsession grows every day. Ps. That’s a sleep sack she’s in. Not a starfish outfit. Al...',
         )
       })
@@ -121,12 +121,12 @@ describe('EmbedComponent.vue', () => {
         })
 
         it('shows a simple link when a user closes the embed preview', () => {
-          wrapper.find('.embed-close-button').trigger('click')
+          wrapper.find('.close-button').trigger('click')
           expect(wrapper.vm.showLinkOnly).toBe(true)
         })
 
         it('opens the data privacy overlay when a user clicks on the preview image', () => {
-          wrapper.find('.embed-preview-image--clickable').trigger('click')
+          wrapper.find('.preview.--clickable').trigger('click')
           expect(wrapper.vm.showOverlay).toBe(true)
         })
 
@@ -194,7 +194,7 @@ describe('EmbedComponent.vue', () => {
           })
 
           it('does not display image to click', () => {
-            expect(wrapper.find('.embed-preview-image--clickable').exists()).toBe(false)
+            expect(wrapper.find('.preview.--clickable').exists()).toBe(false)
           })
         })
       })
