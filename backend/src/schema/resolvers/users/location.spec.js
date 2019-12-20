@@ -42,7 +42,7 @@ const updateUserMutation = gql`
 let newlyCreatedNodesWithLocales = [
   {
     city: {
-      lng: 41.1534,
+      lat: 41.1534,
       nameES: 'Hamburg',
       nameFR: 'Hamburg',
       nameIT: 'Hamburg',
@@ -55,7 +55,7 @@ let newlyCreatedNodesWithLocales = [
       name: 'Hamburg',
       namePL: 'Hamburg',
       id: 'place.5977106083398860',
-      lat: -74.5763,
+      lng: -74.5763,
     },
     state: {
       namePT: 'Nova Jérsia',
@@ -151,7 +151,7 @@ describe('userMiddleware', () => {
       newlyCreatedNodesWithLocales = [
         {
           city: {
-            lng: 53.55,
+            lat: 53.55,
             nameES: 'Hamburgo',
             nameFR: 'Hambourg',
             nameIT: 'Amburgo',
@@ -164,7 +164,7 @@ describe('userMiddleware', () => {
             namePL: 'Hamburg',
             name: 'Hamburg',
             id: 'region.10793468240398860',
-            lat: 10,
+            lng: 10,
           },
           country: {
             namePT: 'Alemanha',
