@@ -5872,12 +5872,12 @@ metascraper-logo@^5.8.12:
   dependencies:
     "@metascraper/helpers" "^5.8.12"
 
-metascraper-publisher@^5.8.7:
-  version "5.8.7"
-  resolved "https://registry.yarnpkg.com/metascraper-publisher/-/metascraper-publisher-5.8.7.tgz#2b67f04db46123f9c6d57eaa3de610921fd28e01"
-  integrity sha512-vVfoyqGPxKWWQjvBL0gz4Xyol3QYdr5HWSs9DI7cLrlIDExOByPPah5bZVSijeseeKymyf36BvCm54+chOZN5g==
+metascraper-publisher@^5.8.12:
+  version "5.8.12"
+  resolved "https://registry.yarnpkg.com/metascraper-publisher/-/metascraper-publisher-5.8.12.tgz#da4beba814978bf848b22f897875c69b05076605"
+  integrity sha512-y54EjUah8ysjood3Pz0uyUvG2b7/BHxrcZsvNlB3+bt+3zCbd9to9y/THCpGvXihz64pEKjQ7Zs8BXDVWXVlPg==
   dependencies:
-    "@metascraper/helpers" "^5.8.7"
+    "@metascraper/helpers" "^5.8.12"
 
 metascraper-soundcloud@^5.8.12:
   version "5.8.12"
