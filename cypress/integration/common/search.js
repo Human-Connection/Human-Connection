@@ -16,7 +16,7 @@ Then("the search has no results", () => {
     expect($li).to.have.length(1);
   });
   cy.get(".ds-select-dropdown").should("contain", 'Nothing found');
-  cy.get(".search-clear-btn").trigger("click");
+  cy.get(".search-clear-btn").trigger("click", { force: true });
 });
 
 Then("I should see the following posts in the select dropdown:", table => {
