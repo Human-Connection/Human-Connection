@@ -1,3 +1,5 @@
+import log from './helpers/databaseLogger'
+
 export default {
   Query: {
     findResources: async (_parent, args, context, _resolveInfo) => {
@@ -16,21 +18,6 @@ export default {
       RETURN resource {.*, __typename: labels(resource)[0]}
       LIMIT $limit
       `
-      const session = context.driver.session()
-      let postResults, userResults
-      const readPostTxResultPromise = session.readTransaction(async transaction => {
-        const postTransactionResponse = transaction.run(postCypher, {
-          query: myQuery,
-          limit,
-          thisUserId,
-        })
-        return postTransactionResponse
-      })
-      try {
-        postResults = await readPostTxResultPromise
-      } finally {
-        session.close()
-      }
 
       const userCypher = `
       CALL db.index.fulltext.queryNodes('user_fulltext_search', $query)
@@ -42,22 +29,30 @@ export default {
       RETURN resource {.*, __typename: labels(resource)[0]}
       LIMIT $limit
       `
-      const readUserTxResultPromise = session.readTransaction(async transaction => {
+
+      const session = context.driver.session()
+      const searchResultPromise = session.readTransaction(async transaction => {
+        const postTransactionResponse = transaction.run(postCypher, {
+          query: myQuery,
+          limit,
+          thisUserId,
+        })
         const userTransactionResponse = transaction.run(userCypher, {
           query: myQuery,
           limit,
           thisUserId,
         })
-        return userTransactionResponse
+        return Promise.all([postTransactionResponse, userTransactionResponse])
       })
+
       try {
-        userResults = await readUserTxResultPromise
+        const [postResults, userResults] = await searchResultPromise
+        log(postResults)
+        log(userResults)
+        return [...postResults.records, ...userResults.records].map(r => r.get('resource'))
       } finally {
         session.close()
       }
-      let searchResults = [...postResults.records, ...userResults.records]
-      searchResults = searchResults.map(record => record.get('resource'))
-      return searchResults
     },
   },
 }
