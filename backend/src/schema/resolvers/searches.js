@@ -1,9 +1,3 @@
-const transformReturnType = record => {
-  return {
-    __typename: record.get('type'),
-    ...record.get('resource').properties,
-  }
-}
 export default {
   Query: {
     findResources: async (_parent, args, context, _resolveInfo) => {
@@ -19,7 +13,7 @@ export default {
       AND NOT (user.deleted = true OR user.disabled = true
       OR resource.deleted = true OR resource.disabled = true
       OR (:User { id: $thisUserId })-[:BLOCKED]-(user))
-      RETURN resource, labels(resource)[0] AS type
+      RETURN resource {.*, __typename: labels(resource)[0]}
       LIMIT $limit
       `
       const session = context.driver.session()
@@ -45,7 +39,7 @@ export default {
       WHERE score >= 0.5
       AND NOT (resource.deleted = true OR resource.disabled = true
       OR (:User { id: $thisUserId })-[:BLOCKED]-(resource))
-      RETURN resource, labels(resource)[0] AS type
+      RETURN resource {.*, __typename: labels(resource)[0]}
       LIMIT $limit
       `
       const readUserTxResultPromise = session.readTransaction(async transaction => {
@@ -62,7 +56,7 @@ export default {
         session.close()
       }
       let searchResults = [...postResults.records, ...userResults.records]
-      searchResults = searchResults.map(transformReturnType)
+      searchResults = searchResults.map(record => record.get('resource'))
       return searchResults
     },
   },
