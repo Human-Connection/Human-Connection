@@ -90,16 +90,14 @@ export default {
     isActive() {
       return !isEmpty(this.previousSearchTerm)
     },
-    isFirstOfType() {
-      return function(option) {
-        return (
-          this.options.findIndex(o => o === option) ===
-          this.options.findIndex(o => o.__typename === option.__typename)
-        )
-      }
-    },
   },
   methods: {
+    isFirstOfType(option) {
+      return (
+        this.options.findIndex(o => o === option) ===
+        this.options.findIndex(o => o.__typename === option.__typename)
+      )
+    },
     onFocus(event) {
       clearTimeout(this.searchProcess)
       this.isOpen = true
