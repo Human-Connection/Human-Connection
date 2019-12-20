@@ -1035,7 +1035,7 @@
     url-regex "~4.1.1"
     video-extensions "~1.1.0"
 
-"@metascraper/helpers@^5.8.10", "@metascraper/helpers@^5.8.12", "@metascraper/helpers@^5.8.7":
+"@metascraper/helpers@^5.8.10", "@metascraper/helpers@^5.8.12":
   version "5.8.12"
   resolved "https://registry.yarnpkg.com/@metascraper/helpers/-/helpers-5.8.12.tgz#c4c1375a90ee9b674f8fb4d5a65cce6f5c6ce30d"
   integrity sha512-hmaIRXWcLGFWAXFKBHECHhf3VhHrbz/iV6spPtTeYyxCVO1TX62qYigqbizZwHk4dGeU1cTtbT2YN8/RCr1RiQ==
@@ -5895,12 +5895,12 @@ metascraper-title@^5.8.12:
     "@metascraper/helpers" "^5.8.12"
     lodash "~4.17.15"
 
-metascraper-url@^5.8.7:
-  version "5.8.7"
-  resolved "https://registry.yarnpkg.com/metascraper-url/-/metascraper-url-5.8.7.tgz#8c04a8f9b82af1058145f21788655b7b6b04fd9c"
-  integrity sha512-K79mT509wV6B1Ak9vSslAbDPQMMRjjWowVgjcby5bOyFpO2j7mQkQIZYobEFpYLHlpb2R9myWJaTKAZe9KrF0A==
+metascraper-url@^5.8.12:
+  version "5.8.12"
+  resolved "https://registry.yarnpkg.com/metascraper-url/-/metascraper-url-5.8.12.tgz#806fc3c32a563e17e8405142614306d34619a5a5"
+  integrity sha512-tU49/fHi2BQsqWiNaLyxROZiSq2LJFvllazwOZ45KXf4EqhZmh1I9L2cdgYLdRk6cNVL5cM+df5ZiY070XQ3nQ==
   dependencies:
-    "@metascraper/helpers" "^5.8.7"
+    "@metascraper/helpers" "^5.8.12"
 
 metascraper-video@^5.8.12:
   version "5.8.12"
