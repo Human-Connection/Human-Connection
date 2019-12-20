@@ -1,0 +1,23 @@
+{
+  "name": "@human-connection/image-micro-service",
+  "version": "1.0.0",
+  "description": "Image micro service for Human Connection",
+  "main": "index.js",
+  "repository": "https://github.com/Human-Connection/Human-Connection",
+  "author": "Robert Schäfer",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "build": "babel src/ -d dist/ --copy-files",
+    "start": "node dist/server.js"
+  },
+  "dependencies": {
+    "@sentry/node": "^5.10.2",
+    "express": "^4.17.1",
+    "sharp": "^0.23.4"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.7.7",
+    "@babel/core": "^7.7.7"
+  }
+}
