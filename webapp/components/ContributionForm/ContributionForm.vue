@@ -169,6 +169,7 @@ export default {
           ? languageOptions.find(o => this.contribution.language === o.value)
           : null
       form.categoryIds = this.categoryIds(this.contribution.categories)
+      form.imageAspectRatio = this.contribution.imageAspectRatio
       form.blurImage = this.contribution.imageBlurred
     }
 
