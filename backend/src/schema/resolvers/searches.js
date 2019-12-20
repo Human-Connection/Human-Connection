@@ -71,3 +71,16 @@ export default {
     },
   },
 }
+
+/*
+MATCH (u1:User { name: 'Huey' })-[:IS_IN]->(l1:Location)
+MATCH (u2:User)-[:IS_IN]->(l2:Location)
+WHERE NOT(u2.name = 'Huey')
+WITH point({longitude: l1.lng, latitude: l1.lat}) AS P1,
+point({longitude: l2.lng, latitude: l2.lat}) AS P2,
+l1.name AS Location1, l2.name AS Location2
+WITH distance(P1, P2) AS Distance,
+Location1 AS Location1, Location2 AS Location2
+ORDER BY Distance
+RETURN Location1, Location2, Distance
+*/
