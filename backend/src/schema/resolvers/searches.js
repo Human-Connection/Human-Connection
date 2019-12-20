@@ -10,12 +10,23 @@ export default {
       const postCypher = `
       CALL db.index.fulltext.queryNodes('post_fulltext_search', $query)
       YIELD node as resource, score
-      MATCH (resource)<-[:WROTE]-(user:User)
+      MATCH (resource)<-[:WROTE]-(author:User)
       WHERE score >= 0.5
-      AND NOT (user.deleted = true OR user.disabled = true
-      OR resource.deleted = true OR resource.disabled = true
-      OR (:User { id: $thisUserId })-[:BLOCKED]-(user))
-      RETURN resource {.*, __typename: labels(resource)[0]}
+      AND NOT (
+        author.deleted = true OR author.disabled = true
+        OR resource.deleted = true OR resource.disabled = true
+        OR (:User { id: $thisUserId })-[:BLOCKED]-(author)
+      )
+      WITH resource, author,
+      [(resource)<-[:COMMENTS]-(comment:Comment) | comment] as comments,
+      [(resource)<-[:SHOUTED]-(user:User) | user] as shouter
+      RETURN resource {
+        .*,
+        __typename: labels(resource)[0],
+        author: properties(author),
+        commentsCount: toString(size(comments)),
+        shoutedCount: toString(size(shouter))
+      }
       LIMIT $limit
       `
 
