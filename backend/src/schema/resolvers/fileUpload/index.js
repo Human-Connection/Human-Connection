@@ -3,6 +3,7 @@ import { createWriteStream } from 'fs'
 import path from 'path'
 import slug from 'slug'
 import { S3 } from 'aws-sdk'
+import uuid from 'uuid/v4'
 
 const {
   AWS_ACCESS_KEY_ID,
@@ -12,21 +13,21 @@ const {
   AWS_BUCKET: Bucket,
 } = s3Configs
 
-const localFileUpload = async ({ createReadStream, fileLocation }) => {
+const localFileUpload = async ({ createReadStream, uniqueFilename }) => {
   await new Promise((resolve, reject) =>
     createReadStream()
-      .pipe(createWriteStream(`public${fileLocation}`))
+      .pipe(createWriteStream(`public${uniqueFilename}`))
       .on('finish', resolve)
       .on('error', reject),
   )
-  return fileLocation
+  return uniqueFilename
 }
 
-const s3Upload = async ({ createReadStream, fileLocation, mimetype }) => {
+const s3Upload = async ({ createReadStream, uniqueFilename, mimetype }) => {
   const s3 = new S3({ region, endpoint })
   const params = {
     Bucket,
-    Key: fileLocation,
+    Key: uniqueFilename,
     ACL: 'public-read',
     ContentType: mimetype,
     Body: createReadStream(),
@@ -43,9 +44,11 @@ export default async function fileUpload(params, { file, url }, uploadCallback) 
   const upload = params[file]
   if (upload) {
     const { createReadStream, filename, mimetype } = await upload
-    const { name } = path.parse(filename)
-    const fileLocation = `/uploads/${Date.now()}-${slug(name)}`
-    const location = await uploadCallback({ createReadStream, fileLocation, mimetype })
+    const { name, ext } = path.parse(filename)
+
+    const uniqueFilename = `/uploads/${uuid()}-${slug(name)}${ext}`
+
+    const location = await uploadCallback({ createReadStream, uniqueFilename, mimetype })
     delete params[file]
     params[url] = location
   }
