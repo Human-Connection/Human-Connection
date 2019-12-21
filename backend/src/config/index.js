@@ -18,6 +18,11 @@ const {
   SMTP_PASSWORD,
   SENTRY_DSN_BACKEND,
   COMMIT,
+  AWS_ACCESS_KEY_ID,
+  AWS_SECRET_ACCESS_KEY,
+  AWS_ENDPOINT,
+  AWS_REGION,
+  AWS_BUCKET,
   NEO4J_URI = 'bolt://localhost:7687',
   NEO4J_USERNAME = 'neo4j',
   NEO4J_PASSWORD = 'neo4j',
@@ -62,6 +67,14 @@ export const developmentConfigs = {
 
 export const sentryConfigs = { SENTRY_DSN_BACKEND, COMMIT }
 
+export const s3Configs = {
+  AWS_ACCESS_KEY_ID,
+  AWS_SECRET_ACCESS_KEY,
+  AWS_ENDPOINT,
+  AWS_REGION,
+  AWS_BUCKET,
+}
+
 export default {
   ...requiredConfigs,
   ...smtpConfigs,
@@ -69,4 +82,5 @@ export default {
   ...serverConfigs,
   ...developmentConfigs,
   ...sentryConfigs,
+  ...s3Configs,
 }
