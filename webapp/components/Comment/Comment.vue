@@ -55,6 +55,13 @@
       </div>
       <ds-space margin-bottom="small" />
     </ds-card>
+    <ds-button
+      v-bind:title="antworten"
+      icon="level-down"
+      style="float:right; top: -22px;"
+      @click.prevent="answerComment"
+    ></ds-button>
+    <div style="clear:both"></div>
   </div>
 </template>
 
@@ -166,6 +173,22 @@ export default {
         this.$emit('deleteComment', DeleteComment)
       } catch (err) {
         this.$toast.error(err.message)
+      }
+    },
+    answerComment() {
+      if (document.querySelector('.is-empty')) {
+        document.querySelector('.is-empty').innerHTML = '@' + this.comment.author.slug
+      } else {
+        const html = document.querySelector('.editor-content').innerHTML
+        const slug =
+          '<a class="mention" href="/profile/' +
+          this.comment.author.id +
+          '" data-mention-id="' +
+          this.comment.author.slug +
+          '" target="_blank" contenteditable="false">@d' +
+          this.comment.author.slug +
+          '</a>'
+        document.querySelector('.editor-content').innerHTML = html + '' + slug
       }
     },
   },
