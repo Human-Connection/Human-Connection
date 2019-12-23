@@ -21,10 +21,13 @@
         </div>
       </ds-grid-item>
       <template v-if="hasResults">
-        <masonry-grid-item v-for="post in posts" :key="post.id">
+        <masonry-grid-item
+          v-for="post in posts"
+          :key="post.id"
+          :imageAspectRatio="post.imageAspectRatio"
+        >
           <hc-post-card
             :post="post"
-            :width="{ base: '100%', xs: '100%', md: '50%', xl: '33%' }"
             @removePostFromList="deletePost"
             @pinPost="pinPost"
             @unpinPost="unpinPost"
@@ -68,6 +71,7 @@ import MasonryGridItem from '~/components/MasonryGrid/MasonryGridItem.vue'
 import { mapGetters, mapMutations } from 'vuex'
 import { filterPosts } from '~/graphql/PostQuery.js'
 import PostMutations from '~/graphql/PostMutations'
+import UpdateQuery from '~/components/utils/UpdateQuery'
 
 export default {
   components: {
@@ -151,27 +155,7 @@ export default {
           first: this.pageSize,
           orderBy: ['pinned_asc', this.orderBy],
         },
-        updateQuery: (previousResult, { fetchMoreResult }) => {
-          if (!fetchMoreResult || fetchMoreResult.Post.length < this.pageSize) {
-            this.hasMore = false
-            $state.complete()
-          }
-
-          const { Post = [] } = previousResult
-          const result = {
-            ...previousResult,
-            Post: [
-              ...Post.filter(prevPost => {
-                return (
-                  fetchMoreResult.Post.filter(newPost => newPost.id === prevPost.id).length === 0
-                )
-              }),
-              ...fetchMoreResult.Post,
-            ],
-          }
-          $state.loaded()
-          return result
-        },
+        updateQuery: UpdateQuery(this, { $state, pageKey: 'Post' }),
       })
     },
     deletePost(deletedPost) {

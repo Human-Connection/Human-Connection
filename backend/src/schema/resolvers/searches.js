@@ -1,73 +1,69 @@
-const transformReturnType = record => {
-  return {
-    __typename: record.get('type'),
-    ...record.get('resource').properties,
-  }
-}
+import log from './helpers/databaseLogger'
+
 export default {
   Query: {
     findResources: async (_parent, args, context, _resolveInfo) => {
       const { query, limit } = args
-      const filter = {}
       const { id: thisUserId } = context.user
       // see http://lucene.apache.org/core/8_3_1/queryparser/org/apache/lucene/queryparser/classic/package-summary.html#package.description
-      const myQuery = query.replace(/\s/g, '* ') + '*'
+      const myQuery = query + '*'
       const postCypher = `
       CALL db.index.fulltext.queryNodes('post_fulltext_search', $query)
       YIELD node as resource, score
-      MATCH (resource)<-[:WROTE]-(user:User)
+      MATCH (resource)<-[:WROTE]-(author:User)
       WHERE score >= 0.5
-      AND NOT user.deleted = true AND NOT user.disabled = true
-      AND NOT resource.deleted = true AND NOT resource.disabled = true
-      AND NOT user.id in COALESCE($filter.author_not.id_in, [])
-      AND NOT (:User { id: $thisUserId })-[:BLOCKED]-(user)
-      RETURN resource, labels(resource)[0] AS type
+      AND NOT (
+        author.deleted = true OR author.disabled = true
+        OR resource.deleted = true OR resource.disabled = true
+        OR (:User { id: $thisUserId })-[:BLOCKED]-(author)
+      )
+      WITH resource, author,
+      [(resource)<-[:COMMENTS]-(comment:Comment) | comment] as comments,
+      [(resource)<-[:SHOUTED]-(user:User) | user] as shouter
+      RETURN resource {
+        .*,
+        __typename: labels(resource)[0],
+        author: properties(author),
+        commentsCount: toString(size(comments)),
+        shoutedCount: toString(size(shouter))
+      }
       LIMIT $limit
       `
-      const session = context.driver.session()
-      let postResults, userResults
-      const readPostTxResultPromise = session.readTransaction(async transaction => {
-        const postTransactionResponse = transaction.run(postCypher, {
-          query: myQuery,
-          filter,
-          limit,
-          thisUserId,
-        })
-        return postTransactionResponse
-      })
-      try {
-        postResults = await readPostTxResultPromise
-      } finally {
-        session.close()
-      }
 
       const userCypher = `
       CALL db.index.fulltext.queryNodes('user_fulltext_search', $query)
       YIELD node as resource, score
       MATCH (resource)
       WHERE score >= 0.5
-      AND NOT resource.deleted = true AND NOT resource.disabled = true
-      AND NOT (:User { id: $thisUserId })-[:BLOCKED]-(resource)
-      RETURN resource, labels(resource)[0] AS type
+      AND NOT (resource.deleted = true OR resource.disabled = true
+      OR (:User { id: $thisUserId })-[:BLOCKED]-(resource))
+      RETURN resource {.*, __typename: labels(resource)[0]}
       LIMIT $limit
       `
-      const readUserTxResultPromise = session.readTransaction(async transaction => {
-        const userTransactionResponse = transaction.run(userCypher, {
+
+      const session = context.driver.session()
+      const searchResultPromise = session.readTransaction(async transaction => {
+        const postTransactionResponse = transaction.run(postCypher, {
           query: myQuery,
-          filter,
           limit,
           thisUserId,
         })
-        return userTransactionResponse
+        const userTransactionResponse = transaction.run(userCypher, {
+          query: myQuery,
+          limit,
+          thisUserId,
+        })
+        return Promise.all([postTransactionResponse, userTransactionResponse])
       })
+
       try {
-        userResults = await readUserTxResultPromise
+        const [postResults, userResults] = await searchResultPromise
+        log(postResults)
+        log(userResults)
+        return [...postResults.records, ...userResults.records].map(r => r.get('resource'))
       } finally {
         session.close()
       }
-      let result = [...postResults.records, ...userResults.records]
-      result = result.map(transformReturnType)
-      return result
     },
   },
 }

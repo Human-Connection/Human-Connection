@@ -29,10 +29,16 @@ const factories = {
 
 export const cleanDatabase = async (options = {}) => {
   const { driver = getDriver() } = options
-  const cypher = 'MATCH (n) DETACH DELETE n'
   const session = driver.session()
   try {
-    return await session.run(cypher)
+    await session.writeTransaction(transaction => {
+      return transaction.run(
+        `
+          MATCH (everything) 
+          DETACH DELETE everything
+        `,
+      )
+    })
   } finally {
     session.close()
   }

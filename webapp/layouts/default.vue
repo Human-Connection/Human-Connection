@@ -21,7 +21,7 @@
               :class="{ 'hide-mobile-menu': !toggleMobileMenu }"
             >
               <div id="nav-search-box" v-if="isLoggedIn">
-                <search-input id="nav-search" :delay="300" @select="goToResource" />
+                <search-resources />
               </div>
             </ds-flex-item>
             <ds-flex-item
@@ -84,7 +84,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import LocaleSwitch from '~/components/LocaleSwitch/LocaleSwitch'
-import SearchInput from '~/components/SearchInput/SearchInput.vue'
+import SearchResources from '~/components/features/SearchResources/SearchResources.vue'
 import Modal from '~/components/Modal'
 import NotificationMenu from '~/components/NotificationMenu/NotificationMenu'
 import seo from '~/mixins/seo'
@@ -96,7 +96,7 @@ import AvatarMenu from '~/components/AvatarMenu/AvatarMenu'
 export default {
   components: {
     LocaleSwitch,
-    SearchInput,
+    SearchResources,
     Modal,
     NotificationMenu,
     AvatarMenu,
@@ -126,26 +126,6 @@ export default {
     },
   },
   methods: {
-    goToResource(item) {
-      this.$nextTick(() => {
-        switch (item.__typename) {
-          case 'Post':
-            this.$router.push({
-              name: 'post-id-slug',
-              params: { id: item.id, slug: item.slug },
-            })
-            break
-          case 'User':
-            this.$router.push({
-              name: 'profile-id-slug',
-              params: { id: item.id, slug: item.slug },
-            })
-            break
-          default:
-            break
-        }
-      })
-    },
     toggleMobileMenuView() {
       this.toggleMobileMenu = !this.toggleMobileMenu
     },

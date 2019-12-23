@@ -1,26 +1,23 @@
 import gql from 'graphql-tag'
+import { userFragment, postFragment } from './Fragments'
 
 export const findResourcesQuery = gql`
+  ${userFragment}
+  ${postFragment}
+
   query($query: String!) {
     findResources(query: $query, limit: 5) {
       __typename
       ... on Post {
-        id
-        title
-        slug
+        ...post
         commentsCount
         shoutedCount
-        createdAt
         author {
-          id
-          name
+          ...user
         }
       }
       ... on User {
-        id
-        name
-        slug
-        avatar
+        ...user
       }
     }
   }

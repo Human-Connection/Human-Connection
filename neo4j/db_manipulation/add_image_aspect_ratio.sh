@@ -12,19 +12,11 @@ do
   sleep 1
 done
 
-shopt -s nullglob
-for image in uploads/*; do
-  [ -e "$image" ] || continue
-  IMAGE_WIDTH=$( identify -format '%w' "$image" )
-  IMAGE_HEIGHT=$( identify -format '%h' "$image" )
-  IMAGE_ASPECT_RATIO=$(echo | awk "{ print ${IMAGE_WIDTH}/${IMAGE_HEIGHT}}")
-  
- 
-  echo "$image"
-  echo "$IMAGE_ASPECT_RATIO"
-  echo "
-    match (post:Post {image: '/"${image}"'})
-    set post.imageAspectRatio = "${IMAGE_ASPECT_RATIO}"
-    return post;
-  " | cypher-shell
-done
+echo "
+  CALL apoc.periodic.iterate('
+  CALL apoc.load.csv("out.csv") yield map as row return row
+  ','
+  MATCH (post:Post) where post.image = row.image
+  set post.imageAspectRatio = row.aspectRatio
+  ', {batchSize:10000, iterateList:true, parallel:true});
+" | cypher-shell

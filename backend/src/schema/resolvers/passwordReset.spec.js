@@ -14,14 +14,11 @@ let authenticatedUser
 let variables
 
 const getAllPasswordResets = async () => {
-  const session = driver.session()
-  try {
-    const transactionRes = await session.run('MATCH (r:PasswordReset) RETURN r')
-    const resets = transactionRes.records.map(record => record.get('r'))
-    return resets
-  } finally {
-    session.close()
-  }
+  const passwordResetQuery = await neode.cypher(
+    'MATCH (passwordReset:PasswordReset) RETURN passwordReset',
+  )
+  const resets = passwordResetQuery.records.map(record => record.get('passwordReset'))
+  return resets
 }
 
 beforeEach(() => {

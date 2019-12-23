@@ -71,6 +71,14 @@ const reviewMutation = gql`
     }
   }
 `
+
+const updateUserMutation = gql`
+  mutation($id: ID!, $name: String) {
+    UpdateUser(id: $id, name: $name) {
+      name
+    }
+  }
+`
 beforeAll(() => {
   const { server } = createServer({
     context: () => {
@@ -394,6 +402,35 @@ describe('validateReview', () => {
       ).resolves.toMatchObject({
         data: { review: null },
         errors: [{ message: 'Resource not found or is not a Post|Comment|User!' }],
+      })
+    })
+  })
+
+  describe('validateUpdateUser', () => {
+    let userParams, variables, updatingUser
+
+    beforeEach(async () => {
+      userParams = {
+        id: 'updating-user',
+        name: 'John Doe',
+      }
+
+      variables = {
+        id: 'updating-user',
+        name: 'John Doughnut',
+      }
+      updatingUser = await factory.create('User', userParams)
+      authenticatedUser = await updatingUser.toJson()
+    })
+
+    it('with name too short', async () => {
+      variables = {
+        ...variables,
+        name: '  ',
+      }
+      await expect(mutate({ mutation: updateUserMutation, variables })).resolves.toMatchObject({
+        data: { UpdateUser: null },
+        errors: [{ message: 'Username must be at least 3 character long!' }],
       })
     })
   })

@@ -1,33 +1,10 @@
 import uuid from 'uuid/v4'
 import { neo4jgraphql } from 'neo4j-graphql-js'
+import { isEmpty } from 'lodash'
 import fileUpload from './fileUpload'
-import { getBlockedUsers, getBlockedByUsers } from './users.js'
-import { mergeWith, isArray, isEmpty } from 'lodash'
 import { UserInputError } from 'apollo-server'
 import Resolver from './helpers/Resolver'
-
-const filterForBlockedUsers = async (params, context) => {
-  if (!context.user) return params
-  const [blockedUsers, blockedByUsers] = await Promise.all([
-    getBlockedUsers(context),
-    getBlockedByUsers(context),
-  ])
-  const badIds = [...blockedByUsers.map(b => b.id), ...blockedUsers.map(b => b.id)]
-  if (!badIds.length) return params
-
-  params.filter = mergeWith(
-    params.filter,
-    {
-      author_not: { id_in: badIds },
-    },
-    (objValue, srcValue) => {
-      if (isArray(objValue)) {
-        return objValue.concat(srcValue)
-      }
-    },
-  )
-  return params
-}
+import { filterForBlockedUsers } from './helpers/filterForBlockedUsers'
 
 const maintainPinnedPosts = params => {
   const pinnedPostFilter = { pinned: true }
@@ -57,17 +34,20 @@ export default {
     PostsEmotionsCountByEmotion: async (object, params, context, resolveInfo) => {
       const { postId, data } = params
       const session = context.driver.session()
-      try {
-        const transactionRes = await session.run(
-          `MATCH (post:Post {id: $postId})<-[emoted:EMOTED {emotion: $data.emotion}]-()
-        RETURN COUNT(DISTINCT emoted) as emotionsCount
-        `,
+      const readTxResultPromise = session.readTransaction(async transaction => {
+        const emotionsCountTransactionResponse = await transaction.run(
+          `
+            MATCH (post:Post {id: $postId})<-[emoted:EMOTED {emotion: $data.emotion}]-()
+            RETURN COUNT(DISTINCT emoted) as emotionsCount
+          `,
           { postId, data },
         )
-
-        const [emotionsCount] = transactionRes.records.map(record => {
-          return record.get('emotionsCount').low
-        })
+        return emotionsCountTransactionResponse.records.map(
+          record => record.get('emotionsCount').low,
+        )
+      })
+      try {
+        const [emotionsCount] = await readTxResultPromise
         return emotionsCount
       } finally {
         session.close()
@@ -76,16 +56,18 @@ export default {
     PostsEmotionsByCurrentUser: async (object, params, context, resolveInfo) => {
       const { postId } = params
       const session = context.driver.session()
-      try {
-        const transactionRes = await session.run(
-          `MATCH (user:User {id: $userId})-[emoted:EMOTED]->(post:Post {id: $postId})
-        RETURN collect(emoted.emotion) as emotion`,
+      const readTxResultPromise = session.readTransaction(async transaction => {
+        const emotionsTransactionResponse = await transaction.run(
+          `
+            MATCH (user:User {id: $userId})-[emoted:EMOTED]->(post:Post {id: $postId})
+            RETURN collect(emoted.emotion) as emotion
+          `,
           { userId: context.user.id, postId },
         )
-
-        const [emotions] = transactionRes.records.map(record => {
-          return record.get('emotion')
-        })
+        return emotionsTransactionResponse.records.map(record => record.get('emotion'))
+      })
+      try {
+        const [emotions] = await readTxResultPromise
         return emotions
       } finally {
         session.close()
@@ -98,25 +80,29 @@ export default {
       delete params.categoryIds
       params = await fileUpload(params, { file: 'imageUpload', url: 'image' })
       params.id = params.id || uuid()
-      const createPostCypher = `CREATE (post:Post {params})
-        SET post.createdAt = toString(datetime())
-        SET post.updatedAt = toString(datetime())
-        WITH post
-        MATCH (author:User {id: $userId})
-        MERGE (post)<-[:WROTE]-(author)
-        WITH post
-        UNWIND $categoryIds AS categoryId
-        MATCH (category:Category {id: categoryId})
-        MERGE (post)-[:CATEGORIZED]->(category)
-        RETURN post`
-
-      const createPostVariables = { userId: context.user.id, categoryIds, params }
-
       const session = context.driver.session()
+      const writeTxResultPromise = session.writeTransaction(async transaction => {
+        const createPostTransactionResponse = await transaction.run(
+          `
+            CREATE (post:Post {params})
+            SET post.createdAt = toString(datetime())
+            SET post.updatedAt = toString(datetime())
+            WITH post
+            MATCH (author:User {id: $userId})
+            MERGE (post)<-[:WROTE]-(author)
+            WITH post
+            UNWIND $categoryIds AS categoryId
+            MATCH (category:Category {id: categoryId})
+            MERGE (post)-[:CATEGORIZED]->(category)
+            RETURN post
+          `,
+          { userId: context.user.id, categoryIds, params },
+        )
+        return createPostTransactionResponse.records.map(record => record.get('post').properties)
+      })
       try {
-        const transactionRes = await session.run(createPostCypher, createPostVariables)
-        const posts = transactionRes.records.map(record => record.get('post').properties)
-        return posts[0]
+        const [post] = await writeTxResultPromise
+        return post
       } catch (e) {
         if (e.code === 'Neo.ClientError.Schema.ConstraintValidationFailed')
           throw new UserInputError('Post with this slug already exists!')
@@ -129,38 +115,44 @@ export default {
       const { categoryIds } = params
       delete params.categoryIds
       params = await fileUpload(params, { file: 'imageUpload', url: 'image' })
-      let updatePostCypher = `MATCH (post:Post {id: $params.id})
-      SET post += $params
-      SET post.updatedAt = toString(datetime())
-      WITH post
-      `
-
       const session = context.driver.session()
-      try {
-        if (categoryIds && categoryIds.length) {
-          const cypherDeletePreviousRelations = `
+      let updatePostCypher = `
+                                MATCH (post:Post {id: $params.id})
+                                SET post += $params
+                                SET post.updatedAt = toString(datetime())
+                                WITH post
+                              `
+
+      if (categoryIds && categoryIds.length) {
+        const cypherDeletePreviousRelations = `
           MATCH (post:Post { id: $params.id })-[previousRelations:CATEGORIZED]->(category:Category)
           DELETE previousRelations
           RETURN post, category
-        `
+          `
 
-          await session.run(cypherDeletePreviousRelations, { params })
+        await session.writeTransaction(transaction => {
+          return transaction.run(cypherDeletePreviousRelations, { params })
+        })
 
-          updatePostCypher += `
+        updatePostCypher += `
           UNWIND $categoryIds AS categoryId
           MATCH (category:Category {id: categoryId})
           MERGE (post)-[:CATEGORIZED]->(category)
           WITH post
         `
-        }
+      }
 
-        updatePostCypher += `RETURN post`
-        const updatePostVariables = { categoryIds, params }
-
-        const transactionRes = await session.run(updatePostCypher, updatePostVariables)
-        const [post] = transactionRes.records.map(record => {
-          return record.get('post').properties
+      updatePostCypher += `RETURN post`
+      const updatePostVariables = { categoryIds, params }
+      try {
+        const writeTxResultPromise = session.writeTransaction(async transaction => {
+          const updatePostTransactionResponse = await transaction.run(
+            updatePostCypher,
+            updatePostVariables,
+          )
+          return updatePostTransactionResponse.records.map(record => record.get('post').properties)
         })
+        const [post] = await writeTxResultPromise
         return post
       } finally {
         session.close()
@@ -169,23 +161,25 @@ export default {
 
     DeletePost: async (object, args, context, resolveInfo) => {
       const session = context.driver.session()
-      try {
-        // we cannot set slug to 'UNAVAILABE' because of unique constraints
-        const transactionRes = await session.run(
+      const writeTxResultPromise = session.writeTransaction(async transaction => {
+        const deletePostTransactionResponse = await transaction.run(
           `
-        MATCH (post:Post {id: $postId})
-        OPTIONAL MATCH (post)<-[:COMMENTS]-(comment:Comment)
-        SET post.deleted        = TRUE
-        SET post.content        = 'UNAVAILABLE'
-        SET post.contentExcerpt = 'UNAVAILABLE'
-        SET post.title          = 'UNAVAILABLE'
-        SET comment.deleted     = TRUE
-        REMOVE post.image
-        RETURN post
-      `,
+            MATCH (post:Post {id: $postId})
+            OPTIONAL MATCH (post)<-[:COMMENTS]-(comment:Comment)
+            SET post.deleted        = TRUE
+            SET post.content        = 'UNAVAILABLE'
+            SET post.contentExcerpt = 'UNAVAILABLE'
+            SET post.title          = 'UNAVAILABLE'
+            SET comment.deleted     = TRUE
+            REMOVE post.image
+            RETURN post
+          `,
           { postId: args.id },
         )
-        const [post] = transactionRes.records.map(record => record.get('post').properties)
+        return deletePostTransactionResponse.records.map(record => record.get('post').properties)
+      })
+      try {
+        const [post] = await writeTxResultPromise
         return post
       } finally {
         session.close()
@@ -195,21 +189,24 @@ export default {
       const { to, data } = params
       const { user } = context
       const session = context.driver.session()
-      try {
-        const transactionRes = await session.run(
-          `MATCH (userFrom:User {id: $user.id}), (postTo:Post {id: $to.id})
-        MERGE (userFrom)-[emotedRelation:EMOTED {emotion: $data.emotion}]->(postTo)
-        RETURN userFrom, postTo, emotedRelation`,
+      const writeTxResultPromise = session.writeTransaction(async transaction => {
+        const addPostEmotionsTransactionResponse = await transaction.run(
+          `
+          MATCH (userFrom:User {id: $user.id}), (postTo:Post {id: $to.id})
+          MERGE (userFrom)-[emotedRelation:EMOTED {emotion: $data.emotion}]->(postTo)
+          RETURN userFrom, postTo, emotedRelation`,
           { user, to, data },
         )
-
-        const [emoted] = transactionRes.records.map(record => {
+        return addPostEmotionsTransactionResponse.records.map(record => {
           return {
             from: { ...record.get('userFrom').properties },
             to: { ...record.get('postTo').properties },
             ...record.get('emotedRelation').properties,
           }
         })
+      })
+      try {
+        const [emoted] = await writeTxResultPromise
         return emoted
       } finally {
         session.close()
@@ -219,20 +216,25 @@ export default {
       const { to, data } = params
       const { id: from } = context.user
       const session = context.driver.session()
-      try {
-        const transactionRes = await session.run(
-          `MATCH (userFrom:User {id: $from})-[emotedRelation:EMOTED {emotion: $data.emotion}]->(postTo:Post {id: $to.id})
-        DELETE emotedRelation
-        RETURN userFrom, postTo`,
+      const writeTxResultPromise = session.writeTransaction(async transaction => {
+        const removePostEmotionsTransactionResponse = await transaction.run(
+          `
+            MATCH (userFrom:User {id: $from})-[emotedRelation:EMOTED {emotion: $data.emotion}]->(postTo:Post {id: $to.id})
+            DELETE emotedRelation
+            RETURN userFrom, postTo
+          `,
           { from, to, data },
         )
-        const [emoted] = transactionRes.records.map(record => {
+        return removePostEmotionsTransactionResponse.records.map(record => {
           return {
             from: { ...record.get('userFrom').properties },
             to: { ...record.get('postTo').properties },
             emotion: data.emotion,
           }
         })
+      })
+      try {
+        const [emoted] = await writeTxResultPromise
         return emoted
       } finally {
         session.close()
@@ -316,6 +318,7 @@ export default {
         'language',
         'pinnedAt',
         'pinned',
+        'imageBlurred',
         'imageAspectRatio',
       ],
       hasMany: {
@@ -344,21 +347,28 @@ export default {
     relatedContributions: async (parent, params, context, resolveInfo) => {
       if (typeof parent.relatedContributions !== 'undefined') return parent.relatedContributions
       const { id } = parent
-      const statement = `
-      MATCH (p:Post {id: $id})-[:TAGGED|CATEGORIZED]->(categoryOrTag)<-[:TAGGED|CATEGORIZED]-(post:Post)
-      WHERE NOT post.deleted AND NOT post.disabled
-      RETURN DISTINCT post
-      LIMIT 10
-      `
-      let relatedContributions
       const session = context.driver.session()
+
+      const writeTxResultPromise = session.writeTransaction(async transaction => {
+        const relatedContributionsTransactionResponse = await transaction.run(
+          `
+            MATCH (p:Post {id: $id})-[:TAGGED|CATEGORIZED]->(categoryOrTag)<-[:TAGGED|CATEGORIZED]-(post:Post)
+            WHERE NOT post.deleted AND NOT post.disabled
+            RETURN DISTINCT post
+            LIMIT 10
+          `,
+          { id },
+        )
+        return relatedContributionsTransactionResponse.records.map(
+          record => record.get('post').properties,
+        )
+      })
       try {
-        const result = await session.run(statement, { id })
-        relatedContributions = result.records.map(r => r.get('post').properties)
+        const relatedContributions = await writeTxResultPromise
+        return relatedContributions
       } finally {
         session.close()
       }
-      return relatedContributions
     },
   },
 }

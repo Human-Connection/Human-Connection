@@ -10,6 +10,7 @@
       <hc-teaser-image
         :contribution="contribution"
         @addTeaserImage="addTeaserImage"
+        :class="{ '--blur-image': form.blurImage }"
         @addImageAspectRatio="addImageAspectRatio"
       >
         <img
@@ -18,7 +19,23 @@
           :src="contribution.image | proxyApiUrl"
         />
       </hc-teaser-image>
+
       <ds-card>
+        <div class="blur-toggle">
+          <label for="blur-img">{{ $t('contribution.inappropriatePicture') }}</label>
+          <input type="checkbox" id="blur-img" v-model="form.blurImage" />
+          <p>
+            <a
+              href="https://support.human-connection.org/kb/faq.php?id=113"
+              target="_blank"
+              class="link"
+            >
+              {{ $t('contribution.inappropriatePictureText') }}
+              <ds-icon name="question-circle" />
+            </a>
+          </p>
+        </div>
+
         <ds-space />
         <client-only>
           <hc-user :user="currentUser" :trunc="35" />
@@ -38,23 +55,21 @@
           </ds-chip>
           <ds-chip v-else size="base">{{ form.title.length }}/{{ formSchema.title.max }}</ds-chip>
         </ds-text>
-        <client-only>
-          <hc-editor
-            :users="users"
-            :value="form.content"
-            :hashtags="hashtags"
-            @input="updateEditorContent"
-          />
-          <ds-text align="right">
-            <ds-chip v-if="errors && errors.content" color="danger" size="base">
-              {{ contentLength }}
-              <ds-icon name="warning"></ds-icon>
-            </ds-chip>
-            <ds-chip v-else size="base">
-              {{ contentLength }}
-            </ds-chip>
-          </ds-text>
-        </client-only>
+        <hc-editor
+          :users="users"
+          :value="form.content"
+          :hashtags="hashtags"
+          @input="updateEditorContent"
+        />
+        <ds-text align="right">
+          <ds-chip v-if="errors && errors.content" color="danger" size="base">
+            {{ contentLength }}
+            <ds-icon name="warning"></ds-icon>
+          </ds-chip>
+          <ds-chip v-else size="base">
+            {{ contentLength }}
+          </ds-chip>
+        </ds-text>
         <ds-space margin-bottom="small" />
         <hc-categories-select model="categoryIds" :existingCategoryIds="form.categoryIds" />
         <ds-text align="right">
@@ -82,6 +97,7 @@
             <ds-icon name="warning"></ds-icon>
           </ds-chip>
         </ds-text>
+
         <ds-space />
         <div slot="footer" style="text-align: right">
           <ds-button
@@ -136,7 +152,9 @@ export default {
       image: null,
       language: null,
       categoryIds: [],
+      blurImage: false,
     }
+
     let id = null
     let slug = null
     const form = { ...formDefaults }
@@ -151,7 +169,9 @@ export default {
           ? languageOptions.find(o => this.contribution.language === o.value)
           : null
       form.categoryIds = this.categoryIds(this.contribution.categories)
+      form.blurImage = this.contribution.imageBlurred
     }
+
     return {
       form,
       formSchema: {
@@ -169,6 +189,7 @@ export default {
           },
         },
         language: { required: true },
+        blurImage: { required: false },
       },
       languageOptions,
       id,
@@ -177,6 +198,7 @@ export default {
       users: [],
       contentMin: 3,
       hashtags: [],
+      elem: null,
     }
   },
   computed: {
@@ -197,6 +219,7 @@ export default {
         teaserImage,
         imageAspectRatio,
         categoryIds,
+        blurImage,
       } = this.form
       this.loading = true
       this.$apollo
@@ -210,6 +233,7 @@ export default {
             language,
             image,
             imageUpload: teaserImage,
+            imageBlurred: blurImage,
             imageAspectRatio,
           },
         })
@@ -275,28 +299,35 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-.smallTag {
-  width: 100%;
-  position: relative;
-  left: 90%;
-}
-.post-title {
-  margin-top: $space-x-small;
-  margin-bottom: $space-xx-small;
-
-  input {
-    border: 0;
-    font-size: $font-size-x-large;
-    font-weight: bold;
-    padding-left: 0;
-    padding-right: 0;
-  }
-}
-
+<style lang="scss">
 .contribution-form {
+  .ds-card-image.--blur-image img {
+    filter: blur(32px);
+  }
+
+  .blur-toggle {
+    text-align: right;
+
+    > .link {
+      display: block;
+    }
+  }
+
   .ds-chip {
     cursor: default;
+  }
+
+  .post-title {
+    margin-top: $space-x-small;
+    margin-bottom: $space-xx-small;
+
+    input {
+      border: 0;
+      font-size: $font-size-x-large;
+      font-weight: bold;
+      padding-left: 0;
+      padding-right: 0;
+    }
   }
 }
 </style>
