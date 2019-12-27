@@ -48,7 +48,7 @@
         <!-- Post language -->
         <ds-tag v-if="post.language" class="category-tag language">
           <base-icon name="globe" />
-          {{post.language ? post.language.toUpperCase(): null}}
+          {{post.language.toUpperCase()}}
         </ds-tag>
       </div>
       <ds-space margin-bottom="small" />
