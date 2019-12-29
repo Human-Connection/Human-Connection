@@ -1,4 +1,4 @@
-<template>s
+<template>
   <transition name="fade" appear>
     <ds-card
       :lang="post.language"
