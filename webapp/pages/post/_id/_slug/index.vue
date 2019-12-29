@@ -1,4 +1,4 @@
-<template>
+<template>s
   <transition name="fade" appear>
     <ds-card
       :lang="post.language"
@@ -48,7 +48,7 @@
         <!-- Post language -->
         <ds-tag v-if="post.language" class="category-tag language">
           <base-icon name="globe" />
-          {{post.language.toUpperCase()}}
+          {{ post.language.toUpperCase() }}
         </ds-tag>
       </div>
       <ds-space margin-bottom="small" />
