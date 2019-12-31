@@ -5895,12 +5895,12 @@ metascraper-title@^5.8.12:
     "@metascraper/helpers" "^5.8.12"
     lodash "~4.17.15"
 
-metascraper-url@^5.8.12:
-  version "5.8.12"
-  resolved "https://registry.yarnpkg.com/metascraper-url/-/metascraper-url-5.8.12.tgz#806fc3c32a563e17e8405142614306d34619a5a5"
-  integrity sha512-tU49/fHi2BQsqWiNaLyxROZiSq2LJFvllazwOZ45KXf4EqhZmh1I9L2cdgYLdRk6cNVL5cM+df5ZiY070XQ3nQ==
+metascraper-url@^5.8.13:
+  version "5.8.13"
+  resolved "https://registry.yarnpkg.com/metascraper-url/-/metascraper-url-5.8.13.tgz#ddeefbfee556a6eceb687ed9d4ff1f3ed9170bdf"
+  integrity sha512-jPezb6ICTU7LK6QuhIhXLmNkL7GfKHnNm8BDmOfI266tfLP7xiz0NZZHJA0+xsmRoP3iMCo3wLA1c7s3Kie75w==
   dependencies:
-    "@metascraper/helpers" "^5.8.12"
+    "@metascraper/helpers" "^5.8.13"
 
 metascraper-video@^5.8.13:
   version "5.8.13"
