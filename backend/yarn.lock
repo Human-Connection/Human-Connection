@@ -1054,7 +1054,7 @@
     url-regex "~4.1.1"
     video-extensions "~1.1.0"
 
-"@metascraper/helpers@^5.8.12", "@metascraper/helpers@^5.8.13":
+"@metascraper/helpers@^5.8.13":
   version "5.8.13"
   resolved "https://registry.yarnpkg.com/@metascraper/helpers/-/helpers-5.8.13.tgz#62e808812e0dfc143668c341f44fac1e09b0fa1a"
   integrity sha512-qRQ7nfuYARxph46E0HBww3n+lKUD16QlPSz2DcL2IgmimClLngU/lsfBGjU1g+NwdPRQDersQO8uuiju1fMHRA==
@@ -5971,12 +5971,12 @@ metascraper-lang@^5.8.13:
   dependencies:
     "@metascraper/helpers" "^5.8.13"
 
-metascraper-logo@^5.8.12:
-  version "5.8.12"
-  resolved "https://registry.yarnpkg.com/metascraper-logo/-/metascraper-logo-5.8.12.tgz#db030673a94fe460a24f25547c4e2dd1a8724db7"
-  integrity sha512-pnYxNxRKmbfV1KIPl7DlwVtFNyTMPKcYSepxCyOA94r3sjEHHZ41FStb4vB7qAq7nUD8IfUpkONp+mDEZ3HmkA==
+metascraper-logo@^5.8.13:
+  version "5.8.13"
+  resolved "https://registry.yarnpkg.com/metascraper-logo/-/metascraper-logo-5.8.13.tgz#5882eb580589c1079302c3bc8bc855eb1e004946"
+  integrity sha512-alJrgCnzkobAjM5CggRtvjjAiJCJzvQEObOlqmFdHheHqk5owSRcoGeJLOCwrYo7RjBx2m3Gult1S4LJzwae5g==
   dependencies:
-    "@metascraper/helpers" "^5.8.12"
+    "@metascraper/helpers" "^5.8.13"
 
 metascraper-publisher@^5.8.13:
   version "5.8.13"
