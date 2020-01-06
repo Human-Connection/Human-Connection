@@ -10,7 +10,7 @@
       <ds-button
         @click.prevent="deleteImage"
         icon="close"
-        v-show="showDeleteButton != ''"
+        v-if="showDeleteButton"
         class="delete-image"
       ></ds-button>
       <hc-teaser-image
@@ -272,9 +272,9 @@ export default {
       return categories.map(c => c.id)
     },
     deleteImage() {
-      this.form.image = ''
-      this.contribution.image = ''
-      this.showDeleteButton = ''
+      this.form.image = null
+      this.contribution.image = null
+      this.showDeleteButton = false
     },
   },
   apollo: {
