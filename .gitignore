@@ -19,4 +19,3 @@ cypress.env.json
 
 release/
 *~
-.vscode/settings.json
