@@ -33,7 +33,7 @@
               params: { id: scope.row.id, slug: scope.row.slug },
             }"
           >
-            <hc-avatar :user="scope.row" size="small" />
+            <hc-avatar :image="scope.row && scope.row.avatar" size="small" />
           </nuxt-link>
         </template>
         <template slot="name" slot-scope="scope">

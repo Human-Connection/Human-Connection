@@ -31,9 +31,7 @@ describe('Avatar.vue', () => {
     describe('with a relative avatar url', () => {
       beforeEach(() => {
         propsData = {
-          user: {
-            avatar: '/avatar.jpg',
-          },
+          image: '/avatar.jpg',
         }
       })
 
@@ -49,9 +47,7 @@ describe('Avatar.vue', () => {
     describe('with an absolute avatar url', () => {
       beforeEach(() => {
         propsData = {
-          user: {
-            avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/sawalazar/128.jpg',
-          },
+          image: 'https://s3.amazonaws.com/uifaces/faces/twitter/sawalazar/128.jpg',
         }
       })
 

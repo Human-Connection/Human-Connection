@@ -11,7 +11,7 @@
         "
         @click.prevent="toggleMenu"
       >
-        <hc-avatar :user="user" />
+        <hc-avatar :image="user && user.avatar" />
         <base-icon class="dropdown-arrow" name="angle-down" />
       </a>
     </template>

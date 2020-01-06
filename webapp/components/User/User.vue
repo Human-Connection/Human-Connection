@@ -9,7 +9,7 @@
     <template slot="default" slot-scope="{ openMenu, closeMenu, isOpen }">
       <nuxt-link :to="userLink" :class="['user', isOpen && 'active']">
         <div @mouseover="showPopover ? openMenu(true) : () => {}" @mouseleave="closeMenu(true)">
-          <hc-avatar v-if="showAvatar" class="avatar" :user="user" />
+          <hc-avatar v-if="showAvatar" class="avatar" :image="user && user.avatar" />
           <div>
             <ds-text class="userinfo">
               <b>{{ userSlug }}</b>

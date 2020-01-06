@@ -11,9 +11,13 @@
           style="position: relative; height: auto;"
         >
           <hc-upload v-if="myProfile" :user="user">
-            <hc-avatar :user="user" class="profile-avatar" size="x-large"></hc-avatar>
+            <hc-avatar
+              :image="user && user.avatar"
+              class="profile-avatar"
+              size="x-large"
+            ></hc-avatar>
           </hc-upload>
-          <hc-avatar v-else :user="user" class="profile-avatar" size="x-large" />
+          <hc-avatar v-else :image="user && user.avatar" class="profile-avatar" size="x-large" />
           <!-- Menu -->
           <client-only>
             <content-menu
@@ -157,7 +161,7 @@
               <template>
                 <ds-space v-for="link in socialMediaLinks" :key="link.username" margin="x-small">
                   <a :href="link.url" target="_blank">
-                    <ds-avatar :image="link.favicon" />
+                    <hc-avatar :image="link.favicon" />
                     {{ link.username }}
                   </a>
                 </ds-space>
