@@ -30,14 +30,6 @@ describe('SearchResources.vue', () => {
   }
 
   describe('mount', () => {
-    it('defaults to an empty array as searchResults', () => {
-      expect(wrapper.vm.searchResults).toEqual([])
-    })
-
-    it('defaults to pending false, as in the search is not pending', () => {
-      expect(wrapper.vm.pending).toBe(false)
-    })
-
     describe('Emitted events', () => {
       let searchableInputComponent
       beforeEach(() => {
@@ -60,7 +52,7 @@ describe('SearchResources.vue', () => {
         })
 
         it('clears searchResults', () => {
-          expect(wrapper.vm.searchResults).toEqual([])
+          expect(wrapper.find('.is-open').exists()).toBe(false)
         })
 
         it('set pending to false', () => {

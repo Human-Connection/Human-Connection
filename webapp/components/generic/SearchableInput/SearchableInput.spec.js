@@ -11,7 +11,7 @@ localVue.filter('dateTime', () => Date.now)
 config.stubs['nuxt-link'] = '<span><slot /></span>'
 
 describe('SearchableInput.vue', () => {
-  let mocks, propsData, getters
+  let mocks, propsData, getters, wrapper
 
   beforeEach(() => {
     propsData = {}
@@ -22,56 +22,43 @@ describe('SearchableInput.vue', () => {
       $t: jest.fn(string => string),
     }
     getters = { 'auth/isModerator': () => false }
+    wrapper = Wrapper()
   })
+  const Wrapper = () => {
+    const store = new Vuex.Store({
+      getters,
+    })
+    return mount(SearchableInput, { mocks, localVue, propsData, store })
+  }
 
   describe('mount', () => {
-    const Wrapper = () => {
-      const store = new Vuex.Store({
-        getters,
-      })
-      return mount(SearchableInput, { mocks, localVue, propsData, store })
-    }
-
-    it('defaults to an empty value', () => {
-      expect(Wrapper().vm.value).toBe('')
-    })
-
-    it('default to a 300 millisecond delay from the time the user stops typing to when the search starts', () => {
-      expect(Wrapper().vm.delay).toEqual(300)
-    })
-
-    it('defaults to an empty array as options', () => {
-      expect(Wrapper().vm.options).toEqual([])
-    })
-
     describe('testing custom functions', () => {
-      let select, wrapper
+      let select
 
       beforeEach(() => {
-        wrapper = Wrapper()
         select = wrapper.find('.ds-select')
         select.trigger('focus')
         select.element.value = 'abcd'
       })
 
       it('opens the select dropdown when focused on', () => {
-        expect(wrapper.vm.isOpen).toBe(true)
+        expect(wrapper.find('.is-open').exists()).toBe(true)
       })
 
       it('opens the select dropdown and blurs after focused on', () => {
         select.trigger('blur')
-        expect(wrapper.vm.isOpen).toBe(false)
+        expect(wrapper.find('.is-open').exists()).toBe(false)
       })
 
       it('is clearable', () => {
         select.trigger('input')
         select.trigger('keyup.esc')
-        expect(wrapper.emitted().clearSearch.length).toBe(1)
+        expect(wrapper.find('.is-open').exists()).toBe(false)
       })
 
       it('changes the unprocessedSearchInput as the value changes', () => {
         select.trigger('input')
-        expect(wrapper.vm.unprocessedSearchInput).toBe('abcd')
+        expect(select.element.value).toBe('abcd')
       })
 
       it('searches for the term when enter is pressed', async () => {
