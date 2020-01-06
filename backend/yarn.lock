@@ -6026,10 +6026,10 @@ metascraper-youtube@^5.8.13:
     is-reachable "~4.0.0"
     p-locate "~4.1.0"
 
-metascraper@^5.9.0:
-  version "5.9.0"
-  resolved "https://registry.yarnpkg.com/metascraper/-/metascraper-5.9.0.tgz#d4b91e94d12de4d2cdc0823133186c4e8a42d766"
-  integrity sha512-c2lGNy9vqf1zTwgN2laRE8y+4oNS6/hxz2ui+JZUG+FSsJPDDlZ+tjb2hS1pyc4M4ieca3OLSiI/stW4Pw4+Kg==
+metascraper@^5.9.4:
+  version "5.9.4"
+  resolved "https://registry.yarnpkg.com/metascraper/-/metascraper-5.9.4.tgz#8c7064d1ac53351bdeae0a7b3d3b4aef56a5020d"
+  integrity sha512-BRH+EozOV58xuzfA961y9UkxtbpwMsIDhKj/PVkSC0PTnwi6W14fJJ4AZGIMNr36QJSoWog6mCcSE43VJ+6sRg==
   dependencies:
     "@metascraper/helpers" "^5.8.13"
     cheerio "~1.0.0-rc.3"
