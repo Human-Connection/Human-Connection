@@ -10,9 +10,9 @@ export default {
         .replace(/\s+/g, ' ')
         .replace(/[[@#:*~\\$|^\]?/"'(){}+?!,.-]/g, '')
         .split(' ')
-        .map(s => s.toLowerCase().match(/^(not|and|or)$/)?  '"' + s + '"' : s + '*')
+        .map(s => (s.toLowerCase().match(/^(not|and|or)$/) ? '"' + s + '"' : s + '*'))
         .join(' ')
-      //console.log(myQuery)
+      // console.log(myQuery)
       const postCypher = `
       CALL db.index.fulltext.queryNodes('post_fulltext_search', $query)
       YIELD node as resource, score
