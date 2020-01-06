@@ -82,6 +82,7 @@ input _PostFilter {
   emotions_none: _PostEMOTEDFilter
   emotions_single: _PostEMOTEDFilter
   emotions_every: _PostEMOTEDFilter
+  imageBlurred: Boolean
 }
 
 enum _PostOrdering {
@@ -127,6 +128,7 @@ type Post {
   createdAt: String
   updatedAt: String
   language: String
+  imageBlurred: Boolean
   pinnedAt: String @cypher(
       statement: "MATCH (this)<-[pinned:PINNED]-(:User) WHERE NOT this.deleted = true AND NOT this.disabled = true RETURN pinned.createdAt"
     )
@@ -140,7 +142,6 @@ type Post {
       LIMIT 10
       """
     )
-
   tags: [Tag]! @relation(name: "TAGGED", direction: "OUT")
   categories: [Category]! @relation(name: "CATEGORIZED", direction: "OUT")
 
@@ -183,6 +184,7 @@ type Mutation {
     language: String
     categoryIds: [ID]
     contentExcerpt: String
+    imageBlurred: Boolean
     imageAspectRatio: Float
   ): Post
   UpdatePost(
@@ -196,6 +198,7 @@ type Mutation {
     visibility: Visibility
     language: String
     categoryIds: [ID]
+    imageBlurred: Boolean
     imageAspectRatio: Float
   ): Post
   DeletePost(id: ID!): Post
@@ -217,6 +220,7 @@ type Query {
     createdAt: String
     updatedAt: String
     language: String
+    imageBlurred: Boolean
     first: Int
     offset: Int
     orderBy: [_PostOrdering]

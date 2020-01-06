@@ -45,6 +45,10 @@ export const postFragment = gql`
     slug
     image
     language
+    imageBlurred
+    author {
+      ...user
+    }
     pinnedAt
     imageAspectRatio
   }
