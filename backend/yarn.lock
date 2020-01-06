@@ -1804,7 +1804,7 @@ apollo-server-caching@^0.5.1:
   dependencies:
     lru-cache "^5.0.0"
 
-apollo-server-core@^2.9.14, apollo-server-core@^2.9.15:
+apollo-server-core@^2.9.15:
   version "2.9.15"
   resolved "https://registry.yarnpkg.com/apollo-server-core/-/apollo-server-core-2.9.15.tgz#fa18659d90430e2f9556191f9d873dbed6a58ca5"
   integrity sha512-MgqtxZkUO2u7cSDQjp8feQlyHT/iZlKv3TV5kNy+xa9ewbfiR/qjziMsz46x+oVPBah+VH9WbGShSbVO0b2TJA==
@@ -1873,12 +1873,12 @@ apollo-server-plugin-base@^0.6.10:
   dependencies:
     apollo-server-types "^0.2.10"
 
-apollo-server-testing@~2.9.14:
-  version "2.9.14"
-  resolved "https://registry.yarnpkg.com/apollo-server-testing/-/apollo-server-testing-2.9.14.tgz#3b442a22b109c7ef7758bc1749dc0ab9923eb605"
-  integrity sha512-An9T0kUpqPOJnuoqGRIbx/c5iy/WRyZnVrfbCjQ0ux9n1reAoMzhmIdDDCIkl8+tu4UfTcjuNl4af5WRY6Lakw==
+apollo-server-testing@~2.9.15:
+  version "2.9.15"
+  resolved "https://registry.yarnpkg.com/apollo-server-testing/-/apollo-server-testing-2.9.15.tgz#d7dfbd2d07b91f05b57927e471edce34d98dc126"
+  integrity sha512-R+v+QrOVmeP95xomvbky4jV1MN6e5ihijZkpc/Ir0JhJthWcIZluaMEJqFWZr4K5k0+G66aF+I8O/bh2LM+4GQ==
   dependencies:
-    apollo-server-core "^2.9.14"
+    apollo-server-core "^2.9.15"
 
 apollo-server-types@^0.2.10:
   version "0.2.10"
