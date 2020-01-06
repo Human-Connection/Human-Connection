@@ -423,7 +423,8 @@
     "comment": {
       "submit": "Comment",
       "submitted": "Comment Submitted",
-      "updated": "Changes Saved"
+      "updated": "Changes Saved",
+      "answered": "answered"
     },
     "edited": "edited"
   },

@@ -56,7 +56,7 @@
       <ds-space margin-bottom="small" />
     </ds-card>
     <ds-button
-      v-bind:title="antworten"
+      v-bind:title="answered"
       icon="level-down"
       style="float:right; top: -22px;"
       @click.prevent="answerComment"
@@ -86,6 +86,7 @@ export default {
       isTarget,
       isCollapsed: !isTarget,
       openEditCommentMenu: false,
+      answered: this.$t('post.comment.answered'),
     }
   },
   components: {
@@ -176,19 +177,20 @@ export default {
       }
     },
     answerComment() {
+      const slug =
+        '<a class="mention" href="/profile/' +
+        this.comment.author.id +
+        '" data-mention-id="' +
+        this.comment.author.slug +
+        '" target="_blank" contenteditable="false">@d' +
+        this.comment.author.slug +
+        '</a>'
+      document.querySelector('.editor-content div').focus()
       if (document.querySelector('.is-empty')) {
-        document.querySelector('.is-empty').innerHTML = '@' + this.comment.author.slug
+          document.querySelector('.is-empty').innerHTML =  slug + ' '
       } else {
-        const html = document.querySelector('.editor-content').innerHTML
-        const slug =
-          '<a class="mention" href="/profile/' +
-          this.comment.author.id +
-          '" data-mention-id="' +
-          this.comment.author.slug +
-          '" target="_blank" contenteditable="false">@d' +
-          this.comment.author.slug +
-          '</a>'
-        document.querySelector('.editor-content').innerHTML = html + '' + slug
+          const html = document.querySelector('.editor-content').innerHTML
+          document.querySelector('.editor-content div').innerHTML = html + ' ' +  slug + ' '
       }
     },
   },

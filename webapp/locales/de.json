@@ -269,7 +269,8 @@
         "comment": {
             "submit": "Kommentiere",
             "submitted": "Kommentar Gesendet",
-            "updated": "Änderungen gespeichert"
+            "updated": "Änderungen gespeichert",
+            "answered": "answered"
         },
         "edited": "bearbeitet"
     },
