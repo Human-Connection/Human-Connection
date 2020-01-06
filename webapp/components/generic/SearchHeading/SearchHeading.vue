@@ -1,5 +1,5 @@
 <template>
-  <ds-flex-item>
+  <ds-flex-item class="search-heading">
     <ds-heading soft size="h5">
       {{ $t(`search.heading.${resourceType}`) }}
     </ds-heading>

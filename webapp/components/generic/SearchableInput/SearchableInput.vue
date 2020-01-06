@@ -49,6 +49,12 @@
             >
               <search-post :option="option" />
             </span>
+            <span
+              v-if="option.__typename === 'Tag'"
+              :class="{ 'extra-space': isFirstOfType(option), 'flex-span': true }"
+            >
+              <search-tag :option="option" />
+            </span>
           </template>
         </ds-select>
       </div>
@@ -59,12 +65,14 @@
 import { isEmpty } from 'lodash'
 import SearchHeading from '~/components/generic/SearchHeading/SearchHeading.vue'
 import SearchPost from '~/components/generic/SearchPost/SearchPost.vue'
+import SearchTag from '~/components/generic/SearchTag/SearchTag.vue'
 import HcUser from '~/components/User/User.vue'
 
 export default {
   components: {
     SearchHeading,
     SearchPost,
+    SearchTag,
     HcUser,
   },
   props: {
@@ -104,10 +112,10 @@ export default {
     },
     handleInput(event) {
       clearTimeout(this.searchProcess)
-      this.value = event.target ? event.target.value.trim() : ''
+      this.value = event.target ? event.target.value.replace(/\s+/g, ' ').trim() : ''
       this.isOpen = true
       this.unprocessedSearchInput = this.value
-      if (isEmpty(this.value) || this.value.length < 3) {
+      if (isEmpty(this.value) || this.value.replace(/\s+/g, '').length < 3) {
         return
       }
       this.searchProcess = setTimeout(() => {

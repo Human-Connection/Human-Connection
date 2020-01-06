@@ -202,7 +202,8 @@
     "failed": "Nothing found",
     "heading": {
       "Post": "Posts",
-      "User": "Users"
+      "User": "Users",
+      "Tag": "Hashtags"
     }
   },
   "settings": {

@@ -518,7 +518,8 @@
         "failed": "Nichts gefunden",
         "heading": {
           "Post": "Beiträge",
-          "User": "Benutzer"
+          "User": "Benutzer",
+	  "Tag": "Hashtags"
         }
     },
     "components": {

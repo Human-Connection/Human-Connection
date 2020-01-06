@@ -6,7 +6,13 @@ export default {
       const { query, limit } = args
       const { id: thisUserId } = context.user
       // see http://lucene.apache.org/core/8_3_1/queryparser/org/apache/lucene/queryparser/classic/package-summary.html#package.description
-      const myQuery = query + '*'
+      const myQuery = query
+        .replace(/\s+/g, ' ')
+        .replace(/[[@#:*~\\$|^\]?/"'(){}+?!,.-]/g, '')
+        .split(' ')
+        .map(s => '"' + s + '"*')
+        .join(' ')
+      // console.log(myQuery)
       const postCypher = `
       CALL db.index.fulltext.queryNodes('post_fulltext_search', $query)
       YIELD node as resource, score
@@ -40,6 +46,15 @@ export default {
       RETURN resource {.*, __typename: labels(resource)[0]}
       LIMIT $limit
       `
+      /*
+	const tagCypher = `
+MATCH (resource:Tag)
+WHERE resource.id CONTAINS $query
+AND NOT(resource.deleted = true OR resource.disabled = true)
+RETURN resource {.*, __typename: labels(resource)[0]}
+LIMIT $limit
+`
+*/
 
       const session = context.driver.session()
       const searchResultPromise = session.readTransaction(async transaction => {
@@ -53,14 +68,20 @@ export default {
           limit,
           thisUserId,
         })
-        return Promise.all([postTransactionResponse, userTransactionResponse])
+        /*
+        const tagTransactionResponse = transaction.run(tagCypher, {
+          query: query,
+          limit,
+        }) */
+        return Promise.all([postTransactionResponse, userTransactionResponse]) //, tagTransactionResponse
       })
 
       try {
-        const [postResults, userResults] = await searchResultPromise
+        const [postResults, userResults] = await searchResultPromise //, tagResults
         log(postResults)
         log(userResults)
-        return [...postResults.records, ...userResults.records].map(r => r.get('resource'))
+        //          log(tagResults)
+        return [...postResults.records, ...userResults.records].map(r => r.get('resource')) //, ...tagResults.records
       } finally {
         session.close()
       }
@@ -68,7 +89,27 @@ export default {
   },
 }
 
-/*
+/* order users by closest geolocation could look like this
+
+MATCH (u1:User { id: $thisUserId })-[:IS_IN]->(l1:Location)
+MATCH (u2:User)-[:IS_IN]->(l2:Location)
+WHERE NOT(u2.id = $thisUserId)
+AND NOT (u2.deleted = true OR u2.disabled = true
+OR (u1)-[:BLOCKED]-(u2))
+WITH point({longitude: l1.lng, latitude: l1.lat}) AS P1,
+point({longitude: l2.lng, latitude: l2.lat}) AS P2,
+u2 AS otherUsers
+WITH distance(P1, P2) AS Distance,
+otherUsers AS users
+ORDER BY Distance
+RETURN users
+
+*/
+
+/* This query is to test if the calculation of distances works.
+See:
+https://github.com/Human-Connection/Human-Connection/issues/2587
+
 MATCH (u1:User { name: 'Huey' })-[:IS_IN]->(l1:Location)
 MATCH (u2:User)-[:IS_IN]->(l2:Location)
 WHERE NOT(u2.name = 'Huey')

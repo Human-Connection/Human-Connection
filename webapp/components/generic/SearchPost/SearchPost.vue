@@ -6,7 +6,7 @@
     <ds-flex-item class="search-option-meta" width="280px">
       <ds-flex>
         <ds-flex-item>
-          <ds-text size="small" color="softer" class="search-meta">
+          <ds-text size="small" color="softer" class="search-post-meta">
             <span style="text-align: right;">
               <b>{{ option.commentsCount }}</b>
               <base-icon name="comments" />
@@ -18,7 +18,7 @@
           </ds-text>
         </ds-flex-item>
         <ds-flex-item>
-          <ds-text size="small" color="softer" align="right">
+          <ds-text size="small" color="softer" align="right" class="search-post-author">
             {{ option.author.name | truncate(32) }} -
             {{ option.createdAt | dateTime('dd.MM.yyyy') }}
           </ds-text>
@@ -49,7 +49,7 @@ export default {
     flex-direction: column;
   }
 }
-.search-meta {
+.search-post-meta {
   float: right;
   padding-top: 2px;
   white-space: nowrap;
