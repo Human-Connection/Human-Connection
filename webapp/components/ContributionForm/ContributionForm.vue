@@ -204,7 +204,7 @@ export default {
       users: [],
       contentMin: 3,
       hashtags: [],
-      showDeleteButton: this.contribution ? this.contribution.image : false,
+      showDeleteButton: !!this.contribution,
       elem: null,
     }
   },
