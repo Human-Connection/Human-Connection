@@ -16,6 +16,7 @@
     </ds-flex>
     <v-img
       v-if="image && !error"
+      :src="image | proxyApiUrl"
       lazy-src="https://picsum.photos/id/11/10/6"
       aspect-ratio="1"
       max-width="500"
