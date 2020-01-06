@@ -157,6 +157,7 @@ export default {
     '@nuxtjs/style-resources',
     '@nuxtjs/sentry',
     '@nuxtjs/pwa',
+    '@nuxtjs/vuetify',
   ],
 
   /*

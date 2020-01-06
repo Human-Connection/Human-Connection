@@ -14,7 +14,14 @@
         </template>
       </ds-flex-item>
     </ds-flex>
-    <img v-if="image && !error" :src="image | proxyApiUrl" @error="onError" />
+    <v-img
+      v-if="image && !error"
+      lazy-src="https://picsum.photos/id/11/10/6"
+      aspect-ratio="1"
+      max-width="500"
+      max-height="300"
+      @error="onError"
+    ></v-img>
   </div>
 </template>
 
@@ -99,3 +106,8 @@ export default {
   },
 }
 </script>
+<style lang="scss">
+.v-image {
+  border-radius: $border-radius-circle;
+}
+</style>

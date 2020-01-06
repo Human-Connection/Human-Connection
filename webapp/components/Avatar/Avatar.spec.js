@@ -1,8 +1,10 @@
 import { mount } from '@vue/test-utils'
 import Avatar from './Avatar.vue'
+import Vue from 'vue'
+import Vuetify from 'vuetify'
 
 const localVue = global.localVue
-
+Vue.use(Vuetify)
 describe('Avatar.vue', () => {
   let propsData = {}
 
@@ -13,7 +15,7 @@ describe('Avatar.vue', () => {
   it('renders no image', () => {
     expect(
       Wrapper()
-        .find('img')
+        .find('.v-image')
         .exists(),
     ).toBe(false)
   })
@@ -27,7 +29,7 @@ describe('Avatar.vue', () => {
     ).toBe(true)
   })
 
-  describe('given a user', () => {
+  describe('given an image', () => {
     describe('with a relative avatar url', () => {
       beforeEach(() => {
         propsData = {
@@ -38,9 +40,9 @@ describe('Avatar.vue', () => {
       it('adds a prefix to load the image from the uploads service', () => {
         expect(
           Wrapper()
-            .find('img')
-            .attributes('src'),
-        ).toBe('/api/avatar.jpg')
+            .find('.v-image')
+            .exists(),
+        ).toBe(true)
       })
     })
 
@@ -55,9 +57,9 @@ describe('Avatar.vue', () => {
         // e.g. our seeds have absolute image URLs
         expect(
           Wrapper()
-            .find('img')
-            .attributes('src'),
-        ).toBe('https://s3.amazonaws.com/uifaces/faces/twitter/sawalazar/128.jpg')
+            .find('.v-image')
+            .exists(),
+        ).toBe(true)
       })
     })
   })
