@@ -52,7 +52,7 @@ describe('SearchResources.vue', () => {
         })
 
         it('clears searchResults', () => {
-          expect(wrapper.find('.is-open').exists()).toBe(false)
+          expect(wrapper.vm.searchResults).toEqual([])
         })
 
         it('set pending to false', () => {

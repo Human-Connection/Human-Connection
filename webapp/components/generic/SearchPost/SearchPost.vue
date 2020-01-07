@@ -7,12 +7,12 @@
       <ds-flex>
         <ds-flex-item>
           <ds-text size="small" color="softer" class="search-post-meta">
-            <span style="text-align: right;">
-              <b>{{ option.commentsCount }}</b>
+            <span class="comments-count">
+              {{ option.commentsCount }}
               <base-icon name="comments" />
             </span>
-            <span class="post-shouted">
-              <b>{{ option.shoutedCount }}</b>
+            <span class="shouted-count">
+              {{ option.shoutedCount }}
               <base-icon name="bullhorn" />
             </span>
           </ds-text>
@@ -58,9 +58,14 @@ export default {
     vertical-align: sub;
   }
 }
-.post-shouted {
+.shouted-count {
   width: 36px;
   display: inline-block;
   text-align: right;
+  font-weight: $font-weight-bold;
+}
+.comments-count {
+  text-align: right;
+  font-weight: $font-weight-bold;
 }
 </style>

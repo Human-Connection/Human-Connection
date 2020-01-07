@@ -37,26 +37,24 @@ describe('SearchPost.vue', () => {
         wrapper
           .find('.search-post-meta')
           .findAll('span')
-          .at(0)
-          .text(),
-      ).toMatch('3')
+          .filter(item => item.text() === '3')
+          .exists(),
+      ).toBe(true)
     })
     it('renders post shoutedCount', () => {
       expect(
         wrapper
           .find('.search-post-meta')
           .findAll('span')
-          .at(1)
-          .text(),
-      ).toMatch('6')
+          .filter(item => item.text() === '6')
+          .exists(),
+      ).toBe(true)
     })
     it('renders post author', () => {
-      expect(
-        wrapper
-          .find('.search-post-author')
-          .text()
-          .replace(/\s+-\s+/, ' '),
-      ).toMatch('Post Author 23.08.2019')
+      expect(wrapper.find('.search-post-author').text()).toContain('Post Author')
+    })
+    it('renders post createdAt', () => {
+      expect(wrapper.find('.search-post-author').text()).toContain('23.08.2019')
     })
   })
 })
