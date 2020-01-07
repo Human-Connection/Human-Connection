@@ -204,11 +204,11 @@
   "settings": {
     "name": "Settings",
     "data": {
-      "name": "Your data",
-      "labelName": "Your Name",
-      "labelSlug": "Your unique user name",
+      "name": "My data",
+      "labelName": "My Name",
+      "labelSlug": "My unique user name",
       "namePlaceholder": "Femanon Funny",
-      "labelCity": "Your City or Region",
+      "labelCity": "My City or Region",
       "labelBio": "About You",
       "success": "Your data was successfully updated!"
     },
