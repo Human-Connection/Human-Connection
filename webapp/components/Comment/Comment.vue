@@ -114,7 +114,7 @@ export default {
         return this.$filters.truncate(this.comment.content, COMMENT_TRUNCATE_TO_LENGTH)
       }
       // console.log(this.comment.content.replace(/\?/gi, '?++'))
-      return this.comment.content.replace(/\?/gi, ' <button class="button">Find</button>')
+      return this.comment.content
     },
     displaysComment() {
       return !this.unavailable || this.isModerator
