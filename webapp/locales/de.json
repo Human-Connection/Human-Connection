@@ -145,7 +145,7 @@
             "successAdd": "Social-Media hinzugefügt. Profil aktualisiert!",
             "successDelete": "Social-Media gelöscht. Profil aktualisiert!"
         },
-        "blocked-users": {
+        "blacklisted-users": {
             "name": "Blockierte Benutzer",
             "explanation": {
                 "intro": "Wenn ein anderer Benutzer von dir blockiert wurde, dann passiert folgendes:",
@@ -158,12 +158,12 @@
             "columns": {
                 "name": "Name",
                 "slug": "Alias",
-                "unblock": "Entsperren"
+                "whitelist": "Entsperren"
             },
             "empty": "Bislang hast du niemanden blockiert.",
             "how-to": "Du kannst andere Benutzer auf deren Profilseite über das Inhaltsmenü blockieren.",
-            "block": "Nutzer blockieren",
-            "unblock": "Nutzer entblocken",
+            "blacklist": "Nutzer blockieren",
+            "whitelist": "Nutzer entblocken",
             "unblocked": "{name} ist wieder entsperrt"
         },
         "privacy": {
@@ -485,7 +485,7 @@
         },
         "teaserImage": {
             "cropperConfirm": "Bestätigen"
-        },        
+        },
         "inappropriatePicture" : "Dieses Bild kann für einige Menschen unangemessen sein.",
         "inappropriatePictureText" : "Wann soll ein Foto versteckt werden"
     },

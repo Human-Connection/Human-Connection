@@ -150,19 +150,19 @@ export default {
             icon: 'edit',
           })
         } else {
-          if (this.resource.isBlocked) {
+          if (this.resource.isBlacklisted) {
             routes.push({
-              label: this.$t(`settings.blocked-users.unblock`),
+              label: this.$t(`settings.blacklisted-users.whitelist`),
               callback: () => {
-                this.$emit('unblock', this.resource)
+                this.$emit('whitelist', this.resource)
               },
               icon: 'user-plus',
             })
           } else {
             routes.push({
-              label: this.$t(`settings.blocked-users.block`),
+              label: this.$t(`settings.blacklisted-users.blacklist`),
               callback: () => {
-                this.$emit('block', this.resource)
+                this.$emit('blacklist', this.resource)
               },
               icon: 'user-times',
             })

@@ -420,17 +420,17 @@ Given("there is an annoying user called {string}", name => {
   });
 });
 
-Given("there is an annoying user who has blocked me", () => {
+Given("there is an annoying user who has blacklisted me", () => {
   cy.neode()
     .first("User", {
       role: 'moderator'
     })
-    .then(blocked => {
+    .then(blacklisted => {
       cy.neode()
         .first("User", {
           id: 'annoying-user'
         })
-        .relateTo(blocked, "blocked");
+        .relateTo(blacklisted, "blacklisted");
     });
 });
 
@@ -514,17 +514,17 @@ Given("I wrote a post {string}", title => {
     });
 });
 
-When("I block the user {string}", name => {
+When("I blacklist the user {string}", name => {
   cy.neode()
     .first("User", {
       name
     })
-    .then(blocked => {
+    .then(blacklisted => {
       cy.neode()
         .first("User", {
           name: narratorParams.name
         })
-        .relateTo(blocked, "blocked");
+        .relateTo(blacklisted, "blacklisted");
     });
 });
 

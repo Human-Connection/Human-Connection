@@ -78,6 +78,12 @@ module.exports = {
     target: 'User',
     direction: 'out',
   },
+  blacklisted: {
+    type: 'relationship',
+    relationship: 'BLACKLISTED',
+    target: 'User',
+    direction: 'out',
+  },
   notifications: {
     type: 'relationship',
     relationship: 'NOTIFIED',

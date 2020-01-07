@@ -407,49 +407,49 @@ describe('ContentMenu.vue', () => {
         ).toBe('/settings')
       })
 
-      it('can block other users', () => {
+      it('can blacklist other users', () => {
         const wrapper = openContentMenu({
           isOwner: false,
           resourceType: 'user',
           resource: {
             id: 'd23a4265-f5f7-4e17-9f86-85f714b4b9f8',
-            isBlocked: false,
+            isBlacklisted: false,
           },
         })
         wrapper
           .findAll('.ds-menu-item')
-          .filter(item => item.text() === 'settings.blocked-users.block')
+          .filter(item => item.text() === 'settings.blacklisted-users.blacklist')
           .at(0)
           .trigger('click')
-        expect(wrapper.emitted('block')).toEqual([
+        expect(wrapper.emitted('blacklist')).toEqual([
           [
             {
               id: 'd23a4265-f5f7-4e17-9f86-85f714b4b9f8',
-              isBlocked: false,
+              isBlacklisted: false,
             },
           ],
         ])
       })
 
-      it('can unblock blocked users', () => {
+      it('can whitelist blacklisted users', () => {
         const wrapper = openContentMenu({
           isOwner: false,
           resourceType: 'user',
           resource: {
             id: 'd23a4265-f5f7-4e17-9f86-85f714b4b9f8',
-            isBlocked: true,
+            isBlacklisted: true,
           },
         })
         wrapper
           .findAll('.ds-menu-item')
-          .filter(item => item.text() === 'settings.blocked-users.unblock')
+          .filter(item => item.text() === 'settings.blacklisted-users.whitelist')
           .at(0)
           .trigger('click')
-        expect(wrapper.emitted('unblock')).toEqual([
+        expect(wrapper.emitted('whitelist')).toEqual([
           [
             {
               id: 'd23a4265-f5f7-4e17-9f86-85f714b4b9f8',
-              isBlocked: true,
+              isBlacklisted: true,
             },
           ],
         ])

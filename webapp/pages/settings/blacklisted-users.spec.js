@@ -1,8 +1,8 @@
 import { config, mount, createLocalVue } from '@vue/test-utils'
-import BlockedUsers from './blocked-users.vue'
+import BlacklistedUsers from './blacklisted-users.vue'
 import Styleguide from '@human-connection/styleguide'
 import Filters from '~/plugins/vue-filters'
-import { Unblock } from '~/graphql/settings/BlockedUsers'
+import { whitelistUserContent } from '~/graphql/settings/BlacklistedUsers'
 
 const localVue = createLocalVue()
 
@@ -11,7 +11,7 @@ localVue.use(Filters)
 
 config.stubs['nuxt-link'] = '<span><slot /></span>'
 
-describe('blocked-users.vue', () => {
+describe('blacklisted-users.vue', () => {
   let wrapper
   let mocks
 
@@ -21,7 +21,7 @@ describe('blocked-users.vue', () => {
       $apollo: {
         mutate: jest.fn(),
         queries: {
-          blockedUsers: {
+          blacklistedUsers: {
             refetch: jest.fn(),
           },
         },
@@ -35,7 +35,7 @@ describe('blocked-users.vue', () => {
 
   describe('mount', () => {
     const Wrapper = () => {
-      return mount(BlockedUsers, { mocks, localVue })
+      return mount(BlacklistedUsers, { mocks, localVue })
     }
 
     beforeEach(() => {
@@ -48,8 +48,8 @@ describe('blocked-users.vue', () => {
 
     describe('given a list of blocked users', () => {
       beforeEach(() => {
-        const blockedUsers = [{ id: 'u1', name: 'John Doe', slug: 'john-doe', avatar: '' }]
-        wrapper.setData({ blockedUsers })
+        const blacklistedUsers = [{ id: 'u1', name: 'John Doe', slug: 'john-doe', avatar: '' }]
+        wrapper.setData({ blacklistedUsers })
       })
 
       describe('click unblock', () => {
@@ -59,7 +59,7 @@ describe('blocked-users.vue', () => {
 
         it('calls unblock mutation with given user', () => {
           expect(mocks.$apollo.mutate).toHaveBeenCalledWith({
-            mutation: Unblock(),
+            mutation: whitelistUserContent(),
             variables: { id: 'u1' },
           })
         })

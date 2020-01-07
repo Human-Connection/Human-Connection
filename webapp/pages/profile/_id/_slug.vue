@@ -22,8 +22,8 @@
               :resource="user"
               :is-owner="myProfile"
               class="user-content-menu"
-              @block="block"
-              @unblock="unblock"
+              @blacklist="blacklist"
+              @whitelist="whitelist"
             />
           </client-only>
           <ds-space margin="small">
@@ -67,14 +67,14 @@
           <ds-space margin="small">
             <template v-if="!myProfile">
               <hc-follow-button
-                v-if="!user.isBlocked"
+                v-if="!user.isBlacklisted"
                 :follow-id="user.id"
                 :is-followed="user.followedByCurrentUser"
                 @optimistic="optimisticFollow"
                 @update="updateFollow"
               />
-              <ds-button v-else fullwidth @click="unblock(user)">
-                {{ $t('settings.blocked-users.unblock') }}
+              <ds-button v-else fullwidth @click="whitelistUserContent(user)">
+                {{ $t('settings.blacklisted-users.whitelist') }}
               </ds-button>
             </template>
           </ds-space>
@@ -285,7 +285,7 @@ import MasonryGrid from '~/components/MasonryGrid/MasonryGrid.vue'
 import MasonryGridItem from '~/components/MasonryGrid/MasonryGridItem.vue'
 import { profilePagePosts } from '~/graphql/PostQuery'
 import UserQuery from '~/graphql/User'
-import { Block, Unblock } from '~/graphql/settings/BlockedUsers'
+import { blacklistUserContent, whitelistUserContent } from '~/graphql/settings/BlacklistedUsers'
 import PostMutations from '~/graphql/PostMutations'
 import UpdateQuery from '~/components/utils/UpdateQuery'
 
@@ -398,14 +398,14 @@ export default {
       this.posts = []
       this.hasMore = true
     },
-    async block(user) {
-      await this.$apollo.mutate({ mutation: Block(), variables: { id: user.id } })
+    async blacklistUserContent(user) {
+      await this.$apollo.mutate({ mutation: blacklistUserContent(), variables: { id: user.id } })
       this.$apollo.queries.User.refetch()
       this.resetPostList()
       this.$apollo.queries.profilePagePosts.refetch()
     },
-    async unblock(user) {
-      await this.$apollo.mutate({ mutation: Unblock(), variables: { id: user.id } })
+    async whitelistUserContent(user) {
+      await this.$apollo.mutate({ mutation: whitelistUserContent(), variables: { id: user.id } })
       this.$apollo.queries.User.refetch()
       this.resetPostList()
       this.$apollo.queries.profilePagePosts.refetch()

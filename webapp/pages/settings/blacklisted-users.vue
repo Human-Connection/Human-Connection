@@ -1,31 +1,31 @@
 <template>
   <div>
     <ds-space>
-      <ds-card :header="$t('settings.blocked-users.name')">
+      <ds-card :header="$t('settings.blacklisted-users.name')">
         <ds-text>
-          {{ $t('settings.blocked-users.explanation.intro') }}
+          {{ $t('settings.blacklisted-users.explanation.intro') }}
         </ds-text>
         <ds-list>
           <ds-list-item>
-            {{ $t('settings.blocked-users.explanation.your-perspective') }}
+            {{ $t('settings.blacklisted-users.explanation.your-perspective') }}
           </ds-list-item>
           <ds-list-item>
-            {{ $t('settings.blocked-users.explanation.their-perspective') }}
+            {{ $t('settings.blacklisted-users.explanation.their-perspective') }}
           </ds-list-item>
           <ds-list-item>
-            {{ $t('settings.blocked-users.explanation.search') }}
+            {{ $t('settings.blacklisted-users.explanation.search') }}
           </ds-list-item>
           <ds-list-item>
-            {{ $t('settings.blocked-users.explanation.notifications') }}
+            {{ $t('settings.blacklisted-users.explanation.notifications') }}
           </ds-list-item>
         </ds-list>
         <ds-text>
-          {{ $t('settings.blocked-users.explanation.closing') }}
+          {{ $t('settings.blacklisted-users.explanation.closing') }}
         </ds-text>
       </ds-card>
     </ds-space>
-    <ds-card v-if="blockedUsers && blockedUsers.length">
-      <ds-table :data="blockedUsers" :fields="fields" condensed>
+    <ds-card v-if="blacklistedUsers && blacklistedUsers.length">
+      <ds-table :data="blacklistedUsers" :fields="fields" condensed>
         <template slot="avatar" slot-scope="scope">
           <nuxt-link
             :to="{
@@ -57,20 +57,22 @@
           </nuxt-link>
         </template>
 
-        <template slot="unblock" slot-scope="scope">
-          <ds-button size="small" @click="unblock(scope)"><ds-icon name="user-plus" /></ds-button>
+        <template slot="whitelistUserContent" slot-scope="scope">
+          <ds-button size="small" @click="whitelistUserContent(scope)">
+            <ds-icon name="user-plus" />
+          </ds-button>
         </template>
       </ds-table>
     </ds-card>
     <ds-card v-else>
       <ds-space>
         <ds-placeholder>
-          {{ $t('settings.blocked-users.empty') }}
+          {{ $t('settings.blacklisted-users.empty') }}
         </ds-placeholder>
       </ds-space>
       <ds-space>
         <ds-text align="center">
-          {{ $t('settings.blocked-users.how-to') }}
+          {{ $t('settings.blacklisted-users.how-to') }}
         </ds-text>
       </ds-space>
     </ds-card>
@@ -78,7 +80,7 @@
 </template>
 
 <script>
-import { BlockedUsers, Unblock } from '~/graphql/settings/BlockedUsers'
+import { blacklistedUsers, whitelistUserContent } from '~/graphql/settings/BlacklistedUsers'
 import HcAvatar from '~/components/Avatar/Avatar.vue'
 
 export default {
@@ -87,28 +89,31 @@ export default {
   },
   data() {
     return {
-      blockedUsers: [],
+      blacklistedUsers: [],
     }
   },
   computed: {
     fields() {
       return {
         avatar: '',
-        name: this.$t('settings.blocked-users.columns.name'),
-        slug: this.$t('settings.blocked-users.columns.slug'),
-        unblock: this.$t('settings.blocked-users.columns.unblock'),
+        name: this.$t('settings.blacklisted-users.columns.name'),
+        slug: this.$t('settings.blacklisted-users.columns.slug'),
+        whitelistUserContent: this.$t('settings.blacklisted-users.columns.unblock'),
       }
     },
   },
   apollo: {
-    blockedUsers: { query: BlockedUsers, fetchPolicy: 'cache-and-network' },
+    blacklistedUsers: { query: blacklistedUsers, fetchPolicy: 'cache-and-network' },
   },
   methods: {
-    async unblock(user) {
-      await this.$apollo.mutate({ mutation: Unblock(), variables: { id: user.row.id } })
-      this.$apollo.queries.blockedUsers.refetch()
+    async whitelistUserContent(user) {
+      await this.$apollo.mutate({
+        mutation: whitelistUserContent(),
+        variables: { id: user.row.id },
+      })
+      this.$apollo.queries.blacklistedUsers.refetch()
       const { name } = user.row
-      this.$toast.success(this.$t('settings.blocked-users.unblocked', { name }))
+      this.$toast.success(this.$t('settings.blacklisted-users.unblocked', { name }))
     },
   },
 }

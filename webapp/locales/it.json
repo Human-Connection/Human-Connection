@@ -145,7 +145,7 @@
             "successAdd": "Social media aggiunti. \nProfilo utente aggiornato ",
             "successDelete": "Social media cancellati. Profilo utente aggiornato!"
         },
-        "blocked-users": {
+        "blacklisted-users": {
             "name": "",
             "explanation": {
                 "intro": "",
@@ -158,12 +158,12 @@
             "columns": {
                 "name": "",
                 "slug": "",
-                "unblock": ""
+                "whitelist": ""
             },
             "empty": "",
             "how-to": "",
-            "block": "",
-            "unblock": "",
+            "blacklist": "",
+            "whitelist": "",
             "unblocked": ""
         },
         "privacy": {
