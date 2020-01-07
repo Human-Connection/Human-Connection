@@ -46,15 +46,6 @@ export default {
       RETURN resource {.*, __typename: labels(resource)[0]}
       LIMIT $limit
       `
-      /*
-	const tagCypher = `
-MATCH (resource:Tag)
-WHERE resource.id CONTAINS $query
-AND NOT(resource.deleted = true OR resource.disabled = true)
-RETURN resource {.*, __typename: labels(resource)[0]}
-LIMIT $limit
-`
-*/
 
       const session = context.driver.session()
       const searchResultPromise = session.readTransaction(async transaction => {
@@ -68,20 +59,14 @@ LIMIT $limit
           limit,
           thisUserId,
         })
-        /*
-        const tagTransactionResponse = transaction.run(tagCypher, {
-          query: query,
-          limit,
-        }) */
-        return Promise.all([postTransactionResponse, userTransactionResponse]) //, tagTransactionResponse
+        return Promise.all([postTransactionResponse, userTransactionResponse])
       })
 
       try {
-        const [postResults, userResults] = await searchResultPromise //, tagResults
+        const [postResults, userResults] = await searchResultPromise
         log(postResults)
         log(userResults)
-        //          log(tagResults)
-        return [...postResults.records, ...userResults.records].map(r => r.get('resource')) //, ...tagResults.records
+        return [...postResults.records, ...userResults.records].map(r => r.get('resource'))
       } finally {
         session.close()
       }

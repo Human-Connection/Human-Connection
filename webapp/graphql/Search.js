@@ -19,9 +19,6 @@ export const findResourcesQuery = gql`
       ... on User {
         ...user
       }
-      ... on Tag {
-        id
-      }
     }
   }
 `
