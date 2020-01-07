@@ -113,8 +113,8 @@ export default {
       if (this.isLongComment && this.isCollapsed) {
         return this.$filters.truncate(this.comment.content, COMMENT_TRUNCATE_TO_LENGTH)
       }
-
-      return this.comment.content
+      // console.log(this.comment.content.replace(/\?/gi, '?++'))
+      return this.comment.content.replace(/\?/gi, ' <button class="button">Find</button>')
     },
     displaysComment() {
       return !this.unavailable || this.isModerator
@@ -187,10 +187,10 @@ export default {
         '</a>'
       document.querySelector('.editor-content div').focus()
       if (document.querySelector('.is-empty')) {
-          document.querySelector('.is-empty').innerHTML =  slug + ' '
+        document.querySelector('.is-empty').innerHTML = slug + ' '
       } else {
-          const html = document.querySelector('.editor-content').innerHTML
-          document.querySelector('.editor-content div').innerHTML = html + ' ' +  slug + ' '
+        const html = document.querySelector('.editor-content').innerHTML
+        document.querySelector('.editor-content div').innerHTML = html + ' ' + slug + ' '
       }
     },
   },
