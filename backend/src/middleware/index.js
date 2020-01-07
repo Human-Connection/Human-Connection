@@ -7,7 +7,6 @@ import sluggify from './sluggifyMiddleware'
 import excerpt from './excerptMiddleware'
 import xss from './xssMiddleware'
 import permissions from './permissionsMiddleware'
-import user from './user/userMiddleware'
 import includedFields from './includedFieldsMiddleware'
 import orderBy from './orderByMiddleware'
 import validation from './validation/validationMiddleware'
@@ -29,7 +28,6 @@ export default schema => {
     notifications,
     hashtags,
     softDelete,
-    user,
     includedFields,
     orderBy,
   }
@@ -46,7 +44,6 @@ export default schema => {
     'notifications',
     'hashtags',
     'softDelete',
-    'user',
     'includedFields',
     'orderBy',
   ]
