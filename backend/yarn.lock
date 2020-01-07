@@ -6270,10 +6270,10 @@ neo4j-graphql-js@^2.11.3:
     lodash "^4.17.15"
     neo4j-driver "^4.0.1"
 
-neode@^0.3.6:
-  version "0.3.6"
-  resolved "https://registry.yarnpkg.com/neode/-/neode-0.3.6.tgz#7daf791eff6d170e52c338ea2e5cca6fdc6bfbe3"
-  integrity sha512-jCskCPobtHpsIIYQD72h5lRjMJEX70KwIeqgpt1VOLI+d1zJZvUlDkcOKgarAW0fmwtHIrPOP6mLPe5G/ZG9+g==
+neode@^0.3.7:
+  version "0.3.7"
+  resolved "https://registry.yarnpkg.com/neode/-/neode-0.3.7.tgz#766105307e138b1212957aceba538e89e3d784cb"
+  integrity sha512-XnRJyD6bZx4HyHBmnLHuVUKtSD3FhBPXYdh7/rqiFAwBDMOSySjMFjFCYmop+sF8IBZmliowDs8zkSHt27U1kw==
   dependencies:
     "@hapi/joi" "^15.1.0"
     dotenv "^4.0.0"
