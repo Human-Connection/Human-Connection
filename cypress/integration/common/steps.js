@@ -204,14 +204,16 @@ Given("we have the following posts in our database:", table => {
     slug: `just-for-fun`,
     icon: "smile"
   })
-
+  
   table.hashes().forEach(({
     ...postAttributes
   }, i) => {
+    if (postAttributes.pinned !== "true") postAttributes.pinned = null
     postAttributes = {
       ...postAttributes,
       deleted: Boolean(postAttributes.deleted),
       disabled: Boolean(postAttributes.disabled),
+      pinned: postAttributes.pinned && Boolean(postAttributes.pinned),
       categoryIds: ['cat-456']
     }
     cy.factory().create("Post", postAttributes);

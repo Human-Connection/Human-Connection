@@ -21,6 +21,7 @@ export default function create() {
         categoryIds: [],
         imageBlurred: false,
         imageAspectRatio: 1.333,
+        pinned: null
       }
       args = {
         ...defaults,
@@ -50,7 +51,6 @@ export default function create() {
       if (author && authorId) throw new Error('You provided both author and authorId')
       if (authorId) author = await neodeInstance.find('User', authorId)
       author = author || (await factoryInstance.create('User'))
-
       const post = await neodeInstance.create('Post', args)
       await post.relateTo(author, 'author')
       await Promise.all(categories.map(c => c.relateTo(post, 'post')))
