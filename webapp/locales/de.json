@@ -42,11 +42,11 @@
     "settings": {
         "name": "Einstellungen",
         "data": {
-            "name": "Deine Daten",
-            "labelName": "Dein Name",
-            "labelCity": "Deine Stadt oder Region",
-            "labelBio": "Über Dich",
-            "labelSlug": "Dein eindeutiger Benutzername",
+            "name": "Meine Daten",
+            "labelName": "Mein Name",
+            "labelCity": "Meine Stadt oder Region",
+            "labelBio": "Über Mich",
+            "labelSlug": "Mein eindeutiger Benutzername",
             "namePlaceholder": "Petra Lustig",
             "success": "Deine Daten wurden erfolgreich aktualisiert!"
         },

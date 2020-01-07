@@ -1,7 +1,7 @@
 <template>
   <ds-form v-model="form" :schema="formSchema" @submit="submit">
     <template slot-scope="{ errors }">
-      <ds-card :header="$t('settings.data.name')">
+      <ds-card :header="$t('settings.data.name') + ' ( @' + currentUser.slug + ' )'">
         <ds-input
           id="name"
           model="name"
@@ -9,7 +9,6 @@
           :label="$t('settings.data.labelName')"
           :placeholder="$t('settings.data.namePlaceholder')"
         />
-        <ds-input id="slug" model="slug" icon="at" :label="$t('settings.data.labelSlug')" />
         <!-- eslint-disable vue/use-v-on-exact -->
         <ds-select
           id="city"
@@ -43,7 +42,6 @@
 <script>
 import { mapGetters, mapMutations } from 'vuex'
 import { CancelToken } from 'axios'
-import UniqueSlugForm from '~/components/utils/UniqueSlugForm'
 import { updateUserMutation } from '~/graphql/User'
 
 let timeout
@@ -63,20 +61,10 @@ export default {
     ...mapGetters({
       currentUser: 'auth/user',
     }),
-    formSchema() {
-      const uniqueSlugForm = UniqueSlugForm({
-        apollo: this.$apollo,
-        currentUser: this.currentUser,
-        translate: this.$t,
-      })
-      return {
-        ...uniqueSlugForm.formSchema,
-      }
-    },
     form: {
       get: function() {
-        const { name, slug, locationName, about } = this.currentUser
-        return { name, slug, locationName, about }
+        const { name, locationName, about } = this.currentUser
+        return { name, locationName, about }
       },
       set: function(formData) {
         this.formData = formData
@@ -89,7 +77,7 @@ export default {
     }),
     async submit() {
       this.loadingData = true
-      const { name, slug, about } = this.formData
+      const { name, about } = this.formData
       let { locationName } = this.formData || this.currentUser
       locationName = locationName && (locationName.label || locationName)
       try {
@@ -98,16 +86,14 @@ export default {
           variables: {
             id: this.currentUser.id,
             name,
-            slug,
             locationName,
             about,
           },
           update: (store, { data: { UpdateUser } }) => {
-            const { name, slug, locationName, about } = UpdateUser
+            const { name, locationName, about } = UpdateUser
             this.setCurrentUser({
               ...this.currentUser,
               name,
-              slug,
               locationName,
               about,
             })
