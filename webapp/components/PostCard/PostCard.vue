@@ -88,6 +88,14 @@ import { postMenuModalsData, deletePostMutation } from '~/components/utils/PostH
 
 export default {
   name: 'HcPostCard',
+  data(){
+    return {
+      views: {
+        grid:   true,
+        list:   false,
+      }
+    }
+  },
   components: {
     HcUser,
     HcCategory,
@@ -103,8 +111,11 @@ export default {
       type: Object,
       default: () => {},
     },
+     
   },
   mounted() {
+    console.log("this postcar vue", this)
+    console.log("this.$props.views", this.views)
     const width = this.$el.offsetWidth
     const height = Math.min(width / this.post.imageAspectRatio, 2000)
     const imageElement = this.$el.querySelector('.ds-card-image')
@@ -154,14 +165,21 @@ export default {
       this.$emit('unpinPost', post)
     },
   },
+  
 }
 </script>
 <style lang="scss">
+.grid-to-list {
+  display: table;
+}
+
 .post-card {
   justify-content: space-between;
   position: relative;
   z-index: 1;
   cursor: pointer;
+  margin-top: 20px;
+ 
 
   &.--pinned {
     border: 1px solid $color-warning;
@@ -175,6 +193,10 @@ export default {
     width: 100%;
     max-height: 2000px;
     object-fit: contain;
+  }
+
+.ds-card-image-list {
+    display: none;
   }
 
   > .ds-card-content {

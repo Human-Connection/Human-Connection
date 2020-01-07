@@ -11,6 +11,10 @@
             <ds-button primary>{{ $t('donations.donate-now') }}</ds-button>
           </a>
         </div>
+        <div>
+            <ds-button @click="sortStyle('grid')" icon="table" :primary="viewsx.grid" :ghost="!viewsx.grid"></ds-button>
+            <ds-button @click="sortStyle('list')" icon="list" :primary="viewsx.list"  :ghost="!viewsx.list"></ds-button>
+        </div>
         <div class="sorting-dropdown">
           <ds-select
             v-model="selected"
@@ -73,7 +77,7 @@ import { filterPosts } from '~/graphql/PostQuery.js'
 import PostMutations from '~/graphql/PostMutations'
 import UpdateQuery from '~/components/utils/UpdateQuery'
 
-export default {
+export default {    
   components: {
     // DonationInfo,
     FilterMenu,
@@ -83,6 +87,9 @@ export default {
     MasonryGrid,
     MasonryGridItem,
   },
+  props: {
+    views: ['grid', 'list'],
+    },
   data() {
     const { hashtag = null } = this.$route.query
     return {
@@ -92,7 +99,16 @@ export default {
       offset: 0,
       pageSize: 12,
       hashtag,
+      viewsx: {
+        grid: true,
+        list: false
+      }   
+      
     }
+  },
+  mounted() {
+     console.log("this.props", this.$props)
+    console.log("HcPostCard", HcPostCard)
   },
   computed: {
     ...mapGetters({
@@ -155,7 +171,7 @@ export default {
           first: this.pageSize,
           orderBy: ['pinned_asc', this.orderBy],
         },
-        updateQuery: UpdateQuery(this, { $state, pageKey: 'Post' }),
+       updateQuery: UpdateQuery(this, { $state, pageKey: 'Post' }),
       })
     },
     deletePost(deletedPost) {
@@ -193,6 +209,37 @@ export default {
           this.$apollo.queries.Post.refetch()
         })
         .catch(error => this.$toast.error(error.message))
+    },
+    sortStyle(type){
+      console.log(type)
+       console.log('this.props.views', this.$props.views)
+        if (type === 'grid') {
+          this.viewsx.grid = true
+          this.viewsx.list = false
+          this.removeSortClassList()
+        }
+        if (type === 'list') {
+          this.viewsx.grid = false
+          this.viewsx.list = true
+           this.addSortClassList()
+        }
+    },
+    addSortClassList(){
+      console.log("addSortClassList")
+     document.querySelector(".ds-grid").classList.add('grid-to-list')
+       document.querySelectorAll(".ds-card-image").forEach((value, index) => {
+            document.querySelectorAll(".ds-card-image")[index].classList.add('ds-card-image-list')
+          })
+         
+    },
+    removeSortClassList(){
+      console.log("removeSortClassList")
+        document.querySelector(".ds-grid").classList.remove('grid-to-list')
+          //document.querySelectorAll(".ds-card-image")[0].classList.add('ds-card-image-list')
+        document.querySelectorAll(".ds-card-image").forEach((value, index) => {
+            document.querySelectorAll(".ds-card-image")[index].classList.remove('ds-card-image-list')
+          })
+          
     },
   },
   apollo: {

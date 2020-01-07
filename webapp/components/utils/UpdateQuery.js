@@ -12,6 +12,8 @@ export default function UpdateQuery(component, { $state, pageKey }) {
     const result = {}
     result[pageKey] = unionBy(oldData, newData, item => item.id)
     $state.loaded()
+    console.log("UPDATEQUERY")
+    console.log(result)
     return result
   }
 }
