@@ -1,16 +1,16 @@
 <template>
-  <div class="ds-avatar avatar" :class="[`ds-size-${this.size}`, online && 'is-online']">
+  <div :class="[`size-${this.size}`, 'user-avatar']">
     <ds-flex v-if="!hasImage || error" style="height: 100%">
       <ds-flex-item centered>
         <template v-if="isAnonymus">
-          <ds-icon name="eye-slash" />
+          <base-icon name="eye-slash" />
         </template>
         <template v-else>
           {{ userInitials }}
         </template>
       </ds-flex-item>
     </ds-flex>
-    <img v-if="image && !error" :src="image | proxyApiUrl" @error="onError" :size="size" />
+    <img v-if="image && !error" :src="image | proxyApiUrl" @error="onError" />
   </div>
 </template>
 
@@ -31,7 +31,6 @@ export default {
       },
     },
     image: { type: String, default: null },
-    online: { type: Boolean, default: false },
   },
   data() {
     return {
@@ -53,3 +52,37 @@ export default {
   },
 }
 </script>
+<style lang="scss">
+.user-avatar {
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .base-icon {
+    margin-top: -0.1em;
+  }
+
+  &.size-small {
+    width: $size-avatar-small;
+    height: $size-avatar-small;
+  }
+  &.size-base {
+    border-width: 1px;
+    width: $size-avatar-base;
+    height: $size-avatar-base;
+  }
+  &.size-large {
+    width: $size-avatar-large;
+    height: $size-avatar-large;
+  }
+  &.size-x-large {
+    width: $size-avatar-x-large;
+    height: $size-avatar-x-large;
+  }
+}
+</style>

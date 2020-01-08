@@ -519,11 +519,10 @@ export default {
     }
   }
 }
-.profile-avatar.ds-avatar {
+.profile-avatar.user-avatar {
   display: block;
   margin: auto;
   margin-top: -60px;
-  border: #fff 5px solid;
 }
 .page-name-profile-id-slug {
   .ds-flex-item:first-child .content-menu {
