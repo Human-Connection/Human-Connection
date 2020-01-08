@@ -76,7 +76,7 @@
     "metascraper-soundcloud": "^5.9.0",
     "metascraper-title": "^5.8.13",
     "metascraper-url": "^5.8.13",
-    "metascraper-video": "^5.8.13",
+    "metascraper-video": "^5.9.5",
     "metascraper-youtube": "^5.8.13",
     "minimatch": "^3.0.4",
     "mustache": "^3.2.1",
