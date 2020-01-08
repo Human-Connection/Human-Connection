@@ -26,7 +26,7 @@ Feature: Blacklist a User
 
   Scenario: Posts of blacklisted users are filtered from search results
     Given we have the following posts in our database:
-      | id             | title                    | content               |
+      | id                 | title                    | content                   |
       | im-not-blacklisted | Post that should be seen | cause I'm not blacklisted |
     Given "Spammy Spammer" wrote a post "Spam Spam Spam"
     When I search for "Spam"
@@ -41,3 +41,13 @@ Feature: Blacklist a User
     Then I should see the following posts in the select dropdown:
       | title                    |
       | Post that should be seen |
+
+  Scenario: Blacklisted users can still see my posts
+    Given I previously created a post
+    And I blacklist the user "Spammy Spammer"
+    Given I log out
+    And I am logged in as the blacklisted user 
+    When I search for "previously created"
+    Then I should see the following posts in the select dropdown:
+      | title                   |
+      | previously created post |

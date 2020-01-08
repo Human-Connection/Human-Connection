@@ -22,8 +22,8 @@
               :resource="user"
               :is-owner="myProfile"
               class="user-content-menu"
-              @blacklist="blacklist"
-              @whitelist="whitelist"
+              @blacklist="blacklistUserContent"
+              @whitelist="whitelistUserContent"
             />
           </client-only>
           <ds-space margin="small">
@@ -399,16 +399,26 @@ export default {
       this.hasMore = true
     },
     async blacklistUserContent(user) {
-      await this.$apollo.mutate({ mutation: blacklistUserContent(), variables: { id: user.id } })
-      this.$apollo.queries.User.refetch()
-      this.resetPostList()
-      this.$apollo.queries.profilePagePosts.refetch()
+      try {
+        await this.$apollo.mutate({ mutation: blacklistUserContent(), variables: { id: user.id } })
+      } catch (error) {
+        this.$toast.error(error.message)
+      } finally {
+        this.$apollo.queries.User.refetch()
+        this.resetPostList()
+        this.$apollo.queries.profilePagePosts.refetch()
+      }
     },
     async whitelistUserContent(user) {
-      await this.$apollo.mutate({ mutation: whitelistUserContent(), variables: { id: user.id } })
-      this.$apollo.queries.User.refetch()
-      this.resetPostList()
-      this.$apollo.queries.profilePagePosts.refetch()
+      try {
+        this.$apollo.mutate({ mutation: whitelistUserContent(), variables: { id: user.id } })
+      } catch (error) {
+        this.$toast.error(error.message)
+      } finally {
+        this.$apollo.queries.User.refetch()
+        this.resetPostList()
+        this.$apollo.queries.profilePagePosts.refetch()
+      }
     },
     pinPost(post) {
       this.$apollo

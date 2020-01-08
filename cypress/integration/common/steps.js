@@ -29,8 +29,18 @@ const narratorParams = {
   ...termsAndConditionsAgreedVersion,
 };
 
+const annoyingParams = {
+  email: "spammy-spammer@example.org",
+  password: "1234",
+  ...termsAndConditionsAgreedVersion
+};
+
 Given("I am logged in", () => {
   cy.login(loginCredentials);
+});
+
+Given("I am logged in as the blacklisted user", () => {
+  cy.login({ email: annoyingParams.email, password: '1234' });
 });
 
 Given("we have a selection of categories", () => {
@@ -227,7 +237,6 @@ Given("I previously created a post", () => {
   lastPost.authorId = narratorParams.id
   lastPost.title = "previously created post";
   lastPost.content = "with some content";
-  lastPost.categoryIds = ["cat0"];
   cy.factory()
     .create("Post", lastPost);
 });
@@ -407,11 +416,6 @@ Then("there are no notifications in the top menu", () => {
 });
 
 Given("there is an annoying user called {string}", name => {
-  const annoyingParams = {
-    email: "spammy-spammer@example.org",
-    password: "1234",
-    ...termsAndConditionsAgreedVersion
-  };
   cy.factory().create("User", {
     ...annoyingParams,
     id: "annoying-user",
@@ -519,12 +523,12 @@ When("I blacklist the user {string}", name => {
     .first("User", {
       name
     })
-    .then(blacklisted => {
+    .then(blacklistedUser => {
       cy.neode()
         .first("User", {
           name: narratorParams.name
         })
-        .relateTo(blacklisted, "blacklisted");
+        .relateTo(blacklistedUser, "blacklisted");
     });
 });
 

@@ -10,7 +10,7 @@ Feature: Blacklist a User
   Scenario Outline: Blacklisted users cannot see each others posts
     Given "Spammy Spammer" wrote a post "Spam Spam Spam"
     And I wrote a post "I hate spammers"
-    And I block the user "Spammy Spammer"
+    And I I blacklist the user "Spammy Spammer"
     When I log in with:
       | Email   | Password   |
       | <email> | <password> |

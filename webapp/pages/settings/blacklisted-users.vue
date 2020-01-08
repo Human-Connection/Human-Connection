@@ -98,7 +98,7 @@ export default {
         avatar: '',
         name: this.$t('settings.blacklisted-users.columns.name'),
         slug: this.$t('settings.blacklisted-users.columns.slug'),
-        whitelistUserContent: this.$t('settings.blacklisted-users.columns.unblock'),
+        whitelistUserContent: this.$t('settings.blacklisted-users.columns.whitelist'),
       }
     },
   },
