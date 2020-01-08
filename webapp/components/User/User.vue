@@ -1,6 +1,6 @@
 <template>
   <div class="user" v-if="displayAnonymous">
-    <hc-avatar v-if="showAvatar" class="avatar" />
+    <user-avatar v-if="showAvatar" class="avatar" />
     <div>
       <b class="username">{{ $t('profile.userAnonym') }}</b>
     </div>
@@ -9,7 +9,7 @@
     <template slot="default" slot-scope="{ openMenu, closeMenu, isOpen }">
       <nuxt-link :to="userLink" :class="['user', isOpen && 'active']">
         <div @mouseover="showPopover ? openMenu(true) : () => {}" @mouseleave="closeMenu(true)">
-          <hc-avatar v-if="showAvatar" class="avatar" :user="user" />
+          <user-avatar v-if="showAvatar" class="avatar" :image="user && user.avatar" />
           <div>
             <ds-text class="userinfo">
               <b>{{ userSlug }}</b>
@@ -89,7 +89,7 @@ import { mapGetters } from 'vuex'
 import HcRelativeDateTime from '~/components/RelativeDateTime'
 import HcFollowButton from '~/components/FollowButton'
 import HcBadges from '~/components/Badges'
-import HcAvatar from '~/components/Avatar/Avatar.vue'
+import UserAvatar from '~/components/UserAvatar/UserAvatar.vue'
 import Dropdown from '~/components/Dropdown'
 
 export default {
@@ -97,7 +97,7 @@ export default {
   components: {
     HcRelativeDateTime,
     HcFollowButton,
-    HcAvatar,
+    UserAvatar,
     HcBadges,
     Dropdown,
   },

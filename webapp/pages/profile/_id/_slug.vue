@@ -11,9 +11,13 @@
           style="position: relative; height: auto;"
         >
           <hc-upload v-if="myProfile" :user="user">
-            <hc-avatar :user="user" class="profile-avatar" size="x-large"></hc-avatar>
+            <user-avatar
+              :image="user && user.avatar"
+              class="profile-avatar"
+              size="x-large"
+            ></user-avatar>
           </hc-upload>
-          <hc-avatar v-else :user="user" class="profile-avatar" size="x-large" />
+          <user-avatar v-else :image="user && user.avatar" class="profile-avatar" size="x-large" />
           <!-- Menu -->
           <client-only>
             <content-menu
@@ -279,7 +283,7 @@ import HcBadges from '~/components/Badges.vue'
 import HcEmpty from '~/components/Empty/Empty'
 import ContentMenu from '~/components/ContentMenu/ContentMenu'
 import HcUpload from '~/components/Upload'
-import HcAvatar from '~/components/Avatar/Avatar.vue'
+import UserAvatar from '~/components/UserAvatar/UserAvatar.vue'
 import MasonryGrid from '~/components/MasonryGrid/MasonryGrid.vue'
 import MasonryGridItem from '~/components/MasonryGrid/MasonryGridItem.vue'
 import { profilePagePosts } from '~/graphql/PostQuery'
@@ -305,7 +309,7 @@ export default {
     HcCountTo,
     HcBadges,
     HcEmpty,
-    HcAvatar,
+    UserAvatar,
     ContentMenu,
     HcUpload,
     MasonryGrid,
