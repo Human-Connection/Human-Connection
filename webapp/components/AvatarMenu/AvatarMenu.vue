@@ -11,7 +11,7 @@
         "
         @click.prevent="toggleMenu"
       >
-        <user-avatar :image="user && user.avatar" />
+        <user-avatar :user="user" />
         <base-icon class="dropdown-arrow" name="angle-down" />
       </a>
     </template>
@@ -49,7 +49,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import Dropdown from '~/components/Dropdown'
-import UserAvatar from '~/components/UserAvatar/UserAvatar.vue'
+import UserAvatar from '~/components/_new/generic/UserAvatar/UserAvatar'
 
 export default {
   components: {

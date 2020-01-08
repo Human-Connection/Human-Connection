@@ -1,16 +1,16 @@
 <template>
   <div :class="[`size-${this.size}`, 'user-avatar']">
-    <ds-flex v-if="!hasImage || error" style="height: 100%">
-      <ds-flex-item centered>
-        <template v-if="isAnonymus">
+    <span v-if="!hasImage || error" class="no-image">
+      <span class="flex-item">
+        <template v-if="isAnonymous">
           <base-icon name="eye-slash" />
         </template>
         <template v-else>
           {{ userInitials }}
         </template>
-      </ds-flex-item>
-    </ds-flex>
-    <img v-if="image && !error" :src="image | proxyApiUrl" @error="onError" />
+      </span>
+    </span>
+    <img v-if="user && user.avatar && !error" :src="user.avatar | proxyApiUrl" @error="onError" />
   </div>
 </template>
 
@@ -18,11 +18,6 @@
 export default {
   name: 'UserAvatar',
   props: {
-    name: { type: String, default: 'Anonymus' },
-    /**
-     * The size used for the avatar.
-     * @options small|base|large
-     */
     size: {
       type: String,
       default: 'base',
@@ -30,7 +25,7 @@ export default {
         return value.match(/(small|base|large|x-large)/)
       },
     },
-    image: { type: String, default: null },
+    user: { type: Object, default: null },
   },
   data() {
     return {
@@ -38,11 +33,19 @@ export default {
     }
   },
   computed: {
-    isAnonymus() {
-      return !this.name || this.name.toLowerCase() === 'anonymus'
+    isAnonymous() {
+      return !this.user || !this.user.name || this.user.name.toLowerCase() === 'anonymous'
     },
     hasImage() {
-      return Boolean(this.image) && !this.error
+      return Boolean(this.user && this.user.avatar) && !this.error
+    },
+    userInitials() {
+      const { name } = this.user || 'Anonymous'
+      const namesArray = name.split(/[ -]/)
+      let initials = ''
+      for (var i = 0; i < namesArray.length; i++) initials += namesArray[i].charAt(0)
+      if (initials.length > 3 && /[A-Z]/.test(initials)) initials = initials.replace(/[a-z]+/g, '')
+      return initials.substr(0, 3).toUpperCase()
     },
   },
   methods: {
@@ -56,7 +59,6 @@ export default {
 .user-avatar {
   img {
     width: 100%;
-    height: 100%;
     border-radius: 50%;
     overflow: hidden;
     object-fit: cover;
@@ -83,6 +85,22 @@ export default {
   &.size-x-large {
     width: $size-avatar-x-large;
     height: $size-avatar-x-large;
+  }
+  .no-image {
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    border-radius: 50%;
+    background-color: $background-color-secondary;
+    color: $text-color-primary-inverse;
+  }
+
+  .no-image .flex-item {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0 auto;
+    align-self: center;
+    display: table;
   }
 }
 </style>

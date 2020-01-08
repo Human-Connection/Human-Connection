@@ -33,7 +33,7 @@
               params: { id: scope.row.id, slug: scope.row.slug },
             }"
           >
-            <user-avatar :image="scope.row && scope.row.avatar" size="small" />
+            <user-avatar :user="scope.row" size="small" />
           </nuxt-link>
         </template>
         <template slot="name" slot-scope="scope">
@@ -79,7 +79,7 @@
 
 <script>
 import { BlockedUsers, Unblock } from '~/graphql/settings/BlockedUsers'
-import UserAvatar from '~/components/UserAvatar/UserAvatar.vue'
+import UserAvatar from '~/components/_new/generic/UserAvatar/UserAvatar'
 
 export default {
   components: {

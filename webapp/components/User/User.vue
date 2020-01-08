@@ -9,7 +9,7 @@
     <template slot="default" slot-scope="{ openMenu, closeMenu, isOpen }">
       <nuxt-link :to="userLink" :class="['user', isOpen && 'active']">
         <div @mouseover="showPopover ? openMenu(true) : () => {}" @mouseleave="closeMenu(true)">
-          <user-avatar v-if="showAvatar" class="avatar" :image="user && user.avatar" />
+          <user-avatar v-if="showAvatar" class="avatar" :user="user" />
           <div>
             <ds-text class="userinfo">
               <b>{{ userSlug }}</b>
@@ -89,7 +89,7 @@ import { mapGetters } from 'vuex'
 import HcRelativeDateTime from '~/components/RelativeDateTime'
 import HcFollowButton from '~/components/FollowButton'
 import HcBadges from '~/components/Badges'
-import UserAvatar from '~/components/UserAvatar/UserAvatar.vue'
+import UserAvatar from '~/components/_new/generic/UserAvatar/UserAvatar'
 import Dropdown from '~/components/Dropdown'
 
 export default {
