@@ -96,6 +96,10 @@ export default {
   flex-shrink: 0;
   display: flex;
   align-items: center;
+
+  .base-button {
+    overflow: visible;
+  }
 }
 
 .notifications-menu-popover {
