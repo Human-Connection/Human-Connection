@@ -22,8 +22,8 @@
               :resource="user"
               :is-owner="myProfile"
               class="user-content-menu"
-              @blacklist="blacklistUserContent"
-              @whitelist="whitelistUserContent"
+              @mute="muteUser"
+              @unmute="unmuteUser"
             />
           </client-only>
           <ds-space margin="small">
@@ -67,14 +67,14 @@
           <ds-space margin="small">
             <template v-if="!myProfile">
               <hc-follow-button
-                v-if="!user.isBlacklisted"
+                v-if="!user.isMuted"
                 :follow-id="user.id"
                 :is-followed="user.followedByCurrentUser"
                 @optimistic="optimisticFollow"
                 @update="updateFollow"
               />
-              <ds-button v-else fullwidth @click="whitelistUserContent(user)">
-                {{ $t('settings.blacklisted-users.whitelist') }}
+              <ds-button v-else fullwidth @click="unmuteUser(user)">
+                {{ $t('settings.muted-users.unmute') }}
               </ds-button>
             </template>
           </ds-space>
@@ -285,7 +285,7 @@ import MasonryGrid from '~/components/MasonryGrid/MasonryGrid.vue'
 import MasonryGridItem from '~/components/MasonryGrid/MasonryGridItem.vue'
 import { profilePagePosts } from '~/graphql/PostQuery'
 import UserQuery from '~/graphql/User'
-import { blacklistUserContent, whitelistUserContent } from '~/graphql/settings/BlacklistedUsers'
+import { muteUser, unmuteUser } from '~/graphql/settings/MutedUsers'
 import PostMutations from '~/graphql/PostMutations'
 import UpdateQuery from '~/components/utils/UpdateQuery'
 
@@ -398,9 +398,9 @@ export default {
       this.posts = []
       this.hasMore = true
     },
-    async blacklistUserContent(user) {
+    async muteUser(user) {
       try {
-        await this.$apollo.mutate({ mutation: blacklistUserContent(), variables: { id: user.id } })
+        await this.$apollo.mutate({ mutation: muteUser(), variables: { id: user.id } })
       } catch (error) {
         this.$toast.error(error.message)
       } finally {
@@ -409,9 +409,9 @@ export default {
         this.$apollo.queries.profilePagePosts.refetch()
       }
     },
-    async whitelistUserContent(user) {
+    async unmuteUser(user) {
       try {
-        this.$apollo.mutate({ mutation: whitelistUserContent(), variables: { id: user.id } })
+        this.$apollo.mutate({ mutation: unmuteUser(), variables: { id: user.id } })
       } catch (error) {
         this.$toast.error(error.message)
       } finally {

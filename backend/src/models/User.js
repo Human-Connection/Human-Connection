@@ -78,9 +78,9 @@ module.exports = {
     target: 'User',
     direction: 'out',
   },
-  blacklisted: {
+  muted: {
     type: 'relationship',
-    relationship: 'BLACKLISTED',
+    relationship: 'MUTED',
     target: 'User',
     direction: 'out',
   },

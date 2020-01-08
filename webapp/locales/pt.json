@@ -145,7 +145,7 @@
             "successAdd": "Mídias sociais adicionadas. Perfil de usuário atualizado!",
             "successDelete": "Mídias sociais removidas. Perfil de usuário atualizado!"
         },
-        "blacklisted-users": {
+        "muted-users": {
             "name": "Usuários bloqueados",
             "explanation": {
                 "intro": "Se outro usuário foi bloqueado por você, isto é o que acontece:",
@@ -158,13 +158,13 @@
             "columns": {
                 "name": "Nome",
                 "slug": "Slug",
-                "whitelist": "Desbloquear"
+                "unmute": "Desbloquear"
             },
             "empty": "Até agora, você não bloqueou ninguém.",
             "how-to": "Você pode bloquear outros usuários em suas páginas de perfil através do menu de conteúdo.",
-            "blacklist": "Bloquear usuário",
-            "whitelist": "Desbloquear usuário",
-            "unblocked": "{name} está desbloqueado novamente"
+            "mute": "Bloquear usuário",
+            "unmute": "Desbloquear usuário",
+            "unmuted": "{name} está desbloqueado novamente"
         },
         "privacy": {
             "name": "Privacidade",

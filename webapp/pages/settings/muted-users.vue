@@ -1,31 +1,31 @@
 <template>
   <div>
     <ds-space>
-      <ds-card :header="$t('settings.blacklisted-users.name')">
+      <ds-card :header="$t('settings.muted-users.name')">
         <ds-text>
-          {{ $t('settings.blacklisted-users.explanation.intro') }}
+          {{ $t('settings.muted-users.explanation.intro') }}
         </ds-text>
         <ds-list>
           <ds-list-item>
-            {{ $t('settings.blacklisted-users.explanation.your-perspective') }}
+            {{ $t('settings.muted-users.explanation.your-perspective') }}
           </ds-list-item>
           <ds-list-item>
-            {{ $t('settings.blacklisted-users.explanation.their-perspective') }}
+            {{ $t('settings.muted-users.explanation.their-perspective') }}
           </ds-list-item>
           <ds-list-item>
-            {{ $t('settings.blacklisted-users.explanation.search') }}
+            {{ $t('settings.muted-users.explanation.search') }}
           </ds-list-item>
           <ds-list-item>
-            {{ $t('settings.blacklisted-users.explanation.notifications') }}
+            {{ $t('settings.muted-users.explanation.notifications') }}
           </ds-list-item>
         </ds-list>
         <ds-text>
-          {{ $t('settings.blacklisted-users.explanation.closing') }}
+          {{ $t('settings.muted-users.explanation.closing') }}
         </ds-text>
       </ds-card>
     </ds-space>
-    <ds-card v-if="blacklistedUsers && blacklistedUsers.length">
-      <ds-table :data="blacklistedUsers" :fields="fields" condensed>
+    <ds-card v-if="mutedUsers && mutedUsers.length">
+      <ds-table :data="mutedUsers" :fields="fields" condensed>
         <template slot="avatar" slot-scope="scope">
           <nuxt-link
             :to="{
@@ -57,8 +57,8 @@
           </nuxt-link>
         </template>
 
-        <template slot="whitelistUserContent" slot-scope="scope">
-          <ds-button size="small" @click="whitelistUserContent(scope)">
+        <template slot="unmuteUser" slot-scope="scope">
+          <ds-button size="small" @click="unmuteUser(scope)">
             <ds-icon name="user-plus" />
           </ds-button>
         </template>
@@ -67,12 +67,12 @@
     <ds-card v-else>
       <ds-space>
         <ds-placeholder>
-          {{ $t('settings.blacklisted-users.empty') }}
+          {{ $t('settings.muted-users.empty') }}
         </ds-placeholder>
       </ds-space>
       <ds-space>
         <ds-text align="center">
-          {{ $t('settings.blacklisted-users.how-to') }}
+          {{ $t('settings.muted-users.how-to') }}
         </ds-text>
       </ds-space>
     </ds-card>
@@ -80,7 +80,7 @@
 </template>
 
 <script>
-import { blacklistedUsers, whitelistUserContent } from '~/graphql/settings/BlacklistedUsers'
+import { mutedUsers, unmuteUser } from '~/graphql/settings/MutedUsers'
 import HcAvatar from '~/components/Avatar/Avatar.vue'
 
 export default {
@@ -89,31 +89,31 @@ export default {
   },
   data() {
     return {
-      blacklistedUsers: [],
+      mutedUsers: [],
     }
   },
   computed: {
     fields() {
       return {
         avatar: '',
-        name: this.$t('settings.blacklisted-users.columns.name'),
-        slug: this.$t('settings.blacklisted-users.columns.slug'),
-        whitelistUserContent: this.$t('settings.blacklisted-users.columns.whitelist'),
+        name: this.$t('settings.muted-users.columns.name'),
+        slug: this.$t('settings.muted-users.columns.slug'),
+        unmuteUser: this.$t('settings.muted-users.columns.unmute'),
       }
     },
   },
   apollo: {
-    blacklistedUsers: { query: blacklistedUsers, fetchPolicy: 'cache-and-network' },
+    mutedUsers: { query: mutedUsers, fetchPolicy: 'cache-and-network' },
   },
   methods: {
-    async whitelistUserContent(user) {
+    async unmuteUser(user) {
       await this.$apollo.mutate({
-        mutation: whitelistUserContent(),
+        mutation: unmuteUser(),
         variables: { id: user.row.id },
       })
-      this.$apollo.queries.blacklistedUsers.refetch()
+      this.$apollo.queries.mutedUsers.refetch()
       const { name } = user.row
-      this.$toast.success(this.$t('settings.blacklisted-users.unblocked', { name }))
+      this.$toast.success(this.$t('settings.muted-users.unblocked', { name }))
     },
   },
 }

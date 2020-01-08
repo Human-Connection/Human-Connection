@@ -8,26 +8,26 @@ import createOrUpdateLocations from './users/location'
 
 const neode = getNeode()
 
-export const getBlacklistedUsers = async context => {
+export const getMutedUsers = async context => {
   const { neode } = context
   const userModel = neode.model('User')
-  let blacklistedUsers = neode
+  let mutedUsers = neode
     .query()
     .match('user', userModel)
     .where('user.id', context.user.id)
-    .relationship(userModel.relationships().get('blacklisted'))
-    .to('blacklisted', userModel)
-    .return('blacklisted')
-  blacklistedUsers = await blacklistedUsers.execute()
-  blacklistedUsers = blacklistedUsers.records.map(r => r.get('blacklisted').properties)
-  return blacklistedUsers
+    .relationship(userModel.relationships().get('muted'))
+    .to('muted', userModel)
+    .return('muted')
+  mutedUsers = await mutedUsers.execute()
+  mutedUsers = mutedUsers.records.map(r => r.get('muted').properties)
+  return mutedUsers
 }
 
 export default {
   Query: {
-    blacklistedUsers: async (object, args, context, resolveInfo) => {
+    mutedUsers: async (object, args, context, resolveInfo) => {
       try {
-        return getBlacklistedUsers(context)
+        return getMutedUsers(context)
       } catch (e) {
         throw new UserInputError(e.message)
       }
@@ -56,7 +56,7 @@ export default {
     },
   },
   Mutation: {
-    blacklistUserContent: async (_parent, params, context, _resolveInfo) => {
+    muteUser: async (_parent, params, context, _resolveInfo) => {
       const { user: currentUser } = context
       if (currentUser.id === params.id) return null
       await neode.cypher(
@@ -66,25 +66,25 @@ export default {
         `,
         { currentUser, params },
       )
-      const [user, blacklistedUser] = await Promise.all([
+      const [user, mutedUser] = await Promise.all([
         neode.find('User', currentUser.id),
         neode.find('User', params.id),
       ])
-      await user.relateTo(blacklistedUser, 'blacklisted')
-      return blacklistedUser.toJson()
+      await user.relateTo(mutedUser, 'muted')
+      return mutedUser.toJson()
     },
-    whitelistUserContent: async (_parent, params, context, _resolveInfo) => {
+    unmuteUser: async (_parent, params, context, _resolveInfo) => {
       const { user: currentUser } = context
       if (currentUser.id === params.id) return null
       await neode.cypher(
         `
-          MATCH(u:User {id: $currentUser.id})-[previousRelationship:BLACKLISTED]->(b:User {id: $params.id})
+          MATCH(u:User {id: $currentUser.id})-[previousRelationship:MUTED]->(b:User {id: $params.id})
           DELETE previousRelationship
         `,
         { currentUser, params },
       )
-      const whitelistedUser = await neode.find('User', params.id)
-      return whitelistedUser.toJson()
+      const unmutedUser = await neode.find('User', params.id)
+      return unmutedUser.toJson()
     },
     block: async (object, args, context, resolveInfo) => {
       const { user: currentUser } = context
@@ -231,8 +231,8 @@ export default {
           'MATCH (this)<-[:FOLLOWS]-(u:User {id: $cypherParams.currentUserId}) RETURN COUNT(u) >= 1',
         isBlocked:
           'MATCH (this)<-[:BLOCKED]-(u:User {id: $cypherParams.currentUserId}) RETURN COUNT(u) >= 1',
-        isBlacklisted:
-          'MATCH (this)<-[:BLACKLISTED]-(u:User {id: $cypherParams.currentUserId}) RETURN COUNT(u) >= 1',
+        isMuted:
+          'MATCH (this)<-[:MUTED]-(u:User {id: $cypherParams.currentUserId}) RETURN COUNT(u) >= 1',
       },
       count: {
         contributionsCount:

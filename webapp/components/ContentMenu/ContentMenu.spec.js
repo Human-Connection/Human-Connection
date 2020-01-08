@@ -407,49 +407,49 @@ describe('ContentMenu.vue', () => {
         ).toBe('/settings')
       })
 
-      it('can blacklist other users', () => {
+      it('can mute other users', () => {
         const wrapper = openContentMenu({
           isOwner: false,
           resourceType: 'user',
           resource: {
             id: 'd23a4265-f5f7-4e17-9f86-85f714b4b9f8',
-            isBlacklisted: false,
+            isMuted: false,
           },
         })
         wrapper
           .findAll('.ds-menu-item')
-          .filter(item => item.text() === 'settings.blacklisted-users.blacklist')
+          .filter(item => item.text() === 'settings.muted-users.mute')
           .at(0)
           .trigger('click')
-        expect(wrapper.emitted('blacklist')).toEqual([
+        expect(wrapper.emitted('mute')).toEqual([
           [
             {
               id: 'd23a4265-f5f7-4e17-9f86-85f714b4b9f8',
-              isBlacklisted: false,
+              isMuted: false,
             },
           ],
         ])
       })
 
-      it('can whitelist blacklisted users', () => {
+      it('can unmute muted users', () => {
         const wrapper = openContentMenu({
           isOwner: false,
           resourceType: 'user',
           resource: {
             id: 'd23a4265-f5f7-4e17-9f86-85f714b4b9f8',
-            isBlacklisted: true,
+            isMuted: true,
           },
         })
         wrapper
           .findAll('.ds-menu-item')
-          .filter(item => item.text() === 'settings.blacklisted-users.whitelist')
+          .filter(item => item.text() === 'settings.muted-users.unmute')
           .at(0)
           .trigger('click')
-        expect(wrapper.emitted('whitelist')).toEqual([
+        expect(wrapper.emitted('unmute')).toEqual([
           [
             {
               id: 'd23a4265-f5f7-4e17-9f86-85f714b4b9f8',
-              isBlacklisted: true,
+              isMuted: true,
             },
           ],
         ])

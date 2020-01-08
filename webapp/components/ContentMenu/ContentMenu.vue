@@ -150,19 +150,19 @@ export default {
             icon: 'edit',
           })
         } else {
-          if (this.resource.isBlacklisted) {
+          if (this.resource.isMuted) {
             routes.push({
-              label: this.$t(`settings.blacklisted-users.whitelist`),
+              label: this.$t(`settings.muted-users.unmute`),
               callback: () => {
-                this.$emit('whitelist', this.resource)
+                this.$emit('unmute', this.resource)
               },
               icon: 'user-plus',
             })
           } else {
             routes.push({
-              label: this.$t(`settings.blacklisted-users.blacklist`),
+              label: this.$t(`settings.muted-users.mute`),
               callback: () => {
-                this.$emit('blacklist', this.resource)
+                this.$emit('mute', this.resource)
               },
               icon: 'user-times',
             })

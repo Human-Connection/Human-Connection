@@ -40,8 +40,8 @@ export default {
           path: `/settings/my-social-media`,
         },
         {
-          name: this.$t('settings.blacklisted-users.name'),
-          path: `/settings/blacklisted-users`,
+          name: this.$t('settings.muted-users.name'),
+          path: `/settings/muted-users`,
         },
         {
           name: this.$t('settings.embeds.name'),

@@ -39,7 +39,7 @@ Given("I am logged in", () => {
   cy.login(loginCredentials);
 });
 
-Given("I am logged in as the blacklisted user", () => {
+Given("I am logged in as the muted user", () => {
   cy.login({ email: annoyingParams.email, password: '1234' });
 });
 
@@ -424,17 +424,17 @@ Given("there is an annoying user called {string}", name => {
   });
 });
 
-Given("there is an annoying user who has blacklisted me", () => {
+Given("there is an annoying user who has muted me", () => {
   cy.neode()
     .first("User", {
       role: 'moderator'
     })
-    .then(blacklisted => {
+    .then(mutedUser => {
       cy.neode()
         .first("User", {
           id: 'annoying-user'
         })
-        .relateTo(blacklisted, "blacklisted");
+        .relateTo(mutedUser, "muted");
     });
 });
 
@@ -518,17 +518,17 @@ Given("I wrote a post {string}", title => {
     });
 });
 
-When("I blacklist the user {string}", name => {
+When("I mute the user {string}", name => {
   cy.neode()
     .first("User", {
       name
     })
-    .then(blacklistedUser => {
+    .then(mutedUser => {
       cy.neode()
         .first("User", {
           name: narratorParams.name
         })
-        .relateTo(blacklistedUser, "blacklisted");
+        .relateTo(mutedUser, "muted");
     });
 });
 

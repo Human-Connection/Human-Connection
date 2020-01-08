@@ -9,7 +9,7 @@ const factory = Factory()
 const neode = getNeode()
 
 let currentUser
-let blacklistedUser
+let mutedUser
 let authenticatedUser
 let server
 
@@ -33,15 +33,15 @@ afterEach(async () => {
   await factory.cleanDatabase()
 })
 
-describe('blacklistedUsers', () => {
-  let blacklistedUserQuery
+describe('mutedUsers', () => {
+  let mutedUserQuery
   beforeEach(() => {
-    blacklistedUserQuery = gql`
+    mutedUserQuery = gql`
       query {
-        blacklistedUsers {
+        mutedUsers {
           id
           name
-          isBlacklisted
+          isMuted
         }
       }
     `
@@ -49,34 +49,34 @@ describe('blacklistedUsers', () => {
 
   it('throws permission error', async () => {
     const { query } = createTestClient(server)
-    const result = await query({ query: blacklistedUserQuery })
+    const result = await query({ query: mutedUserQuery })
     expect(result.errors[0]).toHaveProperty('message', 'Not Authorised!')
   })
 
-  describe('authenticated and given a blacklisted user', () => {
+  describe('authenticated and given a muted user', () => {
     beforeEach(async () => {
       currentUser = await neode.create('User', {
         name: 'Current User',
         id: 'u1',
       })
-      blacklistedUser = await neode.create('User', {
-        name: 'Blacklisted User',
+      mutedUser = await neode.create('User', {
+        name: 'Muted User',
         id: 'u2',
       })
-      await currentUser.relateTo(blacklistedUser, 'blacklisted')
+      await currentUser.relateTo(mutedUser, 'muted')
       authenticatedUser = await currentUser.toJson()
     })
 
-    it('returns a list of blacklisted users', async () => {
+    it('returns a list of muted users', async () => {
       const { query } = createTestClient(server)
-      await expect(query({ query: blacklistedUserQuery })).resolves.toEqual(
+      await expect(query({ query: mutedUserQuery })).resolves.toEqual(
         expect.objectContaining({
           data: {
-            blacklistedUsers: [
+            mutedUsers: [
               {
-                name: 'Blacklisted User',
+                name: 'Muted User',
                 id: 'u2',
-                isBlacklisted: true,
+                isMuted: true,
               },
             ],
           },
@@ -86,28 +86,28 @@ describe('blacklistedUsers', () => {
   })
 })
 
-describe('blacklistUserContent', () => {
-  let blacklistAction
+describe('muteUser', () => {
+  let muteAction
 
   beforeEach(() => {
     currentUser = undefined
-    blacklistAction = variables => {
+    muteAction = variables => {
       const { mutate } = createTestClient(server)
-      const blacklistUserContentMutation = gql`
+      const muteUserMutation = gql`
         mutation($id: ID!) {
-          blacklistUserContent(id: $id) {
+          muteUser(id: $id) {
             id
             name
-            isBlacklisted
+            isMuted
           }
         }
       `
-      return mutate({ mutation: blacklistUserContentMutation, variables })
+      return mutate({ mutation: muteUserMutation, variables })
     }
   })
 
   it('throws permission error', async () => {
-    const result = await blacklistAction({ id: 'u2' })
+    const result = await muteAction({ id: 'u2' })
     expect(result.errors[0]).toHaveProperty('message', 'Not Authorised!')
   })
 
@@ -120,47 +120,47 @@ describe('blacklistUserContent', () => {
       authenticatedUser = await currentUser.toJson()
     })
 
-    describe('blacklist yourself', () => {
+    describe('mute yourself', () => {
       it('returns null', async () => {
-        await expect(blacklistAction({ id: 'u1' })).resolves.toEqual(
-          expect.objectContaining({ data: { blacklistUserContent: null } }),
+        await expect(muteAction({ id: 'u1' })).resolves.toEqual(
+          expect.objectContaining({ data: { muteUser: null } }),
         )
       })
     })
 
-    describe('blacklist not existing user', () => {
+    describe('mute not existing user', () => {
       it('returns null', async () => {
-        await expect(blacklistAction({ id: 'u2' })).resolves.toEqual(
-          expect.objectContaining({ data: { blacklistUserContent: null } }),
+        await expect(muteAction({ id: 'u2' })).resolves.toEqual(
+          expect.objectContaining({ data: { muteUser: null } }),
         )
       })
     })
 
-    describe('given a to-be-blacklisted user', () => {
+    describe('given a to-be-muted user', () => {
       beforeEach(async () => {
-        blacklistedUser = await neode.create('User', {
-          name: 'Blacklisted User',
+        mutedUser = await neode.create('User', {
+          name: 'Muted User',
           id: 'u2',
         })
       })
 
-      it('blacklists a user', async () => {
-        await expect(blacklistAction({ id: 'u2' })).resolves.toEqual(
+      it('mutes a user', async () => {
+        await expect(muteAction({ id: 'u2' })).resolves.toEqual(
           expect.objectContaining({
             data: {
-              blacklistUserContent: { id: 'u2', name: 'Blacklisted User', isBlacklisted: true },
+              muteUser: { id: 'u2', name: 'Muted User', isMuted: true },
             },
           }),
         )
       })
 
       it('unfollows the user', async () => {
-        await currentUser.relateTo(blacklistedUser, 'following')
+        await currentUser.relateTo(mutedUser, 'following')
         const queryUser = gql`
           query {
             User(id: "u2") {
               id
-              isBlacklisted
+              isMuted
               followedByCurrentUser
             }
           }
@@ -168,18 +168,18 @@ describe('blacklistUserContent', () => {
         const { query } = createTestClient(server)
         await expect(query({ query: queryUser })).resolves.toEqual(
           expect.objectContaining({
-            data: { User: [{ id: 'u2', isBlacklisted: false, followedByCurrentUser: true }] },
+            data: { User: [{ id: 'u2', isMuted: false, followedByCurrentUser: true }] },
           }),
         )
-        await blacklistAction({ id: 'u2' })
+        await muteAction({ id: 'u2' })
         await expect(query({ query: queryUser })).resolves.toEqual(
           expect.objectContaining({
-            data: { User: [{ id: 'u2', isBlacklisted: true, followedByCurrentUser: false }] },
+            data: { User: [{ id: 'u2', isMuted: true, followedByCurrentUser: false }] },
           }),
         )
       })
 
-      describe('given both the current user and the to-be-blacklisted user write a post', () => {
+      describe('given both the current user and the to-be-muted user write a post', () => {
         let postQuery
 
         beforeEach(async () => {
@@ -189,11 +189,11 @@ describe('blacklistUserContent', () => {
           })
           const post2 = await neode.create('Post', {
             id: 'p23',
-            title: 'A post written by the blacklisted user',
+            title: 'A post written by the muted user',
           })
           await Promise.all([
             post1.relateTo(currentUser, 'author'),
-            post2.relateTo(blacklistedUser, 'author'),
+            post2.relateTo(mutedUser, 'author'),
           ])
           postQuery = gql`
             query {
@@ -225,9 +225,9 @@ describe('blacklistUserContent', () => {
                   },
                   {
                     id: 'p23',
-                    title: 'A post written by the blacklisted user',
+                    title: 'A post written by the muted user',
                     author: {
-                      name: 'Blacklisted User',
+                      name: 'Muted User',
                       id: 'u2',
                     },
                   },
@@ -240,12 +240,12 @@ describe('blacklistUserContent', () => {
         describe('from the perspective of the current user', () => {
           it('both posts are in the newsfeed', bothPostsAreInTheNewsfeed)
 
-          describe('but if the current user blacklists the other user', () => {
+          describe('but if the current user mutes the other user', () => {
             beforeEach(async () => {
-              await currentUser.relateTo(blacklistedUser, 'blacklisted')
+              await currentUser.relateTo(mutedUser, 'muted')
             })
 
-            it("the blacklisted user's post won't show up in the newsfeed of the current user", async () => {
+            it("the muted user's post won't show up in the newsfeed of the current user", async () => {
               const { query } = createTestClient(server)
               await expect(query({ query: postQuery })).resolves.toEqual(
                 expect.objectContaining({
@@ -264,18 +264,18 @@ describe('blacklistUserContent', () => {
           })
         })
 
-        describe('from the perspective of the blacklisted user', () => {
+        describe('from the perspective of the muted user', () => {
           beforeEach(async () => {
-            authenticatedUser = await blacklistedUser.toJson()
+            authenticatedUser = await mutedUser.toJson()
           })
 
           it('both posts are in the newsfeed', bothPostsAreInTheNewsfeed)
-          describe('but if the current user blacklists the other user', () => {
+          describe('but if the current user mutes the other user', () => {
             beforeEach(async () => {
-              await currentUser.relateTo(blacklistedUser, 'blacklisted')
+              await currentUser.relateTo(mutedUser, 'muted')
             })
 
-            it("the current user's post will show up in the newsfeed of the blacklisted user", async () => {
+            it("the current user's post will show up in the newsfeed of the muted user", async () => {
               const { query } = createTestClient(server)
               await expect(query({ query: postQuery })).resolves.toEqual(
                 expect.objectContaining({
@@ -283,8 +283,8 @@ describe('blacklistUserContent', () => {
                     Post: expect.arrayContaining([
                       {
                         id: 'p23',
-                        title: 'A post written by the blacklisted user',
-                        author: { name: 'Blacklisted User', id: 'u2' },
+                        title: 'A post written by the muted user',
+                        author: { name: 'Muted User', id: 'u2' },
                       },
                       {
                         id: 'p12',
@@ -303,28 +303,28 @@ describe('blacklistUserContent', () => {
   })
 })
 
-describe('whitelistUserContent', () => {
-  let whitelistAction
+describe('unmuteUser', () => {
+  let unmuteAction
 
   beforeEach(() => {
     currentUser = undefined
-    whitelistAction = variables => {
+    unmuteAction = variables => {
       const { mutate } = createTestClient(server)
-      const whitelistUserContentMutation = gql`
+      const unmuteUserMutation = gql`
         mutation($id: ID!) {
-          whitelistUserContent(id: $id) {
+          unmuteUser(id: $id) {
             id
             name
-            isBlacklisted
+            isMuted
           }
         }
       `
-      return mutate({ mutation: whitelistUserContentMutation, variables })
+      return mutate({ mutation: unmuteUserMutation, variables })
     }
   })
 
   it('throws permission error', async () => {
-    const result = await whitelistAction({ id: 'u2' })
+    const result = await unmuteAction({ id: 'u2' })
     expect(result.errors[0]).toHaveProperty('message', 'Not Authorised!')
   })
 
@@ -337,67 +337,67 @@ describe('whitelistUserContent', () => {
       authenticatedUser = await currentUser.toJson()
     })
 
-    describe('whitelist yourself', () => {
+    describe('unmute yourself', () => {
       it('returns null', async () => {
-        await expect(whitelistAction({ id: 'u1' })).resolves.toEqual(
-          expect.objectContaining({ data: { whitelistUserContent: null } }),
+        await expect(unmuteAction({ id: 'u1' })).resolves.toEqual(
+          expect.objectContaining({ data: { unmuteUser: null } }),
         )
       })
     })
 
-    describe('whitelist not-existing user', () => {
+    describe('unmute not-existing user', () => {
       it('returns null', async () => {
-        await expect(whitelistAction({ id: 'lksjdflksfdj' })).resolves.toEqual(
-          expect.objectContaining({ data: { whitelistUserContent: null } }),
+        await expect(unmuteAction({ id: 'lksjdflksfdj' })).resolves.toEqual(
+          expect.objectContaining({ data: { unmuteUser: null } }),
         )
       })
     })
 
     describe('given another user', () => {
       beforeEach(async () => {
-        blacklistedUser = await neode.create('User', {
-          name: 'Blacklisted User',
+        mutedUser = await neode.create('User', {
+          name: 'Muted User',
           id: 'u2',
         })
       })
 
-      describe('whitelisting a not yet blacklisted user', () => {
+      describe('unmuting a not yet muted user', () => {
         it('does not hurt', async () => {
-          await expect(whitelistAction({ id: 'u2' })).resolves.toEqual(
+          await expect(unmuteAction({ id: 'u2' })).resolves.toEqual(
             expect.objectContaining({
               data: {
-                whitelistUserContent: { id: 'u2', name: 'Blacklisted User', isBlacklisted: false },
+                unmuteUser: { id: 'u2', name: 'Muted User', isMuted: false },
               },
             }),
           )
         })
       })
 
-      describe('given a blacklisted user', () => {
+      describe('given a muted user', () => {
         beforeEach(async () => {
-          await currentUser.relateTo(blacklistedUser, 'blacklisted')
+          await currentUser.relateTo(mutedUser, 'muted')
         })
 
-        it('whitelists a user', async () => {
-          await expect(whitelistAction({ id: 'u2' })).resolves.toEqual(
+        it('unmutes a user', async () => {
+          await expect(unmuteAction({ id: 'u2' })).resolves.toEqual(
             expect.objectContaining({
               data: {
-                whitelistUserContent: { id: 'u2', name: 'Blacklisted User', isBlacklisted: false },
+                unmuteUser: { id: 'u2', name: 'Muted User', isMuted: false },
               },
             }),
           )
         })
 
-        describe('whitelisting twice', () => {
+        describe('unmuting twice', () => {
           it('has no effect', async () => {
-            await whitelistAction({ id: 'u2' })
-            await expect(whitelistAction({ id: 'u2' })).resolves.toEqual(
+            await unmuteAction({ id: 'u2' })
+            await expect(unmuteAction({ id: 'u2' })).resolves.toEqual(
               expect.objectContaining({
                 data: {
-                  whitelistUserContent: {
+                  unmuteUser: {
                     id: 'u2',
-                    name: 'Blacklisted User',
-                    isBlacklisted: false,
+                    name: 'Muted User',
+                    isMuted: false,
                   },
                 },
               }),

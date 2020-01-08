@@ -1,4 +1,4 @@
-Feature: Blacklist a User
+Feature: Mute a User
   As a user
   I'd like to have a button to block another user
   To prevent him from seeing and interacting with my contributions and also to avoid seeing his/her posts
@@ -7,10 +7,10 @@ Feature: Blacklist a User
     Given I have a user account
     And there is an annoying user called "Spammy Spammer"
 
-  Scenario Outline: Blacklisted users cannot see each others posts
+  Scenario Outline: Muted users cannot see each others posts
     Given "Spammy Spammer" wrote a post "Spam Spam Spam"
     And I wrote a post "I hate spammers"
-    And I I blacklist the user "Spammy Spammer"
+    And I mute the user "Spammy Spammer"
     When I log in with:
       | Email   | Password   |
       | <email> | <password> |

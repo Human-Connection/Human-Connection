@@ -75,9 +75,9 @@ type User {
   """
   )
 
-  isBlacklisted: Boolean! @cypher(
+  isMuted: Boolean! @cypher(
   statement: """
-  MATCH (this)<-[: BLACKLISTED]-(u: User { id: $cypherParams.currentUserId})
+  MATCH (this)<-[: MUTED]-(u: User { id: $cypherParams.currentUserId})
   RETURN COUNT(u) >= 1
   """
   )
@@ -167,7 +167,7 @@ type Query {
   filter: _UserFilter
   ): [User]
 
-  blacklistedUsers: [User]
+  mutedUsers: [User]
   currentUser: User
 }
 
@@ -192,8 +192,8 @@ type Mutation {
 
   DeleteUser(id: ID!, resource: [Deletable]): User
 
-  blacklistUserContent(id: ID!): User
-  whitelistUserContent(id: ID!): User
+  muteUser(id: ID!): User
+  unmuteUser(id: ID!): User
   block(id: ID!): User
   unblock(id: ID!): User
 }

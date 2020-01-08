@@ -226,9 +226,9 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       dewey.relateTo(huey, 'following'),
       louie.relateTo(jennyRostock, 'following'),
 
-      huey.relateTo(dagobert, 'blacklisted'),
-      dewey.relateTo(dagobert, 'blacklisted'),
-      louie.relateTo(dagobert, 'blacklisted'),
+      huey.relateTo(dagobert, 'muted'),
+      dewey.relateTo(dagobert, 'muted'),
+      louie.relateTo(dagobert, 'muted'),
 
       dagobert.relateTo(huey, 'blocked'),
       dagobert.relateTo(dewey, 'blocked'),

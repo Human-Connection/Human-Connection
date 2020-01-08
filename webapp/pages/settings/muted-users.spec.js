@@ -1,8 +1,8 @@
 import { config, mount, createLocalVue } from '@vue/test-utils'
-import BlacklistedUsers from './blacklisted-users.vue'
+import MutedUsers from './muted-users.vue'
 import Styleguide from '@human-connection/styleguide'
 import Filters from '~/plugins/vue-filters'
-import { whitelistUserContent } from '~/graphql/settings/BlacklistedUsers'
+import { unmuteUser } from '~/graphql/settings/MutedUsers'
 
 const localVue = createLocalVue()
 
@@ -11,7 +11,7 @@ localVue.use(Filters)
 
 config.stubs['nuxt-link'] = '<span><slot /></span>'
 
-describe('blacklisted-users.vue', () => {
+describe('muted-users.vue', () => {
   let wrapper
   let mocks
 
@@ -21,7 +21,7 @@ describe('blacklisted-users.vue', () => {
       $apollo: {
         mutate: jest.fn(),
         queries: {
-          blacklistedUsers: {
+          mutedUsers: {
             refetch: jest.fn(),
           },
         },
@@ -35,7 +35,7 @@ describe('blacklisted-users.vue', () => {
 
   describe('mount', () => {
     const Wrapper = () => {
-      return mount(BlacklistedUsers, { mocks, localVue })
+      return mount(MutedUsers, { mocks, localVue })
     }
 
     beforeEach(() => {
@@ -48,18 +48,18 @@ describe('blacklisted-users.vue', () => {
 
     describe('given a list of blocked users', () => {
       beforeEach(() => {
-        const blacklistedUsers = [{ id: 'u1', name: 'John Doe', slug: 'john-doe', avatar: '' }]
-        wrapper.setData({ blacklistedUsers })
+        const mutedUsers = [{ id: 'u1', name: 'John Doe', slug: 'john-doe', avatar: '' }]
+        wrapper.setData({ mutedUsers })
       })
 
-      describe('click unblock', () => {
+      describe('click unmute', () => {
         beforeEach(() => {
           wrapper.find('button').trigger('click')
         })
 
-        it('calls unblock mutation with given user', () => {
+        it('calls unmute mutation with given user', () => {
           expect(mocks.$apollo.mutate).toHaveBeenCalledWith({
-            mutation: whitelistUserContent(),
+            mutation: unmuteUser(),
             variables: { id: 'u1' },
           })
         })
