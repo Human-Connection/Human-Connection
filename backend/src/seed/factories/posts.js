@@ -21,7 +21,7 @@ export default function create() {
         categoryIds: [],
         imageBlurred: false,
         imageAspectRatio: 1.333,
-        pinned: null
+        pinned: null,
       }
       args = {
         ...defaults,

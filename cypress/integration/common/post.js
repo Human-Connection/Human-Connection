@@ -45,9 +45,8 @@ Then("the editor should be cleared", () => {
   cy.get(".ProseMirror p").should("have.class", "is-empty");
 });
 
-Then("I should see post with title {string} before the post with title {string}", (title_1, title_2) => {
+Then("I should see the post with title {string} before other posts", (title_1) => {
   cy.get("h3.ds-heading-h3").eq(0).should("contain", title_1)
-  cy.get("h3.ds-heading-h3").eq(1).should("contain", title_2)
 })
 
 And("I should be able to pin the post whose title contains {string}", (string)=> {
@@ -70,6 +69,6 @@ And("post with title {string} should have ribbon for pinned posts", (title) => {
   .should("contain", "Announcement")
 })
 
-And("I should see a toast eith message {string}", (title) => {
-  cy.get(".iziToast-message").contains("Comment Submitted");
+And("I should see the toaster with text {string}", (title) => {
+  cy.get(".iziToast-message").contains(title);
 })
