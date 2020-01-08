@@ -2,11 +2,11 @@
   <ds-container width="medium">
     <ds-card icon="balance-scale" :header="$t(`termsAndConditions.newTermsAndConditions`)" centered>
       <p>
-        <base-button>
-          <nuxt-link class="post-link" :to="{ name: 'terms-and-conditions' }" target="_blank">
+        <nuxt-link :to="{ name: 'terms-and-conditions' }" target="_blank">
+          <base-button>
             {{ $t(`termsAndConditions.termsAndConditionsNewConfirmText`) }}
-          </nuxt-link>
-        </base-button>
+          </base-button>
+        </nuxt-link>
       </p>
       <ds-text>
         <input id="checkbox" type="checkbox" v-model="checked" :checked="checked" />
