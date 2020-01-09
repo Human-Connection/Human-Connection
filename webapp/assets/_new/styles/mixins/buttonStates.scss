@@ -12,10 +12,10 @@
   color: $main-color;
   border-color: $main-color;
   background-color: transparent;
-  transition: background-color 0.1s;
+  transition: background-color $duration-short;
 
   &:focus {
-    outline: 1px dashed $main-color;
+    outline: $border-size-base dashed $main-color;
   }
 
   &:enabled {
@@ -38,10 +38,6 @@
     cursor: default;
   }
 
-  &.--loading {
-    color: $color-neutral-80;
-  }
-
   @if $filled {
     color: $color-neutral-100;
     border-color: $main-color;
@@ -61,7 +57,7 @@
     }
 
     &:disabled {
-      color: $color-neutral-80;
+      color: $color-neutral-100;
       background-color: $color-neutral-60;
       border-color: $color-neutral-60;
     }

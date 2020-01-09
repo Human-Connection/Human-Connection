@@ -84,11 +84,11 @@ export default {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: 36px;
-  padding: 0 12px;
+  height: $size-button-base;
+  padding: 0 $space-x-small;
   vertical-align: bottom;
-  border: 1px solid;
-  border-radius: 6px;
+  border: $border-size-base solid;
+  border-radius: $border-radius-x-large;
   overflow: hidden;
   font-weight: $font-weight-bold;
   cursor: pointer;
@@ -106,7 +106,7 @@ export default {
   }
 
   &.--circle {
-    width: 36px;
+    width: $size-button-base;
     border-radius: 50%;
   }
 
@@ -115,21 +115,25 @@ export default {
   }
 
   &.--small {
-    height: 26px;
+    height: $size-button-small;
     font-size: $font-size-small;
 
     &.--circle {
-      width: 26px;
+      width: $size-button-small;
     }
   }
 
   &:not(.--icon-only) > .base-icon {
-    margin-right: 6px;
+    margin-right: $space-xx-small;
+  }
+
+  &:disabled.--loading {
+    color: $color-neutral-80;
   }
 
   > .loading-spinner {
     position: absolute;
-    height: 26px;
+    height: $size-button-small;
     color: $color-neutral-60;
   }
 
