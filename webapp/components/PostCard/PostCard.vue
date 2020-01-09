@@ -27,7 +27,7 @@
     </div>
     <ds-space margin-bottom="small" />
     <!-- Post Title -->
-    <ds-heading tag="h3" no-margin class="hyphenate-text">{{ post.title }}</ds-heading>
+    <ds-heading tag="h3" class="hyphenate-text post-title">{{ post.title }}</ds-heading>
     <ds-space margin-bottom="small" />
     <!-- Post Content Excerpt -->
     <!-- eslint-disable vue/no-v-html -->
@@ -184,6 +184,10 @@ export default {
   /* workaround to avoid jumping layout when footer is rendered */
   > .ds-card-footer {
     height: 75px;
+  }
+
+  .post-title {
+    margin-top: $space-large;
   }
 
   /* workaround to avoid jumping layout when hc-user is rendered */

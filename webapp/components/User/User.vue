@@ -1,6 +1,6 @@
 <template>
   <div class="user" v-if="displayAnonymous">
-    <user-avatar v-if="showAvatar" class="avatar" />
+    <user-avatar v-if="showAvatar" />
     <div>
       <b class="username">{{ $t('profile.userAnonym') }}</b>
     </div>
@@ -8,15 +8,19 @@
   <dropdown v-else :class="{ 'disabled-content': user.disabled }" placement="top-start" offset="0">
     <template slot="default" slot-scope="{ openMenu, closeMenu, isOpen }">
       <nuxt-link :to="userLink" :class="['user', isOpen && 'active']">
-        <div @mouseover="showPopover ? openMenu(true) : () => {}" @mouseleave="closeMenu(true)">
-          <user-avatar v-if="showAvatar" class="avatar" :user="user" />
-          <div>
-            <ds-text class="userinfo">
-              <b>{{ userSlug }}</b>
-            </ds-text>
-          </div>
+        <user-avatar v-if="showAvatar" :user="user" />
+        <div
+          class="user-info"
+          @mouseover="showPopover ? openMenu(true) : () => {}"
+          @mouseleave="closeMenu(true)"
+        >
+          <ds-text>
+            <b>{{ userSlug }}</b>
+          </ds-text>
           <ds-text class="username" align="left" size="small" color="soft">
             {{ userName | truncate(18) }}
+          </ds-text>
+          <ds-text class="date-time" align="left" size="small" color="soft">
             <template v-if="dateTime">
               <base-icon name="clock" />
               <hc-relative-date-time :date-time="dateTime" />
@@ -148,29 +152,19 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.avatar {
-  float: left;
-  margin-right: 4px;
-  height: 100%;
-  vertical-align: middle;
+.user {
+  display: flex;
+  flex-wrap: nowrap;
 }
 
-.userinfo {
+.user-info {
   display: flex;
-  align-items: center;
+  flex-direction: column;
 
   > .ds-text {
     display: flex;
-    align-items: center;
-    margin-left: $space-xx-small;
+    margin: 0 0 $space-xxx-small $space-xx-small;
   }
-}
-
-.user {
-  white-space: nowrap;
-  position: relative;
-  display: flex;
-  align-items: center;
 
   &:hover,
   &.active {
@@ -178,7 +172,10 @@ export default {
   }
 }
 
-.user-slug {
-  margin-bottom: $space-xx-small;
+.date-time {
+  > .base-icon {
+    align-self: center;
+    margin: $space-xxx-small $space-xxx-small 0 0;
+  }
 }
 </style>
