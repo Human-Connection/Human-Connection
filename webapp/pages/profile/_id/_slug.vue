@@ -227,7 +227,7 @@
                   class="profile-post-add-button"
                   icon="plus"
                   circle
-                  primary
+                  filled
                 />
               </nuxt-link>
             </ds-space>

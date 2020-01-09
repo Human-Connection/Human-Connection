@@ -106,6 +106,7 @@
           style="float: right;"
           icon="check"
           type="submit"
+          filled
           :loading="$apollo.loading"
           :disabled="
             errors ||
@@ -115,7 +116,6 @@
               !noCommercial ||
               !noPolitical
           "
-          primary
         >
           {{ $t('actions.save') }}
         </base-button>

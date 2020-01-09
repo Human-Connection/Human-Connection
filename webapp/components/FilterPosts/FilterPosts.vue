@@ -3,7 +3,7 @@
     <base-button
       slot="default"
       icon="filter"
-      :primary="filterActive"
+      :filled="filterActive"
       :ghost="!filterActive"
       slot-scope="{ toggleMenu }"
       @click.prevent="toggleMenu()"

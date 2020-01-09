@@ -23,7 +23,7 @@
     <base-button
       :disabled="disabled"
       :loading="$apollo.loading"
-      primary
+      filled
       name="submit"
       type="submit"
       icon="envelope"

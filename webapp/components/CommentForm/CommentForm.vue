@@ -12,7 +12,7 @@
           >
             {{ $t('actions.cancel') }}
           </base-button>
-          <base-button type="submit" :loading="loading" :disabled="disabled || errors" primary>
+          <base-button type="submit" :loading="loading" :disabled="disabled || errors" filled>
             {{ $t('post.comment.submit') }}
           </base-button>
         </div>

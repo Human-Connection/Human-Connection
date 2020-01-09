@@ -17,7 +17,7 @@
       </ds-text>
 
       <template slot="footer">
-        <base-button primary @click="submit" :disabled="!checked">
+        <base-button filled @click="submit" :disabled="!checked">
           {{ $t(`actions.save`) }}
         </base-button>
       </template>

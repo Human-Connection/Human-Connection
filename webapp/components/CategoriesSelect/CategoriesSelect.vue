@@ -6,7 +6,7 @@
           <base-button
             :data-test="categoryButtonsId(category.id)"
             @click="toggleCategory(category.id)"
-            :primary="isActive(category.id)"
+            :filled="isActive(category.id)"
             :disabled="isDisabled(category.id)"
             :icon="category.icon"
             size="small"

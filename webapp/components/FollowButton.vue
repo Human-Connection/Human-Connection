@@ -4,7 +4,7 @@
     :disabled="disabled || !followId"
     :loading="loading"
     :icon="icon"
-    :primary="isFollowed && !hovered"
+    :filled="isFollowed && !hovered"
     :danger="isFollowed && hovered"
     @mouseenter.native="onHover"
     @mouseleave.native="hovered = false"

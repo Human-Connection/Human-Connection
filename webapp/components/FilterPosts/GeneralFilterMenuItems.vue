@@ -18,7 +18,7 @@
                 name="filter-by-followed-authors-only"
                 icon="user-plus"
                 circle
-                :primary="filteredByUsersFollowed"
+                :filled="filteredByUsersFollowed"
                 @click="toggleFilteredByFollowed(user.id)"
                 v-tooltip="{
                   content: this.$t('contribution.filterFollow'),

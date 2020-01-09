@@ -19,7 +19,7 @@
           <ds-space class="backendErrors" v-if="backendErrors">
             <ds-text align="center" bold color="danger">{{ backendErrors.message }}</ds-text>
           </ds-space>
-          <base-button icon="check" :disabled="errors" type="submit" primary>
+          <base-button icon="check" :disabled="errors" type="submit" filled>
             {{ $t('actions.save') }}
           </base-button>
         </template>

@@ -3,7 +3,7 @@
     <base-button
       :loading="loading"
       :disabled="disabled"
-      :primary="shouted"
+      :filled="shouted"
       icon="bullhorn"
       circle
       @click="toggle"

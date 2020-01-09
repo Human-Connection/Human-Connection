@@ -16,7 +16,7 @@
               circle
               icon="check"
               @click="resetCategories"
-              :primary="!filteredCategoryIds.length"
+              :filled="!filteredCategoryIds.length"
             />
             <ds-flex-item>
               <label class="category-labels">{{ $t('filter-posts.categories.all') }}</label>
@@ -41,7 +41,7 @@
               <base-button
                 circle
                 :icon="category.icon"
-                :primary="filteredCategoryIds.includes(category.id)"
+                :filled="filteredCategoryIds.includes(category.id)"
                 @click="toggleCategory(category.id)"
               />
               <ds-space margin-bottom="small" />

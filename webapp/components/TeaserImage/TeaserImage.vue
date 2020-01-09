@@ -9,7 +9,7 @@
     @vdropzone-thumbnail="transformImage"
   >
     <div class="crop-overlay" ref="cropperOverlay" v-show="showCropper">
-      <base-button @click="cropImage" class="crop-confirm" primary>
+      <base-button @click="cropImage" class="crop-confirm" filled>
         {{ $t('contribution.teaserImage.cropperConfirm') }}
       </base-button>
       <base-button

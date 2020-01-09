@@ -8,7 +8,7 @@
         placeholder="1200"
         icon="money"
       />
-      <base-button primary type="submit" :disabled="!formData.goal || !formData.progress">
+      <base-button filled type="submit" :disabled="!formData.goal || !formData.progress">
         {{ $t('actions.save') }}
       </base-button>
     </ds-form>

@@ -15,7 +15,7 @@
             <base-button
               icon="check"
               circle
-              :primary="!filteredLanguageCodes.length"
+              :filled="!filteredLanguageCodes.length"
               @click="resetLanguages"
             />
             <ds-flex-item>
@@ -36,7 +36,7 @@
             <base-button
               class="language-buttons"
               circle
-              :primary="filteredLanguageCodes.includes(language.code)"
+              :filled="filteredLanguageCodes.includes(language.code)"
               @click="toggleLanguage(language.code)"
             >
               {{ language.code.toUpperCase() }}

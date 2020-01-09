@@ -31,7 +31,7 @@
           :placeholder="$t('settings.data.labelBio')"
         />
         <template slot="footer">
-          <base-button icon="check" :disabled="errors" type="submit" :loading="loadingData" primary>
+          <base-button icon="check" :disabled="errors" type="submit" :loading="loadingData" filled>
             {{ $t('actions.save') }}
           </base-button>
         </template>

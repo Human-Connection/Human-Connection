@@ -12,7 +12,7 @@
               />
             </ds-flex-item>
             <ds-flex-item width="30px">
-              <base-button primary circle type="submit" icon="search" :loading="$apollo.loading" />
+              <base-button filled circle type="submit" icon="search" :loading="$apollo.loading" />
             </ds-flex-item>
           </ds-flex>
         </ds-form>

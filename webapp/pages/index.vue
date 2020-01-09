@@ -8,7 +8,7 @@
         <!--<donation-info /> -->
         <div>
           <a target="_blank" href="https://human-connection.org/spenden/">
-            <base-button primary>{{ $t('donations.donate-now') }}</base-button>
+            <base-button filled>{{ $t('donations.donate-now') }}</base-button>
           </a>
         </div>
         <div class="sorting-dropdown">
@@ -49,7 +49,7 @@
           }"
           class="post-add-button"
           icon="plus"
-          primary
+          filled
           circle
         />
       </nuxt-link>

@@ -54,7 +54,7 @@
           :placeholder="$t('settings.social-media.placeholder')"
         />
         <ds-space margin-top="base">
-          <base-button primary :disabled="disabled" type="submit">
+          <base-button filled :disabled="disabled" type="submit">
             {{ editingLink.id ? $t('actions.save') : $t('settings.social-media.submit') }}
           </base-button>
           <base-button v-if="editingLink.id" id="cancel" ghost @click="handleCancel()">

@@ -24,7 +24,7 @@
         />
         <password-strength :password="formData.password" />
         <ds-space margin-top="base" margin-bottom="xxx-small">
-          <base-button :loading="$apollo.loading" :disabled="errors" primary type="submit">
+          <base-button :loading="$apollo.loading" :disabled="errors" filled type="submit">
             {{ $t('settings.security.change-password.button') }}
           </base-button>
         </ds-space>

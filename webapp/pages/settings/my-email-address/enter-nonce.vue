@@ -17,7 +17,7 @@
         />
 
         <template slot="footer">
-          <base-button class="submit-button" icon="check" :disabled="errors" type="submit" primary>
+          <base-button class="submit-button" icon="check" :disabled="errors" type="submit" filled>
             {{ $t('actions.save') }}
           </base-button>
         </template>
