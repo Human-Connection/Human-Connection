@@ -317,7 +317,9 @@
         "their-perspective": "Vice versa: The blocked person will also no longer see your posts in their news feed.",
         "search": "Posts of blocked people disappear from your search results.",
         "notifications": "Blocked users will no longer receive notifications if they are mentioned in your posts.",
-        "closing": "This should be sufficient for now so that blocked users can no longer bother you."
+        "closing": "This should be sufficient for now so that blocked users can no longer bother you.",
+        "commenting-disabled": "Commenting is not possible at this time on this post.",
+        "commenting-explanation": "This can happen for several reasons, please see "
       },
       "columns": {
         "name": "Name",

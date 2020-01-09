@@ -42,7 +42,7 @@ const maintainPinnedPosts = params => {
 export default {
   Query: {
     Post: async (object, params, context, resolveInfo) => {
-      params = await filterForBlockedUsers(params, context)
+      // params = await filterForBlockedUsers(params, context)
       params = await maintainPinnedPosts(params)
       return neo4jgraphql(object, params, context, resolveInfo)
     },

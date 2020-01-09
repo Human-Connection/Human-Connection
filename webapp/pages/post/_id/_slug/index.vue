@@ -89,7 +89,19 @@
           @toggleNewCommentForm="toggleNewCommentForm"
         />
         <ds-space margin-bottom="large" />
-        <hc-comment-form v-if="showNewCommentForm" :post="post" @createComment="createComment" />
+        <comment-form
+          v-if="showNewCommentForm && !this.blocked"
+          :post="post"
+          @createComment="createComment"
+        />
+        <ds-space v-else>
+          <ds-placeholder>
+            {{ $t('settings.blocked-users.explanation.commenting-disabled') }}
+            <br />
+            {{ $t('settings.blocked-users.explanation.commenting-explanation') }}
+            <a>https://human-connection.org</a>
+          </ds-placeholder>
+        </ds-space>
       </ds-section>
     </ds-card>
   </transition>
@@ -102,12 +114,13 @@ import HcHashtag from '~/components/Hashtag/Hashtag'
 import ContentMenu from '~/components/ContentMenu/ContentMenu'
 import HcUser from '~/components/User/User'
 import HcShoutButton from '~/components/ShoutButton.vue'
-import HcCommentForm from '~/components/CommentForm/CommentForm'
+import CommentForm from '~/components/CommentForm/CommentForm'
 import HcCommentList from '~/components/CommentList/CommentList'
 import { postMenuModalsData, deletePostMutation } from '~/components/utils/PostHelpers'
 import PostQuery from '~/graphql/PostQuery'
 import HcEmotions from '~/components/Emotions/Emotions'
 import PostMutations from '~/graphql/PostMutations'
+import { blockedByPostAuthor } from '~/graphql/User'
 
 export default {
   name: 'PostSlug',
@@ -121,7 +134,7 @@ export default {
     HcUser,
     HcShoutButton,
     ContentMenu,
-    HcCommentForm,
+    CommentForm,
     HcCommentList,
     HcEmotions,
     ContentViewer,
@@ -138,14 +151,9 @@ export default {
       title: 'loading',
       showNewCommentForm: true,
       blurred: false,
+      blocked: null,
+      postAuthor: null,
     }
-  },
-  watch: {
-    Post(post) {
-      this.post = post[0] || {}
-      this.title = this.post.title
-      this.blurred = this.post.imageBlurred
-    },
   },
   mounted() {
     setTimeout(() => {
@@ -214,6 +222,26 @@ export default {
         return {
           id: this.$route.params.id,
         }
+      },
+      update({ Post }) {
+        this.post = Post[0] || {}
+        this.title = this.post.title
+        this.blurred = this.post.imageBlurred
+        this.postAuthor = this.post.author
+      },
+      fetchPolicy: 'cache-and-network',
+    },
+    blockedByPostAuthor: {
+      query() {
+        return blockedByPostAuthor()
+      },
+      variables() {
+        return {
+          postAuthorId: this.postAuthor ? this.postAuthor.id : this.$store.getters['auth/user'].id,
+        }
+      },
+      update({ blockedByPostAuthor }) {
+        this.blocked = blockedByPostAuthor
       },
       fetchPolicy: 'cache-and-network',
     },

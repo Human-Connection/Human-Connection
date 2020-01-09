@@ -102,6 +102,7 @@ export default shield(
       blockedUsers: isAuthenticated,
       notifications: isAuthenticated,
       Donations: isAuthenticated,
+      blockedByPostAuthor: isAuthenticated,
     },
     Mutation: {
       '*': deny,

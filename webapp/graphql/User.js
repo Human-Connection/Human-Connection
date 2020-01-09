@@ -216,3 +216,10 @@ export const checkSlugAvailableQuery = gql`
     }
   }
 `
+export const blockedByPostAuthor = () => {
+  return gql`
+    query($postAuthorId: ID!) {
+      blockedByPostAuthor(postAuthorId: $postAuthorId)
+    }
+  `
+}
