@@ -62,7 +62,13 @@
               />
             </ds-flex-item>
             <ds-flex-item :width="{ base: '100%', sm: '100%', md: '100%', lg: 1 }">
-              <ds-button icon="trash" danger filled :disabled="!deleteEnabled" @click="handleSubmit">
+              <ds-button
+                icon="trash"
+                danger
+                filled
+                :disabled="!deleteEnabled"
+                @click="handleSubmit"
+              >
                 {{ $t('settings.deleteUserAccount.name') }}
               </ds-button>
             </ds-flex-item>

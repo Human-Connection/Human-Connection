@@ -5,7 +5,7 @@ const localVue = global.localVue
 
 localVue.filter('truncate', string => string)
 
-config.stubs.dropdown = '<span class="dropdown"><slot /></span>'
+config.stubs.dropdown = '<span class="dropdown"><slot :toggleMenu="() => null" /></span>'
 
 describe('NotificationMenu.vue', () => {
   let wrapper

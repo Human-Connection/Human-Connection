@@ -102,7 +102,7 @@ export default {
   }
 
   &.--danger.--filled {
-    @include buttonStates($color-scheme: danger, $filled: true)
+    @include buttonStates($color-scheme: danger, $filled: true);
   }
 
   &.--circle {
