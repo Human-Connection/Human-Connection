@@ -12,7 +12,7 @@ export default {
 
 <style lang="scss">
 .loading-spinner {
-  height: 36px;
+  height: $size-button-base;
   overflow: hidden;
   stroke: currentColor;
   animation: rotate 16s linear infinite;
