@@ -5935,12 +5935,12 @@ metascraper-lang@^5.8.13:
   dependencies:
     "@metascraper/helpers" "^5.8.13"
 
-metascraper-logo@^5.8.13:
-  version "5.8.13"
-  resolved "https://registry.yarnpkg.com/metascraper-logo/-/metascraper-logo-5.8.13.tgz#5882eb580589c1079302c3bc8bc855eb1e004946"
-  integrity sha512-alJrgCnzkobAjM5CggRtvjjAiJCJzvQEObOlqmFdHheHqk5owSRcoGeJLOCwrYo7RjBx2m3Gult1S4LJzwae5g==
+metascraper-logo@^5.9.5:
+  version "5.9.5"
+  resolved "https://registry.yarnpkg.com/metascraper-logo/-/metascraper-logo-5.9.5.tgz#1fee5b3de1c79380d50c8e2ecd3d102b6cb9f7d4"
+  integrity sha512-rbBLYVX4xSIzzeQJaUyibQYzjlNGlkyri14ixpIlCdlri3KQ0rRKnwQSeOSUlAu1rVsL7JlsMrhMDCb21dX9sQ==
   dependencies:
-    "@metascraper/helpers" "^5.8.13"
+    "@metascraper/helpers" "^5.9.5"
 
 metascraper-publisher@^5.9.5:
   version "5.9.5"
