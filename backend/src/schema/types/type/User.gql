@@ -77,8 +77,8 @@ type User {
 
   isMuted: Boolean! @cypher(
   statement: """
-  MATCH (this)<-[: MUTED]-(u: User { id: $cypherParams.currentUserId})
-  RETURN COUNT(u) >= 1
+  MATCH (this)<-[:MUTED]-(user:User { id: $cypherParams.currentUserId})
+  RETURN COUNT(user) >= 1
   """
   )
 
