@@ -40,27 +40,6 @@ storiesOf('Generic/BaseButton', module)
     `,
   }))
 
-  .add('small', () => ({
-    components: { BaseButton },
-    template: `
-      <div>
-        <base-button size="small">Small</base-button>
-        <base-button size="small" circle>S</base-button>
-      </div>
-    `,
-  }))
-
-  .add('primary', () => ({
-    components: { BaseButton },
-    template: `
-      <div>
-        <base-button primary>Primary</base-button>
-        <base-button primary disabled>Disabled</base-button>
-        <base-button primary loading>Loading</base-button>
-      </div>
-    `,
-  }))
-
   .add('danger', () => ({
     components: { BaseButton },
     template: `
@@ -68,6 +47,28 @@ storiesOf('Generic/BaseButton', module)
         <base-button danger>Danger</base-button>
         <base-button danger disabled>Disabled</base-button>
         <base-button danger loading>Loading</base-button>
+      </div>
+    `,
+  }))
+
+  .add('filled', () => ({
+    components: { BaseButton },
+    template: `
+      <div>
+        <base-button filled>Filled</base-button>
+        <base-button filled danger>Filled Danger</base-button>
+        <base-button filled disabled>Disabled</base-button>
+        <base-button filled loading>Loading</base-button>
+      </div>
+    `,
+  }))
+
+  .add('small', () => ({
+    components: { BaseButton },
+    template: `
+      <div>
+        <base-button size="small">Small</base-button>
+        <base-button size="small" circle>S</base-button>
       </div>
     `,
   }))
