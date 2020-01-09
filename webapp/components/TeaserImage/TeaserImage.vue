@@ -18,6 +18,7 @@
         size="small"
         circle
         danger
+        filled
         @click="cancelCrop"
       />
     </div>

@@ -57,7 +57,7 @@
           <base-button filled :disabled="disabled" type="submit">
             {{ editingLink.id ? $t('actions.save') : $t('settings.social-media.submit') }}
           </base-button>
-          <base-button v-if="editingLink.id" id="cancel" ghost @click="handleCancel()">
+          <base-button v-if="editingLink.id" id="cancel" danger @click="handleCancel()">
             {{ $t('actions.cancel') }}
           </base-button>
         </ds-space>

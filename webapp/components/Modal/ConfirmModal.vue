@@ -10,7 +10,12 @@
     <p v-html="message" />
 
     <template slot="footer">
-      <base-button class="cancel" :icon="modalData.buttons.cancel.icon" @click="cancel">
+      <base-button
+        class="cancel"
+        :danger="!modalData.buttons.confirm.danger"
+        :icon="modalData.buttons.cancel.icon"
+        @click="cancel"
+      >
         {{ $t(modalData.buttons.cancel.textIdent) }}
       </base-button>
 

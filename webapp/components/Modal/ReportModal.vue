@@ -35,6 +35,7 @@
 
       <base-button
         danger
+        filled
         class="confirm"
         icon="exclamation-circle"
         :disabled="!form.reasonCategory"

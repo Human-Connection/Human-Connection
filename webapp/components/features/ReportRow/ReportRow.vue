@@ -64,6 +64,7 @@
         <base-button
           v-else
           danger
+          filled
           data-test="confirm"
           size="small"
           :icon="statusIconName"

@@ -5,7 +5,7 @@
 
     <template slot="footer">
       <base-button class="cancel" @click="cancel">{{ $t('release.cancel') }}</base-button>
-      <base-button danger class="confirm" icon="exclamation-circle" @click="confirm">
+      <base-button danger filled class="confirm" icon="exclamation-circle" @click="confirm">
         {{ $t('release.submit') }}
       </base-button>
     </template>
