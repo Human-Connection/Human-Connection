@@ -1,15 +1,15 @@
 import { config, mount } from '@vue/test-utils'
 import Vuex from 'vuex'
-import SearchResources from './SearchResources.vue'
+import SearchField from './SearchField.vue'
 import SearchableInput from '~/components/generic/SearchableInput/SearchableInput'
-import { results as searchResults } from './SearchResources.story'
+import { results as searchResults } from './SearchField.story'
 const localVue = global.localVue
 
 localVue.filter('truncate', () => 'truncated string')
 localVue.filter('dateTime', () => Date.now)
 config.stubs['nuxt-link'] = '<span><slot /></span>'
 
-describe('SearchResources.vue', () => {
+describe('SearchField.vue', () => {
   let mocks, wrapper, getters
   beforeEach(() => {
     mocks = {
@@ -26,7 +26,7 @@ describe('SearchResources.vue', () => {
     const store = new Vuex.Store({
       getters,
     })
-    return mount(SearchResources, { mocks, localVue, store })
+    return mount(SearchField, { mocks, localVue, store })
   }
 
   describe('mount', () => {

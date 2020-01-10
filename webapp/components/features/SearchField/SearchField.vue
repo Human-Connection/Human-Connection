@@ -1,7 +1,6 @@
 <template>
   <searchable-input
-    data-test="search-resources"
-    id="search-resources"
+    data-test="search-field"
     :loading="pending"
     :options="searchResults"
     @query="query"
@@ -14,6 +13,7 @@ import { findResourcesQuery } from '~/graphql/Search.js'
 import SearchableInput from '~/components/generic/SearchableInput/SearchableInput.vue'
 
 export default {
+  name: 'SearchField',
   components: {
     SearchableInput,
   },

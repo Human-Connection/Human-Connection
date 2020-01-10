@@ -19,10 +19,10 @@
             <ds-flex-item
               :width="{ base: '85%', sm: '85%', md: '50%', lg: '50%' }"
               :class="{ 'hide-mobile-menu': !toggleMobileMenu }"
+              id="nav-search-box"
+              v-if="isLoggedIn"
             >
-              <div id="nav-search-box" v-if="isLoggedIn">
-                <search-resources />
-              </div>
+              <search-field />
             </ds-flex-item>
             <ds-flex-item
               v-if="isLoggedIn"
@@ -84,7 +84,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import LocaleSwitch from '~/components/LocaleSwitch/LocaleSwitch'
-import SearchResources from '~/components/features/SearchResources/SearchResources.vue'
+import SearchField from '~/components/features/SearchField/SearchField.vue'
 import Modal from '~/components/Modal'
 import NotificationMenu from '~/components/NotificationMenu/NotificationMenu'
 import seo from '~/mixins/seo'
@@ -96,7 +96,7 @@ import AvatarMenu from '~/components/AvatarMenu/AvatarMenu'
 export default {
   components: {
     LocaleSwitch,
-    SearchResources,
+    SearchField,
     Modal,
     NotificationMenu,
     AvatarMenu,

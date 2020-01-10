@@ -28,10 +28,11 @@ describe('SearchPost.vue', () => {
     return shallowMount(SearchPost, { mocks, localVue, propsData })
   }
 
-  describe('mount', () => {
+  describe('shallowMount', () => {
     it('renders post title', () => {
       expect(wrapper.find('.search-option-label').text()).toMatch('Post Title')
     })
+
     it('renders post commentsCount', () => {
       expect(
         wrapper
@@ -41,6 +42,7 @@ describe('SearchPost.vue', () => {
           .exists(),
       ).toBe(true)
     })
+
     it('renders post shoutedCount', () => {
       expect(
         wrapper
@@ -50,9 +52,11 @@ describe('SearchPost.vue', () => {
           .exists(),
       ).toBe(true)
     })
+
     it('renders post author', () => {
       expect(wrapper.find('.search-post-author').text()).toContain('Post Author')
     })
+
     it('renders post createdAt', () => {
       expect(wrapper.find('.search-post-author').text()).toContain('23.08.2019')
     })

@@ -2,7 +2,7 @@ import { config, mount } from '@vue/test-utils'
 import Vuex from 'vuex'
 import Vue from 'vue'
 import SearchableInput from './SearchableInput'
-import { results } from '~/components/features/SearchResources/SearchResources.story'
+import { results } from '~/components/features/SearchField/SearchField.story'
 
 const localVue = global.localVue
 

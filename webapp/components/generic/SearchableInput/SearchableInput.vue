@@ -39,13 +39,13 @@
             </span>
             <span
               v-if="option.__typename === 'User'"
-              :class="{ 'extra-space': isFirstOfType(option), 'flex-span': true }"
+              :class="{ 'option-with-heading': isFirstOfType(option), 'flex-span': true }"
             >
               <hc-user :user="option" :showPopover="false" />
             </span>
             <span
               v-if="option.__typename === 'Post'"
-              :class="{ 'extra-space': isFirstOfType(option), 'flex-span': true }"
+              :class="{ 'option-with-heading': isFirstOfType(option), 'flex-span': true }"
             >
               <search-post :option="option" />
             </span>
@@ -62,6 +62,7 @@ import SearchPost from '~/components/generic/SearchPost/SearchPost.vue'
 import HcUser from '~/components/User/User.vue'
 
 export default {
+  name: 'SearchableInput',
   components: {
     SearchHeading,
     SearchPost,
@@ -169,25 +170,16 @@ export default {
   },
 }
 </script>
-<style lang="scss" `>
+<style lang="scss">
 .searchable-input {
   display: flex;
   align-self: center;
   width: 100%;
   position: relative;
   $padding-left: $space-x-small;
-  .search-heading {
-    display: flex;
-    flex-wrap: wrap;
-    font-weight: bold;
-    cursor: default;
-    background-color: white;
-    margin: -8px;
-    padding: 8px;
-  }
-  .extra-space {
-    margin-top: 8px;
-    padding-top: 4px;
+  .option-with-heading {
+    margin-top: $space-x-small;
+    padding-top: $space-xx-small;
   }
   .flex-span {
     display: flex;

@@ -162,10 +162,10 @@ type Query {
 
   blockedUsers: [User]
   isLoggedIn: Boolean!
-    currentUser: User
-    findUsers(query: String!,limit: Int = 10, filter: _UserFilter): [User]!
+  currentUser: User
+  findUsers(query: String!,limit: Int = 10, filter: _UserFilter): [User]!
     @cypher(
-	statement: """
+      statement: """
       CALL db.index.fulltext.queryNodes('user_fulltext_search', $query)
       YIELD node as post, score
       MATCH (user)
@@ -192,8 +192,7 @@ type Mutation {
   termsAndConditionsAgreedAt: String
   allowEmbedIframes: Boolean
   showShoutsPublicly: Boolean
-
-	locale: String
+  locale: String
   ): User
 
   DeleteUser(id: ID!, resource: [Deletable]): User

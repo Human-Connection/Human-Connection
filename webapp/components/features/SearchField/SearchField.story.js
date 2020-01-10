@@ -1,6 +1,6 @@
 import { storiesOf } from '@storybook/vue'
 import { withA11y } from '@storybook/addon-a11y'
-import SearchResources from './SearchResources.vue'
+import SearchField from './SearchField.vue'
 import helpers from '~/storybook/helpers'
 
 helpers.init()
@@ -100,19 +100,18 @@ export const results = [
   },
 ]
 
-storiesOf('Search Input', module)
+storiesOf('Search Field', module)
   .addDecorator(withA11y)
   .addDecorator(helpers.layout)
   .add('test', () => ({
-    components: { SearchResources },
+    components: { SearchField },
     store: helpers.store,
     data: () => ({
       results: results,
     }),
     template: `
-      <search-input
-        :results="results"
-        :width="{ base: '100%', xs: '100%', md: '50%', xl: '33%' }"
+      <search-field
+        :searchResults="results"
       />
     `,
   }))
