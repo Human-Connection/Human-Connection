@@ -103,7 +103,7 @@
     "@babel/plugin-proposal-throw-expressions": "^7.7.4",
     "@babel/preset-env": "~7.7.7",
     "@babel/register": "~7.7.0",
-    "apollo-server-testing": "~2.9.15",
+    "apollo-server-testing": "~2.9.16",
     "babel-core": "~7.0.0-0",
     "babel-eslint": "~10.0.3",
     "babel-jest": "~24.9.0",
