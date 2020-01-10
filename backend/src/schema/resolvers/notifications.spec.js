@@ -40,11 +40,12 @@ describe('given some notifications', () => {
     const categoryIds = ['cat1']
     author = await factory.create('User', { id: 'author' })
     user = await factory.create('User', { id: 'you' })
-    const [neighbor] = await Promise.all([
+    const [neighbor,badWomen] = await Promise.all([
       factory.create('User', { id: 'neighbor' }),
+      factory.create('User', { id: 'badWomen' }),
       factory.create('Category', { id: 'cat1' }),
     ])
-    const [post1, post2, post3] = await Promise.all([
+    const [post1, post2, post3, post4] = await Promise.all([
       factory.create('Post', { author, id: 'p1', categoryIds, content: 'Not for you' }),
       factory.create('Post', {
         author,
@@ -58,8 +59,14 @@ describe('given some notifications', () => {
         categoryIds,
         content: 'You have been mentioned in a post',
       }),
+      factory.create('Post', {
+        author,
+        id: 'p4',
+        categoryIds,
+        content: 'I am bad content !!!',
+      }),
     ])
-    const [comment1, comment2, comment3] = await Promise.all([
+    const [comment1, comment2, comment3, comment4] = await Promise.all([
       factory.create('Comment', {
         author,
         postId: 'p3',
@@ -77,6 +84,12 @@ describe('given some notifications', () => {
         postId: 'p3',
         id: 'c3',
         content: 'Somebody else was mentioned in a comment',
+      }),
+      factory.create('Comment', {
+        author,
+        postId: 'p4',
+        id: 'c4',
+        content: 'I am bad content in a bad comment to a bad post !!!',
       }),
     ])
     await Promise.all([
@@ -111,6 +124,50 @@ describe('given some notifications', () => {
         reason: 'mentioned_in_comment',
       }),
     ])
+
+    // report notifications
+    const [reportOnUser, reportOnPost, reportOnComment] = await Promise.all([
+      factory.create('Report'),
+      factory.create('Report'),
+      factory.create('Report'),
+    ])
+    await Promise.all([
+      reportOnUser.relateTo(user, 'filed', {
+        resourceId: 'badWomen',
+        reasonCategory: 'discrimination_etc',
+        reasonDescription: 'This user is harassing me with bigoted remarks!',
+      }),
+      reportOnUser.relateTo(badWomen, 'belongsTo'),
+      reportOnPost.relateTo(user, 'filed', {
+        resourceId: 'p4',
+        reasonCategory: 'other',
+        reasonDescription: "This shouldn't be shown to anybody else! It's my private thing!",
+      }),
+      reportOnPost.relateTo(post4, 'belongsTo'),
+      reportOnComment.relateTo(user, 'filed', {
+        resourceId: 'c4',
+        reasonCategory: 'discrimination_etc',
+        reasonDescription: 'This user is harassing me!',
+      }),
+      reportOnComment.relateTo(comment4, 'belongsTo'),
+    ])
+    await Promise.all([
+      reportOnUser.relateTo(user, 'notified', {
+        createdAt: '2019-08-29T17:33:48.651Z',
+        read: false,
+        reason: 'filed_report_on_resource',
+      }),
+      reportOnPost.relateTo(user, 'notified', {
+        createdAt: '2019-08-30T17:33:48.651Z',
+        read: true,
+        reason: 'filed_report_on_resource',
+      }),
+      reportOnComment.relateTo(user, 'notified', {
+        createdAt: '2019-08-31T17:33:48.651Z',
+        read: false,
+        reason: 'filed_report_on_resource',
+      }),
+    ])
   })
 
   describe('notifications', () => {
@@ -125,9 +182,28 @@ describe('given some notifications', () => {
             ... on Comment {
               content
             }
+            ... on Report {
+              filed {
+                reasonCategory
+                reasonDescription
+                reportedResource {
+                  __typename
+                  ... on Post {
+                    id
+                  }
+                  ... on Comment {
+                    id
+                  }
+                  ... on User {
+                    id
+                  }
+                }
+              }
+            }
           }
           read
           createdAt
+          reason
         }
       }
     `
@@ -190,7 +266,7 @@ describe('given some notifications', () => {
       })
 
       describe('filter for read: false', () => {
-        it('returns only unread notifications of current user', async () => {
+        it.only('returns only unread notifications of current user', async () => {
           const expected = expect.objectContaining({
             data: {
               notifications: expect.arrayContaining([
@@ -210,6 +286,36 @@ describe('given some notifications', () => {
                   read: false,
                   createdAt: '2019-08-31T17:33:48.651Z',
                 },
+                {
+                  from: {
+                    filed: {
+                      reasonCategory: 'discrimination_etc',
+                      reasonDescription: 'This user is harassing me with bigoted remarks!',
+                      reportedResource: {
+                        __typename: 'User',
+                        id: 'badWomen',
+                      },
+                    },
+                  },
+                  read: false,
+                  createdAt: '2019-08-31T17:33:48.651Z',
+                  reason: 'filed_report_on_resource',
+                },
+                // {
+                //   from: {
+                //     filed: {
+                //       reasonCategory: 'discrimination_etc',
+                //       reasonDescription: 'This user is harassing me!',
+                //       reportedResource: {
+                //         __typename: 'Comment',
+                //         id: 'c4',
+                //       },
+                //     },
+                //   },
+                //   read: false,
+                //   createdAt: '2019-08-31T17:33:48.651Z',
+                //   reason: 'filed_report_on_resource',
+                // },
               ]),
             },
           })
@@ -218,7 +324,7 @@ describe('given some notifications', () => {
             variables: { ...variables, read: false },
           })
           await expect(response).toMatchObject(expected)
-          await expect(response.data.notifications.length).toEqual(2) // double-check
+          await expect(response.data.notifications.length).toEqual(4) // double-check
         })
 
         describe('if a resource gets deleted', () => {
@@ -262,6 +368,8 @@ describe('given some notifications', () => {
     const markAsReadMutation = gql`
       mutation($id: ID!) {
         markAsRead(id: $id) {
+          createdAt
+          read
           from {
             __typename
             ... on Post {
@@ -271,8 +379,6 @@ describe('given some notifications', () => {
               content
             }
           }
-          read
-          createdAt
         }
       }
     `

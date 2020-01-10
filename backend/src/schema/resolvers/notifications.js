@@ -1,6 +1,6 @@
 import log from './helpers/databaseLogger'
 
-const resourceTypes = ['Post', 'Comment']
+const resourceTypes = ['Post', 'Comment', 'Report']
 
 const transformReturnType = record => {
   return {
@@ -81,7 +81,7 @@ export default {
       const writeTxResultPromise = session.writeTransaction(async transaction => {
         const markNotificationAsReadTransactionResponse = await transaction.run(
           ` 
-            MATCH (resource {id: $resourceId})-[notification:NOTIFIED {read: FALSE}]->(user:User {id:$id})
+            MATCH (resource {id: $resourceId})-[notification:NOTIFIED {read: FALSE}]->(user:User {id: $id})
             SET notification.read = TRUE
             RETURN resource, notification, user
           `,

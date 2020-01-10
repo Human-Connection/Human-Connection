@@ -49,4 +49,18 @@ module.exports = {
       closed: { type: 'boolean', default: false },
     },
   },
+  notified: {
+    type: 'relationship',
+    relationship: 'NOTIFIED',
+    target: 'User',
+    direction: 'out',
+    properties: {
+      read: { type: 'boolean', default: false },
+      reason: {
+        type: 'string',
+        valid: ['filed_report_on_resource'],
+      },
+      createdAt: { type: 'string', isoDate: true, default: () => new Date().toISOString() },
+    },
+  },
 }
