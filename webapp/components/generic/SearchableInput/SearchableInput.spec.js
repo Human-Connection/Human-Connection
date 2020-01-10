@@ -45,14 +45,16 @@ describe('SearchableInput.vue', () => {
         expect(wrapper.find('.is-open').exists()).toBe(true)
       })
 
-      it('opens the select dropdown and blurs after focused on', () => {
+      it('opens the select dropdown and blurs after focused on', async () => {
         select.trigger('blur')
+        await Vue.nextTick()
         expect(wrapper.find('.is-open').exists()).toBe(false)
       })
 
-      it('is clearable', () => {
+      it('is clearable', async () => {
         select.trigger('input')
         select.trigger('keyup.esc')
+        await Vue.nextTick()
         expect(wrapper.find('.is-open').exists()).toBe(false)
       })
 
@@ -88,11 +90,10 @@ describe('SearchableInput.vue', () => {
           select.trigger('input')
           const post = wrapper.find('.search-post')
           post.trigger('click')
-          await Vue.nextTick().then(() => {
-            expect(mocks.$router.push).toHaveBeenCalledWith({
-              name: 'post-id-slug',
-              params: { id: 'post-by-jenny', slug: 'user-post-by-jenny' },
-            })
+          await Vue.nextTick()
+          expect(mocks.$router.push).toHaveBeenCalledWith({
+            name: 'post-id-slug',
+            params: { id: 'post-by-jenny', slug: 'user-post-by-jenny' },
           })
         })
 
@@ -102,11 +103,10 @@ describe('SearchableInput.vue', () => {
           const users = wrapper.findAll('.userinfo')
           const bob = users.filter(item => item.text() === '@bob-der-baumeister')
           bob.trigger('click')
-          await Vue.nextTick().then(() => {
-            expect(mocks.$router.push).toHaveBeenCalledWith({
-              name: 'profile-id-slug',
-              params: { id: 'u2', slug: 'bob-der-baumeister' },
-            })
+          await Vue.nextTick()
+          expect(mocks.$router.push).toHaveBeenCalledWith({
+            name: 'profile-id-slug',
+            params: { id: 'u2', slug: 'bob-der-baumeister' },
           })
         })
       })

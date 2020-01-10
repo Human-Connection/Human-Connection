@@ -62,14 +62,6 @@ export default {
       showCropper: false,
     }
   },
-  watch: {
-    error() {
-      const that = this
-      setTimeout(function() {
-        that.error = false
-      }, 2000)
-    },
-  },
   methods: {
     template() {
       return `<div class="dz-preview dz-file-preview">
@@ -82,6 +74,9 @@ export default {
     verror(file, message) {
       this.error = true
       this.$toast.error(file.status, message)
+      setTimeout(() => {
+        this.error = false
+      }, 2000)
     },
     transformImage(file) {
       this.file = file
