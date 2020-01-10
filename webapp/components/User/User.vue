@@ -6,14 +6,15 @@
     </div>
   </div>
   <dropdown v-else :class="{ 'disabled-content': user.disabled }" placement="top-start" offset="0">
-    <template slot="default" slot-scope="{ openMenu, closeMenu, isOpen }">
-      <nuxt-link :to="userLink" :class="['user', isOpen && 'active']">
+    <template #default="{ openMenu, closeMenu, isOpen }">
+      <nuxt-link
+        :to="userLink"
+        :class="['user', isOpen && 'active']"
+        @mouseover.native="showPopover ? openMenu(true) : () => {}"
+        @mouseleave.native="closeMenu(true)"
+      >
         <user-avatar v-if="showAvatar" :user="user" />
-        <div
-          class="user-info"
-          @mouseover="showPopover ? openMenu(true) : () => {}"
-          @mouseleave="closeMenu(true)"
-        >
+        <div class="user-info">
           <ds-text>
             <b>{{ userSlug }}</b>
           </ds-text>
@@ -30,7 +31,7 @@
         </div>
       </nuxt-link>
     </template>
-    <template slot="popover" v-if="showPopover">
+    <template #popover v-if="showPopover">
       <div style="min-width: 250px">
         <hc-badges v-if="user.badges && user.badges.length" :badges="user.badges" />
         <ds-text
