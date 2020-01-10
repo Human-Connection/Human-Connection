@@ -1,11 +1,11 @@
 import { storiesOf } from '@storybook/vue'
 import { withA11y } from '@storybook/addon-a11y'
-import SearchField from './SearchField.vue'
+import SearchableInput from './SearchableInput.vue'
 import helpers from '~/storybook/helpers'
 
 helpers.init()
 
-export const results = [
+export const searchResults = [
   {
     id: 'post-by-jenny',
     __typename: 'Post',
@@ -104,14 +104,12 @@ storiesOf('Search Field', module)
   .addDecorator(withA11y)
   .addDecorator(helpers.layout)
   .add('test', () => ({
-    components: { SearchField },
+    components: { SearchableInput },
     store: helpers.store,
     data: () => ({
-      results: results,
+      searchResults,
     }),
     template: `
-      <search-field
-        :searchResults="results"
-      />
+      <searchable-input :options="searchResults" />
     `,
   }))

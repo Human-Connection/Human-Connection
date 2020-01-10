@@ -2,7 +2,7 @@ import { config, mount } from '@vue/test-utils'
 import Vuex from 'vuex'
 import SearchField from './SearchField.vue'
 import SearchableInput from '~/components/generic/SearchableInput/SearchableInput'
-import { results as searchResults } from './SearchField.story'
+import { searchResults } from '~/components/generic/SearchableInput/SearchableInput.story'
 const localVue = global.localVue
 
 localVue.filter('truncate', () => 'truncated string')

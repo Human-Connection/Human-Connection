@@ -2,7 +2,7 @@ import { config, mount } from '@vue/test-utils'
 import Vuex from 'vuex'
 import Vue from 'vue'
 import SearchableInput from './SearchableInput'
-import { results } from '~/components/features/SearchField/SearchField.story'
+import { searchResults } from '~/components/generic/SearchableInput/SearchableInput.story'
 
 const localVue = global.localVue
 
@@ -77,7 +77,7 @@ describe('SearchableInput.vue', () => {
 
       describe('navigating to resource', () => {
         beforeEach(() => {
-          propsData = { options: results }
+          propsData = { options: searchResults }
           wrapper = Wrapper()
           select = wrapper.find('.ds-select')
           select.trigger('focus')

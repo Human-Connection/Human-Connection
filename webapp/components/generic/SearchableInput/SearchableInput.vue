@@ -185,7 +185,6 @@ export default {
     display: flex;
     flex-wrap: wrap;
   }
-  &,
   .ds-select-dropdown {
     transition: box-shadow 100ms;
     max-height: 70vh;
