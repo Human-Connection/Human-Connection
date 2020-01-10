@@ -515,7 +515,11 @@
     "search": {
         "placeholder": "Suchen",
         "hint": "Wonach suchst Du?",
-        "failed": "Nichts gefunden"
+        "failed": "Nichts gefunden",
+        "heading": {
+          "Post": "Beiträge",
+          "User": "Benutzer"
+        }
     },
     "components": {
         "password-reset": {

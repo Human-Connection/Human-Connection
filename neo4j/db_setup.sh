@@ -2,7 +2,6 @@
 
 ENV_FILE=$(dirname "$0")/.env
 [[ -f "$ENV_FILE" ]] && source "$ENV_FILE"
-
 if [ -z "$NEO4J_USERNAME" ] || [ -z "$NEO4J_PASSWORD" ]; then
   echo "Please set NEO4J_USERNAME and NEO4J_PASSWORD environment variables."
   echo "Setting up database constraints and indexes will probably fail because of authentication errors."
@@ -21,7 +20,8 @@ CALL db.indexes();
 ' | cypher-shell
 
 echo '
-CALL db.index.fulltext.createNodeIndex("full_text_search",["Post"],["title", "content"]);
+CALL db.index.fulltext.createNodeIndex("post_fulltext_search",["Post"],["title", "content"]);
+CALL db.index.fulltext.createNodeIndex("user_fulltext_search",["User"],["name", "slug"]);
 CREATE CONSTRAINT ON (p:Post)          ASSERT p.id IS UNIQUE;
 CREATE CONSTRAINT ON (c:Comment)       ASSERT c.id IS UNIQUE;
 CREATE CONSTRAINT ON (c:Category)      ASSERT c.id IS UNIQUE;
