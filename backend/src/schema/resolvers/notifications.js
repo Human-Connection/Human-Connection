@@ -24,10 +24,10 @@ export default {
 
       switch (args.read) {
         case true:
-          whereClause = 'WHERE notification.read = TRUE'
+          whereClause = 'AND notification.read = TRUE'
           break
         case false:
-          whereClause = 'WHERE notification.read = FALSE'
+          whereClause = 'AND notification.read = FALSE'
           break
         default:
           whereClause = ''
@@ -48,17 +48,18 @@ export default {
       const readTxResultPromise = session.readTransaction(async transaction => {
         const notificationsTransactionResponse = await transaction.run(
           ` 
-          MATCH (resource {deleted: false, disabled: false})-[notification:NOTIFIED]->(user:User {id:$id})
-          WHERE (labels(resource)[0] in [Post, Comment] AND NOT resource.deleted AND NOT resource.disabled) OR labels(resource)[0] in [Report]
-          ${whereClause}
-          WITH user, notification, resource,
-          [(resource)<-[:WROTE]-(author:User) | author {.*}] as authors,
-          [(resource)-[:COMMENTS]->(post:Post)<-[:WROTE]-(author:User) | post{.*, author: properties(author)} ] as posts
-          WITH resource, user, notification, authors, posts,
-          resource {.*, __typename: labels(resource)[0], author: authors[0], post: posts[0]} as finalResource
-          RETURN notification {.*, from: finalResource, to: properties(user)}
-          ${orderByClause}
-          ${offset} ${limit}
+            MATCH (resource)-[notification:NOTIFIED]->(user:User {id:$id})
+            WHERE ((labels(resource)[0] in ["Post", "Comment"] AND NOT resource.deleted AND NOT resource.disabled) OR labels(resource)[0] in ["Report"])
+              ${whereClause}
+            WITH user, notification, resource,
+            [(resource)<-[:WROTE]-(author:User) | author {.*}] as authors,
+            [(resource)-[:COMMENTS]->(post:Post)<-[:WROTE]-(author:User) | post {.*, author: properties(author)} ] as posts,
+            [(reportedResource)<-[:BELONGS_TO]-(resource)<-[file:FILED]-(user) | file {.*, reportedResource: apoc.map.merge(properties(reportedResource), {__typename: labels(reportedResource)[0]})} ] as files
+            WITH resource, user, notification, authors, posts, files,
+            resource {.*, __typename: labels(resource)[0], author: authors[0], post: posts[0], filed: files} as finalResource
+            RETURN notification {.*, from: finalResource, to: properties(user)}
+            ${orderByClause}
+            ${offset} ${limit}
           `,
           { id: currentUser.id },
         )

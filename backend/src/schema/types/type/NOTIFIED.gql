@@ -1,11 +1,11 @@
 type NOTIFIED {
   id: ID!
-  from: NotificationSource
-  to: User
   createdAt: String!
   updatedAt: String!
-  read: Boolean
-  reason: NotificationReason
+  read: Boolean!
+  reason: NotificationReason!
+  from: NotificationSource!
+  to: User!
 }
 
 union NotificationSource = Post | Comment | Report

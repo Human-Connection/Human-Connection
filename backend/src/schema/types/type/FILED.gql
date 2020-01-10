@@ -3,6 +3,7 @@ type FILED {
   reasonCategory: ReasonCategory!
   reasonDescription: String!
   submitter: User
+  reportedResource: ReportedResource
 }
 
 # this list equals the strings of an array in file "webapp/constants/modals.js"
