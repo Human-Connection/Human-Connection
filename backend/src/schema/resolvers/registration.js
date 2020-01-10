@@ -5,6 +5,7 @@ import encryptPassword from '../../helpers/encryptPassword'
 import generateNonce from './helpers/generateNonce'
 import existingEmailAddress from './helpers/existingEmailAddress'
 import normalizeEmail from './helpers/normalizeEmail'
+import createOrUpdateLocations from './users/location'
 
 const neode = getNeode()
 
@@ -22,7 +23,9 @@ export default {
         throw new UserInputError(e.message)
       }
     },
-    SignupVerification: async (_parent, args) => {
+    SignupVerification: async (_parent, args, context) => {
+      const { driver } = context
+      const session = driver.session()
       const { termsAndConditionsAgreedVersion } = args
       const regEx = new RegExp(/^[0-9]+\.[0-9]+\.[0-9]+$/g)
       if (!regEx.test(termsAndConditionsAgreedVersion)) {
@@ -51,11 +54,14 @@ export default {
           emailAddress.relateTo(user, 'belongsTo'),
           emailAddress.update({ verifiedAt: new Date().toISOString() }),
         ])
+        await createOrUpdateLocations(args.id, args.locationName, session)
         return user.toJson()
       } catch (e) {
         if (e.code === 'Neo.ClientError.Schema.ConstraintValidationFailed')
           throw new UserInputError('User with this slug already exists!')
         throw new UserInputError(e.message)
+      } finally {
+        session.close()
       }
     },
   },

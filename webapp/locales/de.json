@@ -451,7 +451,8 @@
         "filterFollow": "Beiträge filtern von Usern denen ich folge",
         "filterALL": "Alle Beiträge anzeigen",
         "success": "Gespeichert!",
-        "languageSelectLabel": "Sprache",
+        "languageSelectLabel": "Sprache deines Beitrags",
+        "languageSelectText": "Sprache wählen",
         "categories": {
             "infoSelectedNoOfMaxCategories": "{chosen} von {max} Kategorien ausgewählt"
         },
@@ -484,8 +485,9 @@
         },
         "teaserImage": {
             "cropperConfirm": "Bestätigen"
-        },
-        "languageSelectText": "Sprache wählen"
+        },        
+        "inappropriatePicture" : "Dieses Bild kann für einige Menschen unangemessen sein.",
+        "inappropriatePictureText" : "Wann soll ein Foto versteckt werden"
     },
     "comment": {
         "edit": "Kommentar bearbeiten",
@@ -546,7 +548,7 @@
                 "unavailable": "Leider ist die öffentliche Registrierung von Benutzerkonten auf diesem Server derzeit nicht möglich.",
                 "title": "Mach mit bei Human Connection!",
                 "form": {
-                    "description": "Um loszulegen, gib deine E-Mail Adresse ein:",
+                    "description": "Um loszulegen, kannst du dich hier kostenfrei registrieren:",
                     "terms-and-condition": "Ich stimme den <a href=\"\/terms-and-conditions\"><ds-text bold color=\"primary\" > Nutzungsbedingungen<\/ds-text><\/a>zu.",
                     "data-privacy": "Ich habe die  <a href=\"https:\/\/human-connection.org\/datenschutz\/\" target=\"_blank\"><ds-text bold color=\"primary\" >Datenschutzerklärung<\/ds-text><\/a> gelesen und verstanden",
                     "minimum-age": "Ich bin 18 Jahre oder älter.",
