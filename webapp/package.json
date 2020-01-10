@@ -76,7 +76,7 @@
     "jsonwebtoken": "~8.5.1",
     "linkify-it": "~2.2.0",
     "node-fetch": "^2.6.0",
-    "nuxt": "~2.10.2",
+    "nuxt": "~2.11.0",
     "nuxt-dropzone": "^1.0.4",
     "nuxt-env": "~0.1.0",
     "stack-utils": "^2.0.1",
