@@ -86,9 +86,9 @@ describe('notifications', () => {
   const notificationQuery = gql`
     query($read: Boolean) {
       notifications(read: $read, orderBy: updatedAt_desc) {
+        createdAt
         read
         reason
-        createdAt
         from {
           __typename
           ... on Post {
@@ -98,6 +98,28 @@ describe('notifications', () => {
           ... on Comment {
             id
             content
+          }
+          ... on Report {
+            id
+            filed {
+              reasonCategory
+              reasonDescription
+              reportedResource {
+                __typename
+                ... on Post {
+                  id
+                  content
+                }
+                ... on Comment {
+                  id
+                  content
+                }
+                ... on User {
+                  id
+                  name
+                }
+              }
+            }
           }
         }
       }
@@ -554,9 +576,10 @@ describe('notifications', () => {
 
     describe('given me filing a report of a', () => {
       let resourceId
-      let reasonCategory
-      let reasonDescription
+      const reasonCategory = 'discrimination_etc'
+      const reasonDescription = 'I am free to be gay !!!'
       let reportFiler
+      let reportedUserOrAuthorData
       const fileReportAction = async () => {
         authenticatedUser = await reportFiler.toJson()
         await mutate({
@@ -569,58 +592,52 @@ describe('notifications', () => {
         })
         authenticatedUser = await notifiedUser.toJson()
       }
+      const setExpectedNotificationOfReportedResource = (reportedResource) => {
+        return expect.objectContaining({
+          data: {
+            notifications: [
+              {
+                createdAt: expect.any(String),
+                read: false,
+                reason: 'filed_report_on_resource',
+                from: {
+                  __typename: 'Report',
+                  id: expect.any(String),
+                  filed: [
+                    {
+                      reasonCategory: 'discrimination_etc',
+                      reasonDescription: 'I am free to be gay !!!',
+                      reportedResource
+                    }
+                  ],
+                },
+              },
+            ],
+          },
+        })
+      }
+
+      beforeEach(async () => {
+        reportFiler = notifiedUser
+        reportedUserOrAuthorData = {
+          id: 'reportedUser',
+          name: 'Mrs Badman',
+          slug: 'mrs-badman',
+          email: 'reported-user@example.org',
+          password: '1234',
+        }
+      })
 
       describe('user', () => {
-      })
-
-      describe('post', () => {
-      })
-
-      describe('comment', () => {
-        beforeEach(async () => {
-          title = 'My post'
-          postContent = 'My post content.'
-          postAuthor = await neode.create('User', {
-            id: 'postAuthor',
-            name: 'Mrs Post',
-            slug: 'mrs-post',
-            email: 'post-author@example.org',
-            password: '1234',
-          })
-
-          commentContent = 'Commenters comment.'
-          commentAuthor = await neode.create('User', {
-            id: 'commentAuthor',
-            name: 'Mrs Comment',
-            slug: 'mrs-comment',
-            email: 'commentauthor@example.org',
-            password: '1234',
-          })
-        })
-
-        it.only('sends me a notification', async () => {
-          await createCommentOnPostAction()
-          resourceId = 'c47'
-          reasonCategory = 'discrimination_etc'
-          reasonDescription = 'I am free to be gay !!!'
-          reportFiler = notifiedUser
+        it('sends me a notification for filing a report on a user', async () => {
+          await neode.create('User', reportedUserOrAuthorData)
+          resourceId = 'reportedUser'
           await fileReportAction()
           
-          const expected = expect.objectContaining({
-            data: {
-              notifications: [
-                {
-                  read: false,
-                  createdAt: expect.any(String),
-                  reason: 'filed_report_on_resource',
-                  from: {
-                    __typename: 'Comment',
-                    id: 'c47',
-                    content: commentContent,
-                  },
-                },
-              ],
-            },
+          const expected = setExpectedNotificationOfReportedResource({
+            __typename: 'User',
+            id: 'reportedUser',
+            name: 'Mrs Badman',
           })
           const { query } = createTestClient(server)
           await expect(
@@ -631,6 +648,71 @@ describe('notifications', () => {
               },
             }),
           ).resolves.toEqual(expected)
+        })
+      })
+
+      describe('post and comment', () => {
+        beforeEach(async () => {
+          title = 'My post'
+          postContent = 'My post content.'
+          postAuthor = await neode.create('User', reportedUserOrAuthorData)
+        })
+
+        describe('post', () => {
+          it('sends me a notification for filing a report on a post', async () => {
+            await createPostAction()
+            resourceId = 'p47'
+            await fileReportAction()
+            
+            const expected = setExpectedNotificationOfReportedResource({
+              __typename: 'Post',
+              id: 'p47',
+              content: postContent,
+            })
+            const { query } = createTestClient(server)
+            await expect(
+              query({
+                query: notificationQuery,
+                variables: {
+                  read: false,
+                },
+              }),
+            ).resolves.toEqual(expected)
+          })
+        })
+
+        describe('comment', () => {
+          beforeEach(async () => {
+            commentContent = 'Commenters comment.'
+            commentAuthor = await neode.create('User', {
+              id: 'commentAuthor',
+              name: 'Mrs Comment',
+              slug: 'mrs-comment',
+              email: 'commentauthor@example.org',
+              password: '1234',
+            })
+          })
+
+          it('sends me a notification for filing a report on a comment', async () => {
+            await createCommentOnPostAction()
+            resourceId = 'c47'
+            await fileReportAction()
+            
+            const expected = setExpectedNotificationOfReportedResource({
+              __typename: 'Comment',
+              id: 'c47',
+              content: commentContent,
+            })
+            const { query } = createTestClient(server)
+            await expect(
+              query({
+                query: notificationQuery,
+                variables: {
+                  read: false,
+                },
+              }),
+            ).resolves.toEqual(expected)
+          })
         })
       })
     })
