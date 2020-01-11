@@ -76,7 +76,7 @@
     "jsonwebtoken": "~8.5.1",
     "linkify-it": "~2.2.0",
     "node-fetch": "^2.6.0",
-    "nuxt": "~2.10.2",
+    "nuxt": "~2.11.0",
     "nuxt-dropzone": "^1.0.4",
     "nuxt-env": "~0.1.0",
     "stack-utils": "^2.0.1",
@@ -143,6 +143,6 @@
     "vue-jest": "~3.0.5",
     "vue-loader": "~15.8.3",
     "vue-svg-loader": "~0.15.0",
-    "vue-template-compiler": "^2.6.10"
+    "vue-template-compiler": "^2.6.11"
   }
 }
