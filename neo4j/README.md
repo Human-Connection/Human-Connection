@@ -18,15 +18,6 @@ docker-compose up
 You can access Neo4J through [http://localhost:7474/](http://localhost:7474/)
 for an interactive cypher shell and a visualization of the graph.
 
-### Database Indices and Constraints
-
-Database indices and constraints need to be created when the database is
-running. So start the container with the command above and run:
-
-```bash
-docker-compose exec neo4j db_setup
-```
-
 
 ## Installation without Docker
 

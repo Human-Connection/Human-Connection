@@ -11,7 +11,9 @@
     "lint": "eslint src --config .eslintrc.js",
     "test": "jest --forceExit --detectOpenHandles --runInBand",
     "db:reset": "babel-node src/seed/reset-db.js",
-    "db:seed": "babel-node src/seed/seed-db.js"
+    "db:seed": "babel-node src/seed/seed-db.js",
+    "db:setup": "babel-node src/migration/setup.js",
+    "db:migrate": "babel-node src/migration/migrate.js"
   },
   "author": "Human Connection gGmbH",
   "license": "MIT",

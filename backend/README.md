@@ -53,6 +53,27 @@ can issue GraphQL requests or access GraphQL Playground in the browser.
 
 ![GraphQL Playground](../.gitbook/assets/graphql-playground.png)
 
+### Database Indices and Constraints
+
+Database indices and constraints need to be created when the database and the
+backend is running:
+
+{% tabs %}
+{% tab title="Docker" %}
+```bash
+docker-compose exec backend yarn run db:setup
+```
+{% endtab %}
+
+{% tab title="Without Docker" %}
+```bash
+# in folder backend/
+# make sure your database is running on http://localhost:7474/browser/
+yarn run db:setup
+```
+{% endtab %}
+{% endtabs %}
+
 
 #### Seed Database
 
