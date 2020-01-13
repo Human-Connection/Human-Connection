@@ -1,33 +1,10 @@
 import uuid from 'uuid/v4'
 import { neo4jgraphql } from 'neo4j-graphql-js'
+import { isEmpty } from 'lodash'
 import fileUpload from './fileUpload'
-import { getBlockedUsers, getBlockedByUsers } from './users.js'
-import { mergeWith, isArray, isEmpty } from 'lodash'
 import { UserInputError } from 'apollo-server'
 import Resolver from './helpers/Resolver'
-
-const filterForBlockedUsers = async (params, context) => {
-  if (!context.user) return params
-  const [blockedUsers, blockedByUsers] = await Promise.all([
-    getBlockedUsers(context),
-    getBlockedByUsers(context),
-  ])
-  const badIds = [...blockedByUsers.map(b => b.id), ...blockedUsers.map(b => b.id)]
-  if (!badIds.length) return params
-
-  params.filter = mergeWith(
-    params.filter,
-    {
-      author_not: { id_in: badIds },
-    },
-    (objValue, srcValue) => {
-      if (isArray(objValue)) {
-        return objValue.concat(srcValue)
-      }
-    },
-  )
-  return params
-}
+import { filterForBlockedUsers } from './helpers/filterForBlockedUsers'
 
 const maintainPinnedPosts = params => {
   const pinnedPostFilter = { pinned: true }

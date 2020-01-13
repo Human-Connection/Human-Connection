@@ -199,7 +199,11 @@
   "search": {
     "placeholder": "Search",
     "hint": "What are you searching for?",
-    "failed": "Nothing found"
+    "failed": "Nothing found",
+    "heading": {
+      "Post": "Posts",
+      "User": "Users"
+    }
   },
   "settings": {
     "name": "Settings",
