@@ -1,6 +1,6 @@
 import { storiesOf } from '@storybook/vue'
 import { withA11y } from '@storybook/addon-a11y'
-import User from '~/components/User/User.vue'
+import UserTeaser from '~/components/UserTeaser/UserTeaser.vue'
 import helpers from '~/storybook/helpers'
 
 helpers.init()
@@ -53,25 +53,25 @@ export const user = {
   socialMedia: [],
 }
 
-storiesOf('User', module)
+storiesOf('UserTeaser', module)
   .addDecorator(withA11y)
   .addDecorator(helpers.layout)
   .add('available', () => ({
-    components: { User },
+    components: { UserTeaser },
     store: helpers.store,
     data: () => ({
       user,
     }),
-    template: '<user :user="user" :trunc="35" :date-time="new Date()" />',
+    template: '<user-teaser :user="user" :trunc="35" :date-time="new Date()" />',
   }))
   .add('has edited something', () => ({
-    components: { User },
+    components: { UserTeaser },
     store: helpers.store,
     data: () => ({
       user,
     }),
     template: `
-    <user :user="user" :trunc="35" :date-time="new Date()">
+    <user-teaser :user="user" :trunc="35" :date-time="new Date()">
       <template v-slot:dateTime>
         - HEY! I'm edited
       </template>
@@ -79,10 +79,10 @@ storiesOf('User', module)
     `,
   }))
   .add('anonymous', () => ({
-    components: { User },
+    components: { UserTeaser },
     store: helpers.store,
     data: () => ({
       user: null,
     }),
-    template: '<user :user="user" :trunc="35" :date-time="new Date()" />',
+    template: '<user-teaser :user="user" :trunc="35" :date-time="new Date()" />',
   }))

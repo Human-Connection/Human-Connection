@@ -12,13 +12,13 @@
   <div v-else :class="{ comment: true, 'disabled-content': comment.deleted || comment.disabled }">
     <ds-card :id="anchor" :class="{ 'comment--target': isTarget }">
       <ds-space margin-bottom="small" margin-top="small">
-        <hc-user :user="author" :date-time="comment.createdAt">
+        <user-teaser :user="author" :date-time="comment.createdAt">
           <template v-slot:dateTime>
             <ds-text v-if="comment.createdAt !== comment.updatedAt">
               ({{ $t('comment.edited') }})
             </ds-text>
           </template>
-        </hc-user>
+        </user-teaser>
         <client-only>
           <content-menu
             v-show="!openEditCommentMenu"
@@ -61,7 +61,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { COMMENT_MAX_UNTRUNCATED_LENGTH, COMMENT_TRUNCATE_TO_LENGTH } from '~/constants/comment'
-import HcUser from '~/components/User/User'
+import UserTeaser from '~/components/UserTeaser/UserTeaser'
 import ContentMenu from '~/components/ContentMenu/ContentMenu'
 import ContentViewer from '~/components/Editor/ContentViewer'
 import HcCommentForm from '~/components/CommentForm/CommentForm'
@@ -82,7 +82,7 @@ export default {
     }
   },
   components: {
-    HcUser,
+    UserTeaser,
     ContentMenu,
     ContentViewer,
     HcCommentForm,

@@ -11,9 +11,9 @@
           style="position: relative; height: auto;"
         >
           <hc-upload v-if="myProfile" :user="user">
-            <user-avatar :user="user" class="profile-avatar" size="x-large"></user-avatar>
+            <user-avatar :user="user" class="profile-avatar" size="large"></user-avatar>
           </hc-upload>
-          <user-avatar v-else :user="user" class="profile-avatar" size="x-large" />
+          <user-avatar v-else :user="user" class="profile-avatar" size="large" />
           <!-- Menu -->
           <client-only>
             <content-menu
@@ -99,7 +99,7 @@
             <ds-space v-for="follow in uniq(user.following)" :key="follow.id" margin="x-small">
               <!-- TODO: find better solution for rendering errors -->
               <client-only>
-                <user :user="follow" :trunc="15" />
+                <user-teaser :user="follow" :trunc="15" />
               </client-only>
             </ds-space>
             <ds-space v-if="user.followingCount - user.following.length" margin="small">
@@ -129,7 +129,7 @@
             <ds-space v-for="follow in uniq(user.followedBy)" :key="follow.id" margin="x-small">
               <!-- TODO: find better solution for rendering errors -->
               <client-only>
-                <user :user="follow" :trunc="15" />
+                <user-teaser :user="follow" :trunc="15" />
               </client-only>
             </ds-space>
             <ds-space v-if="user.followedByCount - user.followedBy.length" margin="small">
@@ -271,7 +271,7 @@
 
 <script>
 import uniqBy from 'lodash/uniqBy'
-import User from '~/components/User/User'
+import UserTeaser from '~/components/UserTeaser/UserTeaser'
 import HcPostCard from '~/components/PostCard/PostCard.vue'
 import HcFollowButton from '~/components/FollowButton.vue'
 import HcCountTo from '~/components/CountTo.vue'
@@ -297,9 +297,8 @@ const tabToFilterMapping = ({ tab, id }) => {
 }
 
 export default {
-  name: 'HcUserProfile',
   components: {
-    User,
+    UserTeaser,
     HcPostCard,
     HcFollowButton,
     HcCountTo,
@@ -516,7 +515,6 @@ export default {
   }
 }
 .profile-avatar.user-avatar {
-  display: block;
   margin: auto;
   margin-top: -60px;
 }

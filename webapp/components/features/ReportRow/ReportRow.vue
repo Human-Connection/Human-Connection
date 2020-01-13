@@ -19,7 +19,12 @@
       <!-- Content Column -->
       <td class="ds-table-col" data-test="report-content">
         <client-only v-if="isUser">
-          <hc-user :user="report.resource" :showAvatar="false" :trunc="30" :showPopover="false" />
+          <user-teaser
+            :user="report.resource"
+            :showAvatar="false"
+            :trunc="30"
+            :showPopover="false"
+          />
         </client-only>
         <nuxt-link v-else class="title" :to="linkTarget">
           {{ linkText | truncate(50) }}
@@ -29,7 +34,7 @@
       <!-- Author Column -->
       <td class="ds-table-col" data-test="report-author">
         <client-only v-if="!isUser">
-          <hc-user
+          <user-teaser
             :user="report.resource.author"
             :showAvatar="false"
             :trunc="30"
@@ -46,7 +51,7 @@
           {{ statusText }}
         </span>
         <client-only v-if="isReviewed">
-          <hc-user
+          <user-teaser
             :user="moderatorOfLatestReview"
             :showAvatar="false"
             :trunc="30"
@@ -85,12 +90,12 @@
 
 <script>
 import FiledReportsTable from '~/components/features/FiledReportsTable/FiledReportsTable'
-import HcUser from '~/components/User/User'
+import UserTeaser from '~/components/UserTeaser/UserTeaser'
 
 export default {
   components: {
     FiledReportsTable,
-    HcUser,
+    UserTeaser,
   },
   props: {
     report: {

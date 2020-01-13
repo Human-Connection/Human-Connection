@@ -1,26 +1,22 @@
 <template>
-  <div class="user" v-if="displayAnonymous">
+  <div class="user-teaser" v-if="displayAnonymous">
     <user-avatar v-if="showAvatar" />
-    <div>
-      <b class="username">{{ $t('profile.userAnonym') }}</b>
-    </div>
+    <span class="username">{{ $t('profile.userAnonym') }}</span>
   </div>
   <dropdown v-else :class="{ 'disabled-content': user.disabled }" placement="top-start" offset="0">
     <template #default="{ openMenu, closeMenu, isOpen }">
       <nuxt-link
         :to="userLink"
-        :class="['user', isOpen && 'active']"
+        :class="['user-teaser', isOpen && 'active']"
         @mouseover.native="showPopover ? openMenu(true) : () => {}"
         @mouseleave.native="closeMenu(true)"
       >
-        <user-avatar v-if="showAvatar" :user="user" />
+        <user-avatar v-if="showAvatar" :user="user" size="small" />
         <div class="user-info">
-          <ds-text>
-            <b>{{ userSlug }}</b>
-          </ds-text>
-          <ds-text class="username" align="left" size="small" color="soft">
-            {{ userName | truncate(18) }}
-          </ds-text>
+          <span class="user-slug">
+            {{ userSlug }}
+            <span class="username">{{ userName | truncate(18) }}</span>
+          </span>
           <ds-text class="date-time" align="left" size="small" color="soft">
             <template v-if="dateTime">
               <base-icon name="clock" />
@@ -82,7 +78,6 @@
             />
           </ds-flex-item>
         </ds-flex>
-        <!--<ds-space margin-bottom="x-small" />-->
       </div>
     </template>
   </dropdown>
@@ -98,7 +93,7 @@ import UserAvatar from '~/components/_new/generic/UserAvatar/UserAvatar'
 import Dropdown from '~/components/Dropdown'
 
 export default {
-  name: 'HcUser',
+  name: 'UserTeaser',
   components: {
     HcRelativeDateTime,
     HcFollowButton,
@@ -152,31 +147,31 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
-.user {
+<style lang="scss">
+.user-teaser {
   display: flex;
   flex-wrap: nowrap;
-}
+  z-index: $z-index-hc-post-card-link;
+  position: relative;
 
-.user-info {
-  display: flex;
-  flex-direction: column;
-
-  > .ds-text {
+  > .user-info {
     display: flex;
-    margin: 0 0 $space-xxx-small $space-xx-small;
-  }
+    flex-direction: column;
 
-  &:hover,
-  &.active {
-    z-index: 999;
-  }
-}
+    > .ds-text {
+      display: flex;
+      margin: 0 0 $space-xxx-small $space-xx-small;
+    }
 
-.date-time {
-  > .base-icon {
-    align-self: center;
-    margin: $space-xxx-small $space-xxx-small 0 0;
+    > .user-slug {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      margin: 0 0 $space-xxx-small $space-xx-small;
+    }
+  }
+  .username {
+    color: $text-color-soft;
+    font-size: $font-size-small;
   }
 }
 </style>

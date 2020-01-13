@@ -38,7 +38,7 @@
 
         <ds-space />
         <client-only>
-          <hc-user :user="currentUser" :trunc="35" />
+          <user-teaser :user="currentUser" :trunc="35" />
         </client-only>
         <ds-space />
         <ds-input
@@ -122,14 +122,14 @@ import locales from '~/locales'
 import PostMutations from '~/graphql/PostMutations.js'
 import HcCategoriesSelect from '~/components/CategoriesSelect/CategoriesSelect'
 import HcTeaserImage from '~/components/TeaserImage/TeaserImage'
-import HcUser from '~/components/User/User'
+import UserTeaser from '~/components/UserTeaser/UserTeaser'
 
 export default {
   components: {
     HcEditor,
     HcCategoriesSelect,
     HcTeaserImage,
-    HcUser,
+    UserTeaser,
   },
   props: {
     contribution: { type: Object, default: () => {} },

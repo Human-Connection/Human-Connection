@@ -1,16 +1,8 @@
 <template>
-  <div :class="[`size-${this.size}`, 'user-avatar']">
-    <span v-if="!hasImage || error" class="no-image">
-      <span class="flex-item">
-        <template v-if="isAnonymous">
-          <base-icon name="eye-slash" />
-        </template>
-        <template v-else>
-          {{ userInitials }}
-        </template>
-      </span>
-    </span>
-    <img v-if="user && user.avatar && !error" :src="user.avatar | proxyApiUrl" @error="onError" />
+  <div :class="[`--${this.size}`, 'user-avatar', { 'no-image': !hasImage || error }]">
+    <img v-if="hasImage && !error" :src="user.avatar | proxyApiUrl" @error="onError" />
+    <base-icon name="eye-slash" v-else-if="isAnonymous" />
+    <span v-else>{{ userInitials }}</span>
   </div>
 </template>
 
@@ -22,7 +14,7 @@ export default {
       type: String,
       default: 'base',
       validator: value => {
-        return value.match(/(small|base|large|x-large)/)
+        return value.match(/(small|base|large)/)
       },
     },
     user: { type: Object, default: null },
@@ -37,7 +29,7 @@ export default {
       return !this.user || !this.user.name || this.user.name.toLowerCase() === 'anonymous'
     },
     hasImage() {
-      return Boolean(this.user && this.user.avatar) && !this.error
+      return Boolean(this.user && this.user.avatar)
     },
     userInitials() {
       const { name } = this.user || 'Anonymous'
@@ -69,38 +61,28 @@ export default {
     margin-top: -0.1em;
   }
 
-  &.size-small {
+  &.--small {
     width: $size-avatar-small;
     height: $size-avatar-small;
   }
-  &.size-base {
+  &.--base {
     border-width: 1px;
     width: $size-avatar-base;
     height: $size-avatar-base;
   }
-  &.size-large {
+  &.--large {
     width: $size-avatar-large;
     height: $size-avatar-large;
+    font-size: $font-size-xx-large;
   }
-  &.size-x-large {
-    width: $size-avatar-x-large;
-    height: $size-avatar-x-large;
-  }
-  .no-image {
-    height: 100%;
+  &.no-image {
     display: flex;
     flex-wrap: wrap;
     border-radius: 50%;
+    align-items: center;
+    justify-content: center;
     background-color: $background-color-secondary;
     color: $text-color-primary-inverse;
-  }
-
-  .no-image .flex-item {
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0 auto;
-    align-self: center;
-    display: table;
   }
 }
 </style>

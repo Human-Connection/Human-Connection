@@ -3,7 +3,7 @@
     :lang="post.language"
     :image="post.image | proxyApiUrl"
     :class="{
-      'post-card': true,
+      'hc-post-card': true,
       'disabled-content': post.disabled,
       '--pinned': isPinned,
       '--blur-image': post.imageBlurred,
@@ -20,7 +20,7 @@
     <!-- Username, Image & Date of Post -->
     <div class="user-wrapper">
       <client-only>
-        <hc-user :user="post.author" :trunc="35" :date-time="post.createdAt" />
+        <user-teaser :user="post.author" :trunc="35" :date-time="post.createdAt" />
       </client-only>
       <hc-ribbon v-if="isPinned" class="ribbon--pinned" :text="$t('post.pinned')" />
       <hc-ribbon v-else :text="$t('post.name')" />
@@ -78,7 +78,7 @@
 </template>
 
 <script>
-import HcUser from '~/components/User/User'
+import UserTeaser from '~/components/UserTeaser/UserTeaser'
 import ContentMenu from '~/components/ContentMenu/ContentMenu'
 import HcCategory from '~/components/Category'
 import HcRibbon from '~/components/Ribbon'
@@ -89,7 +89,7 @@ import { postMenuModalsData, deletePostMutation } from '~/components/utils/PostH
 export default {
   name: 'HcPostCard',
   components: {
-    HcUser,
+    UserTeaser,
     HcCategory,
     HcRibbon,
     ContentMenu,
@@ -157,7 +157,7 @@ export default {
 }
 </script>
 <style lang="scss">
-.post-card {
+.hc-post-card {
   justify-content: space-between;
   position: relative;
   z-index: 1;
@@ -190,7 +190,7 @@ export default {
     margin-top: $space-large;
   }
 
-  /* workaround to avoid jumping layout when hc-user is rendered */
+  /* workaround to avoid jumping layout when user-teaser is rendered */
   .user-wrapper {
     height: 36px;
   }

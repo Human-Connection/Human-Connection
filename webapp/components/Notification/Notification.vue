@@ -2,7 +2,7 @@
   <ds-space :class="{ read: notification.read, notification: true }" margin-bottom="x-small">
     <client-only>
       <ds-space margin-bottom="x-small">
-        <hc-user :user="from.author" :date-time="from.createdAt" :trunc="35" />
+        <user-teaser :user="from.author" :date-time="from.createdAt" :trunc="35" />
       </ds-space>
       <ds-text class="reason-text-for-test" color="soft">
         {{ $t(`notifications.reason.${notification.reason}`) }}
@@ -35,12 +35,12 @@
 </template>
 
 <script>
-import HcUser from '~/components/User/User'
+import UserTeaser from '~/components/UserTeaser/UserTeaser'
 
 export default {
   name: 'Notification',
   components: {
-    HcUser,
+    UserTeaser,
   },
   props: {
     notification: {
