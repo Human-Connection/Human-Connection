@@ -100,7 +100,7 @@
     "@babel/cli": "~7.7.7",
     "@babel/core": "~7.7.7",
     "@babel/node": "~7.8.0",
-    "@babel/plugin-proposal-throw-expressions": "^7.7.4",
+    "@babel/plugin-proposal-throw-expressions": "^7.8.0",
     "@babel/preset-env": "~7.7.7",
     "@babel/register": "~7.7.0",
     "apollo-server-testing": "~2.9.16",
