@@ -1,5 +1,5 @@
 import { mount, RouterLinkStub } from '@vue/test-utils'
-import User from './User.vue'
+import UserTeaser from './UserTeaser.vue'
 import Vuex from 'vuex'
 
 const localVue = global.localVue
@@ -7,7 +7,7 @@ const filter = jest.fn(str => str)
 
 localVue.filter('truncate', filter)
 
-describe('User', () => {
+describe('UserTeaser', () => {
   let propsData
   let mocks
   let stubs
@@ -35,7 +35,7 @@ describe('User', () => {
       const store = new Vuex.Store({
         getters,
       })
-      return mount(User, { store, propsData, mocks, stubs, localVue })
+      return mount(UserTeaser, { store, propsData, mocks, stubs, localVue })
     }
 
     it('renders anonymous user', () => {

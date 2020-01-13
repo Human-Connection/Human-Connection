@@ -87,7 +87,7 @@ Then(
 );
 
 Then("I select a user entry", () => {
-  cy.get(".searchable-input .userinfo")
+  cy.get(".searchable-input .user-info")
     .first()
     .trigger("click");
 })

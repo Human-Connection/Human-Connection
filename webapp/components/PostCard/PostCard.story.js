@@ -1,6 +1,6 @@
 import { storiesOf } from '@storybook/vue'
 import { withA11y } from '@storybook/addon-a11y'
-import HcPostCard from './HcPostCard.vue'
+import HcPostCard from './PostCard.vue'
 import helpers from '~/storybook/helpers'
 
 helpers.init()
