@@ -97,7 +97,7 @@
     "xregexp": "^4.2.4"
   },
   "devDependencies": {
-    "@babel/cli": "~7.7.7",
+    "@babel/cli": "~7.8.0",
     "@babel/core": "~7.7.7",
     "@babel/node": "~7.8.0",
     "@babel/plugin-proposal-throw-expressions": "^7.8.0",
