@@ -1,30 +1,10 @@
 import uuid from 'uuid/v4'
 import { neo4jgraphql } from 'neo4j-graphql-js'
-import fileUpload from './fileUpload'
-import { getMutedUsers } from './users.js'
-import { mergeWith, isArray, isEmpty } from 'lodash'
+import { isEmpty } from 'lodash'
 import { UserInputError } from 'apollo-server'
+import fileUpload from './fileUpload'
 import Resolver from './helpers/Resolver'
-
-const filterForMutedUsers = async (params, context) => {
-  if (!context.user) return params
-  const [mutedUsers] = await Promise.all([getMutedUsers(context)])
-  const mutedUsersIds = [...mutedUsers.map(user => user.id)]
-  if (!mutedUsersIds.length) return params
-
-  params.filter = mergeWith(
-    params.filter,
-    {
-      author_not: { id_in: mutedUsersIds },
-    },
-    (objValue, srcValue) => {
-      if (isArray(objValue)) {
-        return objValue.concat(srcValue)
-      }
-    },
-  )
-  return params
-}
+import { filterForMutedUsers } from './helpers/filterForMutedUsers'
 
 const maintainPinnedPosts = params => {
   const pinnedPostFilter = { pinned: true }
