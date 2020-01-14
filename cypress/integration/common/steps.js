@@ -271,11 +271,11 @@ Then("the post was saved successfully", () => {
 });
 
 Then(/^I should see only ([0-9]+) posts? on the landing page/, postCount => {
-  cy.get(".post-card").should("have.length", postCount);
+  cy.get(".hc-post-card").should("have.length", postCount);
 });
 
 Then("the first post on the landing page has the title:", title => {
-  cy.get(".post-card:first").should("contain", title);
+  cy.get(".hc-post-card:first").should("contain", title);
 });
 
 Then(
