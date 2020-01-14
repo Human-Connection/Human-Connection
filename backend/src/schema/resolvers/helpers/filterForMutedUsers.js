@@ -20,4 +20,3 @@ export const filterForMutedUsers = async (params, context) => {
   )
   return params
 }
-
