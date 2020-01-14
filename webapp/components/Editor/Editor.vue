@@ -141,7 +141,6 @@ export default {
   methods: {
     openSuggestionList({ items, query, range, command, virtualNode }, suggestionType) {
       this.suggestionType = suggestionType
-
       this.query = this.sanitizeQuery(query)
       this.filteredItems = items
       this.suggestionRange = range
@@ -236,6 +235,9 @@ export default {
     onUpdate(e) {
       const content = e.getHTML()
       this.$emit('input', content)
+    },
+    insertReply(message) {
+      this.editor.commands.mention({ id: message.id, label: message.slug })
     },
     toggleLinkInput(attrs, element) {
       if (!this.isLinkInputActive && attrs && element) {

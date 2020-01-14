@@ -54,13 +54,14 @@
         </button>
       </div>
       <ds-space margin-bottom="small" />
+      <ds-button
+        :title="this.$t('post.comment.answer')"
+        icon="level-down"
+        @click.prevent="reply"
+        v-scroll-to="'.editor'"
+        class="answerbutton"
+      ></ds-button>
     </ds-card>
-    <ds-button
-      v-bind:title="answered"
-      icon="level-down"
-      style="float:right; top: -22px;"
-      @click.prevent="answerComment"
-    ></ds-button>
     <div style="clear:both"></div>
   </div>
 </template>
@@ -86,7 +87,6 @@ export default {
       isTarget,
       isCollapsed: !isTarget,
       openEditCommentMenu: false,
-      answered: this.$t('post.comment.answered'),
     }
   },
   components: {
@@ -113,7 +113,6 @@ export default {
       if (this.isLongComment && this.isCollapsed) {
         return this.$filters.truncate(this.comment.content, COMMENT_TRUNCATE_TO_LENGTH)
       }
-      // console.log(this.comment.content.replace(/\?/gi, '?++'))
       return this.comment.content
     },
     displaysComment() {
@@ -149,6 +148,10 @@ export default {
     },
   },
   methods: {
+    reply(comment) {
+      const message = { slug: this.comment.author.slug, id: this.comment.author.id }
+      this.$emit('reply', message)
+    },
     checkAnchor(anchor) {
       return `#${this.anchor}` === anchor
     },
@@ -176,23 +179,6 @@ export default {
         this.$toast.error(err.message)
       }
     },
-    answerComment() {
-      const slug =
-        '<a class="mention" href="/profile/' +
-        this.comment.author.id +
-        '" data-mention-id="' +
-        this.comment.author.slug +
-        '" target="_blank" contenteditable="false">@d' +
-        this.comment.author.slug +
-        '</a>'
-      document.querySelector('.editor-content div').focus()
-      if (document.querySelector('.is-empty')) {
-        document.querySelector('.is-empty').innerHTML = slug + ' '
-      } else {
-        const html = document.querySelector('.editor-content').innerHTML
-        document.querySelector('.editor-content div').innerHTML = html + ' ' + slug + ' '
-      }
-    },
   },
 }
 </script>
@@ -216,6 +202,11 @@ export default {
 
 .float-right {
   float: right;
+}
+
+.answerbutton {
+  float: right;
+  top: 0px;
 }
 
 @keyframes highlight {

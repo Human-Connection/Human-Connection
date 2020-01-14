@@ -72,12 +72,18 @@
       <!-- Comments -->
       <ds-section slot="footer">
         <hc-comment-list
+          @reply="reply"
           :post="post"
           :routeHash="$route.hash"
           @toggleNewCommentForm="toggleNewCommentForm"
         />
         <ds-space margin-bottom="large" />
-        <hc-comment-form v-if="showNewCommentForm" :post="post" @createComment="createComment" />
+        <hc-comment-form
+          ref="commentForm"
+          v-if="showNewCommentForm"
+          :post="post"
+          @createComment="createComment"
+        />
       </ds-section>
     </ds-card>
   </transition>
@@ -150,6 +156,9 @@ export default {
     },
   },
   methods: {
+    reply(message) {
+      this.$refs.commentForm && this.$refs.commentForm.reply(message)
+    },
     isAuthor(id) {
       return this.$store.getters['auth/user'].id === id
     },

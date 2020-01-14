@@ -57,6 +57,9 @@ export default {
     }
   },
   methods: {
+    reply(message) {
+      this.$refs.editor.insertReply(message)
+    },
     updateEditorContent(value) {
       const sanitizedContent = this.$filters.removeHtml(value, false)
       if (!this.update) {

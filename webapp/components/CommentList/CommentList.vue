@@ -8,6 +8,7 @@
     <ds-space margin-bottom="large" />
     <div v-if="post.comments && post.comments.length" id="comments" class="comments">
       <comment
+        @reply="reply"
         v-for="comment in post.comments"
         :key="comment.id"
         :comment="comment"
@@ -36,6 +37,9 @@ export default {
     post: { type: Object, default: () => {} },
   },
   methods: {
+    reply(message) {
+      this.$emit('reply', message)
+    },
     checkAnchor(anchor) {
       return anchor === '#comments'
     },
