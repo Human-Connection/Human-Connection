@@ -12,8 +12,9 @@
     "test": "jest --forceExit --detectOpenHandles --runInBand",
     "db:reset": "babel-node src/seed/reset-db.js",
     "db:seed": "babel-node src/seed/seed-db.js",
-    "db:setup": "babel-node src/migration/setup.js",
-    "db:migrate": "babel-node src/migration/migrate.js"
+    "db:setup": "babel-node src/db/setup.js",
+    "db:migrate:create": "migrate create --template-file./src/db/migrationTemplate.js",
+    "db:migrate": "migrate --compiler 'js:@babel/register'"
   },
   "author": "Human Connection gGmbH",
   "license": "MIT",
@@ -80,6 +81,7 @@
     "metascraper-url": "^5.10.3",
     "metascraper-video": "^5.10.3",
     "metascraper-youtube": "^5.10.5",
+    "migrate": "^1.6.2",
     "minimatch": "^3.0.4",
     "mustache": "^4.0.0",
     "neo4j-driver": "^4.0.1",
