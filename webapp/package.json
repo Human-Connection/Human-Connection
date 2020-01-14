@@ -121,7 +121,7 @@
     "eslint-config-standard": "~14.1.0",
     "eslint-loader": "~3.0.3",
     "eslint-plugin-import": "~2.19.1",
-    "eslint-plugin-jest": "~23.3.0",
+    "eslint-plugin-jest": "~23.6.0",
     "eslint-plugin-node": "~11.0.0",
     "eslint-plugin-prettier": "~3.1.2",
     "eslint-plugin-promise": "~4.2.1",
