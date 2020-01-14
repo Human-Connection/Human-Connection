@@ -1,0 +1,55 @@
+<template>
+  <div class="emotion-button">
+    <base-button :id="emotion" circle ghost @click="$emit('toggleEmotion', emotion)">
+      <img :src="emojiPath" />
+    </base-button>
+    <label class="label" :for="emotion">{{ $t(`contribution.emotions-label.${emotion}`) }}</label>
+    <p v-if="count !== null" class="count">{{ emotionCount }}x</p>
+  </div>
+</template>
+
+<script>
+export default {
+  props: {
+    emojiPath: {
+      type: String,
+      required: true,
+    },
+    emotion: {
+      type: String,
+      required: true,
+    },
+    emotionCount: {
+      type: Number,
+      default: null,
+    },
+  },
+}
+</script>
+
+<style lang="scss">
+.emotion-button {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  > .base-button {
+    padding: 0;
+
+    &:hover {
+      padding: $space-xxx-small;
+    }
+  }
+
+  > .label {
+    margin-top: $space-xx-small;
+    font-size: $font-size-small;
+    cursor: pointer;
+  }
+
+  > .count {
+    margin: $space-xx-small 0;
+  }
+}
+</style>

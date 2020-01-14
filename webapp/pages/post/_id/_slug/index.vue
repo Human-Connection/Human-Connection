@@ -47,13 +47,9 @@
       </div>
       <ds-space margin-top="x-large">
         <ds-flex :gutter="{ lg: 'small' }">
-          <ds-flex-item
-            :width="{ lg: '75%', md: '75%', sm: '75%', base: '100%' }"
-            class="emotions-buttons-mobile"
-          >
+          <ds-flex-item :width="{ lg: '75%', md: '75%', sm: '75%', base: '100%' }">
             <hc-emotions :post="post" />
           </ds-flex-item>
-          <ds-flex-item :width="{ lg: '10%', md: '3%', sm: '3%' }" />
           <!-- Shout Button -->
           <ds-flex-item
             :width="{ lg: '15%', md: '22%', sm: '22%', base: '100%' }"
