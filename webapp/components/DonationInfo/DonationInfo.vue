@@ -2,7 +2,7 @@
   <div class="donation-info">
     <progress-bar :title="title" :label="label" :goal="goal" :progress="progress" />
     <a target="_blank" href="https://human-connection.org/spenden/">
-      <base-button primary>{{ $t('donations.donate-now') }}</base-button>
+      <base-button filled>{{ $t('donations.donate-now') }}</base-button>
     </a>
   </div>
 </template>

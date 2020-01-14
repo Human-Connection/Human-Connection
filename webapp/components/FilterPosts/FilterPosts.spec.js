@@ -92,7 +92,7 @@ describe('FilterPosts.vue', () => {
     it('starts with all categories button active', () => {
       const wrapper = openFilterPosts()
       allCategoriesButton = wrapper.findAll('button').at(1)
-      expect(allCategoriesButton.attributes().class).toContain('ds-button-primary')
+      expect(allCategoriesButton.attributes().class).toContain('--filled')
     })
 
     it('calls TOGGLE_CATEGORY when clicked', () => {
@@ -111,27 +111,27 @@ describe('FilterPosts.vue', () => {
       expect(mutations['posts/TOGGLE_LANGUAGE']).toHaveBeenCalledWith({}, 'en')
     })
 
-    it('sets category button attribute `primary` when corresponding category is filtered', () => {
+    it('sets category button attribute `filled` when corresponding category is filtered', () => {
       getters['posts/filteredCategoryIds'] = jest.fn(() => ['cat9'])
       const wrapper = openFilterPosts()
       democracyAndPoliticsButton = wrapper.findAll('button').at(4)
-      expect(democracyAndPoliticsButton.attributes().class).toContain('ds-button-primary')
+      expect(democracyAndPoliticsButton.attributes().class).toContain('--filled')
     })
 
-    it('sets language button attribute `primary` when corresponding language is filtered', () => {
+    it('sets language button attribute `filled` when corresponding language is filtered', () => {
       getters['posts/filteredLanguageCodes'] = jest.fn(() => ['es'])
       const wrapper = openFilterPosts()
       spanishButton = wrapper
         .findAll('button.language-buttons')
         .at(languages.findIndex(l => l.code === 'es'))
-      expect(spanishButton.attributes().class).toContain('ds-button-primary')
+      expect(spanishButton.attributes().class).toContain('--filled')
     })
 
-    it('sets "filter-by-followed-authors-only" button attribute `primary`', () => {
+    it('sets "filter-by-followed-authors-only" button attribute `filled`', () => {
       getters['posts/filteredByUsersFollowed'] = jest.fn(() => true)
       const wrapper = openFilterPosts()
       expect(
-        wrapper.find({ name: 'filter-by-followed-authors-only' }).classes('ds-button-primary'),
+        wrapper.find('.base-button[name="filter-by-followed-authors-only"]').classes('--filled'),
       ).toBe(true)
     })
 
@@ -139,7 +139,7 @@ describe('FilterPosts.vue', () => {
       let wrapper
       beforeEach(() => {
         wrapper = openFilterPosts()
-        wrapper.find({ name: 'filter-by-followed-authors-only' }).trigger('click')
+        wrapper.find('.base-button[name="filter-by-followed-authors-only"]').trigger('click')
       })
 
       it('calls TOGGLE_FILTER_BY_FOLLOWED', () => {

@@ -176,6 +176,8 @@ export default {
   }
 
   .content-menu {
+    position: relative;
+    z-index: 99;
     display: inline-block;
     margin-left: $space-xx-small;
     margin-right: -$space-x-small;

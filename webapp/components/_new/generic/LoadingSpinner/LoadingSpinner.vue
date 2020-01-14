@@ -1,14 +1,6 @@
 <template>
-  <svg
-    viewBox="0 0 50 50"
-    class="loading-spinner"
-  >
-    <circle
-      cx="25"
-      cy="25"
-      r="20"
-      class="circle"
-    />
+  <svg viewBox="0 0 50 50" class="loading-spinner">
+    <circle cx="25" cy="25" r="20" class="circle" />
   </svg>
 </template>
 
@@ -20,7 +12,7 @@ export default {
 
 <style lang="scss">
 .loading-spinner {
-  height: 36px;
+  height: $size-button-base;
   overflow: hidden;
   stroke: currentColor;
   animation: rotate 16s linear infinite;

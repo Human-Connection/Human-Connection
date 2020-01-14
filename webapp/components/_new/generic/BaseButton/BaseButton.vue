@@ -1,12 +1,12 @@
 <template>
   <button
-    :type="type"
     :class="buttonClass"
     :disabled="loading"
-    @click.capture="(event) => $emit('click', event)"
+    :type="type"
+    @click.capture="event => $emit('click', event)"
   >
-    <loading-spinner v-if="loading" />
     <base-icon v-if="icon" :name="icon" />
+    <loading-spinner v-if="loading" />
     <slot />
   </button>
 </template>
@@ -23,20 +23,20 @@ export default {
       type: Boolean,
       default: false,
     },
-    icon: {
-      type: String,
+    danger: {
+      type: Boolean,
+      default: false,
+    },
+    filled: {
+      type: Boolean,
+      default: false,
     },
     ghost: {
       type: Boolean,
       default: false,
     },
-    primary: {
-      type: Boolean,
-      default: false,
-    },
-    danger: {
-      type: Boolean,
-      default: false,
+    icon: {
+      type: String,
     },
     loading: {
       type: Boolean,
@@ -46,7 +46,7 @@ export default {
       type: String,
       default: 'regular',
       validator(value) {
-        return value.match(/(small|regular|large)/)
+        return value.match(/(small|regular)/)
       },
     },
     type: {
@@ -63,116 +63,50 @@ export default {
 
       if (this.$slots.default == null) buttonClass += ' --icon-only'
       if (this.circle) buttonClass += ' --circle'
-      if (this.ghost) buttonClass += ' --ghost'
+      if (this.danger) buttonClass += ' --danger'
       if (this.loading) buttonClass += ' --loading'
-
-      if (this.primary) buttonClass += ' --primary'
-      else if (this.danger) buttonClass += ' --danger'
-
       if (this.size === 'small') buttonClass += ' --small'
-      else if (this.size === 'large') buttonClass += ' --large'
+
+      if (this.filled) buttonClass += ' --filled'
+      else if (this.ghost) buttonClass += ' --ghost'
 
       return buttonClass
-    }
-  }
+    },
+  },
 }
 </script>
 
 <style lang="scss">
+@import '~/assets/_new/styles/mixins/buttonStates.scss';
+
 .base-button {
+  @include buttonStates;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: 36px;
-  padding: 0 12px;
+  height: $size-button-base;
+  padding: 0 $space-x-small;
   vertical-align: bottom;
-  color: $color-primary;
-  background-color: transparent;
-  border: 1px solid $color-primary;
-  border-radius: 6px;
+  border: $border-size-base solid;
+  border-radius: $border-radius-x-large;
   overflow: hidden;
   font-weight: $font-weight-bold;
   cursor: pointer;
-  transition: background-color .1s;
-
-  &:focus {
-    outline: 1px dashed $color-primary;
-  }
-
-  &:hover {
-    color: $color-neutral-100;
-    background-color: $color-primary;
-  }
-
-  &:active {
-    color: $color-neutral-100;
-    border-color: $color-primary-dark;
-    background-color: $color-primary-dark;
-  }
-
-  &:disabled {
-    color: $color-neutral-60;
-    border-color: $color-neutral-60;
-    background-color: transparent;
-    cursor: default;
-  }
-
-  &.--primary {
-    color: $color-neutral-100;
-    background-color: $color-primary;
-
-    &:hover {
-      background-color: $color-primary-light;
-      border-color: $color-primary-light;
-    }
-
-    &:active {
-      background-color: $color-primary-dark;
-      border-color: $color-primary-dark;
-    }
-
-    &:disabled {
-      background-color: $color-neutral-60;
-      border-color: $color-neutral-60;
-    }
-  }
 
   &.--danger {
-    color: $color-neutral-100;
-    background-color: $color-danger;
-    border-color: $color-danger;
-
-    &:hover {
-      background-color: $color-danger-light;
-      border-color: $color-danger-light;
-    }
-
-    &:active {
-      background-color: $color-danger-dark;
-      border-color: $color-danger-dark;
-    }
-
-    &:disabled {
-      background-color: $color-neutral-60;
-      border-color: $color-neutral-60;
-    }
+    @include buttonStates($color-scheme: danger);
   }
 
-  &.--small {
-    height: 26px;
-    font-size: $font-size-small;
-
-    &.--circle {
-      width: 26px;
-    }
+  &.--filled {
+    @include buttonStates($filled: true);
   }
 
-  &.--large {
-
+  &.--danger.--filled {
+    @include buttonStates($color-scheme: danger, $filled: true);
   }
 
   &.--circle {
-    width: 36px;
+    width: $size-button-base;
     border-radius: 50%;
   }
 
@@ -180,23 +114,31 @@ export default {
     border: none;
   }
 
+  &.--small {
+    height: $size-button-small;
+    font-size: $font-size-small;
+
+    &.--circle {
+      width: $size-button-small;
+    }
+  }
+
   &:not(.--icon-only) > .base-icon {
-    margin-right: 6px;
+    margin-right: $space-xx-small;
+  }
+
+  &:disabled.--loading {
+    color: $color-neutral-80;
   }
 
   > .loading-spinner {
     position: absolute;
-    height: 26px;
+    height: $size-button-small;
     color: $color-neutral-60;
   }
 
-  &.--loading {
-    color: $color-neutral-80;
-
-    &.--primary > .loading-spinner,
-    &.--danger > .loading-spinner {
-      color: $color-neutral-100;
-    }
+  &.--filled > .loading-spinner {
+    color: $color-neutral-100;
   }
 }
 </style>

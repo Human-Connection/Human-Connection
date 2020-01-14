@@ -1,7 +1,7 @@
 <template>
   <span class="counter-icon">
     <base-icon :name="icon" />
-    <span class="count">{{ cappedCount }}</span>
+    <span :class="counterClass">{{ cappedCount }}</span>
   </span>
 </template>
 
@@ -10,12 +10,20 @@ export default {
   props: {
     icon: { type: String, required: true },
     count: { type: Number, required: true },
+    danger: { type: Boolean, default: false },
   },
   computed: {
     cappedCount() {
       return this.count <= 99 ? this.count : '99+'
-    }
-  }
+    },
+    counterClass() {
+      let counterClass = 'count'
+      if (this.danger) counterClass += ' --danger'
+      if (this.count === 0) counterClass += ' --inactive'
+
+      return counterClass
+    },
+  },
 }
 </script>
 
@@ -25,23 +33,31 @@ export default {
 
   > .count {
     position: absolute;
-    top: -4px;
+    top: -$space-xx-small;
     right: 0;
 
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    height: 16px;
-    min-width: 16px;
-    padding: 3px;
+    height: $size-icon-base;
+    min-width: $size-icon-base;
+    padding: 3px; // magic number to center count
     border-radius: 50%;
     transform: translateX(50%);
 
-    color:$color-neutral-100;
+    color: $color-neutral-100;
     background-color: $color-primary;
-    font-size: 10px;
+    font-size: 10px; // magic number to center count
     line-height: 1;
     text-align: center;
+
+    &.--danger {
+      background-color: $color-danger;
+    }
+
+    &.--inactive {
+      background-color: $color-neutral-60;
+    }
   }
 }
 </style>

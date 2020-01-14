@@ -2,7 +2,7 @@ import { storiesOf } from '@storybook/vue'
 import helpers from '~/storybook/helpers'
 import CounterIcon from './CounterIcon.vue'
 
-storiesOf('CounterIcon', module)
+storiesOf('Generic/CounterIcon', module)
   .addDecorator(helpers.layout)
 
   .add('default', () => ({
@@ -15,6 +15,20 @@ storiesOf('CounterIcon', module)
   .add('high count', () => ({
     components: { CounterIcon },
     template: `
-      <counter-icon icon="bell" :count="150" />
+      <counter-icon icon="comments" :count="150" />
+    `,
+  }))
+
+  .add('danger', () => ({
+    components: { CounterIcon },
+    template: `
+      <counter-icon icon="bell" :count="42" danger />
+    `,
+  }))
+
+  .add('count is 0', () => ({
+    components: { CounterIcon },
+    template: `
+      <counter-icon icon="bell" :count="0" />
     `,
   }))

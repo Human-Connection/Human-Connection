@@ -82,14 +82,10 @@
         </ds-text>
         <ds-space />
         <div slot="footer" style="text-align: right">
-          <base-button
-            data-test="cancel-button"
-            :disabled="loading"
-            @click="$router.back()"
-          >
+          <base-button data-test="cancel-button" :disabled="loading" @click="$router.back()" danger>
             {{ $t('actions.cancel') }}
           </base-button>
-          <base-button type="submit" icon="check" :loading="loading" :disabled="errors" primary>
+          <base-button type="submit" icon="check" :loading="loading" :disabled="errors" filled>
             {{ $t('actions.save') }}
           </base-button>
         </div>

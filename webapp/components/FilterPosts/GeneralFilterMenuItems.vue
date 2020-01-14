@@ -13,17 +13,18 @@
           <ds-flex-item width="10%" />
           <ds-space margin-bottom="xx-small" />
           <ds-flex-item width="100%">
-            <div class="follow-button">
-              <ds-button
+            <div class="follow-filter-button">
+              <base-button
+                name="filter-by-followed-authors-only"
+                icon="user-plus"
+                circle
+                :filled="filteredByUsersFollowed"
+                @click="toggleFilteredByFollowed(user.id)"
                 v-tooltip="{
                   content: this.$t('contribution.filterFollow'),
                   placement: 'left',
                   delay: { show: 500 },
                 }"
-                name="filter-by-followed-authors-only"
-                icon="user-plus"
-                :primary="filteredByUsersFollowed"
-                @click="toggleFilteredByFollowed(user.id)"
               />
               <ds-space margin-bottom="x-small" />
               <ds-flex-item>
@@ -36,14 +37,9 @@
       </ds-flex-item>
       <div v-for="emotion in emotionsArray" :key="emotion">
         <ds-flex-item :width="{ lg: '100%' }">
-          <ds-button
-            size="large"
-            ghost
-            @click="toogleFilteredByEmotions(emotion)"
-            class="emotions-buttons"
-          >
+          <base-button @click="toogleFilteredByEmotions(emotion)" class="emotions-buttons" circle>
             <img :src="iconPath(emotion)" width="40" />
-          </ds-button>
+          </base-button>
           <ds-space margin-bottom="x-small" />
           <ds-flex-item class="emotions-mobile-space text-center">
             <label class="emotions-label">{{ $t(`contribution.emotions-label.${emotion}`) }}</label>
@@ -99,7 +95,7 @@ export default {
   #filter-posts-header {
     text-align: center;
   }
-  .follow-button {
+  .follow-filter-button {
     float: left;
   }
 }

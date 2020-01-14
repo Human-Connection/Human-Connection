@@ -61,6 +61,7 @@
               <base-button
                 icon="trash"
                 danger
+                filled
                 :disabled="!deleteEnabled"
                 data-test="delete-button"
                 @click="handleSubmit"
