@@ -1,22 +1,32 @@
 <template>
   <div class="paginate">
-    <base-button @click="back" :disabled="!hasPrevious" icon="arrow-left" circle />
-    <base-button @click="next" :disabled="!hasNext" icon="arrow-right" circle />
+    <base-button
+      @click="$emit('back')"
+      :disabled="!hasPrevious"
+      icon="arrow-left"
+      circle
+      data-test="previous-button"
+    />
+    <base-button
+      @click="$emit('next')"
+      :disabled="!hasNext"
+      icon="arrow-right"
+      circle
+      data-test="next-button"
+    />
   </div>
 </template>
 
 <script>
 export default {
   props: {
-    hasNext: { type: Boolean, default: false },
-    hasPrevious: { type: Boolean, default: false },
-  },
-  methods: {
-    back() {
-      this.$emit('back')
+    hasNext: {
+      type: Boolean,
+      default: false,
     },
-    next() {
-      this.$emit('next')
+    hasPrevious: {
+      type: Boolean,
+      default: false,
     },
   },
 }
@@ -26,7 +36,7 @@ export default {
 .paginate {
   display: flex;
   justify-content: space-around;
-  width: 100px;
+  width: $size-width-paginate;
   margin: $space-x-small auto;
 }
 </style>

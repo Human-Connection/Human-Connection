@@ -5,35 +5,31 @@ import Paginate from './Paginate'
 const localVue = global.localVue
 
 describe('Paginate.vue', () => {
-  let propsData, wrapper, nextButton, backButton
-
-  beforeEach(() => {
-    propsData = {}
-  })
+  let propsData = {}
+  let wrapper
+  let nextButton
+  let backButton
 
   const Wrapper = () => {
     return mount(Paginate, { propsData, localVue })
   }
-  describe('mount', () => {
-    beforeEach(() => {
-      wrapper = Wrapper()
-    })
 
+  describe('mount', () => {
     describe('next button', () => {
       beforeEach(() => {
         propsData.hasNext = true
         wrapper = Wrapper()
-        nextButton = wrapper.findAll('.base-button').at(0)
+        nextButton = wrapper.find('[data-test="next-button"]')
       })
 
       it('is disabled by default', () => {
         propsData = {}
         wrapper = Wrapper()
-        nextButton = wrapper.findAll('.base-button').at(0)
+        nextButton = wrapper.find('[data-test="next-button"]')
         expect(nextButton.attributes().disabled).toEqual('disabled')
       })
 
-      it('is not disabled if hasNext is true', () => {
+      it('is enabled if hasNext is true', () => {
         expect(nextButton.attributes().disabled).toBeUndefined()
       })
 
@@ -47,17 +43,17 @@ describe('Paginate.vue', () => {
       beforeEach(() => {
         propsData.hasPrevious = true
         wrapper = Wrapper()
-        backButton = wrapper.findAll('.base-button').at(1)
+        backButton = wrapper.find('[data-test="previous-button"]')
       })
 
       it('is disabled by default', () => {
         propsData = {}
         wrapper = Wrapper()
-        backButton = wrapper.findAll('.base-button').at(1)
+        backButton = wrapper.find('[data-test="previous-button"]')
         expect(backButton.attributes().disabled).toEqual('disabled')
       })
 
-      it('is not disabled if hasPrevious is true', () => {
+      it('is enabled if hasPrevious is true', () => {
         expect(backButton.attributes().disabled).toBeUndefined()
       })
 

@@ -10,7 +10,7 @@
         class="follow-filter"
       >
         <base-button
-          name="filter-by-followed-authors-only"
+          data-test="filter-by-followed"
           icon="user-plus"
           circle
           :filled="filteredByUsersFollowed"
