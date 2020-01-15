@@ -1,17 +1,17 @@
 import { mount } from '@vue/test-utils'
 
-import Paginate from './Paginate'
+import PaginationButtons from './PaginationButtons'
 
 const localVue = global.localVue
 
-describe('Paginate.vue', () => {
+describe('PaginationButtons.vue', () => {
   let propsData = {}
   let wrapper
   let nextButton
   let backButton
 
   const Wrapper = () => {
-    return mount(Paginate, { propsData, localVue })
+    return mount(PaginationButtons, { propsData, localVue })
   }
 
   describe('mount', () => {
