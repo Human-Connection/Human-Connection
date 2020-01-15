@@ -72,7 +72,7 @@ export default {
   },
   methods: {
     deleteImage() {
-       this.clearImages()
+      this.clearImages()
     },
     template() {
       return `<div class="dz-preview dz-file-preview">

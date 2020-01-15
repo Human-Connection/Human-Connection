@@ -275,7 +275,7 @@ export default {
       this.contribution.image = null
       this.form.image = null
       this.form.teaserImage = null
-       this.$refs.deleteImage.deleteImage()
+      this.$refs.deleteImage.deleteImage()
     },
   },
   apollo: {
