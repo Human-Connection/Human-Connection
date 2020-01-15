@@ -60,9 +60,9 @@
         @click.prevent="reply"
         v-scroll-to="'.editor'"
         class="answerbutton"
+        size="small"
       ></ds-button>
     </ds-card>
-    <div style="clear:both"></div>
   </div>
 </template>
 
@@ -207,6 +207,9 @@ export default {
 .answerbutton {
   float: right;
   top: 0px;
+}
+.answerbutton:after {
+  clear: both;
 }
 
 @keyframes highlight {
