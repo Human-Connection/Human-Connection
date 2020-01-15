@@ -3,15 +3,16 @@
     <ds-flex :gutter="{ base: 'xx-small', md: 'small', lg: 'xx-small' }">
       <div v-for="category in categories" :key="category.id">
         <ds-flex-item>
-          <ds-button
-            size="small"
-            @click.prevent="toggleCategory(category.id)"
-            :primary="isActive(category.id)"
+          <base-button
+            :data-test="categoryButtonsId(category.id)"
+            @click="toggleCategory(category.id)"
+            :filled="isActive(category.id)"
             :disabled="isDisabled(category.id)"
+            :icon="category.icon"
+            size="small"
           >
-            <ds-icon :name="category.icon" />
             {{ $t(`contribution.category.name.${category.slug}`) }}
-          </ds-button>
+          </base-button>
         </ds-flex-item>
       </div>
     </ds-flex>
@@ -28,16 +29,23 @@
 
 <script>
 import CategoryQuery from '~/graphql/CategoryQuery'
+import xor from 'lodash/xor'
 
 export default {
+  inject: {
+    $parentForm: {
+      default: null,
+    },
+  },
   props: {
     existingCategoryIds: { type: Array, default: () => [] },
+    model: { type: String, required: true },
   },
   data() {
     return {
       categories: null,
       selectedMax: 3,
-      selectedCategoryIds: [],
+      selectedCategoryIds: this.existingCategoryIds,
     }
   },
   computed: {
@@ -48,38 +56,21 @@ export default {
       return this.selectedCount >= this.selectedMax
     },
   },
-  watch: {
-    selectedCategoryIds(categoryIds) {
-      this.$emit('updateCategories', categoryIds)
-    },
-    existingCategoryIds: {
-      immediate: true,
-      handler: function(existingCategoryIds) {
-        if (!existingCategoryIds || !existingCategoryIds.length) {
-          return
-        }
-        this.selectedCategoryIds = existingCategoryIds
-      },
-    },
-  },
   methods: {
     toggleCategory(id) {
-      const index = this.selectedCategoryIds.indexOf(id)
-      if (index > -1) {
-        this.selectedCategoryIds.splice(index, 1)
-      } else {
-        this.selectedCategoryIds.push(id)
+      this.selectedCategoryIds = xor(this.selectedCategoryIds, [id])
+      if (this.$parentForm) {
+        this.$parentForm.update(this.model, this.selectedCategoryIds)
       }
     },
     isActive(id) {
-      const index = this.selectedCategoryIds.indexOf(id)
-      if (index > -1) {
-        return true
-      }
-      return false
+      return this.selectedCategoryIds.includes(id)
     },
     isDisabled(id) {
       return !!(this.reachedMaximum && !this.isActive(id))
+    },
+    categoryButtonsId(categoryId) {
+      return `category-buttons-${categoryId}`
     },
   },
   apollo: {

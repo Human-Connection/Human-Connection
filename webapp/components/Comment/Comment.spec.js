@@ -1,12 +1,8 @@
-import { config, shallowMount, createLocalVue } from '@vue/test-utils'
+import { config, shallowMount } from '@vue/test-utils'
 import Comment from './Comment.vue'
 import Vuex from 'vuex'
-import Styleguide from '@human-connection/styleguide'
 
-const localVue = createLocalVue()
-
-localVue.use(Vuex)
-localVue.use(Styleguide)
+const localVue = global.localVue
 
 config.stubs['client-only'] = '<span><slot /></span>'
 

@@ -1,6 +1,7 @@
 import dotenv from 'dotenv'
+import path from 'path'
 
-dotenv.config()
+dotenv.config({ path: path.resolve(__dirname, '../../.env') })
 
 const {
   MAPBOX_TOKEN,
@@ -16,7 +17,6 @@ const {
   NEO4J_URI = 'bolt://localhost:7687',
   NEO4J_USERNAME = 'neo4j',
   NEO4J_PASSWORD = 'neo4j',
-  GRAPHQL_PORT = 4000,
   CLIENT_URI = 'http://localhost:3000',
   GRAPHQL_URI = 'http://localhost:4000',
 } = process.env
@@ -36,7 +36,6 @@ export const smtpConfigs = {
 }
 export const neo4jConfigs = { NEO4J_URI, NEO4J_USERNAME, NEO4J_PASSWORD }
 export const serverConfigs = {
-  GRAPHQL_PORT,
   CLIENT_URI,
   GRAPHQL_URI,
   PUBLIC_REGISTRATION: process.env.PUBLIC_REGISTRATION === 'true',

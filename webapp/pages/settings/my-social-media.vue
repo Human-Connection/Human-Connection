@@ -24,22 +24,22 @@
                 {{ link.url }}
               </a>
               <span class="divider">|</span>
-              <a name="edit" @click="handleEditSocialMedia(link)">
-                <ds-icon
-                  :aria-label="$t('actions.edit')"
-                  class="icon-button"
-                  name="edit"
-                  :title="$t('actions.edit')"
-                />
-              </a>
-              <a name="delete" @click="handleDeleteSocialMedia(link)">
-                <ds-icon
-                  :aria-label="$t('actions.delete')"
-                  class="icon-button"
-                  name="trash"
-                  :title="$t('actions.delete')"
-                />
-              </a>
+              <base-button
+                icon="edit"
+                circle
+                ghost
+                @click="handleEditSocialMedia(link)"
+                :title="$t('actions.edit')"
+                data-test="edit-button"
+              />
+              <base-button
+                icon="trash"
+                circle
+                ghost
+                @click="handleDeleteSocialMedia(link)"
+                :title="$t('actions.delete')"
+                data-test="delete-button"
+              />
             </template>
           </ds-list-item>
         </ds-list>
@@ -54,12 +54,12 @@
           :placeholder="$t('settings.social-media.placeholder')"
         />
         <ds-space margin-top="base">
-          <ds-button primary :disabled="disabled">
+          <base-button filled :disabled="disabled" type="submit">
             {{ editingLink.id ? $t('actions.save') : $t('settings.social-media.submit') }}
-          </ds-button>
-          <ds-button v-if="editingLink.id" id="cancel" ghost @click="handleCancel()">
+          </base-button>
+          <base-button v-if="editingLink.id" id="cancel" danger @click="handleCancel()">
             {{ $t('actions.cancel') }}
-          </ds-button>
+          </base-button>
         </ds-space>
       </ds-space>
     </ds-card>
@@ -225,6 +225,11 @@ export default {
 .list-item--high {
   .ds-list-item-prefix {
     align-self: center;
+  }
+
+  .ds-list-item-content {
+    display: flex;
+    align-items: center;
   }
 }
 </style>

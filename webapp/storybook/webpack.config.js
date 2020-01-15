@@ -23,13 +23,42 @@ module.exports = async ({ config, mode }) => {
               __dirname,
               '../node_modules/@human-connection/styleguide/dist/shared.scss',
             ),
-            path.resolve(__dirname, '../view/styles/tokens.scss'),
+            path.resolve(__dirname, '../assets/_new/styles/tokens.scss'),
           ],
           injector: 'prepend',
         },
       },
     ],
     include: path.resolve(__dirname, '../'),
+  })
+
+  // load svgs with vue-svg-loader instead of file-loader
+  const rule = config.module.rules.find(
+    r =>
+      r.test && r.test.toString().includes('svg') && r.loader && r.loader.includes('file-loader'),
+  )
+  rule.test = /\.(ico|jpg|jpeg|png|gif|eot|otf|webp|ttf|woff|woff2|cur|ani)(\?.*)?$/
+
+  config.module.rules.push({
+    test: /\.svg$/,
+    use: [
+      'babel-loader',
+      {
+        loader: 'vue-svg-loader',
+        options: {
+          svgo: {
+            plugins: [
+              {
+                removeViewBox: false,
+              },
+              {
+                removeDimensions: true,
+              },
+            ],
+          },
+        },
+      },
+    ],
   })
 
   config.resolve.alias = {

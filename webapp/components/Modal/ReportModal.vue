@@ -29,12 +29,13 @@
     </small>
     <ds-space />
     <template #footer>
-      <ds-button class="cancel" icon="close" @click="cancel">
+      <base-button class="cancel" icon="close" @click="cancel">
         {{ $t('report.cancel') }}
-      </ds-button>
+      </base-button>
 
-      <ds-button
+      <base-button
         danger
+        filled
         class="confirm"
         icon="exclamation-circle"
         :disabled="!form.reasonCategory"
@@ -42,7 +43,7 @@
         @click="confirm"
       >
         {{ $t('report.submit') }}
-      </ds-button>
+      </base-button>
     </template>
   </ds-modal>
 </template>
@@ -149,6 +150,7 @@ export default {
             default:
               this.$toast.error(err.message)
           }
+          this.isOpen = false
           this.loading = false
         })
     },
@@ -160,7 +162,7 @@ export default {
 .ds-modal {
   max-width: 600px !important;
 }
-.ds-radio-option:not(.ds-button) {
+.ds-radio-option {
   width: 100% !important;
 }
 .ds-radio-option-label {

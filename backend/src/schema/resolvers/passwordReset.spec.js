@@ -1,6 +1,6 @@
 import Factory from '../../seed/factories'
-import { gql } from '../../jest/helpers'
-import { neode as getNeode, getDriver } from '../../bootstrap/neo4j'
+import { gql } from '../../helpers/jest'
+import { getNeode, getDriver } from '../../bootstrap/neo4j'
 import createPasswordReset from './helpers/createPasswordReset'
 import createServer from '../../server'
 import { createTestClient } from 'apollo-server-testing'
@@ -14,10 +14,10 @@ let authenticatedUser
 let variables
 
 const getAllPasswordResets = async () => {
-  const session = driver.session()
-  const transactionRes = await session.run('MATCH (r:PasswordReset) RETURN r')
-  const resets = transactionRes.records.map(record => record.get('r'))
-  session.close()
+  const passwordResetQuery = await neode.cypher(
+    'MATCH (passwordReset:PasswordReset) RETURN passwordReset',
+  )
+  const resets = passwordResetQuery.records.map(record => record.get('passwordReset'))
   return resets
 }
 

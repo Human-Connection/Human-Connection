@@ -1,31 +1,9 @@
-type Query {
-  isLoggedIn: Boolean!
-  # Get the currently logged in User based on the given JWT Token
-  currentUser: User
-  findPosts(query: String!, limit: Int = 10, filter: _PostFilter): [Post]!
-    @cypher(
-      statement: """
-      CALL db.index.fulltext.queryNodes('full_text_search', $query)
-      YIELD node as post, score
-      MATCH (post)<-[:WROTE]-(user:User)
-      WHERE score >= 0.2
-      AND NOT user.deleted = true AND NOT user.disabled = true
-      AND NOT post.deleted = true AND NOT post.disabled = true
-      AND NOT user.id in COALESCE($filter.author_not.id_in, [])
-      RETURN post
-      LIMIT $limit
-      """
-    )
-}
-
 type Mutation {
   # Get a JWT Token for the given Email and password
   login(email: String!, password: String!): String!
   changePassword(oldPassword: String!, newPassword: String!): String!
   requestPasswordReset(email: String!): Boolean!
   resetPassword(email: String!, nonce: String!, newPassword: String!): Boolean!
-  disable(id: ID!): ID
-  enable(id: ID!): ID
   # Shout the given Type and ID
   shout(id: ID!, type: ShoutTypeEnum): Boolean!
   # Unshout the given Type and ID

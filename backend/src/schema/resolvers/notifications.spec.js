@@ -1,5 +1,5 @@
 import Factory from '../../seed/factories'
-import { gql } from '../../jest/helpers'
+import { gql } from '../../helpers/jest'
 import { getDriver } from '../../bootstrap/neo4j'
 import { createTestClient } from 'apollo-server-testing'
 import createServer from '../.././server'
@@ -184,6 +184,7 @@ describe('given some notifications', () => {
             data: {
               notifications: expect.arrayContaining(expected),
             },
+            errors: undefined,
           })
         })
       })
@@ -233,7 +234,10 @@ describe('given some notifications', () => {
             `
             await expect(
               mutate({ mutation: deletePostMutation, variables: { id: 'p3' } }),
-            ).resolves.toMatchObject({ data: { DeletePost: { id: 'p3', deleted: true } } })
+            ).resolves.toMatchObject({
+              data: { DeletePost: { id: 'p3', deleted: true } },
+              errors: undefined,
+            })
             authenticatedUser = await user.toJson()
           }
 
@@ -242,11 +246,12 @@ describe('given some notifications', () => {
               query({ query: notificationQuery, variables: { ...variables, read: false } }),
             ).resolves.toMatchObject({
               data: { notifications: [expect.any(Object), expect.any(Object)] },
+              errors: undefined,
             })
             await deletePostAction()
             await expect(
               query({ query: notificationQuery, variables: { ...variables, read: false } }),
-            ).resolves.toMatchObject({ data: { notifications: [] } })
+            ).resolves.toMatchObject({ data: { notifications: [] }, errors: undefined })
           })
         })
       })

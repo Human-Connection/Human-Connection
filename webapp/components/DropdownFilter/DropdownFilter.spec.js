@@ -1,11 +1,8 @@
-import { mount, createLocalVue } from '@vue/test-utils'
-import VTooltip from 'v-tooltip'
-import Styleguide from '@human-connection/styleguide'
+import { mount } from '@vue/test-utils'
+
 import DropdownFilter from './DropdownFilter.vue'
 
-const localVue = createLocalVue()
-localVue.use(Styleguide)
-localVue.use(VTooltip)
+const localVue = global.localVue
 
 describe('DropdownFilter.vue', () => {
   let propsData, wrapper, mocks
@@ -67,9 +64,9 @@ describe('DropdownFilter.vue', () => {
         expect(unreadLink.text()).toEqual('Unread')
       })
 
-      it('clicking on menu item emits filterNotifications', () => {
+      it('clicking on menu item emits filter', () => {
         allLink.trigger('click')
-        expect(wrapper.emitted().filterNotifications[0]).toEqual(
+        expect(wrapper.emitted().filter[0]).toEqual(
           propsData.filterOptions.filter(option => option.label === 'All'),
         )
       })

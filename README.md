@@ -25,7 +25,7 @@ Human Connection is a nonprofit social, action and knowledge network that connec
 
 ## Live demo
 
-Try out our deployed [staging environment](https://nitro-staging.human-connection.org/).
+Try out our deployed [development environment](https://develop.human-connection.org/).
 
 Logins:
 
@@ -55,7 +55,11 @@ Check out the [contribution guideline](./CONTRIBUTING.md), too!
 
 ## Attributions
 
-Locale Icons made by [Freepik](http://www.freepik.com/) from [www.flaticon.com](https://www.flaticon.com/) is licensed by [CC 3.0 BY](http://creativecommons.org/licenses/by/3.0/)
+Locale Icons made by [Freepik](http://www.freepik.com/) from [www.flaticon.com](https://www.flaticon.com/) is licensed by [CC 3.0 BY](http://creativecommons.org/licenses/by/3.0/).
+
+Browser compatibility testing with [BrowserStack](https://www.browserstack.com/).
+
+<img alt="BrowserStack Logo" src=".gitbook/assets/browserstack-logo.svg" width="256">
 
 ## License
 See the [LICENSE](LICENSE.md) file for license rights and limitations (MIT).

@@ -1,12 +1,8 @@
-import { config, mount, createLocalVue } from '@vue/test-utils'
+import { config, mount } from '@vue/test-utils'
 import EmailVerifyPage from './verify.vue'
 import Vuex from 'vuex'
-import Styleguide from '@human-connection/styleguide'
 
-const localVue = createLocalVue()
-
-localVue.use(Vuex)
-localVue.use(Styleguide)
+const localVue = global.localVue
 
 config.stubs['client-only'] = '<span><slot /></span>'
 config.stubs['sweetalert-icon'] = '<span><slot /></span>'

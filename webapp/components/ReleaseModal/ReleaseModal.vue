@@ -4,11 +4,10 @@
     <p v-html="message" />
 
     <template slot="footer">
-      <ds-button class="cancel" @click="cancel">{{ $t('release.cancel') }}</ds-button>
-
-      <ds-button danger class="confirm" icon="exclamation-circle" @click="confirm">
+      <base-button class="cancel" @click="cancel">{{ $t('release.cancel') }}</base-button>
+      <base-button danger filled class="confirm" icon="exclamation-circle" @click="confirm">
         {{ $t('release.submit') }}
-      </ds-button>
+      </base-button>
     </template>
   </ds-modal>
 </template>
@@ -53,11 +52,13 @@ export default {
         // await this.modalData.buttons.confirm.callback()
         await this.$apollo.mutate({
           mutation: gql`
-            mutation($id: ID!) {
-              enable(id: $id)
+            mutation($resourceId: ID!, $disable: Boolean, $closed: Boolean) {
+              review(resourceId: $resourceId, disable: $disable, closed: $closed) {
+                disable
+              }
             }
           `,
-          variables: { id: this.id },
+          variables: { resourceId: this.id, disable: false, closed: false },
         })
         this.$toast.success(this.$t('release.success'))
         this.isOpen = false
@@ -66,6 +67,7 @@ export default {
         }, 1000)
       } catch (err) {
         this.$toast.error(err.message)
+        this.isOpen = false
       }
     },
   },

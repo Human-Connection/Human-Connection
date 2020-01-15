@@ -16,12 +16,12 @@
       <ds-text>
         {{ $t('settings.embeds.status.change.question') }}
       </ds-text>
-      <ds-button @click="submit" :primary="!disabled" :disabled="!disabled">
+      <base-button @click="submit" :filled="!disabled" :disabled="!disabled">
         {{ $t('settings.embeds.status.change.deny') }}
-      </ds-button>
-      <ds-button @click="submit" :primary="disabled" :disabled="disabled">
+      </base-button>
+      <base-button @click="submit" :filled="disabled" :disabled="disabled">
         {{ $t('settings.embeds.status.change.allow') }}
-      </ds-button>
+      </base-button>
 
       <p>{{ $t('settings.embeds.info-description') }}</p>
       <ul>
@@ -37,7 +37,7 @@
 <script>
 import axios from 'axios'
 import { mapGetters, mapMutations } from 'vuex'
-import { allowEmbedIframesMutation } from '~/graphql/User.js'
+import { updateUserMutation } from '~/graphql/User.js'
 
 export default {
   head() {
@@ -69,7 +69,7 @@ export default {
     async submit() {
       try {
         await this.$apollo.mutate({
-          mutation: allowEmbedIframesMutation(),
+          mutation: updateUserMutation(),
           variables: {
             id: this.currentUser.id,
             allowEmbedIframes: !this.disabled,

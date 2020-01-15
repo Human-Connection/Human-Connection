@@ -1,16 +1,11 @@
-import { config, shallowMount, createLocalVue } from '@vue/test-utils'
+import { config, mount } from '@vue/test-utils'
 import NotificationMenu from './NotificationMenu'
 
-import Styleguide from '@human-connection/styleguide'
-import Filters from '~/plugins/vue-filters'
+const localVue = global.localVue
 
-const localVue = createLocalVue()
-
-localVue.use(Styleguide)
-localVue.use(Filters)
 localVue.filter('truncate', string => string)
 
-config.stubs['dropdown'] = '<span class="dropdown"><slot /></span>'
+config.stubs.dropdown = '<span class="dropdown"><slot :toggleMenu="() => null" /></span>'
 
 describe('NotificationMenu.vue', () => {
   let wrapper
@@ -27,9 +22,9 @@ describe('NotificationMenu.vue', () => {
     }
   })
 
-  describe('shallowMount', () => {
+  describe('mount', () => {
     const Wrapper = () => {
-      return shallowMount(NotificationMenu, {
+      return mount(NotificationMenu, {
         data,
         mocks,
         localVue,
@@ -38,7 +33,7 @@ describe('NotificationMenu.vue', () => {
 
     it('counter displays 0', () => {
       wrapper = Wrapper()
-      expect(wrapper.find('ds-button-stub').text()).toEqual('0')
+      expect(wrapper.find('.count').text()).toEqual('0')
     })
 
     it('no dropdown is rendered', () => {
@@ -72,12 +67,12 @@ describe('NotificationMenu.vue', () => {
 
       it('counter displays 0', () => {
         wrapper = Wrapper()
-        expect(wrapper.find('ds-button-stub').text()).toEqual('0')
+        expect(wrapper.find('.count').text()).toEqual('0')
       })
 
-      it('button is not primary', () => {
+      it('counter is not colored', () => {
         wrapper = Wrapper()
-        expect(wrapper.find('ds-button-stub').props('primary')).toBe(false)
+        expect(wrapper.find('.count').classes()).toContain('--inactive')
       })
     })
 
@@ -135,12 +130,12 @@ describe('NotificationMenu.vue', () => {
 
       it('displays the number of unread notifications', () => {
         wrapper = Wrapper()
-        expect(wrapper.find('ds-button-stub').text()).toEqual('2')
+        expect(wrapper.find('.count').text()).toEqual('2')
       })
 
-      it('renders primary button', () => {
+      it('renders the counter in red', () => {
         wrapper = Wrapper()
-        expect(wrapper.find('ds-button-stub').props('primary')).toBe(true)
+        expect(wrapper.find('.count').classes()).toContain('--danger')
       })
     })
   })

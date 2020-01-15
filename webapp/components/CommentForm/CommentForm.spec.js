@@ -1,9 +1,11 @@
-import { mount, createLocalVue } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import CommentForm from './CommentForm'
-import Styleguide from '@human-connection/styleguide'
 
-const localVue = createLocalVue()
-localVue.use(Styleguide)
+import MutationObserver from 'mutation-observer'
+
+global.MutationObserver = MutationObserver
+
+const localVue = global.localVue
 
 describe('CommentForm.vue', () => {
   let mocks
@@ -72,7 +74,7 @@ describe('CommentForm.vue', () => {
 
       it('calls `clear` method when the cancel button is clicked', async () => {
         wrapper.vm.updateEditorContent('ok')
-        await wrapper.find('.cancelBtn').trigger('submit')
+        await wrapper.find('[data-test="cancel-button"]').trigger('submit')
         expect(cancelMethodSpy).toHaveBeenCalledTimes(1)
       })
 
@@ -160,13 +162,13 @@ describe('CommentForm.vue', () => {
       describe('cancel button is clicked', () => {
         it('calls `closeEditWindow` method', async () => {
           wrapper.vm.updateEditorContent('ok')
-          await wrapper.find('.cancelBtn').trigger('submit')
+          await wrapper.find('[data-test="cancel-button"]').trigger('submit')
           expect(closeMethodSpy).toHaveBeenCalledTimes(1)
         })
 
         it('emits `showEditCommentMenu` event', async () => {
           wrapper.vm.updateEditorContent('ok')
-          await wrapper.find('.cancelBtn').trigger('submit')
+          await wrapper.find('[data-test="cancel-button"]').trigger('submit')
           expect(wrapper.emitted('showEditCommentMenu')).toEqual([[false]])
         })
       })

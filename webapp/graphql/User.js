@@ -1,32 +1,44 @@
 import gql from 'graphql-tag'
-import { userFragment, postFragment, commentFragment } from './Fragments'
+import {
+  userCountsFragment,
+  locationAndBadgesFragment,
+  userFragment,
+  postFragment,
+  commentFragment,
+} from './Fragments'
 
 export default i18n => {
   const lang = i18n.locale().toUpperCase()
   return gql`
-    ${userFragment(lang)}
+    ${userFragment}
+    ${userCountsFragment}
+    ${locationAndBadgesFragment(lang)}
 
     query User($id: ID!) {
       User(id: $id) {
         ...user
+        ...userCounts
+        ...locationAndBadges
         about
         locationName
         createdAt
-        badgesCount
-        followingCount
-        following(first: 7) {
-          ...user
-        }
-        followedByCount
         followedByCurrentUser
         isBlocked
+        following(first: 7) {
+          ...user
+          ...userCounts
+          ...locationAndBadges
+        }
         followedBy(first: 7) {
           ...user
+          ...userCounts
+          ...locationAndBadges
         }
         socialMedia {
           id
           url
         }
+        showShoutsPublicly
       }
     }
   `
@@ -46,10 +58,10 @@ export const minimisedUserQuery = () => {
 }
 
 export const notificationQuery = i18n => {
-  const lang = i18n.locale().toUpperCase()
   return gql`
-    ${commentFragment(lang)}
-    ${postFragment(lang)}
+    ${userFragment}
+    ${commentFragment}
+    ${postFragment}
 
     query($read: Boolean, $orderBy: NotificationOrdering, $first: Int, $offset: Int) {
       notifications(read: $read, orderBy: $orderBy, first: $first, offset: $offset) {
@@ -61,11 +73,20 @@ export const notificationQuery = i18n => {
           __typename
           ... on Post {
             ...post
+            author {
+              ...user
+            }
           }
           ... on Comment {
             ...comment
+            author {
+              ...user
+            }
             post {
               ...post
+              author {
+                ...user
+              }
             }
           }
         }
@@ -75,10 +96,10 @@ export const notificationQuery = i18n => {
 }
 
 export const markAsReadMutation = i18n => {
-  const lang = i18n.locale().toUpperCase()
   return gql`
-    ${commentFragment(lang)}
-    ${postFragment(lang)}
+    ${userFragment}
+    ${commentFragment}
+    ${postFragment}
 
     mutation($id: ID!) {
       markAsRead(id: $id) {
@@ -90,11 +111,17 @@ export const markAsReadMutation = i18n => {
           __typename
           ... on Post {
             ...post
+            author {
+              ...user
+            }
           }
           ... on Comment {
             ...comment
             post {
               ...post
+              author {
+                ...user
+              }
             }
           }
         }
@@ -104,16 +131,19 @@ export const markAsReadMutation = i18n => {
 }
 
 export const followUserMutation = i18n => {
-  const lang = i18n.locale().toUpperCase()
   return gql`
-    ${userFragment(lang)}
+    ${userFragment}
+    ${userCountsFragment}
+
     mutation($id: ID!) {
       followUser(id: $id) {
-        name
+        ...user
+        ...userCounts
         followedByCount
         followedByCurrentUser
         followedBy(first: 7) {
           ...user
+          ...userCounts
         }
       }
     }
@@ -121,28 +151,59 @@ export const followUserMutation = i18n => {
 }
 
 export const unfollowUserMutation = i18n => {
-  const lang = i18n.locale().toUpperCase()
   return gql`
-    ${userFragment(lang)}
+    ${userFragment}
+    ${userCountsFragment}
+
     mutation($id: ID!) {
       unfollowUser(id: $id) {
-        name
+        ...user
+        ...userCounts
         followedByCount
         followedByCurrentUser
         followedBy(first: 7) {
           ...user
+          ...userCounts
         }
       }
     }
   `
 }
 
-export const allowEmbedIframesMutation = () => {
+export const updateUserMutation = () => {
   return gql`
-    mutation($id: ID!, $allowEmbedIframes: Boolean) {
-      UpdateUser(id: $id, allowEmbedIframes: $allowEmbedIframes) {
+    mutation(
+      $id: ID!
+      $slug: String
+      $name: String
+      $locationName: String
+      $about: String
+      $allowEmbedIframes: Boolean
+      $showShoutsPublicly: Boolean
+      $termsAndConditionsAgreedVersion: String
+      $avatarUpload: Upload
+    ) {
+      UpdateUser(
+        id: $id
+        slug: $slug
+        name: $name
+        locationName: $locationName
+        about: $about
+        allowEmbedIframes: $allowEmbedIframes
+        showShoutsPublicly: $showShoutsPublicly
+        termsAndConditionsAgreedVersion: $termsAndConditionsAgreedVersion
+        avatarUpload: $avatarUpload
+      ) {
         id
+        slug
+        name
+        locationName
+        about
         allowEmbedIframes
+        showShoutsPublicly
+        locale
+        termsAndConditionsAgreedVersion
+        avatar
       }
     }
   `
@@ -155,14 +216,3 @@ export const checkSlugAvailableQuery = gql`
     }
   }
 `
-
-export const localeMutation = () => {
-  return gql`
-    mutation($id: ID!, $locale: String) {
-      UpdateUser(id: $id, locale: $locale) {
-        id
-        locale
-      }
-    }
-  `
-}

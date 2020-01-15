@@ -1,17 +1,17 @@
 <template>
-  <ds-button
+  <base-button
+    class="follow-button"
     :disabled="disabled || !followId"
     :loading="loading"
     :icon="icon"
-    :primary="isFollowed && !hovered"
+    :filled="isFollowed && !hovered"
     :danger="isFollowed && hovered"
-    fullwidth
     @mouseenter.native="onHover"
     @mouseleave.native="hovered = false"
     @click.prevent="toggle"
   >
     {{ label }}
-  </ds-button>
+  </base-button>
 </template>
 
 <script>
@@ -83,3 +83,10 @@ export default {
   },
 }
 </script>
+
+<style lang="scss">
+.follow-button {
+  display: block;
+  width: 100%;
+}
+</style>

@@ -1,7 +1,7 @@
 import { createTestClient } from 'apollo-server-testing'
 import Factory from '../../seed/factories'
-import { gql } from '../../jest/helpers'
-import { neode as getNeode, getDriver } from '../../bootstrap/neo4j'
+import { gql } from '../../helpers/jest'
+import { getNeode, getDriver } from '../../bootstrap/neo4j'
 import createServer from '../../server'
 
 const driver = getDriver()
@@ -210,6 +210,7 @@ describe('Post', () => {
           data: {
             Post: expect.arrayContaining(expected),
           },
+          errors: undefined,
         })
       })
     })
@@ -229,7 +230,9 @@ describe('Post', () => {
 
       await user.relateTo(followedUser, 'following')
       variables = { filter: { author: { followedBy_some: { id: 'current-user' } } } }
-      const expected = {
+      await expect(
+        query({ query: postQueryFilteredByUsersFollowed, variables }),
+      ).resolves.toMatchObject({
         data: {
           Post: [
             {
@@ -238,10 +241,8 @@ describe('Post', () => {
             },
           ],
         },
-      }
-      await expect(
-        query({ query: postQueryFilteredByUsersFollowed, variables }),
-      ).resolves.toMatchObject(expected)
+        errors: undefined,
+      })
     })
   })
 })
@@ -315,53 +316,6 @@ describe('CreatePost', () => {
         )
       })
     })
-
-    describe('categories', () => {
-      describe('null', () => {
-        beforeEach(() => {
-          variables = { ...variables, categoryIds: null }
-        })
-        it('throws UserInputError', async () => {
-          const {
-            errors: [error],
-          } = await mutate({ mutation: createPostMutation, variables })
-          expect(error).toHaveProperty(
-            'message',
-            'You cannot save a post without at least one category or more than three',
-          )
-        })
-      })
-
-      describe('empty', () => {
-        beforeEach(() => {
-          variables = { ...variables, categoryIds: [] }
-        })
-        it('throws UserInputError', async () => {
-          const {
-            errors: [error],
-          } = await mutate({ mutation: createPostMutation, variables })
-          expect(error).toHaveProperty(
-            'message',
-            'You cannot save a post without at least one category or more than three',
-          )
-        })
-      })
-
-      describe('more than 3 items', () => {
-        beforeEach(() => {
-          variables = { ...variables, categoryIds: ['cat9', 'cat27', 'cat15', 'cat4'] }
-        })
-        it('throws UserInputError', async () => {
-          const {
-            errors: [error],
-          } = await mutate({ mutation: createPostMutation, variables })
-          expect(error).toHaveProperty(
-            'message',
-            'You cannot save a post without at least one category or more than three',
-          )
-        })
-      })
-    })
   })
 })
 
@@ -429,7 +383,10 @@ describe('UpdatePost', () => {
     })
 
     it('updates a post', async () => {
-      const expected = { data: { UpdatePost: { id: 'p9876', content: 'New content' } } }
+      const expected = {
+        data: { UpdatePost: { id: 'p9876', content: 'New content' } },
+        errors: undefined,
+      }
       await expect(mutate({ mutation: updatePostMutation, variables })).resolves.toMatchObject(
         expected,
       )
@@ -440,6 +397,7 @@ describe('UpdatePost', () => {
         data: {
           UpdatePost: { id: 'p9876', content: 'New content', createdAt: expect.any(String) },
         },
+        errors: undefined,
       }
       await expect(mutate({ mutation: updatePostMutation, variables })).resolves.toMatchObject(
         expected,
@@ -467,6 +425,7 @@ describe('UpdatePost', () => {
               categories: expect.arrayContaining([{ id: 'cat9' }, { id: 'cat4' }, { id: 'cat15' }]),
             },
           },
+          errors: undefined,
         }
         await expect(mutate({ mutation: updatePostMutation, variables })).resolves.toMatchObject(
           expected,
@@ -487,78 +446,11 @@ describe('UpdatePost', () => {
               categories: expect.arrayContaining([{ id: 'cat27' }]),
             },
           },
+          errors: undefined,
         }
         await expect(mutate({ mutation: updatePostMutation, variables })).resolves.toMatchObject(
           expected,
         )
-      })
-
-      describe('more than 3 categories', () => {
-        beforeEach(() => {
-          variables = { ...variables, categoryIds: ['cat9', 'cat27', 'cat15', 'cat4'] }
-        })
-
-        it('allows a maximum of three category for a successful update', async () => {
-          const {
-            errors: [error],
-          } = await mutate({ mutation: updatePostMutation, variables })
-          expect(error).toHaveProperty(
-            'message',
-            'You cannot save a post without at least one category or more than three',
-          )
-        })
-      })
-
-      describe('post created without categories somehow', () => {
-        let owner
-
-        beforeEach(async () => {
-          const postSomehowCreated = await neode.create('Post', {
-            id: 'how-was-this-created',
-          })
-          owner = await neode.create('User', {
-            id: 'author-of-post-without-category',
-            name: 'Hacker',
-            slug: 'hacker',
-            email: 'hacker@example.org',
-            password: '1234',
-          })
-          await postSomehowCreated.relateTo(owner, 'author')
-          authenticatedUser = await owner.toJson()
-          variables = { ...variables, id: 'how-was-this-created' }
-        })
-
-        it('throws an error if categoryIds is not an array', async () => {
-          const {
-            errors: [error],
-          } = await mutate({
-            mutation: updatePostMutation,
-            variables: {
-              ...variables,
-              categoryIds: null,
-            },
-          })
-          expect(error).toHaveProperty(
-            'message',
-            'You cannot save a post without at least one category or more than three',
-          )
-        })
-
-        it('requires at least one category for successful update', async () => {
-          const {
-            errors: [error],
-          } = await mutate({
-            mutation: updatePostMutation,
-            variables: {
-              ...variables,
-              categoryIds: [],
-            },
-          })
-          expect(error).toHaveProperty(
-            'message',
-            'You cannot save a post without at least one category or more than three',
-          )
-        })
       })
     })
   })
@@ -836,6 +728,7 @@ describe('UpdatePost', () => {
                 },
               ],
             },
+            errors: undefined,
           }
           variables = { orderBy: ['pinned_desc', 'createdAt_desc'] }
           await expect(query({ query: postOrderingQuery, variables })).resolves.toMatchObject(

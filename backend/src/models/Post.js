@@ -17,12 +17,6 @@ module.exports = {
   image: { type: 'string', allow: [null] },
   deleted: { type: 'boolean', default: false },
   disabled: { type: 'boolean', default: false },
-  disabledBy: {
-    type: 'relationship',
-    relationship: 'DISABLED',
-    target: 'User',
-    direction: 'in',
-  },
   notified: {
     type: 'relationship',
     relationship: 'NOTIFIED',
@@ -45,4 +39,6 @@ module.exports = {
     default: () => new Date().toISOString(),
   },
   language: { type: 'string', allow: [null] },
+  imageBlurred: { type: 'boolean', default: false },
+  imageAspectRatio: { type: 'float', default: 1.0 },
 }

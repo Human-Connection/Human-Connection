@@ -1,14 +1,10 @@
-import { config, shallowMount, mount, createLocalVue, RouterLinkStub } from '@vue/test-utils'
-import Styleguide from '@human-connection/styleguide'
+import { config, shallowMount, mount, RouterLinkStub } from '@vue/test-utils'
+
 import Vuex from 'vuex'
-import Filters from '~/plugins/vue-filters'
+
 import PostCard from './PostCard.vue'
 
-const localVue = createLocalVue()
-
-localVue.use(Vuex)
-localVue.use(Styleguide)
-localVue.use(Filters)
+const localVue = global.localVue
 
 config.stubs['client-only'] = '<span><slot /></span>'
 config.stubs['v-popover'] = '<span><slot /></span>'

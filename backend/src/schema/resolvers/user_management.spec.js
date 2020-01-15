@@ -1,31 +1,33 @@
 import jwt from 'jsonwebtoken'
 import CONFIG from './../../config'
 import Factory from '../../seed/factories'
-import { gql } from '../../jest/helpers'
+import { gql } from '../../helpers/jest'
 import { createTestClient } from 'apollo-server-testing'
 import createServer, { context } from '../../server'
 import encode from '../../jwt/encode'
+import { getNeode } from '../../bootstrap/neo4j'
 
 const factory = Factory()
-let query
-let mutate
-let variables
-let req
-let user
+const neode = getNeode()
+let query, mutate, variables, req, user
 
 const disable = async id => {
-  await factory.create('User', { id: 'u2', role: 'moderator' })
-  const moderatorBearerToken = encode({ id: 'u2' })
-  req = { headers: { authorization: `Bearer ${moderatorBearerToken}` } }
-  await mutate({
-    mutation: gql`
-      mutation($id: ID!) {
-        disable(id: $id)
-      }
-    `,
-    variables: { id },
-  })
-  req = { headers: {} }
+  const moderator = await factory.create('User', { id: 'u2', role: 'moderator' })
+  const user = await neode.find('User', id)
+  const reportAgainstUser = await factory.create('Report')
+  await Promise.all([
+    reportAgainstUser.relateTo(moderator, 'filed', {
+      resourceId: id,
+      reasonCategory: 'discrimination_etc',
+      reasonDescription: 'This user is harassing me with bigoted remarks!',
+    }),
+    reportAgainstUser.relateTo(user, 'belongsTo'),
+  ])
+  const disableVariables = { resourceId: user.id, disable: true, closed: false }
+  await Promise.all([
+    reportAgainstUser.relateTo(moderator, 'reviewed', disableVariables),
+    user.update({ disabled: true, updatedAt: new Date().toISOString() }),
+  ])
 }
 
 beforeEach(() => {
@@ -211,6 +213,28 @@ describe('login', () => {
           await respondsWith({
             data: null,
             errors: [{ message: 'Your account has been disabled.' }],
+          })
+        })
+      })
+
+      describe('normalization', () => {
+        describe('email address is a gmail address ', () => {
+          beforeEach(async () => {
+            const email = await neode.first('EmailAddress', { email: 'test@example.org' })
+            await email.update({ email: 'someuser@gmail.com' })
+          })
+
+          describe('supplied email contains dots', () => {
+            beforeEach(() => {
+              variables = { ...variables, email: 'some.user@gmail.com' }
+            })
+
+            it('normalizes email, issue #2329', async () => {
+              await respondsWith({
+                data: { login: expect.any(String) },
+                errors: undefined,
+              })
+            })
           })
         })
       })

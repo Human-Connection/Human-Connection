@@ -9,9 +9,9 @@
       href="#"
       @click.prevent="toggleMenu()"
     >
-      <ds-icon style="margin-right: 2px;" name="filter" />
-      <label for="dropdown">{{ selected }}</label>
-      <ds-icon style="margin-left: 2px" size="xx-small" name="angle-down" />
+      <base-icon name="filter" />
+      <label class="label" for="dropdown">{{ selected }}</label>
+      <base-icon class="dropdown-arrow" name="angle-down" />
     </a>
     <ds-menu
       slot="popover"
@@ -25,7 +25,7 @@
         class="dropdown-menu-item"
         :route="item.route"
         :parents="item.parents"
-        @click.stop.prevent="filterNotifications(item.route, toggleMenu)"
+        @click.stop.prevent="filter(item.route, toggleMenu)"
       >
         {{ item.route.label }}
       </ds-menu-item>
@@ -44,8 +44,8 @@ export default {
     filterOptions: { type: Array, default: () => [] },
   },
   methods: {
-    filterNotifications(option, toggleMenu) {
-      this.$emit('filterNotifications', option)
+    filter(option, toggleMenu) {
+      this.$emit('filter', option)
       toggleMenu()
     },
   },
@@ -59,7 +59,16 @@ export default {
   height: 100%;
   padding: $space-xx-small;
   color: $text-color-soft;
+
+  > .label {
+    margin: 0 $space-xx-small;
+  }
 }
+
+.dropdown-arrow {
+  font-size: $font-size-xx-small;
+}
+
 .dropdown-menu {
   user-select: none;
   display: flex;

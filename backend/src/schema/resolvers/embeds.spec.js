@@ -3,7 +3,7 @@ import fs from 'fs'
 import path from 'path'
 import { createTestClient } from 'apollo-server-testing'
 import createServer from '../../server'
-import { gql } from '../../jest/helpers'
+import { gql } from '../../helpers/jest'
 
 jest.mock('node-fetch')
 const { Response } = jest.requireActual('node-fetch')
@@ -15,15 +15,12 @@ afterEach(() => {
 let variables = {}
 
 const HumanConnectionOrg = fs.readFileSync(
-  path.join(__dirname, '../../jest/snapshots/embeds/HumanConnectionOrg.html'),
+  path.join(__dirname, '../../../snapshots/embeds/HumanConnectionOrg.html'),
   'utf8',
 )
-const pr960 = fs.readFileSync(
-  path.join(__dirname, '../../jest/snapshots/embeds/pr960.html'),
-  'utf8',
-)
+const pr960 = fs.readFileSync(path.join(__dirname, '../../../snapshots/embeds/pr960.html'), 'utf8')
 const babyLovesCat = fs.readFileSync(
-  path.join(__dirname, '../../jest/snapshots/embeds/babyLovesCat.html'),
+  path.join(__dirname, '../../../snapshots/embeds/babyLovesCat.html'),
   'utf8',
 )
 
@@ -88,7 +85,7 @@ describe('Query', () => {
       })
 
       it('shows some default data', async () => {
-        const expected = expect.objectContaining({
+        await expect(embedAction(variables)).resolves.toMatchObject({
           data: {
             embed: {
               audio: null,
@@ -98,7 +95,7 @@ describe('Query', () => {
               html: null,
               image: null,
               lang: null,
-              publisher: 'YouTube',
+              publisher: null,
               sources: ['resource'],
               title: null,
               type: 'link',
@@ -106,8 +103,8 @@ describe('Query', () => {
               video: null,
             },
           },
+          errors: undefined,
         })
-        await expect(embedAction(variables)).resolves.toEqual(expected)
       })
     })
 
@@ -120,7 +117,7 @@ describe('Query', () => {
       })
 
       it('does not crash if embed provider returns invalid JSON', async () => {
-        const expected = expect.objectContaining({
+        await expect(embedAction(variables)).resolves.toMatchObject({
           data: {
             embed: {
               audio: null,
@@ -140,8 +137,8 @@ describe('Query', () => {
               video: null,
             },
           },
+          errors: undefined,
         })
-        await expect(embedAction(variables)).resolves.toEqual(expected)
       })
     })
 
@@ -154,7 +151,7 @@ describe('Query', () => {
       })
 
       it('returns meta data even if no embed html can be retrieved', async () => {
-        const expected = expect.objectContaining({
+        await expect(embedAction(variables)).resolves.toMatchObject({
           data: {
             embed: {
               type: 'link',
@@ -174,8 +171,8 @@ describe('Query', () => {
               html: null,
             },
           },
+          errors: undefined,
         })
-        await expect(embedAction(variables)).resolves.toEqual(expected)
       })
     })
 
@@ -188,7 +185,7 @@ describe('Query', () => {
       })
 
       it('returns meta data plus youtube iframe html', async () => {
-        const expected = expect.objectContaining({
+        await expect(embedAction(variables)).resolves.toMatchObject({
           data: {
             embed: {
               type: 'video',
@@ -208,8 +205,8 @@ describe('Query', () => {
                 '<iframe width="480" height="270" src="https://www.youtube.com/embed/qkdXAtO40Fo?start=18&feature=oembed" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
             },
           },
+          errors: undefined,
         })
-        await expect(embedAction(variables)).resolves.toEqual(expected)
       })
     })
   })

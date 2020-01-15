@@ -13,9 +13,7 @@ export default {
       const trigger = type === 'link' ? 'click' : 'mouseenter'
       const showOnCreate = type !== 'link'
 
-      if (this.menu) {
-        return
-      }
+      if (this.menu) return
 
       this.menu = tippy(decorationNode, {
         arrow: roundArrow,
@@ -30,10 +28,13 @@ export default {
         onCreate(instance) {
           instance.popperInstance.reference = {
             ...virtualNode,
-            popperOptions: { positionFixed: true },
+            popperOptions: {
+              appendTo: document.querySelectorAll('.editor-content')[0],
+            },
           }
         },
         onMount(instance) {
+          instance.setProps({interactive: true})
           const input = instance.popper.querySelector('input')
           if (input) {
             input.focus({ preventScroll: true })

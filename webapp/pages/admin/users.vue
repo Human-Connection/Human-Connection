@@ -12,7 +12,7 @@
               />
             </ds-flex-item>
             <ds-flex-item width="30px">
-              <ds-button primary type="submit" icon="search" :loading="$apollo.loading" />
+              <base-button filled circle type="submit" icon="search" :loading="$apollo.loading" />
             </ds-flex-item>
           </ds-flex>
         </ds-form>
@@ -50,14 +50,7 @@
           {{ scope.row.createdAt | dateTime }}
         </template>
       </ds-table>
-      <ds-flex direction="row-reverse">
-        <ds-flex-item width="50px">
-          <ds-button @click="next" :disabled="!hasNext" icon="arrow-right" primary />
-        </ds-flex-item>
-        <ds-flex-item width="50px">
-          <ds-button @click="back" :disabled="!hasPrevious" icon="arrow-left" primary />
-        </ds-flex-item>
-      </ds-flex>
+      <hc-paginate :hasNext="hasNext" :hasPrevious="hasPrevious" @next="next" @back="back" />
     </ds-card>
     <ds-card v-else>
       <ds-placeholder>{{ $t('admin.users.empty') }}</ds-placeholder>
@@ -67,9 +60,14 @@
 
 <script>
 import gql from 'graphql-tag'
-import { isEmail, normalizeEmail } from 'validator'
+import { isEmail } from 'validator'
+import normalizeEmail from '~/components/utils/NormalizeEmail'
+import HcPaginate from '~/components/Paginate/Paginate'
 
 export default {
+  components: {
+    HcPaginate,
+  },
   data() {
     const pageSize = 15
     return {

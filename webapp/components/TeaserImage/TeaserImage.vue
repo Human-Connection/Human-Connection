@@ -9,10 +9,18 @@
     @vdropzone-thumbnail="transformImage"
   >
     <div class="crop-overlay" ref="cropperOverlay" v-show="showCropper">
-      <ds-button @click="cropImage" class="crop-confirm" primary>
+      <base-button @click="cropImage" class="crop-confirm" filled>
         {{ $t('contribution.teaserImage.cropperConfirm') }}
-      </ds-button>
-      <ds-button @click="cancelCrop" class="crop-cancel" icon="close"></ds-button>
+      </base-button>
+      <base-button
+        class="crop-cancel"
+        icon="close"
+        size="small"
+        circle
+        danger
+        filled
+        @click="cancelCrop"
+      />
     </div>
     <div
       :class="{
@@ -27,7 +35,7 @@
           'hc-drag-marker-update-post': contribution,
         }"
       >
-        <ds-icon name="image" size="xxx-large" />
+        <base-icon name="image" />
       </div>
     </div>
   </vue-dropzone>
@@ -64,7 +72,7 @@ export default {
   },
   watch: {
     error() {
-      let that = this
+      const that = this
       setTimeout(function() {
         that.error = false
       }, 2000)
@@ -112,10 +120,12 @@ export default {
       this.showCropper = false
       const canvas = this.cropper.getCroppedCanvas()
       canvas.toBlob(blob => {
+        const imageAspectRatio = canvas.width / canvas.height
         this.setupPreview(canvas)
         this.removeCropper()
-        const croppedImageFile = new File([blob], this.file.name, { type: 'image/jpeg' })
+        const croppedImageFile = new File([blob], this.file.name, { type: this.file.type })
         this.$emit('addTeaserImage', croppedImageFile)
+        this.$emit('addImageAspectRatio', imageAspectRatio)
       }, 'image/jpeg')
     },
     setupPreview(canvas) {
@@ -138,7 +148,7 @@ export default {
 <style lang="scss">
 #postdropzone {
   width: 100%;
-  min-height: 500px;
+  min-height: 400px;
   background-color: $background-color-softest;
 }
 

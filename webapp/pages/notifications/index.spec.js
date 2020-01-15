@@ -1,15 +1,11 @@
-import { config, shallowMount, mount, createLocalVue } from '@vue/test-utils'
+import { config, shallowMount, mount } from '@vue/test-utils'
 import NotificationsPage from './index.vue'
-import Styleguide from '@human-connection/styleguide'
-import VTooltip from 'v-tooltip'
+
 import DropdownFilter from '~/components/DropdownFilter/DropdownFilter'
 import NotificationsTable from '~/components/NotificationsTable/NotificationsTable'
 import Paginate from '~/components/Paginate/Paginate'
 
-const localVue = createLocalVue()
-
-localVue.use(Styleguide)
-localVue.use(VTooltip)
+const localVue = global.localVue
 
 config.stubs['client-only'] = '<span><slot /></span>'
 
@@ -75,7 +71,7 @@ describe('PostIndex', () => {
       }
     })
 
-    describe('filterNotifications', () => {
+    describe('filter', () => {
       beforeEach(() => {
         propsData.filterOptions = [
           { label: 'All', value: null },
@@ -83,7 +79,7 @@ describe('PostIndex', () => {
           { label: 'Unread', value: false },
         ]
         wrapper = Wrapper()
-        wrapper.find(DropdownFilter).vm.$emit('filterNotifications', propsData.filterOptions[1])
+        wrapper.find(DropdownFilter).vm.$emit('filter', propsData.filterOptions[1])
       })
 
       it('sets `notificationRead` to value of received option', () => {

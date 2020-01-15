@@ -30,17 +30,16 @@
         name="email"
         icon="envelope"
       />
-      <ds-button
+      <base-button
         :disabled="disabled"
         :loading="$apollo.loading"
-        primary
-        fullwidth
+        filled
         name="submit"
         type="submit"
         icon="envelope"
       >
         {{ $t('components.registration.signup.form.submit') }}
-      </ds-button>
+      </base-button>
       <slot></slot>
     </ds-form>
   </ds-space>
@@ -56,6 +55,9 @@
         <sweetalert-icon icon="error" />
       </transition>
       <ds-text align="center">{{ error.message }}</ds-text>
+      <ds-space centered class="space-top">
+        <nuxt-link to="/login">{{ $t('site.back-to-login') }}</nuxt-link>
+      </ds-space>
     </template>
   </div>
 </template>
@@ -149,3 +151,8 @@ export default {
   },
 }
 </script>
+<style>
+.space-top {
+  margin-top: 6ex;
+}
+</style>

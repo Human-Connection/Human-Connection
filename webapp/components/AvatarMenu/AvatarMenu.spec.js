@@ -1,15 +1,8 @@
-import { config, mount, createLocalVue } from '@vue/test-utils'
+import { config, mount } from '@vue/test-utils'
 import Vuex from 'vuex'
-import VTooltip from 'v-tooltip'
-import Styleguide from '@human-connection/styleguide'
 import AvatarMenu from './AvatarMenu.vue'
-import Filters from '~/plugins/vue-filters'
 
-const localVue = createLocalVue()
-localVue.use(Styleguide)
-localVue.use(Vuex)
-localVue.use(Filters)
-localVue.use(VTooltip)
+const localVue = global.localVue
 
 config.stubs['nuxt-link'] = '<span><slot /></span>'
 config.stubs['router-link'] = '<span><slot /></span>'

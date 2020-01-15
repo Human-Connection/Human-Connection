@@ -1,10 +1,7 @@
-import { shallowMount, mount, createLocalVue } from '@vue/test-utils'
+import { shallowMount, mount } from '@vue/test-utils'
 import DisableModal from './DisableModal.vue'
-import Styleguide from '@human-connection/styleguide'
 
-const localVue = createLocalVue()
-
-localVue.use(Styleguide)
+const localVue = global.localVue
 
 describe('DisableModal.vue', () => {
   let mocks
@@ -29,9 +26,7 @@ describe('DisableModal.vue', () => {
       $apollo: {
         mutate: jest
           .fn()
-          .mockResolvedValueOnce({
-            enable: 'u4711',
-          })
+          .mockResolvedValueOnce()
           .mockRejectedValue({
             message: 'Not Authorised!',
           }),
@@ -162,11 +157,13 @@ describe('DisableModal.vue', () => {
           expect(mocks.$apollo.mutate).toHaveBeenCalled()
         })
 
-        it('passes id to mutation', () => {
+        it('passes parameters to mutation', () => {
           const calls = mocks.$apollo.mutate.mock.calls
           const [[{ variables }]] = calls
-          expect(variables).toEqual({
-            id: 'u4711',
+          expect(variables).toMatchObject({
+            resourceId: 'u4711',
+            disable: true,
+            closed: false,
           })
         })
 

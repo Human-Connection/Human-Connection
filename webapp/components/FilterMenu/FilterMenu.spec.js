@@ -1,12 +1,7 @@
-import { mount, createLocalVue } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import FilterMenu from './FilterMenu.vue'
-import Styleguide from '@human-connection/styleguide'
-import VTooltip from 'v-tooltip'
 
-const localVue = createLocalVue()
-
-localVue.use(Styleguide)
-localVue.use(VTooltip)
+const localVue = global.localVue
 
 describe('FilterMenu.vue', () => {
   let wrapper
@@ -44,7 +39,7 @@ describe('FilterMenu.vue', () => {
 
       describe('click "clear-search-button" button', () => {
         it('emits clearSearch', () => {
-          wrapper.find({ name: 'clear-search-button' }).trigger('click')
+          wrapper.find('[name="clear-search-button"]').trigger('click')
           expect(wrapper.emitted().clearSearch).toHaveLength(1)
         })
       })

@@ -1,14 +1,41 @@
 <template>
-  <ds-form ref="contributionForm" v-model="form" :schema="formSchema">
+  <ds-form
+    class="contribution-form"
+    ref="contributionForm"
+    v-model="form"
+    :schema="formSchema"
+    @submit="submit"
+  >
     <template slot-scope="{ errors }">
-      <hc-teaser-image :contribution="contribution" @addTeaserImage="addTeaserImage">
+      <hc-teaser-image
+        :contribution="contribution"
+        @addTeaserImage="addTeaserImage"
+        :class="{ '--blur-image': form.blurImage }"
+        @addImageAspectRatio="addImageAspectRatio"
+      >
         <img
           v-if="contribution"
           class="contribution-image"
           :src="contribution.image | proxyApiUrl"
         />
       </hc-teaser-image>
+
       <ds-card>
+        <div class="blur-toggle">
+          <label for="blur-img">{{ $t('contribution.inappropriatePicture') }}</label>
+          <input type="checkbox" id="blur-img" v-model="form.blurImage" />
+          <p>
+            <a
+              href="https://support.human-connection.org/kb/faq.php?id=113"
+              target="_blank"
+              class="link"
+            >
+              {{ $t('contribution.inappropriatePictureText') }}
+              <ds-icon name="question-circle" />
+            </a>
+          </p>
+        </div>
+
         <ds-space />
         <client-only>
           <hc-user :user="currentUser" :trunc="35" />
@@ -21,56 +48,64 @@
           name="title"
           autofocus
         />
-        <small class="smallTag">{{ form.title.length }}/{{ formSchema.title.max }}</small>
-        <client-only>
-          <hc-editor
-            :users="users"
-            :value="form.content"
-            :hashtags="hashtags"
-            @input="updateEditorContent"
-          />
-          <small class="smallTag">{{ form.contentLength }}</small>
-        </client-only>
-        <ds-space margin-bottom="small" />
-        <hc-categories-select
-          model="categoryIds"
-          @updateCategories="updateCategories"
-          :existingCategoryIds="form.categoryIds"
+        <ds-text align="right">
+          <ds-chip v-if="errors && errors.title" color="danger" size="base">
+            {{ form.title.length }}/{{ formSchema.title.max }}
+            <ds-icon name="warning"></ds-icon>
+          </ds-chip>
+          <ds-chip v-else size="base">{{ form.title.length }}/{{ formSchema.title.max }}</ds-chip>
+        </ds-text>
+        <hc-editor
+          :users="users"
+          :value="form.content"
+          :hashtags="hashtags"
+          @input="updateEditorContent"
         />
+        <ds-text align="right">
+          <ds-chip v-if="errors && errors.content" color="danger" size="base">
+            {{ contentLength }}
+            <ds-icon name="warning"></ds-icon>
+          </ds-chip>
+          <ds-chip v-else size="base">
+            {{ contentLength }}
+          </ds-chip>
+        </ds-text>
+        <ds-space margin-bottom="small" />
+        <hc-categories-select model="categoryIds" :existingCategoryIds="form.categoryIds" />
+        <ds-text align="right">
+          <ds-chip v-if="errors && errors.categoryIds" color="danger" size="base">
+            {{ form.categoryIds.length }} / 3
+            <ds-icon name="warning"></ds-icon>
+          </ds-chip>
+          <ds-chip v-else size="base">{{ form.categoryIds.length }} / 3</ds-chip>
+        </ds-text>
         <ds-flex class="contribution-form-footer">
-          <ds-flex-item :width="{ base: '10%', sm: '10%', md: '10%', lg: '15%' }" />
-          <ds-flex-item :width="{ base: '80%', sm: '30%', md: '30%', lg: '20%' }">
+          <ds-flex-item :width="{ lg: '50%', md: '50%', sm: '100%' }" />
+          <ds-flex-item>
             <ds-space margin-bottom="small" />
             <ds-select
               model="language"
-              :options="form.languageOptions"
+              :options="languageOptions"
               icon="globe"
-              :placeholder="locale"
+              :placeholder="$t('contribution.languageSelectText')"
               :label="$t('contribution.languageSelectLabel')"
             />
           </ds-flex-item>
         </ds-flex>
+        <ds-text align="right">
+          <ds-chip v-if="errors && errors.language" size="base" color="danger">
+            <ds-icon name="warning"></ds-icon>
+          </ds-chip>
+        </ds-text>
+
         <ds-space />
         <div slot="footer" style="text-align: right">
-          <ds-button
-            class="cancel-button"
-            :disabled="loading"
-            ghost
-            @click.prevent="$router.back()"
-          >
+          <base-button data-test="cancel-button" :disabled="loading" @click="$router.back()" danger>
             {{ $t('actions.cancel') }}
-          </ds-button>
-          <ds-button
-            class="submit-button-for-test"
-            type="submit"
-            icon="check"
-            :loading="loading"
-            :disabled="failsValidations || errors"
-            primary
-            @click.prevent="submit"
-          >
+          </base-button>
+          <base-button type="submit" icon="check" :loading="loading" :disabled="errors" filled>
             {{ $t('actions.save') }}
-          </ds-button>
+          </base-button>
         </div>
         <ds-space margin-bottom="large" />
       </ds-card>
@@ -100,73 +135,88 @@ export default {
     contribution: { type: Object, default: () => {} },
   },
   data() {
+    const languageOptions = orderBy(locales, 'name').map(locale => {
+      return { label: locale.name, value: locale.code }
+    })
+
+    const formDefaults = {
+      title: '',
+      content: '',
+      teaserImage: null,
+      imageAspectRatio: null,
+      image: null,
+      language: null,
+      categoryIds: [],
+      blurImage: false,
+    }
+
+    let id = null
+    let slug = null
+    const form = { ...formDefaults }
+    if (this.contribution && this.contribution.id) {
+      id = this.contribution.id
+      slug = this.contribution.slug
+      form.title = this.contribution.title
+      form.content = this.contribution.content
+      form.image = this.contribution.image
+      form.language =
+        this.contribution && this.contribution.language
+          ? languageOptions.find(o => this.contribution.language === o.value)
+          : null
+      form.categoryIds = this.categoryIds(this.contribution.categories)
+      form.imageAspectRatio = this.contribution.imageAspectRatio
+      form.blurImage = this.contribution.imageBlurred
+    }
+
     return {
-      form: {
-        title: '',
-        content: '',
-        contentLength: 0,
-        teaserImage: null,
-        image: null,
-        language: null,
-        languageOptions: [],
-        categoryIds: [],
-      },
+      form,
       formSchema: {
         title: { required: true, min: 3, max: 100 },
-        content: [{ required: true }],
+        content: { required: true },
+        categoryIds: {
+          type: 'array',
+          required: true,
+          validator: (rule, value) => {
+            const errors = []
+            if (!(value && value.length >= 1 && value.length <= 3)) {
+              errors.push(new Error(this.$t('common.validations.categories')))
+            }
+            return errors
+          },
+        },
+        language: { required: true },
+        blurImage: { required: false },
       },
-      id: null,
+      languageOptions,
+      id,
+      slug,
       loading: false,
-      slug: null,
       users: [],
       contentMin: 3,
-      failsValidations: true,
       hashtags: [],
+      elem: null,
     }
   },
-  watch: {
-    contribution: {
-      immediate: true,
-      handler: function(contribution) {
-        if (!contribution || !contribution.id) {
-          return
-        }
-        this.id = contribution.id
-        this.slug = contribution.slug
-        this.form.title = contribution.title
-        this.form.content = contribution.content
-        this.form.image = contribution.image
-        this.form.categoryIds = this.categoryIds(contribution.categories)
-        this.manageContent(this.form.content)
-      },
-    },
-  },
   computed: {
-    locale() {
-      const locale =
-        this.contribution && this.contribution.language
-          ? locales.find(loc => this.contribution.language === loc.code)
-          : locales.find(loc => this.$i18n.locale() === loc.code)
-      return locale.name
+    contentLength() {
+      return this.$filters.removeHtml(this.form.content).length
     },
     ...mapGetters({
       currentUser: 'auth/user',
     }),
   },
-  mounted() {
-    this.availableLocales()
-  },
   methods: {
     submit() {
-      const { title, content, image, teaserImage, categoryIds } = this.form
-      let language
-      if (this.form.language) {
-        language = this.form.language.value
-      } else if (this.contribution && this.contribution.language) {
-        language = this.contribution.language
-      } else {
-        language = this.$i18n.locale()
-      }
+      const {
+        language: { value: language },
+        title,
+        content,
+        image,
+        teaserImage,
+        imageAspectRatio,
+        categoryIds,
+        blurImage,
+      } = this.form
       this.loading = true
       this.$apollo
         .mutate({
@@ -179,13 +229,14 @@ export default {
             language,
             image,
             imageUpload: teaserImage,
+            imageBlurred: blurImage,
+            imageAspectRatio,
           },
         })
         .then(({ data }) => {
           this.loading = false
           this.$toast.success(this.$t('contribution.success'))
           const result = data[this.id ? 'UpdatePost' : 'CreatePost']
-          this.failedValidations = false
 
           this.$router.push({
             name: 'post-id-slug',
@@ -195,45 +246,19 @@ export default {
         .catch(err => {
           this.$toast.error(err.message)
           this.loading = false
-          this.failedValidations = true
         })
     },
     updateEditorContent(value) {
-      // TODO: Do smth????? what is happening
       this.$refs.contributionForm.update('content', value)
-      this.manageContent(value)
-    },
-    manageContent(content) {
-      // filter HTML out of content value
-      const str = content.replace(/<\/?[^>]+(>|$)/gm, '')
-      // Set counter length of text
-      this.form.contentLength = str.length
-      this.validatePost()
-    },
-    availableLocales() {
-      orderBy(locales, 'name').map(locale => {
-        this.form.languageOptions.push({ label: locale.name, value: locale.code })
-      })
-    },
-    updateCategories(ids) {
-      this.form.categoryIds = ids
-      this.validatePost()
     },
     addTeaserImage(file) {
       this.form.teaserImage = file
     },
-    categoryIds(categories) {
-      let categoryIds = []
-      categories.map(categoryId => {
-        categoryIds.push(categoryId.id)
-      })
-      return categoryIds
+    addImageAspectRatio(aspectRatio) {
+      this.form.imageAspectRatio = aspectRatio
     },
-    validatePost() {
-      const passesContentValidations = this.form.contentLength >= this.contentMin
-      const passesCategoryValidations =
-        this.form.categoryIds.length > 0 && this.form.categoryIds.length <= 3
-      this.failsValidations = !(passesContentValidations && passesCategoryValidations)
+    categoryIds(categories) {
+      return categories.map(c => c.id)
     },
   },
   apollo: {
@@ -270,22 +295,35 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-.smallTag {
-  width: 100%;
-  position: relative;
-  left: 90%;
-}
-.post-title {
-  margin-top: $space-x-small;
-  margin-bottom: $space-xx-small;
+<style lang="scss">
+.contribution-form {
+  .ds-card-image.--blur-image img {
+    filter: blur(32px);
+  }
 
-  input {
-    border: 0;
-    font-size: $font-size-x-large;
-    font-weight: bold;
-    padding-left: 0;
-    padding-right: 0;
+  .blur-toggle {
+    text-align: right;
+
+    > .link {
+      display: block;
+    }
+  }
+
+  .ds-chip {
+    cursor: default;
+  }
+
+  .post-title {
+    margin-top: $space-x-small;
+    margin-bottom: $space-xx-small;
+
+    input {
+      border: 0;
+      font-size: $font-size-x-large;
+      font-weight: bold;
+      padding-left: 0;
+      padding-right: 0;
+    }
   }
 }
 </style>

@@ -1,19 +1,8 @@
 <template>
-  <div id="comments">
-    <h3 style="margin-top: -10px;">
-      <span>
-        <ds-icon name="comments" />
-        <ds-tag
-          v-if="post.comments.length"
-          style="margin-top: -4px; margin-left: -12px; position: absolute;"
-          color="primary"
-          size="small"
-          round
-        >
-          {{ post.comments.length }}
-        </ds-tag>
-        <span class="list-title">{{ $t('common.comment', null, 0) }}</span>
-      </span>
+  <div id="comments" class="comment-list">
+    <h3 class="title">
+      <counter-icon icon="comments" :count="post.comments.length" />
+      {{ $t('common.comment', null, 0) }}
     </h3>
     <ds-space margin-bottom="large" />
     <div v-if="post.comments && post.comments.length" id="comments" class="comments">
@@ -31,12 +20,14 @@
   </div>
 </template>
 <script>
+import CounterIcon from '~/components/_new/generic/CounterIcon/CounterIcon'
 import Comment from '~/components/Comment/Comment'
 import scrollToAnchor from '~/mixins/scrollToAnchor'
 
 export default {
   mixins: [scrollToAnchor],
   components: {
+    CounterIcon,
     Comment,
   },
   props: {
@@ -59,8 +50,14 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-.list-title {
-  margin-left: $space-x-small;
+<style lang="scss">
+.comment-list {
+  > .title {
+    margin-top: 0;
+
+    > .counter-icon {
+      margin-right: $space-small;
+    }
+  }
 }
 </style>

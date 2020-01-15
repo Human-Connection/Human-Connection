@@ -4,7 +4,6 @@ import { expect } from 'chai'
 // import { client } from '../../../src/activitypub/apollo-client'
 import { GraphQLClient } from 'graphql-request'
 import Factory from '../../../src/seed/factories'
-import { host } from '../../../src/jest/helpers'
 const debug = require('debug')('ea:test:steps')
 
 const factory = Factory()

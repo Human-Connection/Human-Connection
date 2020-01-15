@@ -20,17 +20,16 @@
     <ds-space margin-botton="large">
       <ds-text align="left">{{ $t('components.password-reset.request.form.description') }}</ds-text>
     </ds-space>
-    <ds-button
+    <base-button
       :disabled="disabled"
       :loading="$apollo.loading"
-      primary
-      fullwidth
+      filled
       name="submit"
       type="submit"
       icon="envelope"
     >
       {{ $t('components.password-reset.request.form.submit') }}
-    </ds-button>
+    </base-button>
     <slot></slot>
   </ds-form>
   <div v-else>
@@ -46,7 +45,7 @@
 <script>
 import gql from 'graphql-tag'
 import { SweetalertIcon } from 'vue-sweetalert-icons'
-import { normalizeEmail } from 'validator'
+import normalizeEmail from '~/components/utils/NormalizeEmail'
 
 export default {
   components: {

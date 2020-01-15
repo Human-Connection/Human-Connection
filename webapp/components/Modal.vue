@@ -23,11 +23,11 @@
       @close="close"
     />
     <confirm-modal
-      v-if="open === 'delete'"
+      v-if="open === 'confirm'"
       :id="data.resource.id"
       :type="data.type"
       :name="name"
-      :modalData="data.modalsData.delete"
+      :modalData="data.modalData"
       @close="close"
     />
   </div>

@@ -50,16 +50,9 @@
             <ds-space margin-bottom="large">
               <nuxt-link to="/password-reset/request">{{ $t('login.forgotPassword') }}</nuxt-link>
             </ds-space>
-            <ds-button
-              :loading="pending"
-              primary
-              fullwidth
-              name="submit"
-              type="submit"
-              icon="sign-in"
-            >
+            <base-button :loading="pending" filled name="submit" type="submit" icon="sign-in">
               {{ $t('login.login') }}
-            </ds-button>
+            </base-button>
             <ds-space margin-top="large" margin-bottom="x-small">
               {{ $t('login.no-account') }}
               <nuxt-link to="/registration/signup">{{ $t('login.register') }}</nuxt-link>
@@ -93,8 +86,9 @@ export default {
   },
   methods: {
     async onSubmit() {
+      const { email, password } = this.form
       try {
-        await this.$store.dispatch('auth/login', { ...this.form })
+        await this.$store.dispatch('auth/login', { email, password })
         this.$toast.success(this.$t('login.success'))
         this.$emit('success')
       } catch (err) {
@@ -112,6 +106,11 @@ export default {
 }
 .login-card {
   position: relative;
+
+  .base-button {
+    display: block;
+    width: 100%;
+  }
 }
 .login-locale-switch {
   position: absolute;

@@ -1,4 +1,4 @@
-// this list equals to enums in GraphQL schema file "backend/src/schema/types/type/REPORTED.gql"
+// this list equals to enums in GraphQL schema file "backend/src/schema/types/type/FILED.gql"
 export const valuesReasonCategoryOptions = [
   'discrimination_etc',
   'pornographic_content_links',

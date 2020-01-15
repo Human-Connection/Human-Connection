@@ -88,16 +88,37 @@
             v-html="$t('components.registration.signup.form.minimum-age')"
           ></label>
         </ds-text>
-        <ds-button
+        <ds-text>
+          <input id="checkbox3" type="checkbox" v-model="noCommercial" :checked="noCommercial" />
+          <label
+            for="checkbox3"
+            v-html="$t('components.registration.signup.form.no-commercial')"
+          ></label>
+        </ds-text>
+        <ds-text>
+          <input id="checkbox4" type="checkbox" v-model="noPolitical" :checked="noPolitical" />
+          <label
+            for="checkbox4"
+            v-html="$t('components.registration.signup.form.no-political')"
+          ></label>
+        </ds-text>
+        <base-button
           style="float: right;"
           icon="check"
           type="submit"
+          filled
           :loading="$apollo.loading"
-          :disabled="errors || !termsAndConditionsConfirmed || !dataPrivacy || !minimumAge"
-          primary
+          :disabled="
+            errors ||
+              !termsAndConditionsConfirmed ||
+              !dataPrivacy ||
+              !minimumAge ||
+              !noCommercial ||
+              !noPolitical
+          "
         >
           {{ $t('actions.save') }}
-        </ds-button>
+        </base-button>
       </template>
     </ds-form>
   </div>
@@ -145,6 +166,8 @@ export default {
       termsAndConditionsConfirmed: false,
       dataPrivacy: false,
       minimumAge: false,
+      noCommercial: false,
+      noPolitical: false,
     }
   },
   props: {

@@ -1,15 +1,9 @@
-import { mount, createLocalVue } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import flushPromises from 'flush-promises'
 import MySocialMedia from './my-social-media.vue'
 import Vuex from 'vuex'
-import Styleguide from '@human-connection/styleguide'
-import Filters from '~/plugins/vue-filters'
 
-const localVue = createLocalVue()
-
-localVue.use(Vuex)
-localVue.use(Styleguide)
-localVue.use(Filters)
+const localVue = global.localVue
 
 describe('my-social-media.vue', () => {
   let wrapper
@@ -125,11 +119,11 @@ describe('my-social-media.vue', () => {
         })
 
         it('displays the edit button', () => {
-          expect(wrapper.find('a[name="edit"]').exists()).toBe(true)
+          expect(wrapper.find('.base-button[data-test="edit-button"]').exists()).toBe(true)
         })
 
         it('displays the delete button', () => {
-          expect(wrapper.find('a[name="delete"]').exists()).toBe(true)
+          expect(wrapper.find('.base-button[data-test="delete-button"]').exists()).toBe(true)
         })
       })
 
@@ -144,7 +138,7 @@ describe('my-social-media.vue', () => {
 
       describe('editing social media link', () => {
         beforeEach(() => {
-          const editButton = wrapper.find('a[name="edit"]')
+          const editButton = wrapper.find('.base-button[data-test="edit-button"]')
           editButton.trigger('click')
           input = wrapper.find('input#editSocialMedia')
         })
@@ -175,7 +169,7 @@ describe('my-social-media.vue', () => {
 
       describe('deleting social media link', () => {
         beforeEach(() => {
-          const deleteButton = wrapper.find('a[name="delete"]')
+          const deleteButton = wrapper.find('.base-button[data-test="delete-button"]')
           deleteButton.trigger('click')
         })
 

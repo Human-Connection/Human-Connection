@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 
-export const userFragment = lang => gql`
+export const userFragment = gql`
   fragment user on User {
     id
     slug
@@ -8,11 +8,10 @@ export const userFragment = lang => gql`
     avatar
     disabled
     deleted
-    shoutedCount
-    contributionsCount
-    commentedCount
-    followedByCount
-    followedByCurrentUser
+  }
+`
+export const locationAndBadgesFragment = lang => gql`
+  fragment locationAndBadges on User {
     location {
       name: name${lang}
     }
@@ -23,17 +22,18 @@ export const userFragment = lang => gql`
   }
 `
 
-export const postCountsFragment = gql`
-  fragment postCounts on Post {
-    commentsCount
+export const userCountsFragment = gql`
+  fragment userCounts on User {
     shoutedCount
-    shoutedByCurrentUser
-    emotionsCount
+    contributionsCount
+    commentedCount
+    followedByCount
+    followingCount
+    followedByCurrentUser
   }
 `
-export const postFragment = lang => gql`
-  ${userFragment(lang)}
 
+export const postFragment = gql`
   fragment post on Post {
     id
     title
@@ -45,9 +45,27 @@ export const postFragment = lang => gql`
     deleted
     slug
     image
+    language
+    imageBlurred
     author {
       ...user
     }
+    pinnedAt
+    imageAspectRatio
+  }
+`
+
+export const postCountsFragment = gql`
+  fragment postCounts on Post {
+    commentsCount
+    shoutedCount
+    shoutedByCurrentUser
+    emotionsCount
+  }
+`
+
+export const tagsCategoriesAndPinnedFragment = gql`
+  fragment tagsCategoriesAndPinned on Post {
     tags {
       id
     }
@@ -62,12 +80,10 @@ export const postFragment = lang => gql`
       name
       role
     }
-    pinnedAt
   }
 `
-export const commentFragment = lang => gql`
-  ${userFragment(lang)}
 
+export const commentFragment = gql`
   fragment comment on Comment {
     id
     createdAt
@@ -76,8 +92,5 @@ export const commentFragment = lang => gql`
     deleted
     content
     contentExcerpt
-    author {
-      ...user
-    }
   }
 `

@@ -19,9 +19,9 @@
           <ds-space class="backendErrors" v-if="backendErrors">
             <ds-text align="center" bold color="danger">{{ backendErrors.message }}</ds-text>
           </ds-space>
-          <ds-button icon="check" :disabled="errors" type="submit" primary>
+          <base-button icon="check" :disabled="errors" type="submit" filled>
             {{ $t('actions.save') }}
-          </ds-button>
+          </base-button>
         </template>
       </ds-card>
     </template>
@@ -32,7 +32,7 @@
 import { mapGetters } from 'vuex'
 import { AddEmailAddressMutation } from '~/graphql/EmailAddress.js'
 import { SweetalertIcon } from 'vue-sweetalert-icons'
-import { normalizeEmail } from 'validator'
+import normalizeEmail from '~/components/utils/NormalizeEmail'
 
 export default {
   components: {

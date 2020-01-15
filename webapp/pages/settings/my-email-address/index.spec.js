@@ -1,12 +1,8 @@
-import { config, mount, createLocalVue } from '@vue/test-utils'
+import { config, mount } from '@vue/test-utils'
 import EmailSettingsIndexPage from './index.vue'
 import Vuex from 'vuex'
-import Styleguide from '@human-connection/styleguide'
 
-const localVue = createLocalVue()
-
-localVue.use(Vuex)
-localVue.use(Styleguide)
+const localVue = global.localVue
 
 config.stubs['sweetalert-icon'] = '<span><slot /></span>'
 

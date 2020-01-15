@@ -1,16 +1,11 @@
-import { mount, createLocalVue } from '@vue/test-utils'
-import VTooltip from 'v-tooltip'
-import Styleguide from '@human-connection/styleguide'
+import { mount } from '@vue/test-utils'
+
 import Vuex from 'vuex'
 import FilterPosts from './FilterPosts.vue'
 import locales from '~/locales'
 import orderBy from 'lodash/orderBy'
 
-const localVue = createLocalVue()
-
-localVue.use(Styleguide)
-localVue.use(VTooltip)
-localVue.use(Vuex)
+const localVue = global.localVue
 
 let mutations
 let getters
@@ -97,7 +92,7 @@ describe('FilterPosts.vue', () => {
     it('starts with all categories button active', () => {
       const wrapper = openFilterPosts()
       allCategoriesButton = wrapper.findAll('button').at(1)
-      expect(allCategoriesButton.attributes().class).toContain('ds-button-primary')
+      expect(allCategoriesButton.attributes().class).toContain('--filled')
     })
 
     it('calls TOGGLE_CATEGORY when clicked', () => {
@@ -116,35 +111,35 @@ describe('FilterPosts.vue', () => {
       expect(mutations['posts/TOGGLE_LANGUAGE']).toHaveBeenCalledWith({}, 'en')
     })
 
-    it('sets category button attribute `primary` when corresponding category is filtered', () => {
+    it('sets category button attribute `filled` when corresponding category is filtered', () => {
       getters['posts/filteredCategoryIds'] = jest.fn(() => ['cat9'])
       const wrapper = openFilterPosts()
       democracyAndPoliticsButton = wrapper.findAll('button').at(4)
-      expect(democracyAndPoliticsButton.attributes().class).toContain('ds-button-primary')
+      expect(democracyAndPoliticsButton.attributes().class).toContain('--filled')
     })
 
-    it('sets language button attribute `primary` when corresponding language is filtered', () => {
+    it('sets language button attribute `filled` when corresponding language is filtered', () => {
       getters['posts/filteredLanguageCodes'] = jest.fn(() => ['es'])
       const wrapper = openFilterPosts()
       spanishButton = wrapper
         .findAll('button.language-buttons')
         .at(languages.findIndex(l => l.code === 'es'))
-      expect(spanishButton.attributes().class).toContain('ds-button-primary')
+      expect(spanishButton.attributes().class).toContain('--filled')
     })
 
-    it('sets "filter-by-followed-authors-only" button attribute `primary`', () => {
+    it('sets "filter-by-followed" button attribute `filled`', () => {
       getters['posts/filteredByUsersFollowed'] = jest.fn(() => true)
       const wrapper = openFilterPosts()
-      expect(
-        wrapper.find({ name: 'filter-by-followed-authors-only' }).classes('ds-button-primary'),
-      ).toBe(true)
+      expect(wrapper.find('.base-button[data-test="filter-by-followed"]').classes('--filled')).toBe(
+        true,
+      )
     })
 
-    describe('click "filter-by-followed-authors-only" button', () => {
+    describe('click "filter-by-followed" button', () => {
       let wrapper
       beforeEach(() => {
         wrapper = openFilterPosts()
-        wrapper.find({ name: 'filter-by-followed-authors-only' }).trigger('click')
+        wrapper.find('.base-button[data-test="filter-by-followed"]').trigger('click')
       })
 
       it('calls TOGGLE_FILTER_BY_FOLLOWED', () => {

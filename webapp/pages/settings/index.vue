@@ -31,9 +31,9 @@
           :placeholder="$t('settings.data.labelBio')"
         />
         <template slot="footer">
-          <ds-button icon="check" :disabled="errors" type="submit" :loading="loadingData" primary>
+          <base-button icon="check" :disabled="errors" type="submit" :loading="loadingData" filled>
             {{ $t('actions.save') }}
-          </ds-button>
+          </base-button>
         </template>
       </ds-card>
     </template>
@@ -41,39 +41,13 @@
 </template>
 
 <script>
-import gql from 'graphql-tag'
-
 import { mapGetters, mapMutations } from 'vuex'
 import { CancelToken } from 'axios'
 import UniqueSlugForm from '~/components/utils/UniqueSlugForm'
+import { updateUserMutation } from '~/graphql/User'
 
 let timeout
 const mapboxToken = process.env.MAPBOX_TOKEN
-
-/*
-const query = gql`
-  query getUser($id: ID) {
-    User(id: $id) {
-      id
-      name
-      locationName
-      about
-    }
-  }
-`
-*/
-
-const mutation = gql`
-  mutation($id: ID!, $slug: String, $name: String, $locationName: String, $about: String) {
-    UpdateUser(id: $id, slug: $slug, name: $name, locationName: $locationName, about: $about) {
-      id
-      slug
-      name
-      locationName
-      about
-    }
-  }
-`
 
 export default {
   data() {
@@ -117,10 +91,10 @@ export default {
       this.loadingData = true
       const { name, slug, about } = this.formData
       let { locationName } = this.formData || this.currentUser
-      locationName = locationName && (locationName['label'] || locationName)
+      locationName = locationName && (locationName.label || locationName)
       try {
         await this.$apollo.mutate({
-          mutation,
+          mutation: updateUserMutation(),
           variables: {
             id: this.currentUser.id,
             name,
@@ -154,7 +128,7 @@ export default {
       if (!res || !res.data || !res.data.features || !res.data.features.length) {
         return []
       }
-      let output = []
+      const output = []
       res.data.features.forEach(item => {
         output.push({
           label: item.place_name,

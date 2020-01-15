@@ -1,5 +1,6 @@
 import { Given, When, Then } from 'cypress-cucumber-preprocessor/steps'
 import { VERSION } from '../../constants/terms-and-conditions-version.js'
+import { gql } from '../../../backend/src/helpers/jest'
 
 /* global cy  */
 
@@ -43,7 +44,7 @@ Given('I am logged in with a {string} role', role => {
 
 When('I click on "Report Post" from the content menu of the post', () => {
   cy.contains('.ds-card', davidIrvingPostTitle)
-    .find('.content-menu-trigger')
+    .find('.content-menu .base-button')
     .click({force: true})
 
   cy.get('.popover .ds-menu-item-link')
@@ -53,7 +54,7 @@ When('I click on "Report Post" from the content menu of the post', () => {
 
 When('I click on "Report User" from the content menu in the user info box', () => {
   cy.contains('.ds-card', davidIrvingPostTitle)
-    .get('.user-content-menu .content-menu-trigger')
+    .get('.user-content-menu .base-button')
     .click({ force: true })
 
   cy.get('.popover .ds-menu-item-link')
@@ -128,9 +129,9 @@ Given('somebody reported the following posts:', table => {
     cy.factory()
       .create('User', submitter)
       .authenticateAs(submitter)
-      .mutate(`mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
-        report(resourceId: $resourceId, reasonCategory: $reasonCategory, reasonDescription: $reasonDescription) {
-          type
+      .mutate(gql`mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
+        fileReport(resourceId: $resourceId, reasonCategory: $reasonCategory, reasonDescription: $reasonDescription) {
+          id
         }
       }`, {
         resourceId,

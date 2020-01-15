@@ -2,11 +2,11 @@
   <ds-container width="medium">
     <ds-card icon="balance-scale" :header="$t(`termsAndConditions.newTermsAndConditions`)" centered>
       <p>
-        <ds-button>
-          <nuxt-link class="post-link" :to="{ name: 'terms-and-conditions' }" target="_blank">
+        <nuxt-link :to="{ name: 'terms-and-conditions' }" target="_blank">
+          <base-button>
             {{ $t(`termsAndConditions.termsAndConditionsNewConfirmText`) }}
-          </nuxt-link>
-        </ds-button>
+          </base-button>
+        </nuxt-link>
       </p>
       <ds-text>
         <input id="checkbox" type="checkbox" v-model="checked" :checked="checked" />
@@ -17,24 +17,19 @@
       </ds-text>
 
       <template slot="footer">
-        <ds-button primary @click="submit" :disabled="!checked">{{ $t(`actions.save`) }}</ds-button>
+        <base-button filled @click="submit" :disabled="!checked">
+          {{ $t(`actions.save`) }}
+        </base-button>
       </template>
     </ds-card>
   </ds-container>
 </template>
 
 <script>
-import gql from 'graphql-tag'
 import { mapGetters, mapMutations } from 'vuex'
 import { VERSION } from '~/constants/terms-and-conditions-version.js'
-const mutation = gql`
-  mutation($id: ID!, $termsAndConditionsAgreedVersion: String) {
-    UpdateUser(id: $id, termsAndConditionsAgreedVersion: $termsAndConditionsAgreedVersion) {
-      id
-      termsAndConditionsAgreedVersion
-    }
-  }
-`
+import { updateUserMutation } from '~/graphql/User.js'
+
 export default {
   layout: 'default',
   head() {
@@ -74,7 +69,7 @@ export default {
     async submit() {
       try {
         await this.$apollo.mutate({
-          mutation,
+          mutation: updateUserMutation(),
           variables: {
             id: this.currentUser.id,
             termsAndConditionsAgreedVersion: VERSION,

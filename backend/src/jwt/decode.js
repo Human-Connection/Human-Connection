@@ -12,20 +12,27 @@ export default async (driver, authorizationHeader) => {
     return null
   }
   const session = driver.session()
-  const query = `
-    MATCH (user:User {id: $id, deleted: false, disabled: false })
-    SET user.lastActiveAt = toString(datetime())
-    RETURN user {.id, .slug, .name, .avatar, .email, .role, .disabled, .actorId}
-    LIMIT 1
-  `
-  const result = await session.run(query, { id })
-  session.close()
-  const [currentUser] = await result.records.map(record => {
-    return record.get('user')
+
+  const writeTxResultPromise = session.writeTransaction(async transaction => {
+    const updateUserLastActiveTransactionResponse = await transaction.run(
+      ` 
+        MATCH (user:User {id: $id, deleted: false, disabled: false })
+        SET user.lastActiveAt = toString(datetime())
+        RETURN user {.id, .slug, .name, .avatar, .email, .role, .disabled, .actorId}
+        LIMIT 1
+      `,
+      { id },
+    )
+    return updateUserLastActiveTransactionResponse.records.map(record => record.get('user'))
   })
-  if (!currentUser) return null
-  return {
-    token,
-    ...currentUser,
+  try {
+    const [currentUser] = await writeTxResultPromise
+    if (!currentUser) return null
+    return {
+      token,
+      ...currentUser,
+    }
+  } finally {
+    session.close()
   }
 }

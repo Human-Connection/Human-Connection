@@ -1,8 +1,8 @@
 import Factory from '../../seed/factories'
-import { gql } from '../../jest/helpers'
+import { gql } from '../../helpers/jest'
 import { createTestClient } from 'apollo-server-testing'
 import createServer from '../../server'
-import { neode as getNeode, getDriver } from '../../bootstrap/neo4j'
+import { getNeode, getDriver } from '../../bootstrap/neo4j'
 
 const driver = getDriver()
 const neode = getNeode()
@@ -10,7 +10,8 @@ const factory = Factory()
 
 let variables, mutate, authenticatedUser, commentAuthor, newlyCreatedComment
 
-beforeAll(() => {
+beforeAll(async () => {
+  await factory.cleanDatabase()
   const { server } = createServer({
     context: () => {
       return {
@@ -19,8 +20,7 @@ beforeAll(() => {
       }
     },
   })
-  const client = createTestClient(server)
-  mutate = client.mutate
+  mutate = createTestClient(server).mutate
 })
 
 beforeEach(async () => {
@@ -100,6 +100,7 @@ describe('CreateComment', () => {
         await expect(mutate({ mutation: createCommentMutation, variables })).resolves.toMatchObject(
           {
             data: { CreateComment: { content: "I'm authorised to comment" } },
+            errors: undefined,
           },
         )
       })
@@ -108,44 +109,9 @@ describe('CreateComment', () => {
         await expect(mutate({ mutation: createCommentMutation, variables })).resolves.toMatchObject(
           {
             data: { CreateComment: { author: { name: 'Author' } } },
+            errors: undefined,
           },
         )
-      })
-
-      describe('comment content is empty', () => {
-        beforeEach(() => {
-          variables = { ...variables, content: '<p></p>' }
-        })
-
-        it('throw UserInput error', async () => {
-          const { data, errors } = await mutate({ mutation: createCommentMutation, variables })
-          expect(data).toEqual({ CreateComment: null })
-          expect(errors[0]).toHaveProperty('message', 'Comment must be at least 1 character long!')
-        })
-      })
-
-      describe('comment content contains only whitespaces', () => {
-        beforeEach(() => {
-          variables = { ...variables, content: '   <p>   </p>   ' }
-        })
-
-        it('throw UserInput error', async () => {
-          const { data, errors } = await mutate({ mutation: createCommentMutation, variables })
-          expect(data).toEqual({ CreateComment: null })
-          expect(errors[0]).toHaveProperty('message', 'Comment must be at least 1 character long!')
-        })
-      })
-
-      describe('invalid post id', () => {
-        beforeEach(() => {
-          variables = { ...variables, postId: 'does-not-exist' }
-        })
-
-        it('throw UserInput error', async () => {
-          const { data, errors } = await mutate({ mutation: createCommentMutation, variables })
-          expect(data).toEqual({ CreateComment: null })
-          expect(errors[0]).toHaveProperty('message', 'Comment cannot be created without a post!')
-        })
       })
     })
   })
@@ -193,6 +159,7 @@ describe('UpdateComment', () => {
       it('updates the comment', async () => {
         const expected = {
           data: { UpdateComment: { id: 'c456', content: 'The comment is updated' } },
+          errors: undefined,
         }
         await expect(mutate({ mutation: updateCommentMutation, variables })).resolves.toMatchObject(
           expected,
@@ -208,6 +175,7 @@ describe('UpdateComment', () => {
               createdAt: expect.any(String),
             },
           },
+          errors: undefined,
         }
         await expect(mutate({ mutation: updateCommentMutation, variables })).resolves.toMatchObject(
           expected,
@@ -224,17 +192,6 @@ describe('UpdateComment', () => {
         expect(UpdateComment.updatedAt).toBeTruthy()
         expect(Date.parse(UpdateComment.updatedAt)).toEqual(expect.any(Number))
         expect(newlyCreatedComment.updatedAt).not.toEqual(UpdateComment.updatedAt)
-      })
-
-      describe('if `content` empty', () => {
-        beforeEach(() => {
-          variables = { ...variables, content: '  <p> </p>' }
-        })
-
-        it('throws InputError', async () => {
-          const { errors } = await mutate({ mutation: updateCommentMutation, variables })
-          expect(errors[0]).toHaveProperty('message', 'Comment must be at least 1 character long!')
-        })
       })
 
       describe('if comment does not exist for given id', () => {

@@ -1,7 +1,13 @@
 <template>
   <ds-card
+    :lang="post.language"
     :image="post.image | proxyApiUrl"
-    :class="{ 'post-card': true, 'disabled-content': post.disabled, 'post--pinned': isPinned }"
+    :class="{
+      'post-card': true,
+      'disabled-content': post.disabled,
+      '--pinned': isPinned,
+      '--blur-image': post.imageBlurred,
+    }"
   >
     <!-- Post Link Target -->
     <nuxt-link
@@ -12,7 +18,7 @@
     </nuxt-link>
     <ds-space margin-bottom="small" />
     <!-- Username, Image & Date of Post -->
-    <div>
+    <div class="user-wrapper">
       <client-only>
         <hc-user :user="post.author" :trunc="35" :date-time="post.createdAt" />
       </client-only>
@@ -47,13 +53,13 @@
         <div style="display: inline-block; float: right">
           <!-- Shouts Count -->
           <span :style="{ opacity: post.shoutedCount ? 1 : 0.5 }">
-            <ds-icon name="bullhorn" />
+            <base-icon name="bullhorn" />
             <small>{{ post.shoutedCount }}</small>
           </span>
           &nbsp;
           <!-- Comments Count -->
           <span :style="{ opacity: post.commentsCount ? 1 : 0.5 }">
-            <ds-icon name="comments" />
+            <base-icon name="comments" />
             <small>{{ post.commentsCount }}</small>
           </span>
           <!-- Menu -->
@@ -73,7 +79,7 @@
 
 <script>
 import HcUser from '~/components/User/User'
-import ContentMenu from '~/components/ContentMenu'
+import ContentMenu from '~/components/ContentMenu/ContentMenu'
 import HcCategory from '~/components/Category'
 import HcRibbon from '~/components/Ribbon'
 // import { randomBytes } from 'crypto'
@@ -97,6 +103,14 @@ export default {
       type: Object,
       default: () => {},
     },
+  },
+  mounted() {
+    const width = this.$el.offsetWidth
+    const height = Math.min(width / this.post.imageAspectRatio, 2000)
+    const imageElement = this.$el.querySelector('.ds-card-image')
+    if (imageElement) {
+      imageElement.style.height = `${height}px`
+    }
   },
   computed: {
     ...mapGetters({
@@ -142,27 +156,44 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-.ds-card-image img {
-  width: 100%;
-  max-height: 2000px;
-  object-fit: contain;
-  -o-object-fit: cover;
-  object-fit: cover;
-  -o-object-position: center;
-  object-position: center;
-}
-
+<style lang="scss">
 .post-card {
-  cursor: pointer;
+  justify-content: space-between;
   position: relative;
   z-index: 1;
+  cursor: pointer;
 
-  /*.ds-card-footer {
-  }*/
+  &.--pinned {
+    border: 1px solid $color-warning;
+  }
+
+  &.--blur-image > .ds-card-image img {
+    filter: blur(22px);
+  }
+
+  > .ds-card-image img {
+    width: 100%;
+    max-height: 2000px;
+    object-fit: contain;
+  }
+
+  > .ds-card-content {
+    flex-grow: 0;
+  }
+
+  /* workaround to avoid jumping layout when footer is rendered */
+  > .ds-card-footer {
+    height: 75px;
+  }
+
+  /* workaround to avoid jumping layout when hc-user is rendered */
+  .user-wrapper {
+    height: 36px;
+  }
 
   .content-menu {
+    position: relative;
+    z-index: $z-index-post-card-link;
     display: inline-block;
     margin-left: $space-xx-small;
     margin-right: -$space-x-small;
@@ -178,9 +209,5 @@ export default {
     height: 100%;
     text-indent: -999999px;
   }
-}
-
-.post--pinned {
-  border: 1px solid $color-warning;
 }
 </style>

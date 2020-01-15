@@ -1,13 +1,10 @@
-import { mount, createLocalVue } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import Emotions from './Emotions.vue'
-import Styleguide from '@human-connection/styleguide'
+
 import Vuex from 'vuex'
 import PostMutations from '~/graphql/PostMutations.js'
 
-const localVue = createLocalVue()
-
-localVue.use(Styleguide)
-localVue.use(Vuex)
+const localVue = global.localVue
 
 describe('Emotions.vue', () => {
   let wrapper

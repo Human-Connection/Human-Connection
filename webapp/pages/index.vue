@@ -5,7 +5,12 @@
         <filter-menu :hashtag="hashtag" @clearSearch="clearSearch" />
       </ds-grid-item>
       <ds-grid-item :row-span="2" column-span="fullWidth" class="top-info-bar">
-        <donation-info />
+        <!--<donation-info /> -->
+        <div>
+          <a target="_blank" href="https://human-connection.org/spenden/">
+            <base-button filled>{{ $t('donations.donate-now') }}</base-button>
+          </a>
+        </div>
         <div class="sorting-dropdown">
           <ds-select
             v-model="selected"
@@ -16,10 +21,13 @@
         </div>
       </ds-grid-item>
       <template v-if="hasResults">
-        <masonry-grid-item v-for="post in posts" :key="post.id">
+        <masonry-grid-item
+          v-for="post in posts"
+          :key="post.id"
+          :imageAspectRatio="post.imageAspectRatio"
+        >
           <hc-post-card
             :post="post"
-            :width="{ base: '100%', xs: '100%', md: '50%', xl: '33%' }"
             @removePostFromList="deletePost"
             @pinPost="pinPost"
             @unpinPost="unpinPost"
@@ -35,14 +43,19 @@
       </template>
     </masonry-grid>
     <client-only>
-      <ds-button
-        v-tooltip="{ content: $t('contribution.newPost'), placement: 'left', delay: { show: 500 } }"
-        :path="{ name: 'post-create' }"
-        class="post-add-button"
-        icon="plus"
-        size="x-large"
-        primary
-      />
+      <nuxt-link :to="{ name: 'post-create' }">
+        <base-button
+          v-tooltip="{
+            content: $t('contribution.newPost'),
+            placement: 'left',
+            delay: { show: 500 },
+          }"
+          class="post-add-button"
+          icon="plus"
+          filled
+          circle
+        />
+      </nuxt-link>
     </client-only>
     <client-only>
       <infinite-loading v-if="hasMore" @infinite="showMoreContributions">
@@ -53,7 +66,7 @@
 </template>
 
 <script>
-import DonationInfo from '~/components/DonationInfo/DonationInfo.vue'
+// import DonationInfo from '~/components/DonationInfo/DonationInfo.vue'
 import FilterMenu from '~/components/FilterMenu/FilterMenu.vue'
 import HcEmpty from '~/components/Empty/Empty'
 import HcPostCard from '~/components/PostCard/PostCard.vue'
@@ -63,10 +76,11 @@ import MasonryGridItem from '~/components/MasonryGrid/MasonryGridItem.vue'
 import { mapGetters, mapMutations } from 'vuex'
 import { filterPosts } from '~/graphql/PostQuery.js'
 import PostMutations from '~/graphql/PostMutations'
+import UpdateQuery from '~/components/utils/UpdateQuery'
 
 export default {
   components: {
-    DonationInfo,
+    // DonationInfo,
     FilterMenu,
     HcPostCard,
     HcLoadMore,
@@ -146,26 +160,7 @@ export default {
           first: this.pageSize,
           orderBy: ['pinned_asc', this.orderBy],
         },
-        updateQuery: (previousResult, { fetchMoreResult }) => {
-          if (!fetchMoreResult || fetchMoreResult.Post.length < this.pageSize) {
-            this.hasMore = false
-            $state.complete()
-          }
-
-          const result = {
-            ...previousResult,
-            Post: [
-              ...previousResult.Post.filter(prevPost => {
-                return (
-                  fetchMoreResult.Post.filter(newPost => newPost.id === prevPost.id).length === 0
-                )
-              }),
-              ...fetchMoreResult.Post,
-            ],
-          }
-          $state.loaded()
-          return result
-        },
+        updateQuery: UpdateQuery(this, { $state, pageKey: 'Post' }),
       })
     },
     deletePost(deletedPost) {
@@ -248,7 +243,10 @@ export default {
   }
 }
 
-.post-add-button {
+.base-button.--circle.post-add-button {
+  height: 54px;
+  width: 54px;
+  font-size: 26px;
   z-index: 100;
   position: fixed;
   bottom: -5px;

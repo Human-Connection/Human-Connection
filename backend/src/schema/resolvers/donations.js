@@ -2,8 +2,8 @@ export default {
   Mutation: {
     UpdateDonations: async (_parent, params, context, _resolveInfo) => {
       const { driver } = context
-      const session = driver.session()
       let donations
+      const session = driver.session()
       const writeTxResultPromise = session.writeTransaction(async txc => {
         const updateDonationsTransactionResponse = await txc.run(
           ` 

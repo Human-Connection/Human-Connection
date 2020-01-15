@@ -20,10 +20,10 @@ storiesOf('DropdownFilter', module)
       selected: filterOptions[0].label,
     }),
     methods: {
-      filterNotifications: action('filterNotifications'),
+      filter: action('filter'),
     },
     template: `<dropdown-filter
-                  @filterNotifications="filterNotifications"
+                  @filter="filter"
                   :filterOptions="filterOptions"
                   :selected="selected"
                 />`,
