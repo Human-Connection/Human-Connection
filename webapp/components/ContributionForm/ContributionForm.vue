@@ -10,10 +10,11 @@
       <ds-button
         @click.prevent="deleteImage"
         icon="close"
-        v-if="showDeleteButton"
+        v-if="contribution.image || form.teaserImage"
         class="delete-image"
       ></ds-button>
       <hc-teaser-image
+        ref="deleteImage"
         :contribution="contribution"
         @addTeaserImage="addTeaserImage"
         :class="{ '--blur-image': form.blurImage }"
@@ -204,7 +205,6 @@ export default {
       users: [],
       contentMin: 3,
       hashtags: [],
-      showDeleteButton: !!this.contribution,
       elem: null,
     }
   },
@@ -272,9 +272,10 @@ export default {
       return categories.map(c => c.id)
     },
     deleteImage() {
-      this.form.image = null
       this.contribution.image = null
-      this.showDeleteButton = false
+      this.form.image = null
+      this.form.teaserImage = null
+       this.$refs.deleteImage.deleteImage()
     },
   },
   apollo: {

@@ -71,6 +71,9 @@ export default {
     },
   },
   methods: {
+    deleteImage() {
+       this.clearImages()
+    },
     template() {
       return `<div class="dz-preview dz-file-preview">
                 <div class="dz-image">
@@ -207,7 +210,7 @@ export default {
 }
 
 .hc-drag-marker-update-post {
-  opacity: 0;
+  opacity: 0.1;
 }
 
 .contribution-form-footer {
