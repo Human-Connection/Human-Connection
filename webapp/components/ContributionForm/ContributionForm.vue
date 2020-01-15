@@ -8,9 +8,9 @@
   >
     <template slot-scope="{ errors }">
       <ds-button
+        v-if="(contribution && contribution.image) || form.teaserImage"
         @click.prevent="deleteImage"
         icon="close"
-        v-if="contribution.image || form.teaserImage"
         class="delete-image"
       ></ds-button>
       <hc-teaser-image
@@ -23,7 +23,7 @@
         <img
           v-if="contribution"
           class="contribution-image"
-          :src="contribution.image | proxyApiUrl"
+          :src="contribution.image || proxyApiUrl"
         />
       </hc-teaser-image>
 
