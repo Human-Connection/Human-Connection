@@ -127,19 +127,19 @@ describe('FilterPosts.vue', () => {
       expect(spanishButton.attributes().class).toContain('--filled')
     })
 
-    it('sets "filter-by-followed-authors-only" button attribute `filled`', () => {
+    it('sets "filter-by-followed" button attribute `filled`', () => {
       getters['posts/filteredByUsersFollowed'] = jest.fn(() => true)
       const wrapper = openFilterPosts()
       expect(
-        wrapper.find('.base-button[name="filter-by-followed-authors-only"]').classes('--filled'),
+        wrapper.find('.base-button[data-test="filter-by-followed"]').classes('--filled'),
       ).toBe(true)
     })
 
-    describe('click "filter-by-followed-authors-only" button', () => {
+    describe('click "filter-by-followed" button', () => {
       let wrapper
       beforeEach(() => {
         wrapper = openFilterPosts()
-        wrapper.find('.base-button[name="filter-by-followed-authors-only"]').trigger('click')
+        wrapper.find('.base-button[data-test="filter-by-followed"]').trigger('click')
       })
 
       it('calls TOGGLE_FILTER_BY_FOLLOWED', () => {

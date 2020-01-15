@@ -61,7 +61,7 @@ export default {
     buttonClass() {
       let buttonClass = 'base-button'
 
-      if (this.$slots.default == null) buttonClass += ' --icon-only'
+      if (this.$slots.default === undefined) buttonClass += ' --icon-only'
       if (this.circle) buttonClass += ' --circle'
       if (this.danger) buttonClass += ' --danger'
       if (this.loading) buttonClass += ' --loading'
