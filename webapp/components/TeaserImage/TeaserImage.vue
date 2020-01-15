@@ -71,9 +71,6 @@ export default {
     },
   },
   methods: {
-    deleteImage() {
-      this.clearImages()
-    },
     template() {
       return `<div class="dz-preview dz-file-preview">
                 <div class="dz-image">
@@ -104,6 +101,9 @@ export default {
       const contributionImage = document.querySelectorAll('.contribution-image')[0]
       this.oldImage = contributionImage
       if (contributionImage) contributionImage.remove()
+    },
+    deleteImage() {
+      this.clearImages()
     },
     initCropper() {
       this.image = new Image()

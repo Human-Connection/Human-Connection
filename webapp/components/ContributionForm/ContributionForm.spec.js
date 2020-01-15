@@ -235,6 +235,12 @@ describe('ContributionForm.vue', () => {
           expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
         })
 
+        it('deleted a teaser image', async () => {
+          expectedParams.variables.imageUpload = imageUpload
+          wrapper.find(TeaserImage).vm.$emit('addTeaserImage', imageUpload)
+          wrapper.find(TeaserImage).vm.$emit('deleteImage', null)
+        })
+
         it('content is valid with just a link', async () => {
           await wrapper.vm.updateEditorContent(
             '<a href="https://www.youtube.com/watch?v=smoEelV6FUk" target="_blank"></a>',
