@@ -200,6 +200,7 @@ describe('ContributionForm.vue', () => {
               imageUpload: null,
               imageAspectRatio: null,
               image: null,
+              imageBlurred: false,
             },
           }
           postTitleInput = wrapper.find('.ds-input')
@@ -307,6 +308,7 @@ describe('ContributionForm.vue', () => {
                 name: 'Democracy & Politics',
               },
             ],
+            imageAspectRatio: 1,
           },
         }
         wrapper = Wrapper()
@@ -353,7 +355,7 @@ describe('ContributionForm.vue', () => {
               categoryIds: ['cat12'],
               image,
               imageUpload: null,
-              imageAspectRatio: null,
+              imageAspectRatio: 1,
             },
           }
         })

@@ -56,7 +56,7 @@ export default {
     margin-top: 0;
 
     > .counter-icon {
-      margin-right: 12px;
+      margin-right: $space-small;
     }
   }
 }

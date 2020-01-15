@@ -28,6 +28,7 @@ export const userCountsFragment = gql`
     contributionsCount
     commentedCount
     followedByCount
+    followingCount
     followedByCurrentUser
   }
 `
@@ -45,6 +46,10 @@ export const postFragment = gql`
     slug
     image
     language
+    imageBlurred
+    author {
+      ...user
+    }
     pinnedAt
     imageAspectRatio
   }

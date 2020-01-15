@@ -2,8 +2,8 @@ import request from 'request'
 import { UserInputError } from 'apollo-server'
 import isEmpty from 'lodash/isEmpty'
 import Debug from 'debug'
-import asyncForEach from '../../helpers/asyncForEach'
-import CONFIG from './../../config'
+import asyncForEach from '../../../helpers/asyncForEach'
+import CONFIG from '../../../config'
 
 const debug = Debug('human-connection:location')
 
@@ -57,16 +57,12 @@ const createLocation = async (session, mapboxData) => {
   }
   mutation += ' RETURN l.id'
 
-  try {
-    await session.writeTransaction(transaction => {
-      return transaction.run(mutation, data)
-    })
-  } finally {
-    session.close()
-  }
+  await session.writeTransaction(transaction => {
+    return transaction.run(mutation, data)
+  })
 }
 
-const createOrUpdateLocations = async (userId, locationName, driver) => {
+const createOrUpdateLocations = async (userId, locationName, session) => {
   if (isEmpty(locationName)) {
     return
   }
@@ -99,7 +95,6 @@ const createOrUpdateLocations = async (userId, locationName, driver) => {
     throw new UserInputError('locationName is invalid')
   }
 
-  const session = driver.session()
   if (data.place_type.length > 1) {
     data.id = 'region.' + data.id.split('.')[1]
   }
@@ -110,44 +105,36 @@ const createOrUpdateLocations = async (userId, locationName, driver) => {
   if (data.context) {
     await asyncForEach(data.context, async ctx => {
       await createLocation(session, ctx)
-      try {
-        await session.writeTransaction(transaction => {
-          return transaction.run(
-            `
+      await session.writeTransaction(transaction => {
+        return transaction.run(
+          `
               MATCH (parent:Location {id: $parentId}), (child:Location {id: $childId})
               MERGE (child)<-[:IS_IN]-(parent)
               RETURN child.id, parent.id
             `,
-            {
-              parentId: parent.id,
-              childId: ctx.id,
-            },
-          )
-        })
-        parent = ctx
-      } finally {
-        session.close()
-      }
+          {
+            parentId: parent.id,
+            childId: ctx.id,
+          },
+        )
+      })
+      parent = ctx
     })
   }
   // delete all current locations from user and add new location
-  try {
-    await session.writeTransaction(transaction => {
-      return transaction.run(
-        `
+  await session.writeTransaction(transaction => {
+    return transaction.run(
+      `
           MATCH (user:User {id: $userId})-[relationship:IS_IN]->(location:Location)
           DETACH DELETE relationship
           WITH user
-          MATCH (location:Location {id: $locationId}) 
-          MERGE (user)-[:IS_IN]->(location) 
+          MATCH (location:Location {id: $locationId})
+          MERGE (user)-[:IS_IN]->(location)
           RETURN location.id, user.id
         `,
-        { userId: userId, locationId: data.id },
-      )
-    })
-  } finally {
-    session.close()
-  }
+      { userId: userId, locationId: data.id },
+    )
+  })
 }
 
 export default createOrUpdateLocations
