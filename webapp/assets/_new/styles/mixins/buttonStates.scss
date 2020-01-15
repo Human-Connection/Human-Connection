@@ -1,0 +1,65 @@
+@mixin buttonStates($color-scheme: primary, $filled: false) {
+  $main-color: $color-primary;
+  $active-color: $color-primary-dark;
+  $hover-color: $color-primary-light;
+
+  @if $color-scheme == danger {
+    $main-color: $color-danger;
+    $active-color: $color-danger-dark;
+    $hover-color: $color-danger-light;
+  }
+
+  color: $main-color;
+  border-color: $main-color;
+  background-color: transparent;
+  transition: background-color $duration-short;
+
+  &:focus {
+    outline: $border-size-base dashed $main-color;
+  }
+
+  &:enabled {
+    &:hover {
+      color: $color-neutral-100;
+      border-color: $main-color;
+      background-color: $main-color;
+    }
+
+    &:active {
+      color: $color-neutral-100;
+      border-color: $active-color;
+      background-color: $active-color;
+    }
+  }
+
+  &:disabled {
+    color: $color-neutral-60;
+    border-color: $color-neutral-60;
+    cursor: default;
+  }
+
+  @if $filled {
+    color: $color-neutral-100;
+    border-color: $main-color;
+    background-color: $main-color;
+
+    &:enabled {
+      &:hover {
+        border-color: $hover-color;
+        background-color: $hover-color;
+      }
+
+      &:active {
+        color: $color-neutral-100;
+        border-color: $active-color;
+        background-color: $active-color;
+      }
+    }
+
+    &:disabled {
+      color: $color-neutral-100;
+      background-color: $color-neutral-60;
+      border-color: $color-neutral-60;
+    }
+  }
+}

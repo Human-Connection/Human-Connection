@@ -2,9 +2,14 @@
   <dropdown class="content-menu" :placement="placement" offset="5">
     <template slot="default" slot-scope="{ toggleMenu }">
       <slot name="button" :toggleMenu="toggleMenu">
-        <ds-button class="content-menu-trigger" size="small" ghost @click.prevent="toggleMenu">
-          <base-icon name="ellipsis-v" />
-        </ds-button>
+        <base-button
+          data-test="content-menu-button"
+          icon="ellipsis-v"
+          size="small"
+          circle
+          ghost
+          @click="toggleMenu"
+        />
       </slot>
     </template>
     <div slot="popover" slot-scope="{ toggleMenu }" class="content-menu-popover">

@@ -39,7 +39,7 @@ describe('FilterMenu.vue', () => {
 
       describe('click "clear-search-button" button', () => {
         it('emits clearSearch', () => {
-          wrapper.find({ name: 'clear-search-button' }).trigger('click')
+          wrapper.find('[name="clear-search-button"]').trigger('click')
           expect(wrapper.emitted().clearSearch).toHaveLength(1)
         })
       })

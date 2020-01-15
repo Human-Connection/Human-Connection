@@ -63,12 +63,7 @@ describe('CommentList.vue', () => {
 
     it('displays a comments counter', () => {
       wrapper = Wrapper()
-      expect(wrapper.find('span.ds-tag').text()).toEqual('1')
-    })
-
-    it('displays a comments counter', () => {
-      wrapper = Wrapper()
-      expect(wrapper.find('span.ds-tag').text()).toEqual('1')
+      expect(wrapper.find('.count').text()).toEqual('1')
     })
 
     describe('scrollToAnchor mixin', () => {
