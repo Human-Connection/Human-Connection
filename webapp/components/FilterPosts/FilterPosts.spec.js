@@ -130,9 +130,9 @@ describe('FilterPosts.vue', () => {
     it('sets "filter-by-followed" button attribute `filled`', () => {
       getters['posts/filteredByUsersFollowed'] = jest.fn(() => true)
       const wrapper = openFilterPosts()
-      expect(
-        wrapper.find('.base-button[data-test="filter-by-followed"]').classes('--filled'),
-      ).toBe(true)
+      expect(wrapper.find('.base-button[data-test="filter-by-followed"]').classes('--filled')).toBe(
+        true,
+      )
     })
 
     describe('click "filter-by-followed" button', () => {
