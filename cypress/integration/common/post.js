@@ -70,5 +70,5 @@ And("post with title {string} should have ribbon for pinned posts", (title) => {
 })
 
 And("I should see the toaster with text {string}", (title) => {
-  cy.get(".iziToast-message").contains(title);
+  cy.get(".iziToast-message").should("contain", title);
 })
