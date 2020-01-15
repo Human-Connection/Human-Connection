@@ -4,12 +4,13 @@
       <img :src="emojiPath" />
     </base-button>
     <label class="label" :for="emotion">{{ $t(`contribution.emotions-label.${emotion}`) }}</label>
-    <p v-if="count !== null" class="count">{{ emotionCount }}x</p>
+    <p v-if="emotionCount !== null" class="count">{{ emotionCount }}x</p>
   </div>
 </template>
 
 <script>
 export default {
+  name: 'EmotionButton',
   props: {
     emojiPath: {
       type: String,
@@ -43,13 +44,13 @@ export default {
   }
 
   > .label {
-    margin-top: $space-xx-small;
+    margin-top: $space-x-small;
     font-size: $font-size-small;
     cursor: pointer;
   }
 
   > .count {
-    margin: $space-xx-small 0;
+    margin: $space-x-small 0;
   }
 }
 </style>
