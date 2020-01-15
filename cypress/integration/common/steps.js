@@ -256,7 +256,7 @@ When("I choose {string} as the language for the post", (languageCode) => {
 
 Then("the post shows up on the landing page at position {int}", index => {
   cy.openPage("landing");
-  const selector = `.post-card:nth-child(${index}) > .ds-card-content`;
+  const selector = `.hc-post-card:nth-child(${index}) > .ds-card-content`;
   cy.get(selector).should("contain", lastPost.title);
   cy.get(selector).should("contain", lastPost.content);
 });
