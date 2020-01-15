@@ -22,6 +22,6 @@ export default {
 
 // override styleguide styles
 .search-heading.ds-heading:first-child {
-  margin-top: -8px;
+  margin-top: -$space-x-small;
 }
 </style>

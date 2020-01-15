@@ -1,5 +1,5 @@
 <template>
-  <div class="paginate">
+  <div class="pagination-buttons">
     <base-button
       @click="$emit('back')"
       :disabled="!hasPrevious"
@@ -33,7 +33,7 @@ export default {
 </script>
 
 <style lang="scss">
-.paginate {
+.pagination-buttons {
   display: flex;
   justify-content: space-around;
   width: $size-width-paginate;

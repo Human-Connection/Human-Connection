@@ -1,7 +1,7 @@
 <template>
   <div class="emotion-button">
     <base-button :id="emotion" circle ghost @click="$emit('toggleEmotion', emotion)">
-      <img :src="emojiPath" />
+      <img class="image" :src="emojiPath" />
     </base-button>
     <label class="label" :for="emotion">{{ $t(`contribution.emotions-label.${emotion}`) }}</label>
     <p v-if="emotionCount !== null" class="count">{{ emotionCount }}x</p>
@@ -51,6 +51,11 @@ export default {
 
   > .count {
     margin: $space-x-small 0;
+  }
+
+  .image {
+    max-width: $size-button-base;
+    height: 100%;
   }
 }
 </style>

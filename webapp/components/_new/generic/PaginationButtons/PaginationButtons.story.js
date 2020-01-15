@@ -19,7 +19,7 @@ storiesOf('Paginate', module)
       back: action('back'),
       next: action('next'),
     },
-    template: `<paginate
+    template: `<pagination-buttons
                 :hasNext="hasNext"
                 :hasPrevious="hasPrevious"
                 @back="back"
