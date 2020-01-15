@@ -32,7 +32,7 @@ describe('SearchableInput.vue', () => {
   }
 
   describe('mount', () => {
-    let select, dropdown
+    let select
 
     beforeEach(() => {
       select = wrapper.find('.ds-select')

@@ -12,7 +12,12 @@
     >
       <aside v-show="post.imageBlurred" class="blur-toggle">
         <img v-show="blurred" :src="post.image | proxyApiUrl" class="preview" />
-        <ds-button :icon="blurred ? 'eye' : 'eye-slash'" primary @click="blurred = !blurred" />
+        <base-button
+          :icon="blurred ? 'eye' : 'eye-slash'"
+          filled
+          circle
+          @click="blurred = !blurred"
+        />
       </aside>
       <hc-user :user="post.author" :date-time="post.createdAt">
         <template v-slot:dateTime>

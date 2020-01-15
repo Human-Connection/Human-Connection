@@ -1,9 +1,5 @@
 <template>
-  <div
-    class="searchable-input"
-    aria-label="search"
-    role="search"
-  >
+  <div class="searchable-input" aria-label="search" role="search">
     <ds-select
       type="search"
       icon="search"
