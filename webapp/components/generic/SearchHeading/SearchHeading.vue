@@ -1,9 +1,7 @@
 <template>
-  <ds-flex-item class="search-heading">
-    <ds-heading soft size="h5">
-      {{ $t(`search.heading.${resourceType}`) }}
-    </ds-heading>
-  </ds-flex-item>
+  <ds-heading soft size="h5" class="search-heading">
+    {{ $t(`search.heading.${resourceType}`) }}
+  </ds-heading>
 </template>
 <script>
 export default {
@@ -14,13 +12,16 @@ export default {
 }
 </script>
 <style lang="scss">
-.search-heading {
-  display: flex;
-  flex-wrap: wrap;
-  font-weight: bold;
+.search-heading.ds-heading {
+  margin: -$space-x-small;
+  padding: $space-x-small;
+  background-color: $color-neutral-100;
+  font-weight: $font-weight-bold;
   cursor: default;
-  background-color: white;
-  margin: -8px;
-  padding: 8px;
+}
+
+// override styleguide styles
+.search-heading.ds-heading:first-child {
+  margin-top: -8px;
 }
 </style>
