@@ -45,6 +45,11 @@
           :icon="category.icon"
           :name="$t(`contribution.category.name.${category.slug}`)"
         />
+        <!-- Post language -->
+        <ds-tag v-if="post.language" class="category-tag language">
+          <base-icon name="globe" />
+          {{ post.language.toUpperCase() }}
+        </ds-tag>
       </div>
       <ds-space margin-bottom="small" />
       <!-- Tags -->

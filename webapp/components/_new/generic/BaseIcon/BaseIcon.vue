@@ -37,6 +37,7 @@ export default {
 <style lang="scss">
 .base-icon {
   display: inline-flex;
+  vertical-align: bottom;
 
   > .svg {
     height: 1.2em;

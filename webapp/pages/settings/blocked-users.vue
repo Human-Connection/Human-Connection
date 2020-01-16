@@ -58,7 +58,7 @@
         </template>
 
         <template slot="unblock" slot-scope="scope">
-          <ds-button size="small" @click="unblock(scope)"><ds-icon name="user-plus" /></ds-button>
+          <base-button circle size="small" @click="unblock(scope)" icon="user-plus" />
         </template>
       </ds-table>
     </ds-card>

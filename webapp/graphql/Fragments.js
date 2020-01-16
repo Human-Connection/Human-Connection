@@ -28,6 +28,7 @@ export const userCountsFragment = gql`
     contributionsCount
     commentedCount
     followedByCount
+    followingCount
     followedByCurrentUser
   }
 `

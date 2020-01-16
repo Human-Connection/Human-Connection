@@ -19,18 +19,10 @@
             <ds-flex-item
               :width="{ base: '85%', sm: '85%', md: '50%', lg: '50%' }"
               :class="{ 'hide-mobile-menu': !toggleMobileMenu }"
+              id="nav-search-box"
+              v-if="isLoggedIn"
             >
-              <div id="nav-search-box" v-if="isLoggedIn">
-                <search-input
-                  id="nav-search"
-                  :delay="300"
-                  :pending="quickSearchPending"
-                  :results="quickSearchResults"
-                  @clear="quickSearchClear"
-                  @search="value => quickSearch({ value })"
-                  @select="goToPost"
-                />
-              </div>
+              <search-field />
             </ds-flex-item>
             <ds-flex-item
               v-if="isLoggedIn"
@@ -90,9 +82,9 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 import LocaleSwitch from '~/components/LocaleSwitch/LocaleSwitch'
-import SearchInput from '~/components/SearchInput.vue'
+import SearchField from '~/components/features/SearchField/SearchField.vue'
 import Modal from '~/components/Modal'
 import NotificationMenu from '~/components/NotificationMenu/NotificationMenu'
 import seo from '~/mixins/seo'
@@ -104,7 +96,7 @@ import AvatarMenu from '~/components/AvatarMenu/AvatarMenu'
 export default {
   components: {
     LocaleSwitch,
-    SearchInput,
+    SearchField,
     Modal,
     NotificationMenu,
     AvatarMenu,
@@ -122,8 +114,6 @@ export default {
   computed: {
     ...mapGetters({
       isLoggedIn: 'auth/isLoggedIn',
-      quickSearchResults: 'search/quickResults',
-      quickSearchPending: 'search/quickPending',
     }),
     showFilterPostsDropdown() {
       const [firstRoute] = this.$route.matched
@@ -136,18 +126,6 @@ export default {
     },
   },
   methods: {
-    ...mapActions({
-      quickSearchClear: 'search/quickClear',
-      quickSearch: 'search/quickSearch',
-    }),
-    goToPost(item) {
-      this.$nextTick(() => {
-        this.$router.push({
-          name: 'post-id-slug',
-          params: { id: item.id, slug: item.slug },
-        })
-      })
-    },
     toggleMobileMenuView() {
       this.toggleMobileMenu = !this.toggleMobileMenu
     },

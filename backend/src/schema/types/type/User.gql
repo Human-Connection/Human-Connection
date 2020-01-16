@@ -161,7 +161,20 @@ type Query {
   ): [User]
 
   blockedUsers: [User]
+  isLoggedIn: Boolean!
   currentUser: User
+  findUsers(query: String!,limit: Int = 10, filter: _UserFilter): [User]!
+    @cypher(
+      statement: """
+      CALL db.index.fulltext.queryNodes('user_fulltext_search', $query)
+      YIELD node as post, score
+      MATCH (user)
+      WHERE score >= 0.2
+      AND NOT user.deleted = true AND NOT user.disabled = true
+      RETURN user
+      LIMIT $limit
+        """
+    )
 }
 
 type Mutation {
@@ -179,8 +192,7 @@ type Mutation {
   termsAndConditionsAgreedAt: String
   allowEmbedIframes: Boolean
   showShoutsPublicly: Boolean
-
-	locale: String
+  locale: String
   ): User
 
   DeleteUser(id: ID!, resource: [Deletable]): User

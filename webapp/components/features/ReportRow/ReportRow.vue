@@ -11,9 +11,9 @@
         <span class="user-count">
           {{ $t('moderation.reports.numberOfUsers', { count: report.filed.length }) }}
         </span>
-        <ds-button size="small" @click="showFiledReports = !showFiledReports">
+        <base-button size="small" @click="showFiledReports = !showFiledReports">
           {{ $t('moderation.reports.moreDetails') }}
-        </ds-button>
+        </base-button>
       </td>
 
       <!-- Content Column -->
@@ -61,16 +61,17 @@
         <span v-if="report.closed" class="title">
           {{ $t('moderation.reports.decided') }}
         </span>
-        <ds-button
+        <base-button
           v-else
           danger
+          filled
           data-test="confirm"
           size="small"
           :icon="statusIconName"
           @click="$emit('confirm-report')"
         >
           {{ $t('moderation.reports.decideButton') }}
-        </ds-button>
+        </base-button>
       </td>
     </tr>
 

@@ -29,7 +29,7 @@ const iconStyles = `
   font-size: 20px;
 `
 
-storiesOf('BaseIcon', module)
+storiesOf('Generic/BaseIcon', module)
   .addDecorator(helpers.layout)
 
   .add('pure icon', () => ({
