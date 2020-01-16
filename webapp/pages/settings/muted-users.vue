@@ -10,18 +10,9 @@
             {{ $t('settings.muted-users.explanation.your-perspective') }}
           </ds-list-item>
           <ds-list-item>
-            {{ $t('settings.muted-users.explanation.their-perspective') }}
-          </ds-list-item>
-          <ds-list-item>
             {{ $t('settings.muted-users.explanation.search') }}
           </ds-list-item>
-          <ds-list-item>
-            {{ $t('settings.muted-users.explanation.notifications') }}
-          </ds-list-item>
         </ds-list>
-        <ds-text>
-          {{ $t('settings.muted-users.explanation.closing') }}
-        </ds-text>
       </ds-card>
     </ds-space>
     <ds-card v-if="mutedUsers && mutedUsers.length">
@@ -111,7 +102,7 @@ export default {
       })
       this.$apollo.queries.mutedUsers.refetch()
       const { name } = user.row
-      this.$toast.success(this.$t('settings.muted-users.unblocked', { name }))
+      this.$toast.success(this.$t('settings.muted-users.unmuted', { name }))
     },
   },
 }

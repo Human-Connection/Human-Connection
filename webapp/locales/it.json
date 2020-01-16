@@ -146,25 +146,22 @@
             "successDelete": "Social media cancellati. Profilo utente aggiornato!"
         },
         "muted-users": {
-            "name": "",
+            "name": null,
             "explanation": {
-                "intro": "",
-                "your-perspective": "",
-                "their-perspective": "",
-                "search": "",
-                "notifications": "",
-                "closing": ""
+                "intro": null,
+                "your-perspective": null,
+                "search": null
             },
             "columns": {
-                "name": "",
-                "slug": "",
-                "unmute": ""
+                "name": null,
+                "slug": null,
+                "unmute": null
             },
-            "empty": "",
-            "how-to": "",
-            "mute": "",
-            "unmute": "",
-            "unmuted": ""
+            "empty": null,
+            "how-to": null,
+            "mute": null,
+            "unmute": null,
+            "unmuted": null
         },
         "privacy": {
             "name": "",

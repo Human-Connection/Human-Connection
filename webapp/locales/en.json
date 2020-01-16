@@ -318,10 +318,7 @@
       "explanation": {
         "intro": "If another user has been muted by you, this is what happens:",
         "your-perspective": "The muted person's posts will no longer appear in your news feed.",
-        "their-perspective": "However: The muted person will still be able to see your posts in their news feed.",
-        "search": "Posts of muted people disappear from your search results.",
-        "notifications": "Muted users will still receive notifications if they are mentioned in your posts.",
-        "closing": "This should be sufficient for filtering out content from muted users."
+        "search": "Posts of muted people disappear from your search results."
       },
       "columns": {
         "name": "Name",

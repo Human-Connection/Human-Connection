@@ -150,10 +150,7 @@
             "explanation": {
                 "intro": "Se outro usuário foi bloqueado por você, isto é o que acontece:",
                 "your-perspective": "As mensagens da pessoa bloqueada não aparecerão mais no seu feed de notícias.",
-                "their-perspective": "Vice versa: A pessoa bloqueada também não verá mais suas mensagens em seu feed de notícias.",
-                "search": "Publicações de pessoas bloqueadas desaparecem dos resultados da sua pesquisa.",
-                "notifications": "Usuários bloqueados não receberão mais notificações se forem mencionados em suas mensagens.",
-                "closing": "Isso deve ser suficiente por enquanto para que os usuários bloqueados não possam mais incomodá-lo."
+                "search": "Publicações de pessoas bloqueadas desaparecem dos resultados da sua pesquisa."
             },
             "columns": {
                 "name": "Nome",

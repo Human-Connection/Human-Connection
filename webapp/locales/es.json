@@ -150,10 +150,7 @@
             "explanation": {
                 "intro": "Si otro usuario ha sido bloqueado por usted, esto es lo que sucede:",
                 "your-perspective": "Las contribuciones de la persona bloqueada no aparecerán más en su canal de noticias.",
-                "their-perspective": "Viceversa: la persona bloqueada tampoco verá más sus contribuciones en sus noticias.",
-                "search": "Las contribuciones de personas bloqueadas desaparecen de los resultados de búsqueda.",
-                "notifications": "Los usuarios bloqueados no recibirán más notificaciones si se mencionan en sus contribuciones.",
-                "closing": "Esto debería ser suficiente por ahora para que los usuarios bloqueados no puedan molestarle más."
+                "search": "Las contribuciones de personas bloqueadas desaparecen de los resultados de búsqueda."
             },
             "columns": {
                 "name": "Nombre",
@@ -164,7 +161,7 @@
             "how-to": "Puede bloquear a otros usuarios en la página de perfil de aquellos a través del menú de contenido.",
             "mute": "Bloquear usuario",
             "unmute": "Desbloquear usuario",
-            "unblocked": "{name} está desbloqueado nuevamente"
+            "unmuted": "{name} está desbloqueado nuevamente"
         },
         "privacy": {
             "name": "Privacidad",

@@ -150,10 +150,7 @@
             "explanation": {
                 "intro": "Si vous avez bloqué un autre utilisateur, voici ce qui se passe:",
                 "your-perspective": "Les postes de la personne bloquée n'apparaîtront dans votre fil d'actualités.",
-                "their-perspective": "Vice versa: la personne bloquée ne verra plus non plus vos postes dans son fil d'actualités.",
-                "search": "Les postes des personnes bloquées disparaissent de vos résultats de recherche.",
-                "notifications": "Les utilisateurs bloqués ne recevront plus de notifications s'ils sont mentionnés dans vos postes.",
-                "closing": "Ceci devrait être suffisant pour le moment afin que les utilisateurs bloqués ne puissent plus vous déranger."
+                "search": "Les postes des personnes bloquées disparaissent de vos résultats de recherche."
             },
             "columns": {
                 "name": "Nom",

@@ -74,7 +74,7 @@
                 @update="updateFollow"
               />
               <base-button v-else @click="unmuteUser(user)" class="unblock-user-button">
-                {{ $t('settings.blocked-users.unblock') }}
+                {{ $t('settings.muted-users.unmute') }}
               </base-button>
             </template>
           </ds-space>
