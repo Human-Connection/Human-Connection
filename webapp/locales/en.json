@@ -30,7 +30,7 @@
         "unavailable": "Unfortunately, public registration of user accounts is not available right now on this server.",
         "title": "Join Human Connection!",
         "form": {
-          "description": "To get started, enter your e-mail address:",
+          "description": "To get started, you can register here for free:",
           "terms-and-condition": "I confirm to the <a href=\"/terms-and-conditions\"><ds-text bold color=\"primary\" > Terms and conditions</ds-text></a>.",
           "data-privacy": " I have read and understood the <a href=\"https://human-connection.org/datenschutz/\" target=\"_blank\"><ds-text bold color=\"primary\" >Privacy Statement</ds-text></a> ",
           "minimum-age": "I'm 18 years or older.",
@@ -199,7 +199,11 @@
   "search": {
     "placeholder": "Search",
     "hint": "What are you searching for?",
-    "failed": "Nothing found"
+    "failed": "Nothing found",
+    "heading": {
+      "Post": "Posts",
+      "User": "Users"
+    }
   },
   "settings": {
     "name": "Settings",
@@ -703,7 +707,9 @@
     },
     "teaserImage": {
       "cropperConfirm": "Confirm"
-    }
+    },
+    "inappropriatePicture" : "This image may be inappropriate for some people.",
+    "inappropriatePictureText" : "When should my picture be blurred"
   },
   "code-of-conduct": {
     "subheader": "for the social network of the Human Connection gGmbH",
@@ -800,7 +806,6 @@
     }
   }
 }
-
 
 
 

@@ -4,6 +4,7 @@ import { getNeode } from '../../bootstrap/neo4j'
 import { UserInputError, ForbiddenError } from 'apollo-server'
 import Resolver from './helpers/Resolver'
 import log from './helpers/databaseLogger'
+import createOrUpdateLocations from './users/location'
 
 const neode = getNeode()
 
@@ -127,6 +128,7 @@ export default {
       })
       try {
         const [user] = await writeTxResultPromise
+        await createOrUpdateLocations(params.id, params.locationName, session)
         return user
       } catch (error) {
         throw new UserInputError(error.message)

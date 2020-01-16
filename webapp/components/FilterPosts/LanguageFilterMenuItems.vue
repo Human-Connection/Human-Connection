@@ -12,10 +12,11 @@
         <ds-flex>
           <ds-flex-item width="10%" />
           <ds-flex-item width="100%">
-            <ds-button
+            <base-button
               icon="check"
-              @click.stop.prevent="resetLanguages"
-              :primary="!filteredLanguageCodes.length"
+              circle
+              :filled="!filteredLanguageCodes.length"
+              @click="resetLanguages"
             />
             <ds-flex-item>
               <label class="language-labels">{{ $t('filter-posts.language.all') }}</label>
@@ -32,13 +33,14 @@
       <ds-flex v-for="language in locales" :key="language.code" class="languages-menu">
         <ds-flex class="languages-menu">
           <ds-flex-item width="100%" class="language-menu-item">
-            <ds-button
+            <base-button
               class="language-buttons"
-              :primary="filteredLanguageCodes.includes(language.code)"
-              @click.stop.prevent="toggleLanguage(language.code)"
+              circle
+              :filled="filteredLanguageCodes.includes(language.code)"
+              @click="toggleLanguage(language.code)"
             >
               {{ language.code.toUpperCase() }}
-            </ds-button>
+            </base-button>
             <ds-space margin-bottom="small" />
           </ds-flex-item>
           <ds-flex>
