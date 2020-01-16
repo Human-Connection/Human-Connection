@@ -12,7 +12,12 @@
     >
       <aside v-show="post.imageBlurred" class="blur-toggle">
         <img v-show="blurred" :src="post.image | proxyApiUrl" class="preview" />
-        <ds-button :icon="blurred ? 'eye' : 'eye-slash'" primary @click="blurred = !blurred" />
+        <base-button
+          :icon="blurred ? 'eye' : 'eye-slash'"
+          filled
+          circle
+          @click="blurred = !blurred"
+        />
       </aside>
       <hc-user :user="post.author" :date-time="post.createdAt">
         <template v-slot:dateTime>
@@ -59,13 +64,9 @@
       </div>
       <ds-space margin-top="x-large">
         <ds-flex :gutter="{ lg: 'small' }">
-          <ds-flex-item
-            :width="{ lg: '75%', md: '75%', sm: '75%' }"
-            class="emotions-buttons-mobile"
-          >
+          <ds-flex-item :width="{ lg: '75%', md: '75%', sm: '75%', base: '100%' }">
             <hc-emotions :post="post" />
           </ds-flex-item>
-          <ds-flex-item :width="{ lg: '10%', md: '3%', sm: '3%' }" />
           <!-- Shout Button -->
           <ds-flex-item
             :width="{ lg: '15%', md: '22%', sm: '22%', base: '100%' }"

@@ -4,6 +4,8 @@
  */
 
  $color-primary: rgb(23, 181, 63);
+ $color-primary-light: rgb(96, 214, 98);
+ $color-primary-dark: rgb(25, 122, 49);
  $color-primary-active: rgb(25, 194, 67);
  $color-primary-inverse: rgb(241, 253, 244);
  $color-secondary: rgb(0, 142, 230);
@@ -13,6 +15,8 @@
  $color-success-active: rgb(26, 203, 71);
  $color-success-inverse: rgb(241, 253, 244);
  $color-danger: rgb(219, 57, 36);
+ $color-danger-light: rgb(242, 97, 65);
+ $color-danger-dark: rgb(158, 43, 28);
  $color-danger-active: rgb(224, 81, 62);
  $color-danger-inverse: rgb(253, 243, 242);
  $color-warning: rgb(230, 121, 25);
@@ -237,6 +241,13 @@ $size-height-footer: 64px;
 $size-tappable-square: 44px;
 
 /**
+ * @tokens Size Width
+ * @presenter Spacing
+ */
+
+$size-width-paginate: 100px;
+
+/**
  * @tokens Size Avatar
  * @presenter Spacing
  */
@@ -245,6 +256,21 @@ $size-avatar-small: 34px;
 $size-avatar-base: 44px;
 $size-avatar-large: 64px;
 $size-avatar-x-large: 114px;
+
+/**
+ * @tokens Size Buttons
+ * @presenter Spacing
+ */
+
+ $size-button-base: 36px;
+ $size-button-small: 26px;
+
+/**
+ * @tokens Size Icons
+ * @presenter Spacing
+ */
+
+ $size-icon-base: 16px;
 
 /**
  * @tokens Shadow
@@ -291,6 +317,7 @@ $z-index-page-submenu: 2500;
 $z-index-page-header: 2000;
 $z-index-page-sidebar: 1500;
 $z-index-sticky: 100;
+$z-index-post-card-link: 5;
 
 /**
  * @tokens Media Query

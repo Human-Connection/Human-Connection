@@ -126,11 +126,6 @@ describe('PostIndex', () => {
           .trigger('click')
         expect(mutations['posts/SELECT_ORDER']).toHaveBeenCalledWith({}, 'createdAt_asc')
       })
-
-      it('updates offset when a user clicks on the load more button', () => {
-        wrapper.find('.load-more button').trigger('click')
-        expect(wrapper.vm.offset).toEqual(12)
-      })
     })
   })
 })

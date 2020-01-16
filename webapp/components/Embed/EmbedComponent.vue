@@ -2,17 +2,17 @@
   <a v-if="showLinkOnly" :href="dataEmbedUrl" rel="noopener noreferrer nofollow" target="_blank">
     {{ dataEmbedUrl }}
   </a>
-  <ds-container v-else width="small" class="embed-container">
-    <section class="embed-content">
-      <div v-if="showEmbed" v-html="embedHtml" class="embed-html" />
+  <ds-container v-else width="small" class="embed-component">
+    <section class="content">
+      <div v-if="showEmbed" v-html="embedHtml" class="html" />
       <template v-else>
         <img
           v-if="embedHtml && embedImage"
           :src="embedImage"
-          class="embed-preview-image embed-preview-image--clickable"
+          class="preview --clickable"
           @click.prevent="openOverlay()"
         />
-        <img v-else-if="embedImage" :src="embedImage" class="embed-preview-image" />
+        <img v-else-if="embedImage" :src="embedImage" class="preview" />
       </template>
       <h4 v-if="embedTitle">{{ embedTitle }}</h4>
       <p v-if="embedDescription">{{ embedDescription }}</p>
@@ -20,25 +20,27 @@
         {{ dataEmbedUrl }}
       </a>
     </section>
-    <aside v-if="showOverlay" class="embed-overlay">
+    <aside v-if="showOverlay" class="overlay">
       <h3>{{ $t('editor.embed.data_privacy_warning') }}</h3>
       <ds-text>{{ $t('editor.embed.data_privacy_info') }} {{ embedPublisher }}</ds-text>
-      <div class="embed-buttons">
-        <ds-button primary @click.prevent="allowEmbed()">
+      <div class="buttons">
+        <base-button primary @click="allowEmbed()" data-test="play-now-button">
           {{ $t('editor.embed.play_now') }}
-        </ds-button>
-        <ds-button ghost @click.prevent="closeOverlay()">{{ $t('actions.cancel') }}</ds-button>
+        </base-button>
+        <base-button @click="closeOverlay()" data-test="cancel-button">
+          {{ $t('actions.cancel') }}
+        </base-button>
       </div>
-      <label class="embed-checkbox">
+      <label class="checkbox">
         <input type="checkbox" v-model="checkedAlwaysAllowEmbeds" />
         <span>{{ $t('editor.embed.always_allow') }}</span>
       </label>
     </aside>
-    <ds-button
+    <base-button
       icon="close"
-      ghost
       size="small"
-      class="embed-close-button"
+      circle
+      class="close-button"
       @click.prevent="removeEmbed()"
     />
   </ds-container>
@@ -151,3 +153,86 @@ export default {
   },
 }
 </script>
+
+<style lang="scss">
+.embed-component {
+  position: relative;
+  padding: 0;
+  margin: $space-small auto;
+  overflow: hidden;
+  border-radius: $border-radius-base;
+  border: 1px solid $color-neutral-70;
+  background-color: $color-neutral-90;
+
+  > .content {
+    width: 100%;
+    height: 100%;
+
+    h4 {
+      margin: $space-small 0 0 $space-small;
+    }
+
+    p,
+    a {
+      display: block;
+      margin: 0 0 0 $space-small;
+    }
+
+    .html {
+      width: 100%;
+
+      iframe {
+        width: 100%;
+      }
+    }
+
+    .preview {
+      width: 100%;
+      height: auto;
+      max-height: 450px;
+    }
+
+    .preview.--clickable {
+      cursor: pointer;
+    }
+  }
+
+  > .overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    padding: $space-large;
+    background-color: $color-neutral-100;
+
+    > .buttons {
+      .base-button {
+        margin-right: $space-small;
+        white-space: nowrap;
+      }
+    }
+
+    > .checkbox {
+      display: flex;
+
+      input {
+        margin-right: $space-small;
+      }
+    }
+  }
+
+  > .close-button {
+    position: absolute;
+    top: $space-x-small;
+    right: $space-x-small;
+  }
+}
+
+.ProseMirror[contenteditable='false'] {
+  .close-button {
+    display: none;
+  }
+}
+</style>

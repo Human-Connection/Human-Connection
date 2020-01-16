@@ -192,6 +192,8 @@ export default {
   }
 
   .content-menu {
+    position: relative;
+    z-index: $z-index-post-card-link;
     display: inline-block;
     margin-left: $space-xx-small;
     margin-right: -$space-x-small;

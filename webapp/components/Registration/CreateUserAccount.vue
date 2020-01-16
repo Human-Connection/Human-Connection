@@ -102,10 +102,11 @@
             v-html="$t('components.registration.signup.form.no-political')"
           ></label>
         </ds-text>
-        <ds-button
+        <base-button
           style="float: right;"
           icon="check"
           type="submit"
+          filled
           :loading="$apollo.loading"
           :disabled="
             errors ||
@@ -115,10 +116,9 @@
               !noCommercial ||
               !noPolitical
           "
-          primary
         >
           {{ $t('actions.save') }}
-        </ds-button>
+        </base-button>
       </template>
     </ds-form>
   </div>
