@@ -1,6 +1,6 @@
 import uuid from 'uuid/v4'
 
-module.exports = {
+export default {
   id: { type: 'string', primary: true, default: uuid }, // TODO: should be type: 'uuid' but simplified for our tests
   actorId: { type: 'string', allow: [null] },
   name: { type: 'string', disallow: [null], min: 3 },

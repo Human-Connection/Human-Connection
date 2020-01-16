@@ -11,10 +11,19 @@
 // This function is called when a project is opened or re-opened (e.g. due to
 // the project's config changing)
 
+
 const cucumber = require('cypress-cucumber-preprocessor').default
-module.exports = on => {
+const dotenv = require('dotenv')
+
+module.exports = (on, config) => {
   // (on, config) => {
   // `on` is used to hook into various events Cypress emits
   // `config` is the resolved Cypress config
+  const { parsed } = dotenv.config({ path: require.resolve('../../backend/.env') })
+  config.env.NEO4J_URI = parsed.NEO4J_URI
+  config.env.NEO4J_USERNAME = parsed.NEO4J_USERNAME
+  config.env.NEO4J_PASSWORD = parsed.NEO4J_PASSWORD
+
   on('file:preprocessor', cucumber())
+  return config
 }
