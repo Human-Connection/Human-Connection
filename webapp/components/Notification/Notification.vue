@@ -55,15 +55,49 @@ export default {
     isComment() {
       return this.from.__typename === 'Comment'
     },
-    params() {
-      const post = this.isComment ? this.from.post : this.from
-      return {
-        id: post.id,
-        slug: post.slug,
+    sourceData() {
+      let user = null
+      let post = null
+      let comment = null
+      let report = null
+      if (this.from.__typename === 'Post') {
+        post = this.from
+      } else if (this.from.__typename === 'Comment') {
+        comment = this.from
+        post = this.from.post
+      } else if (this.from.__typename === 'Report') {
+        report = {
+          reasonCategory: this.from.filed.reasonCategory,
+          reasonDescription: this.from.filed.reasonDescription,
+        }
+        if (this.from.filed.reportedResource.__typename === 'User') {
+          user = this.from.filed.reportedResource
+        } else if (this.from.filed.reportedResource.__typename === 'Post') {
+          post = this.from.filed.reportedResource
+        } else if (this.from.filed.reportedResource.__typename === 'Comment') {
+          comment = this.from.filed.reportedResource
+          post = this.from.filed.reportedResource.post
+        }
       }
+      return { user, post, comment, report }
+    },
+    params() {
+      // Wolle const post = this.isComment ? this.from.post : this.from
+      return this.sourceData.user
+        ? {
+            id: this.sourceData.user.id,
+            slug: this.sourceData.user.slug,
+          }
+        : this.sourceData.post
+        ? {
+            id: this.sourceData.post.id,
+            slug: this.sourceData.post.slug,
+          }
+        : {}
     },
     hashParam() {
-      return this.isComment ? { hash: `#commentId-${this.from.id}` } : {}
+      // Wolle return this.isComment ? { hash: `#commentId-${this.from.id}` } : {}
+      return this.sourceData.comment ? { hash: `#commentId-${this.sourceData.comment.id}` } : {}
     },
   },
 }

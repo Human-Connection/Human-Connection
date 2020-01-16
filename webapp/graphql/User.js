@@ -89,6 +89,36 @@ export const notificationQuery = i18n => {
               }
             }
           }
+          ... on Report {
+            filed {
+              reasonCategory
+              reasonDescription
+              reportedResource {
+                __typename
+                ... on User {
+                  ...user
+                }
+                ... on Post {
+                  ...post
+                  author {
+                    ...user
+                  }
+                }
+                ... on Comment {
+                  ...comment
+                  author {
+                    ...user
+                  }
+                  post {
+                    ...post
+                    author {
+                      ...user
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       }
     }

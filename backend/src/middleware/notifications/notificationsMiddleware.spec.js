@@ -106,6 +106,10 @@ describe('notifications', () => {
               reasonDescription
               reportedResource {
                 __typename
+                ...on User {
+                  id
+                  name
+                }
                 ... on Post {
                   id
                   content
@@ -113,10 +117,6 @@ describe('notifications', () => {
                 ... on Comment {
                   id
                   content
-                }
-                ... on User {
-                  id
-                  name
                 }
               }
             }

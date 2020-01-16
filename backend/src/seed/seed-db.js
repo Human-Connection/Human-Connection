@@ -711,7 +711,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       }),
       reportAgainstDewey.relateTo(dewey, 'belongsTo'),
     ])
-    // notify first reports
+    // notify first report filers
     await Promise.all([
       reportAgainstDagobert.relateTo(jennyRostock, 'notified', {
         read: false,
@@ -754,7 +754,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       }),
       reportAgainstTrollingComment.relateTo(trollingComment, 'belongsTo'),
     ])
-    // notify second reports
+    // notify second report filers
     await Promise.all([
       reportAgainstDagobert.relateTo(louie, 'notified', {
         read: false,
