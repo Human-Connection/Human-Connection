@@ -689,24 +689,46 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         reasonDescription: 'This user is harassing me with bigoted remarks!',
       }),
       reportAgainstDagobert.relateTo(dagobert, 'belongsTo'),
+
       reportAgainstTrollingPost.relateTo(jennyRostock, 'filed', {
         resourceId: 'p2',
         reasonCategory: 'doxing',
         reasonDescription: "This shouldn't be shown to anybody else! It's my private thing!",
       }),
       reportAgainstTrollingPost.relateTo(p2, 'belongsTo'),
+
       reportAgainstTrollingComment.relateTo(huey, 'filed', {
         resourceId: 'c1',
         reasonCategory: 'other',
         reasonDescription: 'This comment is bigoted',
       }),
       reportAgainstTrollingComment.relateTo(trollingComment, 'belongsTo'),
+
       reportAgainstDewey.relateTo(dagobert, 'filed', {
         resourceId: 'u5',
         reasonCategory: 'discrimination_etc',
         reasonDescription: 'This user is harassing me!',
       }),
       reportAgainstDewey.relateTo(dewey, 'belongsTo'),
+    ])
+    // notify first reports
+    await Promise.all([
+      reportAgainstDagobert.relateTo(jennyRostock, 'notified', {
+        read: false,
+        reason: 'filed_report_on_resource',
+      }),
+      reportAgainstTrollingPost.relateTo(jennyRostock, 'notified', {
+        read: false,
+        reason: 'filed_report_on_resource',
+      }),
+      reportAgainstTrollingComment.relateTo(huey, 'notified', {
+        read: false,
+        reason: 'filed_report_on_resource',
+      }),
+      reportAgainstDewey.relateTo(dagobert, 'notified', {
+        read: false,
+        reason: 'filed_report_on_resource',
+      }),
     ])
 
     // report resource a second time
@@ -717,6 +739,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         reasonDescription: 'this user is attacking me for who I am!',
       }),
       reportAgainstDagobert.relateTo(dagobert, 'belongsTo'),
+
       reportAgainstTrollingPost.relateTo(peterLustig, 'filed', {
         resourceId: 'p2',
         reasonCategory: 'discrimination_etc',
@@ -730,6 +753,21 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         reasonDescription: 'This comment is porno!!!',
       }),
       reportAgainstTrollingComment.relateTo(trollingComment, 'belongsTo'),
+    ])
+    // notify second reports
+    await Promise.all([
+      reportAgainstDagobert.relateTo(louie, 'notified', {
+        read: false,
+        reason: 'filed_report_on_resource',
+      }),
+      reportAgainstTrollingPost.relateTo(peterLustig, 'notified', {
+        read: false,
+        reason: 'filed_report_on_resource',
+      }),
+      reportAgainstTrollingComment.relateTo(bobDerBaumeister, 'notified', {
+        read: false,
+        reason: 'filed_report_on_resource',
+      }),
     ])
 
     const disableVariables = {
