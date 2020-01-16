@@ -5,33 +5,41 @@ import BaseIcon from '../BaseIcon/BaseIcon'
 const localVue = global.localVue
 
 describe('CounterIcon.vue', () => {
-  let propsData, wrapper, tag
+  let propsData, wrapper, count
 
   const Wrapper = () => {
     return mount(CounterIcon, { propsData, localVue })
   }
 
-  describe('given a valid icon name and count', () => {
+  describe('given a valid icon name and count below 100', () => {
     beforeEach(() => {
-      propsData = { icon: 'comments', count: 1 }
+      propsData = { icon: 'comments', count: 42 }
       wrapper = Wrapper()
-      tag = wrapper.find('.ds-tag')
+      count = wrapper.find('.count')
     })
 
-    it('renders BaseIcon', () => {
+    it('renders the icon', () => {
       expect(wrapper.find(BaseIcon).exists()).toBe(true)
     })
 
     it('renders the count', () => {
-      expect(tag.text()).toEqual('1')
+      expect(count.text()).toEqual('42')
+    })
+  })
+
+  describe('given a valid icon name and count above 100', () => {
+    beforeEach(() => {
+      propsData = { icon: 'comments', count: 750 }
+      wrapper = Wrapper()
+      count = wrapper.find('.count')
     })
 
-    it('uses a round tag', () => {
-      expect(tag.classes()).toContain('ds-tag-round')
+    it('renders the icon', () => {
+      expect(wrapper.find(BaseIcon).exists()).toBe(true)
     })
 
-    it('uses a primary button', () => {
-      expect(tag.classes()).toContain('ds-tag-primary')
+    it('renders the capped count with a plus', () => {
+      expect(count.text()).toEqual('99+')
     })
   })
 })
