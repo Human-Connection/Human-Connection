@@ -3,7 +3,7 @@ import NotificationsPage from './index.vue'
 
 import DropdownFilter from '~/components/DropdownFilter/DropdownFilter'
 import NotificationsTable from '~/components/NotificationsTable/NotificationsTable'
-import Paginate from '~/components/Paginate/Paginate'
+import PaginationButtons from '~/components/_new/generic/PaginationButtons/PaginationButtons'
 
 const localVue = global.localVue
 
@@ -122,14 +122,14 @@ describe('PostIndex', () => {
       })
     })
 
-    describe('Paginate', () => {
+    describe('PaginationButtons', () => {
       beforeEach(() => {
         wrapper = Wrapper()
       })
 
       describe('next: given a user is on the first page', () => {
         it('adds offset to pageSize to skip first x notifications and display next page', () => {
-          wrapper.find(Paginate).vm.$emit('next')
+          wrapper.find(PaginationButtons).vm.$emit('next')
           expect(wrapper.vm.offset).toEqual(12)
         })
       })
@@ -137,7 +137,7 @@ describe('PostIndex', () => {
       describe('back: given a user is on the third page', () => {
         it('sets offset when back is emitted', () => {
           wrapper.setData({ offset: 24 })
-          wrapper.find(Paginate).vm.$emit('back')
+          wrapper.find(PaginationButtons).vm.$emit('back')
           expect(wrapper.vm.offset).toEqual(12)
         })
       })

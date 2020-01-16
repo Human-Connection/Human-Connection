@@ -1,27 +1,26 @@
 <template>
-  <ds-flex :gutter="{ lg: 'large' }" class="emotions-flex">
-    <div v-for="emotion in Object.keys(PostsEmotionsCountByEmotion)" :key="emotion">
-      <ds-flex-item :width="{ lg: '100%' }">
-        <hc-emotions-button
-          @toggleEmotion="toggleEmotion"
-          :PostsEmotionsCountByEmotion="PostsEmotionsCountByEmotion"
-          :iconPath="iconPath(emotion)"
-          :emotion="emotion"
-        />
-      </ds-flex-item>
-    </div>
-  </ds-flex>
+  <div class="emotions-button-group">
+    <emotion-button
+      v-for="emotion in Object.keys(PostsEmotionsCountByEmotion)"
+      :key="emotion"
+      :emojiPath="iconPath(emotion)"
+      :emotion="emotion"
+      :emotionCount="PostsEmotionsCountByEmotion[emotion]"
+      @toggleEmotion="toggleEmotion"
+    />
+  </div>
 </template>
+
 <script>
 import gql from 'graphql-tag'
 import { mapGetters } from 'vuex'
-import HcEmotionsButton from '~/components/EmotionsButton/EmotionsButton'
+import EmotionButton from '~/components/EmotionButton/EmotionButton'
 import { PostsEmotionsByCurrentUser } from '~/graphql/PostQuery.js'
 import PostMutations from '~/graphql/PostMutations.js'
 
 export default {
   components: {
-    HcEmotionsButton,
+    EmotionButton,
   },
   props: {
     post: { type: Object, default: () => {} },
@@ -113,3 +112,9 @@ export default {
   },
 }
 </script>
+
+<style lang="scss">
+.emotions-button-group {
+  display: flex;
+}
+</style>
