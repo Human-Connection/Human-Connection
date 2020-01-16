@@ -1,6 +1,6 @@
 {
-  "name": "hc-webapp-next",
-  "version": "1.0.0",
+  "name": "human-connection-webapp",
+  "version": "0.2.1",
   "description": "Human Connection Frontend",
   "authors": [
     "Grzegorz Leoniec (appinteractive)",

@@ -35,6 +35,7 @@ export default {
   },
 
   env: {
+    release: pkg.version,
     // pages which do NOT require a login
     publicPages: [
       'login',
