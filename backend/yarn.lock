@@ -6027,12 +6027,12 @@ metascraper-logo@^5.9.5:
   dependencies:
     "@metascraper/helpers" "^5.9.5"
 
-metascraper-publisher@^5.9.5:
-  version "5.9.5"
-  resolved "https://registry.yarnpkg.com/metascraper-publisher/-/metascraper-publisher-5.9.5.tgz#630483cc6be8ab14028a5a13b139d014fb7d4047"
-  integrity sha512-9lM7VMD2mtP1ZfceoIbSZyN1hpDHoUL5hqB+IL+3Lj8RNn+lHcgg/0zqnLrL5co+GxIbXS3Su5BByKnwmO7YqA==
+metascraper-publisher@^5.10.3:
+  version "5.10.3"
+  resolved "https://registry.yarnpkg.com/metascraper-publisher/-/metascraper-publisher-5.10.3.tgz#caf9dabdae2c118db2125aa34c321e527e88279b"
+  integrity sha512-l2W6YKqybvvhmqEOIvLmb9hTycH5JeIQ8O3d1q21hT3IwMW3BCmy4TyiSoPS+6vWlss0VYdQ8rzmESWdniGRWA==
   dependencies:
-    "@metascraper/helpers" "^5.9.5"
+    "@metascraper/helpers" "^5.10.3"
 
 metascraper-soundcloud@^5.9.5:
   version "5.9.5"
