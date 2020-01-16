@@ -262,9 +262,7 @@
           </template>
         </masonry-grid>
         <client-only>
-          <infinite-loading v-if="hasMore" @infinite="showMoreContributions">
-            <hc-load-more :loading="$apollo.loading" @click="showMoreContributions" />
-          </infinite-loading>
+          <infinite-loading v-if="hasMore" @infinite="showMoreContributions" />
         </client-only>
       </ds-flex-item>
     </ds-flex>
@@ -278,7 +276,6 @@ import HcPostCard from '~/components/PostCard/PostCard.vue'
 import HcFollowButton from '~/components/FollowButton.vue'
 import HcCountTo from '~/components/CountTo.vue'
 import HcBadges from '~/components/Badges.vue'
-import HcLoadMore from '~/components/LoadMore.vue'
 import HcEmpty from '~/components/Empty/Empty'
 import ContentMenu from '~/components/ContentMenu/ContentMenu'
 import HcUpload from '~/components/Upload'
@@ -307,7 +304,6 @@ export default {
     HcFollowButton,
     HcCountTo,
     HcBadges,
-    HcLoadMore,
     HcEmpty,
     HcAvatar,
     ContentMenu,

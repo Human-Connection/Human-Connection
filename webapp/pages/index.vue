@@ -58,9 +58,7 @@
       </nuxt-link>
     </client-only>
     <client-only>
-      <infinite-loading v-if="hasMore" @infinite="showMoreContributions">
-        <hc-load-more :loading="$apollo.loading" @click="showMoreContributions" />
-      </infinite-loading>
+      <infinite-loading v-if="hasMore" @infinite="showMoreContributions" />
     </client-only>
   </div>
 </template>
@@ -70,7 +68,6 @@
 import FilterMenu from '~/components/FilterMenu/FilterMenu.vue'
 import HcEmpty from '~/components/Empty/Empty'
 import HcPostCard from '~/components/PostCard/PostCard.vue'
-import HcLoadMore from '~/components/LoadMore.vue'
 import MasonryGrid from '~/components/MasonryGrid/MasonryGrid.vue'
 import MasonryGridItem from '~/components/MasonryGrid/MasonryGridItem.vue'
 import { mapGetters, mapMutations } from 'vuex'
@@ -83,7 +80,6 @@ export default {
     // DonationInfo,
     FilterMenu,
     HcPostCard,
-    HcLoadMore,
     HcEmpty,
     MasonryGrid,
     MasonryGridItem,
