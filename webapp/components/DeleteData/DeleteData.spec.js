@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils'
 import DeleteData from './DeleteData.vue'
-
+import Vue from 'vue'
 import Vuex from 'vuex'
 
 const localVue = global.localVue
@@ -168,6 +168,7 @@ describe('DeleteData.vue', () => {
       it('shows an error toaster when the mutation rejects', async () => {
         enableDeletionInput = wrapper.find('.enable-deletion-input input')
         enableDeletionInput.setValue(deleteAccountName)
+        await Vue.nextTick()
         deleteAccountBtn = wrapper.find('[data-test="delete-button"]')
         await deleteAccountBtn.trigger('click')
         // second submission causes mutation to reject

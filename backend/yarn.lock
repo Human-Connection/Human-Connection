@@ -6057,20 +6057,20 @@ metascraper-url@^5.10.3:
   dependencies:
     "@metascraper/helpers" "^5.10.3"
 
-metascraper-video@^5.9.5:
-  version "5.9.5"
-  resolved "https://registry.yarnpkg.com/metascraper-video/-/metascraper-video-5.9.5.tgz#707eb9726a96a64ecd8f234a7716c021ccf10f3f"
-  integrity sha512-ApYCnVpEPy3+sLHxjMVXUVolHgdEOwpaiH41win4h5HmDX6jz/gWg3ENaHWfRLTn94Gc3c2Fjkqg/dwShRK0/A==
+metascraper-video@^5.10.3:
+  version "5.10.3"
+  resolved "https://registry.yarnpkg.com/metascraper-video/-/metascraper-video-5.10.3.tgz#deb0510b247aff0c9f1777a9d790f0aa55fa2890"
+  integrity sha512-xXGtPWX1RYSEOkLDvIzD20+o4hrSYycN31briMwQkjL7ZcuSfGgILDOCXSnT+WcpEbRNNxAOmODvAxU5qGnqjQ==
   dependencies:
-    "@metascraper/helpers" "^5.9.5"
+    "@metascraper/helpers" "^5.10.3"
     lodash "~4.17.15"
 
-metascraper-youtube@^5.9.5:
-  version "5.9.5"
-  resolved "https://registry.yarnpkg.com/metascraper-youtube/-/metascraper-youtube-5.9.5.tgz#0d67c3619cfaf5434fe51bd3d18be6a6f1b31c7f"
-  integrity sha512-xC6e6l08/qdqNp7rtyMWPumIh0tCqNhWJkL8F5BjMZCGA3iL2OYh82v26qH/H4GdMZlxSsglNJQTjl8ywcdEmw==
+metascraper-youtube@^5.10.3:
+  version "5.10.3"
+  resolved "https://registry.yarnpkg.com/metascraper-youtube/-/metascraper-youtube-5.10.3.tgz#58a121ae9b7aa8f244cbbfde66b57884390b9d64"
+  integrity sha512-mK+pPu3XJt6RqdoUKlXvlO9Lj2Tf+cfZwqCL1zLi8piYIyjbXDEx8VAb5Yz+GxDR57UWeFugnMtn/CpSbSDMNg==
   dependencies:
-    "@metascraper/helpers" "^5.9.5"
+    "@metascraper/helpers" "^5.10.3"
     get-video-id "~3.1.4"
     is-reachable "~4.0.0"
     p-locate "~4.1.0"
