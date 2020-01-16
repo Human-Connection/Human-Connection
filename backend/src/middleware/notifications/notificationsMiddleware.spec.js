@@ -34,7 +34,7 @@ const createCommentMutation = gql`
     }
   }
 `
-const fileReportMutation = gql `
+const fileReportMutation = gql`
   mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
     fileReport(
       resourceId: $resourceId
@@ -106,7 +106,7 @@ describe('notifications', () => {
               reasonDescription
               reportedResource {
                 __typename
-                ...on User {
+                ... on User {
                   id
                   name
                 }
@@ -592,7 +592,7 @@ describe('notifications', () => {
         })
         authenticatedUser = await notifiedUser.toJson()
       }
-      const setExpectedNotificationOfReportedResource = (reportedResource) => {
+      const setExpectedNotificationOfReportedResource = reportedResource => {
         return expect.objectContaining({
           data: {
             notifications: [
@@ -607,8 +607,8 @@ describe('notifications', () => {
                     {
                       reasonCategory: 'discrimination_etc',
                       reasonDescription: 'I am free to be gay !!!',
-                      reportedResource
-                    }
+                      reportedResource,
+                    },
                   ],
                 },
               },
@@ -633,7 +633,7 @@ describe('notifications', () => {
           await neode.create('User', reportedUserOrAuthorData)
           resourceId = 'reportedUser'
           await fileReportAction()
-          
+
           const expected = setExpectedNotificationOfReportedResource({
             __typename: 'User',
             id: 'reportedUser',
@@ -663,7 +663,7 @@ describe('notifications', () => {
             await createPostAction()
             resourceId = 'p47'
             await fileReportAction()
-            
+
             const expected = setExpectedNotificationOfReportedResource({
               __typename: 'Post',
               id: 'p47',
@@ -697,7 +697,7 @@ describe('notifications', () => {
             await createCommentOnPostAction()
             resourceId = 'c47'
             await fileReportAction()
-            
+
             const expected = setExpectedNotificationOfReportedResource({
               __typename: 'Comment',
               id: 'c47',

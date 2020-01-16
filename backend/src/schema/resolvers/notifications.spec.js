@@ -40,7 +40,7 @@ describe('given some notifications', () => {
     const categoryIds = ['cat1']
     author = await factory.create('User', { id: 'author' })
     user = await factory.create('User', { id: 'you' })
-    const [neighbor,badWomen] = await Promise.all([
+    const [neighbor, badWomen] = await Promise.all([
       factory.create('User', { id: 'neighbor' }),
       factory.create('User', { id: 'badWomen', name: 'Mrs. Badwomen' }),
       factory.create('Category', { id: 'cat1' }),
@@ -199,16 +199,16 @@ describe('given some notifications', () => {
                 reasonDescription
                 reportedResource {
                   __typename
-                  ...on User {
+                  ... on User {
                     id
                     name
                   }
-                  ...on Post {
+                  ... on Post {
                     id
                     title
                     content
                   }
-                  ...on Comment {
+                  ... on Comment {
                     id
                     content
                   }
@@ -275,15 +275,17 @@ describe('given some notifications', () => {
                   from: {
                     __typename: 'Report',
                     id: 'reportOnUser',
-                    filed: [{
-                      reasonCategory: 'discrimination_etc',
-                      reasonDescription: 'This user is harassing me with bigoted remarks!',
-                      reportedResource: {
-                        __typename: 'User',
-                        id: 'badWomen',
-                        name: 'Mrs. Badwomen',
+                    filed: [
+                      {
+                        reasonCategory: 'discrimination_etc',
+                        reasonDescription: 'This user is harassing me with bigoted remarks!',
+                        reportedResource: {
+                          __typename: 'User',
+                          id: 'badWomen',
+                          name: 'Mrs. Badwomen',
+                        },
                       },
-                    }],
+                    ],
                   },
                 },
                 {
@@ -293,16 +295,19 @@ describe('given some notifications', () => {
                   from: {
                     __typename: 'Report',
                     id: 'reportOnPost',
-                    filed: [{
-                      reasonCategory: 'other',
-                      reasonDescription: "This shouldn't be shown to anybody else! It's my private thing!",
-                      reportedResource: {
-                        __typename: 'Post',
-                        id: 'p4',
-                        title: 'Bad Post',
-                        content: 'I am bad content !!!',
+                    filed: [
+                      {
+                        reasonCategory: 'other',
+                        reasonDescription:
+                          "This shouldn't be shown to anybody else! It's my private thing!",
+                        reportedResource: {
+                          __typename: 'Post',
+                          id: 'p4',
+                          title: 'Bad Post',
+                          content: 'I am bad content !!!',
+                        },
                       },
-                    }],
+                    ],
                   },
                 },
                 {
@@ -312,15 +317,17 @@ describe('given some notifications', () => {
                   from: {
                     __typename: 'Report',
                     id: 'reportOnComment',
-                    filed: [{
-                      reasonCategory: 'discrimination_etc',
-                      reasonDescription: 'This user is harassing me!',
-                      reportedResource: {
-                        __typename: 'Comment',
-                        id: 'c4',
-                        content: 'I am bad content in a bad comment to a bad post !!!',
+                    filed: [
+                      {
+                        reasonCategory: 'discrimination_etc',
+                        reasonDescription: 'This user is harassing me!',
+                        reportedResource: {
+                          __typename: 'Comment',
+                          id: 'c4',
+                          content: 'I am bad content in a bad comment to a bad post !!!',
+                        },
                       },
-                    }],
+                    ],
                   },
                 },
               ]),
@@ -364,15 +371,17 @@ describe('given some notifications', () => {
                   from: {
                     __typename: 'Report',
                     id: 'reportOnUser',
-                    filed: [{
-                      reasonCategory: 'discrimination_etc',
-                      reasonDescription: 'This user is harassing me with bigoted remarks!',
-                      reportedResource: {
-                        __typename: 'User',
-                        id: 'badWomen',
-                        name: 'Mrs. Badwomen',
+                    filed: [
+                      {
+                        reasonCategory: 'discrimination_etc',
+                        reasonDescription: 'This user is harassing me with bigoted remarks!',
+                        reportedResource: {
+                          __typename: 'User',
+                          id: 'badWomen',
+                          name: 'Mrs. Badwomen',
+                        },
                       },
-                    }],
+                    ],
                   },
                 },
                 {
@@ -382,15 +391,17 @@ describe('given some notifications', () => {
                   from: {
                     __typename: 'Report',
                     id: 'reportOnComment',
-                    filed: [{
-                      reasonCategory: 'discrimination_etc',
-                      reasonDescription: 'This user is harassing me!',
-                      reportedResource: {
-                        __typename: 'Comment',
-                        id: 'c4',
-                        content: 'I am bad content in a bad comment to a bad post !!!',
+                    filed: [
+                      {
+                        reasonCategory: 'discrimination_etc',
+                        reasonDescription: 'This user is harassing me!',
+                        reportedResource: {
+                          __typename: 'Comment',
+                          id: 'c4',
+                          content: 'I am bad content in a bad comment to a bad post !!!',
+                        },
                       },
-                    }],
+                    ],
                   },
                 },
               ]),

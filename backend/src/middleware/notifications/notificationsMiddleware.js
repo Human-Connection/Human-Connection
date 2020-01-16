@@ -140,9 +140,9 @@ const notifyReportFiler = async (resolve, root, args, context, resolveInfo) => {
           },
         )
       })
-  } catch (error) {
-    debug(error)
-  } finally {
+    } catch (error) {
+      debug(error)
+    } finally {
       session.close()
     }
   }

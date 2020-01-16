@@ -59,7 +59,12 @@ module.exports = {
       read: { type: 'boolean', default: false },
       reason: {
         type: 'string',
-        valid: ['mentioned_in_post', 'mentioned_in_comment', 'commented_on_post', 'filed_report_on_resource'],
+        valid: [
+          'mentioned_in_post',
+          'mentioned_in_comment',
+          'commented_on_post',
+          'filed_report_on_resource',
+        ],
       },
     },
   },

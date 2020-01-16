@@ -87,7 +87,7 @@ export default {
           `,
           {
             resourceId: args.id,
-            id: currentUser.id
+            id: currentUser.id,
           },
         )
         log(markNotificationAsReadTransactionResponse)
