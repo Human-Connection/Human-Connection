@@ -42,7 +42,7 @@ describe('given some notifications', () => {
     user = await factory.create('User', { id: 'you' })
     const [neighbor,badWomen] = await Promise.all([
       factory.create('User', { id: 'neighbor' }),
-      factory.create('User', { id: 'badWomen' }),
+      factory.create('User', { id: 'badWomen', name: 'Mrs. Badwomen' }),
       factory.create('Category', { id: 'cat1' }),
     ])
     const [post1, post2, post3, post4] = await Promise.all([
@@ -63,6 +63,7 @@ describe('given some notifications', () => {
         author,
         id: 'p4',
         categoryIds,
+        title: 'Bad Post',
         content: 'I am bad content !!!',
       }),
     ])
@@ -127,9 +128,15 @@ describe('given some notifications', () => {
 
     // report notifications
     const [reportOnUser, reportOnPost, reportOnComment] = await Promise.all([
-      factory.create('Report'),
-      factory.create('Report'),
-      factory.create('Report'),
+      factory.create('Report', {
+        id: 'reportOnUser',
+      }),
+      factory.create('Report', {
+        id: 'reportOnPost',
+      }),
+      factory.create('Report', {
+        id: 'reportOnComment',
+      }),
     ])
     await Promise.all([
       reportOnUser.relateTo(user, 'filed', {
@@ -153,17 +160,17 @@ describe('given some notifications', () => {
     ])
     await Promise.all([
       reportOnUser.relateTo(user, 'notified', {
-        createdAt: '2019-08-29T17:33:48.651Z',
+        createdAt: '2020-01-15T16:33:48.651Z',
         read: false,
         reason: 'filed_report_on_resource',
       }),
       reportOnPost.relateTo(user, 'notified', {
-        createdAt: '2019-08-30T17:33:48.651Z',
+        createdAt: '2020-01-16T10:33:48.651Z',
         read: true,
         reason: 'filed_report_on_resource',
       }),
       reportOnComment.relateTo(user, 'notified', {
-        createdAt: '2019-08-31T17:33:48.651Z',
+        createdAt: '2020-01-14T12:33:48.651Z',
         read: false,
         reason: 'filed_report_on_resource',
       }),
@@ -174,6 +181,9 @@ describe('given some notifications', () => {
     const notificationQuery = gql`
       query($read: Boolean, $orderBy: NotificationOrdering) {
         notifications(read: $read, orderBy: $orderBy) {
+          createdAt
+          read
+          reason
           from {
             __typename
             ... on Post {
@@ -183,27 +193,29 @@ describe('given some notifications', () => {
               content
             }
             ... on Report {
+              id
               filed {
                 reasonCategory
                 reasonDescription
                 reportedResource {
                   __typename
-                  ... on Post {
+                  ...on Post {
                     id
+                    title
+                    content
                   }
-                  ... on Comment {
+                  ...on Comment {
                     id
+                    content
                   }
-                  ... on User {
+                  ...on User {
                     id
+                    name
                   }
                 }
               }
             }
           }
-          read
-          createdAt
-          reason
         }
       }
     `
@@ -221,110 +233,177 @@ describe('given some notifications', () => {
 
       describe('no filters', () => {
         it('returns all notifications of current user', async () => {
-          const expected = [
-            {
-              from: {
-                __typename: 'Comment',
-                content: 'You have seen this comment mentioning already',
-              },
-              read: true,
-              createdAt: '2019-08-30T15:33:48.651Z',
-            },
-            {
-              from: {
-                __typename: 'Post',
-                content: 'Already seen post mention',
-              },
-              read: true,
-              createdAt: '2019-08-30T17:33:48.651Z',
-            },
-            {
-              from: {
-                __typename: 'Comment',
-                content: 'You have been mentioned in a comment',
-              },
-              read: false,
-              createdAt: '2019-08-30T19:33:48.651Z',
-            },
-            {
-              from: {
-                __typename: 'Post',
-                content: 'You have been mentioned in a post',
-              },
-              read: false,
-              createdAt: '2019-08-31T17:33:48.651Z',
-            },
-          ]
-
-          await expect(query({ query: notificationQuery, variables })).resolves.toMatchObject({
-            data: {
-              notifications: expect.arrayContaining(expected),
-            },
-            errors: undefined,
-          })
-        })
-      })
-
-      describe('filter for read: false', () => {
-        it.only('returns only unread notifications of current user', async () => {
-          const expected = expect.objectContaining({
+          const expected = {
             data: {
               notifications: expect.arrayContaining([
-                {
+                expect.objectContaining({
+                  from: {
+                    __typename: 'Comment',
+                    content: 'You have seen this comment mentioning already',
+                  },
+                  read: true,
+                  createdAt: '2019-08-30T15:33:48.651Z',
+                }),
+                expect.objectContaining({
+                  from: {
+                    __typename: 'Post',
+                    content: 'Already seen post mention',
+                  },
+                  read: true,
+                  createdAt: '2019-08-30T17:33:48.651Z',
+                }),
+                expect.objectContaining({
                   from: {
                     __typename: 'Comment',
                     content: 'You have been mentioned in a comment',
                   },
                   read: false,
                   createdAt: '2019-08-30T19:33:48.651Z',
-                },
-                {
+                }),
+                expect.objectContaining({
                   from: {
                     __typename: 'Post',
                     content: 'You have been mentioned in a post',
                   },
                   read: false,
                   createdAt: '2019-08-31T17:33:48.651Z',
-                },
+                }),
                 {
+                  createdAt: '2020-01-15T16:33:48.651Z',
+                  read: false,
+                  reason: 'filed_report_on_resource',
                   from: {
-                    filed: {
+                    __typename: 'Report',
+                    id: 'reportOnUser',
+                    filed: [{
                       reasonCategory: 'discrimination_etc',
                       reasonDescription: 'This user is harassing me with bigoted remarks!',
                       reportedResource: {
                         __typename: 'User',
                         id: 'badWomen',
+                        name: 'Mrs. Badwomen',
                       },
-                    },
+                    }],
                   },
-                  read: false,
-                  createdAt: '2019-08-31T17:33:48.651Z',
-                  reason: 'filed_report_on_resource',
                 },
-                // {
-                //   from: {
-                //     filed: {
-                //       reasonCategory: 'discrimination_etc',
-                //       reasonDescription: 'This user is harassing me!',
-                //       reportedResource: {
-                //         __typename: 'Comment',
-                //         id: 'c4',
-                //       },
-                //     },
-                //   },
-                //   read: false,
-                //   createdAt: '2019-08-31T17:33:48.651Z',
-                //   reason: 'filed_report_on_resource',
-                // },
+                {
+                  createdAt: '2020-01-16T10:33:48.651Z',
+                  read: true,
+                  reason: 'filed_report_on_resource',
+                  from: {
+                    __typename: 'Report',
+                    id: 'reportOnPost',
+                    filed: [{
+                      reasonCategory: 'other',
+                      reasonDescription: "This shouldn't be shown to anybody else! It's my private thing!",
+                      reportedResource: {
+                        __typename: 'Post',
+                        id: 'p4',
+                        title: 'Bad Post',
+                        content: 'I am bad content !!!',
+                      },
+                    }],
+                  },
+                },
+                {
+                  createdAt: '2020-01-14T12:33:48.651Z',
+                  read: false,
+                  reason: 'filed_report_on_resource',
+                  from: {
+                    __typename: 'Report',
+                    id: 'reportOnComment',
+                    filed: [{
+                      reasonCategory: 'discrimination_etc',
+                      reasonDescription: 'This user is harassing me!',
+                      reportedResource: {
+                        __typename: 'Comment',
+                        id: 'c4',
+                        content: 'I am bad content in a bad comment to a bad post !!!',
+                      },
+                    }],
+                  },
+                },
               ]),
             },
-          })
+            errors: undefined,
+          }
+
+          const response = await query({ query: notificationQuery, variables })
+          await expect(response).toMatchObject(expected)
+          await expect(response.data.notifications.length).toEqual(7) // has to be checked, because of 'arrayContaining'
+        })
+      })
+
+      describe('filter for read: false', () => {
+        it('returns only unread notifications of current user', async () => {
+          const expected = {
+            data: {
+              notifications: expect.arrayContaining([
+                {
+                  createdAt: '2019-08-30T19:33:48.651Z',
+                  read: false,
+                  reason: 'mentioned_in_comment',
+                  from: {
+                    __typename: 'Comment',
+                    content: 'You have been mentioned in a comment',
+                  },
+                },
+                {
+                  createdAt: '2019-08-31T17:33:48.651Z',
+                  read: false,
+                  reason: 'mentioned_in_post',
+                  from: {
+                    __typename: 'Post',
+                    content: 'You have been mentioned in a post',
+                  },
+                },
+                {
+                  createdAt: '2020-01-15T16:33:48.651Z',
+                  read: false,
+                  reason: 'filed_report_on_resource',
+                  from: {
+                    __typename: 'Report',
+                    id: 'reportOnUser',
+                    filed: [{
+                      reasonCategory: 'discrimination_etc',
+                      reasonDescription: 'This user is harassing me with bigoted remarks!',
+                      reportedResource: {
+                        __typename: 'User',
+                        id: 'badWomen',
+                        name: 'Mrs. Badwomen',
+                      },
+                    }],
+                  },
+                },
+                {
+                  createdAt: '2020-01-14T12:33:48.651Z',
+                  read: false,
+                  reason: 'filed_report_on_resource',
+                  from: {
+                    __typename: 'Report',
+                    id: 'reportOnComment',
+                    filed: [{
+                      reasonCategory: 'discrimination_etc',
+                      reasonDescription: 'This user is harassing me!',
+                      reportedResource: {
+                        __typename: 'Comment',
+                        id: 'c4',
+                        content: 'I am bad content in a bad comment to a bad post !!!',
+                      },
+                    }],
+                  },
+                },
+              ]),
+            },
+            errors: undefined,
+          }
+
           const response = await query({
             query: notificationQuery,
             variables: { ...variables, read: false },
           })
           await expect(response).toMatchObject(expected)
-          await expect(response.data.notifications.length).toEqual(4) // double-check
+          await expect(response.data.notifications.length).toEqual(4) // has to be checked, because of 'arrayContaining'
         })
 
         describe('if a resource gets deleted', () => {
@@ -348,16 +427,29 @@ describe('given some notifications', () => {
           }
 
           it('reduces notifications list', async () => {
-            await expect(
-              query({ query: notificationQuery, variables: { ...variables, read: false } }),
-            ).resolves.toMatchObject({
-              data: { notifications: [expect.any(Object), expect.any(Object)] },
+            let response
+
+            response = await query({
+              query: notificationQuery,
+              variables: { ...variables, read: false },
+            })
+            await expect(response).toMatchObject({
+              data: { notifications: expect.any(Array) },
               errors: undefined,
             })
+            await expect(response.data.notifications.length).toEqual(4)
+
             await deletePostAction()
-            await expect(
-              query({ query: notificationQuery, variables: { ...variables, read: false } }),
-            ).resolves.toMatchObject({ data: { notifications: [] }, errors: undefined })
+
+            response = await query({
+              query: notificationQuery,
+              variables: { ...variables, read: false },
+            })
+            await expect(response).toMatchObject({
+              data: { notifications: expect.any(Array) },
+              errors: undefined,
+            })
+            await expect(response.data.notifications.length).toEqual(2)
           })
         })
       })
@@ -377,6 +469,9 @@ describe('given some notifications', () => {
             }
             ... on Comment {
               content
+            }
+            ... on Report {
+              id
             }
           }
         }
@@ -400,7 +495,6 @@ describe('given some notifications', () => {
       describe('not being notified at all', () => {
         beforeEach(async () => {
           variables = {
-            ...variables,
             id: 'p1',
           }
         })
@@ -416,32 +510,34 @@ describe('given some notifications', () => {
         describe('on a post', () => {
           beforeEach(async () => {
             variables = {
-              ...variables,
               id: 'p3',
             }
           })
 
           it('updates `read` attribute and returns NOTIFIED relationship', async () => {
-            const { data } = await mutate({ mutation: markAsReadMutation, variables })
-            expect(data).toEqual({
-              markAsRead: {
-                from: {
-                  __typename: 'Post',
-                  content: 'You have been mentioned in a post',
+            const response = await mutate({ mutation: markAsReadMutation, variables })
+            expect(response).toMatchObject({
+              data: {
+                markAsRead: {
+                  createdAt: '2019-08-31T17:33:48.651Z',
+                  read: true,
+                  from: {
+                    __typename: 'Post',
+                    content: 'You have been mentioned in a post',
+                  },
                 },
-                read: true,
-                createdAt: '2019-08-31T17:33:48.651Z',
               },
+              errors: undefined,
             })
           })
 
           describe('but notification was already marked as read', () => {
             beforeEach(async () => {
               variables = {
-                ...variables,
                 id: 'p2',
               }
             })
+
             it('returns null', async () => {
               const response = await mutate({ mutation: markAsReadMutation, variables })
               expect(response.data.markAsRead).toEqual(null)
@@ -453,22 +549,49 @@ describe('given some notifications', () => {
         describe('on a comment', () => {
           beforeEach(async () => {
             variables = {
-              ...variables,
               id: 'c2',
             }
           })
 
           it('updates `read` attribute and returns NOTIFIED relationship', async () => {
-            const { data } = await mutate({ mutation: markAsReadMutation, variables })
-            expect(data).toEqual({
-              markAsRead: {
-                from: {
-                  __typename: 'Comment',
-                  content: 'You have been mentioned in a comment',
+            const response = await mutate({ mutation: markAsReadMutation, variables })
+            expect(response).toMatchObject({
+              data: {
+                markAsRead: {
+                  createdAt: '2019-08-30T19:33:48.651Z',
+                  read: true,
+                  from: {
+                    __typename: 'Comment',
+                    content: 'You have been mentioned in a comment',
+                  },
                 },
-                read: true,
-                createdAt: '2019-08-30T19:33:48.651Z',
               },
+              errors: undefined,
+            })
+          })
+        })
+
+        describe('on a report', () => {
+          beforeEach(async () => {
+            variables = {
+              id: 'reportOnComment',
+            }
+          })
+
+          it('updates `read` attribute and returns NOTIFIED relationship', async () => {
+            const response = await mutate({ mutation: markAsReadMutation, variables })
+            expect(response).toMatchObject({
+              data: {
+                markAsRead: {
+                  createdAt: '2020-01-14T12:33:48.651Z',
+                  read: true,
+                  from: {
+                    __typename: 'Report',
+                    id: 'reportOnComment',
+                  },
+                },
+              },
+              errors: undefined,
             })
           })
         })

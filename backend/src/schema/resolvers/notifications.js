@@ -56,7 +56,7 @@ export default {
             [(resource)-[:COMMENTS]->(post:Post)<-[:WROTE]-(author:User) | post {.*, author: properties(author)} ] as posts,
             [(reportedResource)<-[:BELONGS_TO]-(resource)<-[file:FILED]-(user) | file {.*, reportedResource: apoc.map.merge(properties(reportedResource), {__typename: labels(reportedResource)[0]})} ] as files
             WITH resource, user, notification, authors, posts, files,
-            resource {.*, __typename: labels(resource)[0], author: authors[0], post: posts[0], filed: files} as finalResource
+            resource {.*, __typename: labels(resource)[0], author: authors[0], post: posts[0], filed: files, resource: files[0].reportedResource} as finalResource
             RETURN notification {.*, from: finalResource, to: properties(user)}
             ${orderByClause}
             ${offset} ${limit}
@@ -85,7 +85,10 @@ export default {
             SET notification.read = TRUE
             RETURN resource, notification, user
           `,
-          { resourceId: args.id, id: currentUser.id },
+          {
+            resourceId: args.id,
+            id: currentUser.id
+          },
         )
         log(markNotificationAsReadTransactionResponse)
         return markNotificationAsReadTransactionResponse.records.map(transformReturnType)
