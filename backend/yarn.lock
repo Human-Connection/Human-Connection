@@ -6020,12 +6020,12 @@ metascraper-lang@^5.10.3:
   dependencies:
     "@metascraper/helpers" "^5.10.3"
 
-metascraper-logo@^5.9.5:
-  version "5.9.5"
-  resolved "https://registry.yarnpkg.com/metascraper-logo/-/metascraper-logo-5.9.5.tgz#1fee5b3de1c79380d50c8e2ecd3d102b6cb9f7d4"
-  integrity sha512-rbBLYVX4xSIzzeQJaUyibQYzjlNGlkyri14ixpIlCdlri3KQ0rRKnwQSeOSUlAu1rVsL7JlsMrhMDCb21dX9sQ==
+metascraper-logo@^5.10.3:
+  version "5.10.3"
+  resolved "https://registry.yarnpkg.com/metascraper-logo/-/metascraper-logo-5.10.3.tgz#22847c9ba65d8ae8e8af05d838f1da0953215300"
+  integrity sha512-8bliBXhe638D5A1gFh3q07rxYMCD6WOgywKFKPLcgOb0YybOU0MlrHkInXaGLMGCinULw3cXCn67b/+11mbmHA==
   dependencies:
-    "@metascraper/helpers" "^5.9.5"
+    "@metascraper/helpers" "^5.10.3"
 
 metascraper-publisher@^5.10.3:
   version "5.10.3"
