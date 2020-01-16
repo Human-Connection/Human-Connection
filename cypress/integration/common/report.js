@@ -44,7 +44,7 @@ Given('I am logged in with a {string} role', role => {
 
 When('I click on "Report Post" from the content menu of the post', () => {
   cy.contains('.ds-card', davidIrvingPostTitle)
-    .find('.content-menu-trigger')
+    .find('.content-menu .base-button')
     .click({force: true})
 
   cy.get('.popover .ds-menu-item-link')
@@ -54,7 +54,7 @@ When('I click on "Report Post" from the content menu of the post', () => {
 
 When('I click on "Report User" from the content menu in the user info box', () => {
   cy.contains('.ds-card', davidIrvingPostTitle)
-    .get('.user-content-menu .content-menu-trigger')
+    .get('.user-content-menu .base-button')
     .click({ force: true })
 
   cy.get('.popover .ds-menu-item-link')

@@ -7,7 +7,7 @@
       </client-only>
     </div>
     <reports-table :reports="reports" @confirm="openModal" />
-    <paginate :hasNext="hasNext" :hasPrevious="hasPrevious" @back="back" @next="next" />
+    <pagination-buttons :hasNext="hasNext" :hasPrevious="hasPrevious" @back="back" @next="next" />
   </ds-card>
 </template>
 <script>
@@ -15,13 +15,13 @@ import { mapMutations } from 'vuex'
 import DropdownFilter from '~/components/DropdownFilter/DropdownFilter'
 import ReportsTable from '~/components/features/ReportsTable/ReportsTable'
 import { reportsListQuery, reviewMutation } from '~/graphql/Moderation.js'
-import Paginate from '~/components/Paginate/Paginate'
+import PaginationButtons from '~/components/_new/generic/PaginationButtons/PaginationButtons'
 
 export default {
   components: {
     DropdownFilter,
     ReportsTable,
-    Paginate,
+    PaginationButtons,
   },
   data() {
     const pageSize = 25

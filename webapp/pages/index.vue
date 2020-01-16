@@ -8,7 +8,7 @@
         <!--<donation-info /> -->
         <div>
           <a target="_blank" href="https://human-connection.org/spenden/">
-            <ds-button primary>{{ $t('donations.donate-now') }}</ds-button>
+            <base-button filled>{{ $t('donations.donate-now') }}</base-button>
           </a>
         </div>
         <div class="sorting-dropdown">
@@ -43,19 +43,22 @@
       </template>
     </masonry-grid>
     <client-only>
-      <ds-button
-        v-tooltip="{ content: $t('contribution.newPost'), placement: 'left', delay: { show: 500 } }"
-        :path="{ name: 'post-create' }"
-        class="post-add-button"
-        icon="plus"
-        size="x-large"
-        primary
-      />
+      <nuxt-link :to="{ name: 'post-create' }">
+        <base-button
+          v-tooltip="{
+            content: $t('contribution.newPost'),
+            placement: 'left',
+            delay: { show: 500 },
+          }"
+          class="post-add-button"
+          icon="plus"
+          filled
+          circle
+        />
+      </nuxt-link>
     </client-only>
     <client-only>
-      <infinite-loading v-if="hasMore" @infinite="showMoreContributions">
-        <hc-load-more :loading="$apollo.loading" @click="showMoreContributions" />
-      </infinite-loading>
+      <infinite-loading v-if="hasMore" @infinite="showMoreContributions" />
     </client-only>
   </div>
 </template>
@@ -65,7 +68,6 @@
 import FilterMenu from '~/components/FilterMenu/FilterMenu.vue'
 import HcEmpty from '~/components/Empty/Empty'
 import HcPostCard from '~/components/PostCard/PostCard.vue'
-import HcLoadMore from '~/components/LoadMore.vue'
 import MasonryGrid from '~/components/MasonryGrid/MasonryGrid.vue'
 import MasonryGridItem from '~/components/MasonryGrid/MasonryGridItem.vue'
 import { mapGetters, mapMutations } from 'vuex'
@@ -78,7 +80,6 @@ export default {
     // DonationInfo,
     FilterMenu,
     HcPostCard,
-    HcLoadMore,
     HcEmpty,
     MasonryGrid,
     MasonryGridItem,
@@ -238,7 +239,10 @@ export default {
   }
 }
 
-.post-add-button {
+.base-button.--circle.post-add-button {
+  height: 54px;
+  width: 54px;
+  font-size: 26px;
   z-index: 100;
   position: fixed;
   bottom: -5px;

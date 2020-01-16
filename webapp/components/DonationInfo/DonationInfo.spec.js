@@ -32,7 +32,7 @@ describe('DonationInfo.vue', () => {
   it('displays a call to action button', () => {
     expect(
       Wrapper()
-        .find('.ds-button')
+        .find('.base-button')
         .text(),
     ).toBe('donations.donate-now')
   })

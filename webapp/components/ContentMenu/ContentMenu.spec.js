@@ -46,7 +46,7 @@ describe('ContentMenu.vue', () => {
         store,
         localVue,
       })
-      menuToggle = wrapper.find('.content-menu-trigger')
+      menuToggle = wrapper.find('[data-test="content-menu-button"]')
       menuToggle.trigger('click')
       return wrapper
     }

@@ -1,30 +1,27 @@
 <template>
-  <ds-space margin-top="large" margin-bottom="xxx-small">
-    <ds-form
-      v-model="formData"
-      :schema="formSchema"
-      @submit="handleSubmitVerify"
-      @input="handleInput"
-      @input-valid="handleInputValid"
-    >
-      <ds-input
-        :placeholder="$t('components.enter-nonce.form.nonce')"
-        model="nonce"
-        name="nonce"
-        id="nonce"
-        icon="question-circle"
-      />
-      <ds-space margin-botton="large">
-        <ds-text>
-          {{ $t('components.enter-nonce.form.description') }}
-        </ds-text>
-      </ds-space>
-      <ds-button :disabled="disabled" primary fullwidth name="submit" type="submit">
-        {{ $t('components.enter-nonce.form.next') }}
-      </ds-button>
-    </ds-form>
+  <ds-form
+    class="enter-nonce"
+    v-model="formData"
+    :schema="formSchema"
+    @submit="handleSubmitVerify"
+    @input="handleInput"
+    @input-valid="handleInputValid"
+  >
+    <ds-input
+      :placeholder="$t('components.enter-nonce.form.nonce')"
+      model="nonce"
+      name="nonce"
+      id="nonce"
+      icon="question-circle"
+    />
+    <ds-text>
+      {{ $t('components.enter-nonce.form.description') }}
+    </ds-text>
+    <base-button :disabled="disabled" filled name="submit" type="submit">
+      {{ $t('components.enter-nonce.form.next') }}
+    </base-button>
     <slot></slot>
-  </ds-space>
+  </ds-form>
 </template>
 
 <script>
@@ -64,3 +61,11 @@ export default {
   },
 }
 </script>
+
+<style lang="scss">
+.enter-nonce {
+  display: flex;
+  flex-direction: column;
+  margin: $space-large 0 $space-xxx-small 0;
+}
+</style>

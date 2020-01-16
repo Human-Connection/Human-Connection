@@ -73,9 +73,9 @@
                 @optimistic="optimisticFollow"
                 @update="updateFollow"
               />
-              <ds-button v-else fullwidth @click="unmuteUser(user)">
-                {{ $t('settings.muted-users.unmute') }}
-              </ds-button>
+              <base-button v-else @click="unmuteUser(user)" class="unblock-user-button">
+                {{ $t('settings.blocked-users.unblock') }}
+              </base-button>
             </template>
           </ds-space>
           <template v-if="user.about">
@@ -215,19 +215,21 @@
 
           <ds-grid-item :row-span="2" column-span="fullWidth">
             <ds-space centered>
-              <ds-button
-                v-if="myProfile"
-                v-tooltip="{
-                  content: $t('contribution.newPost'),
-                  placement: 'left',
-                  delay: { show: 500 },
-                }"
-                :path="{ name: 'post-create' }"
-                class="profile-post-add-button"
-                icon="plus"
-                size="large"
-                primary
-              />
+              <nuxt-link :to="{ name: 'post-create' }">
+                <base-button
+                  v-if="myProfile"
+                  v-tooltip="{
+                    content: $t('contribution.newPost'),
+                    placement: 'left',
+                    delay: { show: 500 },
+                  }"
+                  :path="{ name: 'post-create' }"
+                  class="profile-post-add-button"
+                  icon="plus"
+                  circle
+                  filled
+                />
+              </nuxt-link>
             </ds-space>
           </ds-grid-item>
 
@@ -260,9 +262,7 @@
           </template>
         </masonry-grid>
         <client-only>
-          <infinite-loading v-if="hasMore" @infinite="showMoreContributions">
-            <hc-load-more :loading="$apollo.loading" @click="showMoreContributions" />
-          </infinite-loading>
+          <infinite-loading v-if="hasMore" @infinite="showMoreContributions" />
         </client-only>
       </ds-flex-item>
     </ds-flex>
@@ -276,7 +276,6 @@ import HcPostCard from '~/components/PostCard/PostCard.vue'
 import HcFollowButton from '~/components/FollowButton.vue'
 import HcCountTo from '~/components/CountTo.vue'
 import HcBadges from '~/components/Badges.vue'
-import HcLoadMore from '~/components/LoadMore.vue'
 import HcEmpty from '~/components/Empty/Empty'
 import ContentMenu from '~/components/ContentMenu/ContentMenu'
 import HcUpload from '~/components/Upload'
@@ -305,7 +304,6 @@ export default {
     HcFollowButton,
     HcCountTo,
     HcBadges,
-    HcLoadMore,
     HcEmpty,
     HcAvatar,
     ContentMenu,
@@ -563,5 +561,9 @@ export default {
 }
 .profile-post-add-button {
   box-shadow: $box-shadow-x-large;
+}
+.unblock-user-button {
+  display: block;
+  width: 100%;
 }
 </style>

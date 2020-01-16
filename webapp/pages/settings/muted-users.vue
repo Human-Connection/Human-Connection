@@ -58,9 +58,7 @@
         </template>
 
         <template slot="unmuteUser" slot-scope="scope">
-          <ds-button size="small" @click="unmuteUser(scope)">
-            <ds-icon name="user-plus" />
-          </ds-button>
+          <base-button circle size="small" @click="unmuteUser(scope)" icon="user-plus" />
         </template>
       </ds-table>
     </ds-card>

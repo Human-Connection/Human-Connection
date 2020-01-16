@@ -6,58 +6,42 @@
     </ds-flex>
     <ds-flex :gutter="{ lg: 'large' }">
       <ds-flex-item
-        :width="{ base: '100%', sm: '100%', md: '100%', lg: '10%' }"
-        class="categories-menu-item"
+        :width="{ base: '100%', sm: '100%', md: '10%', lg: '10%' }"
+        class="follow-filter"
       >
-        <ds-flex>
-          <ds-flex-item width="10%" />
-          <ds-space margin-bottom="xx-small" />
-          <ds-flex-item width="100%">
-            <div class="follow-button">
-              <ds-button
-                v-tooltip="{
-                  content: this.$t('contribution.filterFollow'),
-                  placement: 'left',
-                  delay: { show: 500 },
-                }"
-                name="filter-by-followed-authors-only"
-                icon="user-plus"
-                :primary="filteredByUsersFollowed"
-                @click="toggleFilteredByFollowed(user.id)"
-              />
-              <ds-space margin-bottom="x-small" />
-              <ds-flex-item>
-                <label class="follow-label">{{ $t('filter-posts.followers.label') }}</label>
-              </ds-flex-item>
-              <ds-space />
-            </div>
-          </ds-flex-item>
-        </ds-flex>
+        <base-button
+          data-test="filter-by-followed"
+          icon="user-plus"
+          circle
+          :filled="filteredByUsersFollowed"
+          @click="toggleFilteredByFollowed(user.id)"
+          v-tooltip="{
+            content: this.$t('contribution.filterFollow'),
+            placement: 'left',
+            delay: { show: 500 },
+          }"
+        />
+        <label class="follow-label">{{ $t('filter-posts.followers.label') }}</label>
       </ds-flex-item>
-      <div v-for="emotion in emotionsArray" :key="emotion">
-        <ds-flex-item :width="{ lg: '100%' }">
-          <ds-button
-            size="large"
-            ghost
-            @click="toogleFilteredByEmotions(emotion)"
-            class="emotions-buttons"
-          >
-            <img :src="iconPath(emotion)" width="40" />
-          </ds-button>
-          <ds-space margin-bottom="x-small" />
-          <ds-flex-item class="emotions-mobile-space text-center">
-            <label class="emotions-label">{{ $t(`contribution.emotions-label.${emotion}`) }}</label>
-          </ds-flex-item>
-        </ds-flex-item>
-      </div>
+      <emotion-button
+        v-for="emotion in emotionsArray"
+        :key="emotion"
+        :emojiPath="iconPath(emotion)"
+        :emotion="emotion"
+        @toggleEmotion="toogleFilteredByEmotions(emotion)"
+      />
       <ds-space margin-bottom="large" />
     </ds-flex>
   </ds-space>
 </template>
 <script>
 import { mapGetters, mapMutations } from 'vuex'
+import EmotionButton from '~/components/EmotionButton/EmotionButton'
 
 export default {
+  components: {
+    EmotionButton,
+  },
   props: {
     user: { type: Object, required: true },
   },
@@ -95,12 +79,21 @@ export default {
   display: block;
 }
 
+.follow-filter.ds-flex-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: $space-base;
+
+  > .follow-label {
+    margin-top: $space-x-small;
+    text-align: center;
+  }
+}
+
 @media only screen and (max-width: 960px) {
   #filter-posts-header {
     text-align: center;
-  }
-  .follow-button {
-    float: left;
   }
 }
 

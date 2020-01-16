@@ -2,18 +2,33 @@ import { storiesOf } from '@storybook/vue'
 import helpers from '~/storybook/helpers'
 import CounterIcon from './CounterIcon.vue'
 
-storiesOf('CounterIcon', module)
+storiesOf('Generic/CounterIcon', module)
   .addDecorator(helpers.layout)
-  .add('flag icon with button in slot position', () => ({
+
+  .add('default', () => ({
     components: { CounterIcon },
-    data() {
-      return { icon: 'flag', count: 3 }
-    },
     template: `
-      <counter-icon icon="pizza" :count="count">
-        <ds-button ghost primary>
-          Report Details
-        </ds-button>
-      </counter-icon>
+      <counter-icon icon="flag" :count="3" />
+    `,
+  }))
+
+  .add('high count', () => ({
+    components: { CounterIcon },
+    template: `
+      <counter-icon icon="comments" :count="150" />
+    `,
+  }))
+
+  .add('danger', () => ({
+    components: { CounterIcon },
+    template: `
+      <counter-icon icon="bell" :count="42" danger />
+    `,
+  }))
+
+  .add('count is 0', () => ({
+    components: { CounterIcon },
+    template: `
+      <counter-icon icon="bell" :count="0" />
     `,
   }))
