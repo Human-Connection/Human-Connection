@@ -1099,7 +1099,7 @@
     url-regex "~4.1.1"
     video-extensions "~1.1.0"
 
-"@metascraper/helpers@^5.10.3", "@metascraper/helpers@^5.9.5":
+"@metascraper/helpers@^5.10.3":
   version "5.10.3"
   resolved "https://registry.yarnpkg.com/@metascraper/helpers/-/helpers-5.10.3.tgz#38abd95ffbcfaf0bd6afbaa85853d4b9aa780c87"
   integrity sha512-ZiDS3aGIK3OSGBMaYORvUVZAVFKmjh1KZaaFnmjIPi6vWPFOrtLK8r4OrkwroJ0IK6Hg6ZiuDjQo63LDcmLqdA==
@@ -6076,12 +6076,12 @@ metascraper-youtube@^5.10.3:
     is-reachable "~4.0.0"
     p-locate "~4.1.0"
 
-metascraper@^5.10.2:
-  version "5.10.2"
-  resolved "https://registry.yarnpkg.com/metascraper/-/metascraper-5.10.2.tgz#3e2d5c3f8cbe40a8fbd60319bc648d9efd922d13"
-  integrity sha512-h89HZ1jMSzHcp9xAN51/rqOh9oKuY9UBNlar0hdOp9D5v71+e0y4i+lJEly9wJqLAwgVOjRKK5dirTzkj3GdTQ==
+metascraper@^5.10.3:
+  version "5.10.3"
+  resolved "https://registry.yarnpkg.com/metascraper/-/metascraper-5.10.3.tgz#0a914bc2d0cfebc7e81d00505fc113bd0c409113"
+  integrity sha512-F7VIGtApjHGdH/itxL+mCGMfJBo4TXzBio29vb+8y9Fam7cD3n8OrPFVInFOahOe1sBWeXgKP28cDFRkqM0yKQ==
   dependencies:
-    "@metascraper/helpers" "^5.9.5"
+    "@metascraper/helpers" "^5.10.3"
     cheerio "~1.0.0-rc.3"
     cheerio-advanced-selectors "~2.0.1"
     lodash "~4.17.15"
