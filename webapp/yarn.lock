@@ -2145,17 +2145,17 @@
     source-map-support "^0.5.7"
     tslib "^1.9.3"
 
-"@storybook/addon-a11y@^5.3.3":
-  version "5.3.3"
-  resolved "https://registry.yarnpkg.com/@storybook/addon-a11y/-/addon-a11y-5.3.3.tgz#1412bb9ef7acae1e5eb59479b47b392a2c13a080"
-  integrity sha512-ToppQLcijMNEvncH7QsuYIkz+27j1+O6P63/q86XAKx1qJdVOyKY+XGNGR5y0UxtBpUT+iX1wOcrEEWxjqDfhQ==
+"@storybook/addon-a11y@^5.3.5":
+  version "5.3.5"
+  resolved "https://registry.yarnpkg.com/@storybook/addon-a11y/-/addon-a11y-5.3.5.tgz#40d51751798af75ab4863432870d4dc44cf83952"
+  integrity sha512-ttdptgOAXIiP/rwanortrbqhz0lNk5sjpFqUUCMOFcXE19bMtYCqR+HT7lfOxEHpynr/8Dy6d3Xh/Ice4I/AAA==
   dependencies:
-    "@storybook/addons" "5.3.3"
-    "@storybook/api" "5.3.3"
-    "@storybook/client-logger" "5.3.3"
-    "@storybook/components" "5.3.3"
-    "@storybook/core-events" "5.3.3"
-    "@storybook/theming" "5.3.3"
+    "@storybook/addons" "5.3.5"
+    "@storybook/api" "5.3.5"
+    "@storybook/client-logger" "5.3.5"
+    "@storybook/components" "5.3.5"
+    "@storybook/core-events" "5.3.5"
+    "@storybook/theming" "5.3.5"
     axe-core "^3.3.2"
     core-js "^3.0.1"
     global "^4.3.2"
