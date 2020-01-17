@@ -113,7 +113,7 @@
             }
         },
         "deleteUserAccount": {
-            "name": "Eliminar cuenta de usuario",
+            "name": "Borrar datos",
             "contributionsCount": "Eliminar mis {count} contribuciones",
             "commentedCount": "Eliminar mis {count} comentarios",
             "accountDescription": "Tenga en cuenta que su contribución y sus comentarios son importantes para nuestra comunidad. Si aún decide borrarlos, debe marcarlos a continuación.",
@@ -350,27 +350,27 @@
                 "User": {
                     "disable": {
                         "title": "Finalmente Deshabilitar Usuario",
-                        "message": "¿Realmente quiere que el usuario \"<b>{nombre}<\/b>\" permanezca <b>desactivado<\/b>?"
+                        "message": "¿Realmente quiere que el usuario \"<b>{name}<\/b>\" permanezca <b>desactivado<\/b>?"
                     },
                     "enable": {
                         "title": "Finalmente Habilitar Usuario",
-                        "message": "¿Realmente quiere que el usuario \"<b>{nombre}<\/b>\" permanezca <b>habilitado<\/b>?"
+                        "message": "¿Realmente quiere que el usuario \"<b>{name}<\/b>\" permanezca <b>habilitado<\/b>?"
                     }
                 },
                 "Post": {
                     "disable": {
                         "title": "Finalmente Desactivar Contribución",
-                        "message": "¿Realmente quiere que la entrada \"<b>{nombre}<\/b>\" permanezca <b>desactivada<\/b>?"
+                        "message": "¿Realmente quiere que la entrada \"<b>{name}<\/b>\" permanezca <b>desactivada<\/b>?"
                     },
                     "enable": {
                         "title": "Finalmente Habilitar Contribución",
-                        "message": "¿Realmente quiere que la contribución \"<b>{nombre}<\/b>\" permanezca <b>activada<\/b>?"
+                        "message": "¿Realmente quiere que la contribución \"<b>{name}<\/b>\" permanezca <b>activada<\/b>?"
                     }
                 },
                 "Comment": {
                     "disable": {
                         "title": "Desactivar finalmente Comentario",
-                        "message": "¿Realmente quiere que el comentario \"<b>{nombre}<\/b>\" permanezca <b>desactivado<\/b>?"
+                        "message": "¿Realmente quiere que el comentario \"<b>{name}<\/b>\" permanezca <b>desactivado<\/b>?"
                     },
                     "enable": {
                         "title": "Finalmente Habilitar Comentario",
@@ -486,7 +486,9 @@
         "teaserImage": {
             "cropperConfirm": "Confirmar"
         },
-        "languageSelectText": "Seleccione el idioma"
+        "languageSelectText": "Seleccione el idioma",
+        "inappropriatePicture": "Esta imagen puede ser inapropiada para algunas personas.",
+        "inappropriatePictureText": "¿Cuándo debería estar borrosa mi foto?"
     },
     "comment": {
         "edit": "Editar comentario",
@@ -514,7 +516,11 @@
     "search": {
         "placeholder": "Buscar",
         "hint": "¿Qué estás buscando?",
-        "failed": "No se ha encontrado nada"
+        "failed": "No se ha encontrado nada",
+        "heading": {
+            "Post": "Contribuciones",
+            "User": "Usuarios"
+        }
     },
     "components": {
         "password-reset": {
