@@ -268,7 +268,7 @@
         },
         "comment": {
             "submit": "Kommentiere",
-            "submitted": "Kommentar Gesendet",
+            "submitted": "Kommentar gesendet",
             "updated": "Änderungen gespeichert"
         },
         "edited": "bearbeitet"
@@ -316,6 +316,11 @@
         "reports": {
             "empty": "Glückwunsch, es gibt nichts zu moderieren.",
             "name": "Meldungen",
+            "reporter": "gemeldet von",
+            "submitter": "Gemeldet von",
+            "disabledBy": "Gesperrt von",
+            "reasonCategory": "Kategorie",
+            "reasonDescription": "Beschreibung",
             "status": "Aktueller Status",
             "content": "Inhalt",
             "author": "Autor",
@@ -327,55 +332,51 @@
             "decideButton": "Bestätige",
             "DecisionSuccess": "Erfolgreich entschieden!",
             "enabledBy": "Entsperrt von",
-            "disabledBy": "Gesperrt von",
             "previousDecision": "Vorherige Entscheidung:",
             "enabledAt": "Entsperrt am",
             "disabledAt": "Gesperrt am",
-            "reasonCategory": "Kategorie",
-            "reasonDescription": "Beschreibung",
-            "submitter": "Gemeldet von",
             "numberOfUsers": "{count} Nutzern",
             "filterLabel": {
-              "all": "Alle",
-              "unreviewed": "Nicht bearbeitet",
-              "reviewed": "Bearbeitet",
-              "closed": "Abgeschlossen"
+                "all": "Alle",
+                "unreviewed": "Nicht bearbeitet",
+                "reviewed": "Bearbeitet",
+                "closed": "Abgeschlossen"
             },
             "reportedOn": "Datum",
             "moreDetails": "Details öffnen",
             "decideModal": {
-              "submit": "Bestätige Entscheidung",
-              "cancel": "Abbruch",
-              "User": {
-                "disable": {
-                  "title": "Sperre den Benutzer abschließend",
-                  "message": "Möchtest du den Benutzer \"<b>{name}</b>\" wirklich <b>gesperrt</b> lassen?"
+                "submit": "Bestätige Entscheidung",
+                "cancel": "Abbruch",
+                "User": {
+                    "disable": {
+                        "title": "Sperre den Benutzer abschließend",
+                        "message": "Möchtest du den Benutzer \"<b>{name}<\/b>\" wirklich <b>gesperrt<\/b> lassen?"
+                    },
+                    "enable": {
+                        "title": "Entsperre den Benutzer abschließend",
+                        "message": "Möchtest du den Benutzer \"<b>{name}<\/b>\" wirklich <b>entsperrt<\/b> lassen?"
+                    }
                 },
-                "enable": {
-                  "title": "Entsperre den Benutzer abschließend",
-                  "message": "Möchtest du den Benutzer \"<b>{name}</b>\" wirklich <b>entsperrt</b> lassen?"
-                }
-              },
-              "Post": {
-                "disable": {
-                  "title": "Sperre den Beitrag abschließend",
-                  "message": "Möchtest du den Beitrag \"<b>{name}</b>\" wirklich <b>gesperrt</b> lassen?"
+                "Post": {
+                    "disable": {
+                        "title": "Sperre den Beitrag abschließend",
+                        "message": "Möchtest du den Beitrag \"<b>{name}<\/b>\" wirklich <b>gesperrt<\/b> lassen?"
+                    },
+                    "enable": {
+                        "title": "Entsperre den Beitrag abschließend",
+                        "message": "Möchtest du den Beitrag \"<b>{name}<\/b>\" wirklich <b>entsperrt<\/b> lassen?"
+                    }
                 },
-                "enable": {
-                  "title": "Entsperre den Beitrag abschließend",
-                  "message": "Möchtest du den Beitrag \"<b>{name}</b>\" wirklich <b>entsperrt</b> lassen?"
+                "Comment": {
+                    "disable": {
+                        "title": "Sperre den Kommentar abschließend",
+                        "message": "Möchtest du den Kommentar \"<b>{name}<\/b>\" wirklich <b>gesperrt<\/b> lassen?"
+                    },
+                    "enable": {
+                        "title": "Entsperre den Kommentar abschließend",
+                        "message": "Möchtest du den Kommentar \"<b>{name}<\/b>\" wirklich <b>entsperrt<\/b> lassen?"
+                    }
                 }
-              },
-              "Comment": {
-                "disable": {
-                  "title": "Sperre den Kommentar abschließend",
-                  "message": "Möchtest du den Kommentar \"<b>{name}</b>\" wirklich <b>gesperrt</b> lassen?"
-                },
-                "enable": {
-                  "title": "Entsperre den Kommentar abschließend",
-                  "message": "Möchtest du den Kommentar \"<b>{name}</b>\" wirklich <b>entsperrt</b> lassen?"
-                }
-              }
             }
         }
     },
@@ -402,7 +403,6 @@
     "report": {
         "submit": "Meldung senden",
         "cancel": "Abbrechen",
-        "success": "Vielen Dank für diese Meldung!",
         "user": {
             "title": "Nutzer melden",
             "type": "Nutzer",
@@ -421,6 +421,7 @@
             "message": "Bist Du sicher, dass Du den Kommentar von „<b>{name}<\/b>“ melden möchtest?",
             "error": "Du hast den Kommentar bereits gemeldet!"
         },
+        "success": "Vielen Dank für diese Meldung!",
         "reason": {
             "category": {
                 "label": "Wähle eine Kategorie:",
@@ -452,7 +453,6 @@
         "filterALL": "Alle Beiträge anzeigen",
         "success": "Gespeichert!",
         "languageSelectLabel": "Sprache deines Beitrags",
-        "languageSelectText": "Sprache wählen",
         "categories": {
             "infoSelectedNoOfMaxCategories": "{chosen} von {max} Kategorien ausgewählt"
         },
@@ -485,9 +485,10 @@
         },
         "teaserImage": {
             "cropperConfirm": "Bestätigen"
-        },        
-        "inappropriatePicture" : "Dieses Bild kann für einige Menschen unangemessen sein.",
-        "inappropriatePictureText" : "Wann soll ein Foto versteckt werden"
+        },
+        "languageSelectText": "Sprache wählen",
+        "inappropriatePicture": "Dieses Bild kann für einige Menschen unangemessen sein.",
+        "inappropriatePictureText": "Wann soll ein Foto versteckt werden"
     },
     "comment": {
         "edit": "Kommentar bearbeiten",
@@ -517,8 +518,8 @@
         "hint": "Wonach suchst Du?",
         "failed": "Nichts gefunden",
         "heading": {
-          "Post": "Beiträge",
-          "User": "Benutzer"
+            "Post": "Beiträge",
+            "User": "Benutzer"
         }
     },
     "components": {
@@ -556,15 +557,15 @@
                     "terms-and-condition": "Ich stimme den <a href=\"\/terms-and-conditions\"><ds-text bold color=\"primary\" > Nutzungsbedingungen<\/ds-text><\/a>zu.",
                     "data-privacy": "Ich habe die  <a href=\"https:\/\/human-connection.org\/datenschutz\/\" target=\"_blank\"><ds-text bold color=\"primary\" >Datenschutzerklärung<\/ds-text><\/a> gelesen und verstanden",
                     "minimum-age": "Ich bin 18 Jahre oder älter.",
-                    "no-commercial": "Ich habe keine kommerziellen Absichten und ich repräsentiere kein kommerzielles Unternehmen oder Organisation.",
-                    "no-political": "Ich bin nicht im Auftrag einer Partei oder politischen Organisation im Netzwerk. ",
                     "invitation-code": "Dein Einladungscode lautet: <b>{code}<\/b>",
                     "errors": {
                         "email-exists": "Es gibt schon ein Benutzerkonto mit dieser E-Mail Adresse!",
                         "invalid-invitation-token": "Es sieht so aus, als ob der Einladungscode schon eingelöst wurde. Jeder Code kann nur einmalig benutzt werden."
                     },
                     "submit": "Konto erstellen",
-                    "success": "Eine Mail mit einem Bestätigungslink für die Registrierung wurde an <b>{email}<\/b> geschickt"
+                    "success": "Eine Mail mit einem Bestätigungslink für die Registrierung wurde an <b>{email}<\/b> geschickt",
+                    "no-commercial": "Ich habe keine kommerziellen Absichten und ich repräsentiere kein kommerzielles Unternehmen oder Organisation.",
+                    "no-political": "Ich bin nicht im Auftrag einer Partei oder politischen Organisation im Netzwerk. "
                 }
             },
             "create-user-account": {
@@ -797,10 +798,6 @@
             "title": "Fehler und Rückmeldungen",
             "description": "Wir sind sehr bemüht, unser Netzwerk und unsere Daten sicher und abrufbar zu erhalten. Jede neue Version der Software durchläuft sowohl automatisierte als auch manuelle Tests. Es können jedoch unvorhergesehene Fehler auftreten. Deshalb sind wir dankbar für jeden gemeldeten Fehler. Du kannst gerne jeden von Dir entdeckten Fehler dem Support\/der Hilfe-Assistenz mitteilen: support@human-connection.org"
         },
-        "no-commercial-use" : {
-          "title": "Keine kommerzielle Nutzung",
-          "description": "Die Nutzung des Human Connection Netzwerkes ist nicht gestattet für kommerzielle Nutzung. Darunter fällt unter anderem das Bewerben von Produkten mit kommerzieller Absicht, das Einstellen von Affiliate-Links, direkter Aufruf zu Spenden oder finanzieller Unterstützung für Zwecke, die steuerlich nicht als gemeinnützig anerkannt sind."
-        },
         "help-and-questions": {
             "title": "Hilfe und Fragen",
             "description": "Für Hilfe und Fragen haben wir Dir eine umfassende Sammlung an häufig gestellten Fragen und Antworten (FAQ) zusammengestellt. Du findest diese hier: <a href=\"https:\/\/support.human-connection.org\/kb\/\" target=\"_blank\" > https:\/\/support.human-connection.org\/kb\/ <\/a>"
@@ -808,6 +805,10 @@
         "addition": {
             "title": "Zusätzlich machen wir regelmäßig Veranstaltungen, wo Du auch Eindrücke wiedergeben und Fragen stellen kannst. Du findest eine aktuelle Übersicht hier:",
             "description": "<a href=\"https:\/\/human-connection.org\/veranstaltungen\/\" target=\"_blank\" > https:\/\/human-connection.org\/veranstaltungen\/ <\/a>"
+        },
+        "no-commercial-use": {
+            "title": "Keine kommerzielle Nutzung",
+            "description": "Die Nutzung des Human Connection Netzwerkes ist nicht gestattet für kommerzielle Nutzung. Darunter fällt unter anderem das Bewerben von Produkten mit kommerzieller Absicht, das Einstellen von Affiliate-Links, direkter Aufruf zu Spenden oder finanzieller Unterstützung für Zwecke, die steuerlich nicht als gemeinnützig anerkannt sind."
         }
     },
     "donations": {
