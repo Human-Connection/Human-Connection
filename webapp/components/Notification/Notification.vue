@@ -2,31 +2,46 @@
   <ds-space :class="{ read: notification.read, notification: true }" margin-bottom="x-small">
     <client-only>
       <ds-space margin-bottom="x-small">
-        <hc-user :user="from.author" :date-time="from.createdAt" :trunc="35" />
+        <hc-user :user="sourceData.triggerer" :date-time="sourceData.createdAt" :trunc="35" />
       </ds-space>
       <ds-text class="reason-text-for-test" color="soft">
-        {{ $t(`notifications.reason.${notification.reason}`) }}
+        {{ $t(`notifications.reason.${notification.reason}` + sourceData.reasonExtention) }}
       </ds-text>
     </client-only>
     <ds-space margin-bottom="x-small" />
-    <nuxt-link
-      class="notification-mention-post"
-      :to="{ name: 'post-id-slug', params, ...hashParam }"
-      @click.native="$emit('read')"
-    >
+    <nuxt-link class="notification-mention-post" :to="linkTo" @click.native="$emit('read')">
       <ds-space margin-bottom="x-small">
-        <ds-card
-          :header="from.title || from.post.title"
-          hover
-          space="x-small"
-          class="notifications-card"
-        >
+        <ds-card :header="sourceData.title" hover space="x-small" class="notifications-card">
           <ds-space margin-bottom="x-small" />
-          <div>
-            <span v-if="isComment" class="comment-notification-header">
+          <div v-if="sourceData.user">
+            <hc-user :user="sourceData.user" :trunc="35" />
+          </div>
+          <div v-else-if="sourceData.contentExcerpt">
+            <span v-if="sourceData.comment" class="text-notification-header">
               {{ $t(`notifications.comment`) }}:
             </span>
-            {{ from.contentExcerpt | removeHtml }}
+            {{ sourceData.contentExcerpt | removeHtml }}
+          </div>
+          <div v-if="sourceData.report">
+            <ds-space margin-bottom="x-small" />
+            <span class="text-notification-header">
+              {{ $t(`notifications.filedReport.category`) }}:
+            </span>
+            {{ this.$t('report.reason.category.options.' + sourceData.report.reasonCategory) }}
+            <br />
+            <span class="text-notification-header">
+              {{ $t(`notifications.filedReport.description`) }}:
+            </span>
+            <span
+              v-if="
+                sourceData.report.reasonDescription && sourceData.report.reasonDescription !== ''
+              "
+            >
+              {{ sourceData.report.reasonDescription }}
+            </span>
+            <span v-else>
+              —
+            </span>
           </div>
         </ds-card>
       </ds-space>
@@ -35,6 +50,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import HcUser from '~/components/User/User'
 
 export default {
@@ -49,41 +65,78 @@ export default {
     },
   },
   computed: {
-    from() {
-      return this.notification.from
-    },
-    isComment() {
-      return this.from.__typename === 'Comment'
-    },
+    ...mapGetters({
+      currentUser: 'auth/user',
+    }),
     sourceData() {
+      const from = this.notification.from
+      let triggerer
+      const createdAt = this.notification.createdAt
+      let title
+      let author
       let user = null
       let post = null
       let comment = null
+      let contentExcerpt = null
       let report = null
-      if (this.from.__typename === 'Post') {
-        post = this.from
-      } else if (this.from.__typename === 'Comment') {
-        comment = this.from
-        post = this.from.post
-      } else if (this.from.__typename === 'Report') {
+      let reasonExtention = ''
+
+      if (from.__typename === 'Post') {
+        post = from
+        triggerer = post.author
+      } else if (from.__typename === 'Comment') {
+        comment = from
+        triggerer = comment.author
+        post = comment.post
+      } else if (from.__typename === 'Report') {
         report = {
-          reasonCategory: this.from.filed.reasonCategory,
-          reasonDescription: this.from.filed.reasonDescription,
+          reasonCategory: from.filed[0].reasonCategory,
+          reasonDescription: from.filed[0].reasonDescription,
         }
-        if (this.from.filed.reportedResource.__typename === 'User') {
-          user = this.from.filed.reportedResource
-        } else if (this.from.filed.reportedResource.__typename === 'Post') {
-          post = this.from.filed.reportedResource
-        } else if (this.from.filed.reportedResource.__typename === 'Comment') {
-          comment = this.from.filed.reportedResource
-          post = this.from.filed.reportedResource.post
+        triggerer = this.currentUser
+        if (from.filed[0].reportedResource.__typename === 'User') {
+          user = from.filed[0].reportedResource
+          reasonExtention = '.user'
+        } else if (from.filed[0].reportedResource.__typename === 'Post') {
+          post = from.filed[0].reportedResource
+          reasonExtention = '.post'
+        } else if (from.filed[0].reportedResource.__typename === 'Comment') {
+          comment = from.filed[0].reportedResource
+          post = from.filed[0].reportedResource.post
+          reasonExtention = '.comment'
         }
       }
-      return { user, post, comment, report }
+
+      if (user) {
+        title = user.name
+        author = user
+      } else {
+        title = post.title
+        if (comment) {
+          author = comment.author
+          contentExcerpt = comment.contentExcerpt
+        } else {
+          author = post.author
+          contentExcerpt = post.contentExcerpt
+        }
+      }
+
+      const data = {
+        triggerer,
+        createdAt,
+        title,
+        user,
+        post,
+        comment,
+        contentExcerpt,
+        author,
+        report,
+        reasonExtention,
+      }
+      return data
     },
-    params() {
-      // Wolle const post = this.isComment ? this.from.post : this.from
-      return this.sourceData.user
+    linkTo() {
+      const params = this.sourceData.user
         ? {
             id: this.sourceData.user.id,
             slug: this.sourceData.user.slug,
@@ -94,10 +147,14 @@ export default {
             slug: this.sourceData.post.slug,
           }
         : {}
-    },
-    hashParam() {
-      // Wolle return this.isComment ? { hash: `#commentId-${this.from.id}` } : {}
-      return this.sourceData.comment ? { hash: `#commentId-${this.sourceData.comment.id}` } : {}
+      const hashParam = this.sourceData.comment
+        ? { hash: `#commentId-${this.sourceData.comment.id}` }
+        : {}
+      return {
+        name: this.sourceData.user ? 'profile-id-slug' : 'post-id-slug',
+        params,
+        ...hashParam,
+      }
     },
   },
 }
@@ -110,7 +167,7 @@ export default {
 .notifications-card {
   min-width: 500px;
 }
-.comment-notification-header {
+.text-notification-header {
   font-weight: 700;
   margin-right: 0.1rem;
 }

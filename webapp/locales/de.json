@@ -656,9 +656,14 @@
     },
     "notifications": {
         "reason": {
+            "commented_on_post": "Hat deinen Beitrag kommentiert …",
+            "filed_report_on_resource": {
+              "user": "Du hast einen Benutzer gemeldet …",
+              "post": "Du hast einen Beitrag gemeldet …",
+              "comment": "Du hast einen Kommentar gemeldet …"
+            },
             "mentioned_in_post": "Hat dich in einem Beitrag erwähnt …",
-            "mentioned_in_comment": "Hat dich in einem Kommentar erwähnt …",
-            "commented_on_post": "Hat deinen Beitrag kommentiert …"
+            "mentioned_in_comment": "Hat dich in einem Kommentar erwähnt …"
         },
         "comment": "Kommentar",
         "title": "Benachrichtigungen",
@@ -671,7 +676,11 @@
             "read": "Gelesen",
             "unread": "Ungelesen"
         },
-        "empty": "Bedaure, Du hast momentan keinerlei Benachrichtigungen."
+        "empty": "Bedaure, Du hast momentan keinerlei Benachrichtigungen.",
+        "filedReport": {
+          "category": "Kategorie der Meldung",
+          "description": "Beschreibung"
+        }
     },
     "delete": {
         "submit": "Löschen",

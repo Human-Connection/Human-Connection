@@ -606,7 +606,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         postId: 'p15',
       }),
     ])
-    const trollingComment = comments[0]
+    const trollingCommentC1 = comments[0]
+    const trollingCommentC2 = comments[1]
 
     await Promise.all([
       democracy.relateTo(p3, 'post'),
@@ -670,16 +671,23 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       louie.relateTo(p10, 'shouted'),
     ])
 
-    const reports = await Promise.all([
-      factory.create('Report'),
-      factory.create('Report'),
-      factory.create('Report'),
-      factory.create('Report'),
+    const [
+      reportAgainstDagobert,
+      reportAgainstHuey,
+      reportAgainstTrollingPostP2,
+      reportAgainstTrollingPostP9,
+      reportAgainstTrollingCommentC1,
+      reportAgainstTrollingCommentC2,
+      reportAgainstDewey,
+    ] = await Promise.all([
+      factory.create('Report', { id: 'reportAgainstDagobert' }),
+      factory.create('Report', { id: 'reportAgainstHuey' }),
+      factory.create('Report', { id: 'reportAgainstTrollingPostP2' }),
+      factory.create('Report', { id: 'reportAgainstTrollingPostP9' }),
+      factory.create('Report', { id: 'reportAgainstTrollingCommentC1' }),
+      factory.create('Report', { id: 'reportAgainstTrollingCommentC2' }),
+      factory.create('Report', { id: 'reportAgainstDewey' }),
     ])
-    const reportAgainstDagobert = reports[0]
-    const reportAgainstTrollingPost = reports[1]
-    const reportAgainstTrollingComment = reports[2]
-    const reportAgainstDewey = reports[3]
 
     // report resource first time
     await Promise.all([
@@ -690,19 +698,40 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       }),
       reportAgainstDagobert.relateTo(dagobert, 'belongsTo'),
 
-      reportAgainstTrollingPost.relateTo(jennyRostock, 'filed', {
+      reportAgainstHuey.relateTo(jennyRostock, 'filed', {
+        resourceId: 'u4',
+        reasonCategory: 'doxing',
+        reasonDescription: '',
+      }),
+      reportAgainstHuey.relateTo(huey, 'belongsTo'),
+
+      reportAgainstTrollingPostP2.relateTo(jennyRostock, 'filed', {
         resourceId: 'p2',
         reasonCategory: 'doxing',
         reasonDescription: "This shouldn't be shown to anybody else! It's my private thing!",
       }),
-      reportAgainstTrollingPost.relateTo(p2, 'belongsTo'),
+      reportAgainstTrollingPostP2.relateTo(p2, 'belongsTo'),
 
-      reportAgainstTrollingComment.relateTo(huey, 'filed', {
+      reportAgainstTrollingPostP9.relateTo(jennyRostock, 'filed', {
+        resourceId: 'p9',
+        reasonCategory: 'discrimination_etc',
+        reasonDescription: 'Discrimination !!!',
+      }),
+      reportAgainstTrollingPostP9.relateTo(p9, 'belongsTo'),
+
+      reportAgainstTrollingCommentC1.relateTo(huey, 'filed', {
         resourceId: 'c1',
         reasonCategory: 'other',
         reasonDescription: 'This comment is bigoted',
       }),
-      reportAgainstTrollingComment.relateTo(trollingComment, 'belongsTo'),
+      reportAgainstTrollingCommentC1.relateTo(trollingCommentC1, 'belongsTo'),
+
+      reportAgainstTrollingCommentC2.relateTo(jennyRostock, 'filed', {
+        resourceId: 'c2',
+        reasonCategory: 'other',
+        reasonDescription: 'This comment is bigoted',
+      }),
+      reportAgainstTrollingCommentC2.relateTo(trollingCommentC2, 'belongsTo'),
 
       reportAgainstDewey.relateTo(dagobert, 'filed', {
         resourceId: 'u5',
@@ -717,11 +746,23 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         read: false,
         reason: 'filed_report_on_resource',
       }),
-      reportAgainstTrollingPost.relateTo(jennyRostock, 'notified', {
+      reportAgainstHuey.relateTo(jennyRostock, 'notified', {
         read: false,
         reason: 'filed_report_on_resource',
       }),
-      reportAgainstTrollingComment.relateTo(huey, 'notified', {
+      reportAgainstTrollingPostP2.relateTo(jennyRostock, 'notified', {
+        read: false,
+        reason: 'filed_report_on_resource',
+      }),
+      reportAgainstTrollingPostP9.relateTo(jennyRostock, 'notified', {
+        read: false,
+        reason: 'filed_report_on_resource',
+      }),
+      reportAgainstTrollingCommentC1.relateTo(huey, 'notified', {
+        read: false,
+        reason: 'filed_report_on_resource',
+      }),
+      reportAgainstTrollingCommentC2.relateTo(jennyRostock, 'notified', {
         read: false,
         reason: 'filed_report_on_resource',
       }),
@@ -740,19 +781,19 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       }),
       reportAgainstDagobert.relateTo(dagobert, 'belongsTo'),
 
-      reportAgainstTrollingPost.relateTo(peterLustig, 'filed', {
+      reportAgainstTrollingPostP2.relateTo(peterLustig, 'filed', {
         resourceId: 'p2',
         reasonCategory: 'discrimination_etc',
         reasonDescription: 'This post is bigoted',
       }),
-      reportAgainstTrollingPost.relateTo(p2, 'belongsTo'),
+      reportAgainstTrollingPostP2.relateTo(p2, 'belongsTo'),
 
-      reportAgainstTrollingComment.relateTo(bobDerBaumeister, 'filed', {
+      reportAgainstTrollingCommentC1.relateTo(bobDerBaumeister, 'filed', {
         resourceId: 'c1',
         reasonCategory: 'pornographic_content_links',
         reasonDescription: 'This comment is porno!!!',
       }),
-      reportAgainstTrollingComment.relateTo(trollingComment, 'belongsTo'),
+      reportAgainstTrollingCommentC1.relateTo(trollingCommentC1, 'belongsTo'),
     ])
     // notify second report filers
     await Promise.all([
@@ -760,11 +801,11 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         read: false,
         reason: 'filed_report_on_resource',
       }),
-      reportAgainstTrollingPost.relateTo(peterLustig, 'notified', {
+      reportAgainstTrollingPostP2.relateTo(peterLustig, 'notified', {
         read: false,
         reason: 'filed_report_on_resource',
       }),
-      reportAgainstTrollingComment.relateTo(bobDerBaumeister, 'notified', {
+      reportAgainstTrollingCommentC1.relateTo(bobDerBaumeister, 'notified', {
         read: false,
         reason: 'filed_report_on_resource',
       }),
@@ -783,16 +824,16 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         resourceId: 'u7',
       }),
       dagobert.update({ disabled: true, updatedAt: new Date().toISOString() }),
-      reportAgainstTrollingPost.relateTo(peterLustig, 'reviewed', {
+      reportAgainstTrollingPostP2.relateTo(peterLustig, 'reviewed', {
         ...disableVariables,
         resourceId: 'p2',
       }),
       p2.update({ disabled: true, updatedAt: new Date().toISOString() }),
-      reportAgainstTrollingComment.relateTo(bobDerBaumeister, 'reviewed', {
+      reportAgainstTrollingCommentC1.relateTo(bobDerBaumeister, 'reviewed', {
         ...disableVariables,
         resourceId: 'c1',
       }),
-      trollingComment.update({ disabled: true, updatedAt: new Date().toISOString() }),
+      trollingCommentC1.update({ disabled: true, updatedAt: new Date().toISOString() }),
     ])
 
     // second review of resource and close report
@@ -803,19 +844,23 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         closed: true,
       }),
       dagobert.update({ disabled: false, updatedAt: new Date().toISOString(), closed: true }),
-      reportAgainstTrollingPost.relateTo(bobDerBaumeister, 'reviewed', {
+      reportAgainstTrollingPostP2.relateTo(bobDerBaumeister, 'reviewed', {
         resourceId: 'p2',
         disable: true,
         closed: true,
       }),
       p2.update({ disabled: true, updatedAt: new Date().toISOString(), closed: true }),
-      reportAgainstTrollingComment.relateTo(peterLustig, 'reviewed', {
+      reportAgainstTrollingCommentC1.relateTo(peterLustig, 'reviewed', {
         ...disableVariables,
         resourceId: 'c1',
         disable: true,
         closed: true,
       }),
-      trollingComment.update({ disabled: true, updatedAt: new Date().toISOString(), closed: true }),
+      trollingCommentC1.update({
+        disabled: true,
+        updatedAt: new Date().toISOString(),
+        closed: true,
+      }),
     ])
 
     await Promise.all(

@@ -90,6 +90,7 @@ export const notificationQuery = i18n => {
             }
           }
           ... on Report {
+            id
             filed {
               reasonCategory
               reasonDescription
@@ -153,6 +154,9 @@ export const markAsReadMutation = i18n => {
                 ...user
               }
             }
+          }
+          ... on Report {
+            id
           }
         }
       }
