@@ -321,7 +321,63 @@
             "disabledBy": "desativado por",
             "reasonCategory": "Categoria",
             "reasonDescription": "Descrição",
-            "createdAt": "Data"
+            "status": "",
+            "content": "",
+            "author": "",
+            "decision": "",
+            "enabled": "",
+            "disabled": "",
+            "decided": "",
+            "noDecision": "",
+            "decideButton": "",
+            "DecisionSuccess": "",
+            "enabledBy": "",
+            "previousDecision": "",
+            "enabledAt": "",
+            "disabledAt": "",
+            "numberOfUsers": "",
+            "filterLabel": {
+                "all": "",
+                "unreviewed": "",
+                "reviewed": "",
+                "closed": ""
+            },
+            "reportedOn": "",
+            "moreDetails": "",
+            "decideModal": {
+                "submit": "",
+                "cancel": "",
+                "User": {
+                    "disable": {
+                        "title": "",
+                        "message": ""
+                    },
+                    "enable": {
+                        "title": "",
+                        "message": ""
+                    }
+                },
+                "Post": {
+                    "disable": {
+                        "title": "",
+                        "message": ""
+                    },
+                    "enable": {
+                        "title": "",
+                        "message": ""
+                    }
+                },
+                "Comment": {
+                    "disable": {
+                        "title": "",
+                        "message": ""
+                    },
+                    "enable": {
+                        "title": "",
+                        "message": ""
+                    }
+                }
+            }
         }
     },
     "disable": {
@@ -430,7 +486,9 @@
         "teaserImage": {
             "cropperConfirm": "Confirmar"
         },
-        "languageSelectText": "Selecionar Idioma"
+        "languageSelectText": "Selecionar Idioma",
+        "inappropriatePicture": "",
+        "inappropriatePictureText": ""
     },
     "comment": {
         "edit": "Editar Comentário",
@@ -458,7 +516,11 @@
     "search": {
         "placeholder": "Buscar",
         "hint": "O que você está buscando?",
-        "failed": "Nada encontrado"
+        "failed": "Nada encontrado",
+        "heading": {
+            "Post": "",
+            "User": ""
+        }
     },
     "components": {
         "password-reset": {
@@ -501,7 +563,9 @@
                         "invalid-invitation-token": "Parece que o convite já foi usado. Os links para convites só podem ser usados uma vez."
                     },
                     "submit": "Criar uma conta",
-                    "success": "Um e-mail com um link para completar o seu registo foi enviado para <b>{email}<\/b>"
+                    "success": "Um e-mail com um link para completar o seu registo foi enviado para <b>{email}<\/b>",
+                    "no-commercial": "",
+                    "no-political": ""
                 }
             },
             "create-user-account": {
@@ -741,6 +805,10 @@
         "addition": {
             "title": "Além disso, realizamos regularmente eventos onde você também pode compartilhar suas impressões e fazer perguntas. Você pode encontrar uma visão geral atual aqui:",
             "description": "<a href=\"https:\/\/human-connection.org\/events\/\" target=\"_blank\" > https:\/\/human-connection.org\/events\/ <\/a>"
+        },
+        "no-commercial-use": {
+            "title": "",
+            "description": ""
         }
     },
     "donations": {
