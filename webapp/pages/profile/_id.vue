@@ -23,7 +23,7 @@ const options = {
       }
     }
   `,
-  message: 'This user could not be found',
+  message: 'error-pages.user-not-found',
   path: 'profile',
 }
 const persistentLinks = PersistentLinks(options)

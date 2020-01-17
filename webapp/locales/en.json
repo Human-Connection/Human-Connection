@@ -798,6 +798,10 @@
       "title": "In addition, we regularly hold events where you can also share your impressions and ask questions. You can find a current overview here:",
       "description": "<a href=\"https://human-connection.org/events/\" target=\"_blank\" > https://human-connection.org/events/ </a>"
     }
+  },
+  "error-pages" : {
+    "user-not-found": "This user could not be found",
+    "back-to-index": "Back to index page"
   }
 }
 
