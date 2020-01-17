@@ -113,7 +113,7 @@
             }
         },
         "deleteUserAccount": {
-            "name": "Supprimer un compte utilisateur",
+            "name": "Effacer les données",
             "contributionsCount": "Supprimer mes {count} postes",
             "commentedCount": "Supprimer mes {count} commentaires",
             "accountDescription": "Sachez que vos postes et commentaires sont importants pour notre communauté. Si vous voulez quand même les supprimer, vous devez les marquer ci-dessous.",
@@ -158,7 +158,7 @@
             "columns": {
                 "name": "Nom",
                 "slug": "Slug",
-                "unblock": ""
+                "unblock": "Débloquer"
             },
             "empty": "Jusqu'à présent, vous n'avez bloqué personne.",
             "how-to": "Vous pouvez bloquer d'autres utilisateurs sur leur page de profil via le menu de contenu.",
@@ -167,9 +167,9 @@
             "unblocked": "{name} est à nouveau débloqué"
         },
         "privacy": {
-            "name": "",
-            "make-shouts-public": "",
-            "success-update": ""
+            "name": "Confidentialité",
+            "make-shouts-public": "Partager les articles que j'ai recommandés sur mon profil",
+            "success-update": "Paramètres de confidentialité enregistrés"
         }
     },
     "admin": {
@@ -299,7 +299,7 @@
         "validations": {
             "email": "Doit être une adresse mail valide",
             "url": "doit être une URL valide",
-            "categories": ""
+            "categories": "au moins une et au maximum trois catégories doivent être sélectionnées"
         }
     },
     "actions": {
@@ -321,7 +321,63 @@
             "disabledBy": "désactivé par",
             "reasonCategory": "Catégorie",
             "reasonDescription": "Description",
-            "createdAt": "Date"
+            "status": "Statut actuel",
+            "content": "Contenu",
+            "author": "Auteur",
+            "decision": "Décision",
+            "enabled": "Activé",
+            "disabled": "Désactivé",
+            "decided": "Décidé",
+            "noDecision": "Pas de décision!",
+            "decideButton": "Confirmer",
+            "DecisionSuccess": "Décidé avec succès!",
+            "enabledBy": "Activé par",
+            "previousDecision": "Décision précédente:",
+            "enabledAt": "Activé le",
+            "disabledAt": "Désactivé le",
+            "numberOfUsers": "{count} utilisateurs",
+            "filterLabel": {
+                "all": "Tous",
+                "unreviewed": "Non révisé",
+                "reviewed": "Revu",
+                "closed": "Fermé"
+            },
+            "reportedOn": "Date",
+            "moreDetails": "Voir les détails",
+            "decideModal": {
+                "submit": "Confirmer la décision",
+                "cancel": "Annuler",
+                "User": {
+                    "disable": {
+                        "title": "Finalement désactiver l'utilisateur",
+                        "message": "Voulez-vous vraiment laisser l'utilisateur \"<b>{name}<\/b>\" <b>désactivé<\/b>?"
+                    },
+                    "enable": {
+                        "title": "Finalement activer utilisateur",
+                        "message": "Voulez-vous réellement laisser l'utilisateur \"<b>{name}<\/b>\" <b>activé<\/b>?"
+                    }
+                },
+                "Post": {
+                    "disable": {
+                        "title": "Finalement désactiver la publication",
+                        "message": "Voulez-vous vraiment que la publication \"<b>{name}<\/b>\" reste <b>désactivé<\/b>?"
+                    },
+                    "enable": {
+                        "title": "Finalement activer le post",
+                        "message": "Voulez-vous vraiment que la publication \"<b>{name}<\/b>\" reste <b>activé<\/b>?"
+                    }
+                },
+                "Comment": {
+                    "disable": {
+                        "title": "Finalement désactiver le commentaire",
+                        "message": "Voulez-vous vraiment que le commentaire \"<b>{name}<\/b>\" reste <b>désactivé<\/b> ?"
+                    },
+                    "enable": {
+                        "title": "Finalement activer le commentaire",
+                        "message": "Voulez-vous vraiment que le commentaire \"<b>{name}<\/b>\" reste <b>activé<\/b>?"
+                    }
+                }
+            }
         }
     },
     "disable": {
@@ -430,7 +486,9 @@
         "teaserImage": {
             "cropperConfirm": "Confirmer"
         },
-        "languageSelectText": ""
+        "languageSelectText": "Sélectionner une langue",
+        "inappropriatePicture": "Cette image peut être inappropriée pour certaines personnes.",
+        "inappropriatePictureText": "Quand est ce que ma photo doit-elle être floue"
     },
     "comment": {
         "edit": "Rédiger un commentaire",
@@ -458,7 +516,11 @@
     "search": {
         "placeholder": "Rechercher",
         "hint": "Qu'est-ce que vous cherchez ?",
-        "failed": "Rien trouvé"
+        "failed": "Rien trouvé",
+        "heading": {
+            "Post": "Posts",
+            "User": "Utilisateurs"
+        }
     },
     "components": {
         "password-reset": {
@@ -501,7 +563,9 @@
                         "invalid-invitation-token": "On dirait que l'invitation a déjà été utilisée. Les liens d'invitation ne peuvent être utilisés qu'une seule fois."
                     },
                     "submit": "Créer un compte",
-                    "success": "Un mail avec un lien pour compléter votre inscription a été envoyé à <b>{email}<\/b>"
+                    "success": "Un mail avec un lien pour compléter votre inscription a été envoyé à <b>{email}<\/b>",
+                    "no-commercial": "Je n'ai aucun intérêt commercial et je ne représente pas d'entreprise ou toute autre organisation commerciale sur le réseau.",
+                    "no-political": "Je ne parle pas au nom d'un parti ou d'une organisation politique sur le réseau."
                 }
             },
             "create-user-account": {
@@ -741,6 +805,10 @@
         "addition": {
             "title": "De plus, nous organisons régulièrement des événements où vous pouvez également partager vos impressions et poser vos questions. Ici, vous trouverez un aperçu actuel:",
             "description": "<a href=\"https:\/\/human-connection.org\/events\/\" target=\"_blank\" > https:\/\/human-connection.org\/events\/ <\/a>"
+        },
+        "no-commercial-use": {
+            "title": "Pas d'utilisation commerciale",
+            "description": "L'utilisation du réseau Human Connetion à fin commercial n'est pas autorisée. Cela comprend, sans s'y limiter, la publicité de produits à des fins commerciales, la publication de liens d'affiliation, la sollicitation directe de dons ou l'octroi d'un soutien financier à des fins qui ne sont pas reconnues comme organismes de bienfaisance aux fins de l'impôt."
         }
     },
     "donations": {
