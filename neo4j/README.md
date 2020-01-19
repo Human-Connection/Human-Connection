@@ -36,20 +36,6 @@ Then make sure to allow Apoc procedures by adding the following line to your Neo
 ```
 dbms.security.procedures.unrestricted=apoc.*
 ```
-### Database Indices and Constraints
-
-If you have `cypher-shell` available with your local installation of neo4j you
-can run:
-
-```bash
-# in folder neo4j/
-$ cp .env.template .env
-$ ./db_setup.sh
-```
-
-Otherwise, if you don't have `cypher-shell` available, copy the cypher
-statements [from the `db_setup.sh` script](https://github.com/Human-Connection/Human-Connection/blob/master/neo4j/db_setup.sh) and paste the scripts into your
-[database browser frontend](http://localhost:7474).
 
 ### Alternatives
 

@@ -111,6 +111,38 @@ $ yarn run db:reset
 {% endtab %}
 {% endtabs %}
 
+### Data migrations
+
+Although Neo4J is schema-less,you might find yourself in a situation in which
+you have to migrate your data e.g. because your data modeling has changed.
+
+{% tabs %}
+{% tab title="Docker" %}
+Generate a data migration file:
+```bash
+$ docker-compose exec backend yarn run db:migrate:create your_data_migration
+# Edit the file in ./src/db/migrations/
+```
+
+To run the migration:
+```bash
+$ docker-compose exec backend yarn run db:migrate up
+```
+{% endtab %}
+{% tab title="Without Docker" %}
+Generate a data migration file:
+```bash
+$ yarn run db:migrate:create your_data_migration
+# Edit the file in ./src/db/migrations/
+```
+
+To run the migration:
+```bash
+$ yarn run db:migrate up
+```
+{% endtab %}
+{% endtabs %}
+
 # Testing
 
 **Beware**: We have no multiple database setup at the moment. We clean the
