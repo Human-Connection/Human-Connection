@@ -1,10 +1,18 @@
 import { throwError, of, concat } from 'rxjs'
 import { tap, flatMap, mergeMap, map, catchError, filter } from 'rxjs/operators'
-import CONFIG from '../src/config'
-import { getNeode, getDriver } from '../src/bootstrap/neo4j'
-import normalizeEmail from '../src/schema/resolvers//helpers/normalizeEmail'
+import CONFIG from '../../src/config'
+import { getNeode, getDriver } from '../../src/bootstrap/neo4j'
+import normalizeEmail from '../../src/schema/resolvers//helpers/normalizeEmail'
 
+export const description = `
+  This migration merges duplicate :User and :EmailAddress nodes. It became
+  necessary after we implemented the email normalization but forgot to migrate
+  the existing data. Some (40) users decided to just register with a new account
+  but the same email address. On signup our backend would normalize the email,
+  which is good, but would also keep the existing unnormalized email address.
 
+  This led to about 40 duplicate user and email address nodes in our database.
+`
 export function up (next) {
   const driver = getDriver()
   const rxSession = driver.rxSession()

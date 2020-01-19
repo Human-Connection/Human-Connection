@@ -13,8 +13,10 @@
     "db:reset": "babel-node src/seed/reset-db.js",
     "db:seed": "babel-node src/seed/seed-db.js",
     "db:setup": "babel-node src/db/setup.js",
-    "db:migrate:create": "migrate create --template-file./src/db/migrationTemplate.js",
-    "db:migrate": "migrate --compiler 'js:@babel/register'"
+    "__migrate": "migrate --compiler 'js:@babel/register' --migrations-dir ./src/db/migrations",
+    "db:migrate": "yarn run __migrate --store ./src/db/migrate/store.js",
+    "db:migrate:create": "yarn run __migrate --template-file ./src/db/migrate/template.js create",
+    "production:db:migrate": "migrate --migrations-dir ./dist/db/migrations --store ./dist/db/migrate/store.js"
   },
   "author": "Human Connection gGmbH",
   "license": "MIT",
@@ -106,7 +108,7 @@
     "@babel/node": "~7.8.3",
     "@babel/plugin-proposal-throw-expressions": "^7.8.3",
     "@babel/preset-env": "~7.8.3",
-    "@babel/register": "~7.8.3",
+    "@babel/register": "^7.8.3",
     "apollo-server-testing": "~2.9.16",
     "babel-core": "~7.0.0-0",
     "babel-eslint": "~10.0.3",
