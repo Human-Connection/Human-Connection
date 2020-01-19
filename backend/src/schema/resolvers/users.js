@@ -1,6 +1,6 @@
 import { neo4jgraphql } from 'neo4j-graphql-js'
 import fileUpload from './fileUpload'
-import { getNeode } from '../../bootstrap/neo4j'
+import { getNeode } from '../../db/neo4j'
 import { UserInputError, ForbiddenError } from 'apollo-server'
 import Resolver from './helpers/Resolver'
 import log from './helpers/databaseLogger'

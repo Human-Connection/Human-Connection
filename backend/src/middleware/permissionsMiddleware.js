@@ -1,5 +1,5 @@
 import { rule, shield, deny, allow, or } from 'graphql-shield'
-import { getNeode } from '../bootstrap/neo4j'
+import { getNeode } from '../db/neo4j'
 import CONFIG from '../config'
 
 const debug = !!CONFIG.DEBUG

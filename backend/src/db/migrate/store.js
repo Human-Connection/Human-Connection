@@ -1,6 +1,14 @@
-import { getDriver } from '../../bootstrap/neo4j'
+import { getDriver, getNeode } from '../../db/neo4j'
 
 class Store {
+  async init(fn) {
+    const neode = getNeode()
+    await getNeode().schema.install()
+    // eslint-disable-next-line no-console
+    console.log('Successfully created database indices and constraints!')
+    neode.driver.close()
+  }
+
   async load(fn) {
     const driver = getDriver()
     const session = driver.session()

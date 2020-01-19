@@ -1,6 +1,6 @@
 import faker from 'faker'
 import uuid from 'uuid/v4'
-import encryptPassword from '../../helpers/encryptPassword'
+import encryptPassword from '../helpers/encryptPassword'
 import slugify from 'slug'
 
 export default function create() {

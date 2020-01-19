@@ -61,7 +61,7 @@ backend is running:
 {% tabs %}
 {% tab title="Docker" %}
 ```bash
-docker-compose exec backend yarn run db:setup
+docker-compose exec backend yarn run db:migrate init
 ```
 {% endtab %}
 
@@ -69,7 +69,7 @@ docker-compose exec backend yarn run db:setup
 ```bash
 # in folder backend/
 # make sure your database is running on http://localhost:7474/browser/
-yarn run db:setup
+yarn run db:migrate init
 ```
 {% endtab %}
 {% endtabs %}
@@ -94,7 +94,7 @@ $ docker-compose exec backend yarn run db:reset
 # you could also wipe out your neo4j database and delete all volumes with:
 $ docker-compose down -v
 # if container is not running, run this command to set up your database indeces and contstraints
-$ docker-compose run neo4j db_setup
+$ docker-compose run backend yarn run db:migrate init
 ```
 {% endtab %}
 
