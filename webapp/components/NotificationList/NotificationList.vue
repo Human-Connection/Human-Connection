@@ -25,7 +25,6 @@ export default {
   },
   methods: {
     markAsRead(notificationSourceId) {
-      // Wolle console.log('markAsRead !!! notificationSourceId: ', notificationSourceId)
       this.$emit('markAsRead', notificationSourceId)
     },
   },
