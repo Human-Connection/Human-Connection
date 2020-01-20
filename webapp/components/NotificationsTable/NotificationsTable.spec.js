@@ -14,6 +14,7 @@ describe('NotificationsTable.vue', () => {
   let wrapper, mocks, propsData, stubs
   const postNotification = notifications[0]
   const commentNotification = notifications[1]
+  const reportNotification = notifications[2]
 
   beforeEach(() => {
     mocks = {
@@ -31,7 +32,9 @@ describe('NotificationsTable.vue', () => {
         getters: {
           'auth/isModerator': () => false,
           'auth/user': () => {
-            return {}
+            return {
+              name: 'myName',
+            }
           },
         },
       })
@@ -101,17 +104,14 @@ describe('NotificationsTable.vue', () => {
           expect(reason.exists()).toBe(true)
         })
 
-        it('renders a link to the Post', () => {
-          const postLink = firstRowNotification.find('a.notification-mention-post')
+        it('renders a link to the post', () => {
+          const postLink = firstRowNotification.find('a.notification-link-for-test')
           expect(postLink.text()).toEqual(postNotification.from.title)
         })
 
-        it("renders the Post's content", () => {
-          const boldTags = firstRowNotification.findAll('b')
-          const content = boldTags.filter(
-            element => element.text() === postNotification.from.contentExcerpt,
-          )
-          expect(content.exists()).toBe(true)
+        it("renders the post's content", () => {
+          wrapper = Wrapper()
+          expect(wrapper.text()).toContain(postNotification.from.contentExcerpt)
         })
       })
 
@@ -134,17 +134,66 @@ describe('NotificationsTable.vue', () => {
           expect(reason.exists()).toBe(true)
         })
 
-        it('renders a link to the Post', () => {
-          const postLink = secondRowNotification.find('a.notification-mention-post')
+        it('renders a link to the post', () => {
+          const postLink = secondRowNotification.find('a.notification-link-for-test')
           expect(postLink.text()).toEqual(commentNotification.from.post.title)
         })
 
-        it("renders the Post's content", () => {
-          const boldTags = secondRowNotification.findAll('b')
-          const content = boldTags.filter(
-            element => element.text() === commentNotification.from.contentExcerpt,
+        it("renders the comment's content", () => {
+          wrapper = Wrapper()
+          expect(wrapper.text()).toContain(commentNotification.from.contentExcerpt)
+        })
+      })
+
+      describe('Report', () => {
+        let thirdRowNotification
+        beforeEach(() => {
+          thirdRowNotification = wrapper.findAll('tbody tr').at(2)
+        })
+
+        it('renders me as the triggerer', () => {
+          const triggererName = thirdRowNotification.find('.username')
+          expect(triggererName.text()).toEqual('myName')
+        })
+
+        it('renders the reason for the notification', () => {
+          const dsTexts = thirdRowNotification.findAll('.ds-text')
+          const reason = dsTexts.filter(
+            element => element.text() === 'notifications.reason.filed_report_on_resource.user',
           )
-          expect(content.exists()).toBe(true)
+          expect(reason.exists()).toBe(true)
+        })
+
+        it('renders a link to the user', () => {
+          const userLink = thirdRowNotification.find('a.notification-link-for-test')
+          expect(userLink.text()).toEqual(reportNotification.from.filed[0].reportedResource.name)
+        })
+
+        it('renders the reported users slug', () => {
+          wrapper = Wrapper()
+          expect(wrapper.text()).toContain('@mrs.-badwomen')
+        })
+
+        it('renders the identifier "notifications.report.category"', () => {
+          wrapper = Wrapper()
+          expect(wrapper.text()).toContain('notifications.report.category')
+        })
+
+        it('renders the reported category', () => {
+          wrapper = Wrapper()
+          expect(wrapper.text()).toContain(
+            'report.reason.category.options.' + reportNotification.from.filed[0].reasonCategory,
+          )
+        })
+
+        it('renders the identifier "notifications.report.description"', () => {
+          wrapper = Wrapper()
+          expect(wrapper.text()).toContain('notifications.report.description')
+        })
+
+        it('renders the reported description', () => {
+          wrapper = Wrapper()
+          expect(wrapper.text()).toContain(reportNotification.from.filed[0].reasonDescription)
         })
       })
 
@@ -154,7 +203,7 @@ describe('NotificationsTable.vue', () => {
         })
 
         it('clicking on a Post link emits `markNotificationAsRead`', () => {
-          wrapper.find('a.notification-mention-post').trigger('click')
+          wrapper.find('a.notification-link-for-test').trigger('click')
           expect(wrapper.emitted().markNotificationAsRead[0][0]).toEqual(postNotification.from.id)
         })
 

@@ -362,7 +362,7 @@ When("I log in with the following credentials:", table => {
 
 When("open the notification menu and click on the first item", () => {
   cy.get(".notifications-menu").invoke('show').click(); // "invoke('show')" because of the delay for show the menu
-  cy.get(".notification-mention-post")
+  cy.get(".notification-link-for-test")
     .first()
     .click({
       force: true

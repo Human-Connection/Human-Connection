@@ -60,6 +60,7 @@ export const minimisedUserQuery = () => {
 export const notificationQuery = i18n => {
   return gql`
     ${userFragment}
+    ${userCountsFragment}
     ${commentFragment}
     ${postFragment}
 
@@ -98,6 +99,7 @@ export const notificationQuery = i18n => {
                 __typename
                 ... on User {
                   ...user
+                  ...userCounts
                 }
                 ... on Post {
                   ...post

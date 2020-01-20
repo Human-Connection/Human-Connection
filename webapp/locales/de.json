@@ -669,17 +669,18 @@
         "pageLink": "Alle Benachrichtigungen",
         "post": "Beitrag",
         "user": "Benutzer",
+        "report": {
+          "name": "Meldung",
+          "category": "Kategorie der Meldung",
+          "description": "Beschreibung"
+        },
         "content": "Inhalt",
         "filterLabel": {
             "all": "Alle",
             "read": "Gelesen",
             "unread": "Ungelesen"
         },
-        "empty": "Bedaure, Du hast momentan keinerlei Benachrichtigungen.",
-        "filedReport": {
-          "category": "Kategorie der Meldung",
-          "description": "Beschreibung"
-        }
+        "empty": "Bedaure, du hast momentan keinerlei Benachrichtigungen."
     },
     "delete": {
         "submit": "Löschen",

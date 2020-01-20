@@ -1,55 +1,86 @@
 <template>
-  <ds-table v-if="notifications && notifications.length" :data="notifications" :fields="fields">
+  <ds-table
+    v-if="notificationsData && notificationsData.length"
+    :data="notificationsData"
+    :fields="fields"
+  >
     <template #icon="scope">
       <base-icon
-        v-if="scope.row.from.post"
+        v-if="scope.row.report"
+        name="balance-scale"
+        v-tooltip="{ content: $t('notifications.report.name'), placement: 'right' }"
+        :class="{ 'notification-status': scope.row.read }"
+      />
+      <base-icon
+        v-else-if="scope.row.comment"
         name="comment"
         v-tooltip="{ content: $t('notifications.comment'), placement: 'right' }"
+        :class="{ 'notification-status': scope.row.read }"
       />
       <base-icon
         v-else
         name="bookmark"
         v-tooltip="{ content: $t('notifications.post'), placement: 'right' }"
+        :class="{ 'notification-status': scope.row.read }"
       />
     </template>
     <template #user="scope">
       <ds-space margin-bottom="base">
         <client-only>
           <hc-user
-            :user="scope.row.from.author"
-            :date-time="scope.row.from.createdAt"
+            :user="scope.row.triggerer"
+            :date-time="scope.row.createdAt"
             :trunc="35"
             :class="{ 'notification-status': scope.row.read }"
           />
         </client-only>
       </ds-space>
       <ds-text :class="{ 'notification-status': scope.row.read, reason: true }">
-        {{ $t(`notifications.reason.${scope.row.reason}`) }}
+        {{ $t(`notifications.reason.${scope.row.reason}` + scope.row.reasonExtention) }}
       </ds-text>
     </template>
     <template #post="scope">
       <nuxt-link
-        class="notification-mention-post"
+        class="notification-link-for-test"
         :class="{ 'notification-status': scope.row.read }"
-        :to="{
-          name: 'post-id-slug',
-          params: params(scope.row.from),
-          hash: hashParam(scope.row.from),
-        }"
-        @click.native="markNotificationAsRead(scope.row.from.id)"
+        :to="scope.row.linkTo"
+        @click.native="markNotificationAsRead(scope.row.id)"
       >
-        <b>{{ scope.row.from.title || scope.row.from.post.title | truncate(50) }}</b>
+        <b>{{ scope.row.title | truncate(50) }}</b>
       </nuxt-link>
     </template>
     <template #content="scope">
-      <b :class="{ 'notification-status': scope.row.read }">
-        {{ scope.row.from.contentExcerpt | removeHtml }}
-      </b>
+      <div v-if="scope.row.user" :class="{ 'notification-status': scope.row.read }">
+        <hc-user :user="scope.row.user" :trunc="35" />
+      </div>
+      <div v-else-if="scope.row.contentExcerpt" :class="{ 'notification-status': scope.row.read }">
+        <span v-if="scope.row.comment" class="text-notification-header">
+          {{ $t(`notifications.comment`) }}:
+        </span>
+        {{ scope.row.contentExcerpt | removeHtml }}
+      </div>
+      <div v-if="scope.row.report" :class="{ 'notification-status': scope.row.read }">
+        <ds-space margin-bottom="x-small" />
+        <span class="text-notification-header">{{ $t(`notifications.report.category`) }}:</span>
+        {{ $t('report.reason.category.options.' + scope.row.report.reasonCategory) }}
+        <br />
+        <span class="text-notification-header">{{ $t(`notifications.report.description`) }}:</span>
+        <span
+          v-if="scope.row.report.reasonDescription && scope.row.report.reasonDescription !== ''"
+        >
+          {{ scope.row.report.reasonDescription }}
+        </span>
+        <span v-else>
+          —
+        </span>
+      </div>
     </template>
   </ds-table>
   <hc-empty v-else icon="alert" :message="$t('notifications.empty')" />
 </template>
 <script>
+import { mapGetters } from 'vuex'
+import { extractNotificationDataOfCurrentUser } from '~/components/utils/Notifications'
 import HcUser from '~/components/User/User'
 import HcEmpty from '~/components/Empty/Empty'
 
@@ -62,25 +93,35 @@ export default {
     notifications: { type: Array, default: () => [] },
   },
   computed: {
+    ...mapGetters({
+      currentUser: 'auth/user',
+    }),
     fields() {
       return {
         icon: {
           label: ' ',
-          width: '5',
+          width: '3%',
         },
         user: {
-          label: this.$t('notifications.user'),
-          width: '45%',
+          label: ' ',
+          width: '25%',
         },
         post: {
-          label: this.$t('notifications.post'),
+          label: ' ',
           width: '25%',
         },
         content: {
-          label: this.$t('notifications.content'),
-          width: '25%',
+          label: ' ',
+          width: '47%',
         },
       }
+    },
+    notificationsData() {
+      const data = []
+      this.notifications.forEach(notification => {
+        data.push(extractNotificationDataOfCurrentUser(notification, this.currentUser))
+      })
+      return data
     },
   },
   methods: {
@@ -106,5 +147,9 @@ export default {
 <style lang="scss">
 .notification-status {
   opacity: $opacity-soft;
+}
+.text-notification-header {
+  font-weight: 700;
+  margin-right: 0.1rem;
 }
 </style>

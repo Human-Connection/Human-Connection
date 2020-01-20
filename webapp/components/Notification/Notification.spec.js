@@ -235,19 +235,19 @@ describe('Notification', () => {
       expect(wrapper.text()).toContain('Mrs. Badwomen')
     })
 
-    it('renders the identifier "notifications.filedReport.category"', () => {
-      wrapper = Wrapper()
-      expect(wrapper.text()).toContain('notifications.filedReport.category')
-    })
-
-    it('renders the identifier "notifications.filedReport.description"', () => {
-      wrapper = Wrapper()
-      expect(wrapper.text()).toContain('notifications.filedReport.description')
-    })
-
-    it('renders the users slug', () => {
+    it('renders the reported users slug', () => {
       wrapper = Wrapper()
       expect(wrapper.text()).toContain('@mrs.-badwomen')
+    })
+
+    it('renders the identifier "notifications.report.category"', () => {
+      wrapper = Wrapper()
+      expect(wrapper.text()).toContain('notifications.report.category')
+    })
+
+    it('renders the identifier "notifications.report.description"', () => {
+      wrapper = Wrapper()
+      expect(wrapper.text()).toContain('notifications.report.description')
     })
 
     it('has no class "read"', () => {
