@@ -7,7 +7,7 @@
     "build": "babel src/ -d dist/ --copy-files",
     "start": "node dist/",
     "dev": "nodemon --exec babel-node src/ -e js,gql",
-    "dev:debug": "nodemon --exec babel-node --inspect=0.0.0.0:9229 src/index.js -e js,gql",
+    "dev:debug": "nodemon --exec babel-node --inspect=0.0.0.0:9229 src/ -e js,gql",
     "lint": "eslint src --config .eslintrc.js",
     "test": "jest --forceExit --detectOpenHandles --runInBand",
     "db:reset": "babel-node src/seed/reset-db.js",

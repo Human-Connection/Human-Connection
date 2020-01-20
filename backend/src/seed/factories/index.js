@@ -1,30 +1,18 @@
 import { getDriver, getNeode } from '../../bootstrap/neo4j'
-import createBadge from './badges.js'
-import createUser from './users.js'
-import createPost from './posts.js'
-import createComment from './comments.js'
-import createCategory from './categories.js'
-import createTag from './tags.js'
-import createSocialMedia from './socialMedia.js'
-import createLocation from './locations.js'
-import createEmailAddress from './emailAddresses.js'
-import createDonations from './donations.js'
-import createUnverifiedEmailAddresss from './unverifiedEmailAddresses.js'
-import createReport from './reports.js'
 
 const factories = {
-  Badge: createBadge,
-  User: createUser,
-  Post: createPost,
-  Comment: createComment,
-  Category: createCategory,
-  Tag: createTag,
-  SocialMedia: createSocialMedia,
-  Location: createLocation,
-  EmailAddress: createEmailAddress,
-  UnverifiedEmailAddress: createUnverifiedEmailAddresss,
-  Donations: createDonations,
-  Report: createReport,
+  Badge: require('./badges.js').default,
+  User: require('./users.js').default,
+  Post: require('./posts.js').default,
+  Comment: require('./comments.js').default,
+  Category: require('./categories.js').default,
+  Tag: require('./tags.js').default,
+  SocialMedia: require('./socialMedia.js').default,
+  Location: require('./locations.js').default,
+  EmailAddress: require('./emailAddresses.js').default,
+  UnverifiedEmailAddress: require('./unverifiedEmailAddresses.js').default,
+  Donations: require('./donations.js').default,
+  Report: require('./reports.js').default,
 }
 
 export const cleanDatabase = async (options = {}) => {
@@ -34,7 +22,7 @@ export const cleanDatabase = async (options = {}) => {
     await session.writeTransaction(transaction => {
       return transaction.run(
         `
-          MATCH (everything) 
+          MATCH (everything)
           DETACH DELETE everything
         `,
       )
