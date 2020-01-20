@@ -803,7 +803,9 @@
     "profile-not-found": "This profile could not be found",
     "back-to-index": "Back to index page",
     "post-not-found": "This post could not be found",
-    "cannot-edit-post": "This post cannot be edited"
+    "cannot-edit-post": "This post cannot be edited",
+    "default": "This page could not be found",
+    "not-authorized": "Not authorized to this page"
   }
 }
 

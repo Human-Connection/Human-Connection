@@ -2,7 +2,10 @@
   <div class="error-container">
     <base-icon class="error-icon" name="exclamation-circle" />
     <br />
-    <span class="error-message">{{ $t(error.message) }}</span>
+    <span v-if="error.message === 'This page could not be found'" class="error-message">
+      {{ $t('error-pages.default') }}
+    </span>
+    <span v-else class="error-message">{{ $t(error.message) }}</span>
     <br />
     <nuxt-link to="/">{{ $t('error-pages.back-to-index') }}</nuxt-link>
   </div>
