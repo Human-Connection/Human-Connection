@@ -18,11 +18,22 @@
       {{ $t('site.faq') }}
     </a>
     <span>-</span>
-    <a href="https://github.com/Human-Connection/Human-Connection/releases" target="_blank">
-      {{ $t('site.changelog') }}
+    <a
+      href="https://github.com/Human-Connection/Human-Connection/blob/master/CHANGELOG.md"
+      target="_blank"
+    >
+      {{ version }}
     </a>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return { version: `v${process.env.release}` }
+  },
+}
+</script>
 
 <style lang="scss" scoped>
 .ds-footer {

@@ -1,6 +1,7 @@
 import { config, mount } from '@vue/test-utils'
 import ContributionForm from './ContributionForm.vue'
 
+import Vue from 'vue'
 import Vuex from 'vuex'
 import PostMutations from '~/graphql/PostMutations.js'
 import CategoriesSelect from '~/components/CategoriesSelect/CategoriesSelect'
@@ -147,31 +148,31 @@ describe('ContributionForm.vue', () => {
           dataPrivacyButton.trigger('click')
         })
 
-        it('title should not be empty', async () => {
+        it('title cannot be empty', async () => {
           postTitleInput.setValue('')
           wrapper.find('form').trigger('submit')
           expect(mocks.$apollo.mutate).not.toHaveBeenCalled()
         })
 
-        it('title should not be too long', async () => {
+        it('title cannot be too long', async () => {
           postTitleInput.setValue(postTitleTooLong)
           wrapper.find('form').trigger('submit')
           expect(mocks.$apollo.mutate).not.toHaveBeenCalled()
         })
 
-        it('title should not be too short', async () => {
+        it('title cannot be too short', async () => {
           postTitleInput.setValue(postTitleTooShort)
           wrapper.find('form').trigger('submit')
           expect(mocks.$apollo.mutate).not.toHaveBeenCalled()
         })
 
-        it('content should not be empty', async () => {
+        it('content cannot be empty', async () => {
           await wrapper.vm.updateEditorContent('')
           await wrapper.find('form').trigger('submit')
           expect(mocks.$apollo.mutate).not.toHaveBeenCalled()
         })
 
-        it('should have at least one category', async () => {
+        it('has at least one category', async () => {
           dataPrivacyButton = await wrapper
             .find(CategoriesSelect)
             .find('[data-test="category-buttons-cat12"]')
@@ -180,8 +181,9 @@ describe('ContributionForm.vue', () => {
           expect(mocks.$apollo.mutate).not.toHaveBeenCalled()
         })
 
-        it('should have not have more than three categories', async () => {
+        it('has no more than three categories', async () => {
           wrapper.vm.form.categoryIds = ['cat4', 'cat9', 'cat15', 'cat27']
+          await Vue.nextTick()
           wrapper.find('form').trigger('submit')
           expect(mocks.$apollo.mutate).not.toHaveBeenCalled()
         })
@@ -209,10 +211,12 @@ describe('ContributionForm.vue', () => {
           wrapper.find(CategoriesSelect).setData({ categories })
           englishLanguage = wrapper.findAll('li').filter(language => language.text() === 'English')
           englishLanguage.trigger('click')
+          await Vue.nextTick()
           dataPrivacyButton = await wrapper
             .find(CategoriesSelect)
             .find('[data-test="category-buttons-cat12"]')
           dataPrivacyButton.trigger('click')
+          await Vue.nextTick()
         })
 
         it('creates a post with valid title, content, and at least one category', async () => {
@@ -278,10 +282,12 @@ describe('ContributionForm.vue', () => {
           wrapper.find(CategoriesSelect).setData({ categories })
           englishLanguage = wrapper.findAll('li').filter(language => language.text() === 'English')
           englishLanguage.trigger('click')
+          await Vue.nextTick()
           dataPrivacyButton = await wrapper
             .find(CategoriesSelect)
             .find('[data-test="category-buttons-cat12"]')
           dataPrivacyButton.trigger('click')
+          await Vue.nextTick()
         })
 
         it('shows an error toaster when apollo mutation rejects', async () => {
@@ -370,6 +376,7 @@ describe('ContributionForm.vue', () => {
         it('supports updating categories', async () => {
           expectedParams.variables.categoryIds.push('cat3')
           wrapper.find(CategoriesSelect).setData({ categories })
+          await Vue.nextTick()
           const healthWellbeingButton = await wrapper
             .find(CategoriesSelect)
             .find('[data-test="category-buttons-cat3"]')

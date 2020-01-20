@@ -619,7 +619,6 @@
         "imprint": "Pie de imprenta",
         "termsAndConditions": "Términos y condiciones",
         "data-privacy": "Protección de datos",
-        "changelog": "Cambios e historia",
         "contact": "Contacto",
         "tribunal": "Tribunal de registro",
         "register": "Número de registro",
@@ -757,8 +756,7 @@
                 "4": "Retirada temporal de permisos de escritura",
                 "5": "Exclusión temporal de la red.",
                 "6": "Exclusión definitiva de la red",
-                "7": "Las violaciones de la ley alemana pueden ser denunciadas.",
-                "8": "Notificación de incidentes"
+                "7": "Las violaciones de la ley alemana pueden ser denunciadas."
             }
         },
         "get-help": "Si usted está sujeto a un comportamiento inaceptable, lo experimenta o tiene otras preocupaciones, por favor notifique a un organizador de la comunidad tan pronto como sea posible y enlace o apunte el contenido relevante:"

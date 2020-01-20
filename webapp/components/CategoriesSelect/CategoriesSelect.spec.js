@@ -1,5 +1,6 @@
 import { mount } from '@vue/test-utils'
 import CategoriesSelect from './CategoriesSelect'
+import Vue from 'vue'
 
 const localVue = global.localVue
 
@@ -55,8 +56,9 @@ describe('CategoriesSelect.vue', () => {
     })
 
     describe('toggleCategory', () => {
-      beforeEach(() => {
+      beforeEach(async () => {
         wrapper.vm.categories = categories
+        await Vue.nextTick()
         democracyAndPolitics = wrapper.findAll('button').at(0)
         democracyAndPolitics.trigger('click')
       })
