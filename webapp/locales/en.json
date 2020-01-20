@@ -800,7 +800,7 @@
     }
   },
   "error-pages" : {
-    "user-not-found": "This user could not be found",
+    "user-not-found": "This profile could not be found",
     "back-to-index": "Back to index page"
   }
 }

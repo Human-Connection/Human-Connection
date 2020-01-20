@@ -800,7 +800,7 @@
         "amount-of-total": "{amount} von {total} € erreicht"
     },
     "error-pages" : {
-	"user-not-found": "Dieser Benutzer konnte nicht gefunden werden",
+	"profile-not-found": "Dieses Profil konnte nicht gefunden werden",
 	"back-to-index": "Zurück zur Startseite"
     }
 }
