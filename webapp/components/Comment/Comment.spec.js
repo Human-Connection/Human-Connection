@@ -1,4 +1,4 @@
-import { config, shallowMount } from '@vue/test-utils'
+import { config, mount } from '@vue/test-utils'
 import Comment from './Comment.vue'
 import Vuex from 'vuex'
 
@@ -47,14 +47,14 @@ describe('Comment.vue', () => {
     }
   })
 
-  describe('shallowMount', () => {
+  describe('mount', () => {
     beforeEach(jest.useFakeTimers)
 
     Wrapper = () => {
       const store = new Vuex.Store({
         getters,
       })
-      return shallowMount(Comment, {
+      return mount(Comment, {
         store,
         propsData,
         mocks,
@@ -68,6 +68,7 @@ describe('Comment.vue', () => {
           id: '2',
           contentExcerpt: 'Hello I am a comment content',
           content: 'Hello I am comment content',
+          author: { id: 'commentAuthorId', slug: 'ogerly'}
         }
       })
 
@@ -198,6 +199,24 @@ describe('Comment.vue', () => {
             ])
           })
         })
+      })
+
+      describe('click reply button', () => {
+
+        beforeEach(async () => {
+          wrapper = Wrapper()
+          await wrapper.find('.reply-button').trigger('click')
+        }) 
+        it('emits "reply"', () => {
+          expect(wrapper.emitted('reply')).toEqual([
+              [
+                {
+                  id: 'commentAuthorId',
+                  slug: 'ogerly'
+                },
+              ],
+            ])
+          })
       })
     })
   })

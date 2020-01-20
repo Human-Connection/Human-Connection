@@ -55,11 +55,11 @@
       </div>
       <ds-space margin-bottom="small" />
       <ds-button
-        :title="this.$t('post.comment.answer')"
+        :title="this.$t('post.comment.reply')"
         icon="level-down"
         @click.prevent="reply"
         v-scroll-to="'.editor'"
-        class="answerbutton"
+        class="reply-button"
         size="small"
       ></ds-button>
     </ds-card>
@@ -75,6 +75,7 @@ import ContentViewer from '~/components/Editor/ContentViewer'
 import HcCommentForm from '~/components/CommentForm/CommentForm'
 import CommentMutations from '~/graphql/CommentMutations'
 import scrollToAnchor from '~/mixins/scrollToAnchor.js'
+
 
 export default {
   mixins: [scrollToAnchor],
@@ -148,7 +149,7 @@ export default {
     },
   },
   methods: {
-    reply(comment) {
+    reply() {
       const message = { slug: this.comment.author.slug, id: this.comment.author.id }
       this.$emit('reply', message)
     },
@@ -204,11 +205,11 @@ export default {
   float: right;
 }
 
-.answerbutton {
+.reply-button {
   float: right;
   top: 0px;
 }
-.answerbutton:after {
+.reply-button:after {
   clear: both;
 }
 

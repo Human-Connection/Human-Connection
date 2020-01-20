@@ -17,6 +17,7 @@
         @deleteComment="updateCommentList"
         @updateComment="updateCommentList"
         @toggleNewCommentForm="toggleNewCommentForm"
+        class="comment-tag"
       />
     </div>
   </div>

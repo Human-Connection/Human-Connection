@@ -1,16 +1,16 @@
 import { config, shallowMount } from '@vue/test-utils'
 import PostSlug from './index.vue'
 import Vuex from 'vuex'
+import CommentList from '~/components/CommentList/CommentList'
 
 const localVue = global.localVue
-
-config.stubs['client-only'] = '<span><slot /></span>'
 
 describe('PostSlug', () => {
   let wrapper
   let Wrapper
   let store
   let mocks
+  let propsData
 
   beforeEach(() => {
     store = new Vuex.Store({
@@ -20,6 +20,7 @@ describe('PostSlug', () => {
         },
       },
     })
+    propsData = {}
     mocks = {
       $t: jest.fn(),
       $filters: {
@@ -44,12 +45,14 @@ describe('PostSlug', () => {
     }
   })
 
+
   describe('shallowMount', () => {
     Wrapper = () => {
       return shallowMount(PostSlug, {
         store,
         mocks,
         localVue,
+        propsData,
       })
     }
 
@@ -92,4 +95,16 @@ describe('PostSlug', () => {
       })
     })
   })
+
+  describe('given a comment', () => {
+    wrapper = Wrapper()
+     const bar = wrapper.find(CommentList)
+     it('hc-comment-list', () => {
+      expect(bar).toBe({"selector": "Component"})
+    })
+    
+       
+   
+  })
 })
+
