@@ -6028,12 +6028,12 @@ metascraper-logo@^5.10.3:
   dependencies:
     "@metascraper/helpers" "^5.10.3"
 
-metascraper-publisher@^5.10.3:
-  version "5.10.3"
-  resolved "https://registry.yarnpkg.com/metascraper-publisher/-/metascraper-publisher-5.10.3.tgz#caf9dabdae2c118db2125aa34c321e527e88279b"
-  integrity sha512-l2W6YKqybvvhmqEOIvLmb9hTycH5JeIQ8O3d1q21hT3IwMW3BCmy4TyiSoPS+6vWlss0VYdQ8rzmESWdniGRWA==
+metascraper-publisher@^5.10.5:
+  version "5.10.5"
+  resolved "https://registry.yarnpkg.com/metascraper-publisher/-/metascraper-publisher-5.10.5.tgz#8797e419886f084adefcb7b8a642552b2a65ea38"
+  integrity sha512-YTY5UlkVa/htrm8t+O8qCrl2l24PffXkwvGStYJB2vA984WsR0XfhDuDqHqUZiQoSYBx/Za9wi74k6LWPnL4yA==
   dependencies:
-    "@metascraper/helpers" "^5.10.3"
+    "@metascraper/helpers" "^5.10.5"
 
 metascraper-soundcloud@^5.10.5:
   version "5.10.5"
