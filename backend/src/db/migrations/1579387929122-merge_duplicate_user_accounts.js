@@ -74,11 +74,11 @@ export function up(next) {
         next()
       },
       error: error => {
-        throw new Error(error)
+        next(new Error(error), null)
       },
     })
 }
 
-export function down() {
-  throw new Error('Irreversible migration')
+export function down(next) {
+  next(new Error('Irreversible migration'))
 }

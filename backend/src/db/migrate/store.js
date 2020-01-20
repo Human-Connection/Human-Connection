@@ -1,32 +1,36 @@
 import { getDriver, getNeode } from '../../db/neo4j'
 
 class Store {
-  async init(fn) {
+  async init(next) {
     const neode = getNeode()
     const { driver } = neode
     const session = driver.session()
     // eslint-disable-next-line no-console
     const writeTxResultPromise = session.writeTransaction(async txc => {
       await txc.run('CALL apoc.schema.assert({},{},true)') // drop all indices
-      return Promise.all([
-        'CALL db.index.fulltext.createNodeIndex("post_fulltext_search",["Post"],["title", "content"])',
-        'CALL db.index.fulltext.createNodeIndex("user_fulltext_search",["User"],["name", "slug"])'
-      ].map(statement => txc.run(statement)))
+      return Promise.all(
+        [
+          'CALL db.index.fulltext.createNodeIndex("post_fulltext_search",["Post"],["title", "content"])',
+          'CALL db.index.fulltext.createNodeIndex("user_fulltext_search",["User"],["name", "slug"])',
+        ].map(statement => txc.run(statement)),
+      )
     })
     try {
       await writeTxResultPromise
       await getNeode().schema.install()
+      // eslint-disable-next-line no-console
       console.log('Successfully created database indices and constraints!')
+      next()
     } catch (error) {
       console.log(error) // eslint-disable-line no-console
+      next(error, null)
     } finally {
       session.close()
       driver.close()
-      fn()
     }
   }
 
-  async load(fn) {
+  async load(next) {
     const driver = getDriver()
     const session = driver.session()
     const readTxResultPromise = session.readTransaction(async txc => {
@@ -42,18 +46,19 @@ class Store {
         console.log(
           "No migrations found in database. If it's the first time you run migrations, then this is normal.",
         )
-        return fn(null, {})
+        return next(null, {})
       }
       const [{ title: lastRun }] = migrations
-      fn(null, { lastRun, migrations })
+      next(null, { lastRun, migrations })
     } catch (error) {
       console.log(error) // eslint-disable-line no-console
+      next(error)
     } finally {
       session.close()
     }
   }
 
-  async save(set, fn) {
+  async save(set, next) {
     const driver = getDriver()
     const session = driver.session()
     const { migrations } = set
@@ -70,11 +75,12 @@ class Store {
     })
     try {
       await writeTxResultPromise
+      next()
     } catch (error) {
       console.log(error) // eslint-disable-line no-console
+      next(error)
     } finally {
       session.close()
-      fn()
     }
   }
 }
