@@ -256,7 +256,7 @@ When("I choose {string} as the language for the post", (languageCode) => {
 
 Then("the post shows up on the landing page at position {int}", index => {
   cy.openPage("landing");
-  const selector = `.hc-post-card:nth-child(${index}) > .ds-card-content`;
+  const selector = `.post-card:nth-child(${index}) > .ds-card-content`;
   cy.get(selector).should("contain", lastPost.title);
   cy.get(selector).should("contain", lastPost.content);
 });
@@ -271,11 +271,11 @@ Then("the post was saved successfully", () => {
 });
 
 Then(/^I should see only ([0-9]+) posts? on the landing page/, postCount => {
-  cy.get(".hc-post-card").should("have.length", postCount);
+  cy.get(".post-card").should("have.length", postCount);
 });
 
 Then("the first post on the landing page has the title:", title => {
-  cy.get(".hc-post-card:first").should("contain", title);
+  cy.get(".post-card:first").should("contain", title);
 });
 
 Then(

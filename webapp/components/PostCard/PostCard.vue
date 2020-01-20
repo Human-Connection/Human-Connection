@@ -3,7 +3,7 @@
     :lang="post.language"
     :image="post.image | proxyApiUrl"
     :class="{
-      'hc-post-card': true,
+      'post-card': true,
       'disabled-content': post.disabled,
       '--pinned': isPinned,
       '--blur-image': post.imageBlurred,
@@ -157,7 +157,7 @@ export default {
 }
 </script>
 <style lang="scss">
-.hc-post-card {
+.post-card {
   justify-content: space-between;
   position: relative;
   z-index: 1;

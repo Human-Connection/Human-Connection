@@ -19,7 +19,6 @@ describe('UserAvatar.vue', () => {
     expect(wrapper.find('img').exists()).toBe(false)
   })
 
-  // this is testing the style guide
   it('renders an icon', () => {
     expect(wrapper.find(BaseIcon).exists()).toBe(true)
   })

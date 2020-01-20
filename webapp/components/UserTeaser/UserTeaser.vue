@@ -151,7 +151,7 @@ export default {
 .user-teaser {
   display: flex;
   flex-wrap: nowrap;
-  z-index: $z-index-hc-post-card-link;
+  z-index: $z-index-post-card-link;
   position: relative;
 
   > .user-info {
