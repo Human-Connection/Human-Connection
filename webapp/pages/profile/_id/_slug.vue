@@ -11,9 +11,9 @@
           style="position: relative; height: auto;"
         >
           <hc-upload v-if="myProfile" :user="user">
-            <hc-avatar :user="user" class="profile-avatar" size="x-large"></hc-avatar>
+            <user-avatar :user="user" class="profile-avatar" size="large"></user-avatar>
           </hc-upload>
-          <hc-avatar v-else :user="user" class="profile-avatar" size="x-large" />
+          <user-avatar v-else :user="user" class="profile-avatar" size="large" />
           <!-- Menu -->
           <client-only>
             <content-menu
@@ -99,7 +99,7 @@
             <ds-space v-for="follow in uniq(user.following)" :key="follow.id" margin="x-small">
               <!-- TODO: find better solution for rendering errors -->
               <client-only>
-                <user :user="follow" :trunc="15" />
+                <user-teaser :user="follow" />
               </client-only>
             </ds-space>
             <ds-space v-if="user.followingCount - user.following.length" margin="small">
@@ -129,7 +129,7 @@
             <ds-space v-for="follow in uniq(user.followedBy)" :key="follow.id" margin="x-small">
               <!-- TODO: find better solution for rendering errors -->
               <client-only>
-                <user :user="follow" :trunc="15" />
+                <user-teaser :user="follow" />
               </client-only>
             </ds-space>
             <ds-space v-if="user.followedByCount - user.followedBy.length" margin="small">
@@ -157,7 +157,7 @@
               <template>
                 <ds-space v-for="link in socialMediaLinks" :key="link.username" margin="x-small">
                   <a :href="link.url" target="_blank">
-                    <ds-avatar :image="link.favicon" />
+                    <user-avatar :image="link.favicon" />
                     {{ link.username }}
                   </a>
                 </ds-space>
@@ -271,7 +271,7 @@
 
 <script>
 import uniqBy from 'lodash/uniqBy'
-import User from '~/components/User/User'
+import UserTeaser from '~/components/UserTeaser/UserTeaser'
 import HcPostCard from '~/components/PostCard/PostCard.vue'
 import HcFollowButton from '~/components/FollowButton.vue'
 import HcCountTo from '~/components/CountTo.vue'
@@ -279,7 +279,7 @@ import HcBadges from '~/components/Badges.vue'
 import HcEmpty from '~/components/Empty/Empty'
 import ContentMenu from '~/components/ContentMenu/ContentMenu'
 import HcUpload from '~/components/Upload'
-import HcAvatar from '~/components/Avatar/Avatar.vue'
+import UserAvatar from '~/components/_new/generic/UserAvatar/UserAvatar'
 import MasonryGrid from '~/components/MasonryGrid/MasonryGrid.vue'
 import MasonryGridItem from '~/components/MasonryGrid/MasonryGridItem.vue'
 import { profilePagePosts } from '~/graphql/PostQuery'
@@ -297,15 +297,14 @@ const tabToFilterMapping = ({ tab, id }) => {
 }
 
 export default {
-  name: 'HcUserProfile',
   components: {
-    User,
+    UserTeaser,
     HcPostCard,
     HcFollowButton,
     HcCountTo,
     HcBadges,
     HcEmpty,
-    HcAvatar,
+    UserAvatar,
     ContentMenu,
     HcUpload,
     MasonryGrid,
@@ -525,11 +524,9 @@ export default {
     }
   }
 }
-.profile-avatar.ds-avatar {
-  display: block;
+.profile-avatar.user-avatar {
   margin: auto;
   margin-top: -60px;
-  border: #fff 5px solid;
 }
 .page-name-profile-id-slug {
   .ds-flex-item:first-child .content-menu {

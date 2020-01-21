@@ -24,7 +24,7 @@
               params: { id: scope.row.id, slug: scope.row.slug },
             }"
           >
-            <hc-avatar :user="scope.row" size="small" />
+            <user-avatar :user="scope.row" size="small" />
           </nuxt-link>
         </template>
         <template slot="name" slot-scope="scope">
@@ -70,11 +70,11 @@
 
 <script>
 import { mutedUsers, unmuteUser } from '~/graphql/settings/MutedUsers'
-import HcAvatar from '~/components/Avatar/Avatar.vue'
+import UserAvatar from '~/components/_new/generic/UserAvatar/UserAvatar'
 
 export default {
   components: {
-    HcAvatar,
+    UserAvatar,
   },
   data() {
     return {

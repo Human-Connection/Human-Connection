@@ -63,7 +63,7 @@ When('I click on "Report User" from the content menu in the user info box', () =
 })
 
 When('I click on the author', () => {
-  cy.get('.username')
+  cy.get('.user-teaser')
     .click()
     .url().should('include', '/profile/')
 })
