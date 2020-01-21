@@ -27,7 +27,7 @@ Then("I should see my comment", () => {
     .get(".user-avatar img")
     .should("have.attr", "src")
     .and("contain", narratorAvatar)
-    .get("div p.ds-text span")
+    .get(".user-teaser > .info > .text")
     .should("contain", "today at");
 });
 
