@@ -80,7 +80,7 @@
     "nuxt-dropzone": "^1.0.4",
     "nuxt-env": "~0.1.0",
     "stack-utils": "^2.0.1",
-    "tippy.js": "^4.3.5",
+    "tippy.js": "^5.1.4",
     "tiptap": "~1.26.6",
     "tiptap-extensions": "~1.28.6",
     "trunc-html": "^1.1.2",

@@ -16296,12 +16296,12 @@ tiny-emitter@^2.0.0:
   resolved "https://registry.yarnpkg.com/tiny-emitter/-/tiny-emitter-2.1.0.tgz#1d1a56edfc51c43e863cbb5382a72330e3555423"
   integrity sha512-NB6Dk1A9xgQPMoGqC5CVXn123gWyte215ONT5Pp5a0yt4nlEoO1ZWeCwpncaekPHXO60i47ihFnZPiRPjRMq4Q==
 
-tippy.js@^4.3.5:
-  version "4.3.5"
-  resolved "https://registry.yarnpkg.com/tippy.js/-/tippy.js-4.3.5.tgz#882bff8d92f09bb0546d2826d5668c0560006f54"
-  integrity sha512-NDq3efte8nGK6BOJ1dDN1/WelAwfmh3UtIYXXck6+SxLzbIQNZE/cmRSnwScZ/FyiKdIcvFHvYUgqmoGx8CcyA==
+tippy.js@^5.1.4:
+  version "5.1.4"
+  resolved "https://registry.yarnpkg.com/tippy.js/-/tippy.js-5.1.4.tgz#decbef134d35e6ef0c6936e6bd99754cbbd5fb78"
+  integrity sha512-M7AqmLFbo3Cp7SMqdsbfuTpTUlbpK+e6XfCWOWdEy/Qfx7R4CrAAJYaUGEcKRF8IHRZ/9dSm2YAp/fJAdI06ZQ==
   dependencies:
-    popper.js "^1.14.7"
+    popper.js "^1.16.0"
 
 tiptap-commands@^1.12.5:
   version "1.12.5"
