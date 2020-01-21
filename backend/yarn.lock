@@ -5984,12 +5984,12 @@ metascraper-clearbit-logo@^5.3.0:
   dependencies:
     got "~9.6.0"
 
-metascraper-date@^5.10.3:
-  version "5.10.3"
-  resolved "https://registry.yarnpkg.com/metascraper-date/-/metascraper-date-5.10.3.tgz#bd2636c32caf89cb8e46219bba5792f140bd624f"
-  integrity sha512-H4LZgJbfaTlkn56ZvO6C0XtERmIcJoZPhZKxyu6yTTxUYhGKho0M430TZZoGU5sTVTRlDEOtVICMKu+0yz+eog==
+metascraper-date@^5.10.5:
+  version "5.10.5"
+  resolved "https://registry.yarnpkg.com/metascraper-date/-/metascraper-date-5.10.5.tgz#07be5149b9a0502e872080f1d474b2fff34c8361"
+  integrity sha512-BPujzdQ61XYjpPWZLwDmz5ZuQ4Sd4sB9+WKHN7j0gaHfmiWbm7QAKQm8YIjyNwuFysOYBYPI772cEePN6zdn7Q==
   dependencies:
-    "@metascraper/helpers" "^5.10.3"
+    "@metascraper/helpers" "^5.10.5"
 
 metascraper-description@^5.10.5:
   version "5.10.5"
