@@ -5998,12 +5998,12 @@ metascraper-description@^5.10.5:
   dependencies:
     "@metascraper/helpers" "^5.10.5"
 
-metascraper-image@^5.10.3:
-  version "5.10.3"
-  resolved "https://registry.yarnpkg.com/metascraper-image/-/metascraper-image-5.10.3.tgz#853eb464c3b717f8fe4ac8bf31c4b2bc39b83216"
-  integrity sha512-22/WPf9A+jUc/Unvpfursi6FAfo/s71Pq/N9jiTNxBgOjfrUWjrzzw8qUKBxTc7Dwz1mERfDn2B0f/tKdsBAFA==
+metascraper-image@^5.10.5:
+  version "5.10.5"
+  resolved "https://registry.yarnpkg.com/metascraper-image/-/metascraper-image-5.10.5.tgz#3c4b897abacab78b7794d472fade1e195a4e7031"
+  integrity sha512-1YTNu3NaOGwRs0XmlQnmatEepYggwA5HyVxE05IxzNZ9oZdb26A0bwxbXSxSNNRerhcMNdePReHlqjVAk/W1TA==
   dependencies:
-    "@metascraper/helpers" "^5.10.3"
+    "@metascraper/helpers" "^5.10.5"
 
 metascraper-lang-detector@^4.10.2:
   version "4.10.2"
