@@ -38,7 +38,7 @@
 
         <ds-space />
         <client-only>
-          <user-teaser :user="currentUser" :trunc="35" />
+          <user-teaser :user="currentUser" />
         </client-only>
         <ds-space />
         <ds-input

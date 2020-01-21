@@ -20,7 +20,7 @@
     <!-- Username, Image & Date of Post -->
     <div class="user-wrapper">
       <client-only>
-        <user-teaser :user="post.author" :trunc="35" :date-time="post.createdAt" />
+        <user-teaser :user="post.author" :date-time="post.createdAt" />
       </client-only>
       <hc-ribbon v-if="isPinned" class="ribbon--pinned" :text="$t('post.pinned')" />
       <hc-ribbon v-else :text="$t('post.name')" />

@@ -18,7 +18,6 @@
           <user-teaser
             :user="scope.row.from.author"
             :date-time="scope.row.from.createdAt"
-            :trunc="35"
             :class="{ 'notification-status': scope.row.read }"
           />
         </client-only>

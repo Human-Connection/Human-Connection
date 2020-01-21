@@ -22,7 +22,6 @@
           <user-teaser
             :user="report.resource"
             :showAvatar="false"
-            :trunc="30"
             :showPopover="false"
           />
         </client-only>
@@ -37,7 +36,6 @@
           <user-teaser
             :user="report.resource.author"
             :showAvatar="false"
-            :trunc="30"
             :showPopover="false"
           />
         </client-only>
@@ -54,7 +52,6 @@
           <user-teaser
             :user="moderatorOfLatestReview"
             :showAvatar="false"
-            :trunc="30"
             :date-time="report.updatedAt"
             :showPopover="false"
           />
