@@ -76,9 +76,6 @@
         "download": {
             "name": "Daten herunterladen"
         },
-        "delete": {
-            "name": "Konto löschen"
-        },
         "organizations": {
             "name": "Meine Organisationen"
         },
@@ -217,11 +214,6 @@
             "categoryName": "Name",
             "postCount": "Beiträge"
         },
-        "tags": {
-            "name": "Schlagworte",
-            "tagCountUnique": "Benutzer",
-            "tagCount": "Beiträge"
-        },
         "settings": {
             "name": "Einstellungen"
         },
@@ -268,7 +260,7 @@
         },
         "comment": {
             "submit": "Kommentiere",
-            "submitted": "Kommentar Gesendet",
+            "submitted": "Kommentar gesendet",
             "updated": "Änderungen gespeichert"
         },
         "edited": "bearbeitet"
@@ -444,8 +436,6 @@
         }
     },
     "contribution": {
-        "edit": "Beitrag bearbeiten",
-        "delete": "Beitrag löschen",
         "title": "Titel",
         "newPost": "Erstelle einen neuen Beitrag",
         "filterFollow": "Beiträge filtern von Usern denen ich folge",
@@ -490,8 +480,6 @@
         "inappropriatePictureText" : "Wann soll ein Foto versteckt werden"
     },
     "comment": {
-        "edit": "Kommentar bearbeiten",
-        "delete": "Kommentar löschen",
         "content": {
             "unavailable-placeholder": "… dieser Kommentar ist nicht mehr verfügbar"
         },
