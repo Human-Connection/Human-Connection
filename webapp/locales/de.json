@@ -149,11 +149,12 @@
             "name": "Blockierte Benutzer",
             "explanation": {
                 "intro": "Wenn ein anderer Benutzer von dir blockiert wurde, dann passiert folgendes:",
-                "your-perspective": "In deiner Beitragsübersicht tauchen keine Beiträge der blockierten Person mehr auf.",
-                "their-perspective": "Umgekehrt das gleiche: Die blockierte Person sieht deine Beiträge auch nicht mehr in ihrer Übersicht.",
-                "search": "Die Beiträge von blockierten Personen verschwinden aus deinen Suchergebnissen.",
-                "notifications": "Von dir blockierte Personen erhalten keine Benachrichtigungen mehr, wenn sie in deinen Beiträgen erwähnt werden.",
-                "closing": "Das sollte fürs Erste genügen, damit blockierte Benutzer dich nicht mehr länger belästigen können."
+                "your-perspective": "Sie werden nicht mehr in der Lage sein, mit ihren Beiträgen zu interagieren.",
+                "their-perspective": "Umgekehrt das gleiche: Die blockierte Person kann auch nicht mehr mit Ihren Beiträgen interagieren.",
+                "notifications": "Gesperrte Benutzer erhalten keine Benachrichtigungen mehr, wenn sie sich gegenseitig erwähnen.",
+                "closing": "Das sollte fürs Erste genügen, damit blockierte Benutzer dich nicht mehr länger belästigen können.",
+                "commenting-disabled": "Ein Kommentar zu diesem Beitrag ist zur Zeit nicht möglich.",
+                "commenting-explanation": "Dies kann aus verschiedenen Gründen geschehen, siehe "
             },
             "columns": {
                 "name": "Name",
@@ -485,7 +486,7 @@
         },
         "teaserImage": {
             "cropperConfirm": "Bestätigen"
-        },        
+        },
         "inappropriatePicture" : "Dieses Bild kann für einige Menschen unangemessen sein.",
         "inappropriatePictureText" : "Wann soll ein Foto versteckt werden"
     },

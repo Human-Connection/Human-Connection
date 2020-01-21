@@ -94,14 +94,12 @@
           :post="post"
           @createComment="createComment"
         />
-        <ds-space v-else>
-          <ds-placeholder>
-            {{ $t('settings.blocked-users.explanation.commenting-disabled') }}
-            <br />
-            {{ $t('settings.blocked-users.explanation.commenting-explanation') }}
-            <a>https://human-connection.org</a>
-          </ds-placeholder>
-        </ds-space>
+        <ds-placeholder v-else>
+          {{ $t('settings.blocked-users.explanation.commenting-disabled') }}
+          <br />
+          {{ $t('settings.blocked-users.explanation.commenting-explanation') }}
+          <a href="https://support.human-connection.org/kb/">FAQ</a>
+        </ds-placeholder>
       </ds-section>
     </ds-card>
   </transition>
