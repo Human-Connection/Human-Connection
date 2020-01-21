@@ -51,13 +51,13 @@ describe('UserAvatar.vue', () => {
       })
 
       it('displays user initials', () => {
-        expect(wrapper.find('.no-image').text()).toEqual('MR')
+        expect(wrapper.find('.initials').text()).toEqual('MR')
       })
 
       it('displays no more than 3 initials', () => {
         propsData = { user: { name: 'Ana Paula Nunes Marques' } }
         wrapper = Wrapper()
-        expect(wrapper.find('.no-image').text()).toEqual('APN')
+        expect(wrapper.find('.initials').text()).toEqual('APN')
       })
     })
 
@@ -65,6 +65,7 @@ describe('UserAvatar.vue', () => {
       beforeEach(() => {
         propsData = {
           user: {
+            name: 'Not Anonymous',
             avatar: '/avatar.jpg',
           },
         }
@@ -72,7 +73,7 @@ describe('UserAvatar.vue', () => {
       })
 
       it('adds a prefix to load the image from the uploads service', () => {
-        expect(wrapper.find('img').attributes('src')).toBe('/api/avatar.jpg')
+        expect(wrapper.find('.image').attributes('src')).toBe('/api/avatar.jpg')
       })
     })
 
@@ -80,6 +81,7 @@ describe('UserAvatar.vue', () => {
       beforeEach(() => {
         propsData = {
           user: {
+            name: 'Not Anonymous',
             avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/sawalazar/128.jpg',
           },
         }
@@ -88,7 +90,7 @@ describe('UserAvatar.vue', () => {
 
       it('keeps the avatar URL as is', () => {
         // e.g. our seeds have absolute image URLs
-        expect(wrapper.find('img').attributes('src')).toBe(
+        expect(wrapper.find('.image').attributes('src')).toBe(
           'https://s3.amazonaws.com/uifaces/faces/twitter/sawalazar/128.jpg',
         )
       })
