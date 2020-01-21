@@ -8,6 +8,11 @@ We follow this tutorial [here](https://medium.com/@chris_linguine/how-to-monitor
 ```bash
 kubectl proxy # proxy to your kubernetes dashboard
 
+helm repo list
+# If using helm v3, the stable repository is not set, so you need to manually add it.
+helm repo add stable https://kubernetes-charts.storage.googleapis.com
+# Create a monitoring namespace for your cluster
+kubectl create namespace monitoring
 helm --namespace monitoring install prometheus stable/prometheus
 kubectl -n monitoring get pods # look for 'server'
 kubectl port-forward -n monitoring <PROMETHEUS_SERVER_ID> 9090
@@ -29,6 +34,10 @@ kubectl --namespace monitoring port-forward <POD_NAME> 3000
 Now you should see something like this:
 
 ![Grafana dashboard](./grafana/metrics.png)
+
+You can set up a grafana dashboard, by visiting https://grafana.com/dashboards, finding one that is suitable and copying it's id.
+You then go to the left hand menu in localhost, choose `Dashboard` > `Manage` > `Import`
+Paste in the id, click `Load`, select `Prometheus` for the data source, and click `Import`
 
 When you just installed prometheus and grafana, the data will not be available
 immediately, so wait for a couple of minutes and reload.
