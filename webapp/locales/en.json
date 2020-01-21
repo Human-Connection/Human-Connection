@@ -415,7 +415,7 @@
     "menu": {
       "edit": "Edit Post",
       "delete": "Delete Post",
-      "pin": "Pin post",
+      "pin": "Pin Post",
       "pinnedSuccessfully": "Post pinned successfully!",
       "unpin": "Unpin post",
       "unpinnedSuccessfully": "Post unpinned successfully!"

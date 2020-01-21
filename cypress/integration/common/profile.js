@@ -6,10 +6,6 @@ When("I visit my profile page", () => {
   cy.openPage("profile/peter-pan");
 });
 
-When("I visit {string} profile page", slug =>{
-  cy.openPage(`profile/${slug}`)
-})
-
 Then("I should be able to change my profile picture", () => {
   const avatarUpload = "onourjourney.png";
 

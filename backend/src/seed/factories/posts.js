@@ -27,6 +27,9 @@ export default function create() {
         ...defaults,
         ...args,
       }
+      // Convert false to null
+      args.pinned = args.pinned || null
+
       args.slug = args.slug || slugify(args.title, { lower: true })
       args.contentExcerpt = args.contentExcerpt || args.content
 
@@ -45,6 +48,7 @@ export default function create() {
         }),
       )
 
+
       let { author, authorId } = args
       delete args.author
       delete args.authorId
@@ -53,6 +57,19 @@ export default function create() {
       author = author || (await factoryInstance.create('User'))
       const post = await neodeInstance.create('Post', args)
       await post.relateTo(author, 'author')
+
+      if (args.pinned) {
+        args.pinnedAt = args.pinnedAt || new Date().toISOString()
+        if (!args.pinnedBy) {
+          const admin = await factoryInstance.create('User', {
+            role: 'admin',
+            updatedAt: new Date().toISOString(),
+          })
+          await admin.relateTo(post, 'pinned')
+          args.pinnedBy = admin
+        }
+      }
+
       await Promise.all(categories.map(c => c.relateTo(post, 'post')))
       await Promise.all(tags.map(t => t.relateTo(post, 'post')))
       return post

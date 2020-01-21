@@ -45,30 +45,30 @@ Then("the editor should be cleared", () => {
   cy.get(".ProseMirror p").should("have.class", "is-empty");
 });
 
-Then("I should see the post with title {string} before other posts", (title_1) => {
-  cy.get("h3.ds-heading-h3").eq(0).should("contain", title_1)
+When("I open the content menu of post {string}", (title)=> {
+  cy.contains('.post-card', title)
+  .find('.content-menu .base-button')
+  .click()
 })
 
-And("I should be able to pin the post whose title contains {string}", (string)=> {
-  cy.get("article.post-card").contains(string)
-    .parent()
-    .siblings("footer")
-    .find("button.content-menu-trigger")
+When("I click on 'Pin post'", (string)=> {
+  cy.get("a.ds-menu-item-link").contains("Pin Post")
     .click()
-    .get("a.ds-menu-item-link").contains("Pin post")
-    .click()
-    .reload()
-  
-    // .get("p").contains("Post pinned succesfully")
 })
 
-And("post with title {string} should have ribbon for pinned posts", (title) => {
+Then("there is no button to pin a post", () => {
+  cy.get("a.ds-menu-item-link")
+    .should('contain', "Report Post") // sanity check
+    .should('not.contain', "Pin Post")
+})
+
+And("the post with title {string} has a ribbon for pinned posts", (title) => {
   cy.get("article.post-card").contains(title)
   .parent()
   .find("div.ribbon.ribbon--pinned")
   .should("contain", "Announcement")
 })
 
-And("I should see the toaster with text {string}", (title) => {
+Then("I see a toaster with {string}", (title) => {
   cy.get(".iziToast-message").should("contain", title);
 })
