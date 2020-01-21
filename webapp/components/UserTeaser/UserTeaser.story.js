@@ -56,13 +56,21 @@ export const user = {
 storiesOf('UserTeaser', module)
   .addDecorator(withA11y)
   .addDecorator(helpers.layout)
-  .add('available', () => ({
+  .add('user only', () => ({
     components: { UserTeaser },
     store: helpers.store,
     data: () => ({
       user,
     }),
-    template: '<user-teaser :user="user" :trunc="35" :date-time="new Date()" />',
+    template: '<user-teaser :user="user" />',
+  }))
+  .add('with Date', () => ({
+    components: { UserTeaser },
+    store: helpers.store,
+    data: () => ({
+      user,
+    }),
+    template: '<user-teaser :user="user" :date-time="new Date()" />',
   }))
   .add('has edited something', () => ({
     components: { UserTeaser },
@@ -71,7 +79,7 @@ storiesOf('UserTeaser', module)
       user,
     }),
     template: `
-    <user-teaser :user="user" :trunc="35" :date-time="new Date()">
+    <user-teaser :user="user" :date-time="new Date()">
       <template v-slot:dateTime>
         - HEY! I'm edited
       </template>
@@ -84,5 +92,5 @@ storiesOf('UserTeaser', module)
     data: () => ({
       user: null,
     }),
-    template: '<user-teaser :user="user" :trunc="35" :date-time="new Date()" />',
+    template: '<user-teaser :user="user" :date-time="new Date()" />',
   }))

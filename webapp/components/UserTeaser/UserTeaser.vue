@@ -1,9 +1,14 @@
 <template>
   <div class="user-teaser" v-if="displayAnonymous">
     <user-avatar v-if="showAvatar" />
-    <span class="username">{{ $t('profile.userAnonym') }}</span>
+    <span class="info anonymous">{{ $t('profile.userAnonym') }}</span>
   </div>
-  <dropdown v-else :class="{ 'disabled-content': user.disabled }" placement="top-start" offset="0">
+  <dropdown
+    v-else
+    :class="[{ 'disabled-content': user.disabled }]"
+    placement="top-start"
+    offset="0"
+  >
     <template #default="{ openMenu, closeMenu, isOpen }">
       <nuxt-link
         :to="userLink"
@@ -12,18 +17,17 @@
         @mouseleave.native="closeMenu(true)"
       >
         <user-avatar v-if="showAvatar" :user="user" size="small" />
-        <div class="user-info">
-          <span class="user-slug">
-            {{ userSlug }}
-            <span class="username">{{ userName | truncate(18) }}</span>
+        <div class="info">
+          <span class="text">
+            <span class="slug">{{ userSlug }}</span>
+            <span v-if="dateTime">{{ userName }}</span>
           </span>
-          <ds-text class="date-time" align="left" size="small" color="soft">
-            <template v-if="dateTime">
-              <base-icon name="clock" />
-              <hc-relative-date-time :date-time="dateTime" />
-              <slot name="dateTime"></slot>
-            </template>
-          </ds-text>
+          <span v-if="dateTime" class="text">
+            <base-icon name="clock" />
+            <hc-relative-date-time :date-time="dateTime" />
+            <slot name="dateTime"></slot>
+          </span>
+          <span v-else class="text">{{ userName }}</span>
         </div>
       </nuxt-link>
     </template>
@@ -104,7 +108,6 @@ export default {
   props: {
     user: { type: Object, default: null },
     showAvatar: { type: Boolean, default: true },
-    trunc: { type: Number, default: 18 }, // "-1" is no trunc
     dateTime: { type: [Date, String], default: null },
     showPopover: { type: Boolean, default: true },
   },
@@ -162,27 +165,36 @@ export default {
     flex-shrink: 0;
   }
 
-  > .user-info {
+  > .info {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    padding-left: $space-xx-small;
     overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 
-    > .ds-text {
-      display: flex;
-      margin: 0 0 $space-xxx-small $space-xx-small;
-    }
-
-    > .user-slug {
-      margin: 0 0 $space-xxx-small $space-xx-small;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-  }
-  .username {
     color: $text-color-soft;
     font-size: $font-size-small;
+
+    &.anonymous {
+      font-size: $font-size-base;
+    }
+
+    .slug {
+      color: $color-primary;
+      font-size: $font-size-base;
+    }
+  }
+
+  .text {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    > .ds-text {
+      display: inline;
+    }
   }
 }
 </style>
