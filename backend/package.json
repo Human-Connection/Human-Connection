@@ -93,7 +93,7 @@
     "trunc-html": "~1.1.2",
     "uuid": "~3.4.0",
     "validator": "^12.1.0",
-    "wait-on": "~3.3.0",
+    "wait-on": "~4.0.0",
     "xregexp": "^4.2.4"
   },
   "devDependencies": {
