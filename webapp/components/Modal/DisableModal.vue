@@ -4,11 +4,10 @@
     <p v-html="message" />
 
     <template slot="footer">
-      <ds-button class="cancel" @click="cancel">{{ $t('disable.cancel') }}</ds-button>
-
-      <ds-button danger class="confirm" icon="exclamation-circle" @click="confirm">
+      <base-button class="cancel" @click="cancel">{{ $t('disable.cancel') }}</base-button>
+      <base-button danger filled class="confirm" icon="exclamation-circle" @click="confirm">
         {{ $t('disable.submit') }}
-      </ds-button>
+      </base-button>
     </template>
   </ds-modal>
 </template>

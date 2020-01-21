@@ -12,13 +12,18 @@
     >
       <aside v-show="post.imageBlurred" class="blur-toggle">
         <img v-show="blurred" :src="post.image | proxyApiUrl" class="preview" />
-        <ds-button :icon="blurred ? 'eye' : 'eye-slash'" primary @click="blurred = !blurred" />
+        <base-button
+          :icon="blurred ? 'eye' : 'eye-slash'"
+          filled
+          circle
+          @click="blurred = !blurred"
+        />
       </aside>
-      <hc-user :user="post.author" :date-time="post.createdAt">
+      <user-teaser :user="post.author" :date-time="post.createdAt">
         <template v-slot:dateTime>
           <ds-text v-if="post.createdAt !== post.updatedAt">({{ $t('post.edited') }})</ds-text>
         </template>
-      </hc-user>
+      </user-teaser>
       <client-only>
         <content-menu
           placement="bottom-end"
@@ -59,13 +64,9 @@
       </div>
       <ds-space margin-top="x-large">
         <ds-flex :gutter="{ lg: 'small' }">
-          <ds-flex-item
-            :width="{ lg: '75%', md: '75%', sm: '75%' }"
-            class="emotions-buttons-mobile"
-          >
+          <ds-flex-item :width="{ lg: '75%', md: '75%', sm: '75%', base: '100%' }">
             <hc-emotions :post="post" />
           </ds-flex-item>
-          <ds-flex-item :width="{ lg: '10%', md: '3%', sm: '3%' }" />
           <!-- Shout Button -->
           <ds-flex-item
             :width="{ lg: '15%', md: '22%', sm: '22%', base: '100%' }"
@@ -110,7 +111,7 @@ import ContentViewer from '~/components/Editor/ContentViewer'
 import HcCategory from '~/components/Category'
 import HcHashtag from '~/components/Hashtag/Hashtag'
 import ContentMenu from '~/components/ContentMenu/ContentMenu'
-import HcUser from '~/components/User/User'
+import UserTeaser from '~/components/UserTeaser/UserTeaser'
 import HcShoutButton from '~/components/ShoutButton.vue'
 import CommentForm from '~/components/CommentForm/CommentForm'
 import HcCommentList from '~/components/CommentList/CommentList'
@@ -128,7 +129,7 @@ export default {
   components: {
     HcCategory,
     HcHashtag,
-    HcUser,
+    UserTeaser,
     HcShoutButton,
     ContentMenu,
     CommentForm,

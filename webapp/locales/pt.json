@@ -145,26 +145,23 @@
             "successAdd": "Mídias sociais adicionadas. Perfil de usuário atualizado!",
             "successDelete": "Mídias sociais removidas. Perfil de usuário atualizado!"
         },
-        "blocked-users": {
+        "muted-users": {
             "name": "Usuários bloqueados",
             "explanation": {
                 "intro": "Se outro usuário foi bloqueado por você, isto é o que acontece:",
                 "your-perspective": "As mensagens da pessoa bloqueada não aparecerão mais no seu feed de notícias.",
-                "their-perspective": "Vice versa: A pessoa bloqueada também não verá mais suas mensagens em seu feed de notícias.",
-                "search": "Publicações de pessoas bloqueadas desaparecem dos resultados da sua pesquisa.",
-                "notifications": "Usuários bloqueados não receberão mais notificações se forem mencionados em suas mensagens.",
-                "closing": "Isso deve ser suficiente por enquanto para que os usuários bloqueados não possam mais incomodá-lo."
+                "search": "Publicações de pessoas bloqueadas desaparecem dos resultados da sua pesquisa."
             },
             "columns": {
                 "name": "Nome",
                 "slug": "Slug",
-                "unblock": "Desbloquear"
+                "unmute": "Desbloquear"
             },
             "empty": "Até agora, você não bloqueou ninguém.",
             "how-to": "Você pode bloquear outros usuários em suas páginas de perfil através do menu de conteúdo.",
-            "block": "Bloquear usuário",
-            "unblock": "Desbloquear usuário",
-            "unblocked": "{name} está desbloqueado novamente"
+            "mute": "Bloquear usuário",
+            "unmute": "Desbloquear usuário",
+            "unmuted": "{name} está desbloqueado novamente"
         },
         "privacy": {
             "name": "Privacidade",
@@ -561,7 +558,6 @@
         "imprint": "Impressão",
         "termsAndConditions": "Termos e Condições",
         "data-privacy": "Proteção de Dados",
-        "changelog": "Mudanças e Histórico",
         "contact": "Contato",
         "tribunal": "tribunal de registo",
         "register": "número de registo",
@@ -699,8 +695,7 @@
                 "4": "Retirada temporária de permissão de escrita",
                 "5": "Exclusão temporária da rede",
                 "6": "Exclusão definitiva da rede",
-                "7": "Violações da lei alemã podem ser denunciadas",
-                "8": "Divulgação ou incentivo a estes comportamentos."
+                "7": "Violações da lei alemã podem ser denunciadas"
             }
         },
         "get-help": "Se você for vítima ou testemunhar um comportamento inaceitável, ou tiver qualquer outra preocupação, por favor notifique um organizador da comunidade o mais rápido possível e inclua o link ou mencione o conteúdo correspondente:"

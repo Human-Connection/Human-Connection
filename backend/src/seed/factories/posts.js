@@ -36,7 +36,6 @@ export default function create() {
       if (categoryIds)
         categories = await Promise.all(categoryIds.map(id => neodeInstance.find('Category', id)))
       categories = categories || (await Promise.all([factoryInstance.create('Category')]))
-
       const { tagIds = [] } = args
       delete args.tags
       const tags = await Promise.all(

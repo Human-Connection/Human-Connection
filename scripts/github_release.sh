@@ -2,7 +2,7 @@
 ROOT_DIR=$(dirname "$0")/..
 RELEASE_DIR="${ROOT_DIR}/release"
 
-VERSION=$(<$ROOT_DIR/VERSION)
+VERSION=$(jq -r ".version" $ROOT_DIR/package.json)
 
 # mkdir -p $RELEASE_DIR
 
@@ -13,4 +13,4 @@ VERSION=$(<$ROOT_DIR/VERSION)
 #   docker image save "humanconnection/${app}:latest" | gzip > "${RELEASE_DIR}/${app}.${VERSION}.tar.gz"
 # done
 
-ghr -soft "${VERSION}"
+ghr -c "${VERSION}" "${VERSION}"

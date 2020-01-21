@@ -145,26 +145,23 @@
             "successAdd": "Social-Media agregó. Perfil actualizado!",
             "successDelete": "Social-Media borrado. Perfil actualizado!"
         },
-        "blocked-users": {
+        "muted-users": {
             "name": "Usuarios bloqueados",
             "explanation": {
                 "intro": "Si otro usuario ha sido bloqueado por usted, esto es lo que sucede:",
                 "your-perspective": "Las contribuciones de la persona bloqueada no aparecerán más en su canal de noticias.",
-                "their-perspective": "Viceversa: la persona bloqueada tampoco verá más sus contribuciones en sus noticias.",
-                "search": "Las contribuciones de personas bloqueadas desaparecen de los resultados de búsqueda.",
-                "notifications": "Los usuarios bloqueados no recibirán más notificaciones si se mencionan en sus contribuciones.",
-                "closing": "Esto debería ser suficiente por ahora para que los usuarios bloqueados no puedan molestarle más."
+                "search": "Las contribuciones de personas bloqueadas desaparecen de los resultados de búsqueda."
             },
             "columns": {
                 "name": "Nombre",
                 "slug": "Alias",
-                "unblock": "Desbloquear"
+                "unmute": "Desbloquear"
             },
             "empty": "Hasta ahora, no ha bloqueado a nadie.",
             "how-to": "Puede bloquear a otros usuarios en la página de perfil de aquellos a través del menú de contenido.",
-            "block": "Bloquear usuario",
-            "unblock": "Desbloquear usuario",
-            "unblocked": "{name} está desbloqueado nuevamente"
+            "mute": "Bloquear usuario",
+            "unmute": "Desbloquear usuario",
+            "unmuted": "{name} está desbloqueado nuevamente"
         },
         "privacy": {
             "name": "Privacidad",
@@ -619,7 +616,6 @@
         "imprint": "Pie de imprenta",
         "termsAndConditions": "Términos y condiciones",
         "data-privacy": "Protección de datos",
-        "changelog": "Cambios e historia",
         "contact": "Contacto",
         "tribunal": "Tribunal de registro",
         "register": "Número de registro",
@@ -757,8 +753,7 @@
                 "4": "Retirada temporal de permisos de escritura",
                 "5": "Exclusión temporal de la red.",
                 "6": "Exclusión definitiva de la red",
-                "7": "Las violaciones de la ley alemana pueden ser denunciadas.",
-                "8": "Notificación de incidentes"
+                "7": "Las violaciones de la ley alemana pueden ser denunciadas."
             }
         },
         "get-help": "Si usted está sujeto a un comportamiento inaceptable, lo experimenta o tiene otras preocupaciones, por favor notifique a un organizador de la comunidad tan pronto como sea posible y enlace o apunte el contenido relevante:"

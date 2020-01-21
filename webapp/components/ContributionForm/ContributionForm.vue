@@ -38,7 +38,7 @@
 
         <ds-space />
         <client-only>
-          <hc-user :user="currentUser" :trunc="35" />
+          <user-teaser :user="currentUser" />
         </client-only>
         <ds-space />
         <ds-input
@@ -100,17 +100,12 @@
 
         <ds-space />
         <div slot="footer" style="text-align: right">
-          <ds-button
-            class="cancel-button"
-            :disabled="loading"
-            ghost
-            @click.prevent="$router.back()"
-          >
+          <base-button data-test="cancel-button" :disabled="loading" @click="$router.back()" danger>
             {{ $t('actions.cancel') }}
-          </ds-button>
-          <ds-button type="submit" icon="check" :loading="loading" :disabled="errors" primary>
+          </base-button>
+          <base-button type="submit" icon="check" :loading="loading" :disabled="errors" filled>
             {{ $t('actions.save') }}
-          </ds-button>
+          </base-button>
         </div>
         <ds-space margin-bottom="large" />
       </ds-card>
@@ -127,14 +122,14 @@ import locales from '~/locales'
 import PostMutations from '~/graphql/PostMutations.js'
 import HcCategoriesSelect from '~/components/CategoriesSelect/CategoriesSelect'
 import HcTeaserImage from '~/components/TeaserImage/TeaserImage'
-import HcUser from '~/components/User/User'
+import UserTeaser from '~/components/UserTeaser/UserTeaser'
 
 export default {
   components: {
     HcEditor,
     HcCategoriesSelect,
     HcTeaserImage,
-    HcUser,
+    UserTeaser,
   },
   props: {
     contribution: { type: Object, default: () => {} },

@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   createdAt: { type: 'string', isoDate: true, default: () => new Date().toISOString() },
   token: { type: 'string', primary: true, token: true },
   generatedBy: {

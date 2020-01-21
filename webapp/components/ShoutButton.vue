@@ -1,12 +1,11 @@
 <template>
   <ds-space margin="xx-small" class="text-align-center">
-    <ds-button
+    <base-button
       :loading="loading"
       :disabled="disabled"
-      :ghost="!shouted"
-      :primary="shouted"
-      size="x-large"
+      :filled="shouted"
       icon="bullhorn"
+      circle
       @click="toggle"
     />
     <ds-space margin-bottom="xx-small" />

@@ -16,12 +16,12 @@
       <ds-text>
         {{ $t('settings.embeds.status.change.question') }}
       </ds-text>
-      <ds-button @click="submit" :primary="!disabled" :disabled="!disabled">
+      <base-button @click="submit" :filled="!disabled" :disabled="!disabled">
         {{ $t('settings.embeds.status.change.deny') }}
-      </ds-button>
-      <ds-button @click="submit" :primary="disabled" :disabled="disabled">
+      </base-button>
+      <base-button @click="submit" :filled="disabled" :disabled="disabled">
         {{ $t('settings.embeds.status.change.allow') }}
-      </ds-button>
+      </base-button>
 
       <p>{{ $t('settings.embeds.info-description') }}</p>
       <ul>

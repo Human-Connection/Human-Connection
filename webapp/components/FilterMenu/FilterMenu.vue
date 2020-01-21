@@ -6,15 +6,16 @@
       </ds-flex-item>
       <ds-flex-item>
         <div class="filter-menu-buttons">
-          <ds-button
+          <base-button
+            name="clear-search-button"
+            icon="close"
+            circle
+            @click="clearSearch"
             v-tooltip="{
               content: this.$t('filter-menu.clearSearch'),
               placement: 'left',
               delay: { show: 500 },
             }"
-            name="clear-search-button"
-            icon="close"
-            @click="clearSearch"
           />
         </div>
       </ds-flex-item>

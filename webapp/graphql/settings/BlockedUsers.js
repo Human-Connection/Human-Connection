@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 
-export const BlockedUsers = () => {
+export const blockedUsers = () => {
   return gql`
     {
       blockedUsers {
@@ -16,10 +16,10 @@ export const BlockedUsers = () => {
   `
 }
 
-export const Block = () => {
+export const blockUser = () => {
   return gql`
     mutation($id: ID!) {
-      block(id: $id) {
+      blockUser(id: $id) {
         id
         name
         isBlocked
@@ -29,10 +29,10 @@ export const Block = () => {
   `
 }
 
-export const Unblock = () => {
+export const unblockUser = () => {
   return gql`
     mutation($id: ID!) {
-      unblock(id: $id) {
+      unblockUser(id: $id) {
         id
         name
         isBlocked

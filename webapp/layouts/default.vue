@@ -4,38 +4,30 @@
       <ds-container class="main-navigation-container" style="padding: 10px 10px;">
         <div>
           <ds-flex class="main-navigation-flex">
-            <ds-flex-item :width="{ lg: '3.5%' }" />
-            <ds-flex-item :width="{ base: '80%', sm: '80%', md: '80%', lg: '15%' }">
+            <ds-flex-item :width="{ base: '142px' }">
               <nuxt-link :to="{ name: 'index' }" v-scroll-to="'.main-navigation'">
                 <ds-logo />
               </nuxt-link>
             </ds-flex-item>
             <ds-flex-item
-              :width="{ base: '20%', sm: '20%', md: '20%', lg: '0%' }"
+              :width="{ base: '40%', sm: '40%', md: '40%', lg: '0%' }"
               class="mobile-hamburger-menu"
             >
-              <ds-button icon="bars" @click="toggleMobileMenuView" right />
+              <base-button icon="bars" @click="toggleMobileMenuView" circle />
             </ds-flex-item>
             <ds-flex-item
-              :width="{ base: '85%', sm: '85%', md: '50%', lg: '50%' }"
+              :width="{ base: '45%', sm: '45%', md: '45%', lg: '50%' }"
               :class="{ 'hide-mobile-menu': !toggleMobileMenu }"
+              style="flex-shrink: 0; flex-grow: 1;"
+              id="nav-search-box"
+              v-if="isLoggedIn"
             >
-              <div id="nav-search-box" v-if="isLoggedIn">
-                <search-input
-                  id="nav-search"
-                  :delay="300"
-                  :pending="quickSearchPending"
-                  :results="quickSearchResults"
-                  @clear="quickSearchClear"
-                  @search="value => quickSearch({ value })"
-                  @select="goToPost"
-                />
-              </div>
+              <search-field />
             </ds-flex-item>
             <ds-flex-item
               v-if="isLoggedIn"
-              :width="{ base: '15%', sm: '15%', md: '10%', lg: '10%' }"
               :class="{ 'hide-mobile-menu': !toggleMobileMenu }"
+              style="flex-grow: 0; flex-basis: auto;"
             >
               <client-only>
                 <filter-posts
@@ -46,10 +38,8 @@
                 />
               </client-only>
             </ds-flex-item>
-            <ds-flex-item :width="{ base: '100%', sm: '100%', md: '10%', lg: '2%' }" />
             <ds-flex-item
-              :width="{ base: '100%', sm: '100%', md: '100%', lg: '13%' }"
-              style="background-color:white"
+              style="background-color: white; flex-basis: auto;"
               :class="{ 'hide-mobile-menu': !toggleMobileMenu }"
             >
               <div
@@ -58,6 +48,7 @@
                   'desktop-view': !toggleMobileMenu,
                   'hide-mobile-menu': !toggleMobileMenu,
                 }"
+                style="flex-basis: auto;"
               >
                 <client-only>
                   <locale-switch class="topbar-locale-switch" placement="top" offset="8" />
@@ -90,9 +81,9 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 import LocaleSwitch from '~/components/LocaleSwitch/LocaleSwitch'
-import SearchInput from '~/components/SearchInput.vue'
+import SearchField from '~/components/features/SearchField/SearchField.vue'
 import Modal from '~/components/Modal'
 import NotificationMenu from '~/components/NotificationMenu/NotificationMenu'
 import seo from '~/mixins/seo'
@@ -104,7 +95,7 @@ import AvatarMenu from '~/components/AvatarMenu/AvatarMenu'
 export default {
   components: {
     LocaleSwitch,
-    SearchInput,
+    SearchField,
     Modal,
     NotificationMenu,
     AvatarMenu,
@@ -122,8 +113,6 @@ export default {
   computed: {
     ...mapGetters({
       isLoggedIn: 'auth/isLoggedIn',
-      quickSearchResults: 'search/quickResults',
-      quickSearchPending: 'search/quickPending',
     }),
     showFilterPostsDropdown() {
       const [firstRoute] = this.$route.matched
@@ -136,18 +125,6 @@ export default {
     },
   },
   methods: {
-    ...mapActions({
-      quickSearchClear: 'search/quickClear',
-      quickSearch: 'search/quickSearch',
-    }),
-    goToPost(item) {
-      this.$nextTick(() => {
-        this.$router.push({
-          name: 'post-id-slug',
-          params: { id: item.id, slug: item.slug },
-        })
-      })
-    },
     toggleMobileMenuView() {
       this.toggleMobileMenu = !this.toggleMobileMenu
     },
@@ -186,17 +163,21 @@ export default {
 }
 .main-navigation-right {
   display: flex;
-  flex: 1;
+  justify-content: flex-end;
 }
 .main-navigation-right .desktop-view {
   float: right;
 }
-@media only screen and (min-width: 960px) {
+.ds-flex-item.mobile-hamburger-menu {
+  margin-left: auto;
+  text-align: right;
+}
+@media only screen and (min-width: 730px) {
   .mobile-hamburger-menu {
     display: none;
   }
 }
-@media only screen and (max-width: 960px) {
+@media only screen and (max-width: 730px) {
   #nav-search-box,
   .main-navigation-right {
     margin: 10px 0px;

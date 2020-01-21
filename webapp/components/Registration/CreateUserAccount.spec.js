@@ -1,8 +1,8 @@
 import { config, mount } from '@vue/test-utils'
+import Vue from 'vue'
 import { VERSION } from '~/constants/terms-and-conditions-version.js'
 import CreateUserAccount from './CreateUserAccount'
 import { SignupVerificationMutation } from '~/graphql/Registration.js'
-
 const localVue = global.localVue
 
 config.stubs['sweetalert-icon'] = '<span><slot /></span>'
@@ -110,6 +110,7 @@ describe('CreateUserAccount', () => {
 
           it('displays success', async () => {
             await action()
+            await Vue.nextTick()
             expect(mocks.$t).toHaveBeenCalledWith(
               'components.registration.create-user-account.success',
             )
@@ -140,6 +141,7 @@ describe('CreateUserAccount', () => {
 
           it('displays form errors', async () => {
             await action()
+            await Vue.nextTick()
             expect(mocks.$t).toHaveBeenCalledWith(
               'components.registration.create-user-account.error',
             )

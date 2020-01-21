@@ -107,7 +107,6 @@
     "imprint": "Imprint",
     "termsAndConditions": "Terms and conditions",
     "data-privacy": "Data privacy",
-    "changelog": "Changes",
     "contact": "Contact",
     "tribunal": "Registry court",
     "register": "Registry number",
@@ -199,7 +198,11 @@
   "search": {
     "placeholder": "Search",
     "hint": "What are you searching for?",
-    "failed": "Nothing found"
+    "failed": "Nothing found",
+    "heading": {
+      "Post": "Posts",
+      "User": "Users"
+    }
   },
   "settings": {
     "name": "Settings",
@@ -309,6 +312,24 @@
       "successAdd": "Added social media. Updated user profile!",
       "successDelete": "Deleted social media. Updated user profile!"
     },
+    "muted-users": {
+      "name": "Muted users",
+      "explanation": {
+        "intro": "If another user has been muted by you, this is what happens:",
+        "your-perspective": "The muted person's posts will no longer appear in your news feed.",
+        "search": "Posts of muted people disappear from your search results."
+      },
+      "columns": {
+        "name": "Name",
+        "slug": "Slug",
+        "unmute": "Unmute"
+      },
+      "empty": "So far, you have not muted anybody.",
+      "how-to": "You can mute other users on their profile page via the content menu.",
+      "mute": "Mute user",
+      "unmute": "Unmute user",
+      "unmuted": "{name} is unmuted again"
+    },
     "blocked-users": {
       "name": "Blocked users",
       "explanation": {
@@ -316,9 +337,7 @@
         "your-perspective": "You will no longer be able to interact with their contributions.",
         "their-perspective": "Vice versa: The blocked person will also no longer be able to interact with your contributions.",
         "notifications": "Blocked users will no longer receive notifications if they mention each other.",
-        "closing": "This should be sufficient for now so that blocked users can no longer bother you.",
-        "commenting-disabled": "Commenting is not possible at this time on this post.",
-        "commenting-explanation": "This can happen for several reasons, please see our "
+        "closing": "This should be sufficient for now so that blocked users can no longer bother you."
       },
       "columns": {
         "name": "Name",
@@ -752,8 +771,7 @@
         "4": "Temporary withdrawal of write permissions",
         "5": "Temporary exclusion from the network",
         "6": "Final exclusion from the network",
-        "7": "Violations of German law can be reported.",
-        "8": "Advocacy or encouragement to these behaviors."
+        "7": "Violations of German law can be reported."
       }
     },
     "get-help": "If you are subject to or witness unacceptable behavior, or have any other concerns, please notify a community organizer as soon as possible and link or refer to the corresponding content:"

@@ -1,6 +1,6 @@
 import uuid from 'uuid/v4'
 
-module.exports = {
+export default {
   id: { type: 'string', primary: true, default: uuid }, // TODO: should be type: 'uuid' but simplified for our tests
   actorId: { type: 'string', allow: [null] },
   name: { type: 'string', disallow: [null], min: 3 },
@@ -75,6 +75,12 @@ module.exports = {
   blocked: {
     type: 'relationship',
     relationship: 'BLOCKED',
+    target: 'User',
+    direction: 'out',
+  },
+  muted: {
+    type: 'relationship',
+    relationship: 'MUTED',
     target: 'User',
     direction: 'out',
   },

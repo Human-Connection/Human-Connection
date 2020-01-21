@@ -16,24 +16,21 @@
             {{ $t('settings.blocked-users.explanation.notifications') }}
           </ds-list-item>
         </ds-list>
-        <ds-text>
-          {{ $t('settings.blocked-users.explanation.closing') }}
-        </ds-text>
       </ds-card>
     </ds-space>
     <ds-card v-if="blockedUsers && blockedUsers.length">
       <ds-table :data="blockedUsers" :fields="fields" condensed>
-        <template slot="avatar" slot-scope="scope">
+        <template #avatar="scope">
           <nuxt-link
             :to="{
               name: 'profile-id-slug',
               params: { id: scope.row.id, slug: scope.row.slug },
             }"
           >
-            <hc-avatar :user="scope.row" size="small" />
+            <user-avatar :user="scope.row" size="small" />
           </nuxt-link>
         </template>
-        <template slot="name" slot-scope="scope">
+        <template #name="scope">
           <nuxt-link
             :to="{
               name: 'profile-id-slug',
@@ -43,7 +40,7 @@
             <b>{{ scope.row.name | truncate(20) }}</b>
           </nuxt-link>
         </template>
-        <template slot="slug" slot-scope="scope">
+        <template #slug="scope">
           <nuxt-link
             :to="{
               name: 'profile-id-slug',
@@ -54,8 +51,8 @@
           </nuxt-link>
         </template>
 
-        <template slot="unblock" slot-scope="scope">
-          <ds-button size="small" @click="unblock(scope)"><ds-icon name="user-plus" /></ds-button>
+        <template #unblockUser="scope">
+          <base-button circle size="small" @click="unblockUser(scope)" icon="user-plus" />
         </template>
       </ds-table>
     </ds-card>
@@ -75,12 +72,12 @@
 </template>
 
 <script>
-import { BlockedUsers, Unblock } from '~/graphql/settings/BlockedUsers'
-import HcAvatar from '~/components/Avatar/Avatar.vue'
+import { blockedUsers, unblockUser } from '~/graphql/settings/BlockedUsers'
+import UserAvatar from '~/components/_new/generic/UserAvatar/UserAvatar'
 
 export default {
   components: {
-    HcAvatar,
+    UserAvatar,
   },
   data() {
     return {
@@ -93,19 +90,22 @@ export default {
         avatar: '',
         name: this.$t('settings.blocked-users.columns.name'),
         slug: this.$t('settings.blocked-users.columns.slug'),
-        unblock: this.$t('settings.blocked-users.columns.unblock'),
+        unblockUser: this.$t('settings.blocked-users.columns.unblock'),
       }
     },
   },
   apollo: {
-    blockedUsers: { query: BlockedUsers, fetchPolicy: 'cache-and-network' },
+    blockedUsers: { query: blockedUsers, fetchPolicy: 'cache-and-network' },
   },
   methods: {
-    async unblock(user) {
-      await this.$apollo.mutate({ mutation: Unblock(), variables: { id: user.row.id } })
+    async unblockUser(user) {
+      await this.$apollo.mutate({
+        mutation: unblockUser(),
+        variables: { id: user.row.id },
+      })
       this.$apollo.queries.blockedUsers.refetch()
       const { name } = user.row
-      this.$toast.success(this.$t('settings.blocked-users.unblocked', { name }))
+      this.$toast.success(this.$t('settings.blocked-users.unmuted', { name }))
     },
   },
 }

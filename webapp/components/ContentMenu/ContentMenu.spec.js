@@ -46,7 +46,7 @@ describe('ContentMenu.vue', () => {
         store,
         localVue,
       })
-      menuToggle = wrapper.find('.content-menu-trigger')
+      menuToggle = wrapper.find('[data-test="content-menu-button"]')
       menuToggle.trigger('click')
       return wrapper
     }
@@ -407,49 +407,49 @@ describe('ContentMenu.vue', () => {
         ).toBe('/settings')
       })
 
-      it('can block other users', () => {
+      it('can mute other users', () => {
         const wrapper = openContentMenu({
           isOwner: false,
           resourceType: 'user',
           resource: {
             id: 'd23a4265-f5f7-4e17-9f86-85f714b4b9f8',
-            isBlocked: false,
+            isMuted: false,
           },
         })
         wrapper
           .findAll('.ds-menu-item')
-          .filter(item => item.text() === 'settings.blocked-users.block')
+          .filter(item => item.text() === 'settings.muted-users.mute')
           .at(0)
           .trigger('click')
-        expect(wrapper.emitted('block')).toEqual([
+        expect(wrapper.emitted('mute')).toEqual([
           [
             {
               id: 'd23a4265-f5f7-4e17-9f86-85f714b4b9f8',
-              isBlocked: false,
+              isMuted: false,
             },
           ],
         ])
       })
 
-      it('can unblock blocked users', () => {
+      it('can unmute muted users', () => {
         const wrapper = openContentMenu({
           isOwner: false,
           resourceType: 'user',
           resource: {
             id: 'd23a4265-f5f7-4e17-9f86-85f714b4b9f8',
-            isBlocked: true,
+            isMuted: true,
           },
         })
         wrapper
           .findAll('.ds-menu-item')
-          .filter(item => item.text() === 'settings.blocked-users.unblock')
+          .filter(item => item.text() === 'settings.muted-users.unmute')
           .at(0)
           .trigger('click')
-        expect(wrapper.emitted('unblock')).toEqual([
+        expect(wrapper.emitted('unmute')).toEqual([
           [
             {
               id: 'd23a4265-f5f7-4e17-9f86-85f714b4b9f8',
-              isBlocked: true,
+              isMuted: true,
             },
           ],
         ])

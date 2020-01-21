@@ -1,9 +1,10 @@
 import uuid from 'uuid/v4'
 import { neo4jgraphql } from 'neo4j-graphql-js'
-import fileUpload from './fileUpload'
 import { isEmpty } from 'lodash'
 import { UserInputError } from 'apollo-server'
+import fileUpload from './fileUpload'
 import Resolver from './helpers/Resolver'
+import { filterForMutedUsers } from './helpers/filterForMutedUsers'
 
 const maintainPinnedPosts = params => {
   const pinnedPostFilter = { pinned: true }
@@ -18,13 +19,16 @@ const maintainPinnedPosts = params => {
 export default {
   Query: {
     Post: async (object, params, context, resolveInfo) => {
+      params = await filterForMutedUsers(params, context)
       params = await maintainPinnedPosts(params)
       return neo4jgraphql(object, params, context, resolveInfo)
     },
     findPosts: async (object, params, context, resolveInfo) => {
+      params = await filterForMutedUsers(params, context)
       return neo4jgraphql(object, params, context, resolveInfo)
     },
     profilePagePosts: async (object, params, context, resolveInfo) => {
+      params = await filterForMutedUsers(params, context)
       return neo4jgraphql(object, params, context, resolveInfo)
     },
     PostsEmotionsCountByEmotion: async (object, params, context, resolveInfo) => {
