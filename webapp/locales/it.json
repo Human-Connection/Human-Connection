@@ -145,26 +145,23 @@
             "successAdd": "Social media aggiunti. \nProfilo utente aggiornato ",
             "successDelete": "Social media cancellati. Profilo utente aggiornato!"
         },
-        "blocked-users": {
-            "name": "",
+        "muted-users": {
+            "name": null,
             "explanation": {
-                "intro": "",
-                "your-perspective": "",
-                "their-perspective": "",
-                "search": "",
-                "notifications": "",
-                "closing": ""
+                "intro": null,
+                "your-perspective": null,
+                "search": null
             },
             "columns": {
-                "name": "",
-                "slug": "",
-                "unblock": ""
+                "name": null,
+                "slug": null,
+                "unmute": null
             },
-            "empty": "",
-            "how-to": "",
-            "block": "",
-            "unblock": "",
-            "unblocked": ""
+            "empty": null,
+            "how-to": null,
+            "mute": null,
+            "unmute": null,
+            "unmuted": null
         },
         "privacy": {
             "name": "",

@@ -48,7 +48,7 @@ export const user = {
   ],
   followedByCount: 0,
   followedByCurrentUser: false,
-  isBlocked: false,
+  isMuted: false,
   followedBy: [],
   socialMedia: [],
 }

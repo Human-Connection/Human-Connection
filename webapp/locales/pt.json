@@ -145,26 +145,23 @@
             "successAdd": "Mídias sociais adicionadas. Perfil de usuário atualizado!",
             "successDelete": "Mídias sociais removidas. Perfil de usuário atualizado!"
         },
-        "blocked-users": {
+        "muted-users": {
             "name": "Usuários bloqueados",
             "explanation": {
                 "intro": "Se outro usuário foi bloqueado por você, isto é o que acontece:",
                 "your-perspective": "As mensagens da pessoa bloqueada não aparecerão mais no seu feed de notícias.",
-                "their-perspective": "Vice versa: A pessoa bloqueada também não verá mais suas mensagens em seu feed de notícias.",
-                "search": "Publicações de pessoas bloqueadas desaparecem dos resultados da sua pesquisa.",
-                "notifications": "Usuários bloqueados não receberão mais notificações se forem mencionados em suas mensagens.",
-                "closing": "Isso deve ser suficiente por enquanto para que os usuários bloqueados não possam mais incomodá-lo."
+                "search": "Publicações de pessoas bloqueadas desaparecem dos resultados da sua pesquisa."
             },
             "columns": {
                 "name": "Nome",
                 "slug": "Slug",
-                "unblock": "Desbloquear"
+                "unmute": "Desbloquear"
             },
             "empty": "Até agora, você não bloqueou ninguém.",
             "how-to": "Você pode bloquear outros usuários em suas páginas de perfil através do menu de conteúdo.",
-            "block": "Bloquear usuário",
-            "unblock": "Desbloquear usuário",
-            "unblocked": "{name} está desbloqueado novamente"
+            "mute": "Bloquear usuário",
+            "unmute": "Desbloquear usuário",
+            "unmuted": "{name} está desbloqueado novamente"
         },
         "privacy": {
             "name": "Privacidade",
