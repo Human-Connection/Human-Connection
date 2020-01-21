@@ -337,7 +337,9 @@
         "your-perspective": "You will no longer be able to interact with their contributions.",
         "their-perspective": "Vice versa: The blocked person will also no longer be able to interact with your contributions.",
         "notifications": "Blocked users will no longer receive notifications if they mention each other.",
-        "closing": "This should be sufficient for now so that blocked users can no longer bother you."
+        "closing": "This should be sufficient for now so that blocked users can no longer bother you.",
+        "commenting-disabled": "Commenting is not possible at this time on this post.",
+        "commenting-explanation": "This can happen for several reasons, please see our "
       },
       "columns": {
         "name": "Name",

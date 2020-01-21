@@ -1,8 +1,7 @@
 Feature: Mute a User
   As a user
   I'd like to have a button to mute another user
-  To prevent him from seeing and interacting with my contributions and also to avoid seeing his/her posts
-
+  To prevent him from seeing and interacting with my contributions
   Background:
     Given I have a user account
     And there is an annoying user called "Spammy Spammer"
@@ -46,7 +45,7 @@ Feature: Mute a User
     Given I previously created a post
     And I mute the user "Spammy Spammer"
     Given I log out
-    And I am logged in as the muted user 
+    And I am logged in as the "muted" user 
     When I search for "previously created"
     Then I should see the following posts in the select dropdown:
       | title                   |

@@ -39,7 +39,7 @@ Given("I am logged in", () => {
   cy.login(loginCredentials);
 });
 
-Given("I am logged in as the muted user", () => {
+Given("I am logged in as the {string} user", _ => {
   cy.login({ email: annoyingParams.email, password: '1234' });
 });
 
@@ -122,6 +122,12 @@ When("I visit {string}", page => {
 When("I visit the {string} page", page => {
   cy.openPage(page);
 });
+
+When("the blocked user visits my post", () => {
+  cy.logout()
+    .login({ email: annoyingParams.email, password: annoyingParams.password })
+    .openPage('/post/previously-created-post')
+})
 
 Given("I am on the {string} page", page => {
   cy.openPage(page);
@@ -485,7 +491,7 @@ Given("I follow the user {string}", name => {
     });
 });
 
-Given('"Spammy Spammer" wrote a post {string}', title => {
+Given('{string} wrote a post {string}', (_, title) => {
   cy.createCategories("cat21")
     .factory()
     .create("Post", {
@@ -532,6 +538,20 @@ When("I mute the user {string}", name => {
     });
 });
 
+When("I block the user {string}", name => {
+  cy.neode()
+    .first("User", {
+      name
+    })
+    .then(blockedUser => {
+      cy.neode()
+        .first("User", {
+          name: narratorParams.name
+        })
+        .relateTo(blockedUser, "blocked");
+    });
+});
+
 When("I log in with:", table => {
   const [firstRow] = table.hashes();
   const {
@@ -550,3 +570,11 @@ Then("I see only one post with the title {string}", title => {
     .should("have.length", 1);
   cy.get(".main-container").contains(".post-link", title);
 });
+
+Then("they should not see the comment from", () => {
+  cy.get(".ds-card-footer").children().should('not.have.class', 'comment-form')
+})
+
+Then("they should see a text explaining commenting is not possible", () => {
+  cy.get('.ds-placeholder').should('contain', "Commenting is not possible at this time on this post.")
+})

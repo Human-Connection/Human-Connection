@@ -24,6 +24,8 @@
               class="user-content-menu"
               @mute="muteUser"
               @unmute="unmuteUser"
+              @block="blockUser"
+              @unblock="unblockUser"
             />
           </client-only>
           <ds-space margin="small">
@@ -67,7 +69,7 @@
           <ds-space margin="small">
             <template v-if="!myProfile">
               <hc-follow-button
-                v-if="!user.isMuted"
+                v-if="!user.isMuted || !user.isBlocked"
                 :follow-id="user.id"
                 :is-followed="user.followedByCurrentUser"
                 @optimistic="optimisticFollow"
@@ -285,6 +287,7 @@ import MasonryGridItem from '~/components/MasonryGrid/MasonryGridItem.vue'
 import { profilePagePosts } from '~/graphql/PostQuery'
 import UserQuery from '~/graphql/User'
 import { muteUser, unmuteUser } from '~/graphql/settings/MutedUsers'
+import { blockUser, unblockUser } from '~/graphql/settings/BlockedUsers'
 import PostMutations from '~/graphql/PostMutations'
 import UpdateQuery from '~/components/utils/UpdateQuery'
 
@@ -415,6 +418,24 @@ export default {
         this.$apollo.queries.User.refetch()
         this.resetPostList()
         this.$apollo.queries.profilePagePosts.refetch()
+      }
+    },
+    async blockUser(user) {
+      try {
+        await this.$apollo.mutate({ mutation: blockUser(), variables: { id: user.id } })
+      } catch (error) {
+        this.$toast.error(error.message)
+      } finally {
+        this.$apollo.queries.User.refetch()
+      }
+    },
+    async unblockUser(user) {
+      try {
+        this.$apollo.mutate({ mutation: unblockUser(), variables: { id: user.id } })
+      } catch (error) {
+        this.$toast.error(error.message)
+      } finally {
+        this.$apollo.queries.User.refetch()
       }
     },
     pinPost(post) {

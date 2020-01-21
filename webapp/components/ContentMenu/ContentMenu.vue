@@ -172,6 +172,23 @@ export default {
               icon: 'user-times',
             })
           }
+          if (this.resource.isBlocked) {
+            routes.push({
+              label: this.$t(`settings.blocked-users.unblock`),
+              callback: () => {
+                this.$emit('unblock', this.resource)
+              },
+              icon: 'user-plus',
+            })
+          } else {
+            routes.push({
+              label: this.$t(`settings.blocked-users.block`),
+              callback: () => {
+                this.$emit('block', this.resource)
+              },
+              icon: 'user-times',
+            })
+          }
         }
       }
 
