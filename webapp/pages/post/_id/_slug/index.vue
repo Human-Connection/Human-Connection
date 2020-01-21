@@ -90,7 +90,7 @@
         />
         <ds-space margin-bottom="large" />
         <comment-form
-          v-if="showNewCommentForm && !this.blocked"
+          v-if="showNewCommentForm && !post.author.isBlocked"
           :post="post"
           @createComment="createComment"
         />
@@ -120,7 +120,6 @@ import { postMenuModalsData, deletePostMutation } from '~/components/utils/PostH
 import PostQuery from '~/graphql/PostQuery'
 import HcEmotions from '~/components/Emotions/Emotions'
 import PostMutations from '~/graphql/PostMutations'
-import { blockedByPostAuthor } from '~/graphql/User'
 
 export default {
   name: 'PostSlug',
@@ -228,20 +227,6 @@ export default {
         this.title = this.post.title
         this.blurred = this.post.imageBlurred
         this.postAuthor = this.post.author
-      },
-      fetchPolicy: 'cache-and-network',
-    },
-    blockedByPostAuthor: {
-      query() {
-        return blockedByPostAuthor()
-      },
-      variables() {
-        return {
-          postAuthorId: this.postAuthor ? this.postAuthor.id : this.$store.getters['auth/user'].id,
-        }
-      },
-      update({ blockedByPostAuthor }) {
-        this.blocked = blockedByPostAuthor
       },
       fetchPolicy: 'cache-and-network',
     },

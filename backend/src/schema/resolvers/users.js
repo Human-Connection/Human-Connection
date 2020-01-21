@@ -48,29 +48,6 @@ export default {
         throw new UserInputError(e.message)
       }
     },
-    blockedByPostAuthor: async (_parent, params, context, _resolveInfo) => {
-      const { postAuthorId } = params
-      const { user, driver } = context
-      const session = driver.session()
-      const readTxResultPromise = session.readTransaction(async transaction => {
-        const blockedByPostAuthorTransactionResponse = await transaction.run(
-          `
-            MATCH (currentUser:User {id: $currentUserId})<-[relationship:BLOCKED]-(postAuthor:User {id: $postAuthorId})
-            RETURN COUNT(relationship) >= 1 as blockedByPostAuthor
-          `,
-          { postAuthorId, currentUserId: user.id },
-        )
-        return blockedByPostAuthorTransactionResponse.records.map(record =>
-          record.get('blockedByPostAuthor'),
-        )
-      })
-      try {
-        const [blockedByPostAuthor] = await readTxResultPromise
-        return blockedByPostAuthor
-      } finally {
-        session.close()
-      }
-    },
     User: async (object, args, context, resolveInfo) => {
       const { email } = args
       if (email) {
