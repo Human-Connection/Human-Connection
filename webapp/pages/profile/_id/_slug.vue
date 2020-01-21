@@ -22,8 +22,8 @@
               :resource="user"
               :is-owner="myProfile"
               class="user-content-menu"
-              @block="block"
-              @unblock="unblock"
+              @mute="muteUser"
+              @unmute="unmuteUser"
             />
           </client-only>
           <ds-space margin="small">
@@ -67,14 +67,14 @@
           <ds-space margin="small">
             <template v-if="!myProfile">
               <hc-follow-button
-                v-if="!user.isBlocked"
+                v-if="!user.isMuted"
                 :follow-id="user.id"
                 :is-followed="user.followedByCurrentUser"
                 @optimistic="optimisticFollow"
                 @update="updateFollow"
               />
-              <base-button v-else @click="unblock(user)" class="unblock-user-button">
-                {{ $t('settings.blocked-users.unblock') }}
+              <base-button v-else @click="unmuteUser(user)" class="unblock-user-button">
+                {{ $t('settings.muted-users.unmute') }}
               </base-button>
             </template>
           </ds-space>
@@ -284,7 +284,7 @@ import MasonryGrid from '~/components/MasonryGrid/MasonryGrid.vue'
 import MasonryGridItem from '~/components/MasonryGrid/MasonryGridItem.vue'
 import { profilePagePosts } from '~/graphql/PostQuery'
 import UserQuery from '~/graphql/User'
-import { Block, Unblock } from '~/graphql/settings/BlockedUsers'
+import { muteUser, unmuteUser } from '~/graphql/settings/MutedUsers'
 import PostMutations from '~/graphql/PostMutations'
 import UpdateQuery from '~/components/utils/UpdateQuery'
 
@@ -396,17 +396,27 @@ export default {
       this.posts = []
       this.hasMore = true
     },
-    async block(user) {
-      await this.$apollo.mutate({ mutation: Block(), variables: { id: user.id } })
-      this.$apollo.queries.User.refetch()
-      this.resetPostList()
-      this.$apollo.queries.profilePagePosts.refetch()
+    async muteUser(user) {
+      try {
+        await this.$apollo.mutate({ mutation: muteUser(), variables: { id: user.id } })
+      } catch (error) {
+        this.$toast.error(error.message)
+      } finally {
+        this.$apollo.queries.User.refetch()
+        this.resetPostList()
+        this.$apollo.queries.profilePagePosts.refetch()
+      }
     },
-    async unblock(user) {
-      await this.$apollo.mutate({ mutation: Unblock(), variables: { id: user.id } })
-      this.$apollo.queries.User.refetch()
-      this.resetPostList()
-      this.$apollo.queries.profilePagePosts.refetch()
+    async unmuteUser(user) {
+      try {
+        this.$apollo.mutate({ mutation: unmuteUser(), variables: { id: user.id } })
+      } catch (error) {
+        this.$toast.error(error.message)
+      } finally {
+        this.$apollo.queries.User.refetch()
+        this.resetPostList()
+        this.$apollo.queries.profilePagePosts.refetch()
+      }
     },
     pinPost(post) {
       this.$apollo

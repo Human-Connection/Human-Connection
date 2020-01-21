@@ -78,6 +78,12 @@ export default {
     target: 'User',
     direction: 'out',
   },
+  muted: {
+    type: 'relationship',
+    relationship: 'MUTED',
+    target: 'User',
+    direction: 'out',
+  },
   notifications: {
     type: 'relationship',
     relationship: 'NOTIFIED',

@@ -18,8 +18,8 @@
     "cypress:backend": "cd backend && yarn run dev",
     "cypress:webapp": "cd webapp && yarn run dev",
     "cypress:setup": "run-p cypress:backend cypress:webapp",
-    "cypress:run": "cross-env cypress run --browser chromium",
-    "cypress:open": "cross-env cypress open --browser chromium",
+    "cypress:run": "cross-env cypress run",
+    "cypress:open": "cross-env cypress open",
     "cucumber:setup": "cd backend && yarn run dev",
     "cucumber": "wait-on tcp:4000 && cucumber-js --require-module @babel/register --exit",
     "release": "standard-version"
