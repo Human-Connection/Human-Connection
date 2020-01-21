@@ -148,15 +148,25 @@ export default {
 </script>
 
 <style lang="scss">
+.trigger {
+  max-width: 100%;
+}
+
 .user-teaser {
   display: flex;
   flex-wrap: nowrap;
   z-index: $z-index-post-card-link;
   position: relative;
 
+  > .user-avatar {
+    flex-shrink: 0;
+  }
+
   > .user-info {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
 
     > .ds-text {
       display: flex;
@@ -164,9 +174,10 @@ export default {
     }
 
     > .user-slug {
-      white-space: nowrap;
-      text-overflow: ellipsis;
       margin: 0 0 $space-xxx-small $space-xx-small;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
   .username {
