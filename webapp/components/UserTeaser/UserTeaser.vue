@@ -158,8 +158,6 @@ export default {
 .user-teaser {
   display: flex;
   flex-wrap: nowrap;
-  z-index: $z-index-post-card-link;
-  position: relative;
 
   > .user-avatar {
     flex-shrink: 0;
