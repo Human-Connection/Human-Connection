@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   id: { type: 'string', primary: true },
   lat: { type: 'number' },
   lng: { type: 'number' },

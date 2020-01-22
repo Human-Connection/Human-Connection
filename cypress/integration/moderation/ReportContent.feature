@@ -11,7 +11,7 @@ Feature: Report and Moderate
     Given we have the following user accounts:
       | id            | name                                           | 
       | u67           | David Irving                                   |
-      | annoying-user | I'm gonna block Moderators and Admins HA HA HA |
+      | annoying-user | I'm gonna mute Moderators and Admins HA HA HA |
     
     Given we have the following posts in our database:
       | authorId      | id | title                         | content                                              |
@@ -58,16 +58,16 @@ Feature: Report and Moderate
     Then I see all the reported posts including the one from above
     And each list item links to the post page
 
-  Scenario: Review reported posts of a user who's blocked a moderator
+  Scenario: Review reported posts of a user who's muted a moderator
     Given somebody reported the following posts:
       | submitterEmail           | resourceId | reasonCategory | reasonDescription |
       | p2.submitter@example.org | p2         | other          | Offensive content |
     And my user account has the role "moderator"
-    And there is an annoying user who has blocked me
+    And there is an annoying user who has muted me
     And I am logged in
     When I click on the avatar menu in the top right corner
     And I click on "Moderation"
-    Then I see all the reported posts including from the user who blocked me
+    Then I see all the reported posts including from the user who muted me
     And I can visit the post page
 
   Scenario: Normal user can't see the moderation page

@@ -88,68 +88,6 @@ describe('ProfileSlug', () => {
         it('displays name of the user', () => {
           expect(wrapper.text()).toContain('Bob the builder')
         })
-
-        describe('load more button', () => {
-          const aPost = {
-            title: 'I am a post',
-            content: 'This is my content',
-            contentExcerpt: 'This is my content',
-          }
-
-          describe('currently no posts available (e.g. after tab switching)', () => {
-            beforeEach(() => {
-              wrapper.setData({ posts: [], hasMore: false })
-            })
-
-            it('displays no "load more" button', () => {
-              expect(wrapper.find('.load-more').exists()).toBe(false)
-            })
-
-            describe('apollo client in `loading` state', () => {
-              beforeEach(() => {
-                wrapper.vm.$apollo.loading = true
-              })
-
-              it('never displays more than one loading spinner', () => {
-                expect(wrapper.findAll('.ds-spinner')).toHaveLength(1)
-              })
-
-              it('displays a loading spinner below the posts list', () => {
-                expect(wrapper.find('.ds-spinner').exists()).toBe(true)
-              })
-            })
-          })
-
-          describe('pagination returned at least as many posts as pageSize', () => {
-            beforeEach(() => {
-              const posts = [1, 2, 3, 4, 5, 6].map(id => {
-                return {
-                  ...aPost,
-                  id,
-                }
-              })
-              wrapper.setData({ posts })
-            })
-
-            it('displays "load more" button', () => {
-              expect(wrapper.find('.load-more').exists()).toBe(true)
-            })
-
-            describe('apollo client in `loading` state', () => {
-              beforeEach(() => {
-                wrapper.vm.$apollo.loading = true
-              })
-
-              it('never displays more than one loading spinner', () => {
-                expect(wrapper.findAll('.ds-spinner')).toHaveLength(1)
-              })
-
-              it('displays a loading spinner below the posts list', () => {
-                expect(wrapper.find('.load-more .ds-spinner').exists()).toBe(true)
-              })
-            })
-          })
-        })
       })
     })
   })

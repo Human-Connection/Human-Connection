@@ -15,10 +15,9 @@
     <template #user="scope">
       <ds-space margin-bottom="base">
         <client-only>
-          <hc-user
+          <user-teaser
             :user="scope.row.from.author"
             :date-time="scope.row.from.createdAt"
-            :trunc="35"
             :class="{ 'notification-status': scope.row.read }"
           />
         </client-only>
@@ -50,12 +49,12 @@
   <hc-empty v-else icon="alert" :message="$t('notifications.empty')" />
 </template>
 <script>
-import HcUser from '~/components/User/User'
+import UserTeaser from '~/components/UserTeaser/UserTeaser'
 import HcEmpty from '~/components/Empty/Empty'
 
 export default {
   components: {
-    HcUser,
+    UserTeaser,
     HcEmpty,
   },
   props: {

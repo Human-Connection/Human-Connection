@@ -145,26 +145,23 @@
             "successAdd": "Social media aggiunti. \nProfilo utente aggiornato ",
             "successDelete": "Social media cancellati. Profilo utente aggiornato!"
         },
-        "blocked-users": {
-            "name": "",
+        "muted-users": {
+            "name": null,
             "explanation": {
-                "intro": "",
-                "your-perspective": "",
-                "their-perspective": "",
-                "search": "",
-                "notifications": "",
-                "closing": ""
+                "intro": null,
+                "your-perspective": null,
+                "search": null
             },
             "columns": {
-                "name": "",
-                "slug": "",
-                "unblock": ""
+                "name": null,
+                "slug": null,
+                "unmute": null
             },
-            "empty": "",
-            "how-to": "",
-            "block": "",
-            "unblock": "",
-            "unblocked": ""
+            "empty": null,
+            "how-to": null,
+            "mute": null,
+            "unmute": null,
+            "unmuted": null
         },
         "privacy": {
             "name": "",
@@ -561,7 +558,6 @@
         "imprint": "Impressum",
         "termsAndConditions": "",
         "data-privacy": "protezione dei dati",
-        "changelog": "Cambiamenti e storia",
         "contact": "Contatto",
         "tribunal": "registro tribunale",
         "register": "numero di registro",
@@ -699,8 +695,7 @@
                 "4": "Revoca temporanea delle autorizzazioni di scrittura",
                 "5": "Esclusione temporanea dalla rete",
                 "6": "Esclusione definitiva dalla rete",
-                "7": "Violazioni della legge tedesca possono essere segnalate.",
-                "8": "Sostegno o incoraggiamento a questi comportamenti."
+                "7": "Violazioni della legge tedesca possono essere segnalate."
             }
         },
         "get-help": "Se sei soggetto o testimone di un comportamento inaccettabile, o se hai altre preoccupazioni, ti preghiamo di avvisare al più presto un organizzatore della comunità e di fare riferimento al contenuto corrispondente:"

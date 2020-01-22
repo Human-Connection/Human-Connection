@@ -1,5 +1,6 @@
 import { config, shallowMount, mount } from '@vue/test-utils'
 import ReportModal from './ReportModal.vue'
+import Vue from 'vue'
 
 const localVue = global.localVue
 
@@ -151,9 +152,11 @@ describe('ReportModal.vue', () => {
       })
 
       describe('click confirm button', () => {
-        beforeEach(() => {
+        beforeEach(async () => {
           wrapper.find('.ds-radio-option-label').trigger('click')
+          await Vue.nextTick()
           wrapper.find('button.confirm').trigger('click')
+          await Vue.nextTick()
         })
 
         it('calls report mutation', () => {

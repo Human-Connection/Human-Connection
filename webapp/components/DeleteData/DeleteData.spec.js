@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils'
 import DeleteData from './DeleteData.vue'
-
+import Vue from 'vue'
 import Vuex from 'vuex'
 
 const localVue = global.localVue
@@ -81,7 +81,7 @@ describe('DeleteData.vue', () => {
     })
 
     it('does not call the delete user mutation if deleteEnabled is false', () => {
-      deleteAccountBtn = wrapper.find('.ds-button-danger')
+      deleteAccountBtn = wrapper.find('[data-test="delete-button"]')
       deleteAccountBtn.trigger('click')
       expect(mocks.$apollo.mutate).not.toHaveBeenCalled()
     })
@@ -90,7 +90,7 @@ describe('DeleteData.vue', () => {
       beforeEach(() => {
         enableDeletionInput = wrapper.find('.enable-deletion-input input')
         enableDeletionInput.setValue(deleteAccountName)
-        deleteAccountBtn = wrapper.find('.ds-button-danger')
+        deleteAccountBtn = wrapper.find('[data-test="delete-button"]')
       })
 
       it('if deleteEnabled is true and only deletes user by default', () => {
@@ -168,7 +168,8 @@ describe('DeleteData.vue', () => {
       it('shows an error toaster when the mutation rejects', async () => {
         enableDeletionInput = wrapper.find('.enable-deletion-input input')
         enableDeletionInput.setValue(deleteAccountName)
-        deleteAccountBtn = wrapper.find('.ds-button-danger')
+        await Vue.nextTick()
+        deleteAccountBtn = wrapper.find('[data-test="delete-button"]')
         await deleteAccountBtn.trigger('click')
         // second submission causes mutation to reject
         await deleteAccountBtn.trigger('click')

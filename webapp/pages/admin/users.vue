@@ -50,7 +50,7 @@
           {{ scope.row.createdAt | dateTime }}
         </template>
       </ds-table>
-      <hc-paginate :hasNext="hasNext" :hasPrevious="hasPrevious" @next="next" @back="back" />
+      <pagination-buttons :hasNext="hasNext" :hasPrevious="hasPrevious" @next="next" @back="back" />
     </ds-card>
     <ds-card v-else>
       <ds-placeholder>{{ $t('admin.users.empty') }}</ds-placeholder>
@@ -62,11 +62,11 @@
 import gql from 'graphql-tag'
 import { isEmail } from 'validator'
 import normalizeEmail from '~/components/utils/NormalizeEmail'
-import HcPaginate from '~/components/Paginate/Paginate'
+import PaginationButtons from '~/components/_new/generic/PaginationButtons/PaginationButtons'
 
 export default {
   components: {
-    HcPaginate,
+    PaginationButtons,
   },
   data() {
     const pageSize = 15

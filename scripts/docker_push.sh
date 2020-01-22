@@ -2,7 +2,8 @@
 ROOT_DIR=$(dirname "$0")/..
 # BUILD_COMMIT=${TRAVIS_COMMIT:-$(git rev-parse HEAD)}
 
-IFS='.' read -r major minor patch < $ROOT_DIR/VERSION
+VERSION=$(jq -r '.version' $ROOT_DIR/package.json)
+IFS='.' read -r major minor patch <<< $VERSION
 apps=(nitro-web nitro-backend neo4j maintenance)
 tags=($major $major.$minor $major.$minor.$patch)
 

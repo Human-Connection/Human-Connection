@@ -42,9 +42,9 @@ describe('AvatarMenu.vue', () => {
       wrapper = Wrapper()
     })
 
-    it('renders the HcAvatar component', () => {
+    it('renders the UserAvatar component', () => {
       wrapper.find('.avatar-menu-trigger').trigger('click')
-      expect(wrapper.find('.ds-avatar').exists()).toBe(true)
+      expect(wrapper.find('.user-avatar').exists()).toBe(true)
     })
 
     describe('given a userName', () => {

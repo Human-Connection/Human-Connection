@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils'
 import CommentForm from './CommentForm'
-
+import Vue from 'vue'
 import MutationObserver from 'mutation-observer'
 
 global.MutationObserver = MutationObserver
@@ -74,6 +74,7 @@ describe('CommentForm.vue', () => {
 
       it('calls `clear` method when the cancel button is clicked', async () => {
         wrapper.vm.updateEditorContent('ok')
+        await Vue.nextTick()
         await wrapper.find('[data-test="cancel-button"]').trigger('submit')
         expect(cancelMethodSpy).toHaveBeenCalledTimes(1)
       })

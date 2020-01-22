@@ -15,21 +15,21 @@
       @markNotificationAsRead="markNotificationAsRead"
       :notifications="notifications"
     />
-    <paginate :hasNext="hasNext" :hasPrevious="hasPrevious" @back="back" @next="next" />
+    <pagination-buttons :hasNext="hasNext" :hasPrevious="hasPrevious" @back="back" @next="next" />
   </ds-card>
 </template>
 
 <script>
 import NotificationsTable from '~/components/NotificationsTable/NotificationsTable'
 import DropdownFilter from '~/components/DropdownFilter/DropdownFilter'
-import Paginate from '~/components/Paginate/Paginate'
+import PaginationButtons from '~/components/_new/generic/PaginationButtons/PaginationButtons'
 import { notificationQuery, markAsReadMutation } from '~/graphql/User'
 
 export default {
   components: {
     DropdownFilter,
     NotificationsTable,
-    Paginate,
+    PaginationButtons,
   },
   data() {
     const pageSize = 12

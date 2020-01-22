@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   id: { type: 'string', primary: true, lowercase: true },
   status: { type: 'string', valid: ['permanent', 'temporary'] },
   type: { type: 'string', valid: ['role', 'crowdfunding'] },

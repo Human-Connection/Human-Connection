@@ -65,10 +65,6 @@ export default {
   }
 }
 
-.dropdown-arrow {
-  font-size: $font-size-xx-small;
-}
-
 .dropdown-menu {
   user-select: none;
   display: flex;

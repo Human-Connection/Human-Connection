@@ -1,0 +1,7 @@
+{
+  "bumpFiles": [
+    "package.json",
+    "backend/package.json",
+    "webapp/package.json"
+  ]
+}

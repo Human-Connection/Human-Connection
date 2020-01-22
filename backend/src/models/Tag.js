@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   id: { type: 'string', primary: true },
   deleted: { type: 'boolean', default: false },
   disabled: { type: 'boolean', default: false },

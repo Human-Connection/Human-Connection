@@ -2,6 +2,7 @@ import { mount } from '@vue/test-utils'
 import flushPromises from 'flush-promises'
 import MySocialMedia from './my-social-media.vue'
 import Vuex from 'vuex'
+import Vue from 'vue'
 
 const localVue = global.localVue
 
@@ -48,10 +49,10 @@ describe('my-social-media.vue', () => {
         submitButton = wrapper.find('button')
       })
 
-      it('requires the link to be a valid url', () => {
+      it('requires the link to be a valid url', async () => {
         input.setValue('some value')
         form.trigger('submit')
-
+        await Vue.nextTick()
         expect(mocks.$apollo.mutate).not.toHaveBeenCalled()
       })
 
@@ -59,19 +60,19 @@ describe('my-social-media.vue', () => {
         mocks.$apollo.mutate.mockRejectedValue({ message: 'Ouch!' })
         input.setValue(newSocialMediaUrl)
         form.trigger('submit')
-
+        await Vue.nextTick()
         await flushPromises()
-
         expect(mocks.$toast.error).toHaveBeenCalledTimes(1)
       })
 
       describe('success', () => {
-        beforeEach(() => {
+        beforeEach(async () => {
           mocks.$apollo.mutate.mockResolvedValue({
             data: { CreateSocialMedia: { id: 's2', url: newSocialMediaUrl } },
           })
           input.setValue(newSocialMediaUrl)
           form.trigger('submit')
+          await Vue.nextTick()
         })
 
         it('sends the new url to the backend', () => {
@@ -84,13 +85,11 @@ describe('my-social-media.vue', () => {
 
         it('displays a success message', async () => {
           await flushPromises()
-
           expect(mocks.$toast.success).toHaveBeenCalledTimes(1)
         })
 
         it('clears the form', async () => {
           await flushPromises()
-
           expect(input.value).toBe(undefined)
           expect(submitButton.vm.$attrs.disabled).toBe(true)
         })
@@ -127,19 +126,18 @@ describe('my-social-media.vue', () => {
         })
       })
 
-      it('does not accept a duplicate url', () => {
-        input = wrapper.find('input#addSocialMedia')
-
-        input.setValue(socialMediaUrl)
+      it('does not accept a duplicate url', async () => {
+        wrapper.find('input#addSocialMedia').setValue(socialMediaUrl)
         form.trigger('submit')
-
+        await Vue.nextTick()
         expect(mocks.$apollo.mutate).not.toHaveBeenCalled()
       })
 
       describe('editing social media link', () => {
-        beforeEach(() => {
+        beforeEach(async () => {
           const editButton = wrapper.find('.base-button[data-test="edit-button"]')
           editButton.trigger('click')
+          await Vue.nextTick()
           input = wrapper.find('input#editSocialMedia')
         })
 
@@ -149,28 +147,29 @@ describe('my-social-media.vue', () => {
           expect(addInput.exists()).toBe(false)
         })
 
-        it('sends the new url to the backend', () => {
+        it('sends the new url to the backend', async () => {
           const expected = expect.objectContaining({
             variables: { id: 's1', url: newSocialMediaUrl },
           })
           input.setValue(newSocialMediaUrl)
           form.trigger('submit')
-
+          await Vue.nextTick()
           expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expected)
         })
 
-        it('allows the user to cancel editing', () => {
+        it('allows the user to cancel editing', async () => {
           const cancelButton = wrapper.find('button#cancel')
           cancelButton.trigger('click')
-
+          await Vue.nextTick()
           expect(wrapper.find('input#editSocialMedia').exists()).toBe(false)
         })
       })
 
       describe('deleting social media link', () => {
-        beforeEach(() => {
+        beforeEach(async () => {
           const deleteButton = wrapper.find('.base-button[data-test="delete-button"]')
           deleteButton.trigger('click')
+          await Vue.nextTick()
         })
 
         it('sends the link id to the backend', () => {
@@ -184,7 +183,6 @@ describe('my-social-media.vue', () => {
 
         it('displays a success message', async () => {
           await flushPromises()
-
           expect(mocks.$toast.success).toHaveBeenCalledTimes(1)
         })
       })
