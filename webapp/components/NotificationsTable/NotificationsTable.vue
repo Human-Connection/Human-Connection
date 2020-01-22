@@ -53,17 +53,17 @@
         <user-teaser :user="scope.row.user" />
       </div>
       <div v-else-if="scope.row.contentExcerpt" :class="{ 'notification-status': scope.row.read }">
-        <span v-if="scope.row.comment" class="text-notification-header">
+        <span v-if="scope.row.comment" class="notification-content-header-text">
           {{ $t(`notifications.comment`) }}:
         </span>
         {{ scope.row.contentExcerpt | removeHtml }}
       </div>
       <div v-if="scope.row.report" :class="{ 'notification-status': scope.row.read }">
         <ds-space margin-bottom="x-small" />
-        <span class="text-notification-header">{{ $t(`notifications.report.category`) }}:</span>
+        <span class="notification-content-header-text">{{ $t(`notifications.report.category`) }}:</span>
         {{ $t('report.reason.category.options.' + scope.row.report.reasonCategory) }}
         <br />
-        <span class="text-notification-header">{{ $t(`notifications.report.description`) }}:</span>
+        <span class="notification-content-header-text">{{ $t(`notifications.report.description`) }}:</span>
         <span
           v-if="scope.row.report.reasonDescription && scope.row.report.reasonDescription !== ''"
         >
@@ -147,7 +147,7 @@ export default {
 .notification-status {
   opacity: $opacity-soft;
 }
-.text-notification-header {
+.notification-content-header-text {
   font-weight: 700;
   margin-right: 0.1rem;
 }

@@ -26,17 +26,17 @@
             <user-teaser :user="notificationData.user" />
           </div>
           <div v-else-if="notificationData.contentExcerpt">
-            <span v-if="notificationData.comment" class="text-notification-header">
+            <span v-if="notificationData.comment" class="notification-content-header-text">
               {{ $t(`notifications.comment`) }}:
             </span>
             {{ notificationData.contentExcerpt | removeHtml }}
           </div>
           <div v-if="notificationData.report">
             <ds-space margin-bottom="x-small" />
-            <span class="text-notification-header">{{ $t(`notifications.report.category`) }}:</span>
+            <span class="notification-content-header-text">{{ $t(`notifications.report.category`) }}:</span>
             {{ $t('report.reason.category.options.' + notificationData.report.reasonCategory) }}
             <br />
-            <span class="text-notification-header">
+            <span class="notification-content-header-text">
               {{ $t(`notifications.report.description`) }}:
             </span>
             <span
@@ -91,7 +91,7 @@ export default {
 .notifications-card {
   min-width: 500px;
 }
-.text-notification-header {
+.notification-content-header-text {
   font-weight: 700;
   margin-right: 0.1rem;
 }
