@@ -24,10 +24,10 @@ Then("my comment should be successfully created", () => {
 Then("I should see my comment", () => {
   cy.get("div.comment p")
     .should("contain", "Human Connection rocks")
-    .get(".ds-avatar img")
+    .get(".user-avatar img")
     .should("have.attr", "src")
     .and("contain", narratorAvatar)
-    .get("div p.ds-text span")
+    .get(".user-teaser > .info > .text")
     .should("contain", "today at");
 });
 

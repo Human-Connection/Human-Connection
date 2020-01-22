@@ -1,6 +1,6 @@
 {
   "name": "human-connection",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Fullstack and API tests with cypress and cucumber for Human Connection",
   "author": "Human Connection gGmbh",
   "license": "MIT",
@@ -18,8 +18,8 @@
     "cypress:backend": "cd backend && yarn run dev",
     "cypress:webapp": "cd webapp && yarn run dev",
     "cypress:setup": "run-p cypress:backend cypress:webapp",
-    "cypress:run": "cross-env cypress run --browser chromium",
-    "cypress:open": "cross-env cypress open --browser chromium",
+    "cypress:run": "cross-env cypress run",
+    "cypress:open": "cross-env cypress open",
     "cucumber:setup": "cd backend && yarn run dev",
     "cucumber": "wait-on tcp:4000 && cucumber-js --require-module @babel/register --exit",
     "release": "standard-version"
@@ -39,7 +39,7 @@
     "cypress-plugin-retries": "^1.5.2",
     "date-fns": "^2.9.0",
     "dotenv": "^8.2.0",
-    "expect": "^24.9.0",
+    "expect": "^25.1.0",
     "faker": "Marak/faker.js#master",
     "graphql-request": "^1.8.2",
     "neo4j-driver": "^4.0.1",

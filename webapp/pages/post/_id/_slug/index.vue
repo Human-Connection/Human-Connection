@@ -19,11 +19,11 @@
           @click="blurred = !blurred"
         />
       </aside>
-      <hc-user :user="post.author" :date-time="post.createdAt">
+      <user-teaser :user="post.author" :date-time="post.createdAt">
         <template v-slot:dateTime>
           <ds-text v-if="post.createdAt !== post.updatedAt">({{ $t('post.edited') }})</ds-text>
         </template>
-      </hc-user>
+      </user-teaser>
       <client-only>
         <content-menu
           placement="bottom-end"
@@ -101,7 +101,7 @@ import ContentViewer from '~/components/Editor/ContentViewer'
 import HcCategory from '~/components/Category'
 import HcHashtag from '~/components/Hashtag/Hashtag'
 import ContentMenu from '~/components/ContentMenu/ContentMenu'
-import HcUser from '~/components/User/User'
+import UserTeaser from '~/components/UserTeaser/UserTeaser'
 import HcShoutButton from '~/components/ShoutButton.vue'
 import HcCommentForm from '~/components/CommentForm/CommentForm'
 import HcCommentList from '~/components/CommentList/CommentList'
@@ -119,7 +119,7 @@ export default {
   components: {
     HcCategory,
     HcHashtag,
-    HcUser,
+    UserTeaser,
     HcShoutButton,
     ContentMenu,
     HcCommentForm,

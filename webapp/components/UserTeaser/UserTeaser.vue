@@ -1,32 +1,37 @@
 <template>
-  <div class="user" v-if="displayAnonymous">
-    <hc-avatar v-if="showAvatar" class="avatar" />
-    <div>
-      <b class="username">{{ $t('profile.userAnonym') }}</b>
-    </div>
+  <div class="user-teaser" v-if="displayAnonymous">
+    <user-avatar v-if="showAvatar" />
+    <span class="info anonymous">{{ $t('profile.userAnonym') }}</span>
   </div>
-  <dropdown v-else :class="{ 'disabled-content': user.disabled }" placement="top-start" offset="0">
-    <template slot="default" slot-scope="{ openMenu, closeMenu, isOpen }">
-      <nuxt-link :to="userLink" :class="['user', isOpen && 'active']">
-        <div @mouseover="showPopover ? openMenu(true) : () => {}" @mouseleave="closeMenu(true)">
-          <hc-avatar v-if="showAvatar" class="avatar" :user="user" />
-          <div>
-            <ds-text class="userinfo">
-              <b>{{ userSlug }}</b>
-            </ds-text>
-          </div>
-          <ds-text class="username" align="left" size="small" color="soft">
-            {{ userName | truncate(18) }}
-            <template v-if="dateTime">
-              <base-icon name="clock" />
-              <hc-relative-date-time :date-time="dateTime" />
-              <slot name="dateTime"></slot>
-            </template>
-          </ds-text>
+  <dropdown
+    v-else
+    :class="[{ 'disabled-content': user.disabled }]"
+    placement="top-start"
+    offset="0"
+  >
+    <template #default="{ openMenu, closeMenu, isOpen }">
+      <nuxt-link
+        :to="userLink"
+        :class="['user-teaser', isOpen && 'active']"
+        @mouseover.native="showPopover ? openMenu(true) : () => {}"
+        @mouseleave.native="closeMenu(true)"
+      >
+        <user-avatar v-if="showAvatar" :user="user" size="small" />
+        <div class="info">
+          <span class="text">
+            <span class="slug">{{ userSlug }}</span>
+            <span v-if="dateTime">{{ userName }}</span>
+          </span>
+          <span v-if="dateTime" class="text">
+            <base-icon name="clock" />
+            <hc-relative-date-time :date-time="dateTime" />
+            <slot name="dateTime"></slot>
+          </span>
+          <span v-else class="text">{{ userName }}</span>
         </div>
       </nuxt-link>
     </template>
-    <template slot="popover" v-if="showPopover">
+    <template #popover v-if="showPopover">
       <div style="min-width: 250px">
         <hc-badges v-if="user.badges && user.badges.length" :badges="user.badges" />
         <ds-text
@@ -77,7 +82,6 @@
             />
           </ds-flex-item>
         </ds-flex>
-        <!--<ds-space margin-bottom="x-small" />-->
       </div>
     </template>
   </dropdown>
@@ -89,22 +93,21 @@ import { mapGetters } from 'vuex'
 import HcRelativeDateTime from '~/components/RelativeDateTime'
 import HcFollowButton from '~/components/FollowButton'
 import HcBadges from '~/components/Badges'
-import HcAvatar from '~/components/Avatar/Avatar.vue'
+import UserAvatar from '~/components/_new/generic/UserAvatar/UserAvatar'
 import Dropdown from '~/components/Dropdown'
 
 export default {
-  name: 'HcUser',
+  name: 'UserTeaser',
   components: {
     HcRelativeDateTime,
     HcFollowButton,
-    HcAvatar,
+    UserAvatar,
     HcBadges,
     Dropdown,
   },
   props: {
     user: { type: Object, default: null },
     showAvatar: { type: Boolean, default: true },
-    trunc: { type: Number, default: 18 }, // "-1" is no trunc
     dateTime: { type: [Date, String], default: null },
     showPopover: { type: Boolean, default: true },
   },
@@ -147,38 +150,51 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
-.avatar {
-  float: left;
-  margin-right: 4px;
-  height: 100%;
-  vertical-align: middle;
+<style lang="scss">
+.trigger {
+  max-width: 100%;
 }
 
-.userinfo {
+.user-teaser {
   display: flex;
-  align-items: center;
-
-  > .ds-text {
-    display: flex;
-    align-items: center;
-    margin-left: $space-xx-small;
-  }
-}
-
-.user {
-  white-space: nowrap;
+  flex-wrap: nowrap;
+  z-index: $z-index-post-card-link;
   position: relative;
-  display: flex;
-  align-items: center;
 
-  &:hover,
-  &.active {
-    z-index: 999;
+  > .user-avatar {
+    flex-shrink: 0;
   }
-}
 
-.user-slug {
-  margin-bottom: $space-xx-small;
+  > .info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: $space-xx-small;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    color: $text-color-soft;
+    font-size: $font-size-small;
+
+    &.anonymous {
+      font-size: $font-size-base;
+    }
+
+    .slug {
+      color: $color-primary;
+      font-size: $font-size-base;
+    }
+  }
+
+  .text {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    > .ds-text {
+      display: inline;
+    }
+  }
 }
 </style>

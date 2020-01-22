@@ -6,7 +6,6 @@ addons:
       - libgconf-2-4
   snaps:
     - docker
-    - chromium
 
 install:
   - yarn global add wait-on
