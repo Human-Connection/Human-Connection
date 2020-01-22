@@ -41,7 +41,6 @@ export default {
       MATCH (resource)
       WHERE score >= 0.5
       AND NOT (resource.deleted = true OR resource.disabled = true
-      OR (:User { id: $thisUserId })-[:BLOCKED]-(resource))
       RETURN resource {.*, __typename: labels(resource)[0]}
       LIMIT $limit
       `
