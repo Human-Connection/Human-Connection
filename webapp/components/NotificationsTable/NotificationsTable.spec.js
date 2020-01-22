@@ -152,7 +152,7 @@ describe('NotificationsTable.vue', () => {
         })
 
         it('renders me as the triggerer', () => {
-          const triggererName = thirdRowNotification.find('.username')
+          const triggererName = thirdRowNotification.find('.userName-for-test')
           expect(triggererName.text()).toEqual('myName')
         })
 
