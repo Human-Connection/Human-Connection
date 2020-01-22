@@ -11,7 +11,7 @@
         "
         @click.prevent="toggleMenu"
       >
-        <user-avatar :user="user" />
+        <user-avatar :user="user" size="small" />
         <base-icon class="dropdown-arrow" name="angle-down" />
       </a>
     </template>

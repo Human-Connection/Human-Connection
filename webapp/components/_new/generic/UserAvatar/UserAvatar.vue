@@ -2,9 +2,12 @@
   <div :class="['user-avatar', size && `--${this.size}`]">
     <span class="initials">{{ userInitials }}</span>
     <base-icon v-if="isAnonymous" name="eye-slash" />
-    <img
+    <responsive-image
       v-else
-      :src="user.avatar | proxyApiUrl"
+      :lazySrc="user.avatar | proxyApiUrl"
+      :lazySrcset="user.avatar | proxyApiUrl"
+      :width="34"
+      :height="34"
       class="image"
       @error="event.target.style.display = 'none'"
     />
@@ -12,8 +15,10 @@
 </template>
 
 <script>
+import ResponsiveImage from '~/components/_new/generic/ResponsiveImage/ResponsiveImage'
 export default {
   name: 'UserAvatar',
+  components: { ResponsiveImage },
   props: {
     size: {
       type: String,
@@ -58,13 +63,11 @@ export default {
     width: $size-avatar-small;
     height: $size-avatar-small;
   }
-
   &.--large {
     width: $size-avatar-large;
     height: $size-avatar-large;
     font-size: $font-size-xx-large;
   }
-
   > .initials,
   > .base-icon {
     position: absolute;
