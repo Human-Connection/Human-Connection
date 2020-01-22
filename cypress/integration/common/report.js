@@ -7,7 +7,7 @@ import { gql } from '../../../backend/src/helpers/jest'
 let lastReportTitle
 let davidIrvingPostTitle = 'The Truth about the Holocaust'
 let davidIrvingPostSlug = 'the-truth-about-the-holocaust'
-let annoyingUserWhoBlockedModeratorTitle = 'Fake news'
+let annoyingUserWhoMutedModeratorTitle = 'Fake news'
 
 const savePostTitle = $post => {
   return $post
@@ -63,7 +63,7 @@ When('I click on "Report User" from the content menu in the user info box', () =
 })
 
 When('I click on the author', () => {
-  cy.get('.username')
+  cy.get('.user-teaser')
     .click()
     .url().should('include', '/profile/')
 })
@@ -147,9 +147,9 @@ Then('I see all the reported posts including the one from above', () => {
   })
 })
 
-Then('I see all the reported posts including from the user who blocked me', () => {
+Then('I see all the reported posts including from the user who muted me', () => {
   cy.get('table tbody').within(() => {
-    cy.contains('tr', annoyingUserWhoBlockedModeratorTitle)
+    cy.contains('tr', annoyingUserWhoMutedModeratorTitle)
   })
 })
 
@@ -159,9 +159,9 @@ Then('each list item links to the post page', () => {
 })
 
 Then('I can visit the post page', () => {
-  cy.contains(annoyingUserWhoBlockedModeratorTitle).click()
+  cy.contains(annoyingUserWhoMutedModeratorTitle).click()
   cy.location('pathname').should('contain', '/post')
-    .get('h3').should('contain', annoyingUserWhoBlockedModeratorTitle)
+    .get('h3').should('contain', annoyingUserWhoMutedModeratorTitle)
 })
 
 When("they have a post someone has reported", () => {

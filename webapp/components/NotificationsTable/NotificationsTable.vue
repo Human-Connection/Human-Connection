@@ -27,10 +27,9 @@
     <template #user="scope">
       <ds-space margin-bottom="base">
         <client-only>
-          <hc-user
+          <user-teaser
             :user="scope.row.triggerer"
             :date-time="scope.row.createdAt"
-            :trunc="35"
             :class="{ 'notification-status': scope.row.read }"
           />
         </client-only>
@@ -51,7 +50,7 @@
     </template>
     <template #content="scope">
       <div v-if="scope.row.user" :class="{ 'notification-status': scope.row.read }">
-        <hc-user :user="scope.row.user" :trunc="35" />
+        <user-teaser :user="scope.row.user" />
       </div>
       <div v-else-if="scope.row.contentExcerpt" :class="{ 'notification-status': scope.row.read }">
         <span v-if="scope.row.comment" class="text-notification-header">
@@ -81,12 +80,12 @@
 <script>
 import { mapGetters } from 'vuex'
 import { extractNotificationDataOfCurrentUser } from '~/components/utils/Notifications'
-import HcUser from '~/components/User/User'
+import UserTeaser from '~/components/UserTeaser/UserTeaser'
 import HcEmpty from '~/components/Empty/Empty'
 
 export default {
   components: {
-    HcUser,
+    UserTeaser,
     HcEmpty,
   },
   props: {

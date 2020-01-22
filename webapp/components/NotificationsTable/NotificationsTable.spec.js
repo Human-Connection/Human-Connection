@@ -92,8 +92,8 @@ describe('NotificationsTable.vue', () => {
         })
 
         it('renders the author', () => {
-          const username = firstRowNotification.find('.username')
-          expect(username.text()).toEqual(postNotification.from.author.name)
+          const userinfo = firstRowNotification.find('.user-teaser > .info')
+          expect(userinfo.text()).toContain(postNotification.from.author.name)
         })
 
         it('renders the reason for the notification', () => {
@@ -122,8 +122,8 @@ describe('NotificationsTable.vue', () => {
         })
 
         it('renders the author', () => {
-          const username = secondRowNotification.find('.username')
-          expect(username.text()).toEqual(commentNotification.from.author.name)
+          const userinfo = secondRowNotification.find('.user-teaser > .info')
+          expect(userinfo.text()).toContain(commentNotification.from.author.name)
         })
 
         it('renders the reason for the notification', () => {

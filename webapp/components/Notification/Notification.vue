@@ -2,10 +2,9 @@
   <ds-space :class="{ read: notificationData.read, notification: true }" margin-bottom="x-small">
     <client-only>
       <ds-space margin-bottom="x-small">
-        <hc-user
+        <user-teaser
           :user="notificationData.triggerer"
           :date-time="notificationData.createdAt"
-          :trunc="35"
         />
       </ds-space>
       <ds-text class="reason-text-for-test" color="soft">
@@ -24,7 +23,7 @@
         <ds-card :header="notificationData.title" hover space="x-small" class="notifications-card">
           <ds-space margin-bottom="x-small" />
           <div v-if="notificationData.user">
-            <hc-user :user="notificationData.user" :trunc="35" />
+            <user-teaser :user="notificationData.user" />
           </div>
           <div v-else-if="notificationData.contentExcerpt">
             <span v-if="notificationData.comment" class="text-notification-header">
@@ -61,12 +60,12 @@
 <script>
 import { mapGetters } from 'vuex'
 import { extractNotificationDataOfCurrentUser } from '~/components/utils/Notifications'
-import HcUser from '~/components/User/User'
+import UserTeaser from '~/components/UserTeaser/UserTeaser'
 
 export default {
   name: 'Notification',
   components: {
-    HcUser,
+    UserTeaser,
   },
   props: {
     notification: {

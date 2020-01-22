@@ -76,9 +76,6 @@
         "download": {
             "name": "Daten herunterladen"
         },
-        "delete": {
-            "name": "Konto löschen"
-        },
         "organizations": {
             "name": "Meine Organisationen"
         },
@@ -145,26 +142,23 @@
             "successAdd": "Social-Media hinzugefügt. Profil aktualisiert!",
             "successDelete": "Social-Media gelöscht. Profil aktualisiert!"
         },
-        "blocked-users": {
-            "name": "Blockierte Benutzer",
+        "muted-users": {
+            "name": "Stummgeschaltete Benutzer",
             "explanation": {
-                "intro": "Wenn ein anderer Benutzer von dir blockiert wurde, dann passiert folgendes:",
-                "your-perspective": "In deiner Beitragsübersicht tauchen keine Beiträge der blockierten Person mehr auf.",
-                "their-perspective": "Umgekehrt das gleiche: Die blockierte Person sieht deine Beiträge auch nicht mehr in ihrer Übersicht.",
-                "search": "Die Beiträge von blockierten Personen verschwinden aus deinen Suchergebnissen.",
-                "notifications": "Von dir blockierte Personen erhalten keine Benachrichtigungen mehr, wenn sie in deinen Beiträgen erwähnt werden.",
-                "closing": "Das sollte fürs Erste genügen, damit blockierte Benutzer dich nicht mehr länger belästigen können."
+                "intro": "Wenn ein anderer Benutzer von dir stummgeschaltet wurde, dann passiert folgendes:",
+                "your-perspective": "In deiner Beitragsübersicht tauchen keine Beiträge der stummgeschalteten Person mehr auf.",
+                "search": "Die Beiträge von stummgeschalteten Personen verschwinden aus deinen Suchergebnissen."
             },
             "columns": {
                 "name": "Name",
                 "slug": "Alias",
-                "unblock": "Entsperren"
+                "unmute": "Entsperren"
             },
-            "empty": "Bislang hast du niemanden blockiert.",
-            "how-to": "Du kannst andere Benutzer auf deren Profilseite über das Inhaltsmenü blockieren.",
-            "block": "Nutzer blockieren",
-            "unblock": "Nutzer entblocken",
-            "unblocked": "{name} ist wieder entsperrt"
+            "empty": "Bislang hast du niemanden stummgeschaltet.",
+            "how-to": "Du kannst andere Benutzer auf deren Profilseite über das Inhaltsmenü stummschalten.",
+            "mute": "Stumm schalten",
+            "unmute": "Stummschaltung aufheben",
+            "unmuted": "{name} ist nicht mehr stummgeschaltet"
         },
         "privacy": {
             "name": "Privatsphäre",
@@ -217,11 +211,6 @@
             "categoryName": "Name",
             "postCount": "Beiträge"
         },
-        "tags": {
-            "name": "Schlagworte",
-            "tagCountUnique": "Benutzer",
-            "tagCount": "Beiträge"
-        },
         "settings": {
             "name": "Einstellungen"
         },
@@ -268,7 +257,7 @@
         },
         "comment": {
             "submit": "Kommentiere",
-            "submitted": "Kommentar Gesendet",
+            "submitted": "Kommentar gesendet",
             "updated": "Änderungen gespeichert"
         },
         "edited": "bearbeitet"
@@ -444,8 +433,6 @@
         }
     },
     "contribution": {
-        "edit": "Beitrag bearbeiten",
-        "delete": "Beitrag löschen",
         "title": "Titel",
         "newPost": "Erstelle einen neuen Beitrag",
         "filterFollow": "Beiträge filtern von Usern denen ich folge",
@@ -485,13 +472,11 @@
         },
         "teaserImage": {
             "cropperConfirm": "Bestätigen"
-        },        
+        },
         "inappropriatePicture" : "Dieses Bild kann für einige Menschen unangemessen sein.",
         "inappropriatePictureText" : "Wann soll ein Foto versteckt werden"
     },
     "comment": {
-        "edit": "Kommentar bearbeiten",
-        "delete": "Kommentar löschen",
         "content": {
             "unavailable-placeholder": "… dieser Kommentar ist nicht mehr verfügbar"
         },

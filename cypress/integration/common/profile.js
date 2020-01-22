@@ -32,5 +32,5 @@ Then("I cannot upload a picture", () => {
   cy.get(".ds-card-content")
     .children()
     .should("not.have.id", "customdropzone")
-    .should("have.class", "ds-avatar");
+    .should("have.class", "user-avatar");
 });

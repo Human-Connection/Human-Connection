@@ -9,7 +9,7 @@ const factory = Factory()
 const neode = getNeode()
 
 let currentUser
-let blockedUser
+let mutedUser
 let authenticatedUser
 let server
 
@@ -33,15 +33,15 @@ afterEach(async () => {
   await factory.cleanDatabase()
 })
 
-describe('blockedUsers', () => {
-  let blockedUserQuery
+describe('mutedUsers', () => {
+  let mutedUserQuery
   beforeEach(() => {
-    blockedUserQuery = gql`
+    mutedUserQuery = gql`
       query {
-        blockedUsers {
+        mutedUsers {
           id
           name
-          isBlocked
+          isMuted
         }
       }
     `
@@ -49,34 +49,34 @@ describe('blockedUsers', () => {
 
   it('throws permission error', async () => {
     const { query } = createTestClient(server)
-    const result = await query({ query: blockedUserQuery })
+    const result = await query({ query: mutedUserQuery })
     expect(result.errors[0]).toHaveProperty('message', 'Not Authorised!')
   })
 
-  describe('authenticated and given a blocked user', () => {
+  describe('authenticated and given a muted user', () => {
     beforeEach(async () => {
       currentUser = await neode.create('User', {
         name: 'Current User',
         id: 'u1',
       })
-      blockedUser = await neode.create('User', {
-        name: 'Blocked User',
+      mutedUser = await neode.create('User', {
+        name: 'Muted User',
         id: 'u2',
       })
-      await currentUser.relateTo(blockedUser, 'blocked')
+      await currentUser.relateTo(mutedUser, 'muted')
       authenticatedUser = await currentUser.toJson()
     })
 
-    it('returns a list of blocked users', async () => {
+    it('returns a list of muted users', async () => {
       const { query } = createTestClient(server)
-      await expect(query({ query: blockedUserQuery })).resolves.toEqual(
+      await expect(query({ query: mutedUserQuery })).resolves.toEqual(
         expect.objectContaining({
           data: {
-            blockedUsers: [
+            mutedUsers: [
               {
-                name: 'Blocked User',
+                name: 'Muted User',
                 id: 'u2',
-                isBlocked: true,
+                isMuted: true,
               },
             ],
           },
@@ -86,28 +86,28 @@ describe('blockedUsers', () => {
   })
 })
 
-describe('block', () => {
-  let blockAction
+describe('muteUser', () => {
+  let muteAction
 
   beforeEach(() => {
     currentUser = undefined
-    blockAction = variables => {
+    muteAction = variables => {
       const { mutate } = createTestClient(server)
-      const blockMutation = gql`
+      const muteUserMutation = gql`
         mutation($id: ID!) {
-          block(id: $id) {
+          muteUser(id: $id) {
             id
             name
-            isBlocked
+            isMuted
           }
         }
       `
-      return mutate({ mutation: blockMutation, variables })
+      return mutate({ mutation: muteUserMutation, variables })
     }
   })
 
   it('throws permission error', async () => {
-    const result = await blockAction({ id: 'u2' })
+    const result = await muteAction({ id: 'u2' })
     expect(result.errors[0]).toHaveProperty('message', 'Not Authorised!')
   })
 
@@ -120,45 +120,47 @@ describe('block', () => {
       authenticatedUser = await currentUser.toJson()
     })
 
-    describe('block yourself', () => {
+    describe('mute yourself', () => {
       it('returns null', async () => {
-        await expect(blockAction({ id: 'u1' })).resolves.toEqual(
-          expect.objectContaining({ data: { block: null } }),
+        await expect(muteAction({ id: 'u1' })).resolves.toEqual(
+          expect.objectContaining({ data: { muteUser: null } }),
         )
       })
     })
 
-    describe('block not existing user', () => {
+    describe('mute not existing user', () => {
       it('returns null', async () => {
-        await expect(blockAction({ id: 'u2' })).resolves.toEqual(
-          expect.objectContaining({ data: { block: null } }),
+        await expect(muteAction({ id: 'u2' })).resolves.toEqual(
+          expect.objectContaining({ data: { muteUser: null } }),
         )
       })
     })
 
-    describe('given a to-be-blocked user', () => {
+    describe('given a to-be-muted user', () => {
       beforeEach(async () => {
-        blockedUser = await neode.create('User', {
-          name: 'Blocked User',
+        mutedUser = await neode.create('User', {
+          name: 'Muted User',
           id: 'u2',
         })
       })
 
-      it('blocks a user', async () => {
-        await expect(blockAction({ id: 'u2' })).resolves.toEqual(
+      it('mutes a user', async () => {
+        await expect(muteAction({ id: 'u2' })).resolves.toEqual(
           expect.objectContaining({
-            data: { block: { id: 'u2', name: 'Blocked User', isBlocked: true } },
+            data: {
+              muteUser: { id: 'u2', name: 'Muted User', isMuted: true },
+            },
           }),
         )
       })
 
       it('unfollows the user', async () => {
-        await currentUser.relateTo(blockedUser, 'following')
+        await currentUser.relateTo(mutedUser, 'following')
         const queryUser = gql`
           query {
             User(id: "u2") {
               id
-              isBlocked
+              isMuted
               followedByCurrentUser
             }
           }
@@ -166,18 +168,18 @@ describe('block', () => {
         const { query } = createTestClient(server)
         await expect(query({ query: queryUser })).resolves.toEqual(
           expect.objectContaining({
-            data: { User: [{ id: 'u2', isBlocked: false, followedByCurrentUser: true }] },
+            data: { User: [{ id: 'u2', isMuted: false, followedByCurrentUser: true }] },
           }),
         )
-        await blockAction({ id: 'u2' })
+        await muteAction({ id: 'u2' })
         await expect(query({ query: queryUser })).resolves.toEqual(
           expect.objectContaining({
-            data: { User: [{ id: 'u2', isBlocked: true, followedByCurrentUser: false }] },
+            data: { User: [{ id: 'u2', isMuted: true, followedByCurrentUser: false }] },
           }),
         )
       })
 
-      describe('given both the current user and the to-be-blocked user write a post', () => {
+      describe('given both the current user and the to-be-muted user write a post', () => {
         let postQuery
 
         beforeEach(async () => {
@@ -187,11 +189,11 @@ describe('block', () => {
           })
           const post2 = await neode.create('Post', {
             id: 'p23',
-            title: 'A post written by the blocked user',
+            title: 'A post written by the muted user',
           })
           await Promise.all([
             post1.relateTo(currentUser, 'author'),
-            post2.relateTo(blockedUser, 'author'),
+            post2.relateTo(mutedUser, 'author'),
           ])
           postQuery = gql`
             query {
@@ -223,9 +225,9 @@ describe('block', () => {
                   },
                   {
                     id: 'p23',
-                    title: 'A post written by the blocked user',
+                    title: 'A post written by the muted user',
                     author: {
-                      name: 'Blocked User',
+                      name: 'Muted User',
                       id: 'u2',
                     },
                   },
@@ -238,12 +240,12 @@ describe('block', () => {
         describe('from the perspective of the current user', () => {
           it('both posts are in the newsfeed', bothPostsAreInTheNewsfeed)
 
-          describe('but if the current user blocks the other user', () => {
+          describe('but if the current user mutes the other user', () => {
             beforeEach(async () => {
-              await currentUser.relateTo(blockedUser, 'blocked')
+              await currentUser.relateTo(mutedUser, 'muted')
             })
 
-            it("the blocked user's post won't show up in the newsfeed of the current user", async () => {
+            it("the muted user's post won't show up in the newsfeed of the current user", async () => {
               const { query } = createTestClient(server)
               await expect(query({ query: postQuery })).resolves.toEqual(
                 expect.objectContaining({
@@ -262,29 +264,34 @@ describe('block', () => {
           })
         })
 
-        describe('from the perspective of the blocked user', () => {
+        describe('from the perspective of the muted user', () => {
           beforeEach(async () => {
-            authenticatedUser = await blockedUser.toJson()
+            authenticatedUser = await mutedUser.toJson()
           })
 
           it('both posts are in the newsfeed', bothPostsAreInTheNewsfeed)
-          describe('but if the current user blocks the other user', () => {
+          describe('but if the current user mutes the other user', () => {
             beforeEach(async () => {
-              await currentUser.relateTo(blockedUser, 'blocked')
+              await currentUser.relateTo(mutedUser, 'muted')
             })
 
-            it("the current user's post won't show up in the newsfeed of the blocked user", async () => {
+            it("the current user's post will show up in the newsfeed of the muted user", async () => {
               const { query } = createTestClient(server)
               await expect(query({ query: postQuery })).resolves.toEqual(
                 expect.objectContaining({
                   data: {
-                    Post: [
+                    Post: expect.arrayContaining([
                       {
                         id: 'p23',
-                        title: 'A post written by the blocked user',
-                        author: { name: 'Blocked User', id: 'u2' },
+                        title: 'A post written by the muted user',
+                        author: { name: 'Muted User', id: 'u2' },
                       },
-                    ],
+                      {
+                        id: 'p12',
+                        title: 'A post written by the current user',
+                        author: { name: 'Current User', id: 'u1' },
+                      },
+                    ]),
                   },
                 }),
               )
@@ -296,28 +303,28 @@ describe('block', () => {
   })
 })
 
-describe('unblock', () => {
-  let unblockAction
+describe('unmuteUser', () => {
+  let unmuteAction
 
   beforeEach(() => {
     currentUser = undefined
-    unblockAction = variables => {
+    unmuteAction = variables => {
       const { mutate } = createTestClient(server)
-      const unblockMutation = gql`
+      const unmuteUserMutation = gql`
         mutation($id: ID!) {
-          unblock(id: $id) {
+          unmuteUser(id: $id) {
             id
             name
-            isBlocked
+            isMuted
           }
         }
       `
-      return mutate({ mutation: unblockMutation, variables })
+      return mutate({ mutation: unmuteUserMutation, variables })
     }
   })
 
   it('throws permission error', async () => {
-    const result = await unblockAction({ id: 'u2' })
+    const result = await unmuteAction({ id: 'u2' })
     expect(result.errors[0]).toHaveProperty('message', 'Not Authorised!')
   })
 
@@ -330,59 +337,69 @@ describe('unblock', () => {
       authenticatedUser = await currentUser.toJson()
     })
 
-    describe('unblock yourself', () => {
+    describe('unmute yourself', () => {
       it('returns null', async () => {
-        await expect(unblockAction({ id: 'u1' })).resolves.toEqual(
-          expect.objectContaining({ data: { unblock: null } }),
+        await expect(unmuteAction({ id: 'u1' })).resolves.toEqual(
+          expect.objectContaining({ data: { unmuteUser: null } }),
         )
       })
     })
 
-    describe('unblock not-existing user', () => {
+    describe('unmute not-existing user', () => {
       it('returns null', async () => {
-        await expect(unblockAction({ id: 'lksjdflksfdj' })).resolves.toEqual(
-          expect.objectContaining({ data: { unblock: null } }),
+        await expect(unmuteAction({ id: 'lksjdflksfdj' })).resolves.toEqual(
+          expect.objectContaining({ data: { unmuteUser: null } }),
         )
       })
     })
 
     describe('given another user', () => {
       beforeEach(async () => {
-        blockedUser = await neode.create('User', {
-          name: 'Blocked User',
+        mutedUser = await neode.create('User', {
+          name: 'Muted User',
           id: 'u2',
         })
       })
 
-      describe('unblocking a not yet blocked user', () => {
+      describe('unmuting a not yet muted user', () => {
         it('does not hurt', async () => {
-          await expect(unblockAction({ id: 'u2' })).resolves.toEqual(
+          await expect(unmuteAction({ id: 'u2' })).resolves.toEqual(
             expect.objectContaining({
-              data: { unblock: { id: 'u2', name: 'Blocked User', isBlocked: false } },
+              data: {
+                unmuteUser: { id: 'u2', name: 'Muted User', isMuted: false },
+              },
             }),
           )
         })
       })
 
-      describe('given a blocked user', () => {
+      describe('given a muted user', () => {
         beforeEach(async () => {
-          await currentUser.relateTo(blockedUser, 'blocked')
+          await currentUser.relateTo(mutedUser, 'muted')
         })
 
-        it('unblocks a user', async () => {
-          await expect(unblockAction({ id: 'u2' })).resolves.toEqual(
+        it('unmutes a user', async () => {
+          await expect(unmuteAction({ id: 'u2' })).resolves.toEqual(
             expect.objectContaining({
-              data: { unblock: { id: 'u2', name: 'Blocked User', isBlocked: false } },
+              data: {
+                unmuteUser: { id: 'u2', name: 'Muted User', isMuted: false },
+              },
             }),
           )
         })
 
-        describe('unblocking twice', () => {
+        describe('unmuting twice', () => {
           it('has no effect', async () => {
-            await unblockAction({ id: 'u2' })
-            await expect(unblockAction({ id: 'u2' })).resolves.toEqual(
+            await unmuteAction({ id: 'u2' })
+            await expect(unmuteAction({ id: 'u2' })).resolves.toEqual(
               expect.objectContaining({
-                data: { unblock: { id: 'u2', name: 'Blocked User', isBlocked: false } },
+                data: {
+                  unmuteUser: {
+                    id: 'u2',
+                    name: 'Muted User',
+                    isMuted: false,
+                  },
+                },
               }),
             )
           })
