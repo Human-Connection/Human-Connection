@@ -1,4 +1,4 @@
-export const notifications = [
+export const testNotifications = [
   {
     read: false,
     reason: 'mentioned_in_post',

@@ -3,7 +3,7 @@ import { config, mount, RouterLinkStub } from '@vue/test-utils'
 import Vuex from 'vuex'
 import NotificationsTable from './NotificationsTable'
 
-import { notifications } from '~/components/utils/Notifications'
+import { testNotifications } from '~/components/utils/Notifications'
 const localVue = global.localVue
 
 localVue.filter('truncate', string => string)
@@ -12,6 +12,7 @@ config.stubs['client-only'] = '<span><slot /></span>'
 
 describe('NotificationsTable.vue', () => {
   let wrapper, mocks, propsData, stubs
+  const notifications = testNotifications
   const postNotification = notifications[0]
   const commentNotification = notifications[1]
   const reportNotification = notifications[2]

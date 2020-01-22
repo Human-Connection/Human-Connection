@@ -3,7 +3,7 @@ import NotificationList from './NotificationList'
 import Notification from '../Notification/Notification'
 import Vuex from 'vuex'
 
-import { notifications } from '~/components/utils/Notifications'
+import { testNotifications } from '~/components/utils/Notifications'
 
 const localVue = global.localVue
 
@@ -34,7 +34,7 @@ describe('NotificationList.vue', () => {
     stubs = {
       NuxtLink: RouterLinkStub,
     }
-    propsData = { notifications }
+    propsData = { notifications: testNotifications }
   })
 
   describe('shallowMount', () => {
