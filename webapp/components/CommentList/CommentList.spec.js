@@ -102,23 +102,22 @@ describe('CommentList.vue', () => {
         })
       })
     })
-  })
 
-  describe('Comment', () => {
-    beforeEach(() => {
-      wrapper = Wrapper()
+    describe('Comment', () => {
+      beforeEach(() => {
+        wrapper = Wrapper()
+      })
+      it.only('Comment emitted reply()', () => {
+        wrapper.find('.comment-tag').vm.$emit('reply')
+        expect(wrapper.emitted('reply')).toEqual([
+          [
+            {
+              id: 'commentAuthorId',
+              slug: 'ogerly',
+            },
+          ],
+        ])
+      })
     })
-   
-    it('Comment emitted reply()', () => {
-      wrapper.find('.comment-tag').vm.$emit('reply')
-     expect(wrapper.emitted('reply')).toEqual([
-      [
-        {
-          id: 'commentAuthorId',
-          slug: 'ogerly'
-        },
-      ],
-    ])
-  })
   })
 })

@@ -68,7 +68,7 @@ describe('Comment.vue', () => {
           id: '2',
           contentExcerpt: 'Hello I am a comment content',
           content: 'Hello I am comment content',
-          author: { id: 'commentAuthorId', slug: 'ogerly'}
+          author: { id: 'commentAuthorId', slug: 'ogerly' },
         }
       })
 
@@ -202,21 +202,21 @@ describe('Comment.vue', () => {
       })
 
       describe('click reply button', () => {
-
         beforeEach(async () => {
           wrapper = Wrapper()
           await wrapper.find('.reply-button').trigger('click')
-        }) 
+        })
+
         it('emits "reply"', () => {
           expect(wrapper.emitted('reply')).toEqual([
-              [
-                {
-                  id: 'commentAuthorId',
-                  slug: 'ogerly'
-                },
-              ],
-            ])
-          })
+            [
+              {
+                id: 'commentAuthorId',
+                slug: 'ogerly',
+              },
+            ],
+          ])
+        })
       })
     })
   })

@@ -72,10 +72,11 @@
       <!-- Comments -->
       <ds-section slot="footer">
         <hc-comment-list
-          @reply="reply"
+          class="hc-comment-list-for-test"
           :post="post"
           :routeHash="$route.hash"
           @toggleNewCommentForm="toggleNewCommentForm"
+          @reply="reply"
         />
         <ds-space margin-bottom="large" />
         <hc-comment-form
@@ -128,16 +129,10 @@ export default {
   data() {
     return {
       post: null,
-      ready: false,
+      ready: true,
       title: 'loading',
       showNewCommentForm: true,
     }
-  },
-  watch: {
-    Post(post) {
-      this.post = post[0] || {}
-      this.title = this.post.title
-    },
   },
   mounted() {
     setTimeout(() => {
@@ -209,6 +204,10 @@ export default {
         return {
           id: this.$route.params.id,
         }
+      },
+      update({ Post }) {
+        this.post = Post
+        this.title = this.post.title
       },
       fetchPolicy: 'cache-and-network',
     },

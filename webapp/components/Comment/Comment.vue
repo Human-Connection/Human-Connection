@@ -76,7 +76,6 @@ import HcCommentForm from '~/components/CommentForm/CommentForm'
 import CommentMutations from '~/graphql/CommentMutations'
 import scrollToAnchor from '~/mixins/scrollToAnchor.js'
 
-
 export default {
   mixins: [scrollToAnchor],
   data() {

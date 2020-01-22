@@ -1,7 +1,11 @@
-import { config, shallowMount } from '@vue/test-utils'
+import { config, mount } from '@vue/test-utils'
 import PostSlug from './index.vue'
 import Vuex from 'vuex'
-import CommentList from '~/components/CommentList/CommentList'
+import Vue from 'vue'
+
+config.stubs['client-only'] = '<span><slot /></span>'
+config.stubs['nuxt-link'] = '<span><slot /></span>'
+config.stubs['router-link'] = '<span><slot /></span>'
 
 const localVue = global.localVue
 
@@ -16,8 +20,9 @@ describe('PostSlug', () => {
     store = new Vuex.Store({
       getters: {
         'auth/user': () => {
-          return {}
+          return { id: '1stUser' }
         },
+        'auth/isModerator': () => false,
       },
     })
     propsData = {}
@@ -25,6 +30,7 @@ describe('PostSlug', () => {
       $t: jest.fn(),
       $filters: {
         truncate: a => a,
+        removeHtml: a => a,
       },
       $route: {
         hash: '',
@@ -41,14 +47,15 @@ describe('PostSlug', () => {
       },
       $apollo: {
         mutate: jest.fn().mockResolvedValue(),
+        query: jest.fn().mockResolvedValue(),
       },
+      $scrollTo: jest.fn(),
     }
   })
 
-
-  describe('shallowMount', () => {
+  describe('mount', () => {
     Wrapper = () => {
-      return shallowMount(PostSlug, {
+      return mount(PostSlug, {
         store,
         mocks,
         localVue,
@@ -56,20 +63,18 @@ describe('PostSlug', () => {
       })
     }
 
-    beforeEach(jest.useFakeTimers)
-
     describe('test Post callbacks', () => {
       beforeEach(() => {
         wrapper = Wrapper()
-        wrapper.setData({
-          post: {
-            id: 'p23',
-            name: 'It is a post',
-            author: {
-              id: 'u1',
-            },
-          },
-        })
+        // wrapper.setData({
+        //   post: {
+        //     id: 'p23',
+        //     name: 'It is a post',
+        //     author: {
+        //       id: 'u1',
+        //     },
+        //   },
+        // })
       })
 
       describe('deletion of Post from Page by invoking "deletePostCallback()"', () => {
@@ -94,17 +99,38 @@ describe('PostSlug', () => {
         })
       })
     })
-  })
 
-  describe('given a comment', () => {
-    wrapper = Wrapper()
-     const bar = wrapper.find(CommentList)
-     it('hc-comment-list', () => {
-      expect(bar).toBe({"selector": "Component"})
+    describe('test Post callbacks', () => {
+      beforeEach(() => {
+        beforeEach(jest.useFakeTimers)
+        wrapper = Wrapper()
+      })
+      it('CommentList', () => {
+        wrapper.setData({
+          post: {
+            id: 1,
+            author: {
+              id: '1stUser',
+            },
+            comments: [
+              {
+                id: 'comment134',
+                contentExcerpt: 'this is a comment',
+                content: 'this is a comment',
+                author: {
+                  id: '1stUser',
+                  slug: '1st-user',
+                },
+              },
+            ],
+          },
+        })
+        jest.runAllTimers()
+        Vue.nextTick()
+        const spy = jest.spyOn(wrapper.vm, 'reply')
+        console.log(spy)
+        expect(spy).toBe(true)
+      })
     })
-    
-       
-   
   })
 })
-
