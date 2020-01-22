@@ -128,19 +128,6 @@ export default {
     },
   },
   methods: {
-    isComment(notificationSource) {
-      return notificationSource.__typename === 'Comment'
-    },
-    params(notificationSource) {
-      const post = this.isComment(notificationSource) ? notificationSource.post : notificationSource
-      return {
-        id: post.id,
-        slug: post.slug,
-      }
-    },
-    hashParam(notificationSource) {
-      return this.isComment(notificationSource) ? `#commentId-${notificationSource.id}` : ''
-    },
     markNotificationAsRead(notificationSourceId) {
       this.$emit('markNotificationAsRead', notificationSourceId)
     },
