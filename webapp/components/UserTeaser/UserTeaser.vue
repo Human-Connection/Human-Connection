@@ -1,6 +1,6 @@
 <template>
   <div class="user-teaser" v-if="displayAnonymous">
-    <user-avatar v-if="showAvatar" />
+    <user-avatar v-if="showAvatar" size="small" />
     <span class="info anonymous">{{ $t('profile.userAnonym') }}</span>
   </div>
   <dropdown
