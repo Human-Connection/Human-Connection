@@ -1,6 +1,6 @@
 import { storiesOf } from '@storybook/vue'
 import { withA11y } from '@storybook/addon-a11y'
-import Comment from './Comment'
+import CommentCard from './CommentCard'
 import helpers from '~/storybook/helpers'
 
 helpers.init()
@@ -41,14 +41,14 @@ const comment = {
   __typename: 'Comment',
 }
 
-storiesOf('Comment', module)
+storiesOf('CommentCard', module)
   .addDecorator(withA11y)
   .addDecorator(helpers.layout)
   .add('Basic comment', () => ({
-    components: { Comment },
+    components: { CommentCard },
     store: helpers.store,
     data: () => ({
       comment,
     }),
-    template: `<comment :key="comment.id" :comment="comment" />`,
+    template: `<comment-card :key="comment.id" :comment="comment" />`,
   }))

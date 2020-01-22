@@ -5,7 +5,7 @@
       {{ $t('common.comment', null, 0) }}
     </h3>
     <div v-if="post.comments && post.comments.length" id="comments" class="comments">
-      <comment
+      <comment-card
         v-for="comment in post.comments"
         :key="comment.id"
         :comment="comment"
@@ -19,14 +19,14 @@
 </template>
 <script>
 import CounterIcon from '~/components/_new/generic/CounterIcon/CounterIcon'
-import Comment from '~/components/Comment/Comment'
+import CommentCard from '~/components/CommentCard/CommentCard'
 import scrollToAnchor from '~/mixins/scrollToAnchor'
 
 export default {
   mixins: [scrollToAnchor],
   components: {
     CounterIcon,
-    Comment,
+    CommentCard,
   },
   props: {
     post: {

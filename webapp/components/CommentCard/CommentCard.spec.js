@@ -1,12 +1,12 @@
 import { config, shallowMount } from '@vue/test-utils'
-import Comment from './Comment.vue'
+import CommentCard from './CommentCard.vue'
 import Vuex from 'vuex'
 
 const localVue = global.localVue
 
 config.stubs['client-only'] = '<span><slot /></span>'
 
-describe('Comment.vue', () => {
+describe('CommentCard.vue', () => {
   let propsData
   let mocks
   let getters
@@ -61,7 +61,7 @@ describe('Comment.vue', () => {
       const store = new Vuex.Store({
         getters,
       })
-      return shallowMount(Comment, {
+      return shallowMount(CommentCard, {
         store,
         propsData,
         mocks,

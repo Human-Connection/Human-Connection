@@ -1,5 +1,5 @@
 <template>
-  <base-card v-if="isUnavailable" class="comment">
+  <base-card v-if="isUnavailable" class="comment-card">
     <p>
       <base-icon name="ban" />
       {{ this.$t('comment.content.unavailable-placeholder') }}
@@ -96,7 +96,7 @@ export default {
       return this.comment.createdAt !== this.comment.updatedAt
     },
     commentClass() {
-      let commentClass = 'comment'
+      let commentClass = 'comment-card'
 
       if (this.comment.deleted || this.comment.disabled) commentClass += ' disabled-content'
       if (this.isTarget) commentClass += ' --target'
@@ -164,7 +164,7 @@ export default {
 }
 </script>
 <style lang="scss">
-.comment {
+.comment-card {
   display: flex;
   flex-direction: column;
   margin-bottom: $space-small;
