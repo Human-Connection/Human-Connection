@@ -4,14 +4,12 @@
       <counter-icon icon="comments" :count="post.comments.length" />
       {{ $t('common.comment', null, 0) }}
     </h3>
-    <ds-space margin-bottom="large" />
     <div v-if="post.comments && post.comments.length" id="comments" class="comments">
       <comment
         v-for="comment in post.comments"
         :key="comment.id"
         :comment="comment"
-        :post="post"
-        :routeHash="routeHash"
+        :postId="post.id"
         @deleteComment="updateCommentList"
         @updateComment="updateCommentList"
         @toggleNewCommentForm="toggleNewCommentForm"
@@ -31,8 +29,10 @@ export default {
     Comment,
   },
   props: {
-    routeHash: { type: String, default: () => '' },
-    post: { type: Object, default: () => {} },
+    post: {
+      type: Object,
+      required: true,
+    },
   },
   methods: {
     checkAnchor(anchor) {

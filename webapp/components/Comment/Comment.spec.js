@@ -14,7 +14,13 @@ describe('Comment.vue', () => {
   let Wrapper
 
   beforeEach(() => {
-    propsData = {}
+    propsData = {
+      comment: {
+        id: 'comment007',
+        author: { id: 'some-user' },
+      },
+      postId: 'post42',
+    }
     mocks = {
       $t: jest.fn(),
       $toast: {
@@ -28,6 +34,7 @@ describe('Comment.vue', () => {
         truncate: a => a,
         removeHtml: a => a,
       },
+      $route: { hash: '' },
       $scrollTo: jest.fn(),
       $apollo: {
         mutate: jest.fn().mockResolvedValue({
@@ -68,6 +75,7 @@ describe('Comment.vue', () => {
           id: '2',
           contentExcerpt: 'Hello I am a comment content',
           content: 'Hello I am comment content',
+          author: { id: 'some-user' },
         }
       })
 

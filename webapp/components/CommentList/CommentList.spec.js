@@ -17,9 +17,14 @@ describe('CommentList.vue', () => {
     beforeEach(() => {
       propsData = {
         post: {
-          id: 1,
+          id: 'post42',
           comments: [
-            { id: 'comment134', contentExcerpt: 'this is a comment', content: 'this is a comment' },
+            {
+              id: 'comment134',
+              contentExcerpt: 'this is a comment',
+              content: 'this is a comment',
+              author: { id: 'some-user' },
+            },
           ],
         },
       }
@@ -38,6 +43,7 @@ describe('CommentList.vue', () => {
           removeHtml: a => a,
         },
         $scrollTo: jest.fn(),
+        $route: { hash: '' },
         $apollo: {
           queries: {
             Post: {
@@ -70,12 +76,6 @@ describe('CommentList.vue', () => {
       beforeEach(jest.useFakeTimers)
 
       describe('$route.hash !== `#comments`', () => {
-        beforeEach(() => {
-          mocks.$route = {
-            hash: '',
-          }
-        })
-
         it('skips $scrollTo', () => {
           wrapper = Wrapper()
           jest.runAllTimers()

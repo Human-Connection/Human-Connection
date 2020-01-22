@@ -84,11 +84,7 @@
       </ds-space>
       <!-- Comments -->
       <ds-section slot="footer">
-        <hc-comment-list
-          :post="post"
-          :routeHash="$route.hash"
-          @toggleNewCommentForm="toggleNewCommentForm"
-        />
+        <hc-comment-list :post="post" @toggleNewCommentForm="toggleNewCommentForm" />
         <ds-space margin-bottom="large" />
         <hc-comment-form v-if="showNewCommentForm" :post="post" @createComment="createComment" />
       </ds-section>
@@ -249,19 +245,8 @@ export default {
     }
   }
 
-  .content-menu {
-    float: right;
-    margin-right: -$space-x-small;
-    margin-top: -$space-large;
-  }
-
   .comments {
     margin-top: $space-small;
-
-    .comment {
-      margin-top: $space-small;
-      position: relative;
-    }
 
     .ProseMirror {
       min-height: 0px;

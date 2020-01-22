@@ -69,7 +69,7 @@ export default {
       this.$refs.editor.clear()
     },
     closeEditWindow() {
-      this.$emit('showEditCommentMenu', false)
+      this.$emit('finishEditing')
     },
     handleCancel() {
       if (!this.update) {
