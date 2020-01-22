@@ -60,10 +60,14 @@
       </div>
       <div v-if="scope.row.report" :class="{ 'notification-status': scope.row.read }">
         <ds-space margin-bottom="x-small" />
-        <span class="notification-content-header-text">{{ $t(`notifications.report.category`) }}:</span>
+        <span class="notification-content-header-text">
+          {{ $t(`notifications.report.category`) }}:
+        </span>
         {{ $t('report.reason.category.options.' + scope.row.report.reasonCategory) }}
         <br />
-        <span class="notification-content-header-text">{{ $t(`notifications.report.description`) }}:</span>
+        <span class="notification-content-header-text">
+          {{ $t(`notifications.report.description`) }}:
+        </span>
         <span
           v-if="scope.row.report.reasonDescription && scope.row.report.reasonDescription !== ''"
         >

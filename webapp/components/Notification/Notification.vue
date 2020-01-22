@@ -2,10 +2,7 @@
   <ds-space :class="{ read: notificationData.read, notification: true }" margin-bottom="x-small">
     <client-only>
       <ds-space margin-bottom="x-small">
-        <user-teaser
-          :user="notificationData.triggerer"
-          :date-time="notificationData.createdAt"
-        />
+        <user-teaser :user="notificationData.triggerer" :date-time="notificationData.createdAt" />
       </ds-space>
       <ds-text class="reason-text-for-test" color="soft">
         <base-icon
@@ -35,7 +32,12 @@
       @click.native="$emit('read')"
     >
       <ds-space margin-bottom="x-small">
-        <ds-card :header="(notificationData.post || notificationData.comment) && notificationData.title" hover space="x-small" class="notifications-card">
+        <ds-card
+          :header="(notificationData.post || notificationData.comment) && notificationData.title"
+          hover
+          space="x-small"
+          class="notifications-card"
+        >
           <div v-if="notificationData.user">
             <!-- because of different margin above ds-card content without header property -->
             <ds-space margin-bottom="small" />
@@ -49,7 +51,9 @@
           </div>
           <div v-if="notificationData.report">
             <ds-space margin-bottom="x-small" />
-            <span class="notification-content-header-text">{{ $t(`notifications.report.category`) }}:</span>
+            <span class="notification-content-header-text">
+              {{ $t(`notifications.report.category`) }}:
+            </span>
             {{ $t('report.reason.category.options.' + notificationData.report.reasonCategory) }}
             <br />
             <span class="notification-content-header-text">
@@ -68,7 +72,10 @@
             </span>
           </div>
           <!-- because of different margin underneath ds-card content without header property -->
-          <ds-space v-if="!(notificationData.post || notificationData.comment)" margin-bottom="base" />
+          <ds-space
+            v-if="!(notificationData.post || notificationData.comment)"
+            margin-bottom="base"
+          />
         </ds-card>
       </ds-space>
     </nuxt-link>
