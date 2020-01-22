@@ -106,7 +106,7 @@
     "apollo-server-testing": "~2.9.16",
     "babel-core": "~7.0.0-0",
     "babel-eslint": "~10.0.3",
-    "babel-jest": "~24.9.0",
+    "babel-jest": "~25.1.0",
     "chai": "~4.2.0",
     "cucumber": "~6.0.5",
     "eslint": "~6.8.0",
