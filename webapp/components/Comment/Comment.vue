@@ -54,14 +54,15 @@
         </button>
       </div>
       <ds-space margin-bottom="small" />
-      <ds-button
+      <base-button
         :title="this.$t('post.comment.reply')"
         icon="level-down"
         @click.prevent="reply"
         v-scroll-to="'.editor'"
+        circle
         class="reply-button"
         size="small"
-      ></ds-button>
+      ></base-button>
     </ds-card>
   </div>
 </template>
@@ -75,6 +76,7 @@ import ContentViewer from '~/components/Editor/ContentViewer'
 import HcCommentForm from '~/components/CommentForm/CommentForm'
 import CommentMutations from '~/graphql/CommentMutations'
 import scrollToAnchor from '~/mixins/scrollToAnchor.js'
+import BaseButton from '~/components/_new/generic/BaseButton/BaseButton'
 
 export default {
   mixins: [scrollToAnchor],
@@ -94,6 +96,7 @@ export default {
     ContentMenu,
     ContentViewer,
     HcCommentForm,
+    BaseButton,
   },
   props: {
     routeHash: { type: String, default: () => '' },

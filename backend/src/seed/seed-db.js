@@ -352,6 +352,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         language: sample(languages),
         image: faker.image.unsplash.food(300, 169),
         categoryIds: ['cat16'],
+        imageBlurred: true,
         imageAspectRatio: 300 / 169,
       }),
       factory.create('Post', {
@@ -398,6 +399,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         author: dewey,
         id: 'p10',
         categoryIds: ['cat10'],
+        imageBlurred: true,
       }),
       factory.create('Post', {
         author: louie,
@@ -444,6 +446,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         $title: String!
         $content: String!
         $categoryIds: [ID]
+        $imageBlurred: Boolean
         $imageAspectRatio: Float
       ) {
         CreatePost(
@@ -451,6 +454,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           title: $title
           content: $content
           categoryIds: $categoryIds
+          imageBlurred: $imageBlurred
           imageAspectRatio: $imageAspectRatio
         ) {
           id

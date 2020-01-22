@@ -9,10 +9,18 @@
     @vdropzone-thumbnail="transformImage"
   >
     <div class="crop-overlay" ref="cropperOverlay" v-show="showCropper">
-      <ds-button @click.stop.prevent="cropImage" class="crop-confirm" primary>
+      <base-button @click="cropImage" class="crop-confirm" filled>
         {{ $t('contribution.teaserImage.cropperConfirm') }}
-      </ds-button>
-      <ds-button @click="cancelCrop" class="crop-cancel" icon="close"></ds-button>
+      </base-button>
+      <base-button
+        class="crop-cancel"
+        icon="close"
+        size="small"
+        circle
+        danger
+        filled
+        @click="cancelCrop"
+      />
     </div>
     <div
       :class="{
@@ -140,7 +148,7 @@ export default {
 <style lang="scss">
 #postdropzone {
   width: 100%;
-  min-height: 500px;
+  min-height: 400px;
   background-color: $background-color-softest;
 }
 

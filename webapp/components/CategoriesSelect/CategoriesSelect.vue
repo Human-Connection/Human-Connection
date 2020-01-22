@@ -3,16 +3,16 @@
     <ds-flex :gutter="{ base: 'xx-small', md: 'small', lg: 'xx-small' }">
       <div v-for="category in categories" :key="category.id">
         <ds-flex-item>
-          <ds-button
-            size="small"
+          <base-button
             :data-test="categoryButtonsId(category.id)"
-            @click.prevent="toggleCategory(category.id)"
-            :primary="isActive(category.id)"
+            @click="toggleCategory(category.id)"
+            :filled="isActive(category.id)"
             :disabled="isDisabled(category.id)"
+            :icon="category.icon"
+            size="small"
           >
-            <base-icon :name="category.icon" />
             {{ $t(`contribution.category.name.${category.slug}`) }}
-          </ds-button>
+          </base-button>
         </ds-flex-item>
       </div>
     </ds-flex>

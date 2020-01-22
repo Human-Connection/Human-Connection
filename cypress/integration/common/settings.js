@@ -119,7 +119,7 @@ Then('they should be able to see my social media links', () => {
 })
 
 When('I delete a social media link', () => {
-  cy.get("a[name='delete']")
+  cy.get(".base-button[title='Delete']")
     .click()
 })
 
@@ -129,7 +129,7 @@ Then('it gets deleted successfully', () => {
 })
 
 When('I start editing a social media link', () => {
-  cy.get("a[name='edit']")
+  cy.get(".base-button[title='Edit']")
     .click()
 })
 

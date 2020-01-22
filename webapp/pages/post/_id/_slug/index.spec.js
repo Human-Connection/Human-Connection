@@ -128,7 +128,6 @@ describe('PostSlug', () => {
         jest.runAllTimers()
         Vue.nextTick()
         const spy = jest.spyOn(wrapper.vm, 'reply')
-        console.log(spy)
         expect(spy).toBe(true)
       })
     })

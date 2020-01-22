@@ -8,5 +8,4 @@
     }
   ],
   "editor.formatOnSave": false,
-  "eslint.autoFixOnSave": true
 }

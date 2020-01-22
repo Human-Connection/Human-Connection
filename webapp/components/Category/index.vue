@@ -19,6 +19,9 @@ export default {
 .category-tag {
   display: inline-flex;
   align-items: center;
+  &.language {
+    float: right;
+  }
 
   > .base-icon {
     margin-right: $space-xx-small;

@@ -17,9 +17,9 @@
         />
 
         <template slot="footer">
-          <ds-button class="submit-button" icon="check" :disabled="errors" type="submit" primary>
+          <base-button class="submit-button" icon="check" :disabled="errors" type="submit" filled>
             {{ $t('actions.save') }}
-          </ds-button>
+          </base-button>
         </template>
       </ds-card>
     </template>

@@ -12,10 +12,11 @@
         <ds-flex>
           <ds-flex-item width="10%" />
           <ds-flex-item width="100%">
-            <ds-button
+            <base-button
+              circle
               icon="check"
-              @click.stop.prevent="resetCategories"
-              :primary="!filteredCategoryIds.length"
+              @click="resetCategories"
+              :filled="!filteredCategoryIds.length"
             />
             <ds-flex-item>
               <label class="category-labels">{{ $t('filter-posts.categories.all') }}</label>
@@ -37,10 +38,11 @@
         <ds-flex v-for="category in chunk[index - 1]" :key="category.id" class="categories-menu">
           <ds-flex class="categories-menu">
             <ds-flex-item width="100%" class="categories-menu-item">
-              <ds-button
+              <base-button
+                circle
                 :icon="category.icon"
-                :primary="filteredCategoryIds.includes(category.id)"
-                @click.stop.prevent="toggleCategory(category.id)"
+                :filled="filteredCategoryIds.includes(category.id)"
+                @click="toggleCategory(category.id)"
               />
               <ds-space margin-bottom="small" />
             </ds-flex-item>

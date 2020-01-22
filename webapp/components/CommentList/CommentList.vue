@@ -1,9 +1,8 @@
 <template>
-  <div id="comments">
-    <h3 style="margin-top: -10px;">
-      <counter-icon icon="comments" :count="post.comments.length">
-        {{ $t('common.comment', null, 0) }}
-      </counter-icon>
+  <div id="comments" class="comment-list">
+    <h3 class="title">
+      <counter-icon icon="comments" :count="post.comments.length" />
+      {{ $t('common.comment', null, 0) }}
     </h3>
     <ds-space margin-bottom="large" />
     <div v-if="post.comments && post.comments.length" id="comments" class="comments">
@@ -55,3 +54,15 @@ export default {
   },
 }
 </script>
+
+<style lang="scss">
+.comment-list {
+  > .title {
+    margin-top: 0;
+
+    > .counter-icon {
+      margin-right: $space-small;
+    }
+  }
+}
+</style>

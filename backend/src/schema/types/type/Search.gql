@@ -1,0 +1,5 @@
+union SearchResult = Post | User
+
+type Query {
+  findResources(query: String!, limit: Int = 5): [SearchResult]!
+}

@@ -51,11 +51,10 @@ describe('LoginForm', () => {
 
       it('dispatches login with form data', () => {
         fillIn(Wrapper())
-        expect(storeMocks.actions['auth/login']).toHaveBeenCalledWith(
-          expect.any(Object),
-          { email: 'email@example.org', password: '1234' },
-          undefined,
-        )
+        expect(storeMocks.actions['auth/login']).toHaveBeenCalledWith(expect.any(Object), {
+          email: 'email@example.org',
+          password: '1234',
+        })
       })
     })
   })
