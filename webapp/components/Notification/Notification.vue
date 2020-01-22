@@ -8,6 +8,21 @@
         />
       </ds-space>
       <ds-text class="reason-text-for-test" color="soft">
+        <base-icon
+          v-if="notificationData.report"
+          name="balance-scale"
+          v-tooltip="{ content: $t('notifications.report.name'), placement: 'right' }"
+        />
+        <base-icon
+          v-else-if="notificationData.comment"
+          name="comment"
+          v-tooltip="{ content: $t('notifications.comment'), placement: 'right' }"
+        />
+        <base-icon
+          v-else
+          name="bookmark"
+          v-tooltip="{ content: $t('notifications.post'), placement: 'right' }"
+        />
         {{
           $t(`notifications.reason.${notificationData.reason}` + notificationData.reasonExtention)
         }}
@@ -20,9 +35,10 @@
       @click.native="$emit('read')"
     >
       <ds-space margin-bottom="x-small">
-        <ds-card :header="notificationData.title" hover space="x-small" class="notifications-card">
-          <ds-space margin-bottom="x-small" />
+        <ds-card :header="(notificationData.post || notificationData.comment) && notificationData.title" hover space="x-small" class="notifications-card">
           <div v-if="notificationData.user">
+            <!-- because of different margin above ds-card content without header property -->
+            <ds-space margin-bottom="small" />
             <user-teaser :user="notificationData.user" />
           </div>
           <div v-else-if="notificationData.contentExcerpt">
@@ -51,6 +67,8 @@
               —
             </span>
           </div>
+          <!-- because of different margin underneath ds-card content without header property -->
+          <ds-space v-if="!(notificationData.post || notificationData.comment)" margin-bottom="base" />
         </ds-card>
       </ds-space>
     </nuxt-link>
