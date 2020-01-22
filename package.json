@@ -39,7 +39,7 @@
     "cypress-plugin-retries": "^1.5.2",
     "date-fns": "^2.9.0",
     "dotenv": "^8.2.0",
-    "expect": "^24.9.0",
+    "expect": "^25.1.0",
     "faker": "Marak/faker.js#master",
     "graphql-request": "^1.8.2",
     "neo4j-driver": "^4.0.1",
