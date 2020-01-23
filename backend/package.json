@@ -16,7 +16,7 @@
     "db:reset": "yarn run db:clean",
     "db:seed": "babel-node src/db/seed.js",
     "db:migrate": "yarn run __migrate --store ./src/db/migrate/store.js",
-    "db:migrate:create": "yarn run __migrate --template-file ./src/db/migrate/template.js create"
+    "db:migrate:create": "yarn run __migrate --template-file ./src/db/migrate/template.js --date-format 'yyyymmddHHmmss' create"
   },
   "author": "Human Connection gGmbH",
   "license": "MIT",
