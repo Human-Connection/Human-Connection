@@ -33,7 +33,7 @@ export function up(next) {
                     ` 
                     MATCH(location:Location {id: $locationId}), (location2:Location {id: $locationId})
                     WHERE location.id = location2.id AND id(location) < id(location2)
-                    CALL apoc.refactor.mergeNodes([location, location2], { properties: 'combine' }) YIELD node as updatedLocation
+                    CALL apoc.refactor.mergeNodes([location, location2], { properties: 'combine', mergeRels: true }) YIELD node as updatedLocation
                     RETURN location {.*},updatedLocation {.*}
                   `,
                     { locationId },

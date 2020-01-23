@@ -35,7 +35,7 @@ class Store {
     const session = driver.session()
     const readTxResultPromise = session.readTransaction(async txc => {
       const result = await txc.run(
-        'MATCH (migration:Migration) RETURN migration {.*} ORDER BY migration.migratedAt DESC',
+        'MATCH (migration:Migration) RETURN migration {.*} ORDER BY migration.timestamp DESC',
       )
       return result.records.map(r => r.get('migration'))
     })
@@ -65,14 +65,16 @@ class Store {
     const writeTxResultPromise = session.writeTransaction(txc => {
       return Promise.all(
         migrations.map(async migration => {
-          const { title, description } = migration
-          const properties = { title, description }
+          const { title, description, timestamp } = migration
+          const properties = { title, description, timestamp }
           const migrationResult = await txc.run(
             `
               MERGE (migration:Migration { title: $properties.title })
-              ON CREATE SET migration += $properties,
+              ON MATCH SET
+              migration += $properties
+              ON CREATE SET
+              migration += $properties,
               migration.migratedAt = toString(datetime())
-              RETURN migration
             `,
             { properties },
           )
