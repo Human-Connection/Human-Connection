@@ -91,7 +91,7 @@
           @reply="reply"
         />
         <ds-space margin-bottom="large" />
-        <hc-comment-form
+        <comment-form
           ref="commentForm"
           v-if="showNewCommentForm"
           :post="post"
@@ -109,7 +109,7 @@ import HcHashtag from '~/components/Hashtag/Hashtag'
 import ContentMenu from '~/components/ContentMenu/ContentMenu'
 import UserTeaser from '~/components/UserTeaser/UserTeaser'
 import HcShoutButton from '~/components/ShoutButton.vue'
-import HcCommentForm from '~/components/CommentForm/CommentForm'
+import CommentForm from '~/components/CommentForm/CommentForm'
 import CommentList from '~/components/CommentList/CommentList'
 import { postMenuModalsData, deletePostMutation } from '~/components/utils/PostHelpers'
 import PostQuery from '~/graphql/PostQuery'
@@ -128,7 +128,7 @@ export default {
     UserTeaser,
     HcShoutButton,
     ContentMenu,
-    HcCommentForm,
+    CommentForm,
     CommentList,
     HcEmotions,
     ContentViewer,

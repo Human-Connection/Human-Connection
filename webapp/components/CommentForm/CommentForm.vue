@@ -52,7 +52,6 @@ export default {
   },
   methods: {
     reply(message) {
-      if (!this.$refs.editor.insertReply) return null
       this.$refs.editor.insertReply(message)
     },
     updateEditorContent(value) {

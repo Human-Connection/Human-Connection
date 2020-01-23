@@ -6,15 +6,12 @@ import CommentList from '~/components/CommentList/CommentList'
 config.stubs['client-only'] = '<span><slot /></span>'
 config.stubs['nuxt-link'] = '<span><slot /></span>'
 config.stubs['router-link'] = '<span><slot /></span>'
-config.stubs['content-viewer'] = '<span><slot /></span>'
-config.stubs['hc-editor'] = '<span><slot /></span>'
-config.stubs['hc-emotions'] = '<span><slot /></span>'
 
 const localVue = global.localVue
 localVue.directive('scrollTo', jest.fn())
 
 describe('PostSlug', () => {
-  let wrapper, Wrapper, store, mocks, propsData, spy
+  let store, propsData, mocks, stubs, wrapper, Wrapper, spy
 
   beforeEach(() => {
     store = new Vuex.Store({
@@ -47,7 +44,7 @@ describe('PostSlug', () => {
       },
       $apollo: {
         mutate: jest.fn().mockResolvedValue(),
-        query: jest.fn().mockResolvedValue(),
+        query: jest.fn().mockResolvedValue({ data: { PostEmotionsCountByEmotion: {} } }),
       },
       $scrollTo: jest.fn(),
       $refs: {
@@ -58,6 +55,10 @@ describe('PostSlug', () => {
           reply: jest.fn(),
         },
       },
+    }
+    stubs = {
+      HcEditor: { render: () => {}, methods: { insertReply: () => null } },
+      ContentViewer: true,
     }
     jest.useFakeTimers()
     wrapper = Wrapper()
@@ -91,6 +92,7 @@ describe('PostSlug', () => {
         mocks,
         localVue,
         propsData,
+        stubs,
       })
     }
 

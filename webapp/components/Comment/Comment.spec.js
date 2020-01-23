@@ -7,14 +7,9 @@ localVue.directive('scrollTo', jest.fn())
 
 config.stubs['client-only'] = '<span><slot /></span>'
 config.stubs['nuxt-link'] = '<span><slot /></span>'
-config.stubs['content-viewer'] = '<span><slot /></span>'
 
 describe('Comment.vue', () => {
-  let propsData
-  let mocks
-  let getters
-  let wrapper
-  let Wrapper
+  let propsData, mocks, stubs, getters, wrapper, Wrapper
 
   beforeEach(() => {
     propsData = {}
@@ -42,6 +37,9 @@ describe('Comment.vue', () => {
         }),
       },
     }
+    stubs = {
+      ContentViewer: true,
+    }
     getters = {
       'auth/user': () => {
         return {}
@@ -62,6 +60,7 @@ describe('Comment.vue', () => {
         propsData,
         mocks,
         localVue,
+        stubs,
       })
     }
 
