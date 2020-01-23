@@ -85,6 +85,10 @@
             </ds-space>
           </template>
         </ds-card>
+        <!-- User ID -->
+        <ds-text color="softer" size="small" class="hyphenate-text" style="text-align: center;">
+          <small>{{ $t('profile.userId') }}: {{ user.id }}</small>
+        </ds-text>
         <ds-space />
         <ds-heading tag="h3" soft style="text-align: center; margin-bottom: 10px;">
           {{ $t('profile.network.title') }}
