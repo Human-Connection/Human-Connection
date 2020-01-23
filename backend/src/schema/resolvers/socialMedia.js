@@ -1,4 +1,4 @@
-import { getNeode } from '../../bootstrap/neo4j'
+import { getNeode } from '../../db/neo4j'
 import Resolver from './helpers/Resolver'
 
 const neode = getNeode()
