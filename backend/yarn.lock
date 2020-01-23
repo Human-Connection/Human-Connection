@@ -6122,12 +6122,12 @@ merge2@^1.3.0:
   resolved "https://registry.yarnpkg.com/merge2/-/merge2-1.3.0.tgz#5b366ee83b2f1582c48f87e47cf1a9352103ca81"
   integrity sha512-2j4DAdlBOkiSZIsaXk4mTE3sRS02yBHAtfy127xRV3bQUFqXkjHCHLW6Scv7DwNRbIWNHH8zpnz9zMaKXIdvYw==
 
-metascraper-audio@^5.10.5:
-  version "5.10.5"
-  resolved "https://registry.yarnpkg.com/metascraper-audio/-/metascraper-audio-5.10.5.tgz#7f292bfb66516753672a52dec083fabdc05edfbd"
-  integrity sha512-S3Wrzfgf0zpl8rjYN1NBMEz0FCcpbtTV/+QxktLqSeJv/kzLfUWrYQadOMv9++EQpIc8umBgVwHeZ6+1TCBVgA==
+metascraper-audio@^5.10.6:
+  version "5.10.6"
+  resolved "https://registry.yarnpkg.com/metascraper-audio/-/metascraper-audio-5.10.6.tgz#095892445b90d40bc54e54f69536a80e36fd9e4c"
+  integrity sha512-wTVtYK8Ico82caIi6HlkyGgUaBC21X/vhT2aQ4LKcg+gHoOhJcmWNd5me9VhaRJ7gTV/7yKkL5A54fBcjcn8Kg==
   dependencies:
-    "@metascraper/helpers" "^5.10.5"
+    "@metascraper/helpers" "^5.10.6"
 
 metascraper-author@^5.10.6:
   version "5.10.6"
