@@ -132,7 +132,7 @@ export default {
       )
     },
     isPinned() {
-      return this.post && this.post.pinnedBy
+      return this.post && this.post.pinned
     },
   },
   methods: {
