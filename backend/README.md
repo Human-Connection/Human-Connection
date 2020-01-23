@@ -120,7 +120,7 @@ you have to migrate your data e.g. because your data modeling has changed.
 {% tab title="Docker" %}
 Generate a data migration file:
 ```bash
-$ docker-compose exec backend yarn run db:migrate:create your_data_migration
+$ docker-compose exec backend yarn run db:migrate:create your_data_migration --date-format 'yyyymmddHHmmss' --template-file src/db/migrate/template.js
 # Edit the file in ./src/db/migrations/
 ```
 
@@ -132,7 +132,7 @@ $ docker-compose exec backend yarn run db:migrate up
 {% tab title="Without Docker" %}
 Generate a data migration file:
 ```bash
-$ yarn run db:migrate:create your_data_migration
+$ yarn run db:migrate:create your_data_migration --date-format 'yyyymmddHHmmss' --template-file src/db/migrate/template.js
 # Edit the file in ./src/db/migrations/
 ```
 

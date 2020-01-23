@@ -24,19 +24,19 @@ export function up(next) {
             .records()
             .pipe(
               map(record => {
-                const { id: locationIds } = record.get('location')
-                return { locationIds }
+                const { id: locationId } = record.get('location')
+                return { locationId }
               }),
-              mergeMap(({ locationIds }) => {
+              mergeMap(({ locationId }) => {
                 return transaction
                   .run(
                     ` 
-                    MATCH(location:Location {id: $locationIds}), (location2:Location {id: $locationIds})
+                    MATCH(location:Location {id: $locationId}), (location2:Location {id: $locationId})
                     WHERE location.id = location2.id AND id(location) < id(location2)
-                    CALL apoc.refactor.mergeNodes([location, location2], { properties: 'combine', mergeRels: true }) YIELD node as updatedLocation
+                    CALL apoc.refactor.mergeNodes([location, location2], { properties: 'combine' }) YIELD node as updatedLocation
                     RETURN location {.*},updatedLocation {.*}
                   `,
-                    { locationIds },
+                    { locationId },
                   )
                   .records()
                   .pipe(
