@@ -3,8 +3,11 @@ import Comment from './Comment.vue'
 import Vuex from 'vuex'
 
 const localVue = global.localVue
+localVue.directive('scrollTo', jest.fn())
 
 config.stubs['client-only'] = '<span><slot /></span>'
+config.stubs['nuxt-link'] = '<span><slot /></span>'
+config.stubs['content-viewer'] = '<span><slot /></span>'
 
 describe('Comment.vue', () => {
   let propsData

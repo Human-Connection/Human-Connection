@@ -1,20 +1,20 @@
 import { config, mount } from '@vue/test-utils'
-import PostSlug from './index.vue'
 import Vuex from 'vuex'
-import Vue from 'vue'
+import PostSlug from './index.vue'
+import CommentList from '~/components/CommentList/CommentList'
 
 config.stubs['client-only'] = '<span><slot /></span>'
 config.stubs['nuxt-link'] = '<span><slot /></span>'
 config.stubs['router-link'] = '<span><slot /></span>'
+config.stubs['content-viewer'] = '<span><slot /></span>'
+config.stubs['hc-editor'] = '<span><slot /></span>'
+config.stubs['hc-emotions'] = '<span><slot /></span>'
 
 const localVue = global.localVue
+localVue.directive('scrollTo', jest.fn())
 
 describe('PostSlug', () => {
-  let wrapper
-  let Wrapper
-  let store
-  let mocks
-  let propsData
+  let wrapper, Wrapper, store, mocks, propsData, spy
 
   beforeEach(() => {
     store = new Vuex.Store({
@@ -50,7 +50,38 @@ describe('PostSlug', () => {
         query: jest.fn().mockResolvedValue(),
       },
       $scrollTo: jest.fn(),
+      $refs: {
+        editor: {
+          insertReply: jest.fn(),
+        },
+        commentForm: {
+          reply: jest.fn(),
+        },
+      },
     }
+    jest.useFakeTimers()
+    wrapper = Wrapper()
+    wrapper.setData({
+      post: {
+        id: '1',
+        author: {
+          id: '1stUser',
+        },
+        comments: [
+          {
+            id: 'comment134',
+            contentExcerpt: 'this is a comment',
+            content: 'this is a comment',
+            author: {
+              id: '1stUser',
+              slug: '1st-user',
+            },
+          },
+        ],
+      },
+      ready: true,
+    })
+    spy = jest.spyOn(wrapper.vm, 'reply')
   })
 
   describe('mount', () => {
@@ -64,22 +95,9 @@ describe('PostSlug', () => {
     }
 
     describe('test Post callbacks', () => {
-      beforeEach(() => {
-        wrapper = Wrapper()
-        // wrapper.setData({
-        //   post: {
-        //     id: 'p23',
-        //     name: 'It is a post',
-        //     author: {
-        //       id: 'u1',
-        //     },
-        //   },
-        // })
-      })
-
       describe('deletion of Post from Page by invoking "deletePostCallback()"', () => {
-        beforeEach(() => {
-          wrapper.vm.deletePostCallback()
+        beforeEach(async () => {
+          await wrapper.vm.deletePostCallback()
         })
 
         describe('after timeout', () => {
@@ -100,35 +118,13 @@ describe('PostSlug', () => {
       })
     })
 
-    describe('test Post callbacks', () => {
-      beforeEach(() => {
-        beforeEach(jest.useFakeTimers)
-        wrapper = Wrapper()
-      })
-      it('CommentList', () => {
-        wrapper.setData({
-          post: {
-            id: 1,
-            author: {
-              id: '1stUser',
-            },
-            comments: [
-              {
-                id: 'comment134',
-                contentExcerpt: 'this is a comment',
-                content: 'this is a comment',
-                author: {
-                  id: '1stUser',
-                  slug: '1st-user',
-                },
-              },
-            ],
-          },
+    describe('reply method called when emitted reply received', () => {
+      it('CommentList', async () => {
+        wrapper.find(CommentList).vm.$emit('reply', {
+          id: 'commentAuthorId',
+          slug: 'ogerly',
         })
-        jest.runAllTimers()
-        Vue.nextTick()
-        const spy = jest.spyOn(wrapper.vm, 'reply')
-        expect(spy).toBe(true)
+        expect(spy).toHaveBeenCalledTimes(1)
       })
     })
   })

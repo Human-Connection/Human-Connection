@@ -84,8 +84,7 @@
       </ds-space>
       <!-- Comments -->
       <ds-section slot="footer">
-        <hc-comment-list
-          class="hc-comment-list-for-test"
+        <comment-list
           :post="post"
           :routeHash="$route.hash"
           @toggleNewCommentForm="toggleNewCommentForm"
@@ -111,7 +110,7 @@ import ContentMenu from '~/components/ContentMenu/ContentMenu'
 import UserTeaser from '~/components/UserTeaser/UserTeaser'
 import HcShoutButton from '~/components/ShoutButton.vue'
 import HcCommentForm from '~/components/CommentForm/CommentForm'
-import HcCommentList from '~/components/CommentList/CommentList'
+import CommentList from '~/components/CommentList/CommentList'
 import { postMenuModalsData, deletePostMutation } from '~/components/utils/PostHelpers'
 import PostQuery from '~/graphql/PostQuery'
 import HcEmotions from '~/components/Emotions/Emotions'
@@ -130,7 +129,7 @@ export default {
     HcShoutButton,
     ContentMenu,
     HcCommentForm,
-    HcCommentList,
+    CommentList,
     HcEmotions,
     ContentViewer,
   },
@@ -142,18 +141,11 @@ export default {
   data() {
     return {
       post: null,
-      ready: true,
+      ready: false,
       title: 'loading',
       showNewCommentForm: true,
       blurred: false,
     }
-  },
-  watch: {
-    Post(post) {
-      this.post = post[0] || {}
-      this.title = this.post.title
-      this.blurred = this.post.imageBlurred
-    },
   },
   mounted() {
     setTimeout(() => {
@@ -227,8 +219,9 @@ export default {
         }
       },
       update({ Post }) {
-        this.post = Post
+        this.post = Post[0] || {}
         this.title = this.post.title
+        this.blurred = this.post.imageBlurred
       },
       fetchPolicy: 'cache-and-network',
     },

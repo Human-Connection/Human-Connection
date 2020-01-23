@@ -52,6 +52,7 @@ export default {
   },
   methods: {
     reply(message) {
+      if (!this.$refs.editor.insertReply) return null
       this.$refs.editor.insertReply(message)
     },
     updateEditorContent(value) {
@@ -136,8 +137,8 @@ export default {
       query() {
         return minimisedUserQuery()
       },
-      result(result) {
-        this.users = result.data.User
+      update({ User }) {
+        this.users = User
       },
     },
   },

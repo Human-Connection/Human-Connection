@@ -1,10 +1,13 @@
 import { config, mount } from '@vue/test-utils'
 import CommentList from './CommentList'
+import Comment from '~/components/Comment/Comment'
 import Vuex from 'vuex'
+import Vue from 'vue'
 
 const localVue = global.localVue
 
 localVue.filter('truncate', string => string)
+localVue.directive('scrollTo', jest.fn())
 
 config.stubs['v-popover'] = '<span><slot /></span>'
 config.stubs['nuxt-link'] = '<span><slot /></span>'
@@ -102,8 +105,12 @@ describe('CommentList.vue', () => {
       beforeEach(() => {
         wrapper = Wrapper()
       })
-      it.only('Comment emitted reply()', () => {
-        wrapper.find('.comment-tag').vm.$emit('reply')
+      it('Comment emitted reply()', () => {
+        wrapper.find(Comment).vm.$emit('reply', {
+          id: 'commentAuthorId',
+          slug: 'ogerly',
+        })
+        Vue.nextTick()
         expect(wrapper.emitted('reply')).toEqual([
           [
             {
