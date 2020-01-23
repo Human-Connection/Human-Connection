@@ -31,6 +31,7 @@ const narratorParams = {
 
 const annoyingParams = {
   email: "spammy-spammer@example.org",
+  slug: 'spammy-spammer',
   password: "1234",
   ...termsAndConditionsAgreedVersion
 };
@@ -39,8 +40,12 @@ Given("I am logged in", () => {
   cy.login(loginCredentials);
 });
 
-Given("I am logged in as the {string} user", _ => {
-  cy.login({ email: annoyingParams.email, password: '1234' });
+Given("the {string} user searches for {string}", (_, postTitle) => {
+  cy.logout()
+    .login({ email: annoyingParams.email, password: '1234' })
+    .get(".searchable-input .ds-select-search")
+    .focus()
+    .type(postTitle);
 });
 
 Given("we have a selection of categories", () => {
@@ -123,7 +128,7 @@ When("I visit the {string} page", page => {
   cy.openPage(page);
 });
 
-When("the blocked user visits my post", () => {
+When("a blocked user visits the post page of one of my authored posts", () => {
   cy.logout()
     .login({ email: annoyingParams.email, password: annoyingParams.password })
     .openPage('/post/previously-created-post')
@@ -506,7 +511,7 @@ Then("the list of posts of this user is empty", () => {
   cy.get(".main-container").find(".ds-space.hc-empty");
 });
 
-Then("nobody is following the user profile anymore", () => {
+Then("I get removed from his follower collection", () => {
   cy.get(".ds-card-content").not(".post-link");
   cy.get(".main-container").contains(
     ".ds-card-content",

@@ -24,6 +24,7 @@ export default i18n => {
         createdAt
         followedByCurrentUser
         isMuted
+        isBlocked
         following(first: 7) {
           ...user
           ...userCounts

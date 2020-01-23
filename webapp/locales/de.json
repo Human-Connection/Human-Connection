@@ -169,11 +169,12 @@
           "name": "Blocked users",
           "explanation": {
             "intro": "Wenn ein anderer Benutzer von dir blockiert wurde, dann passiert folgendes:",
-            "your-perspective": "In deiner Beitragsübersicht tauchen keine Beiträge der blockierten Person mehr auf.",
-            "their-perspective": "Umgekehrt das gleiche: Die blockierte Person sieht deine Beiträge auch nicht mehr in ihrer Übersicht.",
-            "search": "Die Beiträge von blockierten Personen verschwinden aus deinen Suchergebnissen.",
+            "your-perspective": "Du kannst keine Beiträge der blockierten Person mehr kommentieren.",
+            "their-perspective": "Die blockierte Person kann deine Beiträge nicht mehr kommentieren",
             "notifications": "Von dir blockierte Personen erhalten keine Benachrichtigungen mehr, wenn sie in deinen Beiträgen erwähnt werden.",
-            "closing": "Das sollte fürs Erste genügen, damit blockierte Benutzer dich nicht mehr länger belästigen können."
+            "closing": "Das sollte fürs Erste genügen, damit blockierte Benutzer dich nicht mehr länger belästigen können.",
+            "commenting-disabled": "Du kannst den Beitrag derzeit nicht kommentieren.",
+            "commenting-explanation": "Dafür kann es mehrere Gründe geben, bitte schau in unsere "
           },
           "columns": {
             "name": "Name",
@@ -183,7 +184,7 @@
           "empty": "Bislang hast du niemanden blockiert.",
           "how-to": "Du kannst andere Benutzer auf deren Profilseite über das Inhaltsmenü blockieren.",
           "block": "Nutzer blockieren",
-          "unblock": "Nutzer entblocken",
+          "unblock": "Nutzer entsperren",
           "unblocked": "{name} ist wieder entsperrt"
         }
     },

@@ -68,16 +68,23 @@
           </ds-flex>
           <ds-space margin="small">
             <template v-if="!myProfile">
+              <base-button
+                v-if="user.isBlocked"
+                @click="unblockUser(user)"
+                class="unblock-user-button"
+              >
+                {{ $t('settings.blocked-users.unblock') }}
+              </base-button>
+              <base-button v-if="user.isMuted" @click="unmuteUser(user)" class="unmute-user-button">
+                {{ $t('settings.muted-users.unmute') }}
+              </base-button>
               <hc-follow-button
-                v-if="!user.isMuted || !user.isBlocked"
+                v-if="!(user.isBlocked || user.isMuted)"
                 :follow-id="user.id"
                 :is-followed="user.followedByCurrentUser"
                 @optimistic="optimisticFollow"
                 @update="updateFollow"
               />
-              <base-button v-else @click="unmuteUser(user)" class="unblock-user-button">
-                {{ $t('settings.muted-users.unmute') }}
-              </base-button>
             </template>
           </ds-space>
           <template v-if="user.about">
@@ -580,8 +587,10 @@ export default {
 .profile-post-add-button {
   box-shadow: $box-shadow-x-large;
 }
-.unblock-user-button {
+.unblock-user-button,
+.unmute-user-button {
   display: block;
   width: 100%;
+  margin-bottom: $space-x-small;
 }
 </style>
