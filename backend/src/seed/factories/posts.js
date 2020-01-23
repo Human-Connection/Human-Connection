@@ -48,7 +48,6 @@ export default function create() {
         }),
       )
 
-
       let { author, authorId } = args
       delete args.author
       delete args.authorId
