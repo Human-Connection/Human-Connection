@@ -90,37 +90,43 @@ describe('given some notifications', () => {
         author,
         postId: 'p4',
         id: 'c4',
-        content: 'I am bad content in a bad comment to a bad post !!!',
+        content: 'I am harassing content in a harassing comment to a bad post !!!',
       }),
     ])
     await Promise.all([
       post1.relateTo(neighbor, 'notified', {
         createdAt: '2019-08-29T17:33:48.651Z',
+        updatedAt: '2019-08-29T17:33:48.651Z',
         read: false,
         reason: 'mentioned_in_post',
       }),
       post2.relateTo(user, 'notified', {
         createdAt: '2019-08-30T17:33:48.651Z',
+        updatedAt: '2019-08-30T17:33:48.651Z',
         read: true,
         reason: 'mentioned_in_post',
       }),
       post3.relateTo(user, 'notified', {
         createdAt: '2019-08-31T17:33:48.651Z',
+        updatedAt: '2019-08-31T17:33:48.651Z',
         read: false,
         reason: 'mentioned_in_post',
       }),
       comment1.relateTo(user, 'notified', {
         createdAt: '2019-08-30T15:33:48.651Z',
+        updatedAt: '2019-08-30T15:33:48.651Z',
         read: true,
         reason: 'mentioned_in_comment',
       }),
       comment2.relateTo(user, 'notified', {
         createdAt: '2019-08-30T19:33:48.651Z',
+        updatedAt: '2019-08-30T19:33:48.651Z',
         read: false,
         reason: 'mentioned_in_comment',
       }),
       comment3.relateTo(neighbor, 'notified', {
         createdAt: '2019-09-01T17:33:48.651Z',
+        updatedAt: '2019-09-01T17:33:48.651Z',
         read: false,
         reason: 'mentioned_in_comment',
       }),
@@ -161,16 +167,19 @@ describe('given some notifications', () => {
     await Promise.all([
       reportOnUser.relateTo(user, 'notified', {
         createdAt: '2020-01-15T16:33:48.651Z',
+        updatedAt: '2020-01-15T16:33:48.651Z',
         read: false,
         reason: 'filed_report_on_resource',
       }),
       reportOnPost.relateTo(user, 'notified', {
         createdAt: '2020-01-16T10:33:48.651Z',
+        updatedAt: '2020-01-16T10:33:48.651Z',
         read: true,
         reason: 'filed_report_on_resource',
       }),
       reportOnComment.relateTo(user, 'notified', {
         createdAt: '2020-01-14T12:33:48.651Z',
+        updatedAt: '2020-01-14T12:33:48.651Z',
         read: false,
         reason: 'filed_report_on_resource',
       }),
@@ -182,6 +191,7 @@ describe('given some notifications', () => {
       query($read: Boolean, $orderBy: NotificationOrdering) {
         notifications(read: $read, orderBy: $orderBy) {
           createdAt
+          updatedAt
           read
           reason
           from {
@@ -236,60 +246,9 @@ describe('given some notifications', () => {
           const expected = {
             data: {
               notifications: expect.arrayContaining([
-                expect.objectContaining({
-                  from: {
-                    __typename: 'Comment',
-                    content: 'You have seen this comment mentioning already',
-                  },
-                  read: true,
-                  createdAt: '2019-08-30T15:33:48.651Z',
-                }),
-                expect.objectContaining({
-                  from: {
-                    __typename: 'Post',
-                    content: 'Already seen post mention',
-                  },
-                  read: true,
-                  createdAt: '2019-08-30T17:33:48.651Z',
-                }),
-                expect.objectContaining({
-                  from: {
-                    __typename: 'Comment',
-                    content: 'You have been mentioned in a comment',
-                  },
-                  read: false,
-                  createdAt: '2019-08-30T19:33:48.651Z',
-                }),
-                expect.objectContaining({
-                  from: {
-                    __typename: 'Post',
-                    content: 'You have been mentioned in a post',
-                  },
-                  read: false,
-                  createdAt: '2019-08-31T17:33:48.651Z',
-                }),
-                {
-                  createdAt: '2020-01-15T16:33:48.651Z',
-                  read: false,
-                  reason: 'filed_report_on_resource',
-                  from: {
-                    __typename: 'Report',
-                    id: 'reportOnUser',
-                    filed: [
-                      {
-                        reasonCategory: 'discrimination_etc',
-                        reasonDescription: 'This user is harassing me with bigoted remarks!',
-                        reportedResource: {
-                          __typename: 'User',
-                          id: 'badWomen',
-                          name: 'Mrs. Badwomen',
-                        },
-                      },
-                    ],
-                  },
-                },
                 {
                   createdAt: '2020-01-16T10:33:48.651Z',
+                  updatedAt: '2020-01-16T10:33:48.651Z',
                   read: true,
                   reason: 'filed_report_on_resource',
                   from: {
@@ -311,61 +270,8 @@ describe('given some notifications', () => {
                   },
                 },
                 {
-                  createdAt: '2020-01-14T12:33:48.651Z',
-                  read: false,
-                  reason: 'filed_report_on_resource',
-                  from: {
-                    __typename: 'Report',
-                    id: 'reportOnComment',
-                    filed: [
-                      {
-                        reasonCategory: 'discrimination_etc',
-                        reasonDescription: 'This user is harassing me!',
-                        reportedResource: {
-                          __typename: 'Comment',
-                          id: 'c4',
-                          content: 'I am bad content in a bad comment to a bad post !!!',
-                        },
-                      },
-                    ],
-                  },
-                },
-              ]),
-            },
-            errors: undefined,
-          }
-
-          const response = await query({ query: notificationQuery, variables })
-          await expect(response).toMatchObject(expected)
-          await expect(response.data.notifications.length).toEqual(7) // has to be checked, because of 'arrayContaining'
-        })
-      })
-
-      describe('filter for read: false', () => {
-        it('returns only unread notifications of current user', async () => {
-          const expected = {
-            data: {
-              notifications: expect.arrayContaining([
-                {
-                  createdAt: '2019-08-30T19:33:48.651Z',
-                  read: false,
-                  reason: 'mentioned_in_comment',
-                  from: {
-                    __typename: 'Comment',
-                    content: 'You have been mentioned in a comment',
-                  },
-                },
-                {
-                  createdAt: '2019-08-31T17:33:48.651Z',
-                  read: false,
-                  reason: 'mentioned_in_post',
-                  from: {
-                    __typename: 'Post',
-                    content: 'You have been mentioned in a post',
-                  },
-                },
-                {
                   createdAt: '2020-01-15T16:33:48.651Z',
+                  updatedAt: '2020-01-15T16:33:48.651Z',
                   read: false,
                   reason: 'filed_report_on_resource',
                   from: {
@@ -386,6 +292,7 @@ describe('given some notifications', () => {
                 },
                 {
                   createdAt: '2020-01-14T12:33:48.651Z',
+                  updatedAt: '2020-01-14T12:33:48.651Z',
                   read: false,
                   reason: 'filed_report_on_resource',
                   from: {
@@ -398,7 +305,121 @@ describe('given some notifications', () => {
                         reportedResource: {
                           __typename: 'Comment',
                           id: 'c4',
-                          content: 'I am bad content in a bad comment to a bad post !!!',
+                          content: 'I am harassing content in a harassing comment to a bad post !!!',
+                        },
+                      },
+                    ],
+                  },
+                },
+                expect.objectContaining({
+                  createdAt: '2019-08-31T17:33:48.651Z',
+                  updatedAt: '2019-08-31T17:33:48.651Z',
+                  read: false,
+                  from: {
+                    __typename: 'Post',
+                    content: 'You have been mentioned in a post',
+                  },
+                }),
+                expect.objectContaining({
+                  createdAt: '2019-08-30T19:33:48.651Z',
+                  updatedAt: '2019-08-30T19:33:48.651Z',
+                  read: false,
+                  from: {
+                    __typename: 'Comment',
+                    content: 'You have been mentioned in a comment',
+                  },
+                }),
+                expect.objectContaining({
+                  createdAt: '2019-08-30T17:33:48.651Z',
+                  updatedAt: '2019-08-30T17:33:48.651Z',
+                  read: true,
+                  from: {
+                    __typename: 'Post',
+                    content: 'Already seen post mention',
+                  },
+                }),
+                expect.objectContaining({
+                  createdAt: '2019-08-30T15:33:48.651Z',
+                  updatedAt: '2019-08-30T15:33:48.651Z',
+                  read: true,
+                  from: {
+                    __typename: 'Comment',
+                    content: 'You have seen this comment mentioning already',
+                  },
+                }),
+              ]),
+            },
+            errors: undefined,
+          }
+
+          const response = await query({ query: notificationQuery, variables })
+          await expect(response).toMatchObject(expected)
+          await expect(response.data.notifications.length).toEqual(7) // has to be checked, because of 'arrayContaining'
+        })
+      })
+
+      describe('filter for read: false', () => {
+        it('returns only unread notifications of current user', async () => {
+          const expected = {
+            data: {
+              notifications: expect.arrayContaining([
+                {
+                  createdAt: '2019-08-30T19:33:48.651Z',
+                  updatedAt: '2019-08-30T19:33:48.651Z',
+                  read: false,
+                  reason: 'mentioned_in_comment',
+                  from: {
+                    __typename: 'Comment',
+                    content: 'You have been mentioned in a comment',
+                  },
+                },
+                {
+                  createdAt: '2019-08-31T17:33:48.651Z',
+                  updatedAt: '2019-08-31T17:33:48.651Z',
+                  read: false,
+                  reason: 'mentioned_in_post',
+                  from: {
+                    __typename: 'Post',
+                    content: 'You have been mentioned in a post',
+                  },
+                },
+                {
+                  createdAt: '2020-01-15T16:33:48.651Z',
+                  updatedAt: '2020-01-15T16:33:48.651Z',
+                  read: false,
+                  reason: 'filed_report_on_resource',
+                  from: {
+                    __typename: 'Report',
+                    id: 'reportOnUser',
+                    filed: [
+                      {
+                        reasonCategory: 'discrimination_etc',
+                        reasonDescription: 'This user is harassing me with bigoted remarks!',
+                        reportedResource: {
+                          __typename: 'User',
+                          id: 'badWomen',
+                          name: 'Mrs. Badwomen',
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  createdAt: '2020-01-14T12:33:48.651Z',
+                  updatedAt: '2020-01-14T12:33:48.651Z',
+                  read: false,
+                  reason: 'filed_report_on_resource',
+                  from: {
+                    __typename: 'Report',
+                    id: 'reportOnComment',
+                    filed: [
+                      {
+                        reasonCategory: 'discrimination_etc',
+                        reasonDescription: 'This user is harassing me!',
+                        reportedResource: {
+                          __typename: 'Comment',
+                          id: 'c4',
+                          content: 'I am harassing content in a harassing comment to a bad post !!!',
                         },
                       },
                     ],

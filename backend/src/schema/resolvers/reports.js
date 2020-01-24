@@ -1,3 +1,4 @@
+import { undefinedToNullResolver } from './helpers/Resolver'
 import log from './helpers/databaseLogger'
 
 const transformReturnType = record => {
@@ -184,9 +185,12 @@ export default {
     },
   },
   FILED: {
-    reasonDescription: async (parent, _params, _context, _resolveInfo) => {
-      if (typeof parent.reasonDescription !== 'undefined') return parent.reasonDescription
-      return null
-    },
+    ...undefinedToNullResolver([
+      'reasonDescription',
+    ]),
+    // Wolle reasonDescription: async (parent, _params, _context, _resolveInfo) => {
+    //   if (typeof parent.reasonDescription !== 'undefined') return parent.reasonDescription
+    //   return null
+    // },
   },
 }

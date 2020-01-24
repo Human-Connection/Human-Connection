@@ -55,7 +55,18 @@ export default {
     target: 'User',
     direction: 'out',
     properties: {
-      createdAt: { type: 'string', isoDate: true, default: () => new Date().toISOString() },
+      createdAt: {
+        type: 'string',
+        isoDate: true,
+        required: true,
+        default: () => new Date().toISOString()
+      },
+      updatedAt: {
+        type: 'string',
+        isoDate: true,
+        required: true,
+        default: () => new Date().toISOString()
+      },
       read: { type: 'boolean', default: false },
       reason: {
         type: 'string',

@@ -40,6 +40,7 @@
     </template>
     <template #post="scope">
       <nuxt-link
+        data-testid="notification-link"
         class="notification-link-for-test"
         :class="{ 'notification-status': scope.row.read }"
         :to="scope.row.linkTo"

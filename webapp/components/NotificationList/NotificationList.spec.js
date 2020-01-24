@@ -73,7 +73,8 @@ describe('NotificationList.vue', () => {
 
     describe('click on a notification', () => {
       beforeEach(() => {
-        wrapper.find('.notification-link-for-test').trigger('click')
+        // Wolle wrapper.find('.notification-link-for-test').trigger('click')
+        wrapper.getByTestId('notification-link').trigger('click')
       })
 
       it("emits 'markAsRead' with the id of the notification source", () => {

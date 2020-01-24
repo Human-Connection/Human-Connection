@@ -27,6 +27,7 @@
     </client-only>
     <ds-space margin-bottom="x-small" />
     <nuxt-link
+      data-test-id="notification-link"
       class="notification-link-for-test"
       :to="notificationData.linkTo"
       @click.native="$emit('read')"
