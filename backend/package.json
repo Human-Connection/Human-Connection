@@ -96,6 +96,7 @@
     "request": "~2.88.0",
     "sanitize-html": "~1.21.1",
     "slug": "~2.1.0",
+    "subscriptions-transport-ws": "^0.9.16",
     "trunc-html": "~1.1.2",
     "uuid": "~3.4.0",
     "validator": "^12.1.0",

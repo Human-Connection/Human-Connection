@@ -1175,7 +1175,7 @@
     url-regex "~4.1.1"
     video-extensions "~1.1.0"
 
-"@metascraper/helpers@^5.10.5", "@metascraper/helpers@^5.10.6":
+"@metascraper/helpers@^5.10.6":
   version "5.10.6"
   resolved "https://registry.yarnpkg.com/@metascraper/helpers/-/helpers-5.10.6.tgz#0b786607212925a577926fd0cd0313a49de3499c"
   integrity sha512-/jvhlM3RKGYMoUK8D8S1r3tN03/EYizCqWF7zDx0aBMC8Ihp33DRGs9oNdsgkgwzVF7O/YpDm55l9K+qVJlsyQ==
@@ -7918,6 +7918,11 @@ serve-static@1.14.1:
   version "1.14.1"
   resolved "https://registry.yarnpkg.com/serve-static/-/serve-static-1.14.1.tgz#666e636dc4f010f7ef29970a88a674320898b2f9"
   integrity sha512-JMrvUwE54emCYWlTI+hGrGv5I8dEwmco/00EvkzIIsR7MqrHonbD9pO2MOfFnpFntl7ecpZs+3mW+XbQZu9QCg==
+  dependencies:
+    encodeurl "~1.0.2"
+    escape-html "~1.0.3"
+    parseurl "~1.3.3"
+    send "0.17.1"
 
 set-blocking@^2.0.0, set-blocking@~2.0.0:
   version "2.0.0"

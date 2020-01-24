@@ -5,6 +5,11 @@ import { UserInputError } from 'apollo-server'
 import fileUpload from './fileUpload'
 import Resolver from './helpers/Resolver'
 import { filterForMutedUsers } from './helpers/filterForMutedUsers'
+import { PubSub } from 'apollo-server'
+
+const pubsub = new PubSub();
+const POST_ADDED = 'POST_ADDED';
+
 
 const maintainPinnedPosts = params => {
   const pinnedPostFilter = { pinned: true }
@@ -17,6 +22,12 @@ const maintainPinnedPosts = params => {
 }
 
 export default {
+  Subscription: {
+    postAdded: {
+      // Additional event labels can be passed to asyncIterator creation
+      subscribe: () => pubsub.asyncIterator([POST_ADDED]),
+    },
+  },
   Query: {
     Post: async (object, params, context, resolveInfo) => {
       params = await filterForMutedUsers(params, context)
@@ -102,6 +113,7 @@ export default {
       })
       try {
         const [post] = await writeTxResultPromise
+        pubsub.publish(POST_ADDED, { postAdded: post });
         return post
       } catch (e) {
         if (e.code === 'Neo.ClientError.Schema.ConstraintValidationFailed')

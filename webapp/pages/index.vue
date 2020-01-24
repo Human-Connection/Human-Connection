@@ -74,6 +74,16 @@ import { mapGetters, mapMutations } from 'vuex'
 import { filterPosts } from '~/graphql/PostQuery.js'
 import PostMutations from '~/graphql/PostMutations'
 import UpdateQuery from '~/components/utils/UpdateQuery'
+import gql from 'graphql-tag'
+import {
+  userFragment,
+  postFragment,
+  commentFragment,
+  postCountsFragment,
+  userCountsFragment,
+  locationAndBadgesFragment,
+  tagsCategoriesAndPinnedFragment,
+} from '~/graphql/Fragments'
 
 export default {
   components: {
@@ -213,6 +223,36 @@ export default {
         this.posts = Post
       },
       fetchPolicy: 'cache-and-network',
+      subscribeToMore: {
+        document: gql`
+    ${userFragment}
+    ${userCountsFragment}
+    ${locationAndBadgesFragment('EN')}
+    ${postFragment}
+    ${postCountsFragment}
+    ${tagsCategoriesAndPinnedFragment}
+
+        subscription Post {
+          postAdded {
+            ...post
+            ...postCounts
+            ...tagsCategoriesAndPinned
+            author {
+              ...user
+              ...userCounts
+              ...locationAndBadges
+            }
+          }
+        }`,
+        // Mutate the previous result
+        updateQuery: (previousResult, { subscriptionData }) => {
+          console.log('previousResult', previousResult)
+          console.log('subscriptionData', subscriptionData)
+          const { data: { postAdded: newPost } } = subscriptionData
+          return { Post: [newPost, ...previousResult.Post] }
+          // Here, return the new result from the previous with the new data
+        },
+      }
     },
   },
 }

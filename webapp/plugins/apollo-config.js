@@ -9,6 +9,7 @@ export default ({ app }) => {
   const backendUrl = process.env.GRAPHQL_URI || 'http://localhost:4000'
 
   return {
+    wsEndpoint: 'ws://localhost:4000/graphql', // optional
     httpEndpoint: process.server ? backendUrl : '/api',
     httpLinkOptions: {
       credentials: 'same-origin',
@@ -16,7 +17,7 @@ export default ({ app }) => {
     credentials: true,
     tokenName: 'human-connection-token',
     persisting: false,
-    websocketsOnly: false,
+    websocketsOnly: true,
     cache: new InMemoryCache({ fragmentMatcher }),
   }
 }
