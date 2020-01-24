@@ -6190,12 +6190,12 @@ metascraper-description@^5.10.6:
   dependencies:
     "@metascraper/helpers" "^5.10.6"
 
-metascraper-image@^5.10.5:
-  version "5.10.5"
-  resolved "https://registry.yarnpkg.com/metascraper-image/-/metascraper-image-5.10.5.tgz#3c4b897abacab78b7794d472fade1e195a4e7031"
-  integrity sha512-1YTNu3NaOGwRs0XmlQnmatEepYggwA5HyVxE05IxzNZ9oZdb26A0bwxbXSxSNNRerhcMNdePReHlqjVAk/W1TA==
+metascraper-image@^5.10.6:
+  version "5.10.6"
+  resolved "https://registry.yarnpkg.com/metascraper-image/-/metascraper-image-5.10.6.tgz#b23ec4bfab0467342b294f3d049c7b7e9a1dd071"
+  integrity sha512-/+m0VaaqnBgNREun/8jcq+clc4s9Z0FAuMO/TQf/mrz9SbcmpHeTD0WpiGJgEa9zYSbuEQYHdBkxhpw+SdJPCA==
   dependencies:
-    "@metascraper/helpers" "^5.10.5"
+    "@metascraper/helpers" "^5.10.6"
 
 metascraper-lang-detector@^4.10.2:
   version "4.10.2"
