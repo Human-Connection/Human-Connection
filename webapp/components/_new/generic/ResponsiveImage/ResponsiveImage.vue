@@ -1,5 +1,5 @@
 <template>
-  <img :data-src="lazySrc" :data-srcset="lazySrcset" :style="style" class="responsive-image" />
+  <img :data-src="lazySrc" :data-srcset="lazySrcset" :style="style" class="responsive-image lozad" />
 </template>
 
 <script>
