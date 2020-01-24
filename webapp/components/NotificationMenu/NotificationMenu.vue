@@ -22,13 +22,13 @@
 </template>
 
 <script>
+import unionBy from 'lodash/unionBy'
 import { NOTIFICATIONS_POLL_INTERVAL } from '~/constants/notifications'
 import { notificationQuery, markAsReadMutation } from '~/graphql/User'
-import unionBy from 'lodash/unionBy'
-
 import CounterIcon from '~/components/_new/generic/CounterIcon/CounterIcon'
 import Dropdown from '~/components/Dropdown'
 import NotificationList from '../NotificationList/NotificationList'
+import { notificationAdded } from '~/graphql/User'
 
 export default {
   name: 'NotificationMenu',
@@ -77,11 +77,18 @@ export default {
           orderBy: 'updatedAt_desc',
         }
       },
-      pollInterval: NOTIFICATIONS_POLL_INTERVAL,
-      update({ notifications }) {
-        return unionBy(notifications, this.notifications, notification => notification.id).sort(
-          (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
-        )
+      // pollInterval: NOTIFICATIONS_POLL_INTERVAL,
+      // update({ notifications }) {
+      //   return unionBy(notifications, this.notifications, notification => notification.id).sort(
+      //     (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+      //   )
+      // },
+      subscribeToMore: {
+        document: notificationAdded(),
+        updateQuery: (previousResult, { subscriptionData }) => {
+          const { data: { notificationAdded: newNotification } } = subscriptionData
+          return { notifications: [newNotification, ...previousResult.notifications] }
+        },
       },
       error(error) {
         this.$toast.error(error.message)

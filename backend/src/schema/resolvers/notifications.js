@@ -1,4 +1,8 @@
 import log from './helpers/databaseLogger'
+import { PubSub } from 'apollo-server'
+
+const pubsub = new PubSub()
+const NOTIFICATION_ADDED = 'NOTIFICATION_ADDED'
 
 const resourceTypes = ['Post', 'Comment']
 
@@ -16,6 +20,11 @@ const transformReturnType = record => {
 }
 
 export default {
+  Subscription: {
+    notificationAdded: {
+      subscribe: () => pubsub.asyncIterator([NOTIFICATION_ADDED]),
+    },
+  },
   Query: {
     notifications: async (_parent, args, context, _resolveInfo) => {
       const { user: currentUser } = context

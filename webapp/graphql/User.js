@@ -130,6 +130,43 @@ export const markAsReadMutation = i18n => {
   `
 }
 
+export const notificationAdded = () => {
+  return gql`
+    ${userFragment}
+    ${commentFragment}
+    ${postFragment}
+
+    subscription notifications {
+      notificationAdded {
+        id
+        read
+        reason
+        createdAt
+        from {
+          __typename
+          ... on Post {
+            ...post
+            author {
+              ...user
+            }
+          }
+          ... on Comment {
+            ...comment
+            author {
+              ...user
+            }
+            post {
+              ...post
+              author {
+                ...user
+              }
+            }
+          }
+        }
+      }
+    }
+  `
+}
 export const followUserMutation = i18n => {
   return gql`
     ${userFragment}

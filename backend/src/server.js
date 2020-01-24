@@ -42,7 +42,6 @@ const createServer = options => {
     schema: middleware(schema),
     subscriptions: {
       onConnect: (connectionParams, webSocket) => {
-        console.log('connectionParams', connectionParams)
         return getContext(connectionParams)
       },
     },

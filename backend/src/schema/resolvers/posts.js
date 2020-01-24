@@ -7,8 +7,8 @@ import Resolver from './helpers/Resolver'
 import { filterForMutedUsers } from './helpers/filterForMutedUsers'
 import { PubSub } from 'apollo-server'
 
-const pubsub = new PubSub();
-const POST_ADDED = 'POST_ADDED';
+const pubsub = new PubSub()
+const POST_ADDED = 'POST_ADDED'
 
 
 const maintainPinnedPosts = params => {
@@ -113,7 +113,7 @@ export default {
       })
       try {
         const [post] = await writeTxResultPromise
-        pubsub.publish(POST_ADDED, { postAdded: post });
+        pubsub.publish(POST_ADDED, { postAdded: post })
         return post
       } catch (e) {
         if (e.code === 'Neo.ClientError.Schema.ConstraintValidationFailed')

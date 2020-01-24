@@ -1,5 +1,9 @@
 import extractMentionedUsers from './mentions/extractMentionedUsers'
 import { validateNotifyUsers } from '../validation/validationMiddleware'
+import { PubSub } from 'apollo-server'
+
+const pubsub = new PubSub()
+const NOTIFICATION_ADDED = 'NOTIFICATION_ADDED'
 
 const handleContentDataOfPost = async (resolve, root, args, context, resolveInfo) => {
   const idsOfUsers = extractMentionedUsers(args.content)
@@ -74,12 +78,18 @@ const notifyUsersOfMention = async (label, id, idsOfUsers, reason, context) => {
     WHEN notification.createdAt IS NULL
     THEN notification END ).createdAt = toString(datetime())
     SET notification.updatedAt = toString(datetime())
+    RETURN notification
   `
   const session = context.driver.session()
+  const writeTxResultPromise = session.writeTransaction(async transaction => {
+    const notificationTransactionResponse = await transaction.run(mentionedCypher, { id, idsOfUsers, reason })
+    return notificationTransactionResponse.records.map(record => record.get('notification').properties)
+  })
   try {
-    await session.writeTransaction(transaction => {
-      return transaction.run(mentionedCypher, { id, idsOfUsers, reason })
-    })
+    const [notification] = await writeTxResultPromise
+    return pubsub.publish(NOTIFICATION_ADDED, { notificationAdded: notification })
+  } catch (error) {
+    throw new Error(error)
   } finally {
     session.close()
   }

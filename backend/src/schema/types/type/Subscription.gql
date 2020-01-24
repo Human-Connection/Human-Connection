@@ -1,0 +1,4 @@
+type Subscription {
+  postAdded: Post
+  notificationAdded: NOTIFIED
+}

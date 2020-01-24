@@ -244,13 +244,9 @@ export default {
             }
           }
         }`,
-        // Mutate the previous result
         updateQuery: (previousResult, { subscriptionData }) => {
-          console.log('previousResult', previousResult)
-          console.log('subscriptionData', subscriptionData)
           const { data: { postAdded: newPost } } = subscriptionData
           return { Post: [newPost, ...previousResult.Post] }
-          // Here, return the new result from the previous with the new data
         },
       }
     },

@@ -1,7 +1,3 @@
-type Subscription {
-  postAdded: Post
-}
-
 type Mutation {
   # Get a JWT Token for the given Email and password
   login(email: String!, password: String!): String!
