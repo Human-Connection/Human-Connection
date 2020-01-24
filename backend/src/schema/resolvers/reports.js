@@ -185,9 +185,7 @@ export default {
     },
   },
   FILED: {
-    ...undefinedToNullResolver([
-      'reasonDescription',
-    ]),
+    ...undefinedToNullResolver(['reasonDescription']),
     // Wolle reasonDescription: async (parent, _params, _context, _resolveInfo) => {
     //   if (typeof parent.reasonDescription !== 'undefined') return parent.reasonDescription
     //   return null

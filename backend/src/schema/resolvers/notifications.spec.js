@@ -305,7 +305,8 @@ describe('given some notifications', () => {
                         reportedResource: {
                           __typename: 'Comment',
                           id: 'c4',
-                          content: 'I am harassing content in a harassing comment to a bad post !!!',
+                          content:
+                            'I am harassing content in a harassing comment to a bad post !!!',
                         },
                       },
                     ],
@@ -419,7 +420,8 @@ describe('given some notifications', () => {
                         reportedResource: {
                           __typename: 'Comment',
                           id: 'c4',
-                          content: 'I am harassing content in a harassing comment to a bad post !!!',
+                          content:
+                            'I am harassing content in a harassing comment to a bad post !!!',
                         },
                       },
                     ],

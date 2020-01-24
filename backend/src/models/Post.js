@@ -27,13 +27,13 @@ export default {
         type: 'string',
         isoDate: true,
         required: true,
-        default: () => new Date().toISOString()
+        default: () => new Date().toISOString(),
       },
       updatedAt: {
         type: 'string',
         isoDate: true,
         required: true,
-        default: () => new Date().toISOString()
+        default: () => new Date().toISOString(),
       },
       read: { type: 'boolean', default: false },
       reason: {
