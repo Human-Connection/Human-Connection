@@ -683,7 +683,7 @@ describe('notifications', () => {
 
         describe('comment', () => {
           beforeEach(async () => {
-            commentContent = 'Commenters comment.'
+            commentContent = 'Commenter's comment.'
             commentAuthor = await neode.create('User', {
               id: 'commentAuthor',
               name: 'Mrs Comment',
