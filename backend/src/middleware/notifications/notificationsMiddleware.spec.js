@@ -574,7 +574,7 @@ describe('notifications', () => {
       })
     })
 
-    describe('given me filing a report of a', () => {
+    describe('given I file a report on a', () => {
       let resourceId
       const reasonCategory = 'discrimination_etc'
       const reasonDescription = 'I am free to be gay !!!'
