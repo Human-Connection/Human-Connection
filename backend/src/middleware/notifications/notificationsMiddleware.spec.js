@@ -651,7 +651,7 @@ describe('notifications', () => {
         })
       })
 
-      describe('post and comment', () => {
+      describe('post or comment', () => {
         beforeEach(async () => {
           title = 'My post'
           postContent = 'My post content.'
