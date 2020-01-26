@@ -20,6 +20,7 @@ function clean(dirty) {
       'hr',
       'b',
       'i',
+      'u',
       'em',
       'strong',
       'a',
