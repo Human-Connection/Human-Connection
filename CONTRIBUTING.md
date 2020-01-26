@@ -64,7 +64,7 @@ Regular pair programming sessions
 * we team up and work on an issue together (often using Visual Studio live sharing sessions)
 
 Open-Source Community Meeting
-* every Thursday 13:00
+* bi-weekly on Thursday 13:00 (when there is no sprint retrospective)
 * the link will be posted in the [discord chat](https://discord.gg/6ub73U3) and on the [Agile Ventures website](https://www.agileventures.org/events?utf8=%E2%9C%93&project_id=220&commit=Filter+by+Project)
 * all contributors welcome!
 
@@ -99,3 +99,35 @@ We believe in open source contributions as a learning experience – everyone is
 We use pair programming sessions as a tool for knowledge sharing. We can learn a lot from each other and only by sharing what we know and overcoming challenges together can we grow as a team and truly own this project collectively.
 
 As a volunteeer you have no commitment except your own self development and your awesomeness by contributing to this free and open-source software project. Cheers to you!
+
+
+## Open-Source Bounties
+
+There are so many good reasons to contribute to Human Connection
+* You learn state-of-the-art technologies
+* You build your portfolio
+* You contribute to a good cause
+
+Now there is one more good reason: You can receive a small fincancial
+compensation for your contribution! :tada:
+
+### How it works
+
+Before you can benefit from the Open-Source bounty program you **must get one
+pull request approved and merged for free**. You can choose something really
+quick and easy, e.g. a fixing a typo in our [documentation](https://docs.human-connection.org/human-connection/)
+would be enough. But getting at least one pull request merged will make you get
+in touch with the team, learn the workflow and understand this contribution
+guide. Please join our our [community chat](https://human-connection.org/discord),
+too.
+
+You can filter Github issues with label [bounty](https://github.com/Human-Connection/Human-Connection/issues?q=is%3Aopen+is%3Aissue+label%3Abounty). These issues should have a second label `€<amount>`
+which indicate their respective financial compensation in Euros.
+
+You can bill us after your pull request got approved and merged into `master`.
+Payment methods are up to you: Bank transfer or PayPal is fine for us. Just send
+us your invoice as .pdf file attached to an E-Mail once you are done.
+
+Our Open-Source bounty program is a work-in-progress. Based on our future
+experience we will make changes and improvements. So keep an eye on this
+contribution guide.
