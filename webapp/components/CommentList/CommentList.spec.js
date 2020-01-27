@@ -105,6 +105,7 @@ describe('CommentList.vue', () => {
       beforeEach(() => {
         wrapper = Wrapper()
       })
+
       it('Comment emitted reply()', () => {
         wrapper.find(Comment).vm.$emit('reply', {
           id: 'commentAuthorId',

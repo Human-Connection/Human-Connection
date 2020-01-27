@@ -11,7 +11,7 @@ const localVue = global.localVue
 localVue.directive('scrollTo', jest.fn())
 
 describe('PostSlug', () => {
-  let store, propsData, mocks, stubs, wrapper, Wrapper, spy
+  let store, propsData, mocks, stubs, wrapper, Wrapper
 
   beforeEach(() => {
     store = new Vuex.Store({
@@ -47,17 +47,9 @@ describe('PostSlug', () => {
         query: jest.fn().mockResolvedValue({ data: { PostEmotionsCountByEmotion: {} } }),
       },
       $scrollTo: jest.fn(),
-      $refs: {
-        editor: {
-          insertReply: jest.fn(),
-        },
-        commentForm: {
-          reply: jest.fn(),
-        },
-      },
     }
     stubs = {
-      HcEditor: { render: () => {}, methods: { insertReply: () => null } },
+      HcEditor: { render: () => {}, methods: { insertReply: jest.fn(() => null) } },
       ContentViewer: true,
     }
     jest.useFakeTimers()
@@ -82,7 +74,6 @@ describe('PostSlug', () => {
       },
       ready: true,
     })
-    spy = jest.spyOn(wrapper.vm, 'reply')
   })
 
   describe('mount', () => {
@@ -126,7 +117,10 @@ describe('PostSlug', () => {
           id: 'commentAuthorId',
           slug: 'ogerly',
         })
-        expect(spy).toHaveBeenCalledTimes(1)
+        expect(stubs.HcEditor.methods.insertReply).toHaveBeenCalledWith({
+          id: 'commentAuthorId',
+          slug: 'ogerly',
+        })
       })
     })
   })
