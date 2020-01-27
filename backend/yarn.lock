@@ -1175,7 +1175,7 @@
     url-regex "~4.1.1"
     video-extensions "~1.1.0"
 
-"@metascraper/helpers@^5.10.5", "@metascraper/helpers@^5.10.6":
+"@metascraper/helpers@^5.10.6":
   version "5.10.6"
   resolved "https://registry.yarnpkg.com/@metascraper/helpers/-/helpers-5.10.6.tgz#0b786607212925a577926fd0cd0313a49de3499c"
   integrity sha512-/jvhlM3RKGYMoUK8D8S1r3tN03/EYizCqWF7zDx0aBMC8Ihp33DRGs9oNdsgkgwzVF7O/YpDm55l9K+qVJlsyQ==
@@ -1607,10 +1607,10 @@
   dependencies:
     "@types/yargs-parser" "*"
 
-"@types/yup@0.26.27":
-  version "0.26.27"
-  resolved "https://registry.yarnpkg.com/@types/yup/-/yup-0.26.27.tgz#b928b1d644ffe98766e1440131222aefd3ca8f89"
-  integrity sha512-Rlsq3DExOHfWur75nQUAa5I0fXA2vSrw0u0qK3SI4PAkyOWjNzZsTaK+U9/sofWm3ttwWYn+C92pSq0s4rob4w==
+"@types/yup@0.26.28":
+  version "0.26.28"
+  resolved "https://registry.yarnpkg.com/@types/yup/-/yup-0.26.28.tgz#6b8a98fb56ddb5c8a3a7f60996165221671c1ca1"
+  integrity sha512-DiT584YBKBENDzgk50LwiJLLOh+XgHpiy9p8PwSoOY696LpfrJRIeJ2AoBCG9KyjE8gWL4J64xDZgw15itecag==
 
 "@types/zen-observable@^0.8.0":
   version "0.8.0"
@@ -4476,12 +4476,12 @@ graphql-middleware@~4.0.2:
   dependencies:
     graphql-tools "^4.0.5"
 
-graphql-shield@~7.0.7:
-  version "7.0.7"
-  resolved "https://registry.yarnpkg.com/graphql-shield/-/graphql-shield-7.0.7.tgz#6b1e029a291924482949e108569fd7f95ea18d61"
-  integrity sha512-T7Ds9ailm9dFQ/u7E4pmyE/nu6I7RbG4L2Bice6zqz3ajuV4AvMGB57mCg9xB5RFZ3wpVHd+s9aFLPB0FpWtjg==
+graphql-shield@~7.0.8:
+  version "7.0.8"
+  resolved "https://registry.yarnpkg.com/graphql-shield/-/graphql-shield-7.0.8.tgz#5ade058610e1b247b0762cb2424d121e9a5f5b46"
+  integrity sha512-KxYMhoiv5lsHcO0HZDhYjjWLbwzreDCmqmnkLRsLNY+6P0q81KSowoNVPuoAsItkjr9m5Fa6IDObOVxSTSt5Lw==
   dependencies:
-    "@types/yup" "0.26.27"
+    "@types/yup" "0.26.28"
     object-hash "^2.0.0"
     yup "^0.28.0"
 
