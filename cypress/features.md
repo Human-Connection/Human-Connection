@@ -249,10 +249,12 @@ Shows automatically related actions for existing post.
 
 ### Administration
 
+[Cucumber Features](https://github.com/Human-Connection/Human-Connection/tree/master/cypress/integration/administration)
+
 * Provide Admin-Interface to send Users Invite Code
 * Static Pages for Data Privacy Statement ...
 * Create, edit and delete Announcements
-* Show Announcements on top of User Interface
+* Pin a post to inform users
 
 ### Invitation
 

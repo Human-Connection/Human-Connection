@@ -53,5 +53,33 @@ Then("the editor should be cleared", () => {
 Then("it should create a mention in the CommentForm", () => {
   cy.get(".ProseMirror a")
     .should('have.class', 'mention')
-    .should('contain', '@peter-pan')
+    should('contain', '@peter-pan')
+})
+
+When("I open the content menu of post {string}", (title)=> {
+  cy.contains('.post-card', title)
+  .find('.content-menu .base-button')
+  .click()
+})
+
+When("I click on 'Pin post'", (string)=> {
+  cy.get("a.ds-menu-item-link").contains("Pin post")
+    .click()
+})
+
+Then("there is no button to pin a post", () => {
+  cy.get("a.ds-menu-item-link")
+    .should('contain', "Report Post") // sanity check
+    .should('not.contain', "Pin post")
+})
+
+And("the post with title {string} has a ribbon for pinned posts", (title) => {
+  cy.get("article.post-card").contains(title)
+  .parent()
+  .find("div.ribbon.ribbon--pinned")
+  .should("contain", "Announcement")
+})
+
+Then("I see a toaster with {string}", (title) => {
+  cy.get(".iziToast-message").should("contain", title);
 })
