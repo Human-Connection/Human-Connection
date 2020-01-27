@@ -33,7 +33,7 @@
     "codecov": "^3.6.2",
     "cross-env": "^6.0.3",
     "cucumber": "^6.0.5",
-    "cypress": "^3.8.2",
+    "cypress": "^3.8.3",
     "cypress-cucumber-preprocessor": "^2.0.1",
     "cypress-file-upload": "^3.5.3",
     "cypress-plugin-retries": "^1.5.2",
