@@ -41,4 +41,14 @@ export default {
   language: { type: 'string', allow: [null] },
   imageBlurred: { type: 'boolean', default: false },
   imageAspectRatio: { type: 'float', default: 1.0 },
+  comments: {
+    type: 'relationship',
+    relationship: 'COMMENTS',
+    target: 'Comment',
+    direction: 'in',
+    properties: {
+      createdAt: { type: 'string', isoDate: true, default: () => new Date().toISOString() },
+      updatedAt: { type: 'string', isoDate: true, default: () => new Date().toISOString() },
+    },
+  },
 }
