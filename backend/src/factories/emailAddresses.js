@@ -1,22 +1,24 @@
 import faker from 'faker'
+import { Factory } from 'rosie'
+import { getNeode } from '../db/neo4j'
 
-export function defaults({ args }) {
-  const defaults = {
-    email: faker.internet.email(),
-    verifiedAt: new Date().toISOString(),
-  }
-  args = {
-    ...defaults,
-    ...args,
-  }
-  return args
+export const defaults = {
+  email: faker.internet.email,
+  verifiedAt: () => new Date().toISOString(),
 }
+
+const neode = getNeode()
+
+Factory.define('emailAddress')
+  .attr(defaults)
+  .after((buildObject, options) => {
+    return neode.create('EmailAddress', buildObject)
+  })
 
 export default function create() {
   return {
     factory: async ({ args, neodeInstance }) => {
-      args = defaults({ args })
-      return neodeInstance.create('EmailAddress', args)
+      return Factory.build('emailAddress', args)
     },
   }
 }

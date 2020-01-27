@@ -1,15 +1,19 @@
+import { Factory } from 'rosie'
+import { getNeode } from '../db/neo4j'
+
+const neode = getNeode()
+
+Factory.define('badge')
+  .attr('type', 'crowdfunding')
+  .attr('status', 'permanent')
+  .after((buildObject, options) => {
+    return neode.create('Badge', buildObject)
+  })
+
 export default function create() {
   return {
-    factory: async ({ args, neodeInstance }) => {
-      const defaults = {
-        type: 'crowdfunding',
-        status: 'permanent',
-      }
-      args = {
-        ...defaults,
-        ...args,
-      }
-      return neodeInstance.create('Badge', args)
+    factory: ({ args, neodeInstance }) => {
+      return Factory.build('badge', args)
     },
   }
 }
