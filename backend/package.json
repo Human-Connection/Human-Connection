@@ -98,7 +98,7 @@
     "slug": "~2.1.1",
     "trunc-html": "~1.1.2",
     "uuid": "~3.4.0",
-    "validator": "^12.1.0",
+    "validator": "^12.2.0",
     "wait-on": "~4.0.0",
     "xregexp": "^4.2.4"
   },
