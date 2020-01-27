@@ -64,7 +64,7 @@ Regular pair programming sessions
 * we team up and work on an issue together (often using Visual Studio live sharing sessions)
 
 Open-Source Community Meeting
-* bi-weekly on Thursday 13:00 (when there is no sprint retrospective)
+* bi-weekly on Mondays 13:00 (when there is no sprint retrospective)
 * the link will be posted in the [discord chat](https://discord.gg/6ub73U3) and on the [Agile Ventures website](https://www.agileventures.org/events?utf8=%E2%9C%93&project_id=220&commit=Filter+by+Project)
 * all contributors welcome!
 
