@@ -53,7 +53,7 @@ Then("the editor should be cleared", () => {
 Then("it should create a mention in the CommentForm", () => {
   cy.get(".ProseMirror a")
     .should('have.class', 'mention')
-    should('contain', '@peter-pan')
+    .should('contain', '@peter-pan')
 })
 
 When("I open the content menu of post {string}", (title)=> {
