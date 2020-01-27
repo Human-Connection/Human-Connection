@@ -53,17 +53,18 @@ export default function create() {
 
       const post = await neodeInstance.create('Post', args)
 
-      let { comment, commentContent } = args
-      delete args.comment
+      const { commentContent } = args
+      let comment
       delete args.commentContent
-      if (comment && commentContent) throw new Error('You provided both comment and commentContent')
-      if (commentContent) comment = await neodeInstance.find('Comment', commentContent)
-      comment =
-        comment ||
-        (await factoryInstance.create('Comment', { content: commentContent, post, author }))
+      if (commentContent)
+        comment = await factoryInstance.create('Comment', {
+          contentExcerpt: commentContent,
+          post,
+          author,
+        })
 
       await post.relateTo(author, 'author')
-      await post.relateTo(comment, 'comments')
+      if (comment) await post.relateTo(comment, 'comments')
       await Promise.all(categories.map(c => c.relateTo(post, 'post')))
       await Promise.all(tags.map(t => t.relateTo(post, 'post')))
       return post
