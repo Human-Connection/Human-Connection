@@ -75,7 +75,6 @@ export default {
 
   > .image {
     position: relative;
-    z-index: 5;
     width: 100%;
     object-fit: cover;
     object-position: center;
