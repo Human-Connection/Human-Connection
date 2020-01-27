@@ -6,7 +6,7 @@
       v-else
       :src="user.avatar | proxyApiUrl"
       class="image"
-      @error="event.target.style.display = 'none'"
+      @error="$event.target.style.display = 'none'"
     />
   </div>
 </template>
