@@ -1,10 +1,9 @@
 import { createTestClient } from 'apollo-server-testing'
 import createServer from '../.././server'
-import Factory from '../../factories'
+import Factory, { cleanDatabase } from '../../factories'
 import { gql } from '../../helpers/jest'
 import { getDriver, getNeode } from '../../db/neo4j'
 
-const factory = Factory()
 const instance = getNeode()
 const driver = getDriver()
 
@@ -53,7 +52,7 @@ describe('file a report on a resource', () => {
   }
 
   beforeAll(async () => {
-    await factory.cleanDatabase()
+    await cleanDatabase()
     const { server } = createServer({
       context: () => {
         return {
@@ -68,7 +67,7 @@ describe('file a report on a resource', () => {
   })
 
   afterEach(async () => {
-    await factory.cleanDatabase()
+    await cleanDatabase()
   })
 
   describe('report a resource', () => {
@@ -84,8 +83,8 @@ describe('file a report on a resource', () => {
 
     describe('authenticated', () => {
       beforeEach(async () => {
-        currentUser = await factory.create(
-          'User',
+        currentUser = await Factory.build(
+          'user',
           {
             id: 'current-user-id',
             role: 'user',
@@ -95,8 +94,8 @@ describe('file a report on a resource', () => {
             password: '1234',
           },
         )
-        otherReportingUser = await factory.create(
-          'User',
+        otherReportingUser = await Factory.build(
+          'user',
           {
             id: 'other-reporting-user-id',
             role: 'user',
@@ -106,8 +105,8 @@ describe('file a report on a resource', () => {
             password: '1234',
           },
         )
-        await factory.create(
-          'User',
+        await Factory.build(
+          'user',
           {
             id: 'abusive-user-id',
             role: 'user',
@@ -356,8 +355,8 @@ describe('file a report on a resource', () => {
 
         describe('reported resource is a post', () => {
           beforeEach(async () => {
-            await factory.create(
-              'Post',
+            await Factory.build(
+              'post',
               {
                 id: 'post-to-report-id',
                 title: 'This is a post that is going to be reported',
@@ -415,8 +414,8 @@ describe('file a report on a resource', () => {
 
         describe('reported resource is a comment', () => {
           beforeEach(async () => {
-            await factory.create(
-              'Post',
+            await Factory.build(
+              'post',
               {
                 id: 'p1',
                 title: 'post to comment on',
@@ -427,8 +426,8 @@ describe('file a report on a resource', () => {
                 author: currentUser,
               },
             )
-            await factory.create(
-              'Comment',
+            await Factory.build(
+              'comment',
               {
                 id: 'comment-to-report-id',
                 content: 'Post comment to be reported.',
@@ -486,7 +485,7 @@ describe('file a report on a resource', () => {
 
         describe('reported resource is a tag', () => {
           beforeEach(async () => {
-            await factory.create('Tag', {
+            await Factory.build('tag', {
               id: 'tag-to-report-id',
             })
           })
@@ -544,8 +543,8 @@ describe('file a report on a resource', () => {
 
     beforeEach(async () => {
       authenticatedUser = null
-      moderator = await factory.create(
-        'User',
+      moderator = await Factory.build(
+        'user',
         {
           id: 'moderator-1',
           role: 'moderator',
@@ -555,8 +554,8 @@ describe('file a report on a resource', () => {
           password: '1234',
         },
       )
-      currentUser = await factory.create(
-        'User',
+      currentUser = await Factory.build(
+        'user',
         {
           id: 'current-user-id',
           role: 'user',
@@ -566,8 +565,8 @@ describe('file a report on a resource', () => {
           password: '1234',
         },
       )
-      abusiveUser = await factory.create(
-        'User',
+      abusiveUser = await Factory.build(
+        'user',
         {
           id: 'abusive-user-1',
           role: 'user',
@@ -584,8 +583,8 @@ describe('file a report on a resource', () => {
       })
 
       await Promise.all([
-        factory.create(
-          'Post',
+        Factory.build(
+          'post',
           {
             id: 'abusive-post-1',
             content: 'Interesting Knowledge',
@@ -595,8 +594,8 @@ describe('file a report on a resource', () => {
             author: abusiveUser,
           },
         ),
-        factory.create(
-          'Post',
+        Factory.build(
+          'post',
           {
             id: 'post-2',
             content: 'More things to do …',
@@ -606,8 +605,8 @@ describe('file a report on a resource', () => {
             categoryIds,
           },
         ),
-        factory.create(
-          'Post',
+        Factory.build(
+          'post',
           {
             id: 'post-3',
             content: 'I am at school …',
@@ -619,8 +618,8 @@ describe('file a report on a resource', () => {
         ),
       ])
       await Promise.all([
-        factory.create(
-          'Comment',
+        Factory.build(
+          'comment',
           {
             id: 'abusive-comment-1',
           },

@@ -1,10 +1,8 @@
-import Factory from '../factories'
+import Factory, { cleanDatabase } from '../factories'
 import { gql } from '../helpers/jest'
 import { getNeode, getDriver } from '../db/neo4j'
 import createServer from '../server'
 import { createTestClient } from 'apollo-server-testing'
-
-const factory = Factory()
 
 let mutate
 let authenticatedUser
@@ -28,18 +26,18 @@ beforeAll(() => {
 
 beforeEach(async () => {
   variables = {}
-  const admin = await factory.create('User', {
+  const admin = await Factory.build('user', {
     role: 'admin',
   })
-  await factory.create(
-    'User',
+  await Factory.build(
+    'user',
     {},
     {
       email: 'someone@example.org',
       password: '1234',
     },
   )
-  await factory.create('Category', {
+  await Factory.build('category', {
     id: 'cat9',
     name: 'Democracy & Politics',
     icon: 'university',
@@ -48,7 +46,7 @@ beforeEach(async () => {
 })
 
 afterEach(async () => {
-  await factory.cleanDatabase()
+  await cleanDatabase()
 })
 
 describe('slugifyMiddleware', () => {
@@ -88,8 +86,8 @@ describe('slugifyMiddleware', () => {
 
     describe('if slug exists', () => {
       beforeEach(async () => {
-        await factory.create(
-          'Post',
+        await Factory.build(
+          'post',
           {
             title: 'Pre-existing post',
             slug: 'pre-existing-post',
@@ -199,7 +197,7 @@ describe('slugifyMiddleware', () => {
 
     describe('given a user has signed up with their email address', () => {
       beforeEach(async () => {
-        await factory.create('EmailAddress', {
+        await Factory.build('emailAddress', {
           email: '123@example.org',
           nonce: '123456',
           verifiedAt: null,
@@ -223,7 +221,7 @@ describe('slugifyMiddleware', () => {
 
       describe('if slug exists', () => {
         beforeEach(async () => {
-          await factory.create('User', {
+          await Factory.build('user', {
             name: 'I am a user',
             slug: 'i-am-a-user',
           })

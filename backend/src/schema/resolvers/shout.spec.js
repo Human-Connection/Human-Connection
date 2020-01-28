@@ -1,11 +1,10 @@
 import { createTestClient } from 'apollo-server-testing'
-import Factory from '../../factories'
+import Factory, { cleanDatabase } from '../../factories'
 import { gql } from '../../helpers/jest'
 import { getNeode, getDriver } from '../../db/neo4j'
 import createServer from '../../server'
 
 let mutate, query, authenticatedUser, variables
-const factory = Factory()
 const instance = getNeode()
 const driver = getDriver()
 
@@ -47,8 +46,8 @@ describe('shout and unshout posts', () => {
     query = createTestClient(server).query
   })
   beforeEach(async () => {
-    currentUser = await factory.create(
-      'User',
+    currentUser = await Factory.build(
+      'user',
       {
         id: 'current-user-id',
         name: 'Current User',
@@ -59,8 +58,8 @@ describe('shout and unshout posts', () => {
       },
     )
 
-    postAuthor = await factory.create(
-      'User',
+    postAuthor = await Factory.build(
+      'user',
       {
         id: 'id-of-another-user',
         name: 'Another User',
@@ -72,7 +71,7 @@ describe('shout and unshout posts', () => {
     )
   })
   afterEach(async () => {
-    await factory.cleanDatabase()
+    await cleanDatabase()
   })
 
   describe('shout', () => {
@@ -88,8 +87,8 @@ describe('shout and unshout posts', () => {
     describe('authenticated', () => {
       beforeEach(async () => {
         authenticatedUser = await currentUser.toJson()
-        await factory.create(
-          'Post',
+        await Factory.build(
+          'post',
           {
             name: 'Other user post',
             id: 'another-user-post-id',
@@ -98,8 +97,8 @@ describe('shout and unshout posts', () => {
             author: postAuthor,
           },
         )
-        await factory.create(
-          'Post',
+        await Factory.build(
+          'post',
           {
             name: 'current user post',
             id: 'current-user-post-id',
@@ -164,8 +163,8 @@ describe('shout and unshout posts', () => {
     describe('authenticated', () => {
       beforeEach(async () => {
         authenticatedUser = await currentUser.toJson()
-        await factory.create(
-          'Post',
+        await Factory.build(
+          'post',
           {
             name: 'Posted By Another User',
             id: 'posted-by-another-user',

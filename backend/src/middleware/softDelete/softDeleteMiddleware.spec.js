@@ -1,10 +1,9 @@
-import Factory from '../../factories'
+import Factory, { cleanDatabase } from '../../factories'
 import { gql } from '../../helpers/jest'
 import { getNeode, getDriver } from '../../db/neo4j'
 import createServer from '../../server'
 import { createTestClient } from 'apollo-server-testing'
 
-const factory = Factory()
 const neode = getNeode()
 const driver = getDriver()
 
@@ -18,9 +17,9 @@ const action = () => {
 beforeAll(async () => {
   // For performance reasons we do this only once
   const users = await Promise.all([
-    factory.create('User', { id: 'u1', role: 'user' }),
-    factory.create(
-      'User',
+    Factory.build('user', { id: 'u1', role: 'user' }),
+    Factory.build(
+      'user',
       {
         id: 'm1',
         role: 'moderator',
@@ -29,7 +28,7 @@ beforeAll(async () => {
         password: '1234',
       },
     ),
-    factory.create('User', {
+    Factory.build('user', {
       id: 'u2',
       role: 'user',
       name: 'Offensive Name',
@@ -50,8 +49,8 @@ beforeAll(async () => {
 
   await Promise.all([
     user.relateTo(troll, 'following'),
-    factory.create(
-      'Post',
+    Factory.build(
+      'post',
       {
         id: 'p1',
         title: 'Deleted post',
@@ -63,8 +62,8 @@ beforeAll(async () => {
         categoryIds,
       },
     ),
-    factory.create(
-      'Post',
+    Factory.build(
+      'post',
       {
         id: 'p3',
         title: 'Publicly visible post',
@@ -79,8 +78,8 @@ beforeAll(async () => {
   ])
 
   const resources = await Promise.all([
-    factory.create(
-      'Comment',
+    Factory.build(
+      'comment',
       {
         id: 'c2',
         content: 'Enabled comment on public post',
@@ -90,8 +89,8 @@ beforeAll(async () => {
         postId: 'p3',
       },
     ),
-    factory.create(
-      'Post',
+    Factory.build(
+      'post',
       {
         id: 'p2',
         title: 'Disabled post',
@@ -105,8 +104,8 @@ beforeAll(async () => {
         categoryIds,
       },
     ),
-    factory.create(
-      'Comment',
+    Factory.build(
+      'comment',
       {
         id: 'c1',
         content: 'Disabled comment',
@@ -135,9 +134,9 @@ beforeAll(async () => {
   const trollingComment = resources[2]
 
   const reports = await Promise.all([
-    factory.create('Report'),
-    factory.create('Report'),
-    factory.create('Report'),
+    Factory.build('report'),
+    Factory.build('report'),
+    Factory.build('report'),
   ])
   const reportAgainstTroll = reports[0]
   const reportAgainstTrollingPost = reports[1]
@@ -184,7 +183,7 @@ beforeAll(async () => {
 })
 
 afterAll(async () => {
-  await factory.cleanDatabase()
+  await cleanDatabase()
 })
 
 describe('softDeleteMiddleware', () => {

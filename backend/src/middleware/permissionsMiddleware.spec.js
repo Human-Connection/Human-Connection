@@ -1,10 +1,9 @@
 import { createTestClient } from 'apollo-server-testing'
 import createServer from '../server'
-import Factory from '../factories'
+import Factory, { cleanDatabase } from '../factories'
 import { gql } from '../helpers/jest'
 import { getDriver, getNeode } from '../db/neo4j'
 
-const factory = Factory()
 const instance = getNeode()
 const driver = getDriver()
 
@@ -20,7 +19,7 @@ const userQuery = gql`
 
 describe('authorization', () => {
   beforeAll(async () => {
-    await factory.cleanDatabase()
+    await cleanDatabase()
     const { server } = createServer({
       context: () => ({
         driver,
@@ -34,8 +33,8 @@ describe('authorization', () => {
   describe('given two existing users', () => {
     beforeEach(async () => {
       ;[owner, anotherRegularUser, administrator, moderator] = await Promise.all([
-        factory.create(
-          'User',
+        Factory.build(
+          'user',
           {
             name: 'Owner',
           },
@@ -44,8 +43,8 @@ describe('authorization', () => {
             password: 'iamtheowner',
           },
         ),
-        factory.create(
-          'User',
+        Factory.build(
+          'user',
           {
             name: 'Another Regular User',
           },
@@ -54,8 +53,8 @@ describe('authorization', () => {
             password: 'else',
           },
         ),
-        factory.create(
-          'User',
+        Factory.build(
+          'user',
           {
             name: 'Admin',
             role: 'admin',
@@ -65,8 +64,8 @@ describe('authorization', () => {
             password: 'admin',
           },
         ),
-        factory.create(
-          'User',
+        Factory.build(
+          'user',
           {
             name: 'Moderator',
             role: 'moderator',
@@ -81,7 +80,7 @@ describe('authorization', () => {
     })
 
     afterEach(async () => {
-      await factory.cleanDatabase()
+      await cleanDatabase()
     })
 
     describe('access email address', () => {

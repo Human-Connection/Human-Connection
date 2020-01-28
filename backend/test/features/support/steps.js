@@ -6,12 +6,11 @@ import { GraphQLClient } from 'graphql-request'
 import Factory from '../../../src/factories'
 const debug = require('debug')('ea:test:steps')
 
-const factory = Factory()
 const client = new GraphQLClient(host)
 
 function createUser (slug) {
   debug(`creating user ${slug}`)
-  return factory.create('User', {
+  return Factory.build('user', {
     name: slug,
   }, {
     password: '1234'

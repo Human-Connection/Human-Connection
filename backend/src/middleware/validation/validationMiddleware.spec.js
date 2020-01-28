@@ -1,10 +1,9 @@
 import { gql } from '../../helpers/jest'
-import Factory from '../../factories'
+import Factory, { cleanDatabase } from '../../factories'
 import { getNeode, getDriver } from '../../db/neo4j'
 import { createTestClient } from 'apollo-server-testing'
 import createServer from '../../server'
 
-const factory = Factory()
 const neode = getNeode()
 const driver = getDriver()
 let authenticatedUser,
@@ -94,14 +93,14 @@ beforeAll(() => {
 
 beforeEach(async () => {
   users = await Promise.all([
-    factory.create('User', {
+    Factory.build('user', {
       id: 'reporting-user',
     }),
-    factory.create('User', {
+    Factory.build('user', {
       id: 'moderating-user',
       role: 'moderator',
     }),
-    factory.create('User', {
+    Factory.build('user', {
       id: 'commenting-user',
     }),
   ])
@@ -119,8 +118,8 @@ beforeEach(async () => {
   moderatingUser = users[1]
   commentingUser = users[2]
   const posts = await Promise.all([
-    factory.create(
-      'Post',
+    Factory.build(
+      'post',
       {
         id: 'offensive-post',
       },
@@ -128,8 +127,8 @@ beforeEach(async () => {
         authorId: 'moderating-user',
       },
     ),
-    factory.create(
-      'Post',
+    Factory.build(
+      'post',
       {
         id: 'post-4-commenting',
       },
@@ -142,7 +141,7 @@ beforeEach(async () => {
 })
 
 afterEach(async () => {
-  await factory.cleanDatabase()
+  await cleanDatabase()
 })
 
 describe('validateCreateComment', () => {
@@ -192,8 +191,8 @@ describe('validateCreateComment', () => {
   describe('validateUpdateComment', () => {
     let updateCommentVariables
     beforeEach(async () => {
-      await factory.create(
-        'Comment',
+      await Factory.build(
+        'comment',
         {
           id: 'comment-id',
         },
@@ -343,7 +342,7 @@ describe('validateReport', () => {
 
 describe('validateReview', () => {
   beforeEach(async () => {
-    const reportAgainstModerator = await factory.create('Report')
+    const reportAgainstModerator = await Factory.build('report')
     await Promise.all([
       reportAgainstModerator.relateTo(reportingUser, 'filed', {
         ...reportVariables,
@@ -385,7 +384,7 @@ describe('validateReview', () => {
   })
 
   it('throws an error if a moderator tries to review their own resource(Post|Comment)', async () => {
-    const reportAgainstOffensivePost = await factory.create('Report')
+    const reportAgainstOffensivePost = await Factory.build('report')
     await Promise.all([
       reportAgainstOffensivePost.relateTo(reportingUser, 'filed', {
         ...reportVariables,
@@ -404,7 +403,7 @@ describe('validateReview', () => {
 
   describe('moderate a resource that is not a (Comment|Post|User) ', () => {
     beforeEach(async () => {
-      await Promise.all([factory.create('Tag', { id: 'tag-id' })])
+      await Promise.all([Factory.build('tag', { id: 'tag-id' })])
     })
 
     it('returns null', async () => {
@@ -434,7 +433,7 @@ describe('validateReview', () => {
         id: 'updating-user',
         name: 'John Doughnut',
       }
-      updatingUser = await factory.create('User', userParams)
+      updatingUser = await Factory.build('user', userParams)
       authenticatedUser = await updatingUser.toJson()
     })
 

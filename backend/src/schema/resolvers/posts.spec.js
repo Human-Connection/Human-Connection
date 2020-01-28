@@ -1,11 +1,10 @@
 import { createTestClient } from 'apollo-server-testing'
-import Factory from '../../factories'
+import Factory, { cleanDatabase } from '../../factories'
 import { gql } from '../../helpers/jest'
 import { getNeode, getDriver } from '../../db/neo4j'
 import createServer from '../../server'
 
 const driver = getDriver()
-const factory = Factory()
 const neode = getNeode()
 
 let query
@@ -40,7 +39,7 @@ const createPostMutation = gql`
 `
 
 beforeAll(async () => {
-  await factory.cleanDatabase()
+  await cleanDatabase()
   const { server } = createServer({
     context: () => {
       return {
@@ -56,8 +55,8 @@ beforeAll(async () => {
 
 beforeEach(async () => {
   variables = {}
-  user = await factory.create(
-    'User',
+  user = await Factory.build(
+    'user',
     {
       id: 'current-user',
       name: 'TestUser',
@@ -93,7 +92,7 @@ beforeEach(async () => {
 })
 
 afterEach(async () => {
-  await factory.cleanDatabase()
+  await cleanDatabase()
 })
 
 describe('Post', () => {
@@ -101,8 +100,8 @@ describe('Post', () => {
     let followedUser, happyPost, cryPost
     beforeEach(async () => {
       ;[followedUser] = await Promise.all([
-        factory.create(
-          'User',
+        Factory.build(
+          'user',
           {
             id: 'followed-by-me',
             name: 'Followed User',
@@ -114,10 +113,10 @@ describe('Post', () => {
         ),
       ])
       ;[happyPost, cryPost] = await Promise.all([
-        factory.create('Post', { id: 'happy-post' }, { categoryIds: ['cat4'] }),
-        factory.create('Post', { id: 'cry-post' }, { categoryIds: ['cat15'] }),
-        factory.create(
-          'Post',
+        Factory.build('post', { id: 'happy-post' }, { categoryIds: ['cat4'] }),
+        Factory.build('post', { id: 'cry-post' }, { categoryIds: ['cat15'] }),
+        Factory.build(
+          'post',
           {
             id: 'post-by-followed-user',
           },
@@ -355,9 +354,9 @@ describe('UpdatePost', () => {
     }
   `
   beforeEach(async () => {
-    author = await factory.create('User', { slug: 'the-author' })
-    newlyCreatedPost = await factory.create(
-      'Post',
+    author = await Factory.build('user', { slug: 'the-author' })
+    newlyCreatedPost = await Factory.build(
+      'post',
       {
         id: 'p9876',
         title: 'Old title',
@@ -549,8 +548,8 @@ describe('UpdatePost', () => {
 
       describe('are allowed to pin posts', () => {
         beforeEach(async () => {
-          await factory.create(
-            'Post',
+          await Factory.build(
+            'post',
             {
               id: 'created-and-pinned-by-same-admin',
             },
@@ -614,13 +613,13 @@ describe('UpdatePost', () => {
       describe('post created by another admin', () => {
         let otherAdmin
         beforeEach(async () => {
-          otherAdmin = await factory.create('User', {
+          otherAdmin = await Factory.build('user', {
             role: 'admin',
             name: 'otherAdmin',
           })
           authenticatedUser = await otherAdmin.toJson()
-          await factory.create(
-            'Post',
+          await Factory.build(
+            'post',
             {
               id: 'created-by-one-admin-pinned-by-different-one',
             },
@@ -684,8 +683,8 @@ describe('UpdatePost', () => {
       describe('pinned post already exists', () => {
         let pinnedPost
         beforeEach(async () => {
-          await factory.create(
-            'Post',
+          await Factory.build(
+            'post',
             {
               id: 'only-pinned-post',
             },
@@ -718,12 +717,12 @@ describe('UpdatePost', () => {
 
       describe('PostOrdering', () => {
         beforeEach(async () => {
-          await factory.create('Post', {
+          await Factory.build('post', {
             id: 'im-a-pinned-post',
             createdAt: '2019-11-22T17:26:29.070Z',
             pinned: true,
           })
-          await factory.create('Post', {
+          await Factory.build('post', {
             id: 'i-was-created-before-pinned-post',
             // fairly old, so this should be 3rd
             createdAt: '2019-10-22T17:26:29.070Z',
@@ -842,7 +841,7 @@ describe('UpdatePost', () => {
     describe('admin can unpin posts', () => {
       let admin, pinnedPost
       beforeEach(async () => {
-        pinnedPost = await factory.create('Post', { id: 'post-to-be-unpinned' })
+        pinnedPost = await Factory.build('post', { id: 'post-to-be-unpinned' })
         admin = await user.update({
           role: 'admin',
           name: 'Admin',
@@ -909,9 +908,9 @@ describe('DeletePost', () => {
   `
 
   beforeEach(async () => {
-    author = await factory.create('User')
-    await factory.create(
-      'Post',
+    author = await Factory.build('user')
+    await Factory.build(
+      'post',
       {
         id: 'p4711',
         title: 'I will be deleted',
@@ -969,8 +968,8 @@ describe('DeletePost', () => {
 
     describe('if there are comments on the post', () => {
       beforeEach(async () => {
-        await factory.create(
-          'Comment',
+        await Factory.build(
+          'comment',
           {
             content: 'to be deleted comment content',
             contentExcerpt: 'to be deleted comment content',
@@ -1033,8 +1032,8 @@ describe('emotions', () => {
 
   beforeEach(async () => {
     author = await neode.create('User', { id: 'u257' })
-    postToEmote = await factory.create(
-      'Post',
+    postToEmote = await Factory.build(
+      'post',
       {
         id: 'p1376',
       },

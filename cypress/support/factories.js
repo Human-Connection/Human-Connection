@@ -1,4 +1,4 @@
-import Factory from '../../backend/src/factories'
+import Factory, { cleanDatabase } from '../../backend/src/factories'
 import { getDriver, getNeode } from '../../backend/src/db/neo4j'
 
 const neo4jConfigs = {
@@ -12,7 +12,7 @@ const factoryOptions = { neo4jDriver, neodeInstance }
 const factory = Factory(factoryOptions)
 
 beforeEach(async () => {
-  await factory.cleanDatabase()
+  await cleanDatabase()
 })
 
 Cypress.Commands.add('neode', () => {
@@ -38,10 +38,10 @@ Cypress.Commands.add('factory', () => {
 })
 
 Cypress.Commands.add(
-  'create',
+  'build',
   { prevSubject: true },
   async (factory, node, properties, options) => {
-    await factory.create(node, properties, options)
+    await Factory.build(node, properties, options)
     return factory
   }
 )

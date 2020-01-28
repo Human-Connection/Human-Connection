@@ -1,10 +1,9 @@
 import { createTestClient } from 'apollo-server-testing'
-import Factory from '../../factories'
+import Factory, { cleanDatabase } from '../../factories'
 import { gql } from '../../helpers/jest'
 import { getNeode, getDriver } from '../../db/neo4j'
 import createServer from '../../server'
 
-const factory = Factory()
 const driver = getDriver()
 const instance = getNeode()
 
@@ -31,8 +30,8 @@ describe('rewards', () => {
   })
 
   beforeEach(async () => {
-    regularUser = await factory.create(
-      'User',
+    regularUser = await Factory.build(
+      'user',
       {
         id: 'regular-user-id',
         role: 'user',
@@ -42,8 +41,8 @@ describe('rewards', () => {
         password: '1234',
       },
     )
-    moderator = await factory.create(
-      'User',
+    moderator = await Factory.build(
+      'user',
       {
         id: 'moderator-id',
         role: 'moderator',
@@ -52,8 +51,8 @@ describe('rewards', () => {
         email: 'moderator@example.org',
       },
     )
-    administrator = await factory.create(
-      'User',
+    administrator = await Factory.build(
+      'user',
       {
         id: 'admin-id',
         role: 'admin',
@@ -62,7 +61,7 @@ describe('rewards', () => {
         email: 'admin@example.org',
       },
     )
-    badge = await factory.create('Badge', {
+    badge = await Factory.build('badge', {
       id: 'indiegogo_en_rhino',
       type: 'crowdfunding',
       status: 'permanent',
@@ -71,7 +70,7 @@ describe('rewards', () => {
   })
 
   afterEach(async () => {
-    await factory.cleanDatabase()
+    await cleanDatabase()
   })
 
   describe('reward', () => {
@@ -145,7 +144,7 @@ describe('rewards', () => {
       })
 
       it('rewards a second different badge to same user', async () => {
-        await factory.create('Badge', {
+        await Factory.build('badge', {
           id: 'indiegogo_en_racoon',
           icon: '/img/badges/indiegogo_en_racoon.svg',
         })
@@ -187,8 +186,8 @@ describe('rewards', () => {
           },
           errors: undefined,
         }
-        await factory.create(
-          'User',
+        await Factory.build(
+          'user',
           {
             id: 'regular-user-2-id',
           },

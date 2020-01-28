@@ -1,11 +1,9 @@
-import Factory from '../../factories'
-import { Factory as RosieFactory } from 'rosie'
+import Factory, { cleanDatabase } from '../../factories'
 import { gql } from '../../helpers/jest'
 import { getDriver, getNeode } from '../../db/neo4j'
 import createServer from '../../server'
 import { createTestClient } from 'apollo-server-testing'
 
-const factory = Factory()
 const neode = getNeode()
 
 let mutate
@@ -31,7 +29,7 @@ beforeAll(() => {
 })
 
 afterEach(async () => {
-  await factory.cleanDatabase()
+  await cleanDatabase()
 })
 
 describe('Signup', () => {
@@ -59,8 +57,8 @@ describe('Signup', () => {
 
     describe('as admin', () => {
       beforeEach(async () => {
-        const admin = await factory.create(
-          'User',
+        const admin = await Factory.build(
+          'user',
           {
             role: 'admin',
           },
@@ -98,7 +96,7 @@ describe('Signup', () => {
         describe('if the email already exists', () => {
           let emailAddress
           beforeEach(async () => {
-            emailAddress = await factory.create('EmailAddress', {
+            emailAddress = await Factory.build('emailAddress', {
               email: 'someuser@example.org',
               verifiedAt: null,
             })
@@ -106,7 +104,7 @@ describe('Signup', () => {
 
           describe('and the user has registered already', () => {
             beforeEach(async () => {
-              const user = await RosieFactory.build('userWithoutEmailAddress')
+              const user = await Factory.build('userWithoutEmailAddress')
               await emailAddress.relateTo(user, 'belongsTo')
             })
 

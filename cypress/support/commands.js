@@ -75,19 +75,19 @@ Cypress.Commands.add("openPage", page => {
 });
 
 Cypress.Commands.add("createCategories", (id, slug) => {
-  cy.neode()
-    .create("Category", {
+  cy.factory()
+    .build("category", {
       id: `${id}`,
       name: "Just For Fun",
       slug: `${slug}`,
       icon: "smile"
     })
-    .create("Category", {
+    .build("category", {
       id: `${id}1`,
       name: "Happiness & Values",
       icon: "heart-o"
     })
-    .create("Category", {
+    .build("category", {
       id: `${id}2`,
       name: "Health & Wellbeing",
       icon: "medkit"
