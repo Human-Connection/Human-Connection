@@ -51,19 +51,21 @@ beforeAll(async () => {
   await Promise.all([
     user.relateTo(troll, 'following'),
     factory.create('Post', {
-      author: user,
       id: 'p1',
       title: 'Deleted post',
       slug: 'deleted-post',
       deleted: true,
+    }, {
+      author: user,
       categoryIds,
     }),
     factory.create('Post', {
-      author: user,
       id: 'p3',
       title: 'Publicly visible post',
       slug: 'publicly-visible-post',
       deleted: false,
+    }, {
+      author: user,
       categoryIds,
     }),
   ])
@@ -77,12 +79,13 @@ beforeAll(async () => {
     }),
     factory.create('Post', {
       id: 'p2',
-      author: troll,
       title: 'Disabled post',
       content: 'This is an offensive post content',
       contentExcerpt: 'This is an offensive post content',
       image: '/some/offensive/image.jpg',
       deleted: false,
+    }, {
+      author: troll,
       categoryIds,
     }),
     factory.create('Comment', {

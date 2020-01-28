@@ -92,6 +92,7 @@ describe('slugifyMiddleware', () => {
           title: 'Pre-existing post',
           slug: 'pre-existing-post',
           content: 'as Someone else content',
+        }, {
           categoryIds,
         })
       })

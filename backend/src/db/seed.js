@@ -386,86 +386,98 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
 
     const [p0, p1, p3, p4, p5, p6, p9, p10, p11, p13, p14, p15] = await Promise.all([
       factory.create('Post', {
-        author: peterLustig,
         id: 'p0',
         language: sample(languages),
         image: faker.image.unsplash.food(300, 169),
-        categoryIds: ['cat16'],
         imageBlurred: true,
         imageAspectRatio: 300 / 169,
+      }, {
+        categoryIds: ['cat16'],
+        author: peterLustig,
       }),
       factory.create('Post', {
-        author: bobDerBaumeister,
         id: 'p1',
         language: sample(languages),
         image: faker.image.unsplash.technology(300, 1500),
-        categoryIds: ['cat1'],
         imageAspectRatio: 300 / 1500,
+      }, {
+        categoryIds: ['cat1'],
+        author: bobDerBaumeister,
       }),
       factory.create('Post', {
-        author: huey,
         id: 'p3',
         language: sample(languages),
+      }, {
         categoryIds: ['cat3'],
+        author: huey,
       }),
       factory.create('Post', {
-        author: dewey,
         id: 'p4',
         language: sample(languages),
+      }, {
         categoryIds: ['cat4'],
+        author: dewey,
       }),
       factory.create('Post', {
-        author: louie,
         id: 'p5',
         language: sample(languages),
+      }, {
         categoryIds: ['cat5'],
+        author: louie,
       }),
       factory.create('Post', {
-        authorId: 'u1',
         id: 'p6',
         language: sample(languages),
         image: faker.image.unsplash.buildings(300, 857),
-        categoryIds: ['cat6'],
         imageAspectRatio: 300 / 857,
+      }, {
+        categoryIds: ['cat6'],
+        author: peterLustig,
       }),
       factory.create('Post', {
-        author: huey,
         id: 'p9',
         language: sample(languages),
+      }, {
         categoryIds: ['cat9'],
+        author: huey,
       }),
       factory.create('Post', {
-        author: dewey,
         id: 'p10',
-        categoryIds: ['cat10'],
         imageBlurred: true,
+      }, {
+        author: dewey,
+        categoryIds: ['cat10'],
       }),
       factory.create('Post', {
-        author: louie,
         id: 'p11',
         language: sample(languages),
         image: faker.image.unsplash.people(300, 901),
-        categoryIds: ['cat11'],
         imageAspectRatio: 300 / 901,
+      }, {
+        categoryIds: ['cat11'],
+        author: louie,
       }),
       factory.create('Post', {
-        author: bobDerBaumeister,
         id: 'p13',
         language: sample(languages),
+      }, {
+        author: bobDerBaumeister,
         categoryIds: ['cat13'],
       }),
       factory.create('Post', {
-        author: jennyRostock,
         id: 'p14',
         language: sample(languages),
         image: faker.image.unsplash.objects(300, 200),
-        categoryIds: ['cat14'],
         imageAspectRatio: 300 / 450,
+      }, {
+        author: jennyRostock,
+        categoryIds: ['cat14'],
       }),
       factory.create('Post', {
-        author: huey,
         id: 'p15',
         language: sample(languages),
+      }, {
+        author: huey,
         categoryIds: ['cat15'],
       }),
     ])
@@ -828,8 +840,10 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
     await Promise.all(
       [...Array(30).keys()].map(() => {
         return factory.create('Post', {
-          author: jennyRostock,
           image: faker.image.unsplash.objects(),
+        }, {
+          categoryIds: ['cat1'],
+          author: jennyRostock,
         })
       }),
     )
@@ -864,8 +878,9 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
     await Promise.all(
       [...Array(21).keys()].map(() => {
         return factory.create('Post', {
-          author: peterLustig,
           image: faker.image.unsplash.buildings(),
+        }, {
+          author: peterLustig,
         })
       }),
     )
@@ -900,8 +915,9 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
     await Promise.all(
       [...Array(11).keys()].map(() => {
         return factory.create('Post', {
-          author: dewey,
           image: faker.image.unsplash.food(),
+        }, {
+          author: dewey,
         })
       }),
     )
@@ -936,8 +952,9 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
     await Promise.all(
       [...Array(16).keys()].map(() => {
         return factory.create('Post', {
-          author: louie,
           image: faker.image.unsplash.technology(),
+        }, {
+          author: louie,
         })
       }),
     )
@@ -945,8 +962,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
     await Promise.all(
       [...Array(4).keys()].map(() => {
         return factory.create('Comment', {
-          author: louie,
           postId: 'p1',
+          author: louie,
         })
       }),
     )
@@ -972,8 +989,9 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
     await Promise.all(
       [...Array(45).keys()].map(() => {
         return factory.create('Post', {
-          author: bobDerBaumeister,
           image: faker.image.unsplash.people(),
+        }, {
+          author: bobDerBaumeister,
         })
       }),
     )
@@ -1008,8 +1026,9 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
     await Promise.all(
       [...Array(8).keys()].map(() => {
         return factory.create('Post', {
-          author: huey,
           image: faker.image.unsplash.nature(),
+        }, {
+          author: huey,
         })
       }),
     )

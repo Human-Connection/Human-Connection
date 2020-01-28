@@ -329,9 +329,10 @@ describe('DeleteUser', () => {
             icon: 'university',
           })
           await factory.create('Post', {
-            author: user,
             id: 'p139',
             content: 'Post by user u343',
+          }, {
+            author: user,
             categoryIds,
           })
           await factory.create('Comment', {
