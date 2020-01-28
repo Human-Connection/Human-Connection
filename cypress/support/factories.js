@@ -40,17 +40,9 @@ Cypress.Commands.add('factory', () => {
 Cypress.Commands.add(
   'create',
   { prevSubject: true },
-  async (factory, node, properties) => {
-    await factory.create(node, properties)
+  async (factory, node, properties, options) => {
+    await factory.create(node, properties, options)
     return factory
   }
 )
 
-Cypress.Commands.add(
-  'relate',
-  { prevSubject: true },
-  async (factory, node, relationship, properties) => {
-    await factory.relate(node, relationship, properties)
-    return factory
-  }
-)

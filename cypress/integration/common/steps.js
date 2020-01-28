@@ -192,11 +192,6 @@ When("I press {string}", label => {
   cy.contains(label).click();
 });
 
-Given("we have this user in our database:", table => {
-  const [firstRow] = table.hashes()
-  cy.factory().create('User', firstRow)
-})
-
 Given("we have the following posts in our database:", table => {
   cy.factory().create('Category', {
     id: `cat-456`,
