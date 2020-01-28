@@ -25,7 +25,7 @@ export default {
       return this.error.key || mapping[this.error.statusCode] || 'error-pages.default'
     },
     image() {
-      return `/img/svg/errors/error${this.error.statusCode ? this.error.statusCode : '500'}.svg`
+      return `/img/svg/errors/error${this.error.statusCode || '500'}.svg`
     },
   },
 }
@@ -42,7 +42,7 @@ export default {
   margin: $space-base;
 }
 .error-image {
-  width: 70%;
+  width: 30%;
   display: block;
   margin-left: auto;
   margin-right: auto;
