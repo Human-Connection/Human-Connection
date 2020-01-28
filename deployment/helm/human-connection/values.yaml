@@ -11,8 +11,6 @@ smtpHost: "mailserver.human-connection"
 smtpPort: "25"
 smtpUsername:
 smtpPassword:
-sentryDsnWebapp: "https://f6a31aa8f406426187cb45ae6dacdbeb@nitro-sentry.human-connection.org/7"
-sentryDsnBackend: "https://44e0f3fb04894fbfbcf898f2bcf652de@nitro-sentry.human-connection.org/6"
 neo4jResourceRequestsMemory: "1G"
 neo4jResourceLimitsMemory: "2G"
 neo4jConfig:

@@ -24,14 +24,14 @@ spec:
         human-connection.org/selector: deployment-backend
     spec:
       containers:
-      - envFrom:
+      - name: backend
+        image: humanconnection/nitro-backend:latest
+        imagePullPolicy: {{ .Values.pullPolicy }}
+        envFrom:
         - configMapRef:
             name: {{ .Release.Name }}-configmap
         - secretRef:
             name: {{ .Release.Name }}-secrets
-        image: humanconnection/nitro-backend:latest
-        imagePullPolicy: {{ .Values.pullPolicy }}
-        name: backend
         ports:
         - containerPort: 4000
           protocol: TCP
@@ -50,7 +50,4 @@ spec:
       - name: uploads
         persistentVolumeClaim:
           claimName: uploads-claim
-      dnsPolicy: ClusterFirst
-      restartPolicy: Always
-      terminationGracePeriodSeconds: 30
 status: {}
