@@ -31,10 +31,11 @@ Given("I see David Irving's post on the post page", page => {
 
 Given('I am logged in with a {string} role', role => {
   cy.factory().create('User', {
-    email: `${role}@example.org`,
-    password: '1234',
     termsAndConditionsAgreedVersion: VERSION,
     role
+  }, {
+    email: `${role}@example.org`,
+    password: '1234',
   })
   cy.login({
     email: `${role}@example.org`,
@@ -127,7 +128,7 @@ Given('somebody reported the following posts:', table => {
       password: '1234'
     }
     cy.factory()
-      .create('User', submitter)
+      .create('User', {}, submitter)
       .authenticateAs(submitter)
       .mutate(gql`mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
         fileReport(resourceId: $resourceId, reasonCategory: $reasonCategory, reasonDescription: $reasonDescription) {

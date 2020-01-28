@@ -34,8 +34,8 @@ Factory.define('userWithoutEmailAddress')
   })
 
 Factory.define('user')
-  .option('email', faker.internet.exampleEmail)
   .extend('userWithoutEmailAddress')
+  .option('email', faker.internet.exampleEmail)
   .after(async (buildObject, options) => {
     const [user, email] = await Promise.all([
       buildObject,
@@ -47,7 +47,7 @@ Factory.define('user')
 
 export default function create() {
   return {
-    factory: async ({ args, options }) => {
+    factory: ({ args, options }) => {
       return Factory.build('user', args, options)
     },
   }
