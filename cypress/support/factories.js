@@ -40,8 +40,8 @@ Cypress.Commands.add('factory', () => {
 Cypress.Commands.add(
   'build',
   { prevSubject: true },
-  async (factory, node, properties, options) => {
-    await Factory.build(node, properties, options)
+  async (factory, name, atrributes, options) => {
+    await Factory.build(name, atrributes, options)
     return factory
   }
 )

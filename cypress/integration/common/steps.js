@@ -42,26 +42,18 @@ Given("I am logged in as the muted user", () => {
 });
 
 Given("we have a selection of categories", () => {
-  cy.createCategories("cat0", "just-for-fun");
+  cy.factory().build('category', { id: "cat0", slug: "just-for-fun" });
 });
 
 Given("we have a selection of tags and categories as well as posts", () => {
-  cy.createCategories("cat12", "cat121", "cat122")
-    .factory()
-    .build("tag", {
-      id: "Ecology"
-    })
-    .build("tag", {
-      id: "Nature"
-    })
-    .build("tag", {
-      id: "Democracy"
-    });
-
   cy.factory()
-    .build("user", {
-      id: 'a1'
-    })
+    .build('category', { id: 'cat12', name: "Just For Fun", icon: "smile", })
+    .build('category', { id: 'cat121', name: "Happiness & Values", icon: "heart-o"})
+    .build('category', { id: 'cat122', name: "Health & Wellbeing", icon: "medkit"})
+    .build("tag", { id: "Ecology" })
+    .build("tag", { id: "Nature" })
+    .build("tag", { id: "Democracy" })
+    .build("user", { id: 'a1' })
     .build("post", {}, {
       authorId: 'a1',
       tagIds: ["Ecology", "Nature", "Democracy"],
@@ -71,20 +63,14 @@ Given("we have a selection of tags and categories as well as posts", () => {
       authorId: 'a1',
       tagIds: ["Nature", "Democracy"],
       categoryIds: ["cat121"]
-    });
-
-  cy.factory()
-    .build("user", {
-      id: 'a2'
     })
+    .build("user", { id: 'a2' })
     .build("post", {}, {
       authorId: 'a2',
       tagIds: ['Nature', 'Democracy'],
       categoryIds: ["cat12"]
-    });
-  cy.factory()
+    })
     .build("post", {}, {
-      authorId: narratorParams.id,
       tagIds: ['Democracy'],
       categoryIds: ["cat122"]
     })
@@ -95,12 +81,12 @@ Given("we have the following user accounts:", table => {
     cy.factory().build("user", {
       ...params,
       ...termsAndConditionsAgreedVersion
-    });
+    }, params);
   });
 });
 
 Given("I have a user account", () => {
-  cy.factory().build("user", narratorParams);
+  cy.factory().build("user", narratorParams, loginCredentials);
 });
 
 Given("my user account has the role {string}", role => {
@@ -197,16 +183,16 @@ Given("we have the following posts in our database:", table => {
     icon: "smile"
   })
 
-  table.hashes().forEach(({
-    ...postAttributes
-  }, i) => {
-    postAttributes = {
-      ...postAttributes,
-      deleted: Boolean(postAttributes.deleted),
-      disabled: Boolean(postAttributes.disabled),
-      pinned: Boolean(postAttributes.pinned),
-    }
-    cy.factory().build("post", postAttributes, { categoryIds: ['cat-456'] });
+  table.hashes().forEach((attributesOrOptions, i) => {
+    cy.factory().build("post", {
+      ...attributesOrOptions,
+      deleted: Boolean(attributesOrOptions.deleted),
+      disabled: Boolean(attributesOrOptions.disabled),
+      pinned: Boolean(attributesOrOptions.pinned),
+    }, {
+      ...attributesOrOptions,
+      categoryIds: ['cat-456']
+    });
   })
 });
 
@@ -476,13 +462,11 @@ Given("I follow the user {string}", name => {
 });
 
 Given('"Spammy Spammer" wrote a post {string}', title => {
-  cy.createCategories("cat21")
-    .factory()
+  cy.factory()
     .build("post", {
       title,
     }, {
       authorId: 'annoying-user',
-      categoryIds: ["cat21"]
     });
 });
 
@@ -500,13 +484,11 @@ Then("nobody is following the user profile anymore", () => {
 });
 
 Given("I wrote a post {string}", title => {
-  cy.createCategories(`cat213`, title)
-    .factory()
+  cy.factory()
     .build("post", {
       title,
     }, {
       authorId: narratorParams.id,
-      categoryIds: ["cat213"]
     });
 });
 

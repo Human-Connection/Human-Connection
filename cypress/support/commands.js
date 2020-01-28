@@ -75,27 +75,6 @@ Cypress.Commands.add("openPage", page => {
   cy.visit(`/${page}`);
 });
 
-Cypress.Commands.add("createCategories", (id, slug) => {
-  cy.factory()
-    .build("category", {
-      id: `${id}`,
-      name: "Just For Fun",
-      slug: `${slug}`,
-      icon: "smile"
-    })
-    .build("category", {
-      id: `${id}1`,
-      name: "Happiness & Values",
-      icon: "heart-o"
-    })
-    .build("category", {
-      id: `${id}2`,
-      name: "Health & Wellbeing",
-      icon: "medkit"
-    });
-});
-
-
 Cypress.Commands.add(
   'authenticateAs',
   async ({email, password}) => {
