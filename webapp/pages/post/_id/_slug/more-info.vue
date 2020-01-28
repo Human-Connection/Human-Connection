@@ -3,10 +3,7 @@
     <h2 style="margin-bottom: .2em;">{{ $t('post.moreInfo.title') }}</h2>
     <p>{{ $t('post.moreInfo.description') }}</p>
     <ds-space />
-    <h3>
-      <!-- <ds-icon name="compass" /> -->
-      {{ $t('post.moreInfo.titleOfCategoriesSection') }}
-    </h3>
+    <h3>{{ $t('post.moreInfo.titleOfCategoriesSection') }}</h3>
     <hc-category
       v-for="category in post.categories"
       :key="category.id"
@@ -22,7 +19,11 @@
     <h3>{{ $t('post.moreInfo.titleOfRelatedContributionsSection') }}</h3>
     <ds-section>
       <masonry-grid v-if="post.relatedContributions && post.relatedContributions.length">
-        <masonry-grid-item v-for="relatedPost in post.relatedContributions" :key="relatedPost.id">
+        <masonry-grid-item
+          v-for="relatedPost in post.relatedContributions"
+          :key="relatedPost.id"
+          :imageAspectRatio="relatedPost.imageAspectRatio"
+        >
           <hc-post-card
             :post="relatedPost"
             :width="{ base: '100%', lg: 1 }"
@@ -36,8 +37,8 @@
 </template>
 
 <script>
-import HcEmpty from '~/components/Empty.vue'
-import HcPostCard from '~/components/PostCard'
+import HcEmpty from '~/components/Empty/Empty'
+import HcPostCard from '~/components/PostCard/PostCard.vue'
 import HcCategory from '~/components/Category'
 import HcHashtag from '~/components/Hashtag/Hashtag'
 import { relatedContributions } from '~/graphql/PostQuery'
@@ -87,9 +88,5 @@ export default {
 <style lang="scss">
 .related-post {
   box-shadow: $box-shadow-base;
-
-  .ds-card-image {
-    max-height: 80px;
-  }
 }
 </style>

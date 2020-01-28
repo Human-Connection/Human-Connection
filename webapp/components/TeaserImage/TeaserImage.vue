@@ -5,25 +5,37 @@
     id="postdropzone"
     class="ds-card-image"
     :use-custom-slot="true"
-    @vdropzone-thumbnail="thumbnail"
     @vdropzone-error="verror"
+    @vdropzone-thumbnail="transformImage"
   >
-    <div class="dz-message">
+    <div class="crop-overlay" ref="cropperOverlay" v-show="showCropper">
+      <base-button @click="cropImage" class="crop-confirm" filled>
+        {{ $t('contribution.teaserImage.cropperConfirm') }}
+      </base-button>
+      <base-button
+        class="crop-cancel"
+        icon="close"
+        size="small"
+        circle
+        danger
+        filled
+        @click="cancelCrop"
+      />
+    </div>
+    <div
+      :class="{
+        'hc-attachments-upload-area-post': true,
+        'hc-attachments-upload-area-update-post': contribution,
+      }"
+    >
+      <slot></slot>
       <div
         :class="{
-          'hc-attachments-upload-area-post': true,
-          'hc-attachments-upload-area-update-post': contribution,
+          'hc-drag-marker-post': true,
+          'hc-drag-marker-update-post': contribution,
         }"
       >
-        <slot></slot>
-        <div
-          :class="{
-            'hc-drag-marker-post': true,
-            'hc-drag-marker-update-post': contribution,
-          }"
-        >
-          <ds-icon name="image" size="xxx-large" />
-        </div>
+        <base-icon name="image" />
       </div>
     </div>
   </vue-dropzone>
@@ -31,6 +43,8 @@
 
 <script>
 import vueDropzone from 'nuxt-dropzone'
+import Cropper from 'cropperjs'
+import 'cropperjs/dist/cropper.css'
 
 export default {
   components: {
@@ -42,20 +56,19 @@ export default {
   data() {
     return {
       dropzoneOptions: {
-        url: this.addTeaserImage,
+        url: () => '',
         maxFilesize: 5.0,
         previewTemplate: this.template(),
       },
+      image: null,
+      file: null,
+      editor: null,
+      cropper: null,
+      thumbnailElement: null,
+      oldImage: null,
       error: false,
+      showCropper: false,
     }
-  },
-  watch: {
-    error() {
-      let that = this
-      setTimeout(function() {
-        that.error = false
-      }, 2000)
-    },
   },
   methods: {
     template() {
@@ -64,33 +77,65 @@ export default {
                   <div data-dz-thumbnail-bg></div>
                 </div>
               </div>
-      `
+	     `
     },
     verror(file, message) {
       this.error = true
       this.$toast.error(file.status, message)
+      setTimeout(() => {
+        this.error = false
+      }, 2000)
     },
-    addTeaserImage(file) {
-      this.$emit('addTeaserImage', file[0])
-      return ''
+    transformImage(file) {
+      this.file = file
+      this.showCropper = true
+      this.initEditor()
+      this.initCropper()
     },
-    thumbnail: (file, dataUrl) => {
-      let thumbnailElement, contributionImage, uploadArea, thumbnailPreview, image
-      if (file.previewElement) {
-        thumbnailElement = document.querySelectorAll('#postdropzone')[0]
-        contributionImage = document.querySelectorAll('.contribution-image')[0]
-        thumbnailPreview = document.querySelectorAll('.thumbnail-preview')[0]
-        if (contributionImage) {
-          uploadArea = document.querySelectorAll('.hc-attachments-upload-area-update-post')[0]
-          uploadArea.removeChild(contributionImage)
-          uploadArea.classList.remove('hc-attachments-upload-area-update-post')
-        }
-        image = new Image()
-        image.src = URL.createObjectURL(file)
-        image.classList.add('thumbnail-preview')
-        if (thumbnailPreview) return thumbnailElement.replaceChild(image, thumbnailPreview)
-        thumbnailElement.appendChild(image)
-      }
+    initEditor() {
+      this.editor = this.$refs.cropperOverlay
+      this.clearImages()
+      this.thumbnailElement.appendChild(this.editor)
+    },
+    clearImages() {
+      this.thumbnailElement = document.querySelectorAll('#postdropzone')[0]
+      const thumbnailPreview = document.querySelectorAll('.thumbnail-preview')[0]
+      if (thumbnailPreview) thumbnailPreview.remove()
+      const contributionImage = document.querySelectorAll('.contribution-image')[0]
+      this.oldImage = contributionImage
+      if (contributionImage) contributionImage.remove()
+    },
+    initCropper() {
+      this.image = new Image()
+      this.image.src = URL.createObjectURL(this.file)
+      this.editor.appendChild(this.image)
+      this.cropper = new Cropper(this.image, { zoomable: false, autoCropArea: 0.9 })
+    },
+    cropImage() {
+      this.showCropper = false
+      const canvas = this.cropper.getCroppedCanvas()
+      canvas.toBlob(blob => {
+        const imageAspectRatio = canvas.width / canvas.height
+        this.setupPreview(canvas)
+        this.removeCropper()
+        const croppedImageFile = new File([blob], this.file.name, { type: this.file.type })
+        this.$emit('addTeaserImage', croppedImageFile)
+        this.$emit('addImageAspectRatio', imageAspectRatio)
+      }, 'image/jpeg')
+    },
+    setupPreview(canvas) {
+      this.image = new Image()
+      this.image.src = canvas.toDataURL()
+      this.image.classList.add('thumbnail-preview')
+      this.thumbnailElement.appendChild(this.image)
+    },
+    cancelCrop() {
+      this.showCropper = false
+      if (this.oldImage) this.thumbnailElement.appendChild(this.oldImage)
+      this.removeCropper()
+    },
+    removeCropper() {
+      this.editor.removeChild(document.querySelectorAll('.cropper-container')[0])
     },
   },
 }
@@ -98,14 +143,8 @@ export default {
 <style lang="scss">
 #postdropzone {
   width: 100%;
-  min-height: 300px;
+  min-height: 400px;
   background-color: $background-color-softest;
-}
-
-@media only screen and (max-width: 960px) {
-  #postdropzone {
-    min-height: 200px;
-  }
 }
 
 .hc-attachments-upload-area-post {
@@ -134,11 +173,10 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 180px 5px;
   color: hsl(0, 0%, 25%);
   transition: all 0.2s ease-out;
   font-size: 60px;
-  margin: 80px 5px;
-
   background-color: $background-color-softest;
   opacity: 0.65;
 
@@ -178,7 +216,23 @@ export default {
   border-top: $border-size-base solid $border-color-softest;
 }
 
-.contribution-image {
-  max-height: 300px;
+.crop-overlay {
+  max-height: 2000px;
+  position: relative;
+  width: 100%;
+  background-color: #000;
+}
+
+.crop-confirm {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  z-index: 1;
+}
+.crop-cancel {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  z-index: 1;
 }
 </style>

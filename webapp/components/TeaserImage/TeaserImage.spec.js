@@ -1,10 +1,7 @@
-import { mount, createLocalVue } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import TeaserImage from './TeaserImage.vue'
-import Styleguide from '@human-connection/styleguide'
 
-const localVue = createLocalVue()
-
-localVue.use(Styleguide)
+const localVue = global.localVue
 
 describe('TeaserImage.vue', () => {
   let wrapper
@@ -15,6 +12,7 @@ describe('TeaserImage.vue', () => {
       $toast: {
         error: jest.fn(),
       },
+      $t: jest.fn(string => string),
     }
   })
   describe('mount', () => {
@@ -23,17 +21,6 @@ describe('TeaserImage.vue', () => {
     }
     beforeEach(() => {
       wrapper = Wrapper()
-    })
-
-    describe('File upload', () => {
-      const imageUpload = [
-        { file: { filename: 'avataar.svg', previewElement: '' }, url: 'someUrlToImage' },
-      ]
-
-      it('supports adding a teaser image', () => {
-        wrapper.vm.addTeaserImage(imageUpload)
-        expect(wrapper.emitted().addTeaserImage[0]).toEqual(imageUpload)
-      })
     })
 
     describe('handles errors', () => {

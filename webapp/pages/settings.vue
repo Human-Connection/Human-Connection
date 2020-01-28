@@ -24,16 +24,28 @@ export default {
           path: `/settings`,
         },
         {
+          name: this.$t('settings.email.name'),
+          path: `/settings/my-email-address`,
+        },
+        {
           name: this.$t('settings.security.name'),
           path: `/settings/security`,
+        },
+        {
+          name: this.$t('settings.privacy.name'),
+          path: '/settings/privacy',
         },
         {
           name: this.$t('settings.social-media.name'),
           path: `/settings/my-social-media`,
         },
         {
-          name: this.$t('settings.blocked-users.name'),
-          path: `/settings/blocked-users`,
+          name: this.$t('settings.muted-users.name'),
+          path: `/settings/muted-users`,
+        },
+        {
+          name: this.$t('settings.embeds.name'),
+          path: `/settings/embeds`,
         },
         {
           name: this.$t('settings.deleteUserAccount.name'),

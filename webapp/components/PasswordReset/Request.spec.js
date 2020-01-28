@@ -1,10 +1,8 @@
-import { config, mount, createLocalVue } from '@vue/test-utils'
+import { config, mount } from '@vue/test-utils'
 import Request from './Request'
-import Styleguide from '@human-connection/styleguide'
 
-const localVue = createLocalVue()
+const localVue = global.localVue
 
-localVue.use(Styleguide)
 config.stubs['sweetalert-icon'] = '<span><slot /></span>'
 config.stubs['client-only'] = '<span><slot /></span>'
 config.stubs['nuxt-link'] = '<span><slot /></span>'
@@ -18,7 +16,7 @@ describe('Request', () => {
         success: jest.fn(),
         error: jest.fn(),
       },
-      $t: jest.fn(),
+      $t: jest.fn(t => t),
       $apollo: {
         loading: false,
         mutate: jest.fn().mockResolvedValue({ data: { reqestPasswordReset: true } }),
@@ -45,7 +43,7 @@ describe('Request', () => {
 
     it('renders a password reset form', () => {
       wrapper = Wrapper()
-      expect(wrapper.find('.password-reset').exists()).toBe(true)
+      expect(wrapper.find('form').exists()).toBe(true)
     })
 
     describe('submit', () => {
@@ -69,7 +67,10 @@ describe('Request', () => {
       })
 
       it('displays a message that a password email was requested', () => {
-        const expected = ['password-reset.form.submitted', { email: 'mail@example.org' }]
+        const expected = [
+          'components.password-reset.request.form.submitted',
+          { email: 'mail@example.org' },
+        ]
         expect(mocks.$t).toHaveBeenCalledWith(...expected)
       })
 
@@ -79,6 +80,19 @@ describe('Request', () => {
         it('emits `handleSubmitted`', () => {
           expect(wrapper.emitted('handleSubmitted')).toEqual([[{ email: 'mail@example.org' }]])
         })
+      })
+    })
+
+    describe('capital letters in a gmail address', () => {
+      beforeEach(async () => {
+        wrapper = Wrapper()
+        wrapper.find('input#email').setValue('mAiL@gmail.com')
+        await wrapper.find('form').trigger('submit')
+      })
+
+      it('normalizes email to lower case letters', () => {
+        const expected = expect.objectContaining({ variables: { email: 'mail@gmail.com' } })
+        expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expected)
       })
     })
   })

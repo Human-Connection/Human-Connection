@@ -160,7 +160,7 @@ hr {
     align-content: center;
     align-items: center;
 
-    .ds-icon {
+    .base-icon {
       padding-right: $space-xx-small;
     }
   }
@@ -174,4 +174,8 @@ hr {
   hyphens: auto;
   overflow-wrap: break-word;
   word-wrap: break-word;
+}
+
+.dropdown-arrow {
+  font-size: $font-size-xx-small;
 }

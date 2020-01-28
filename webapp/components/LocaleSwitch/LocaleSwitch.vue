@@ -7,9 +7,9 @@
       href="#"
       @click.prevent="toggleMenu()"
     >
-      <ds-icon style="margin-right: 2px;" name="globe" />
-      {{ current.code.toUpperCase() }}
-      <ds-icon style="margin-left: 2px" size="xx-small" name="angle-down" />
+      <base-icon name="globe" />
+      <span class="label">{{ current.code.toUpperCase() }}</span>
+      <base-icon class="dropdown-arrow" name="angle-down" />
     </a>
     <ds-menu
       slot="popover"
@@ -33,9 +33,12 @@
 </template>
 
 <script>
+import gql from 'graphql-tag'
 import Dropdown from '~/components/Dropdown'
 import find from 'lodash/find'
 import orderBy from 'lodash/orderBy'
+import locales from '~/locales'
+import { mapGetters, mapMutations } from 'vuex'
 
 export default {
   components: {
@@ -47,7 +50,7 @@ export default {
   },
   data() {
     return {
-      locales: orderBy(process.env.locales, 'name'),
+      locales: orderBy(locales, 'name'),
     }
   },
   computed: {
@@ -55,7 +58,7 @@ export default {
       return find(this.locales, { code: this.$i18n.locale() })
     },
     routes() {
-      let routes = this.locales.map(locale => {
+      const routes = this.locales.map(locale => {
         return {
           name: locale.name,
           path: locale.code,
@@ -63,14 +66,51 @@ export default {
       })
       return routes
     },
+    ...mapGetters({
+      currentUser: 'auth/user',
+    }),
   },
   methods: {
     changeLanguage(locale, toggleMenu) {
       this.$i18n.set(locale)
+      this.updateUserLocale()
       toggleMenu()
     },
     matcher(locale) {
       return locale === this.$i18n.locale()
+    },
+
+    ...mapMutations({
+      setCurrentUser: 'auth/SET_USER',
+    }),
+    async updateUserLocale() {
+      if (!this.currentUser || !this.currentUser.id) return null
+      try {
+        await this.$apollo.mutate({
+          mutation: gql`
+            mutation($id: ID!, $locale: String) {
+              UpdateUser(id: $id, locale: $locale) {
+                id
+                locale
+              }
+            }
+          `,
+          variables: {
+            id: this.currentUser.id,
+            locale: this.$i18n.locale(),
+          },
+          update: (store, { data: { UpdateUser } }) => {
+            const { locale } = UpdateUser
+            this.setCurrentUser({
+              ...this.currentUser,
+              locale,
+            })
+          },
+        })
+        this.$toast.success(this.$t('contribution.success'))
+      } catch (err) {
+        this.$toast.error(err.message)
+      }
     },
   },
 }
@@ -84,6 +124,10 @@ export default {
   height: 100%;
   padding: $space-xx-small;
   color: $text-color-soft;
+
+  > .label {
+    margin: 0 $space-xx-small;
+  }
 }
 
 nav.locale-menu-popover {

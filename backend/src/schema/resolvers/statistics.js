@@ -1,37 +1,45 @@
+import log from './helpers/databaseLogger'
+
 export default {
   Query: {
-    statistics: async (parent, args, { driver, user }) => {
+    statistics: async (_parent, _args, { driver }) => {
       const session = driver.session()
-      const response = {}
+      const counts = {}
       try {
         const mapping = {
           countUsers: 'User',
           countPosts: 'Post',
           countComments: 'Comment',
           countNotifications: 'NOTIFIED',
-          countInvites: 'InvitationCode',
+          countEmails: 'EmailAddress',
           countFollows: 'FOLLOWS',
           countShouts: 'SHOUTED',
         }
-        const cypher = `
-          CALL apoc.meta.stats() YIELD labels, relTypesCount
-          RETURN labels, relTypesCount
-        `
-        const result = await session.run(cypher)
-        const [statistics] = await result.records.map(record => {
-          return {
-            ...record.get('labels'),
-            ...record.get('relTypesCount'),
-          }
+        const statisticsReadTxResultPromise = session.readTransaction(async transaction => {
+          const statisticsTransactionResponse = await transaction.run(
+            `
+              CALL apoc.meta.stats() YIELD labels, relTypesCount
+              RETURN labels, relTypesCount
+            `,
+          )
+          log(statisticsTransactionResponse)
+          return statisticsTransactionResponse.records.map(record => {
+            return {
+              ...record.get('labels'),
+              ...record.get('relTypesCount'),
+            }
+          })
         })
+        const [statistics] = await statisticsReadTxResultPromise
         Object.keys(mapping).forEach(key => {
           const stat = statistics[mapping[key]]
-          response[key] = stat ? stat.toNumber() : 0
+          counts[key] = stat ? stat.toNumber() : 0
         })
+        counts.countInvites = counts.countEmails - counts.countUsers
+        return counts
       } finally {
         session.close()
       }
-      return response
     },
   },
 }

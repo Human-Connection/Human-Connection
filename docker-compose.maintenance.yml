@@ -15,7 +15,6 @@ services:
     environment:
       - NEO4J_dbms_security_auth__enabled=false
       - NEO4J_dbms_memory_heap_max__size=2G
-      - GRAPHQL_PORT=4000
       - GRAPHQL_URI=http://localhost:4000
       - CLIENT_URI=http://localhost:3000
       - JWT_SECRET=b/&&7b78BF&fv/Vd

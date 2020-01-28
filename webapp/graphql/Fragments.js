@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 
-export const userFragment = lang => gql`
+export const userFragment = gql`
   fragment user on User {
     id
     slug
@@ -8,11 +8,10 @@ export const userFragment = lang => gql`
     avatar
     disabled
     deleted
-    shoutedCount
-    contributionsCount
-    commentedCount
-    followedByCount
-    followedByCurrentUser
+  }
+`
+export const locationAndBadgesFragment = lang => gql`
+  fragment locationAndBadges on User {
     location {
       name: name${lang}
     }
@@ -20,6 +19,40 @@ export const userFragment = lang => gql`
       id
       icon
     }
+  }
+`
+
+export const userCountsFragment = gql`
+  fragment userCounts on User {
+    shoutedCount
+    contributionsCount
+    commentedCount
+    followedByCount
+    followingCount
+    followedByCurrentUser
+  }
+`
+
+export const postFragment = gql`
+  fragment post on Post {
+    id
+    title
+    content
+    contentExcerpt
+    createdAt
+    updatedAt
+    disabled
+    deleted
+    slug
+    image
+    language
+    imageBlurred
+    author {
+      ...user
+    }
+    pinnedAt
+    imageAspectRatio
+    pinned
   }
 `
 
@@ -31,22 +64,9 @@ export const postCountsFragment = gql`
     emotionsCount
   }
 `
-export const postFragment = lang => gql`
-  ${userFragment(lang)}
 
-  fragment post on Post {
-    id
-    title
-    content
-    contentExcerpt
-    createdAt
-    disabled
-    deleted
-    slug
-    image
-    author {
-      ...user
-    }
+export const tagsCategoriesAndPinnedFragment = gql`
+  fragment tagsCategoriesAndPinned on Post {
     tags {
       id
     }
@@ -56,20 +76,22 @@ export const postFragment = lang => gql`
       name
       icon
     }
+    pinnedBy {
+      id
+      name
+      role
+    }
   }
 `
-export const commentFragment = lang => gql`
-  ${userFragment(lang)}
 
+export const commentFragment = gql`
   fragment comment on Comment {
     id
     createdAt
+    updatedAt
     disabled
     deleted
     content
     contentExcerpt
-    author {
-      ...user
-    }
   }
 `

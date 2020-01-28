@@ -11,11 +11,6 @@
             <p v-html="$t(`termsAndConditions.${section}.description`)" />
           </li>
         </ol>
-        <p>{{ $t('termsAndConditions.have-fun') }}</p>
-        <br />
-        <p>
-          <strong v-html="$t('termsAndConditions.closing')" />
-        </p>
       </div>
     </ds-container>
   </div>
@@ -31,15 +26,17 @@ export default {
   },
   data() {
     return {
+      // if you change terms and conditions please change also version in file "webapp/constants/terms-and-conditions-version.js"
       sections: [
-        'risk',
-        'data-privacy',
-        'work-in-progress',
+        'terms-of-service',
+        'use-and-license',
+        'privacy-statement',
         'code-of-conduct',
         'moderation',
-        'fairness',
-        'questions',
-        'human-connection',
+        'errors-and-feedback',
+        'no-commercial-use',
+        'help-and-questions',
+        'addition',
       ],
     }
   },

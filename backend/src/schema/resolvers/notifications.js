@@ -1,3 +1,5 @@
+import log from './helpers/databaseLogger'
+
 const resourceTypes = ['Post', 'Comment']
 
 const transformReturnType = record => {
@@ -18,9 +20,8 @@ export default {
     notifications: async (_parent, args, context, _resolveInfo) => {
       const { user: currentUser } = context
       const session = context.driver.session()
-      let notifications
-      let whereClause
-      let orderByClause
+      let whereClause, orderByClause
+
       switch (args.read) {
         case true:
           whereClause = 'WHERE notification.read = TRUE'
@@ -41,40 +42,64 @@ export default {
         default:
           orderByClause = ''
       }
+      const offset = args.offset && typeof args.offset === 'number' ? `SKIP ${args.offset}` : ''
+      const limit = args.first && typeof args.first === 'number' ? `LIMIT ${args.first}` : ''
 
+      const readTxResultPromise = session.readTransaction(async transaction => {
+        const notificationsTransactionResponse = await transaction.run(
+          ` 
+          MATCH (resource {deleted: false, disabled: false})-[notification:NOTIFIED]->(user:User {id:$id})
+          ${whereClause}
+          WITH user, notification, resource,
+          [(resource)<-[:WROTE]-(author:User) | author {.*}] as authors,
+          [(resource)-[:COMMENTS]->(post:Post)<-[:WROTE]-(author:User) | post{.*, author: properties(author)} ] as posts
+          WITH resource, user, notification, authors, posts,
+          resource {.*, __typename: labels(resource)[0], author: authors[0], post: posts[0]} as finalResource
+          RETURN notification {.*, from: finalResource, to: properties(user)}
+          ${orderByClause}
+          ${offset} ${limit}
+          `,
+          { id: currentUser.id },
+        )
+        log(notificationsTransactionResponse)
+        return notificationsTransactionResponse.records.map(record => record.get('notification'))
+      })
       try {
-        const cypher = `
-        MATCH (resource {deleted: false, disabled: false})-[notification:NOTIFIED]->(user:User {id:$id})
-        ${whereClause}
-        RETURN resource, notification, user
-        ${orderByClause}
-        `
-        const result = await session.run(cypher, { id: currentUser.id })
-        notifications = await result.records.map(transformReturnType)
+        const notifications = await readTxResultPromise
+        return notifications
       } finally {
         session.close()
       }
-      return notifications
     },
   },
   Mutation: {
     markAsRead: async (parent, args, context, resolveInfo) => {
       const { user: currentUser } = context
       const session = context.driver.session()
-      let notification
+      const writeTxResultPromise = session.writeTransaction(async transaction => {
+        const markNotificationAsReadTransactionResponse = await transaction.run(
+          ` 
+            MATCH (resource {id: $resourceId})-[notification:NOTIFIED {read: FALSE}]->(user:User {id:$id})
+            SET notification.read = TRUE
+            RETURN resource, notification, user
+          `,
+          { resourceId: args.id, id: currentUser.id },
+        )
+        log(markNotificationAsReadTransactionResponse)
+        return markNotificationAsReadTransactionResponse.records.map(transformReturnType)
+      })
       try {
-        const cypher = `
-        MATCH (resource {id: $resourceId})-[notification:NOTIFIED {read: FALSE}]->(user:User {id:$id})
-        SET notification.read = TRUE
-        RETURN resource, notification, user
-        `
-        const result = await session.run(cypher, { resourceId: args.id, id: currentUser.id })
-        const notifications = await result.records.map(transformReturnType)
-        notification = notifications[0]
+        const [notifications] = await writeTxResultPromise
+        return notifications
       } finally {
         session.close()
       }
-      return notification
+    },
+  },
+  NOTIFIED: {
+    id: async parent => {
+      // serialize an ID to help the client update the cache
+      return `${parent.reason}/${parent.from.id}/${parent.to.id}`
     },
   },
 }

@@ -12,7 +12,7 @@
         <slot></slot>
         <div class="hc-attachments-upload-area">
           <div class="hc-drag-marker">
-            <ds-icon v-if="hover" name="image" size="xxx-large" />
+            <base-icon v-if="hover" name="image" />
           </div>
         </div>
       </div>
@@ -21,7 +21,7 @@
 </template>
 <script>
 import vueDropzone from 'nuxt-dropzone'
-import gql from 'graphql-tag'
+import { updateUserMutation } from '~/graphql/User.js'
 
 export default {
   components: {
@@ -43,7 +43,7 @@ export default {
   },
   watch: {
     error() {
-      let that = this
+      const that = this
       setTimeout(function() {
         that.error = false
       }, 2000)
@@ -62,14 +62,7 @@ export default {
       const avatarUpload = file[0]
       this.$apollo
         .mutate({
-          mutation: gql`
-            mutation($id: ID!, $avatarUpload: Upload) {
-              UpdateUser(id: $id, avatarUpload: $avatarUpload) {
-                id
-                avatar
-              }
-            }
-          `,
+          mutation: updateUserMutation(),
           variables: {
             avatarUpload,
             id: this.user.id,

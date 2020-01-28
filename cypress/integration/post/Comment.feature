@@ -20,3 +20,19 @@ Feature: Post Comment
     Then my comment should be successfully created
     And I should see my comment
     And the editor should be cleared
+
+  Scenario: View medium length comments
+    Given I visit "post/bWBjpkTKZp/101-essays"
+    And I type in a comment with 305 characters
+    And I click on the "Comment" button
+    Then my comment should be successfully created
+    And I should see the entirety of my comment
+    And the editor should be cleared
+
+  Scenario: View long comments
+    Given I visit "post/bWBjpkTKZp/101-essays"
+    And I type in a comment with 1205 characters
+    And I click on the "Comment" button
+    Then my comment should be successfully created
+    And I should see an abreviated version of my comment
+    And the editor should be cleared

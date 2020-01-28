@@ -1,12 +1,9 @@
-import { config, shallowMount, mount, createLocalVue } from '@vue/test-utils'
+import { config, shallowMount, mount } from '@vue/test-utils'
 import ReportModal from './ReportModal.vue'
-import Vuex from 'vuex'
-import Styleguide from '@human-connection/styleguide'
+import Vue from 'vue'
 
-const localVue = createLocalVue()
+const localVue = global.localVue
 
-localVue.use(Vuex)
-localVue.use(Styleguide)
 config.stubs['sweetalert-icon'] = '<span><slot /></span>'
 
 describe('ReportModal.vue', () => {
@@ -20,7 +17,7 @@ describe('ReportModal.vue', () => {
       id: 'c43',
     }
     mocks = {
-      $t: jest.fn(),
+      $t: jest.fn(a => a),
       $filters: {
         truncate: a => a,
       },
@@ -29,7 +26,9 @@ describe('ReportModal.vue', () => {
         error: () => {},
       },
       $apollo: {
-        mutate: jest.fn().mockResolvedValue(),
+        mutate: jest.fn().mockResolvedValue({
+          data: {},
+        }),
       },
     }
   })
@@ -153,8 +152,11 @@ describe('ReportModal.vue', () => {
       })
 
       describe('click confirm button', () => {
-        beforeEach(() => {
+        beforeEach(async () => {
+          wrapper.find('.ds-radio-option-label').trigger('click')
+          await Vue.nextTick()
           wrapper.find('button.confirm').trigger('click')
+          await Vue.nextTick()
         })
 
         it('calls report mutation', () => {

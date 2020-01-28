@@ -1,4 +1,4 @@
-Feature: Notifications for a mentions
+Feature: Notification for a mention
   As a user
   I want to be notified if sb. mentions me in a post or comment
   In order join conversations about or related to me
@@ -20,6 +20,7 @@ Feature: Notifications for a mentions
       """
     And mention "@matt-rider" in the text
     And I select a category
+    And I choose "en" as the language for the post
     And I click on "Save"
     When I log out
     And I log in with the following credentials:

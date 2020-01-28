@@ -1,420 +1,698 @@
-import { GraphQLClient } from 'graphql-request'
-import Factory from '../../seed/factories'
-import { host, login, gql } from '../../jest/helpers'
-import { neode } from '../../bootstrap/neo4j'
+import { createTestClient } from 'apollo-server-testing'
+import Factory from '../../factories'
+import { gql } from '../../helpers/jest'
+import { getNeode, getDriver } from '../../db/neo4j'
+import createServer from '../../server'
 
-let client
 const factory = Factory()
-const instance = neode()
-const categoryIds = ['cat9']
+const neode = getNeode()
+const driver = getDriver()
 
-const setupAuthenticateClient = params => {
-  const authenticateClient = async () => {
-    await factory.create('User', params)
-    const headers = await login(params)
-    client = new GraphQLClient(host, { headers })
-  }
-  return authenticateClient
-}
+let mutate,
+  authenticatedUser,
+  disableVariables,
+  enableVariables,
+  moderator,
+  nonModerator,
+  closeReportVariables
 
-let createResource
-let authenticateClient
-let createPostVariables
-let createCommentVariables
-
-beforeEach(async () => {
-  createResource = () => {}
-  authenticateClient = () => {
-    client = new GraphQLClient(host)
-  }
-  await instance.create('Category', {
-    id: 'cat9',
-    name: 'Democracy & Politics',
-    icon: 'university',
-  })
-})
-
-const setup = async () => {
-  await createResource()
-  await authenticateClient()
-}
-
-afterEach(async () => {
-  await factory.cleanDatabase()
-})
-
-describe('disable', () => {
-  const mutation = gql`
-    mutation($id: ID!) {
-      disable(id: $id)
+const reviewMutation = gql`
+  mutation($resourceId: ID!, $disable: Boolean, $closed: Boolean) {
+    review(resourceId: $resourceId, disable: $disable, closed: $closed) {
+      createdAt
+      updatedAt
+      resource {
+        __typename
+        ... on User {
+          id
+          disabled
+        }
+        ... on Post {
+          id
+          disabled
+        }
+        ... on Comment {
+          id
+          disabled
+        }
+      }
+      report {
+        id
+        createdAt
+        updatedAt
+        closed
+        reviewed {
+          createdAt
+          moderator {
+            id
+          }
+        }
+      }
     }
-  `
-  let variables
-
-  beforeEach(() => {
-    // our defaul set of variables
-    variables = {
-      id: 'blabla',
-    }
-  })
-
-  const action = async () => {
-    return client.request(mutation, variables)
   }
+`
 
-  it('throws authorization error', async () => {
-    await setup()
-    await expect(action()).rejects.toThrow('Not Authorised')
+describe('moderate resources', () => {
+  beforeAll(async () => {
+    await factory.cleanDatabase()
+    authenticatedUser = undefined
+    const { server } = createServer({
+      context: () => {
+        return {
+          driver,
+          neode,
+          user: authenticatedUser,
+        }
+      },
+    })
+    mutate = createTestClient(server).mutate
   })
 
-  describe('authenticated', () => {
-    beforeEach(() => {
-      authenticateClient = setupAuthenticateClient({
-        email: 'user@example.org',
-        password: '1234',
+  beforeEach(async () => {
+    disableVariables = {
+      resourceId: 'undefined-resource',
+      disable: true,
+      closed: false,
+    }
+    enableVariables = {
+      resourceId: 'undefined-resource',
+      disable: false,
+      closed: false,
+    }
+    authenticatedUser = null
+    moderator = await factory.create('User', {
+      id: 'moderator-id',
+      name: 'Moderator',
+      email: 'moderator@example.org',
+      password: '1234',
+      role: 'moderator',
+    })
+    nonModerator = await factory.create('User', {
+      id: 'non-moderator',
+      name: 'Non Moderator',
+      email: 'non.moderator@example.org',
+      password: '1234',
+    })
+  })
+
+  afterEach(async () => {
+    await factory.cleanDatabase()
+  })
+
+  describe('review to close report, leaving resource enabled', () => {
+    describe('unauthenticated', () => {
+      it('throws authorization error', async () => {
+        await expect(
+          mutate({ mutation: reviewMutation, variables: disableVariables }),
+        ).resolves.toMatchObject({
+          errors: [{ message: 'Not Authorised!' }],
+        })
       })
     })
 
-    it('throws authorization error', async () => {
-      await setup()
-      await expect(action()).rejects.toThrow('Not Authorised')
+    describe('authenticated', () => {
+      beforeEach(async () => {
+        authenticatedUser = await nonModerator.toJson()
+      })
+
+      it('non-moderator receives an authorization error', async () => {
+        await expect(
+          mutate({ mutation: reviewMutation, variables: disableVariables }),
+        ).resolves.toMatchObject({
+          errors: [{ message: 'Not Authorised!' }],
+        })
+      })
     })
 
-    describe('as moderator', () => {
-      beforeEach(() => {
-        authenticateClient = setupAuthenticateClient({
-          id: 'u7',
-          email: 'moderator@example.org',
-          password: '1234',
-          role: 'moderator',
+    describe('moderator', () => {
+      beforeEach(async () => {
+        authenticatedUser = await moderator.toJson()
+        const questionablePost = await factory.create('Post', {
+          id: 'should-i-be-disabled',
+        })
+        const reportAgainstQuestionablePost = await factory.create('Report')
+        await Promise.all([
+          reportAgainstQuestionablePost.relateTo(nonModerator, 'filed', {
+            resourceId: 'should-i-be-disabled',
+            reasonCategory: 'doxing',
+            reasonDescription: "This shouldn't be shown to anybody else! It's my private thing!",
+          }),
+          reportAgainstQuestionablePost.relateTo(questionablePost, 'belongsTo'),
+        ])
+        closeReportVariables = {
+          resourceId: 'should-i-be-disabled',
+          disable: false,
+          closed: true,
+        }
+      })
+
+      it('report can be closed without disabling resource', async () => {
+        await expect(
+          mutate({ mutation: reviewMutation, variables: closeReportVariables }),
+        ).resolves.toMatchObject({
+          data: {
+            review: {
+              resource: { __typename: 'Post', id: 'should-i-be-disabled', disabled: false },
+              report: { id: expect.any(String), closed: true },
+            },
+          },
+          errors: undefined,
         })
       })
 
-      describe('on something that is not a (Comment|Post|User) ', () => {
-        beforeEach(async () => {
-          variables = {
-            id: 't23',
-          }
-          createResource = () => {
-            return Promise.all([factory.create('Tag', { id: 't23' })])
-          }
-        })
-
-        it('returns null', async () => {
-          const expected = { disable: null }
-          await setup()
-          await expect(action()).resolves.toEqual(expected)
-        })
+      it('creates only one review for multiple reviews by the same moderator on same resource', async () => {
+        await Promise.all([
+          mutate({
+            mutation: reviewMutation,
+            variables: { ...disableVariables, resourceId: 'should-i-be-disabled' },
+          }),
+          mutate({
+            mutation: reviewMutation,
+            variables: { ...enableVariables, resourceId: 'should-i-be-disabled' },
+          }),
+        ])
+        const cypher =
+          'MATCH (:Report)<-[review:REVIEWED]-(moderator:User {id: "moderator-id"}) RETURN review'
+        const reviews = await neode.cypher(cypher)
+        expect(reviews.records).toHaveLength(1)
       })
 
-      describe('on a comment', () => {
+      it('updates the updatedAt attribute', async () => {
+        const [firstReview, secondReview] = await Promise.all([
+          mutate({
+            mutation: reviewMutation,
+            variables: { ...disableVariables, resourceId: 'should-i-be-disabled' },
+          }),
+          mutate({
+            mutation: reviewMutation,
+            variables: { ...enableVariables, resourceId: 'should-i-be-disabled' },
+          }),
+        ])
+        expect(firstReview.data.review.updatedAt).toBeTruthy()
+        expect(Date.parse(firstReview.data.review.updatedAt)).toEqual(expect.any(Number))
+        expect(secondReview.data.review.updatedAt).toBeTruthy()
+        expect(Date.parse(secondReview.data.review.updatedAt)).toEqual(expect.any(Number))
+        expect(firstReview.data.review.updatedAt).not.toEqual(secondReview.data.review.updatedAt)
+      })
+    })
+  })
+
+  describe('review to disable', () => {
+    describe('unauthenticated', () => {
+      it('throws authorization error', async () => {
+        await expect(
+          mutate({ mutation: reviewMutation, variables: disableVariables }),
+        ).resolves.toMatchObject({
+          errors: [{ message: 'Not Authorised!' }],
+        })
+      })
+    })
+
+    describe('authenticated', () => {
+      beforeEach(async () => {
+        authenticatedUser = await nonModerator.toJson()
+      })
+
+      it('non-moderator receives an authorization error', async () => {
+        await expect(
+          mutate({ mutation: reviewMutation, variables: disableVariables }),
+        ).resolves.toMatchObject({
+          errors: [{ message: 'Not Authorised!' }],
+        })
+      })
+    })
+
+    describe('moderator', () => {
+      beforeEach(async () => {
+        authenticatedUser = await moderator.toJson()
+      })
+
+      describe('moderate a comment', () => {
         beforeEach(async () => {
-          variables = {
-            id: 'c47',
-          }
-          createPostVariables = {
-            id: 'p3',
-            title: 'post to comment on',
-            content: 'please comment on me',
-            categoryIds,
-          }
-          createCommentVariables = {
-            id: 'c47',
-            postId: 'p3',
-            content: 'this comment was created for this post',
-          }
-          createResource = async () => {
-            await factory.create('User', {
-              id: 'u45',
-              email: 'commenter@example.org',
-              password: '1234',
-            })
-            const asAuthenticatedUser = await factory.authenticateAs({
-              email: 'commenter@example.org',
-              password: '1234',
-            })
-            await asAuthenticatedUser.create('Post', createPostVariables)
-            await asAuthenticatedUser.create('Comment', createCommentVariables)
+          const trollingComment = await factory.create('Comment', {
+            id: 'comment-id',
+          })
+          const reportAgainstTrollingComment = await factory.create('Report')
+          await Promise.all([
+            reportAgainstTrollingComment.relateTo(nonModerator, 'filed', {
+              resourceId: 'comment-id',
+              reasonCategory: 'other',
+              reasonDescription: 'This comment is bigoted',
+            }),
+            reportAgainstTrollingComment.relateTo(trollingComment, 'belongsTo'),
+          ])
+          disableVariables = {
+            ...disableVariables,
+            resourceId: 'comment-id',
           }
         })
 
         it('returns disabled resource id', async () => {
-          const expected = { disable: 'c47' }
-          await setup()
-          await expect(action()).resolves.toEqual(expected)
+          await expect(
+            mutate({ mutation: reviewMutation, variables: disableVariables }),
+          ).resolves.toMatchObject({
+            data: { review: { resource: { __typename: 'Comment', id: 'comment-id' } } },
+            errors: undefined,
+          })
         })
 
-        it('changes .disabledBy', async () => {
-          const before = { Comment: [{ id: 'c47', disabledBy: null }] }
-          const expected = { Comment: [{ id: 'c47', disabledBy: { id: 'u7' } }] }
-
-          await setup()
-          await expect(client.request('{ Comment { id,  disabledBy { id } } }')).resolves.toEqual(
-            before,
-          )
-          await action()
+        it('returns .reviewed', async () => {
           await expect(
-            client.request('{ Comment(disabled: true) { id,  disabledBy { id } } }'),
-          ).resolves.toEqual(expected)
+            mutate({ mutation: reviewMutation, variables: disableVariables }),
+          ).resolves.toMatchObject({
+            data: {
+              review: {
+                resource: { __typename: 'Comment', id: 'comment-id' },
+                report: {
+                  id: expect.any(String),
+                  reviewed: expect.arrayContaining([
+                    { createdAt: expect.any(String), moderator: { id: 'moderator-id' } },
+                  ]),
+                },
+              },
+            },
+            errors: undefined,
+          })
         })
 
         it('updates .disabled on comment', async () => {
-          const before = { Comment: [{ id: 'c47', disabled: false }] }
-          const expected = { Comment: [{ id: 'c47', disabled: true }] }
-
-          await setup()
-          await expect(client.request('{ Comment { id disabled } }')).resolves.toEqual(before)
-          await action()
           await expect(
-            client.request('{ Comment(disabled: true) { id disabled } }'),
-          ).resolves.toEqual(expected)
+            mutate({ mutation: reviewMutation, variables: disableVariables }),
+          ).resolves.toMatchObject({
+            data: {
+              review: { resource: { __typename: 'Comment', id: 'comment-id', disabled: true } },
+            },
+            errors: undefined,
+          })
+        })
+
+        it('can be closed with one review', async () => {
+          closeReportVariables = {
+            ...disableVariables,
+            closed: true,
+          }
+          await expect(
+            mutate({ mutation: reviewMutation, variables: closeReportVariables }),
+          ).resolves.toMatchObject({
+            data: {
+              review: {
+                resource: { __typename: 'Comment', id: 'comment-id' },
+                report: { id: expect.any(String), closed: true },
+              },
+            },
+            errors: undefined,
+          })
         })
       })
 
-      describe('on a post', () => {
+      describe('moderate a post', () => {
         beforeEach(async () => {
-          variables = {
-            id: 'p9',
-          }
-
-          createResource = async () => {
-            await factory.create('User', { email: 'author@example.org', password: '1234' })
-            await factory.authenticateAs({ email: 'author@example.org', password: '1234' })
-            await factory.create('Post', {
-              id: 'p9', // that's the ID we will look for
-              categoryIds,
-            })
+          const trollingPost = await factory.create('Post', {
+            id: 'post-id',
+          })
+          const reportAgainstTrollingPost = await factory.create('Report')
+          await Promise.all([
+            reportAgainstTrollingPost.relateTo(nonModerator, 'filed', {
+              resourceId: 'post-id',
+              reasonCategory: 'doxing',
+              reasonDescription: "This shouldn't be shown to anybody else! It's my private thing!",
+            }),
+            reportAgainstTrollingPost.relateTo(trollingPost, 'belongsTo'),
+          ])
+          disableVariables = {
+            ...disableVariables,
+            resourceId: 'post-id',
           }
         })
 
         it('returns disabled resource id', async () => {
-          const expected = { disable: 'p9' }
-          await setup()
-          await expect(action()).resolves.toEqual(expected)
+          await expect(
+            mutate({ mutation: reviewMutation, variables: disableVariables }),
+          ).resolves.toMatchObject({
+            data: {
+              review: {
+                resource: { __typename: 'Post', id: 'post-id' },
+              },
+            },
+            errors: undefined,
+          })
         })
 
-        it('changes .disabledBy', async () => {
-          const before = { Post: [{ id: 'p9', disabledBy: null }] }
-          const expected = { Post: [{ id: 'p9', disabledBy: { id: 'u7' } }] }
-
-          await setup()
-          await expect(client.request('{ Post { id,  disabledBy { id } } }')).resolves.toEqual(
-            before,
-          )
-          await action()
+        it('returns .reviewed', async () => {
           await expect(
-            client.request('{ Post(disabled: true) { id,  disabledBy { id } } }'),
-          ).resolves.toEqual(expected)
+            mutate({ mutation: reviewMutation, variables: disableVariables }),
+          ).resolves.toMatchObject({
+            data: {
+              review: {
+                resource: { __typename: 'Post', id: 'post-id' },
+                report: {
+                  id: expect.any(String),
+                  reviewed: expect.arrayContaining([
+                    { createdAt: expect.any(String), moderator: { id: 'moderator-id' } },
+                  ]),
+                },
+              },
+            },
+            errors: undefined,
+          })
         })
 
         it('updates .disabled on post', async () => {
-          const before = { Post: [{ id: 'p9', disabled: false }] }
-          const expected = { Post: [{ id: 'p9', disabled: true }] }
-
-          await setup()
-          await expect(client.request('{ Post { id disabled } }')).resolves.toEqual(before)
-          await action()
-          await expect(client.request('{ Post(disabled: true) { id disabled } }')).resolves.toEqual(
-            expected,
-          )
+          await expect(
+            mutate({ mutation: reviewMutation, variables: disableVariables }),
+          ).resolves.toMatchObject({
+            data: { review: { resource: { __typename: 'Post', id: 'post-id', disabled: true } } },
+            errors: undefined,
+          })
         })
-      })
-    })
-  })
-})
 
-describe('enable', () => {
-  const mutation = gql`
-    mutation($id: ID!) {
-      enable(id: $id)
-    }
-  `
-  let variables
-
-  const action = async () => {
-    return client.request(mutation, variables)
-  }
-
-  beforeEach(() => {
-    // our defaul set of variables
-    variables = {
-      id: 'blabla',
-    }
-  })
-
-  it('throws authorization error', async () => {
-    await setup()
-    await expect(action()).rejects.toThrow('Not Authorised')
-  })
-
-  describe('authenticated', () => {
-    beforeEach(() => {
-      authenticateClient = setupAuthenticateClient({
-        email: 'user@example.org',
-        password: '1234',
-      })
-    })
-
-    it('throws authorization error', async () => {
-      await setup()
-      await expect(action()).rejects.toThrow('Not Authorised')
-    })
-
-    describe('as moderator', () => {
-      beforeEach(async () => {
-        authenticateClient = setupAuthenticateClient({
-          role: 'moderator',
-          email: 'someuser@example.org',
-          password: '1234',
+        it('can be closed with one review', async () => {
+          closeReportVariables = {
+            ...disableVariables,
+            closed: true,
+          }
+          await expect(
+            mutate({ mutation: reviewMutation, variables: closeReportVariables }),
+          ).resolves.toMatchObject({
+            data: {
+              review: {
+                resource: { __typename: 'Post', id: 'post-id' },
+                report: { id: expect.any(String), closed: true },
+              },
+            },
+            errors: undefined,
+          })
         })
       })
 
-      describe('on something that is not a (Comment|Post|User) ', () => {
+      describe('moderate a user', () => {
         beforeEach(async () => {
-          variables = {
-            id: 't23',
-          }
-          createResource = () => {
-            // we cannot create a :DISABLED relationship here
-            return Promise.all([factory.create('Tag', { id: 't23' })])
-          }
-        })
-
-        it('returns null', async () => {
-          const expected = { enable: null }
-          await setup()
-          await expect(action()).resolves.toEqual(expected)
-        })
-      })
-
-      describe('on a comment', () => {
-        beforeEach(async () => {
-          variables = {
-            id: 'c456',
-          }
-          createPostVariables = {
-            id: 'p9',
-            title: 'post to comment on',
-            content: 'please comment on me',
-            categoryIds,
-          }
-          createCommentVariables = {
-            id: 'c456',
-            postId: 'p9',
-            content: 'this comment was created for this post',
-          }
-          createResource = async () => {
-            await factory.create('User', {
-              id: 'u123',
-              email: 'author@example.org',
-              password: '1234',
-            })
-            const asAuthenticatedUser = await factory.authenticateAs({
-              email: 'author@example.org',
-              password: '1234',
-            })
-            await asAuthenticatedUser.create('Post', createPostVariables)
-            await asAuthenticatedUser.create('Comment', createCommentVariables)
-
-            const disableMutation = gql`
-              mutation {
-                disable(id: "c456")
-              }
-            `
-            await factory.mutate(disableMutation) // that's we want to delete
+          const troll = await factory.create('User', {
+            id: 'user-id',
+          })
+          const reportAgainstTroll = await factory.create('Report')
+          await Promise.all([
+            reportAgainstTroll.relateTo(nonModerator, 'filed', {
+              resourceId: 'user-id',
+              reasonCategory: 'discrimination_etc',
+              reasonDescription: 'This user is harassing me with bigoted remarks!',
+            }),
+            reportAgainstTroll.relateTo(troll, 'belongsTo'),
+          ])
+          disableVariables = {
+            ...disableVariables,
+            resourceId: 'user-id',
           }
         })
 
         it('returns disabled resource id', async () => {
-          const expected = { enable: 'c456' }
-          await setup()
-          await expect(action()).resolves.toEqual(expected)
+          await expect(
+            mutate({ mutation: reviewMutation, variables: disableVariables }),
+          ).resolves.toMatchObject({
+            data: { review: { resource: { __typename: 'User', id: 'user-id' } } },
+            errors: undefined,
+          })
         })
 
-        it('changes .disabledBy', async () => {
-          const before = { Comment: [{ id: 'c456', disabledBy: { id: 'u123' } }] }
-          const expected = { Comment: [{ id: 'c456', disabledBy: null }] }
-
-          await setup()
+        it('returns .reviewed', async () => {
           await expect(
-            client.request('{ Comment(disabled: true) { id,  disabledBy { id } } }'),
-          ).resolves.toEqual(before)
-          await action()
-          await expect(client.request('{ Comment { id,  disabledBy { id } } }')).resolves.toEqual(
-            expected,
-          )
+            mutate({ mutation: reviewMutation, variables: disableVariables }),
+          ).resolves.toMatchObject({
+            data: {
+              review: {
+                resource: { __typename: 'User', id: 'user-id' },
+                report: {
+                  id: expect.any(String),
+                  reviewed: expect.arrayContaining([
+                    { createdAt: expect.any(String), moderator: { id: 'moderator-id' } },
+                  ]),
+                },
+              },
+            },
+            errors: undefined,
+          })
         })
 
-        it('updates .disabled on post', async () => {
-          const before = { Comment: [{ id: 'c456', disabled: true }] }
-          const expected = { Comment: [{ id: 'c456', disabled: false }] }
-
-          await setup()
+        it('updates .disabled on user', async () => {
           await expect(
-            client.request('{ Comment(disabled: true) { id disabled } }'),
-          ).resolves.toEqual(before)
-          await action() // this updates .disabled
-          await expect(client.request('{ Comment { id disabled } }')).resolves.toEqual(expected)
+            mutate({ mutation: reviewMutation, variables: disableVariables }),
+          ).resolves.toMatchObject({
+            data: { review: { resource: { __typename: 'User', id: 'user-id', disabled: true } } },
+            errors: undefined,
+          })
+        })
+
+        it('can be closed with one review', async () => {
+          closeReportVariables = {
+            ...disableVariables,
+            closed: true,
+          }
+          await expect(
+            mutate({ mutation: reviewMutation, variables: closeReportVariables }),
+          ).resolves.toMatchObject({
+            data: {
+              review: {
+                resource: { __typename: 'User', id: 'user-id' },
+                report: { id: expect.any(String), closed: true },
+              },
+            },
+            errors: undefined,
+          })
+        })
+      })
+    })
+  })
+
+  describe('review to re-enable after disabled', () => {
+    describe('unautenticated user', () => {
+      it('throws authorization error', async () => {
+        enableVariables = {
+          ...enableVariables,
+          resourceId: 'post-id',
+        }
+        await expect(
+          mutate({ mutation: reviewMutation, variables: enableVariables }),
+        ).resolves.toMatchObject({
+          errors: [{ message: 'Not Authorised!' }],
+        })
+      })
+    })
+
+    describe('authenticated user', () => {
+      describe('non moderator', () => {
+        beforeEach(async () => {
+          authenticatedUser = await nonModerator.toJson()
+        })
+
+        it('throws authorization error', async () => {
+          enableVariables = {
+            ...enableVariables,
+            resourceId: 'post-id',
+          }
+          await expect(
+            mutate({ mutation: reviewMutation, variables: enableVariables }),
+          ).resolves.toMatchObject({
+            errors: [{ message: 'Not Authorised!' }],
+          })
         })
       })
 
-      describe('on a post', () => {
+      describe('moderator', () => {
         beforeEach(async () => {
-          variables = {
-            id: 'p9',
-          }
+          authenticatedUser = await moderator.toJson()
+        })
 
-          createResource = async () => {
-            await factory.create('User', {
-              id: 'u123',
-              email: 'author@example.org',
-              password: '1234',
+        describe('moderate a comment', () => {
+          beforeEach(async () => {
+            const trollingComment = await factory.create('Comment', {
+              id: 'comment-id',
             })
-            await factory.authenticateAs({ email: 'author@example.org', password: '1234' })
-            await factory.create('Post', {
-              id: 'p9', // that's the ID we will look for
-              categoryIds,
+            const reportAgainstTrollingComment = await factory.create('Report')
+            await Promise.all([
+              reportAgainstTrollingComment.relateTo(nonModerator, 'filed', {
+                resourceId: 'comment-id',
+                reasonCategory: 'other',
+                reasonDescription: 'This comment is bigoted',
+              }),
+              reportAgainstTrollingComment.relateTo(trollingComment, 'belongsTo'),
+            ])
+            await Promise.all([
+              reportAgainstTrollingComment.relateTo(moderator, 'reviewed', {
+                ...disableVariables,
+                resourceId: 'comment-id',
+              }),
+              trollingComment.update({ disabled: true, updatedAt: new Date().toISOString() }),
+            ])
+            enableVariables = {
+              ...enableVariables,
+              resourceId: 'comment-id',
+            }
+          })
+
+          it('returns enabled resource id', async () => {
+            await expect(
+              mutate({ mutation: reviewMutation, variables: enableVariables }),
+            ).resolves.toMatchObject({
+              data: { review: { resource: { __typename: 'Comment', id: 'comment-id' } } },
             })
+          })
 
-            const disableMutation = gql`
-              mutation {
-                disable(id: "p9")
-              }
-            `
-            await factory.mutate(disableMutation) // that's we want to delete
-          }
+          it('returns .reviewed', async () => {
+            await expect(
+              mutate({ mutation: reviewMutation, variables: enableVariables }),
+            ).resolves.toMatchObject({
+              data: {
+                review: {
+                  resource: { __typename: 'Comment', id: 'comment-id' },
+                  report: {
+                    id: expect.any(String),
+                    reviewed: expect.arrayContaining([
+                      { createdAt: expect.any(String), moderator: { id: 'moderator-id' } },
+                    ]),
+                  },
+                },
+              },
+            })
+          })
+
+          it('updates .disabled on comment', async () => {
+            await expect(
+              mutate({ mutation: reviewMutation, variables: enableVariables }),
+            ).resolves.toMatchObject({
+              data: {
+                review: { resource: { __typename: 'Comment', id: 'comment-id', disabled: false } },
+              },
+            })
+          })
         })
 
-        it('returns disabled resource id', async () => {
-          const expected = { enable: 'p9' }
-          await setup()
-          await expect(action()).resolves.toEqual(expected)
+        describe('moderate a post', () => {
+          beforeEach(async () => {
+            const trollingPost = await factory.create('Post', {
+              id: 'post-id',
+            })
+            const reportAgainstTrollingPost = await factory.create('Report')
+            await Promise.all([
+              reportAgainstTrollingPost.relateTo(nonModerator, 'filed', {
+                resourceId: 'post-id',
+                reasonCategory: 'doxing',
+                reasonDescription:
+                  "This shouldn't be shown to anybody else! It's my private thing!",
+              }),
+              reportAgainstTrollingPost.relateTo(trollingPost, 'belongsTo'),
+            ])
+            await Promise.all([
+              reportAgainstTrollingPost.relateTo(moderator, 'reviewed', {
+                ...disableVariables,
+                resourceId: 'comment-id',
+              }),
+              trollingPost.update({ disabled: true, updatedAt: new Date().toISOString() }),
+            ])
+            enableVariables = {
+              ...enableVariables,
+              resourceId: 'post-id',
+            }
+          })
+
+          it('returns enabled resource id', async () => {
+            await expect(
+              mutate({ mutation: reviewMutation, variables: enableVariables }),
+            ).resolves.toMatchObject({
+              data: { review: { resource: { __typename: 'Post', id: 'post-id' } } },
+            })
+          })
+
+          it('returns .reviewed', async () => {
+            await expect(
+              mutate({ mutation: reviewMutation, variables: enableVariables }),
+            ).resolves.toMatchObject({
+              data: {
+                review: {
+                  resource: { __typename: 'Post', id: 'post-id' },
+                  report: {
+                    id: expect.any(String),
+                    reviewed: expect.arrayContaining([
+                      { createdAt: expect.any(String), moderator: { id: 'moderator-id' } },
+                    ]),
+                  },
+                },
+              },
+            })
+          })
+
+          it('updates .disabled on post', async () => {
+            await expect(
+              mutate({ mutation: reviewMutation, variables: enableVariables }),
+            ).resolves.toMatchObject({
+              data: {
+                review: { resource: { __typename: 'Post', id: 'post-id', disabled: false } },
+              },
+            })
+          })
         })
 
-        it('changes .disabledBy', async () => {
-          const before = { Post: [{ id: 'p9', disabledBy: { id: 'u123' } }] }
-          const expected = { Post: [{ id: 'p9', disabledBy: null }] }
+        describe('moderate a user', () => {
+          beforeEach(async () => {
+            const troll = await factory.create('User', {
+              id: 'user-id',
+            })
+            const reportAgainstTroll = await factory.create('Report')
+            await Promise.all([
+              reportAgainstTroll.relateTo(nonModerator, 'filed', {
+                resourceId: 'user-id',
+                reasonCategory: 'discrimination_etc',
+                reasonDescription: 'This user is harassing me with bigoted remarks!',
+              }),
+              reportAgainstTroll.relateTo(troll, 'belongsTo'),
+            ])
+            await Promise.all([
+              reportAgainstTroll.relateTo(moderator, 'reviewed', {
+                ...disableVariables,
+                resourceId: 'comment-id',
+              }),
+              troll.update({ disabled: true, updatedAt: new Date().toISOString() }),
+            ])
+            enableVariables = {
+              ...enableVariables,
+              resourceId: 'user-id',
+            }
+          })
 
-          await setup()
-          await expect(
-            client.request('{ Post(disabled: true) { id,  disabledBy { id } } }'),
-          ).resolves.toEqual(before)
-          await action()
-          await expect(client.request('{ Post { id,  disabledBy { id } } }')).resolves.toEqual(
-            expected,
-          )
-        })
+          it('returns enabled resource id', async () => {
+            await expect(
+              mutate({ mutation: reviewMutation, variables: enableVariables }),
+            ).resolves.toMatchObject({
+              data: { review: { resource: { __typename: 'User', id: 'user-id' } } },
+            })
+          })
 
-        it('updates .disabled on post', async () => {
-          const before = { Post: [{ id: 'p9', disabled: true }] }
-          const expected = { Post: [{ id: 'p9', disabled: false }] }
+          it('returns .reviewed', async () => {
+            await expect(
+              mutate({ mutation: reviewMutation, variables: enableVariables }),
+            ).resolves.toMatchObject({
+              data: {
+                review: {
+                  resource: { __typename: 'User', id: 'user-id' },
+                  report: {
+                    id: expect.any(String),
+                    reviewed: expect.arrayContaining([
+                      { createdAt: expect.any(String), moderator: { id: 'moderator-id' } },
+                    ]),
+                  },
+                },
+              },
+            })
+          })
 
-          await setup()
-          await expect(client.request('{ Post(disabled: true) { id disabled } }')).resolves.toEqual(
-            before,
-          )
-          await action() // this updates .disabled
-          await expect(client.request('{ Post { id disabled } }')).resolves.toEqual(expected)
+          it('updates .disabled on user', async () => {
+            await expect(
+              mutate({ mutation: reviewMutation, variables: enableVariables }),
+            ).resolves.toMatchObject({
+              data: {
+                review: { resource: { __typename: 'User', id: 'user-id', disabled: false } },
+              },
+            })
+          })
         })
       })
     })

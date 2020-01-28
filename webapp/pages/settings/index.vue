@@ -1,74 +1,53 @@
 <template>
-  <ds-form v-model="form" @submit="submit">
-    <ds-card :header="$t('settings.data.name')">
-      <ds-input
-        id="name"
-        model="name"
-        icon="user"
-        :label="$t('settings.data.labelName')"
-        :placeholder="$t('settings.data.namePlaceholder')"
-      />
-      <!-- eslint-disable vue/use-v-on-exact -->
-      <ds-select
-        id="city"
-        model="locationName"
-        icon="map-marker"
-        :options="cities"
-        :label="$t('settings.data.labelCity')"
-        :placeholder="$t('settings.data.labelCity')"
-        :loading="loadingGeo"
-        @input.native="handleCityInput"
-      />
-      <!-- eslint-enable vue/use-v-on-exact -->
-      <ds-input
-        id="bio"
-        model="about"
-        type="textarea"
-        rows="3"
-        :label="$t('settings.data.labelBio')"
-        :placeholder="$t('settings.data.labelBio')"
-      />
-      <template slot="footer">
-        <ds-button style="float: right;" icon="check" type="submit" :loading="loadingData" primary>
-          {{ $t('actions.save') }}
-        </ds-button>
-      </template>
-    </ds-card>
+  <ds-form v-model="form" :schema="formSchema" @submit="submit">
+    <template slot-scope="{ errors }">
+      <ds-card :header="$t('settings.data.name')">
+        <ds-input
+          id="name"
+          model="name"
+          icon="user"
+          :label="$t('settings.data.labelName')"
+          :placeholder="$t('settings.data.namePlaceholder')"
+        />
+        <ds-input id="slug" model="slug" icon="at" :label="$t('settings.data.labelSlug')" />
+        <!-- eslint-disable vue/use-v-on-exact -->
+        <ds-select
+          id="city"
+          model="locationName"
+          icon="map-marker"
+          :options="cities"
+          :label="$t('settings.data.labelCity')"
+          :placeholder="$t('settings.data.labelCity')"
+          :loading="loadingGeo"
+          @input.native="handleCityInput"
+        />
+        <!-- eslint-enable vue/use-v-on-exact -->
+        <ds-input
+          id="bio"
+          model="about"
+          type="textarea"
+          rows="3"
+          :label="$t('settings.data.labelBio')"
+          :placeholder="$t('settings.data.labelBio')"
+        />
+        <template slot="footer">
+          <base-button icon="check" :disabled="errors" type="submit" :loading="loadingData" filled>
+            {{ $t('actions.save') }}
+          </base-button>
+        </template>
+      </ds-card>
+    </template>
   </ds-form>
 </template>
 
 <script>
-import gql from 'graphql-tag'
-
 import { mapGetters, mapMutations } from 'vuex'
 import { CancelToken } from 'axios'
+import UniqueSlugForm from '~/components/utils/UniqueSlugForm'
+import { updateUserMutation } from '~/graphql/User'
 
 let timeout
 const mapboxToken = process.env.MAPBOX_TOKEN
-
-/*
-const query = gql`
-  query getUser($id: ID) {
-    User(id: $id) {
-      id
-      name
-      locationName
-      about
-    }
-  }
-`
-*/
-
-const mutation = gql`
-  mutation($id: ID!, $name: String, $locationName: String, $about: String) {
-    UpdateUser(id: $id, name: $name, locationName: $locationName, about: $about) {
-      id
-      name
-      locationName
-      about
-    }
-  }
-`
 
 export default {
   data() {
@@ -84,10 +63,20 @@ export default {
     ...mapGetters({
       currentUser: 'auth/user',
     }),
+    formSchema() {
+      const uniqueSlugForm = UniqueSlugForm({
+        apollo: this.$apollo,
+        currentUser: this.currentUser,
+        translate: this.$t,
+      })
+      return {
+        ...uniqueSlugForm.formSchema,
+      }
+    },
     form: {
       get: function() {
-        const { name, locationName, about } = this.currentUser
-        return { name, locationName, about }
+        const { name, slug, locationName, about } = this.currentUser
+        return { name, slug, locationName, about }
       },
       set: function(formData) {
         this.formData = formData
@@ -100,23 +89,25 @@ export default {
     }),
     async submit() {
       this.loadingData = true
-      const { name, about } = this.formData
+      const { name, slug, about } = this.formData
       let { locationName } = this.formData || this.currentUser
-      locationName = locationName && (locationName['label'] || locationName)
+      locationName = locationName && (locationName.label || locationName)
       try {
         await this.$apollo.mutate({
-          mutation,
+          mutation: updateUserMutation(),
           variables: {
             id: this.currentUser.id,
             name,
+            slug,
             locationName,
             about,
           },
           update: (store, { data: { UpdateUser } }) => {
-            const { name, locationName, about } = UpdateUser
+            const { name, slug, locationName, about } = UpdateUser
             this.setCurrentUser({
               ...this.currentUser,
               name,
+              slug,
               locationName,
               about,
             })
@@ -137,7 +128,7 @@ export default {
       if (!res || !res.data || !res.data.features || !res.data.features.length) {
         return []
       }
-      let output = []
+      const output = []
       res.data.features.forEach(item => {
         output.push({
           label: item.place_name,

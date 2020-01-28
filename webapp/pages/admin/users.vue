@@ -12,7 +12,7 @@
               />
             </ds-flex-item>
             <ds-flex-item width="30px">
-              <ds-button primary type="submit" icon="search" :loading="$apollo.loading" />
+              <base-button filled circle type="submit" icon="search" :loading="$apollo.loading" />
             </ds-flex-item>
           </ds-flex>
         </ds-form>
@@ -20,9 +20,7 @@
     </ds-space>
     <ds-card v-if="User && User.length">
       <ds-table :data="User" :fields="fields" condensed>
-        <template slot="index" slot-scope="scope">
-          {{ scope.row.index + 1 }}.
-        </template>
+        <template slot="index" slot-scope="scope">{{ scope.row.index + 1 }}.</template>
         <template slot="name" slot-scope="scope">
           <nuxt-link
             :to="{
@@ -32,6 +30,11 @@
           >
             <b>{{ scope.row.name | truncate(20) }}</b>
           </nuxt-link>
+        </template>
+        <template slot="email" slot-scope="scope">
+          <a :href="`mailto:${scope.row.email}`">
+            <b>{{ scope.row.email }}</b>
+          </a>
         </template>
         <template slot="slug" slot-scope="scope">
           <nuxt-link
@@ -47,14 +50,7 @@
           {{ scope.row.createdAt | dateTime }}
         </template>
       </ds-table>
-      <ds-flex direction="row-reverse">
-        <ds-flex-item width="50px">
-          <ds-button @click="next" :disabled="!hasNext" icon="arrow-right" primary />
-        </ds-flex-item>
-        <ds-flex-item width="50px">
-          <ds-button @click="back" :disabled="!hasPrevious" icon="arrow-left" primary />
-        </ds-flex-item>
-      </ds-flex>
+      <pagination-buttons :hasNext="hasNext" :hasPrevious="hasPrevious" @next="next" @back="back" />
     </ds-card>
     <ds-card v-else>
       <ds-placeholder>{{ $t('admin.users.empty') }}</ds-placeholder>
@@ -64,9 +60,14 @@
 
 <script>
 import gql from 'graphql-tag'
-import isemail from 'isemail'
+import { isEmail } from 'validator'
+import normalizeEmail from '~/components/utils/NormalizeEmail'
+import PaginationButtons from '~/components/_new/generic/PaginationButtons/PaginationButtons'
 
 export default {
+  components: {
+    PaginationButtons,
+  },
   data() {
     const pageSize = 15
     return {
@@ -92,6 +93,7 @@ export default {
       return {
         index: this.$t('admin.users.table.columns.number'),
         name: this.$t('admin.users.table.columns.name'),
+        email: this.$t('admin.users.table.columns.email'),
         slug: this.$t('admin.users.table.columns.slug'),
         createdAt: this.$t('admin.users.table.columns.createdAt'),
         contributionsCount: {
@@ -128,6 +130,7 @@ export default {
               id
               name
               slug
+              email
               role
               createdAt
               contributionsCount
@@ -162,8 +165,8 @@ export default {
     submit(formData) {
       this.offset = 0
       const { query } = formData
-      if (isemail.validate(query)) {
-        this.email = query
+      if (isEmail(query)) {
+        this.email = normalizeEmail(query)
         this.filter = null
       } else {
         this.email = null

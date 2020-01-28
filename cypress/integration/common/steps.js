@@ -4,9 +4,13 @@ import {
   Then
 } from "cypress-cucumber-preprocessor/steps";
 import helpers from "../../support/helpers";
+import { VERSION } from '../../constants/terms-and-conditions-version.js'
+import locales from '../../../webapp/locales'
+import orderBy from 'lodash/orderBy'
 
 /* global cy  */
 
+const languages = orderBy(locales, 'name')
 let lastPost = {};
 
 let loginCredentials = {
@@ -14,7 +18,7 @@ let loginCredentials = {
   password: "1234"
 };
 const termsAndConditionsAgreedVersion = {
-  termsAndConditionsAgreedVersion: "0.0.2"
+  termsAndConditionsAgreedVersion: VERSION
 };
 const narratorParams = {
   id: 'id-of-peter-pan',
@@ -25,8 +29,18 @@ const narratorParams = {
   ...termsAndConditionsAgreedVersion,
 };
 
+const annoyingParams = {
+  email: "spammy-spammer@example.org",
+  password: "1234",
+  ...termsAndConditionsAgreedVersion
+};
+
 Given("I am logged in", () => {
   cy.login(loginCredentials);
+});
+
+Given("I am logged in as the muted user", () => {
+  cy.login({ email: annoyingParams.email, password: '1234' });
 });
 
 Given("we have a selection of categories", () => {
@@ -198,6 +212,7 @@ Given("we have the following posts in our database:", table => {
       ...postAttributes,
       deleted: Boolean(postAttributes.deleted),
       disabled: Boolean(postAttributes.disabled),
+      pinned: Boolean(postAttributes.pinned),
       categoryIds: ['cat-456']
     }
     cy.factory().create("Post", postAttributes);
@@ -223,7 +238,6 @@ Given("I previously created a post", () => {
   lastPost.authorId = narratorParams.id
   lastPost.title = "previously created post";
   lastPost.content = "with some content";
-  lastPost.categoryIds = ["cat0"];
   cy.factory()
     .create("Post", lastPost);
 });
@@ -239,10 +253,16 @@ When("I type in the following text:", text => {
 });
 
 Then("I select a category", () => {
-  cy.get("span")
+  cy.get(".base-button")
     .contains("Just for Fun")
     .click();
 });
+
+When("I choose {string} as the language for the post", (languageCode) => {
+  cy.get('.ds-flex-item > .ds-form-item .ds-select ')
+    .click().get('.ds-select-option')
+    .eq(languages.findIndex(l => l.code === languageCode)).click()
+})
 
 Then("the post shows up on the landing page at position {int}", index => {
   cy.openPage("landing");
@@ -351,10 +371,12 @@ When("I log in with the following credentials:", table => {
 });
 
 When("open the notification menu and click on the first item", () => {
-  cy.get(".notifications-menu").click();
+  cy.get(".notifications-menu").invoke('show').click(); // "invoke('show')" because of the delay for show the menu
   cy.get(".notification-mention-post")
     .first()
-    .click();
+    .click({
+      force: true
+    });
 });
 
 Then("see {int} unread notifications in the top menu", count => {
@@ -395,17 +417,26 @@ Then("there are no notifications in the top menu", () => {
 });
 
 Given("there is an annoying user called {string}", name => {
-  const annoyingParams = {
-    email: "spammy-spammer@example.org",
-    password: "1234",
-    ...termsAndConditionsAgreedVersion
-  };
   cy.factory().create("User", {
     ...annoyingParams,
     id: "annoying-user",
     name,
     ...termsAndConditionsAgreedVersion,
   });
+});
+
+Given("there is an annoying user who has muted me", () => {
+  cy.neode()
+    .first("User", {
+      role: 'moderator'
+    })
+    .then(mutedUser => {
+      cy.neode()
+        .first("User", {
+          id: 'annoying-user'
+        })
+        .relateTo(mutedUser, "muted");
+    });
 });
 
 Given("I am on the profile page of the annoying user", name => {
@@ -423,7 +454,7 @@ When("I ", name => {
 When(
   "I click on {string} from the content menu in the user info box",
   button => {
-    cy.get(".user-content-menu .content-menu-trigger").click();
+    cy.get(".user-content-menu .base-button").click();
     cy.get(".popover .ds-menu-item-link")
       .contains(button)
       .click({
@@ -433,7 +464,7 @@ When(
 );
 
 When("I navigate to my {string} settings page", settingsPage => {
-  cy.get(".avatar-menu").click();
+  cy.get(".avatar-menu-trigger").click();
   cy.get(".avatar-menu-popover")
     .find("a[href]")
     .contains("Settings")
@@ -488,17 +519,17 @@ Given("I wrote a post {string}", title => {
     });
 });
 
-When("I block the user {string}", name => {
+When("I mute the user {string}", name => {
   cy.neode()
     .first("User", {
       name
     })
-    .then(blocked => {
+    .then(mutedUser => {
       cy.neode()
         .first("User", {
           name: narratorParams.name
         })
-        .relateTo(blocked, "blocked");
+        .relateTo(mutedUser, "muted");
     });
 });
 

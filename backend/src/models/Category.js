@@ -1,9 +1,9 @@
 import uuid from 'uuid/v4'
 
-module.exports = {
+export default {
   id: { type: 'string', primary: true, default: uuid },
   name: { type: 'string', required: true, default: false },
-  slug: { type: 'string' },
+  slug: { type: 'string', unique: 'true' },
   icon: { type: 'string', required: true, default: false },
   createdAt: { type: 'string', isoDate: true, default: () => new Date().toISOString() },
   updatedAt: {

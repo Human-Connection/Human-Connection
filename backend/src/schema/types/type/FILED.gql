@@ -1,0 +1,18 @@
+type FILED {
+  createdAt: String!
+  reasonCategory: ReasonCategory!
+  reasonDescription: String!
+  submitter: User
+}
+
+# this list equals the strings of an array in file "webapp/constants/modals.js"
+enum ReasonCategory {
+  other
+  discrimination_etc
+  pornographic_content_links
+  glorific_trivia_of_cruel_inhuman_acts
+  doxing
+  intentional_intimidation_stalking_persecution
+  advert_products_services_commercial
+  criminal_behavior_violation_german_law
+}

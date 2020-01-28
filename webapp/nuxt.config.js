@@ -1,6 +1,10 @@
 import path from 'path'
+import dotenv from 'dotenv'
+
+dotenv.config() // we want to synchronize @nuxt-dotenv and nuxt-env
+
 const pkg = require('./package')
-export const envWhitelist = ['NODE_ENV', 'MAPBOX_TOKEN']
+export const envWhitelist = ['NODE_ENV', 'MAPBOX_TOKEN', 'PUBLIC_REGISTRATION']
 const dev = process.env.NODE_ENV !== 'production'
 
 const styleguidePath = '../styleguide'
@@ -31,28 +35,24 @@ export default {
   },
 
   env: {
+    release: pkg.version,
     // pages which do NOT require a login
     publicPages: [
       'login',
       'logout',
       'password-reset-request',
-      'password-reset-verify-nonce',
+      'password-reset-enter-nonce',
       'password-reset-change-password',
-      // 'registration-signup', TODO: implement to open public registration
-      // 'registration-signup-by-invitation-code',
-      // 'registration-verify-nonce',
+      'registration-signup',
+      'registration-enter-nonce',
       'registration-create-user-account',
       'pages-slug',
-      'imprint',
       'terms-and-conditions',
       'code-of-conduct',
-      'data-privacy',
       'changelog',
     ],
     // pages to keep alive
     keepAlivePages: ['index'],
-    // active locales
-    locales: require('./locales'),
   },
   /*
    ** Headers of the page
@@ -95,19 +95,20 @@ export default {
   /*
    ** Global CSS
    */
-  css: ['~assets/styles/main.scss'],
+  css: ['~assets/_new/styles/resets.scss', '~assets/styles/main.scss'],
 
   /*
    ** Global processed styles
    */
   styleResources: {
-    scss: styleguideStyles,
+    scss: [styleguideStyles, '~assets/_new/styles/tokens.scss'],
   },
 
   /*
    ** Plugins to load before mounting the App
    */
   plugins: [
+    { src: '~/plugins/base-components.js', ssr: true },
     {
       src: `~/plugins/styleguide${process.env.STYLEGUIDE_DEV ? '-dev' : ''}.js`,
       ssr: true,
@@ -119,87 +120,13 @@ export default {
     { src: '~/plugins/v-tooltip.js', ssr: false },
     { src: '~/plugins/izi-toast.js', ssr: false },
     { src: '~/plugins/vue-filters.js' },
-    { src: '~/plugins/vue-infinite-scroll.js', ssr: false },
+    { src: '~/plugins/vue-infinite-loading.js', ssr: false },
   ],
 
   router: {
     middleware: ['authenticated', 'termsAndConditions'],
     linkActiveClass: 'router-link-active',
     linkExactActiveClass: 'router-link-exact-active',
-    scrollBehavior: (to, _from, savedPosition) => {
-      let position = false
-      // if no children detected and scrollToTop is not explicitly disabled
-      if (
-        to.matched.length < 2 &&
-        to.matched.every(r => r.components.default.options.scrollToTop !== false)
-      ) {
-        // scroll to the top of the page
-        position = {
-          x: 0,
-          y: 0,
-        }
-      } else if (to.matched.some(r => r.components.default.options.scrollToTop)) {
-        // if one of the children has scrollToTop option set to true
-        position = {
-          x: 0,
-          y: 0,
-        }
-      }
-
-      // savedPosition is only available for popstate navigations (back button)
-      if (savedPosition) {
-        position = savedPosition
-      }
-
-      return new Promise(resolve => {
-        // wait for the out transition to complete (if necessary)
-        window.$nuxt.$once('triggerScroll', () => {
-          let processInterval = null
-          let processTime = 0
-          const callInterval = 100
-          const callIntervalLimit = 2000
-
-          // coords will be used if no selector is provided,
-          // or if the selector didn't match any element.
-          if (to.hash) {
-            let hash = to.hash
-            // CSS.escape() is not supported with IE and Edge.
-            if (typeof window.CSS !== 'undefined' && typeof window.CSS.escape !== 'undefined') {
-              hash = '#' + window.CSS.escape(hash.substr(1))
-            }
-            try {
-              processInterval = setInterval(() => {
-                const hashIsFound = document.querySelector(hash)
-
-                if (hashIsFound) {
-                  position = {
-                    selector: hash,
-                    offset: { x: 0, y: -500 },
-                  }
-                }
-                processTime += callInterval
-                if (hashIsFound || processTime >= callIntervalLimit) {
-                  clearInterval(processInterval)
-                  processInterval = null
-                }
-              }, callInterval)
-            } catch (e) {
-              /* eslint-disable-next-line no-console */
-              console.warn(
-                'Failed to save scroll position. Please add CSS.escape() polyfill (https://github.com/mathiasbynens/CSS.escape).',
-              )
-            }
-          }
-
-          let resolveInterval = setInterval(() => {
-            if (!processInterval) {
-              clearInterval(resolveInterval)
-              resolve(position)
-            }
-          }, callInterval)
-        })
-      })
-    },
   },
 
   /*
@@ -218,11 +145,19 @@ export default {
         keys: envWhitelist,
       },
     ],
+    [
+      'vue-scrollto/nuxt',
+      {
+        offset: -100, // to compensate fixed navbar height
+        duration: 1000,
+      },
+    ],
     'cookie-universal-nuxt',
     '@nuxtjs/apollo',
     '@nuxtjs/axios',
     '@nuxtjs/style-resources',
     '@nuxtjs/sentry',
+    '@nuxtjs/pwa',
   ],
 
   /*
@@ -296,10 +231,12 @@ export default {
   },
 
   manifest: {
-    name: 'Human-Connection.org',
-    description: 'Human-Connection.org',
-    theme_color: '#ffffff',
-    lang: 'de',
+    name: 'Human Connection',
+    short_name: 'HC',
+    homepage_url: 'https://human-connection.org/',
+    description: 'The free and open source social network for active citizenship',
+    theme_color: '#17b53f',
+    lang: 'en',
   },
 
   /*
@@ -322,20 +259,45 @@ export default {
       svgRule.test = /\.(png|jpe?g|gif|webp)$/
       config.module.rules.push({
         test: /\.svg$/,
-        loader: 'vue-svg-loader',
-        options: {
-          svgo: {
-            plugins: [
-              {
-                removeViewBox: false,
+        use: [
+          'babel-loader',
+          {
+            loader: 'vue-svg-loader',
+            options: {
+              svgo: {
+                plugins: [
+                  {
+                    removeViewBox: false,
+                  },
+                  {
+                    removeDimensions: true,
+                  },
+                ],
               },
-              {
-                removeDimensions: true,
-              },
-            ],
+            },
           },
-        },
+        ],
       })
+      const tagAttributesForTesting = ['data-test', ':data-test', 'v-bind:data-test']
+      ctx.loaders.vue.compilerOptions = {
+        modules: [
+          {
+            preTransformNode(abstractSyntaxTreeElement) {
+              if (!ctx.isDev) {
+                const { attrsMap, attrsList } = abstractSyntaxTreeElement
+                tagAttributesForTesting.forEach(attribute => {
+                  if (attrsMap[attribute]) {
+                    delete attrsMap[attribute]
+                    const index = attrsList.findIndex(attr => attr.name === attribute)
+                    attrsList.splice(index, 1)
+                  }
+                })
+              }
+              return abstractSyntaxTreeElement
+            },
+          },
+        ],
+      }
     },
   },
 }

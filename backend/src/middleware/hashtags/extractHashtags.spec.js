@@ -8,9 +8,24 @@ describe('extractHashtags', () => {
   })
 
   describe('searches through links', () => {
-    it('finds links with and without ".hashtag" class and extracts Hashtag names', () => {
-      const content =
-        '<p><a class="hashtag" href="/search/hashtag/Elections">#Elections</a><a href="/search/hashtag/Democracy">#Democracy</a></p>'
+    it('without `class="hashtag"` but `data-hashtag-id="something"`, and extracts the Hashtag to make a Hashtag link', () => {
+      const content = `
+        <p>
+          <a
+            class="hashtag"
+            data-hashtag-id="Elections"
+            href="/?hashtag=Elections"
+          >
+            #Elections
+          </a>
+          <a
+            data-hashtag-id="Democracy"
+            href="/?hashtag=Democracy"
+          >
+            #Democracy
+          </a>
+        </p>
+      `
       expect(extractHashtags(content)).toEqual(['Elections', 'Democracy'])
     })
 
@@ -20,23 +35,57 @@ describe('extractHashtags', () => {
       expect(extractHashtags(content)).toEqual([])
     })
 
-    describe('handles links', () => {
-      it('ignores links with domains', () => {
-        const content =
-          '<p><a class="hashtag" href="http://localhost:3000/search/hashtag/Elections">#Elections</a><a href="/search/hashtag/Democracy">#Democracy</a></p>'
-        expect(extractHashtags(content)).toEqual(['Democracy'])
-      })
-
-      it('ignores Hashtag links with not allowed character combinations', () => {
-        // Allowed are all unicode letters '\pL' and all digits '0-9'. There haveto be at least one letter in it.
-        const content =
-          '<p>Something inspirational about <a href="/search/hashtag/AbcDefXyz0123456789!*(),2" class="hashtag" target="_blank">#AbcDefXyz0123456789!*(),2</a>, <a href="/search/hashtag/0123456789" class="hashtag" target="_blank">#0123456789</a>, <a href="/search/hashtag/0123456789a" class="hashtag" target="_blank">#0123456789a</a>, <a href="/search/hashtag/AbcDefXyz0123456789" target="_blank">#AbcDefXyz0123456789</a>, and <a href="/search/hashtag/λαπ" target="_blank">#λαπ</a>.</p>'
-        expect(extractHashtags(content).sort()).toEqual([
-          '0123456789a',
-          'AbcDefXyz0123456789',
-          'λαπ',
-        ])
-      })
+    it('ignores hashtag links with unsupported character combinations', () => {
+      // Allowed are all unicode letters '\pL' and all digits '0-9'. There haveto be at least one letter in it.
+      const content = `
+      <p>
+        Something inspirational about
+        <a
+          href="/?hashtag=AbcDefXyz0123456789!*(),2"
+          data-hashtag-id="AbcDefXyz0123456789!*(),2"
+          class="hashtag"
+          target="_blank"
+        >
+          #AbcDefXyz0123456789!*(),2
+        </a>,
+        <a
+          href="/?hashtag=0123456789"
+          data-hashtag-id="0123456789"
+          class="hashtag"
+          target="_blank"
+        >
+          #0123456789
+        </a>,
+        <a href="?hashtag=0123456789a"
+          data-hashtag-id="0123456789a"
+          class="hashtag"
+          target="_blank"
+        >
+          #0123456789a
+        </a>,
+        <a
+          href="/?hashtag=AbcDefXyz0123456789"
+          data-hashtag-id="AbcDefXyz0123456789"
+          class="hashtag"
+          target="_blank"
+        >
+          #AbcDefXyz0123456789
+        </a>, and
+        <a
+          href="/?hashtag=%C4%A7%CF%80%CE%B1%CE%BB"
+          data-hashtag-id="ħπαλ"
+          class="hashtag"
+          target="_blank"
+        >
+          #ħπαλ
+        </a>.
+      </p>
+      `
+      expect(extractHashtags(content).sort()).toEqual([
+        '0123456789a',
+        'AbcDefXyz0123456789',
+        'ħπαλ',
+      ])
     })
 
     describe('does not crash if', () => {

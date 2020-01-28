@@ -1,11 +1,11 @@
-import { rule, shield, deny, allow, and, or, not } from 'graphql-shield'
-import { neode } from '../bootstrap/neo4j'
+import { rule, shield, deny, allow, or } from 'graphql-shield'
+import { getNeode } from '../db/neo4j'
 import CONFIG from '../config'
 
 const debug = !!CONFIG.DEBUG
 const allowExternalErrors = true
 
-const instance = neode()
+const neode = getNeode()
 
 const isAuthenticated = rule({
   cache: 'contextual',
@@ -36,67 +36,33 @@ const isMyOwn = rule({
 const isMySocialMedia = rule({
   cache: 'no_cache',
 })(async (_, args, { user }) => {
-  let socialMedia = await instance.find('SocialMedia', args.id)
+  let socialMedia = await neode.find('SocialMedia', args.id)
   socialMedia = await socialMedia.toJson()
   return socialMedia.ownedBy.node.id === user.id
-})
-
-/* TODO: decide if we want to remove this check: the check
- * `onlyEnabledContent` throws authorization errors only if you have
- * arguments for `disabled` or `deleted` assuming these are filter
- * parameters. Soft-delete middleware obfuscates data on its way out
- * anyways. Furthermore, `neo4j-graphql-js` offers many ways to filter for
- * data so I believe, this is not a good check anyways.
- */
-const onlyEnabledContent = rule({
-  cache: 'strict',
-})(async (parent, args, ctx, info) => {
-  const { disabled, deleted } = args
-  return !(disabled || deleted)
-})
-
-const invitationLimitReached = rule({
-  cache: 'no_cache',
-})(async (parent, args, { user, driver }) => {
-  const session = driver.session()
-  try {
-    const result = await session.run(
-      `
-      MATCH (user:User {id:$id})-[:GENERATED]->(i:InvitationCode)
-      RETURN COUNT(i) >= 3 as limitReached
-      `,
-      { id: user.id },
-    )
-    const [limitReached] = result.records.map(record => {
-      return record.get('limitReached')
-    })
-    return limitReached
-  } finally {
-    session.close()
-  }
 })
 
 const isAuthor = rule({
   cache: 'no_cache',
 })(async (_parent, args, { user, driver }) => {
   if (!user) return false
-  const session = driver.session()
   const { id: resourceId } = args
-  const result = await session.run(
-    `
-  MATCH (resource {id: $resourceId})<-[:WROTE]-(author)
-  RETURN author
-  `,
-    {
-      resourceId,
-    },
-  )
-  session.close()
-  const [author] = result.records.map(record => {
-    return record.get('author')
+  const session = driver.session()
+  const authorReadTxPromise = session.readTransaction(async transaction => {
+    const authorTransactionResponse = await transaction.run(
+      `
+        MATCH (resource {id: $resourceId})<-[:WROTE]-(author {id: $userId})
+        RETURN author
+      `,
+      { resourceId, userId: user.id },
+    )
+    return authorTransactionResponse.records.map(record => record.get('author'))
   })
-  const authorId = author && author.properties && author.properties.id
-  return authorId === user.id
+  try {
+    const [author] = await authorReadTxPromise
+    return !!author
+  } finally {
+    session.close()
+  }
 })
 
 const isDeletingOwnAccount = rule({
@@ -111,40 +77,45 @@ const noEmailFilter = rule({
   return !('email' in args)
 })
 
+const publicRegistration = rule()(() => !!CONFIG.PUBLIC_REGISTRATION)
+
 // Permissions
-const permissions = shield(
+export default shield(
   {
     Query: {
       '*': deny,
       findPosts: allow,
+      findUsers: allow,
+      findResources: allow,
       embed: allow,
       Category: allow,
       Tag: allow,
-      Report: isModerator,
+      reports: isModerator,
       statistics: allow,
       currentUser: allow,
-      Post: or(onlyEnabledContent, isModerator),
+      Post: allow,
+      profilePagePosts: allow,
       Comment: allow,
       User: or(noEmailFilter, isAdmin),
       isLoggedIn: allow,
       Badge: allow,
       PostsEmotionsCountByEmotion: allow,
       PostsEmotionsByCurrentUser: isAuthenticated,
-      blockedUsers: isAuthenticated,
+      mutedUsers: isAuthenticated,
       notifications: isAuthenticated,
+      Donations: isAuthenticated,
     },
     Mutation: {
       '*': deny,
       login: allow,
       SignupByInvitation: allow,
-      Signup: isAdmin,
+      Signup: or(publicRegistration, isAdmin),
       SignupVerification: allow,
-      CreateInvitationCode: and(isAuthenticated, or(not(invitationLimitReached), isAdmin)),
       UpdateUser: onlyYourself,
       CreatePost: isAuthenticated,
       UpdatePost: isAuthor,
       DeletePost: isAuthor,
-      report: isAuthenticated,
+      fileReport: isAuthenticated,
       CreateSocialMedia: isAuthenticated,
       UpdateSocialMedia: isMySocialMedia,
       DeleteSocialMedia: isMySocialMedia,
@@ -152,13 +123,12 @@ const permissions = shield(
       // RemoveBadgeRewarded: isAdmin,
       reward: isAdmin,
       unreward: isAdmin,
-      follow: isAuthenticated,
-      unfollow: isAuthenticated,
+      followUser: isAuthenticated,
+      unfollowUser: isAuthenticated,
       shout: isAuthenticated,
       unshout: isAuthenticated,
       changePassword: isAuthenticated,
-      enable: isModerator,
-      disable: isModerator,
+      review: isModerator,
       CreateComment: isAuthenticated,
       UpdateComment: isAuthor,
       DeleteComment: isAuthor,
@@ -167,12 +137,17 @@ const permissions = shield(
       resetPassword: allow,
       AddPostEmotions: isAuthenticated,
       RemovePostEmotions: isAuthenticated,
-      block: isAuthenticated,
-      unblock: isAuthenticated,
+      muteUser: isAuthenticated,
+      unmuteUser: isAuthenticated,
       markAsRead: isAuthenticated,
+      AddEmailAddress: isAuthenticated,
+      VerifyEmailAddress: isAuthenticated,
+      pinPost: isAdmin,
+      unpinPost: isAdmin,
+      UpdateDonations: isAdmin,
     },
     User: {
-      email: isMyOwn,
+      email: or(isMyOwn, isAdmin),
     },
   },
   {
@@ -181,5 +156,3 @@ const permissions = shield(
     fallbackRule: allow,
   },
 )
-
-export default permissions

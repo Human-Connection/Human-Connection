@@ -1,21 +1,138 @@
+input _PostFilter {
+  AND: [_PostFilter!]
+  OR: [_PostFilter!]
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  author: _UserFilter
+  author_not: _UserFilter
+  author_in: [_UserFilter!]
+  author_not_in: [_UserFilter!]
+  title: String
+  title_not: String
+  title_in: [String!]
+  title_not_in: [String!]
+  title_contains: String
+  title_not_contains: String
+  title_starts_with: String
+  title_not_starts_with: String
+  title_ends_with: String
+  title_not_ends_with: String
+  shoutedBy_some: _UserFilter
+  slug: String
+  slug_not: String
+  slug_in: [String!]
+  slug_not_in: [String!]
+  slug_contains: String
+  slug_not_contains: String
+  slug_starts_with: String
+  slug_not_starts_with: String
+  slug_ends_with: String
+  slug_not_ends_with: String
+  content: String
+  content_not: String
+  content_in: [String!]
+  content_not_in: [String!]
+  content_contains: String
+  content_not_contains: String
+  content_starts_with: String
+  content_not_starts_with: String
+  content_ends_with: String
+  content_not_ends_with: String
+  image: String
+  visibility: Visibility
+  visibility_not: Visibility
+  visibility_in: [Visibility!]
+  visibility_not_in: [Visibility!]
+  language: String
+  language_not: String
+  language_in: [String!]
+  language_not_in: [String!]
+  pinned: Boolean # required for `maintainPinnedPost`
+  tags: _TagFilter
+  tags_not: _TagFilter
+  tags_in: [_TagFilter!]
+  tags_not_in: [_TagFilter!]
+  tags_some: _TagFilter
+  tags_none: _TagFilter
+  tags_single: _TagFilter
+  tags_every: _TagFilter
+  categories: _CategoryFilter
+  categories_not: _CategoryFilter
+  categories_in: [_CategoryFilter!]
+  categories_not_in: [_CategoryFilter!]
+  categories_some: _CategoryFilter
+  categories_none: _CategoryFilter
+  categories_single: _CategoryFilter
+  categories_every: _CategoryFilter
+  comments: _CommentFilter
+  comments_not: _CommentFilter
+  comments_in: [_CommentFilter!]
+  comments_not_in: [_CommentFilter!]
+  comments_some: _CommentFilter
+  comments_none: _CommentFilter
+  comments_single: _CommentFilter
+  comments_every: _CommentFilter
+  emotions: _PostEMOTEDFilter
+  emotions_not: _PostEMOTEDFilter
+  emotions_in: [_PostEMOTEDFilter!]
+  emotions_not_in: [_PostEMOTEDFilter!]
+  emotions_some: _PostEMOTEDFilter
+  emotions_none: _PostEMOTEDFilter
+  emotions_single: _PostEMOTEDFilter
+  emotions_every: _PostEMOTEDFilter
+  imageBlurred: Boolean
+}
+
+enum _PostOrdering {
+  id_asc
+  id_desc
+  title_asc
+  title_desc
+  slug_asc
+  slug_desc
+  content_asc
+  content_desc
+  image_asc
+  image_desc
+  visibility_asc
+  visibility_desc
+  createdAt_asc
+  createdAt_desc
+  updatedAt_asc
+  updatedAt_desc
+  language_asc
+  language_desc
+  pinned_asc
+  pinned_desc
+}
+
+
 type Post {
   id: ID!
   activityId: String
   objectId: String
   author: User @relation(name: "WROTE", direction: "IN")
   title: String!
-  slug: String
+  slug: String!
   content: String!
   contentExcerpt: String
   image: String
   imageUpload: Upload
+  imageAspectRatio: Float
   visibility: Visibility
   deleted: Boolean
   disabled: Boolean
-  disabledBy: User @relation(name: "DISABLED", direction: "IN")
+  pinned: Boolean
   createdAt: String
   updatedAt: String
   language: String
+  imageBlurred: Boolean
+  pinnedAt: String @cypher(
+      statement: "MATCH (this)<-[pinned:PINNED]-(:User) WHERE NOT this.deleted = true AND NOT this.disabled = true RETURN pinned.createdAt"
+    )
+  pinnedBy: User @relation(name:"PINNED", direction: "IN")
   relatedContributions: [Post]!
     @cypher(
       statement: """
@@ -25,7 +142,6 @@ type Post {
       LIMIT 10
       """
     )
-
   tags: [Tag]! @relation(name: "TAGGED", direction: "OUT")
   categories: [Category]! @relation(name: "CATEGORIZED", direction: "OUT")
 
@@ -68,6 +184,8 @@ type Mutation {
     language: String
     categoryIds: [ID]
     contentExcerpt: String
+    imageBlurred: Boolean
+    imageAspectRatio: Float
   ): Post
   UpdatePost(
     id: ID!
@@ -80,13 +198,50 @@ type Mutation {
     visibility: Visibility
     language: String
     categoryIds: [ID]
+    imageBlurred: Boolean
+    imageAspectRatio: Float
   ): Post
   DeletePost(id: ID!): Post
   AddPostEmotions(to: _PostInput!, data: _EMOTEDInput!): EMOTED
   RemovePostEmotions(to: _PostInput!, data: _EMOTEDInput!): EMOTED
+  pinPost(id: ID!): Post
+  unpinPost(id: ID!): Post
 }
 
 type Query {
+  Post(
+    id: ID
+    title: String
+    slug: String
+    content: String
+    image: String
+    visibility: Visibility
+    pinned: Boolean
+    createdAt: String
+    updatedAt: String
+    language: String
+    imageBlurred: Boolean
+    first: Int
+    offset: Int
+    orderBy: [_PostOrdering]
+    filter: _PostFilter
+    imageAspectRatio: Float
+  ): [Post]
   PostsEmotionsCountByEmotion(postId: ID!, data: _EMOTEDInput!): Int!
   PostsEmotionsByCurrentUser(postId: ID!): [String]
+  profilePagePosts(filter: _PostFilter, first: Int, offset: Int, orderBy: [_PostOrdering]): [Post]
+  findPosts(query: String!, limit: Int = 10, filter: _PostFilter): [Post]!
+    @cypher(
+      statement: """
+      CALL db.index.fulltext.queryNodes('post_fulltext_search', $query)
+      YIELD node as post, score
+      MATCH (post)<-[:WROTE]-(user:User)
+      WHERE score >= 0.2
+      AND NOT user.deleted = true AND NOT user.disabled = true
+      AND NOT post.deleted = true AND NOT post.disabled = true
+      AND NOT user.id in COALESCE($filter.author_not.id_in, [])
+      RETURN post
+      LIMIT $limit
+      """
+    )
 }

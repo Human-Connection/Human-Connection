@@ -1,10 +1,7 @@
-import { mount, createLocalVue } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import Users from './users.vue'
-import Styleguide from '@human-connection/styleguide'
 
-const localVue = createLocalVue()
-
-localVue.use(Styleguide)
+const localVue = global.localVue
 
 describe('Users', () => {
   let wrapper
@@ -46,6 +43,12 @@ describe('Users', () => {
       describe('query looks like an email address', () => {
         it('searches users for exact email address', async () => {
           const wrapper = await searchAction(Wrapper(), { query: 'email@example.org' })
+          expect(wrapper.vm.email).toEqual('email@example.org')
+          expect(wrapper.vm.filter).toBe(null)
+        })
+
+        it('email address is case-insensitive', async () => {
+          const wrapper = await searchAction(Wrapper(), { query: 'eMaiL@example.org' })
           expect(wrapper.vm.email).toEqual('email@example.org')
           expect(wrapper.vm.filter).toBe(null)
         })

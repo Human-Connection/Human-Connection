@@ -1,21 +1,21 @@
 <template>
-  <ds-button
+  <base-button
+    class="follow-button"
     :disabled="disabled || !followId"
     :loading="loading"
     :icon="icon"
-    :primary="isFollowed && !hovered"
+    :filled="isFollowed && !hovered"
     :danger="isFollowed && hovered"
-    fullwidth
     @mouseenter.native="onHover"
     @mouseleave.native="hovered = false"
     @click.prevent="toggle"
   >
     {{ label }}
-  </ds-button>
+  </base-button>
 </template>
 
 <script>
-import gql from 'graphql-tag'
+import { followUserMutation, unfollowUserMutation } from '~/graphql/User'
 
 export default {
   name: 'HcFollowButton',
@@ -61,28 +61,32 @@ export default {
     },
     async toggle() {
       const follow = !this.isFollowed
-      const mutation = follow ? 'follow' : 'unfollow'
+      const mutation = follow ? followUserMutation(this.$i18n) : unfollowUserMutation(this.$i18n)
 
       this.hovered = false
-      this.$emit('optimistic', follow)
+      const optimisticResult = { followedByCurrentUser: follow }
+      this.$emit('optimistic', optimisticResult)
 
       try {
-        await this.$apollo.mutate({
-          mutation: gql`
-            mutation($id: ID!) {
-              ${mutation}(id: $id, type: User)
-            }
-          `,
-          variables: {
-            id: this.followId,
-          },
+        const { data } = await this.$apollo.mutate({
+          mutation,
+          variables: { id: this.followId },
         })
 
-        this.$emit('update', follow)
-      } catch {
-        this.$emit('optimistic', !follow)
+        const followedUser = follow ? data.followUser : data.unfollowUser
+        this.$emit('update', followedUser)
+      } catch (err) {
+        optimisticResult.followedByCurrentUser = !follow
+        this.$emit('optimistic', optimisticResult)
       }
     },
   },
 }
 </script>
+
+<style lang="scss">
+.follow-button {
+  display: block;
+  width: 100%;
+}
+</style>

@@ -1,34 +1,51 @@
----
-  apiVersion: extensions/v1beta1
-  kind: Deployment
-  metadata:
-    name: mailserver
-    namespace: human-connection
-  spec:
-    replicas: 1
-    minReadySeconds: 15
-    progressDeadlineSeconds: 60
-    selector:
-      matchLabels:
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    human-connection.org/selector: deployment-human-connection-mailserver
+  name: mailserver
+  namespace: human-connection
+spec:
+  minReadySeconds: 15
+  progressDeadlineSeconds: 60
+  replicas: 1
+  revisionHistoryLimit: 2147483647
+  selector:
+    matchLabels:
+      human-connection.org/selector: deployment-human-connection-mailserver
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
         human-connection.org/selector: deployment-human-connection-mailserver
-    template:
-      metadata:
-        labels:
-          human-connection.org/selector: deployment-human-connection-mailserver
-        name: "mailserver"
-      spec:
-        containers:
-        - name: mailserver
-          image: djfarrelly/maildev
-          imagePullPolicy: Always
-          ports:
-          - containerPort: 80
-          - containerPort: 25
-          envFrom:
-          - configMapRef:
-              name: configmap
-          - secretRef:
-              name: human-connection
-        restartPolicy: Always
-        terminationGracePeriodSeconds: 30
-  status: {}
+      name: mailserver
+    spec:
+      containers:
+      - envFrom:
+        - configMapRef:
+            name: configmap
+        - secretRef:
+            name: human-connection
+        image: djfarrelly/maildev
+        imagePullPolicy: Always
+        name: mailserver
+        ports:
+        - containerPort: 80
+          protocol: TCP
+        - containerPort: 25
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+status: {}

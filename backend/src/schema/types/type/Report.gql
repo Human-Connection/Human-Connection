@@ -1,0 +1,30 @@
+type Report {
+  id: ID!
+  createdAt: String!
+  updatedAt: String!
+  rule: ReportRule!
+  disable: Boolean!
+  closed: Boolean!
+  filed: [FILED]
+  reviewed: [REVIEWED]!
+  resource: ReportedResource
+}
+
+union ReportedResource = User | Post | Comment
+
+enum ReportRule {
+  latestReviewUpdatedAtRules
+}
+
+type Mutation {
+  fileReport(resourceId: ID!, reasonCategory: ReasonCategory!, reasonDescription: String!): Report
+}
+
+type Query {
+  reports(orderBy: ReportOrdering, first: Int, offset: Int, reviewed: Boolean, closed: Boolean): [Report]
+}
+
+enum ReportOrdering {
+  createdAt_asc
+  createdAt_desc
+}

@@ -1,7 +1,7 @@
-import { gql } from '../../jest/helpers'
-import Factory from '../../seed/factories'
+import { gql } from '../../helpers/jest'
+import Factory from '../../factories'
 import { createTestClient } from 'apollo-server-testing'
-import { neode, getDriver } from '../../bootstrap/neo4j'
+import { getNeode, getDriver } from '../../db/neo4j'
 import createServer from '../../server'
 
 let server
@@ -11,7 +11,7 @@ let hashtagingUser
 let authenticatedUser
 const factory = Factory()
 const driver = getDriver()
-const instance = neode()
+const neode = getNeode()
 const categoryIds = ['cat9']
 const createPostMutation = gql`
   mutation($id: ID, $title: String!, $postContent: String!, $categoryIds: [ID]!) {
@@ -36,7 +36,7 @@ beforeAll(() => {
     context: () => {
       return {
         user: authenticatedUser,
-        neode: instance,
+        neode,
         driver,
       }
     },
@@ -48,14 +48,14 @@ beforeAll(() => {
 })
 
 beforeEach(async () => {
-  hashtagingUser = await instance.create('User', {
+  hashtagingUser = await neode.create('User', {
     id: 'you',
     name: 'Al Capone',
     slug: 'al-capone',
     email: 'test@example.org',
     password: '1234',
   })
-  await instance.create('Category', {
+  await neode.create('Category', {
     id: 'cat9',
     name: 'Democracy & Politics',
     icon: 'university',
@@ -69,8 +69,27 @@ afterEach(async () => {
 describe('hashtags', () => {
   const id = 'p135'
   const title = 'Two Hashtags'
-  const postContent =
-    '<p>Hey Dude, <a class="hashtag" href="/search/hashtag/Democracy">#Democracy</a> should work equal for everybody!? That seems to be the only way to have equal <a class="hashtag" href="/search/hashtag/Liberty">#Liberty</a> for everyone.</p>'
+  const postContent = `
+    <p>
+      Hey Dude,
+      <a
+        class="hashtag"
+        data-hashtag-id="Democracy"
+        href="/?hashtag=Democracy">
+          #Democracy
+      </a>
+      should work equal for everybody!? That seems to be the only way to have
+      equal
+      <a
+        class="hashtag"
+        data-hashtag-id="Liberty"
+        href="/?hashtag=Liberty"
+      >
+        #Liberty
+      </a>
+      for everyone.
+    </p>
+  `
   const postWithHastagsQuery = gql`
     query($id: ID) {
       Post(id: $id) {
@@ -129,10 +148,29 @@ describe('hashtags', () => {
         )
       })
 
-      describe('afterwards update the Post by removing a Hashtag, leaving a Hashtag and add a Hashtag', () => {
-        // The already existing Hashtag has no class at this point.
-        const postContent =
-          '<p>Hey Dude, <a class="hashtag" href="/search/hashtag/Elections">#Elections</a> should work equal for everybody!? That seems to be the only way to have equal <a href="/search/hashtag/Liberty">#Liberty</a> for everyone.</p>'
+      describe('updates the Post by removing, keeping and adding one hashtag respectively', () => {
+        // The already existing hashtag has no class at this point.
+        const postContent = `
+          <p>
+            Hey Dude,
+            <a
+              class="hashtag"
+              data-hashtag-id="Elections"
+              href="?hashtag=Elections"
+            >
+              #Elections
+            </a>
+            should work equal for everybody!? That seems to be the only way to
+            have equal
+            <a
+              data-hashtag-id="Liberty"
+              href="?hashtag=Liberty"
+            >
+              #Liberty
+            </a>
+            for everyone.
+          </p>
+        `
 
         it('only one previous Hashtag and the new Hashtag exists', async () => {
           await mutate({

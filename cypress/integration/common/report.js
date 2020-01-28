@@ -1,11 +1,13 @@
 import { Given, When, Then } from 'cypress-cucumber-preprocessor/steps'
+import { VERSION } from '../../constants/terms-and-conditions-version.js'
+import { gql } from '../../../backend/src/helpers/jest'
 
 /* global cy  */
 
 let lastReportTitle
 let davidIrvingPostTitle = 'The Truth about the Holocaust'
 let davidIrvingPostSlug = 'the-truth-about-the-holocaust'
-let davidIrvingName = 'David Irving'
+let annoyingUserWhoMutedModeratorTitle = 'Fake news'
 
 const savePostTitle = $post => {
   return $post
@@ -31,7 +33,7 @@ Given('I am logged in with a {string} role', role => {
   cy.factory().create('User', {
     email: `${role}@example.org`,
     password: '1234',
-    termsAndConditionsAgreedVersion: "0.0.2",
+    termsAndConditionsAgreedVersion: VERSION,
     role
   })
   cy.login({
@@ -42,7 +44,7 @@ Given('I am logged in with a {string} role', role => {
 
 When('I click on "Report Post" from the content menu of the post', () => {
   cy.contains('.ds-card', davidIrvingPostTitle)
-    .find('.content-menu-trigger')
+    .find('.content-menu .base-button')
     .click({force: true})
 
   cy.get('.popover .ds-menu-item-link')
@@ -52,7 +54,7 @@ When('I click on "Report Post" from the content menu of the post', () => {
 
 When('I click on "Report User" from the content menu in the user info box', () => {
   cy.contains('.ds-card', davidIrvingPostTitle)
-    .get('.user-content-menu .content-menu-trigger')
+    .get('.user-content-menu .base-button')
     .click({ force: true })
 
   cy.get('.popover .ds-menu-item-link')
@@ -61,7 +63,7 @@ When('I click on "Report User" from the content menu in the user info box', () =
 })
 
 When('I click on the author', () => {
-  cy.get('.username')
+  cy.get('.user-teaser')
     .click()
     .url().should('include', '/profile/')
 })
@@ -107,6 +109,11 @@ Then(`I can't see the moderation menu item`, () => {
 When(/^I confirm the reporting dialog .*:$/, message => {
   cy.contains(message) // wait for element to become visible
   cy.get('.ds-modal').within(() => {
+    cy.get('.ds-radio-option-label')
+      .first()
+      .click({
+        force: true
+      })
     cy.get('button')
       .contains('Report')
       .click()
@@ -114,21 +121,22 @@ When(/^I confirm the reporting dialog .*:$/, message => {
 })
 
 Given('somebody reported the following posts:', table => {
-  table.hashes().forEach(({ id }) => {
+  table.hashes().forEach(({ submitterEmail, resourceId, reasonCategory, reasonDescription }) => {
     const submitter = {
-      email: `submitter${id}@example.org`,
+      email: submitterEmail,
       password: '1234'
     }
     cy.factory()
       .create('User', submitter)
       .authenticateAs(submitter)
-      .mutate(`mutation($id: ID!, $description: String!) {
-        report(description: $description, id: $id) {
+      .mutate(gql`mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
+        fileReport(resourceId: $resourceId, reasonCategory: $reasonCategory, reasonDescription: $reasonDescription) {
           id
         }
       }`, {
-        id,
-        description: 'Offensive content'
+        resourceId,
+        reasonCategory,
+        reasonDescription
       })
   })
 })
@@ -139,7 +147,27 @@ Then('I see all the reported posts including the one from above', () => {
   })
 })
 
+Then('I see all the reported posts including from the user who muted me', () => {
+  cy.get('table tbody').within(() => {
+    cy.contains('tr', annoyingUserWhoMutedModeratorTitle)
+  })
+})
+
 Then('each list item links to the post page', () => {
   cy.contains(davidIrvingPostTitle).click()
   cy.location('pathname').should('contain', '/post')
+})
+
+Then('I can visit the post page', () => {
+  cy.contains(annoyingUserWhoMutedModeratorTitle).click()
+  cy.location('pathname').should('contain', '/post')
+    .get('h3').should('contain', annoyingUserWhoMutedModeratorTitle)
+})
+
+When("they have a post someone has reported", () => {
+  cy.factory()
+    .create("Post", {
+      authorId: 'annnoying-user',
+      title,
+    });
 })

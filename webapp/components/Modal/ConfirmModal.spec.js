@@ -1,13 +1,10 @@
-import { config, shallowMount, mount, createLocalVue } from '@vue/test-utils'
-import Vuex from 'vuex'
-import Styleguide from '@human-connection/styleguide'
+import { config, shallowMount, mount } from '@vue/test-utils'
+
 import ConfirmModal from './ConfirmModal.vue'
 import { postMenuModalsData } from '~/components/utils/PostHelpers'
 
-const localVue = createLocalVue()
+const localVue = global.localVue
 
-localVue.use(Vuex)
-localVue.use(Styleguide)
 config.stubs['sweetalert-icon'] = '<span><slot /></span>'
 
 describe('ConfirmModal.vue', () => {

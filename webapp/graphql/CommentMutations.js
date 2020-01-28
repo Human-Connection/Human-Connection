@@ -10,6 +10,7 @@ export default i18n => {
           contentExcerpt
           content
           createdAt
+          updatedAt
           disabled
           deleted
           author {
@@ -39,6 +40,7 @@ export default i18n => {
           contentExcerpt
           content
           createdAt
+          updatedAt
           disabled
           deleted
           author {

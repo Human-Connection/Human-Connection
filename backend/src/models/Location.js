@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   id: { type: 'string', primary: true },
   lat: { type: 'number' },
   lng: { type: 'number' },
@@ -12,6 +12,7 @@ module.exports = {
   nameDE: { type: 'string' },
   nameNL: { type: 'string' },
   namePL: { type: 'string' },
+  nameRU: { type: 'string' },
   isIn: {
     type: 'relationship',
     relationship: 'IS_IN',

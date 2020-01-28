@@ -1,12 +1,8 @@
-import { shallowMount, createLocalVue } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
+import Vue from 'vue'
 import Upload from '.'
-import Vuex from 'vuex'
-import Styleguide from '@human-connection/styleguide'
 
-const localVue = createLocalVue()
-
-localVue.use(Vuex)
-localVue.use(Styleguide)
+const localVue = global.localVue
 
 describe('Upload', () => {
   let wrapper
@@ -62,8 +58,9 @@ describe('Upload', () => {
       expect(mocks.$toast.error).toHaveBeenCalledWith(fileError.status, message)
     })
 
-    it('changes error status from false to true to false', () => {
+    it('changes error status from false to true to false', async () => {
       wrapper.vm.verror(fileError, message)
+      await Vue.nextTick()
       expect(wrapper.vm.error).toEqual(true)
       jest.runAllTimers()
       expect(wrapper.vm.error).toEqual(false)

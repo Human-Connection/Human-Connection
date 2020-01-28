@@ -1,12 +1,12 @@
-import { shallowMount, createLocalVue } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import Ribbon from './index'
 
-const localVue = createLocalVue()
+const localVue = global.localVue
 
 describe('Ribbon', () => {
   let text
 
-  let Wrapper = () => {
+  const Wrapper = () => {
     return shallowMount(Ribbon, {
       localVue,
       propsData: {

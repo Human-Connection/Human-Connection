@@ -1,3 +1,20 @@
+input _TagFilter {
+  AND: [_TagFilter!]
+  OR: [_TagFilter!]
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  taggedPosts: _PostFilter
+  taggedPosts_not: _PostFilter
+  taggedPosts_in: [_PostFilter!]
+  taggedPosts_not_in: [_PostFilter!]
+  taggedPosts_some: _PostFilter
+  taggedPosts_none: _PostFilter
+  taggedPosts_single: _PostFilter
+  taggedPosts_every: _PostFilter
+}
+
 type Tag {
   id: ID!
   taggedPosts: [Post]! @relation(name: "TAGGED", direction: "IN")
@@ -5,4 +22,23 @@ type Tag {
   taggedCountUnique: Int! @cypher(statement: "MATCH (this)<-[:TAGGED]-(p)<-[:WROTE]-(u:User) RETURN COUNT(DISTINCT u)")
   deleted: Boolean
   disabled: Boolean
+}
+
+enum _TagOrdering {
+  id_asc
+  id_desc
+  taggedCount_asc
+  taggedCount_desc
+  taggedCountUnique_asc
+  taggedCountUnique_desc
+}
+
+type Query {
+  Tag(
+    id: ID
+    first: Int
+    offset: Int
+    orderBy: [_TagOrdering]
+    filter: _TagFilter
+  ): [Tag]
 }

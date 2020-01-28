@@ -1,6 +1,6 @@
-import Factory from '../../seed/factories'
-import { gql } from '../../jest/helpers'
-import { neode as getNeode, getDriver } from '../../bootstrap/neo4j'
+import Factory from '../../factories'
+import { gql } from '../../helpers/jest'
+import { getNeode, getDriver } from '../../db/neo4j'
 import createServer from '../../server'
 import { createTestClient } from 'apollo-server-testing'
 
@@ -8,14 +8,8 @@ const factory = Factory()
 const neode = getNeode()
 const driver = getDriver()
 
-let query
-let mutate
-let graphqlQuery
 const categoryIds = ['cat9']
-let authenticatedUser
-let user
-let moderator
-let troll
+let query, graphqlQuery, authenticatedUser, user, moderator, troll
 
 const action = () => {
   return query({ query: graphqlQuery })
@@ -38,17 +32,16 @@ beforeAll(async () => {
       avatar: '/some/offensive/avatar.jpg',
       about: 'This self description is very offensive',
     }),
+    neode.create('Category', {
+      id: 'cat9',
+      name: 'Democracy & Politics',
+      icon: 'university',
+    }),
   ])
 
   user = users[0]
   moderator = users[1]
   troll = users[2]
-
-  await neode.create('Category', {
-    id: 'cat9',
-    name: 'Democracy & Politics',
-    icon: 'university',
-  })
 
   await Promise.all([
     user.relateTo(troll, 'following'),
@@ -70,32 +63,31 @@ beforeAll(async () => {
     }),
   ])
 
-  await Promise.all([
+  const resources = await Promise.all([
     factory.create('Comment', {
       author: user,
       id: 'c2',
       postId: 'p3',
       content: 'Enabled comment on public post',
     }),
+    factory.create('Post', {
+      id: 'p2',
+      author: troll,
+      title: 'Disabled post',
+      content: 'This is an offensive post content',
+      contentExcerpt: 'This is an offensive post content',
+      image: '/some/offensive/image.jpg',
+      deleted: false,
+      categoryIds,
+    }),
+    factory.create('Comment', {
+      id: 'c1',
+      author: troll,
+      postId: 'p3',
+      content: 'Disabled comment',
+      contentExcerpt: 'Disabled comment',
+    }),
   ])
-
-  await factory.create('Post', {
-    id: 'p2',
-    author: troll,
-    title: 'Disabled post',
-    content: 'This is an offensive post content',
-    contentExcerpt: 'This is an offensive post content',
-    image: '/some/offensive/image.jpg',
-    deleted: false,
-    categoryIds,
-  })
-  await factory.create('Comment', {
-    id: 'c1',
-    author: troll,
-    postId: 'p3',
-    content: 'Disabled comment',
-    contentExcerpt: 'Disabled comment',
-  })
 
   const { server } = createServer({
     context: () => {
@@ -108,20 +100,57 @@ beforeAll(async () => {
   })
   const client = createTestClient(server)
   query = client.query
-  mutate = client.mutate
 
-  authenticatedUser = await moderator.toJson()
-  const disableMutation = gql`
-    mutation($id: ID!) {
-      disable(id: $id)
-    }
-  `
-  await Promise.all([
-    mutate({ mutation: disableMutation, variables: { id: 'c1' } }),
-    mutate({ mutation: disableMutation, variables: { id: 'u2' } }),
-    mutate({ mutation: disableMutation, variables: { id: 'p2' } }),
+  const trollingPost = resources[1]
+  const trollingComment = resources[2]
+
+  const reports = await Promise.all([
+    factory.create('Report'),
+    factory.create('Report'),
+    factory.create('Report'),
   ])
-  authenticatedUser = null
+  const reportAgainstTroll = reports[0]
+  const reportAgainstTrollingPost = reports[1]
+  const reportAgainstTrollingComment = reports[2]
+
+  const reportVariables = {
+    resourceId: 'undefined-resource',
+    reasonCategory: 'discrimination_etc',
+    reasonDescription: 'I am what I am !!!',
+  }
+
+  await Promise.all([
+    reportAgainstTroll.relateTo(user, 'filed', { ...reportVariables, resourceId: 'u2' }),
+    reportAgainstTroll.relateTo(troll, 'belongsTo'),
+    reportAgainstTrollingPost.relateTo(user, 'filed', { ...reportVariables, resourceId: 'p2' }),
+    reportAgainstTrollingPost.relateTo(trollingPost, 'belongsTo'),
+    reportAgainstTrollingComment.relateTo(moderator, 'filed', {
+      ...reportVariables,
+      resourceId: 'c1',
+    }),
+    reportAgainstTrollingComment.relateTo(trollingComment, 'belongsTo'),
+  ])
+
+  const disableVariables = {
+    resourceId: 'undefined-resource',
+    disable: true,
+    closed: false,
+  }
+
+  await Promise.all([
+    reportAgainstTroll.relateTo(moderator, 'reviewed', { ...disableVariables, resourceId: 'u2' }),
+    troll.update({ disabled: true, updatedAt: new Date().toISOString() }),
+    reportAgainstTrollingPost.relateTo(moderator, 'reviewed', {
+      ...disableVariables,
+      resourceId: 'p2',
+    }),
+    trollingPost.update({ disabled: true, updatedAt: new Date().toISOString() }),
+    reportAgainstTrollingComment.relateTo(moderator, 'reviewed', {
+      ...disableVariables,
+      resourceId: 'c1',
+    }),
+    trollingComment.update({ disabled: true, updatedAt: new Date().toISOString() }),
+  ])
 })
 
 afterAll(async () => {
@@ -338,76 +367,6 @@ describe('softDeleteMiddleware', () => {
               },
             } = await action()
             await expect(comments).toEqual(expect.arrayContaining(expected))
-          })
-        })
-      })
-
-      describe('filter (deleted: true)', () => {
-        beforeEach(() => {
-          graphqlQuery = gql`
-            {
-              Post(deleted: true) {
-                title
-              }
-            }
-          `
-        })
-
-        describe('as user', () => {
-          beforeEach(async () => {
-            authenticatedUser = await user.toJson()
-          })
-
-          it('throws authorisation error', async () => {
-            const { data, errors } = await action()
-            expect(data).toEqual({ Post: null })
-            expect(errors[0]).toHaveProperty('message', 'Not Authorised!')
-          })
-        })
-
-        describe('as moderator', () => {
-          beforeEach(async () => {
-            authenticatedUser = await moderator.toJson()
-          })
-
-          it('does not show deleted posts', async () => {
-            const expected = { data: { Post: [{ title: 'UNAVAILABLE' }] } }
-            await expect(action()).resolves.toMatchObject(expected)
-          })
-        })
-      })
-
-      describe('filter (disabled: true)', () => {
-        beforeEach(() => {
-          graphqlQuery = gql`
-            {
-              Post(disabled: true) {
-                title
-              }
-            }
-          `
-        })
-
-        describe('as user', () => {
-          beforeEach(async () => {
-            authenticatedUser = await user.toJson()
-          })
-
-          it('throws authorisation error', async () => {
-            const { data, errors } = await action()
-            expect(data).toEqual({ Post: null })
-            expect(errors[0]).toHaveProperty('message', 'Not Authorised!')
-          })
-        })
-
-        describe('as moderator', () => {
-          beforeEach(async () => {
-            authenticatedUser = await moderator.toJson()
-          })
-
-          it('shows disabled posts', async () => {
-            const expected = { data: { Post: [{ title: 'Disabled post' }] } }
-            await expect(action()).resolves.toMatchObject(expected)
           })
         })
       })

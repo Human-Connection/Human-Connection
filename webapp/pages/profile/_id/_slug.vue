@@ -11,9 +11,9 @@
           style="position: relative; height: auto;"
         >
           <hc-upload v-if="myProfile" :user="user">
-            <hc-avatar :user="user" class="profile-avatar" size="x-large"></hc-avatar>
+            <user-avatar :user="user" class="profile-avatar" size="large"></user-avatar>
           </hc-upload>
-          <hc-avatar v-else :user="user" class="profile-avatar" size="x-large" />
+          <user-avatar v-else :user="user" class="profile-avatar" size="large" />
           <!-- Menu -->
           <client-only>
             <content-menu
@@ -22,14 +22,19 @@
               :resource="user"
               :is-owner="myProfile"
               class="user-content-menu"
-              @block="block"
-              @unblock="unblock"
+              @mute="muteUser"
+              @unmute="unmuteUser"
             />
           </client-only>
           <ds-space margin="small">
-            <ds-heading tag="h3" align="center" no-margin>{{ userName }}</ds-heading>
+            <ds-heading tag="h3" align="center" no-margin>
+              {{ userName }}
+            </ds-heading>
+            <ds-text align="center" color="soft">
+              {{ userSlug }}
+            </ds-text>
             <ds-text v-if="user.location" align="center" color="soft" size="small">
-              <ds-icon name="map-marker" />
+              <base-icon name="map-marker" />
               {{ user.location.name }}
             </ds-text>
             <ds-text align="center" color="soft" size="small">
@@ -43,7 +48,11 @@
             <ds-flex-item>
               <client-only>
                 <ds-number :label="$t('profile.followers')">
-                  <hc-count-to slot="count" :end-val="user.followedByCount" />
+                  <hc-count-to
+                    slot="count"
+                    :start-val="followedByCountStartValue"
+                    :end-val="user.followedByCount"
+                  />
                 </ds-number>
               </client-only>
             </ds-flex-item>
@@ -58,15 +67,15 @@
           <ds-space margin="small">
             <template v-if="!myProfile">
               <hc-follow-button
-                v-if="!user.isBlocked"
+                v-if="!user.isMuted"
                 :follow-id="user.id"
                 :is-followed="user.followedByCurrentUser"
-                @optimistic="follow => (user.followedByCurrentUser = follow)"
-                @update="follow => fetchUser()"
+                @optimistic="optimisticFollow"
+                @update="updateFollow"
               />
-              <ds-button v-else fullwidth @click="unblock(user)">
-                {{ $t('settings.blocked-users.unblock') }}
-              </ds-button>
+              <base-button v-else @click="unmuteUser(user)" class="unblock-user-button">
+                {{ $t('settings.muted-users.unmute') }}
+              </base-button>
             </template>
           </ds-space>
           <template v-if="user.about">
@@ -90,7 +99,7 @@
             <ds-space v-for="follow in uniq(user.following)" :key="follow.id" margin="x-small">
               <!-- TODO: find better solution for rendering errors -->
               <client-only>
-                <user :user="follow" :trunc="15" />
+                <user-teaser :user="follow" />
               </client-only>
             </ds-space>
             <ds-space v-if="user.followingCount - user.following.length" margin="small">
@@ -120,7 +129,7 @@
             <ds-space v-for="follow in uniq(user.followedBy)" :key="follow.id" margin="x-small">
               <!-- TODO: find better solution for rendering errors -->
               <client-only>
-                <user :user="follow" :trunc="15" />
+                <user-teaser :user="follow" />
               </client-only>
             </ds-space>
             <ds-space v-if="user.followedByCount - user.followedBy.length" margin="small">
@@ -143,12 +152,12 @@
           <ds-card style="position: relative; height: auto;">
             <ds-space margin="x-small">
               <ds-text tag="h5" color="soft">
-                {{ $t('profile.socialMedia') }} {{ user.name | truncate(15) }}?
+                {{ $t('profile.socialMedia') }} {{ userName | truncate(15) }}?
               </ds-text>
               <template>
                 <ds-space v-for="link in socialMediaLinks" :key="link.username" margin="x-small">
                   <a :href="link.url" target="_blank">
-                    <ds-avatar :image="link.favicon" />
+                    <user-avatar :image="link.favicon" />
                     {{ link.username }}
                   </a>
                 </ds-space>
@@ -159,11 +168,11 @@
       </ds-flex-item>
 
       <ds-flex-item :width="{ base: '100%', sm: 3, md: 5, lg: 3 }">
-        <masonry-grid class="user-profile-posts-list">
+        <masonry-grid>
           <ds-grid-item class="profile-top-navigation" :row-span="3" column-span="fullWidth">
             <ds-card class="ds-tab-nav">
               <ul class="Tabs">
-                <li class="Tabs__tab Tab pointer" :class="{ active: tabActive === 'post' }">
+                <li class="Tabs__tab pointer" :class="{ active: tabActive === 'post' }">
                   <a @click="handleTab('post')">
                     <ds-space margin="small">
                       <client-only placeholder="Loading...">
@@ -174,7 +183,7 @@
                     </ds-space>
                   </a>
                 </li>
-                <li class="Tabs__tab Tab pointer" :class="{ active: tabActive === 'comment' }">
+                <li class="Tabs__tab pointer" :class="{ active: tabActive === 'comment' }">
                   <a @click="handleTab('comment')">
                     <ds-space margin="small">
                       <client-only placeholder="Loading...">
@@ -185,7 +194,11 @@
                     </ds-space>
                   </a>
                 </li>
-                <li class="Tabs__tab Tab pointer" :class="{ active: tabActive === 'shout' }">
+                <li
+                  class="Tabs__tab pointer"
+                  :class="{ active: tabActive === 'shout' }"
+                  v-if="myProfile || user.showShoutsPublicly"
+                >
                   <a @click="handleTab('shout')">
                     <ds-space margin="small">
                       <client-only placeholder="Loading...">
@@ -196,35 +209,42 @@
                     </ds-space>
                   </a>
                 </li>
-                <li class="Tabs__presentation-slider" role="presentation"></li>
               </ul>
             </ds-card>
           </ds-grid-item>
 
           <ds-grid-item :row-span="2" column-span="fullWidth">
             <ds-space centered>
-              <ds-button
-                v-if="myProfile"
-                v-tooltip="{
-                  content: $t('contribution.newPost'),
-                  placement: 'left',
-                  delay: { show: 500 },
-                }"
-                :path="{ name: 'post-create' }"
-                class="profile-post-add-button"
-                icon="plus"
-                size="large"
-                primary
-              />
+              <nuxt-link :to="{ name: 'post-create' }">
+                <base-button
+                  v-if="myProfile"
+                  v-tooltip="{
+                    content: $t('contribution.newPost'),
+                    placement: 'left',
+                    delay: { show: 500 },
+                  }"
+                  :path="{ name: 'post-create' }"
+                  class="profile-post-add-button"
+                  icon="plus"
+                  circle
+                  filled
+                />
+              </nuxt-link>
             </ds-space>
           </ds-grid-item>
 
           <template v-if="posts.length">
-            <masonry-grid-item v-for="post in posts" :key="post.id">
+            <masonry-grid-item
+              v-for="post in posts"
+              :key="post.id"
+              :imageAspectRatio="post.imageAspectRatio"
+            >
               <hc-post-card
                 :post="post"
                 :width="{ base: '100%', md: '100%', xl: '50%' }"
                 @removePostFromList="removePostFromList"
+                @pinPost="pinPost"
+                @unpinPost="unpinPost"
               />
             </masonry-grid-item>
           </template>
@@ -241,16 +261,9 @@
             </ds-grid-item>
           </template>
         </masonry-grid>
-        <div
-          v-if="hasMore"
-          v-infinite-scroll="showMoreContributions"
-          :infinite-scroll-disabled="$apollo.loading"
-          :infinite-scroll-distance="10"
-          :infinite-scroll-throttle-delay="800"
-          :infinite-scroll-immediate-check="true"
-        >
-          <hc-load-more :loading="$apollo.loading" @click="showMoreContributions" />
-        </div>
+        <client-only>
+          <infinite-loading v-if="hasMore" @infinite="showMoreContributions" />
+        </client-only>
       </ds-flex-item>
     </ds-flex>
   </div>
@@ -258,21 +271,22 @@
 
 <script>
 import uniqBy from 'lodash/uniqBy'
-import User from '~/components/User/User'
-import HcPostCard from '~/components/PostCard'
+import UserTeaser from '~/components/UserTeaser/UserTeaser'
+import HcPostCard from '~/components/PostCard/PostCard.vue'
 import HcFollowButton from '~/components/FollowButton.vue'
 import HcCountTo from '~/components/CountTo.vue'
 import HcBadges from '~/components/Badges.vue'
-import HcLoadMore from '~/components/LoadMore.vue'
-import HcEmpty from '~/components/Empty.vue'
-import ContentMenu from '~/components/ContentMenu'
+import HcEmpty from '~/components/Empty/Empty'
+import ContentMenu from '~/components/ContentMenu/ContentMenu'
 import HcUpload from '~/components/Upload'
-import HcAvatar from '~/components/Avatar/Avatar.vue'
+import UserAvatar from '~/components/_new/generic/UserAvatar/UserAvatar'
 import MasonryGrid from '~/components/MasonryGrid/MasonryGrid.vue'
 import MasonryGridItem from '~/components/MasonryGrid/MasonryGridItem.vue'
-import { filterPosts } from '~/graphql/PostQuery'
+import { profilePagePosts } from '~/graphql/PostQuery'
 import UserQuery from '~/graphql/User'
-import { Block, Unblock } from '~/graphql/settings/BlockedUsers'
+import { muteUser, unmuteUser } from '~/graphql/settings/MutedUsers'
+import PostMutations from '~/graphql/PostMutations'
+import UpdateQuery from '~/components/utils/UpdateQuery'
 
 const tabToFilterMapping = ({ tab, id }) => {
   return {
@@ -283,16 +297,14 @@ const tabToFilterMapping = ({ tab, id }) => {
 }
 
 export default {
-  name: 'HcUserProfile',
   components: {
-    User,
+    UserTeaser,
     HcPostCard,
     HcFollowButton,
     HcCountTo,
     HcBadges,
-    HcLoadMore,
     HcEmpty,
-    HcAvatar,
+    UserAvatar,
     ContentMenu,
     HcUpload,
     MasonryGrid,
@@ -312,6 +324,7 @@ export default {
       pageSize: 6,
       tabActive: 'post',
       filter,
+      followedByCountStartValue: 0,
     }
   },
   computed: {
@@ -336,6 +349,10 @@ export default {
       const { name } = this.user || {}
       return name || this.$t('profile.userAnonym')
     },
+    userSlug() {
+      const { slug } = this.user || {}
+      return slug && `@${slug}`
+    },
   },
   watch: {
     User(val) {
@@ -358,31 +375,19 @@ export default {
     uniq(items, field = 'id') {
       return uniqBy(items, field)
     },
-    fetchUser() {
-      // TODO: we should use subscriptions instead of fetching the whole user again
-      this.$apollo.queries.User.refetch()
-    },
-    showMoreContributions() {
-      const { Post: PostQuery } = this.$apollo.queries
+    showMoreContributions($state) {
+      const { profilePagePosts: PostQuery } = this.$apollo.queries
       if (!PostQuery) return // seems this can be undefined on subpages
-
       this.offset += this.pageSize
+
       PostQuery.fetchMore({
         variables: {
           offset: this.offset,
           filter: this.filter,
           first: this.pageSize,
-          orderBy: this.sorting,
+          orderBy: 'createdAt_desc',
         },
-        updateQuery: (previousResult, { fetchMoreResult }) => {
-          if (!fetchMoreResult || fetchMoreResult.Post.length < this.pageSize) {
-            this.hasMore = false
-          }
-          const result = Object.assign({}, previousResult, {
-            Post: [...previousResult.Post, ...fetchMoreResult.Post],
-          })
-          return result
-        },
+        updateQuery: UpdateQuery(this, { $state, pageKey: 'profilePagePosts' }),
       })
     },
     resetPostList() {
@@ -390,23 +395,80 @@ export default {
       this.posts = []
       this.hasMore = true
     },
-    async block(user) {
-      await this.$apollo.mutate({ mutation: Block(), variables: { id: user.id } })
-      this.$apollo.queries.User.refetch()
-      this.resetPostList()
-      this.$apollo.queries.Post.refetch()
+    async muteUser(user) {
+      try {
+        await this.$apollo.mutate({ mutation: muteUser(), variables: { id: user.id } })
+      } catch (error) {
+        this.$toast.error(error.message)
+      } finally {
+        this.$apollo.queries.User.refetch()
+        this.resetPostList()
+        this.$apollo.queries.profilePagePosts.refetch()
+      }
     },
-    async unblock(user) {
-      await this.$apollo.mutate({ mutation: Unblock(), variables: { id: user.id } })
-      this.$apollo.queries.User.refetch()
-      this.resetPostList()
-      this.$apollo.queries.Post.refetch()
+    async unmuteUser(user) {
+      try {
+        this.$apollo.mutate({ mutation: unmuteUser(), variables: { id: user.id } })
+      } catch (error) {
+        this.$toast.error(error.message)
+      } finally {
+        this.$apollo.queries.User.refetch()
+        this.resetPostList()
+        this.$apollo.queries.profilePagePosts.refetch()
+      }
+    },
+    pinPost(post) {
+      this.$apollo
+        .mutate({
+          mutation: PostMutations().pinPost,
+          variables: { id: post.id },
+        })
+        .then(() => {
+          this.$toast.success(this.$t('post.menu.pinnedSuccessfully'))
+          this.resetPostList()
+          this.$apollo.queries.profilePagePosts.refetch()
+        })
+        .catch(error => this.$toast.error(error.message))
+    },
+    unpinPost(post) {
+      this.$apollo
+        .mutate({
+          mutation: PostMutations().unpinPost,
+          variables: { id: post.id },
+        })
+        .then(() => {
+          this.$toast.success(this.$t('post.menu.unpinnedSuccessfully'))
+          this.resetPostList()
+          this.$apollo.queries.profilePagePosts.refetch()
+        })
+        .catch(error => this.$toast.error(error.message))
+    },
+    optimisticFollow({ followedByCurrentUser }) {
+      /*
+       * Note: followedByCountStartValue is updated to avoid counting from 0 when follow/unfollow
+       */
+      this.followedByCountStartValue = this.user.followedByCount
+      const currentUser = this.$store.getters['auth/user']
+      if (followedByCurrentUser) {
+        this.user.followedByCount++
+        this.user.followedBy = [currentUser, ...this.user.followedBy]
+      } else {
+        this.user.followedByCount--
+        this.user.followedBy = this.user.followedBy.filter(user => user.id !== currentUser.id)
+      }
+      this.user.followedByCurrentUser = followedByCurrentUser
+    },
+    updateFollow({ followedByCurrentUser, followedBy, followedByCount }) {
+      this.followedByCountStartValue = this.user.followedByCount
+      this.user.followedByCount = followedByCount
+      this.user.followedByCurrentUser = followedByCurrentUser
+      this.user.followedBy = followedBy
     },
   },
   apollo: {
-    Post: {
+    profilePagePosts: {
       query() {
-        return filterPosts(this.$i18n)
+        return profilePagePosts(this.$i18n)
       },
       variables() {
         return {
@@ -416,8 +478,8 @@ export default {
           orderBy: 'createdAt_desc',
         }
       },
-      update({ Post }) {
-        this.posts = Post
+      update({ profilePagePosts }) {
+        this.posts = profilePagePosts
       },
       fetchPolicy: 'cache-and-network',
     },
@@ -438,58 +500,33 @@ export default {
 .pointer {
   cursor: pointer;
 }
-.Tab {
-  border-collapse: collapse;
-  padding-bottom: 5px;
-}
-.Tab:hover {
-  border-bottom: 2px solid #c9c6ce;
-}
+
 .Tabs {
   position: relative;
   background-color: #fff;
   height: 100%;
-
-  &:after {
-    content: ' ';
-    display: table;
-    clear: both;
-  }
+  display: flex;
   margin: 0;
   padding: 0;
   list-style: none;
 
   &__tab {
-    float: left;
-    width: 33.333%;
     text-align: center;
     height: 100%;
+    flex-grow: 1;
 
-    &:first-child.active ~ .Tabs__presentation-slider {
-      left: 0;
+    &:hover {
+      border-bottom: 2px solid #c9c6ce;
     }
-    &:nth-child(2).active ~ .Tabs__presentation-slider {
-      left: 33.333%;
+
+    &.active {
+      border-bottom: 2px solid #17b53f;
     }
-    &:nth-child(3).active ~ .Tabs__presentation-slider {
-      left: calc(33.333% * 2);
-    }
-  }
-  &__presentation-slider {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 33.333%;
-    height: 2px;
-    background-color: #17b53f;
-    transition: left 0.25s;
   }
 }
-.profile-avatar.ds-avatar {
-  display: block;
+.profile-avatar.user-avatar {
   margin: auto;
   margin-top: -60px;
-  border: #fff 5px solid;
 }
 .page-name-profile-id-slug {
   .ds-flex-item:first-child .content-menu {
@@ -521,5 +558,9 @@ export default {
 }
 .profile-post-add-button {
   box-shadow: $box-shadow-x-large;
+}
+.unblock-user-button {
+  display: block;
+  width: 100%;
 }
 </style>

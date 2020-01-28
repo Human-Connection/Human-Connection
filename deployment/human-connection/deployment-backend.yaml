@@ -5,7 +5,7 @@ metadata:
   labels:
     human-connection.org/commit: COMMIT
     human-connection.org/selector: deployment-human-connection-backend
-  name: nitro-backend
+  name: backend
   namespace: human-connection
 spec:
   minReadySeconds: 15
@@ -28,7 +28,7 @@ spec:
       labels:
         human-connection.org/commit: COMMIT
         human-connection.org/selector: deployment-human-connection-backend
-      name: nitro-backend
+      name: backend
     spec:
       containers:
       - envFrom:

@@ -5,7 +5,9 @@
       <ds-heading size="h3">{{ $t('admin.invites.title') }}</ds-heading>
       <ds-text>{{ $t('admin.invites.description') }}</ds-text>
     </ds-space>
-    <signup :invitation="true" />
+    <ds-card class="signup">
+      <signup :invitation="true" />
+    </ds-card>
   </ds-section>
 </template>
 

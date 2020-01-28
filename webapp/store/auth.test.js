@@ -13,6 +13,7 @@ const currentUser = {
   email: 'user@example.org',
   avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/mutu_krish/128.jpg',
   role: 'user',
+  locale: 'de',
 }
 const successfulLoginResponse = { data: { login: token } }
 const successfulCurrentUserResponse = { data: { currentUser } }
@@ -126,6 +127,7 @@ describe('actions', () => {
                 email: 'user@example.org',
                 avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/mutu_krish/128.jpg',
                 role: 'user',
+                locale: 'de',
               },
             ],
           ]),
@@ -167,7 +169,10 @@ describe('actions', () => {
 
       it('saves pending flags in order', () => {
         expect(commit.mock.calls).toEqual(
-          expect.arrayContaining([['SET_PENDING', true], ['SET_PENDING', false]]),
+          expect.arrayContaining([
+            ['SET_PENDING', true],
+            ['SET_PENDING', false],
+          ]),
         )
       })
     })
@@ -205,7 +210,10 @@ describe('actions', () => {
           await action({ commit }, { email: 'user@example.org', password: 'wrong' })
         } catch (err) {} // ignore
         expect(commit.mock.calls).toEqual(
-          expect.arrayContaining([['SET_PENDING', true], ['SET_PENDING', false]]),
+          expect.arrayContaining([
+            ['SET_PENDING', true],
+            ['SET_PENDING', false],
+          ]),
         )
       })
     })

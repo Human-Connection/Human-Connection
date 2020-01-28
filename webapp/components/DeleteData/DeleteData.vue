@@ -5,7 +5,7 @@
       <ds-container>
         <ds-flex>
           <ds-flex-item :width="{ base: '22%', sm: '12%', md: '12%', lg: '8%' }">
-            <ds-icon name="warning" size="xxx-large" class="delete-warning-icon" />
+            <base-icon name="warning" class="delete-warning-icon" />
           </ds-flex-item>
           <ds-flex-item :width="{ base: '78%', sm: '88%', md: '88%', lg: '92%' }">
             <ds-heading>{{ $t('settings.deleteUserAccount.name') }}</ds-heading>
@@ -55,16 +55,19 @@
           <ds-space margin-bottom="xx-small" />
           <ds-flex :gutter="{ base: 'xx-small', md: 'small', lg: 'large' }">
             <ds-flex-item :width="{ base: '100%', sm: '100%', md: '100%', lg: 1.75 }">
-              <ds-input
-                v-model="enableDeletionValue"
-                @input="enableDeletion"
-                class="enable-deletion-input"
-              />
+              <ds-input v-model="enableDeletionValue" class="enable-deletion-input" />
             </ds-flex-item>
             <ds-flex-item :width="{ base: '100%', sm: '100%', md: '100%', lg: 1 }">
-              <ds-button icon="trash" danger :disabled="!deleteEnabled" @click="handleSubmit">
+              <base-button
+                icon="trash"
+                danger
+                filled
+                :disabled="!deleteEnabled"
+                data-test="delete-button"
+                @click="handleSubmit"
+              >
                 {{ $t('settings.deleteUserAccount.name') }}
-              </ds-button>
+              </base-button>
             </ds-flex-item>
           </ds-flex>
         </ds-container>
@@ -82,7 +85,6 @@ export default {
     return {
       deleteContributions: false,
       deleteComments: false,
-      deleteEnabled: false,
       enableDeletionValue: null,
     }
   },
@@ -90,18 +92,16 @@ export default {
     ...mapGetters({
       currentUser: 'auth/user',
     }),
+    deleteEnabled() {
+      return this.enableDeletionValue === this.currentUser.name
+    },
   },
   methods: {
     ...mapActions({
       logout: 'auth/logout',
     }),
-    enableDeletion() {
-      if (this.enableDeletionValue === this.currentUser.name) {
-        this.deleteEnabled = true
-      }
-    },
     handleSubmit() {
-      let resourceArgs = []
+      const resourceArgs = []
       if (this.deleteContributions) {
         resourceArgs.push('Post')
       }
@@ -134,6 +134,7 @@ export default {
 <style lang="scss">
 .delete-warning-icon {
   color: $color-danger;
+  font-size: $font-size-xxx-large;
 }
 
 .checkbox-container {

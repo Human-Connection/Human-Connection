@@ -1,15 +1,9 @@
-import { config, mount, createLocalVue } from '@vue/test-utils'
+import { config, mount } from '@vue/test-utils'
 import CommentList from './CommentList'
-import Empty from '~/components/Empty'
 import Vuex from 'vuex'
-import Styleguide from '@human-connection/styleguide'
-import Filters from '~/plugins/vue-filters'
 
-const localVue = createLocalVue()
+const localVue = global.localVue
 
-localVue.use(Styleguide)
-localVue.use(Vuex)
-localVue.use(Filters)
 localVue.filter('truncate', string => string)
 
 config.stubs['v-popover'] = '<span><slot /></span>'
@@ -17,12 +11,9 @@ config.stubs['nuxt-link'] = '<span><slot /></span>'
 config.stubs['client-only'] = '<span><slot /></span>'
 
 describe('CommentList.vue', () => {
-  let mocks
-  let store
-  let wrapper
-  let propsData
+  let mocks, store, wrapper, propsData, stubs
 
-  describe('shallowMount', () => {
+  describe('mount', () => {
     beforeEach(() => {
       propsData = {
         post: {
@@ -44,7 +35,9 @@ describe('CommentList.vue', () => {
         $t: jest.fn(),
         $filters: {
           truncate: a => a,
+          removeHtml: a => a,
         },
+        $scrollTo: jest.fn(),
         $apollo: {
           queries: {
             Post: {
@@ -52,6 +45,9 @@ describe('CommentList.vue', () => {
             },
           },
         },
+      }
+      stubs = {
+        EditorContent: "<div class='stub'></div>",
       }
     })
 
@@ -61,24 +57,45 @@ describe('CommentList.vue', () => {
         mocks,
         localVue,
         propsData,
+        stubs,
       })
     }
 
-    beforeEach(() => {
-      wrapper = Wrapper()
-    })
-
-    it('displays a message icon when there are no comments to display', () => {
-      propsData.post.comments = []
-      expect(Wrapper().findAll(Empty)).toHaveLength(1)
-    })
-
     it('displays a comments counter', () => {
-      expect(wrapper.find('span.ds-tag').text()).toEqual('1')
+      wrapper = Wrapper()
+      expect(wrapper.find('.count').text()).toEqual('1')
     })
 
-    it('displays comments when there are comments to display', () => {
-      expect(wrapper.find('div.comments').text()).toEqual('this is a comment')
+    describe('scrollToAnchor mixin', () => {
+      beforeEach(jest.useFakeTimers)
+
+      describe('$route.hash !== `#comments`', () => {
+        beforeEach(() => {
+          mocks.$route = {
+            hash: '',
+          }
+        })
+
+        it('skips $scrollTo', () => {
+          wrapper = Wrapper()
+          jest.runAllTimers()
+          expect(mocks.$scrollTo).not.toHaveBeenCalled()
+        })
+      })
+
+      describe('$route.hash === `#comments`', () => {
+        beforeEach(() => {
+          mocks.$route = {
+            hash: '#comments',
+          }
+        })
+
+        it('calls $scrollTo', () => {
+          wrapper = Wrapper()
+          jest.runAllTimers()
+          expect(mocks.$scrollTo).toHaveBeenCalledWith('#comments')
+        })
+      })
     })
   })
 })

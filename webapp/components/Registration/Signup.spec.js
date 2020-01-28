@@ -1,11 +1,10 @@
-import { config, mount, createLocalVue } from '@vue/test-utils'
+import { config, mount } from '@vue/test-utils'
 import Signup, { SignupMutation, SignupByInvitationMutation } from './Signup'
-import Styleguide from '@human-connection/styleguide'
 
-const localVue = createLocalVue()
+const localVue = global.localVue
 
-localVue.use(Styleguide)
 config.stubs['sweetalert-icon'] = '<span><slot /></span>'
+config.stubs['nuxt-link'] = '<span><slot /></span>'
 
 describe('Signup', () => {
   let wrapper
@@ -42,13 +41,13 @@ describe('Signup', () => {
     describe('without invitation code', () => {
       it('renders signup form', () => {
         wrapper = Wrapper()
-        expect(wrapper.find('.signup').exists()).toBe(true)
+        expect(wrapper.find('form').exists()).toBe(true)
       })
 
       describe('submit', () => {
         beforeEach(async () => {
           wrapper = Wrapper()
-          wrapper.find('input#email').setValue('mail@example.org')
+          wrapper.find('input#email').setValue('mAIL@exAMPLE.org')
           await wrapper.find('form').trigger('submit')
         })
 
@@ -59,7 +58,7 @@ describe('Signup', () => {
 
         it('delivers email to backend', () => {
           const expected = expect.objectContaining({
-            variables: { email: 'mail@example.org', token: null },
+            variables: { email: 'mAIL@exAMPLE.org', token: null },
           })
           expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expected)
         })
@@ -69,15 +68,18 @@ describe('Signup', () => {
         })
 
         it('displays a message that a mail for email verification was sent', () => {
-          const expected = ['registration.signup.form.success', { email: 'mail@example.org' }]
+          const expected = [
+            'components.registration.signup.form.success',
+            { email: 'mail@example.org' },
+          ]
           expect(mocks.$t).toHaveBeenCalledWith(...expected)
         })
 
         describe('after animation', () => {
           beforeEach(jest.runAllTimers)
 
-          it('emits `handleSubmitted`', () => {
-            expect(wrapper.emitted('handleSubmitted')).toEqual([[{ email: 'mail@example.org' }]])
+          it('emits `submit`', () => {
+            expect(wrapper.emitted('submit')).toEqual([[{ email: 'mail@example.org' }]])
           })
         })
       })
@@ -115,13 +117,15 @@ describe('Signup', () => {
             mocks.$apollo.mutate = jest
               .fn()
               .mockRejectedValue(
-                new Error('UserInputError: User account with this email already exists.'),
+                new Error('UserInputError: A user account with this email already exists.'),
               )
           })
 
           it('explains the error', async () => {
             await action()
-            expect(mocks.$t).toHaveBeenCalledWith('registration.signup.form.errors.email-exists')
+            expect(mocks.$t).toHaveBeenCalledWith(
+              'components.registration.signup.form.errors.email-exists',
+            )
           })
         })
 
@@ -137,7 +141,7 @@ describe('Signup', () => {
           it('explains the error', async () => {
             await action()
             expect(mocks.$t).toHaveBeenCalledWith(
-              'registration.signup.form.errors.invalid-invitation-token',
+              'components.registration.signup.form.errors.invalid-invitation-token',
             )
           })
         })

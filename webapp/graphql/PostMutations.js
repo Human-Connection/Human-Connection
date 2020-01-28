@@ -9,6 +9,8 @@ export default () => {
         $language: String
         $categoryIds: [ID]
         $imageUpload: Upload
+        $imageBlurred: Boolean
+        $imageAspectRatio: Float
       ) {
         CreatePost(
           title: $title
@@ -16,12 +18,15 @@ export default () => {
           language: $language
           categoryIds: $categoryIds
           imageUpload: $imageUpload
+          imageBlurred: $imageBlurred
+          imageAspectRatio: $imageAspectRatio
         ) {
           title
           slug
           content
           contentExcerpt
           language
+          imageBlurred
         }
       }
     `,
@@ -34,6 +39,8 @@ export default () => {
         $imageUpload: Upload
         $categoryIds: [ID]
         $image: String
+        $imageBlurred: Boolean
+        $imageAspectRatio: Float
       ) {
         UpdatePost(
           id: $id
@@ -43,6 +50,8 @@ export default () => {
           imageUpload: $imageUpload
           categoryIds: $categoryIds
           image: $image
+          imageBlurred: $imageBlurred
+          imageAspectRatio: $imageAspectRatio
         ) {
           id
           title
@@ -50,6 +59,13 @@ export default () => {
           content
           contentExcerpt
           language
+          imageBlurred
+          pinnedBy {
+            id
+            name
+            role
+          }
+          imageAspectRatio
         }
       }
     `,
@@ -82,6 +98,40 @@ export default () => {
           }
           to {
             id
+          }
+        }
+      }
+    `,
+    pinPost: gql`
+      mutation($id: ID!) {
+        pinPost(id: $id) {
+          id
+          title
+          slug
+          content
+          contentExcerpt
+          language
+          pinnedBy {
+            id
+            name
+            role
+          }
+        }
+      }
+    `,
+    unpinPost: gql`
+      mutation($id: ID!) {
+        unpinPost(id: $id) {
+          id
+          title
+          slug
+          content
+          contentExcerpt
+          language
+          pinnedBy {
+            id
+            name
+            role
           }
         }
       }

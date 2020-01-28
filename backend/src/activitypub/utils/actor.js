@@ -22,17 +22,3 @@ export function createActor(name, pubkey) {
     },
   }
 }
-
-export function createWebFinger(name) {
-  const { host } = new URL(activityPub.endpoint)
-  return {
-    subject: `acct:${name}@${host}`,
-    links: [
-      {
-        rel: 'self',
-        type: 'application/activity+json',
-        href: `${activityPub.endpoint}/activitypub/users/${name}`,
-      },
-    ],
-  }
-}

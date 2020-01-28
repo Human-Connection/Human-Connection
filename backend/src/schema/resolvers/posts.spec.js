@@ -1,7 +1,7 @@
 import { createTestClient } from 'apollo-server-testing'
-import Factory from '../../seed/factories'
-import { gql } from '../../jest/helpers'
-import { neode as getNeode, getDriver } from '../../bootstrap/neo4j'
+import Factory from '../../factories'
+import { gql } from '../../helpers/jest'
+import { getNeode, getDriver } from '../../db/neo4j'
 import createServer from '../../server'
 
 const driver = getDriver()
@@ -39,7 +39,8 @@ const createPostMutation = gql`
   }
 `
 
-beforeAll(() => {
+beforeAll(async () => {
+  await factory.cleanDatabase()
   const { server } = createServer({
     context: () => {
       return {
@@ -209,6 +210,7 @@ describe('Post', () => {
           data: {
             Post: expect.arrayContaining(expected),
           },
+          errors: undefined,
         })
       })
     })
@@ -228,7 +230,9 @@ describe('Post', () => {
 
       await user.relateTo(followedUser, 'following')
       variables = { filter: { author: { followedBy_some: { id: 'current-user' } } } }
-      const expected = {
+      await expect(
+        query({ query: postQueryFilteredByUsersFollowed, variables }),
+      ).resolves.toMatchObject({
         data: {
           Post: [
             {
@@ -237,10 +241,8 @@ describe('Post', () => {
             },
           ],
         },
-      }
-      await expect(
-        query({ query: postQueryFilteredByUsersFollowed, variables }),
-      ).resolves.toMatchObject(expected)
+        errors: undefined,
+      })
     })
   })
 })
@@ -269,7 +271,10 @@ describe('CreatePost', () => {
     })
 
     it('creates a post', async () => {
-      const expected = { data: { CreatePost: { title: 'I am a title', content: 'Some content' } } }
+      const expected = {
+        data: { CreatePost: { title: 'I am a title', content: 'Some content' } },
+        errors: undefined,
+      }
       await expect(mutate({ mutation: createPostMutation, variables })).resolves.toMatchObject(
         expected,
       )
@@ -285,6 +290,7 @@ describe('CreatePost', () => {
             },
           },
         },
+        errors: undefined,
       }
       await expect(mutate({ mutation: createPostMutation, variables })).resolves.toMatchObject(
         expected,
@@ -310,53 +316,6 @@ describe('CreatePost', () => {
         )
       })
     })
-
-    describe('categories', () => {
-      describe('null', () => {
-        beforeEach(() => {
-          variables = { ...variables, categoryIds: null }
-        })
-        it('throws UserInputError', async () => {
-          const {
-            errors: [error],
-          } = await mutate({ mutation: createPostMutation, variables })
-          expect(error).toHaveProperty(
-            'message',
-            'You cannot save a post without at least one category or more than three',
-          )
-        })
-      })
-
-      describe('empty', () => {
-        beforeEach(() => {
-          variables = { ...variables, categoryIds: [] }
-        })
-        it('throws UserInputError', async () => {
-          const {
-            errors: [error],
-          } = await mutate({ mutation: createPostMutation, variables })
-          expect(error).toHaveProperty(
-            'message',
-            'You cannot save a post without at least one category or more than three',
-          )
-        })
-      })
-
-      describe('more than 3 items', () => {
-        beforeEach(() => {
-          variables = { ...variables, categoryIds: ['cat9', 'cat27', 'cat15', 'cat4'] }
-        })
-        it('throws UserInputError', async () => {
-          const {
-            errors: [error],
-          } = await mutate({ mutation: createPostMutation, variables })
-          expect(error).toHaveProperty(
-            'message',
-            'You cannot save a post without at least one category or more than three',
-          )
-        })
-      })
-    })
   })
 })
 
@@ -366,7 +325,12 @@ describe('UpdatePost', () => {
     mutation($id: ID!, $title: String!, $content: String!, $categoryIds: [ID]) {
       UpdatePost(id: $id, title: $title, content: $content, categoryIds: $categoryIds) {
         id
+        title
         content
+        author {
+          name
+          slug
+        }
         categories {
           id
         }
@@ -386,7 +350,6 @@ describe('UpdatePost', () => {
     })
 
     variables = {
-      ...variables,
       id: 'p9876',
       title: 'New title',
       content: 'New content',
@@ -395,8 +358,11 @@ describe('UpdatePost', () => {
 
   describe('unauthenticated', () => {
     it('throws authorization error', async () => {
-      const { errors } = await mutate({ mutation: updatePostMutation, variables })
-      expect(errors[0]).toHaveProperty('message', 'Not Authorised!')
+      authenticatedUser = null
+      expect(mutate({ mutation: updatePostMutation, variables })).resolves.toMatchObject({
+        errors: [{ message: 'Not Authorised!' }],
+        data: { UpdatePost: null },
+      })
     })
   })
 
@@ -417,7 +383,10 @@ describe('UpdatePost', () => {
     })
 
     it('updates a post', async () => {
-      const expected = { data: { UpdatePost: { id: 'p9876', content: 'New content' } } }
+      const expected = {
+        data: { UpdatePost: { id: 'p9876', content: 'New content' } },
+        errors: undefined,
+      }
       await expect(mutate({ mutation: updatePostMutation, variables })).resolves.toMatchObject(
         expected,
       )
@@ -428,6 +397,7 @@ describe('UpdatePost', () => {
         data: {
           UpdatePost: { id: 'p9876', content: 'New content', createdAt: expect.any(String) },
         },
+        errors: undefined,
       }
       await expect(mutate({ mutation: updatePostMutation, variables })).resolves.toMatchObject(
         expected,
@@ -455,6 +425,7 @@ describe('UpdatePost', () => {
               categories: expect.arrayContaining([{ id: 'cat9' }, { id: 'cat4' }, { id: 'cat15' }]),
             },
           },
+          errors: undefined,
         }
         await expect(mutate({ mutation: updatePostMutation, variables })).resolves.toMatchObject(
           expected,
@@ -475,78 +446,409 @@ describe('UpdatePost', () => {
               categories: expect.arrayContaining([{ id: 'cat27' }]),
             },
           },
+          errors: undefined,
         }
         await expect(mutate({ mutation: updatePostMutation, variables })).resolves.toMatchObject(
           expected,
         )
       })
+    })
+  })
 
-      describe('more than 3 categories', () => {
-        beforeEach(() => {
-          variables = { ...variables, categoryIds: ['cat9', 'cat27', 'cat15', 'cat4'] }
+  describe('pin posts', () => {
+    const pinPostMutation = gql`
+      mutation($id: ID!) {
+        pinPost(id: $id) {
+          id
+          title
+          content
+          author {
+            name
+            slug
+          }
+          pinnedBy {
+            id
+            name
+            role
+          }
+          createdAt
+          updatedAt
+          pinnedAt
+          pinned
+        }
+      }
+    `
+    beforeEach(async () => {
+      variables = { ...variables }
+    })
+
+    describe('unauthenticated', () => {
+      it('throws authorization error', async () => {
+        authenticatedUser = null
+        await expect(mutate({ mutation: pinPostMutation, variables })).resolves.toMatchObject({
+          errors: [{ message: 'Not Authorised!' }],
+          data: { pinPost: null },
+        })
+      })
+    })
+
+    describe('ordinary users', () => {
+      it('throws authorization error', async () => {
+        await expect(mutate({ mutation: pinPostMutation, variables })).resolves.toMatchObject({
+          errors: [{ message: 'Not Authorised!' }],
+          data: { pinPost: null },
+        })
+      })
+    })
+
+    describe('moderators', () => {
+      let moderator
+      beforeEach(async () => {
+        moderator = await user.update({ role: 'moderator', updatedAt: new Date().toISOString() })
+        authenticatedUser = await moderator.toJson()
+      })
+
+      it('throws authorization error', async () => {
+        await expect(mutate({ mutation: pinPostMutation, variables })).resolves.toMatchObject({
+          errors: [{ message: 'Not Authorised!' }],
+          data: { pinPost: null },
+        })
+      })
+    })
+
+    describe('admins', () => {
+      let admin
+      beforeEach(async () => {
+        admin = await user.update({
+          role: 'admin',
+          name: 'Admin',
+          updatedAt: new Date().toISOString(),
+        })
+        authenticatedUser = await admin.toJson()
+      })
+
+      describe('are allowed to pin posts', () => {
+        beforeEach(async () => {
+          await factory.create('Post', {
+            id: 'created-and-pinned-by-same-admin',
+            author: admin,
+          })
+          variables = { ...variables, id: 'created-and-pinned-by-same-admin' }
         })
 
-        it('allows a maximum of three category for a successful update', async () => {
-          const {
-            errors: [error],
-          } = await mutate({ mutation: updatePostMutation, variables })
-          expect(error).toHaveProperty(
-            'message',
-            'You cannot save a post without at least one category or more than three',
+        it('responds with the updated Post', async () => {
+          const expected = {
+            data: {
+              pinPost: {
+                id: 'created-and-pinned-by-same-admin',
+                author: {
+                  name: 'Admin',
+                },
+                pinnedBy: {
+                  id: 'current-user',
+                  name: 'Admin',
+                  role: 'admin',
+                },
+              },
+            },
+            errors: undefined,
+          }
+
+          await expect(mutate({ mutation: pinPostMutation, variables })).resolves.toMatchObject(
+            expected,
+          )
+        })
+
+        it('sets createdAt date for PINNED', async () => {
+          const expected = {
+            data: {
+              pinPost: {
+                id: 'created-and-pinned-by-same-admin',
+                pinnedAt: expect.any(String),
+              },
+            },
+            errors: undefined,
+          }
+          await expect(mutate({ mutation: pinPostMutation, variables })).resolves.toMatchObject(
+            expected,
+          )
+        })
+
+        it('sets redundant `pinned` property for performant ordering', async () => {
+          variables = { ...variables, id: 'created-and-pinned-by-same-admin' }
+          const expected = {
+            data: { pinPost: { pinned: true } },
+            errors: undefined,
+          }
+          await expect(mutate({ mutation: pinPostMutation, variables })).resolves.toMatchObject(
+            expected,
           )
         })
       })
 
-      describe('post created without categories somehow', () => {
-        let owner
-
+      describe('post created by another admin', () => {
+        let otherAdmin
         beforeEach(async () => {
-          const postSomehowCreated = await neode.create('Post', {
-            id: 'how-was-this-created',
+          otherAdmin = await factory.create('User', {
+            role: 'admin',
+            name: 'otherAdmin',
           })
-          owner = await neode.create('User', {
-            id: 'author-of-post-without-category',
-            name: 'Hacker',
-            slug: 'hacker',
-            email: 'hacker@example.org',
-            password: '1234',
+          authenticatedUser = await otherAdmin.toJson()
+          await factory.create('Post', {
+            id: 'created-by-one-admin-pinned-by-different-one',
+            author: otherAdmin,
           })
-          await postSomehowCreated.relateTo(owner, 'author')
-          authenticatedUser = await owner.toJson()
-          variables = { ...variables, id: 'how-was-this-created' }
         })
 
-        it('throws an error if categoryIds is not an array', async () => {
-          const {
-            errors: [error],
-          } = await mutate({
-            mutation: updatePostMutation,
-            variables: {
-              ...variables,
-              categoryIds: null,
+        it('responds with the updated Post', async () => {
+          authenticatedUser = await admin.toJson()
+          variables = { ...variables, id: 'created-by-one-admin-pinned-by-different-one' }
+          const expected = {
+            data: {
+              pinPost: {
+                id: 'created-by-one-admin-pinned-by-different-one',
+                author: {
+                  name: 'otherAdmin',
+                },
+                pinnedBy: {
+                  id: 'current-user',
+                  name: 'Admin',
+                  role: 'admin',
+                },
+              },
             },
-          })
-          expect(error).toHaveProperty(
-            'message',
-            'You cannot save a post without at least one category or more than three',
+            errors: undefined,
+          }
+
+          await expect(mutate({ mutation: pinPostMutation, variables })).resolves.toMatchObject(
+            expected,
           )
+        })
+      })
+
+      describe('post created by another user', () => {
+        it('responds with the updated Post', async () => {
+          const expected = {
+            data: {
+              pinPost: {
+                id: 'p9876',
+                author: {
+                  slug: 'the-author',
+                },
+                pinnedBy: {
+                  id: 'current-user',
+                  name: 'Admin',
+                  role: 'admin',
+                },
+              },
+            },
+            errors: undefined,
+          }
+
+          await expect(mutate({ mutation: pinPostMutation, variables })).resolves.toMatchObject(
+            expected,
+          )
+        })
+      })
+
+      describe('pinned post already exists', () => {
+        let pinnedPost
+        beforeEach(async () => {
+          await factory.create('Post', {
+            id: 'only-pinned-post',
+            author: admin,
+          })
+          await mutate({ mutation: pinPostMutation, variables })
         })
 
-        it('requires at least one category for successful update', async () => {
-          const {
-            errors: [error],
-          } = await mutate({
-            mutation: updatePostMutation,
-            variables: {
-              ...variables,
-              categoryIds: [],
-            },
-          })
-          expect(error).toHaveProperty(
-            'message',
-            'You cannot save a post without at least one category or more than three',
-          )
+        it('removes previous `pinned` attribute', async () => {
+          const cypher = 'MATCH (post:Post) WHERE post.pinned IS NOT NULL RETURN post'
+          pinnedPost = await neode.cypher(cypher)
+          expect(pinnedPost.records).toHaveLength(1)
+          variables = { ...variables, id: 'only-pinned-post' }
+          await mutate({ mutation: pinPostMutation, variables })
+          pinnedPost = await neode.cypher(cypher)
+          expect(pinnedPost.records).toHaveLength(1)
         })
+
+        it('removes previous PINNED relationship', async () => {
+          variables = { ...variables, id: 'only-pinned-post' }
+          await mutate({ mutation: pinPostMutation, variables })
+          pinnedPost = await neode.cypher(
+            `MATCH (:User)-[pinned:PINNED]->(post:Post) RETURN post, pinned`,
+          )
+          expect(pinnedPost.records).toHaveLength(1)
+        })
+      })
+
+      describe('PostOrdering', () => {
+        beforeEach(async () => {
+          await factory.create('Post', {
+            id: 'im-a-pinned-post',
+            createdAt: '2019-11-22T17:26:29.070Z',
+            pinned: true,
+          })
+          await factory.create('Post', {
+            id: 'i-was-created-before-pinned-post',
+            // fairly old, so this should be 3rd
+            createdAt: '2019-10-22T17:26:29.070Z',
+          })
+        })
+
+        describe('order by `pinned_asc` and `createdAt_desc`', () => {
+          beforeEach(() => {
+            // this is the ordering in the frontend
+            variables = { orderBy: ['pinned_asc', 'createdAt_desc'] }
+          })
+
+          it('pinned post appear first even when created before other posts', async () => {
+            const postOrderingQuery = gql`
+              query($orderBy: [_PostOrdering]) {
+                Post(orderBy: $orderBy) {
+                  id
+                  pinned
+                  createdAt
+                  pinnedAt
+                }
+              }
+            `
+            await expect(query({ query: postOrderingQuery, variables })).resolves.toMatchObject({
+              data: {
+                Post: [
+                  {
+                    id: 'im-a-pinned-post',
+                    pinned: true,
+                    createdAt: '2019-11-22T17:26:29.070Z',
+                    pinnedAt: expect.any(String),
+                  },
+                  {
+                    id: 'p9876',
+                    pinned: null,
+                    createdAt: expect.any(String),
+                    pinnedAt: null,
+                  },
+                  {
+                    id: 'i-was-created-before-pinned-post',
+                    pinned: null,
+                    createdAt: '2019-10-22T17:26:29.070Z',
+                    pinnedAt: null,
+                  },
+                ],
+              },
+              errors: undefined,
+            })
+          })
+        })
+      })
+    })
+  })
+
+  describe('unpin posts', () => {
+    const unpinPostMutation = gql`
+      mutation($id: ID!) {
+        unpinPost(id: $id) {
+          id
+          title
+          content
+          author {
+            name
+            slug
+          }
+          pinnedBy {
+            id
+            name
+            role
+          }
+          createdAt
+          updatedAt
+          pinned
+          pinnedAt
+        }
+      }
+    `
+    beforeEach(async () => {
+      variables = { ...variables }
+    })
+
+    describe('unauthenticated', () => {
+      it('throws authorization error', async () => {
+        authenticatedUser = null
+        await expect(mutate({ mutation: unpinPostMutation, variables })).resolves.toMatchObject({
+          errors: [{ message: 'Not Authorised!' }],
+          data: { unpinPost: null },
+        })
+      })
+    })
+
+    describe('users cannot unpin posts', () => {
+      it('throws authorization error', async () => {
+        await expect(mutate({ mutation: unpinPostMutation, variables })).resolves.toMatchObject({
+          errors: [{ message: 'Not Authorised!' }],
+          data: { unpinPost: null },
+        })
+      })
+    })
+
+    describe('moderators cannot unpin posts', () => {
+      let moderator
+      beforeEach(async () => {
+        moderator = await user.update({ role: 'moderator', updatedAt: new Date().toISOString() })
+        authenticatedUser = await moderator.toJson()
+      })
+
+      it('throws authorization error', async () => {
+        await expect(mutate({ mutation: unpinPostMutation, variables })).resolves.toMatchObject({
+          errors: [{ message: 'Not Authorised!' }],
+          data: { unpinPost: null },
+        })
+      })
+    })
+
+    describe('admin can unpin posts', () => {
+      let admin, pinnedPost
+      beforeEach(async () => {
+        pinnedPost = await factory.create('Post', { id: 'post-to-be-unpinned' })
+        admin = await user.update({
+          role: 'admin',
+          name: 'Admin',
+          updatedAt: new Date().toISOString(),
+        })
+        authenticatedUser = await admin.toJson()
+        await admin.relateTo(pinnedPost, 'pinned', { createdAt: new Date().toISOString() })
+        variables = { ...variables, id: 'post-to-be-unpinned' }
+      })
+
+      it('responds with the unpinned Post', async () => {
+        authenticatedUser = await admin.toJson()
+        const expected = {
+          data: {
+            unpinPost: {
+              id: 'post-to-be-unpinned',
+              pinnedBy: null,
+              pinnedAt: null,
+            },
+          },
+          errors: undefined,
+        }
+
+        await expect(mutate({ mutation: unpinPostMutation, variables })).resolves.toMatchObject(
+          expected,
+        )
+      })
+
+      it('unsets `pinned` property', async () => {
+        const expected = {
+          data: {
+            unpinPost: {
+              id: 'post-to-be-unpinned',
+              pinned: null,
+            },
+          },
+          errors: undefined,
+        }
+        await expect(mutate({ mutation: unpinPostMutation, variables })).resolves.toMatchObject(
+          expected,
+        )
       })
     })
   })

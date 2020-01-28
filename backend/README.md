@@ -53,6 +53,27 @@ can issue GraphQL requests or access GraphQL Playground in the browser.
 
 ![GraphQL Playground](../.gitbook/assets/graphql-playground.png)
 
+### Database Indices and Constraints
+
+Database indices and constraints need to be created when the database and the
+backend is running:
+
+{% tabs %}
+{% tab title="Docker" %}
+```bash
+docker-compose exec backend yarn run db:migrate init
+```
+{% endtab %}
+
+{% tab title="Without Docker" %}
+```bash
+# in folder backend/
+# make sure your database is running on http://localhost:7474/browser/
+yarn run db:migrate init
+```
+{% endtab %}
+{% endtabs %}
+
 
 #### Seed Database
 
@@ -72,6 +93,8 @@ To reset the database run:
 $ docker-compose exec backend yarn run db:reset
 # you could also wipe out your neo4j database and delete all volumes with:
 $ docker-compose down -v
+# if container is not running, run this command to set up your database indeces and contstraints
+$ docker-compose run backend yarn run db:migrate init
 ```
 {% endtab %}
 
@@ -88,6 +111,37 @@ $ yarn run db:reset
 {% endtab %}
 {% endtabs %}
 
+### Data migrations
+
+Although Neo4J is schema-less,you might find yourself in a situation in which
+you have to migrate your data e.g. because your data modeling has changed.
+
+{% tabs %}
+{% tab title="Docker" %}
+Generate a data migration file:
+```bash
+$ docker-compose exec backend yarn run db:migrate:create your_data_migration
+# Edit the file in ./src/db/migrations/
+```
+
+To run the migration:
+```bash
+$ docker-compose exec backend yarn run db:migrate up
+```
+{% endtab %}
+{% tab title="Without Docker" %}
+Generate a data migration file:
+```bash
+$ yarn run db:migrate:create your_data_migration
+# Edit the file in ./src/db/migrations/
+```
+
+To run the migration:
+```bash
+$ yarn run db:migrate up
+```
+{% endtab %}
+{% endtabs %}
 
 # Testing
 

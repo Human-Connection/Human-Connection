@@ -1,14 +1,8 @@
-import { config, shallowMount, createLocalVue } from '@vue/test-utils'
+import { config, shallowMount } from '@vue/test-utils'
 import PostSlug from './index.vue'
 import Vuex from 'vuex'
-import Styleguide from '@human-connection/styleguide'
-import Filters from '~/plugins/vue-filters'
 
-const localVue = createLocalVue()
-
-localVue.use(Vuex)
-localVue.use(Styleguide)
-localVue.use(Filters)
+const localVue = global.localVue
 
 config.stubs['client-only'] = '<span><slot /></span>'
 
@@ -30,6 +24,9 @@ describe('PostSlug', () => {
       $t: jest.fn(),
       $filters: {
         truncate: a => a,
+      },
+      $route: {
+        hash: '',
       },
       // If you are mocking the router, then don't use VueRouter with localVue: https://vue-test-utils.vuejs.org/guides/using-with-vue-router.html
       $router: {

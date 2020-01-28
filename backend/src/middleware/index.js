@@ -7,7 +7,6 @@ import sluggify from './sluggifyMiddleware'
 import excerpt from './excerptMiddleware'
 import xss from './xssMiddleware'
 import permissions from './permissionsMiddleware'
-import user from './userMiddleware'
 import includedFields from './includedFieldsMiddleware'
 import orderBy from './orderByMiddleware'
 import validation from './validation/validationMiddleware'
@@ -18,25 +17,25 @@ import sentry from './sentryMiddleware'
 
 export default schema => {
   const middlewares = {
-    permissions,
     sentry,
+    permissions,
+    xss,
     activityPub,
     validation,
     sluggify,
     excerpt,
+    email,
     notifications,
     hashtags,
-    xss,
     softDelete,
-    user,
     includedFields,
     orderBy,
-    email,
   }
 
   let order = [
     'sentry',
     'permissions',
+    'xss',
     // 'activityPub', disabled temporarily
     'validation',
     'sluggify',
@@ -44,9 +43,7 @@ export default schema => {
     'email',
     'notifications',
     'hashtags',
-    'xss',
     'softDelete',
-    'user',
     'includedFields',
     'orderBy',
   ]

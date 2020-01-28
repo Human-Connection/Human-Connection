@@ -4,23 +4,33 @@
       <ds-grid-item v-show="hashtag" :row-span="2" column-span="fullWidth">
         <filter-menu :hashtag="hashtag" @clearSearch="clearSearch" />
       </ds-grid-item>
-      <ds-grid-item :row-span="2" column-span="fullWidth">
+      <ds-grid-item :row-span="2" column-span="fullWidth" class="top-info-bar">
+        <!--<donation-info /> -->
+        <div>
+          <a target="_blank" href="https://human-connection.org/spenden/">
+            <base-button filled>{{ $t('donations.donate-now') }}</base-button>
+          </a>
+        </div>
         <div class="sorting-dropdown">
           <ds-select
             v-model="selected"
             :options="sortingOptions"
             size="large"
-            v-bind:icon-right="sortingIcon"
-            @input="toggleOnlySorting"
+            :icon-right="sortingIcon"
           ></ds-select>
         </div>
       </ds-grid-item>
       <template v-if="hasResults">
-        <masonry-grid-item v-for="post in posts" :key="post.id">
+        <masonry-grid-item
+          v-for="post in posts"
+          :key="post.id"
+          :imageAspectRatio="post.imageAspectRatio"
+        >
           <hc-post-card
             :post="post"
-            :width="{ base: '100%', xs: '100%', md: '50%', xl: '33%' }"
             @removePostFromList="deletePost"
+            @pinPost="pinPost"
+            @unpinPost="unpinPost"
           />
         </masonry-grid-item>
       </template>
@@ -33,43 +43,43 @@
       </template>
     </masonry-grid>
     <client-only>
-      <ds-button
-        v-tooltip="{ content: $t('contribution.newPost'), placement: 'left', delay: { show: 500 } }"
-        :path="{ name: 'post-create' }"
-        class="post-add-button"
-        icon="plus"
-        size="x-large"
-        primary
-      />
+      <nuxt-link :to="{ name: 'post-create' }">
+        <base-button
+          v-tooltip="{
+            content: $t('contribution.newPost'),
+            placement: 'left',
+            delay: { show: 500 },
+          }"
+          class="post-add-button"
+          icon="plus"
+          filled
+          circle
+        />
+      </nuxt-link>
     </client-only>
-    <div
-      v-if="hasMore"
-      v-infinite-scroll="showMoreContributions"
-      :infinite-scroll-disabled="$apollo.loading"
-      :infinite-scroll-distance="10"
-      :infinite-scroll-throttle-delay="800"
-      :infinite-scroll-immediate-check="true"
-    >
-      <hc-load-more v-if="true" :loading="$apollo.loading" @click="showMoreContributions" />
-    </div>
+    <client-only>
+      <infinite-loading v-if="hasMore" @infinite="showMoreContributions" />
+    </client-only>
   </div>
 </template>
 
 <script>
+// import DonationInfo from '~/components/DonationInfo/DonationInfo.vue'
 import FilterMenu from '~/components/FilterMenu/FilterMenu.vue'
-import HcEmpty from '~/components/Empty'
-import HcPostCard from '~/components/PostCard'
-import HcLoadMore from '~/components/LoadMore.vue'
+import HcEmpty from '~/components/Empty/Empty'
+import HcPostCard from '~/components/PostCard/PostCard.vue'
 import MasonryGrid from '~/components/MasonryGrid/MasonryGrid.vue'
 import MasonryGridItem from '~/components/MasonryGrid/MasonryGridItem.vue'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import { filterPosts } from '~/graphql/PostQuery.js'
+import PostMutations from '~/graphql/PostMutations'
+import UpdateQuery from '~/components/utils/UpdateQuery'
 
 export default {
   components: {
+    // DonationInfo,
     FilterMenu,
     HcPostCard,
-    HcLoadMore,
     HcEmpty,
     MasonryGrid,
     MasonryGridItem,
@@ -83,30 +93,29 @@ export default {
       offset: 0,
       pageSize: 12,
       hashtag,
-      placeholder: this.$t('sorting.newest'),
-      selected: this.$t('sorting.newest'),
-      sortingIcon: 'sort-amount-desc',
-      sorting: 'createdAt_desc',
-      sortingOptions: [
-        {
-          label: this.$t('sorting.newest'),
-          value: 'Newest',
-          icons: 'sort-amount-desc',
-          order: 'createdAt_desc',
-        },
-        {
-          label: this.$t('sorting.oldest'),
-          value: 'Oldest',
-          icons: 'sort-amount-asc',
-          order: 'createdAt_asc',
-        },
-      ],
     }
   },
   computed: {
     ...mapGetters({
-      postsFilter: 'postsFilter/postsFilter',
+      postsFilter: 'posts/filter',
+      orderOptions: 'posts/orderOptions',
+      orderBy: 'posts/orderBy',
+      selectedOrder: 'posts/selectedOrder',
+      sortingIcon: 'posts/orderIcon',
     }),
+    selected: {
+      get() {
+        return this.selectedOrder(this)
+      },
+      set({ value }) {
+        this.offset = 0
+        this.posts = []
+        this.selectOrder(value)
+      },
+    },
+    sortingOptions() {
+      return this.orderOptions(this)
+    },
     finalFilters() {
       let filter = this.postsFilter
       if (this.hashtag) {
@@ -122,12 +131,9 @@ export default {
     },
   },
   methods: {
-    toggleOnlySorting(x) {
-      this.offset = 0
-      this.posts = []
-      this.sortingIcon = x.icons
-      this.sorting = x.order
-    },
+    ...mapMutations({
+      selectOrder: 'posts/SELECT_ORDER',
+    }),
     clearSearch() {
       this.$router.push({ path: '/' })
       this.hashtag = null
@@ -138,7 +144,7 @@ export default {
         params: { id: post.id, slug: post.slug },
       }).href
     },
-    showMoreContributions() {
+    showMoreContributions($state) {
       const { Post: PostQuery } = this.$apollo.queries
       if (!PostQuery) return // seems this can be undefined on subpages
 
@@ -148,23 +154,46 @@ export default {
           offset: this.offset,
           filter: this.finalFilters,
           first: this.pageSize,
-          orderBy: this.sorting,
+          orderBy: ['pinned_asc', this.orderBy],
         },
-        updateQuery: (previousResult, { fetchMoreResult }) => {
-          if (!fetchMoreResult || fetchMoreResult.Post.length < this.pageSize) {
-            this.hasMore = false
-          }
-          const result = Object.assign({}, previousResult, {
-            Post: [...previousResult.Post, ...fetchMoreResult.Post],
-          })
-          return result
-        },
+        updateQuery: UpdateQuery(this, { $state, pageKey: 'Post' }),
       })
     },
     deletePost(deletedPost) {
       this.posts = this.posts.filter(post => {
         return post.id !== deletedPost.id
       })
+    },
+    resetPostList() {
+      this.offset = 0
+      this.posts = []
+      this.hasMore = true
+    },
+    pinPost(post) {
+      this.$apollo
+        .mutate({
+          mutation: PostMutations().pinPost,
+          variables: { id: post.id },
+        })
+        .then(() => {
+          this.$toast.success(this.$t('post.menu.pinnedSuccessfully'))
+          this.resetPostList()
+          this.$apollo.queries.Post.refetch()
+        })
+        .catch(error => this.$toast.error(error.message))
+    },
+    unpinPost(post) {
+      this.$apollo
+        .mutate({
+          mutation: PostMutations().unpinPost,
+          variables: { id: post.id },
+        })
+        .then(() => {
+          this.$toast.success(this.$t('post.menu.unpinnedSuccessfully'))
+          this.resetPostList()
+          this.$apollo.queries.Post.refetch()
+        })
+        .catch(error => this.$toast.error(error.message))
     },
   },
   apollo: {
@@ -176,7 +205,7 @@ export default {
         return {
           filter: this.finalFilters,
           first: this.pageSize,
-          orderBy: this.sorting,
+          orderBy: ['pinned_asc', this.orderBy],
           offset: 0,
         }
       },
@@ -190,6 +219,11 @@ export default {
 </script>
 
 <style lang="scss">
+.ds-card-image img {
+  max-height: 2000px;
+  object-fit: contain;
+}
+
 .masonry-grid {
   display: grid;
   grid-gap: 10px;
@@ -205,7 +239,10 @@ export default {
   }
 }
 
-.post-add-button {
+.base-button.--circle.post-add-button {
+  height: 54px;
+  width: 54px;
+  font-size: 26px;
   z-index: 100;
   position: fixed;
   bottom: -5px;
@@ -217,7 +254,20 @@ export default {
 .sorting-dropdown {
   width: 250px;
   position: relative;
-  float: right;
-  margin: 4px 0;
+
+  @media (max-width: 680px) {
+    width: 180px;
+  }
+}
+
+.top-info-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+
+  @media (max-width: 546px) {
+    grid-row-end: span 3 !important;
+    flex-direction: column;
+  }
 }
 </style>

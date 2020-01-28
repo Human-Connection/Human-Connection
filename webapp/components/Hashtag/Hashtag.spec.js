@@ -1,14 +1,15 @@
-import { shallowMount, createLocalVue } from '@vue/test-utils'
-import Styleguide from '@human-connection/styleguide'
+import { config, shallowMount } from '@vue/test-utils'
+
 import Hashtag from './Hashtag'
 
-const localVue = createLocalVue()
-localVue.use(Styleguide)
+const localVue = global.localVue
+
+config.stubs['nuxt-link'] = '<span><slot /></span>'
 
 describe('Hashtag', () => {
   let id
 
-  let Wrapper = () => {
+  const Wrapper = () => {
     return shallowMount(Hashtag, {
       localVue,
       propsData: {

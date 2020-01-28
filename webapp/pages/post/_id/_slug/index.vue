@@ -1,13 +1,29 @@
 <template>
   <transition name="fade" appear>
     <ds-card
+      :lang="post.language"
       v-if="post && ready"
       :image="post.image | proxyApiUrl"
-      :class="{ 'post-card': true, 'disabled-content': post.disabled }"
+      :class="{
+        'post-page': true,
+        'disabled-content': post.disabled,
+        '--blur-image': blurred,
+      }"
     >
-      <ds-space margin-bottom="small" />
-      <hc-user :user="post.author" :date-time="post.createdAt" />
-      <!-- Content Menu (can open Modals) -->
+      <aside v-show="post.imageBlurred" class="blur-toggle">
+        <img v-show="blurred" :src="post.image | proxyApiUrl" class="preview" />
+        <base-button
+          :icon="blurred ? 'eye' : 'eye-slash'"
+          filled
+          circle
+          @click="blurred = !blurred"
+        />
+      </aside>
+      <user-teaser :user="post.author" :date-time="post.createdAt">
+        <template v-slot:dateTime>
+          <ds-text v-if="post.createdAt !== post.updatedAt">({{ $t('post.edited') }})</ds-text>
+        </template>
+      </user-teaser>
       <client-only>
         <content-menu
           placement="bottom-end"
@@ -15,6 +31,8 @@
           :resource="post"
           :modalsData="menuModalsData"
           :is-owner="isAuthor(post.author ? post.author.id : null)"
+          @pinPost="pinPost"
+          @unpinPost="unpinPost"
         />
       </client-only>
       <ds-space margin-bottom="small" />
@@ -32,6 +50,11 @@
           :icon="category.icon"
           :name="$t(`contribution.category.name.${category.slug}`)"
         />
+        <!-- Post language -->
+        <ds-tag v-if="post.language" class="category-tag language">
+          <base-icon name="globe" />
+          {{ post.language.toUpperCase() }}
+        </ds-tag>
       </div>
       <ds-space margin-bottom="small" />
       <!-- Tags -->
@@ -41,13 +64,9 @@
       </div>
       <ds-space margin-top="x-large">
         <ds-flex :gutter="{ lg: 'small' }">
-          <ds-flex-item
-            :width="{ lg: '75%', md: '75%', sm: '75%' }"
-            class="emotions-buttons-mobile"
-          >
+          <ds-flex-item :width="{ lg: '75%', md: '75%', sm: '75%', base: '100%' }">
             <hc-emotions :post="post" />
           </ds-flex-item>
-          <ds-flex-item :width="{ lg: '10%', md: '3%', sm: '3%' }" />
           <!-- Shout Button -->
           <ds-flex-item
             :width="{ lg: '15%', md: '22%', sm: '22%', base: '100%' }"
@@ -65,9 +84,13 @@
       </ds-space>
       <!-- Comments -->
       <ds-section slot="footer">
-        <hc-comment-list :post="post" />
+        <hc-comment-list
+          :post="post"
+          :routeHash="$route.hash"
+          @toggleNewCommentForm="toggleNewCommentForm"
+        />
         <ds-space margin-bottom="large" />
-        <hc-comment-form :post="post" @createComment="createComment" />
+        <hc-comment-form v-if="showNewCommentForm" :post="post" @createComment="createComment" />
       </ds-section>
     </ds-card>
   </transition>
@@ -77,14 +100,15 @@
 import ContentViewer from '~/components/Editor/ContentViewer'
 import HcCategory from '~/components/Category'
 import HcHashtag from '~/components/Hashtag/Hashtag'
-import ContentMenu from '~/components/ContentMenu'
-import HcUser from '~/components/User/User'
+import ContentMenu from '~/components/ContentMenu/ContentMenu'
+import UserTeaser from '~/components/UserTeaser/UserTeaser'
 import HcShoutButton from '~/components/ShoutButton.vue'
 import HcCommentForm from '~/components/CommentForm/CommentForm'
 import HcCommentList from '~/components/CommentList/CommentList'
 import { postMenuModalsData, deletePostMutation } from '~/components/utils/PostHelpers'
 import PostQuery from '~/graphql/PostQuery'
 import HcEmotions from '~/components/Emotions/Emotions'
+import PostMutations from '~/graphql/PostMutations'
 
 export default {
   name: 'PostSlug',
@@ -95,7 +119,7 @@ export default {
   components: {
     HcCategory,
     HcHashtag,
-    HcUser,
+    UserTeaser,
     HcShoutButton,
     ContentMenu,
     HcCommentForm,
@@ -113,12 +137,15 @@ export default {
       post: null,
       ready: false,
       title: 'loading',
+      showNewCommentForm: true,
+      blurred: false,
     }
   },
   watch: {
     Post(post) {
       this.post = post[0] || {}
       this.title = this.post.title
+      this.blurred = this.post.imageBlurred
     },
   },
   mounted() {
@@ -153,6 +180,31 @@ export default {
     async createComment(comment) {
       this.post.comments.push(comment)
     },
+    pinPost(post) {
+      this.$apollo
+        .mutate({
+          mutation: PostMutations().pinPost,
+          variables: { id: post.id },
+        })
+        .then(() => {
+          this.$toast.success(this.$t('post.menu.pinnedSuccessfully'))
+        })
+        .catch(error => this.$toast.error(error.message))
+    },
+    unpinPost(post) {
+      this.$apollo
+        .mutate({
+          mutation: PostMutations().unpinPost,
+          variables: { id: post.id },
+        })
+        .then(() => {
+          this.$toast.success(this.$t('post.menu.unpinnedSuccessfully'))
+        })
+        .catch(error => this.$toast.error(error.message))
+    },
+    toggleNewCommentForm(showNewCommentForm) {
+      this.showNewCommentForm = showNewCommentForm
+    },
   },
   apollo: {
     Post: {
@@ -169,45 +221,70 @@ export default {
   },
 }
 </script>
-
 <style lang="scss">
-.page-name-post-id-slug {
+.post-page {
+  &.--blur-image > .ds-card-image img {
+    filter: blur(22px);
+  }
+
+  .ds-card-content {
+    position: relative;
+    padding-top: 24px;
+  }
+
+  .blur-toggle {
+    position: absolute;
+    top: -80px;
+    right: 0;
+
+    display: flex;
+    align-items: center;
+
+    height: 80px;
+    padding: 12px;
+
+    .preview {
+      height: 100%;
+      margin-right: 12px;
+    }
+  }
+
   .content-menu {
     float: right;
     margin-right: -$space-x-small;
     margin-top: -$space-large;
   }
 
-  .post-card {
-    margin: auto;
-    cursor: auto;
+  .comments {
+    margin-top: $space-small;
 
-    .comments {
+    .comment {
       margin-top: $space-small;
-
-      .comment {
-        margin-top: $space-small;
-        position: relative;
-      }
+      position: relative;
     }
 
-    .ds-card-image {
-      img {
-        max-height: 300px;
-        object-fit: cover;
-        object-position: center;
-      }
+    .ProseMirror {
+      min-height: 0px;
     }
+  }
 
-    .ds-card-footer {
-      padding: 0;
+  .ds-card-image {
+    img {
+      max-height: 2000px;
+      object-fit: contain;
+      object-position: center;
+    }
+  }
 
-      .ds-section {
-        padding: $space-base;
-      }
+  .ds-card-footer {
+    padding: 0;
+
+    .ds-section {
+      padding: $space-base;
     }
   }
 }
+
 @media only screen and (max-width: 960px) {
   .shout-button {
     float: left;

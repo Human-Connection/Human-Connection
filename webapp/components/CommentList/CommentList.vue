@@ -1,19 +1,8 @@
 <template>
-  <div id="comments">
-    <h3 style="margin-top: -10px;">
-      <span>
-        <ds-icon name="comments" />
-        <ds-tag
-          v-if="post.comments.length"
-          style="margin-top: -4px; margin-left: -12px; position: absolute;"
-          color="primary"
-          size="small"
-          round
-        >
-          {{ post.comments.length }}
-        </ds-tag>
-        &nbsp; Comments
-      </span>
+  <div id="comments" class="comment-list">
+    <h3 class="title">
+      <counter-icon icon="comments" :count="post.comments.length" />
+      {{ $t('common.comment', null, 0) }}
     </h3>
     <ds-space margin-bottom="large" />
     <div v-if="post.comments && post.comments.length" id="comments" class="comments">
@@ -22,31 +11,53 @@
         :key="comment.id"
         :comment="comment"
         :post="post"
+        :routeHash="routeHash"
         @deleteComment="updateCommentList"
         @updateComment="updateCommentList"
+        @toggleNewCommentForm="toggleNewCommentForm"
       />
     </div>
-    <hc-empty v-else name="empty" icon="messages" />
   </div>
 </template>
 <script>
-import Comment from '~/components/Comment.vue'
-import HcEmpty from '~/components/Empty.vue'
+import CounterIcon from '~/components/_new/generic/CounterIcon/CounterIcon'
+import Comment from '~/components/Comment/Comment'
+import scrollToAnchor from '~/mixins/scrollToAnchor'
 
 export default {
+  mixins: [scrollToAnchor],
   components: {
+    CounterIcon,
     Comment,
-    HcEmpty,
   },
   props: {
+    routeHash: { type: String, default: () => '' },
     post: { type: Object, default: () => {} },
   },
   methods: {
+    checkAnchor(anchor) {
+      return anchor === '#comments'
+    },
     updateCommentList(updatedComment) {
       this.post.comments = this.post.comments.map(comment => {
         return comment.id === updatedComment.id ? updatedComment : comment
       })
     },
+    toggleNewCommentForm(showNewCommentForm) {
+      this.$emit('toggleNewCommentForm', showNewCommentForm)
+    },
   },
 }
 </script>
+
+<style lang="scss">
+.comment-list {
+  > .title {
+    margin-top: 0;
+
+    > .counter-icon {
+      margin-right: $space-small;
+    }
+  }
+}
+</style>

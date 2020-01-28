@@ -84,8 +84,11 @@ export const actions = {
             role
             about
             locationName
+            locale
             contributionsCount
             commentedCount
+            allowEmbedIframes
+            showShoutsPublicly
             termsAndConditionsAgreedVersion
             socialMedia {
               id

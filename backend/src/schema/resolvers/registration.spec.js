@@ -1,6 +1,6 @@
-import Factory from '../../seed/factories'
-import { gql } from '../../jest/helpers'
-import { getDriver, neode as getNeode } from '../../bootstrap/neo4j'
+import Factory from '../../factories'
+import { gql } from '../../helpers/jest'
+import { getDriver, getNeode } from '../../db/neo4j'
 import createServer from '../../server'
 import { createTestClient } from 'apollo-server-testing'
 
@@ -9,7 +9,6 @@ const neode = getNeode()
 
 let mutate
 let authenticatedUser
-let user
 let variables
 const driver = getDriver()
 
@@ -32,243 +31,6 @@ beforeAll(() => {
 
 afterEach(async () => {
   await factory.cleanDatabase()
-})
-
-describe('CreateInvitationCode', () => {
-  const mutation = gql`
-    mutation {
-      CreateInvitationCode {
-        token
-      }
-    }
-  `
-
-  describe('unauthenticated', () => {
-    beforeEach(() => {
-      authenticatedUser = null
-    })
-
-    it('throws Authorization error', async () => {
-      await expect(mutate({ mutation })).resolves.toMatchObject({
-        errors: [{ message: 'Not Authorised!' }],
-      })
-    })
-  })
-
-  describe('authenticated', () => {
-    beforeEach(async () => {
-      user = await factory.create('User', {
-        id: 'i123',
-        name: 'Inviter',
-        email: 'inviter@example.org',
-        password: '1234',
-        termsAndConditionsAgreedVersion: null,
-      })
-      authenticatedUser = await user.toJson()
-    })
-
-    it('resolves', async () => {
-      await expect(mutate({ mutation })).resolves.toMatchObject({
-        data: { CreateInvitationCode: { token: expect.any(String) } },
-      })
-    })
-
-    it('creates an InvitationCode with a `createdAt` attribute', async () => {
-      await mutate({ mutation })
-      const codes = await neode.all('InvitationCode')
-      const invitation = await codes.first().toJson()
-      expect(invitation.createdAt).toBeTruthy()
-      expect(Date.parse(invitation.createdAt)).toEqual(expect.any(Number))
-    })
-
-    it('relates inviting User to InvitationCode', async () => {
-      await mutate({ mutation })
-      const result = await neode.cypher(
-        'MATCH(code:InvitationCode)<-[:GENERATED]-(user:User) RETURN user',
-      )
-      const inviter = neode.hydrateFirst(result, 'user', neode.model('User'))
-      await expect(inviter.toJson()).resolves.toEqual(expect.objectContaining({ name: 'Inviter' }))
-    })
-
-    describe('who has invited a lot of users already', () => {
-      beforeEach(async () => {
-        await Promise.all([mutate({ mutation }), mutate({ mutation }), mutate({ mutation })])
-      })
-
-      describe('as ordinary `user`', () => {
-        it('throws `Not Authorised` because of maximum number of invitations', async () => {
-          await expect(mutate({ mutation })).resolves.toMatchObject({
-            errors: [{ message: 'Not Authorised!' }],
-          })
-        })
-
-        it('creates no additional invitation codes', async () => {
-          await mutate({ mutation })
-          const invitationCodes = await neode.all('InvitationCode')
-          await expect(invitationCodes.toJson()).resolves.toHaveLength(3)
-        })
-      })
-
-      describe('as a strong donator', () => {
-        beforeEach(() => {
-          // What is the setup?
-        })
-
-        it.todo('can invite more people')
-        // it('can invite more people', async () => {
-        // await action()
-        // const invitationQuery = `{ User { createdAt } }`
-        // const { User: users } = await client.request(invitationQuery )
-        // expect(users).toHaveLength(3 + 1 + 1)
-        // })
-      })
-    })
-  })
-})
-
-describe('SignupByInvitation', () => {
-  const mutation = gql`
-    mutation($email: String!, $token: String!) {
-      SignupByInvitation(email: $email, token: $token) {
-        email
-      }
-    }
-  `
-
-  describe('with valid email but invalid InvitationCode', () => {
-    beforeEach(() => {
-      variables = {
-        ...variables,
-        email: 'any-email@example.org',
-        token: 'wut?',
-      }
-    })
-
-    it('throws UserInputError', async () => {
-      await expect(mutate({ mutation, variables })).resolves.toMatchObject({
-        errors: [{ message: 'UserInputError: Invitation code already used or does not exist.' }],
-      })
-    })
-
-    describe('with valid InvitationCode', () => {
-      beforeEach(async () => {
-        const inviter = await factory.create('User', {
-          name: 'Inviter',
-          email: 'inviter@example.org',
-          password: '1234',
-        })
-        authenticatedUser = await inviter.toJson()
-        const invitationMutation = gql`
-          mutation {
-            CreateInvitationCode {
-              token
-            }
-          }
-        `
-        const {
-          data: {
-            CreateInvitationCode: { token },
-          },
-        } = await mutate({ mutation: invitationMutation })
-        authenticatedUser = null
-        variables = {
-          ...variables,
-          token,
-        }
-      })
-
-      describe('given an invalid email', () => {
-        beforeEach(() => {
-          variables = { ...variables, email: 'someuser' }
-        })
-
-        it('throws `email is not a valid email`', async () => {
-          await expect(mutate({ mutation, variables })).resolves.toMatchObject({
-            errors: [{ message: expect.stringContaining('"email" must be a valid email') }],
-          })
-        })
-
-        it('creates no additional EmailAddress node', async () => {
-          let emailAddresses = await neode.all('EmailAddress')
-          emailAddresses = await emailAddresses.toJson()
-          expect(emailAddresses).toHaveLength(1)
-          await mutate({ mutation, variables })
-          emailAddresses = await neode.all('EmailAddress')
-          emailAddresses = await emailAddresses.toJson()
-          expect(emailAddresses).toHaveLength(1)
-        })
-      })
-
-      describe('given a valid email', () => {
-        beforeEach(() => {
-          variables = { ...variables, email: 'someUser@example.org' }
-        })
-
-        it('resolves', async () => {
-          await expect(mutate({ mutation, variables })).resolves.toMatchObject({
-            data: { SignupByInvitation: { email: 'someuser@example.org' } },
-          })
-        })
-
-        describe('creates a EmailAddress node', () => {
-          it('with a `createdAt` attribute', async () => {
-            await mutate({ mutation, variables })
-            let emailAddress = await neode.first('EmailAddress', { email: 'someuser@example.org' })
-            emailAddress = await emailAddress.toJson()
-            expect(emailAddress.createdAt).toBeTruthy()
-            expect(Date.parse(emailAddress.createdAt)).toEqual(expect.any(Number))
-          })
-
-          it('with a cryptographic `nonce`', async () => {
-            await mutate({ mutation, variables })
-            let emailAddress = await neode.first('EmailAddress', { email: 'someuser@example.org' })
-            emailAddress = await emailAddress.toJson()
-            expect(emailAddress.nonce).toEqual(expect.any(String))
-          })
-
-          it('connects inviter through invitation code', async () => {
-            await mutate({ mutation, variables })
-            const result = await neode.cypher(
-              'MATCH(inviter:User)-[:GENERATED]->(:InvitationCode)-[:ACTIVATED]->(email:EmailAddress {email: {email}}) RETURN inviter',
-              { email: 'someuser@example.org' },
-            )
-            const inviter = neode.hydrateFirst(result, 'inviter', neode.model('User'))
-            await expect(inviter.toJson()).resolves.toEqual(
-              expect.objectContaining({ name: 'Inviter' }),
-            )
-          })
-
-          describe('using the same InvitationCode twice', () => {
-            it('rejects because codes can be used only once', async () => {
-              await mutate({ mutation, variables })
-              variables = { ...variables, email: 'yetanotheremail@example.org' }
-              await expect(mutate({ mutation, variables })).resolves.toMatchObject({
-                errors: [
-                  { message: 'UserInputError: Invitation code already used or does not exist.' },
-                ],
-              })
-            })
-          })
-
-          describe('if a user account with the given email already exists', () => {
-            beforeEach(async () => {
-              await factory.create('User', { email: 'someuser@example.org' })
-            })
-
-            it('throws unique violation error', async () => {
-              await expect(mutate({ mutation, variables })).resolves.toMatchObject({
-                errors: [{ message: 'User account with this email already exists.' }],
-              })
-            })
-          })
-
-          describe('if the EmailAddress already exists but without user account', () => {
-            it.todo('shall we re-send the registration email?')
-          })
-        })
-      })
-    })
-  })
 })
 
 describe('Signup', () => {
@@ -307,14 +69,66 @@ describe('Signup', () => {
       it('is allowed to signup users by email', async () => {
         await expect(mutate({ mutation, variables })).resolves.toMatchObject({
           data: { Signup: { email: 'someuser@example.org' } },
+          errors: undefined,
         })
       })
 
-      it('creates a Signup with a cryptographic `nonce`', async () => {
-        await mutate({ mutation, variables })
-        let emailAddress = await neode.first('EmailAddress', { email: 'someuser@example.org' })
-        emailAddress = await emailAddress.toJson()
-        expect(emailAddress.nonce).toEqual(expect.any(String))
+      describe('creates a EmailAddress node', () => {
+        it('with `createdAt` attribute', async () => {
+          await mutate({ mutation, variables })
+          let emailAddress = await neode.first('EmailAddress', { email: 'someuser@example.org' })
+          emailAddress = await emailAddress.toJson()
+          expect(emailAddress.createdAt).toBeTruthy()
+          expect(Date.parse(emailAddress.createdAt)).toEqual(expect.any(Number))
+        })
+
+        it('with a cryptographic `nonce`', async () => {
+          await mutate({ mutation, variables })
+          let emailAddress = await neode.first('EmailAddress', { email: 'someuser@example.org' })
+          emailAddress = await emailAddress.toJson()
+          expect(emailAddress.nonce).toEqual(expect.any(String))
+        })
+
+        describe('if the email already exists', () => {
+          let email
+          beforeEach(async () => {
+            email = await factory.create('EmailAddress', {
+              email: 'someuser@example.org',
+              verifiedAt: null,
+            })
+          })
+
+          describe('and the user has registered already', () => {
+            beforeEach(async () => {
+              await factory.create('User', { email })
+            })
+
+            it('throws UserInputError error because of unique constraint violation', async () => {
+              await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+                errors: [{ message: 'A user account with this email already exists.' }],
+              })
+            })
+          })
+
+          describe('but the user has not yet registered', () => {
+            it('resolves with the already existing email', async () => {
+              await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+                data: { Signup: { email: 'someuser@example.org' } },
+                errors: undefined,
+              })
+            })
+
+            it('creates no additional `EmailAddress` node', async () => {
+              // admin account and the already existing user
+              await expect(neode.all('EmailAddress')).resolves.toHaveLength(2)
+              await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+                data: { Signup: { email: 'someuser@example.org' } },
+                errors: undefined,
+              })
+              await expect(neode.all('EmailAddress')).resolves.toHaveLength(2)
+            })
+          })
+        })
       })
     })
   })
@@ -329,6 +143,7 @@ describe('SignupVerification', () => {
       $nonce: String!
       $about: String
       $termsAndConditionsAgreedVersion: String!
+      $locale: String
     ) {
       SignupVerification(
         name: $name
@@ -337,6 +152,7 @@ describe('SignupVerification', () => {
         nonce: $nonce
         about: $about
         termsAndConditionsAgreedVersion: $termsAndConditionsAgreedVersion
+        locale: $locale
       ) {
         id
         termsAndConditionsAgreedVersion
@@ -353,6 +169,7 @@ describe('SignupVerification', () => {
         password: '123',
         email: 'john@example.org',
         termsAndConditionsAgreedVersion: '0.1.0',
+        locale: 'en',
       }
     })
 
@@ -432,6 +249,17 @@ describe('SignupVerification', () => {
             const user = await neode.first('User', { name: 'John Doe' })
             await expect(user.toJson()).resolves.toMatchObject({
               about: 'Find this description in the user profile',
+            })
+          })
+
+          it('allowing the about field to be an empty string', async () => {
+            variables = { ...variables, about: '' }
+            await expect(mutate({ mutation, variables })).resolves.toMatchObject({
+              data: {
+                SignupVerification: expect.objectContaining({
+                  id: expect.any(String),
+                }),
+              },
             })
           })
 

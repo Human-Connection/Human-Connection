@@ -1,15 +1,16 @@
 # Setup Ingress and HTTPS
 
 Follow [this quick start guide](https://docs.cert-manager.io/en/latest/tutorials/acme/quick-start/index.html) and install certmanager via helm and tiller:
+[This resource was also helpful](https://docs.cert-manager.io/en/latest/getting-started/install/kubernetes.html#installing-with-helm)
 
-```text
+```bash
 $ kubectl create serviceaccount tiller --namespace=kube-system
 $ kubectl create clusterrolebinding tiller-admin --serviceaccount=kube-system:tiller --clusterrole=cluster-admin
 $ helm init --service-account=tiller
+$ helm repo add jetstack https://charts.jetstack.io
 $ helm repo update
-$ helm install stable/nginx-ingress
-$ kubectl apply -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.6/deploy/manifests/00-crds.yaml
-$ helm install --name cert-manager --namespace cert-manager stable/cert-manager
+$ kubectl apply -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.11/deploy/manifests/00-crds.yaml
+$ helm install --name cert-manager --namespace cert-manager --version v0.11.0 jetstack/cert-manager
 ```
 
 ## Create Letsencrypt Issuers and Ingress Services

@@ -4,7 +4,6 @@
     "imprint": "Afdruk",
     "termsAc": "Gebruiksvoorwaarden",
     "data-privacy": "gegevensbescherming",
-    "changelog": "Veranderingen & Geschiedenis",
     "contact": "contact",
     "tribunal": "registerrechtbank",
     "register": "inschrijfnummer",
@@ -158,7 +157,10 @@
   },
   "contribution": {
     "edit": "Bijdrage bewerken",
-    "delete": "Bijdrage verwijderen"
+    "delete": "Bijdrage verwijderen",
+    "teaserImage": {
+      "cropperConfirm": "Bevestigen"
+    }
   },
   "comment": {
     "edit": "Commentaar bewerken",

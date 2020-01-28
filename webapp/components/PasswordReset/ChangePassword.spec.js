@@ -1,10 +1,8 @@
-import { config, mount, createLocalVue } from '@vue/test-utils'
+import { config, mount } from '@vue/test-utils'
 import ChangePassword from './ChangePassword'
-import Styleguide from '@human-connection/styleguide'
 
-const localVue = createLocalVue()
+const localVue = global.localVue
 
-localVue.use(Styleguide)
 config.stubs['sweetalert-icon'] = '<span><slot /></span>'
 
 describe('ChangePassword ', () => {
@@ -39,7 +37,7 @@ describe('ChangePassword ', () => {
       })
     }
 
-    describe('given email and verification nonce', () => {
+    describe('given email and nonce', () => {
       beforeEach(() => {
         propsData.email = 'mail@example.org'
         propsData.nonce = '123456'
@@ -66,7 +64,7 @@ describe('ChangePassword ', () => {
 
         describe('password reset successful', () => {
           it('displays success message', () => {
-            const expected = 'verify-nonce.form.change-password.success'
+            const expected = 'components.password-reset.change-password.success'
             expect(mocks.$t).toHaveBeenCalledWith(expected)
           })
 

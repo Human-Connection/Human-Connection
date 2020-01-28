@@ -1,53 +1,28 @@
 import { makeAugmentedSchema } from 'neo4j-graphql-js'
-import CONFIG from './../config'
-import applyScalars from './../bootstrap/scalars'
-import applyDirectives from './../bootstrap/directives'
 import typeDefs from './types'
 import resolvers from './resolvers'
 
-export default applyScalars(
-  applyDirectives(
-    makeAugmentedSchema({
-      typeDefs,
-      resolvers,
-      config: {
-        query: {
-          exclude: [
-            'Badge',
-            'Embed',
-            'InvitationCode',
-            'EmailAddress',
-            'Notfication',
-            'Statistics',
-            'LoggedInUser',
-            'Location',
-            'SocialMedia',
-            'NOTIFIED',
-          ],
-          // add 'User' here as soon as possible
-        },
-        mutation: {
-          exclude: [
-            'Badge',
-            'Embed',
-            'InvitationCode',
-            'EmailAddress',
-            'Notfication',
-            'Post',
-            'Comment',
-            'Report',
-            'Statistics',
-            'LoggedInUser',
-            'Location',
-            'SocialMedia',
-            'User',
-            'EMOTED',
-            'NOTIFIED',
-          ],
-          // add 'User' here as soon as possible
-        },
-        debug: !!CONFIG.DEBUG,
-      },
-    }),
-  ),
-)
+export default makeAugmentedSchema({
+  typeDefs,
+  resolvers,
+  config: {
+    query: {
+      exclude: [
+        'Badge',
+        'Embed',
+        'EmailAddress',
+        'Notfication',
+        'Statistics',
+        'LoggedInUser',
+        'Location',
+        'SocialMedia',
+        'NOTIFIED',
+        'FILED',
+        'REVIEWED',
+        'Report',
+        'Donations',
+      ],
+    },
+    mutation: false,
+  },
+})

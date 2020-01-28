@@ -2,17 +2,38 @@
   <div id="footer" class="ds-footer">
     <a href="https://human-connection.org" target="_blank" v-html="$t('site.made')"></a>
     <span>-</span>
-    <nuxt-link to="/imprint">{{ $t('site.imprint') }}</nuxt-link>
+    <a href="https://human-connection.org/impressum/" target="_blank">
+      {{ $t('site.imprint') }}
+    </a>
     <span>-</span>
     <nuxt-link to="/terms-and-conditions">{{ $t('site.termsAndConditions') }}</nuxt-link>
     <span>-</span>
     <nuxt-link to="/code-of-conduct">{{ $t('site.code-of-conduct') }}</nuxt-link>
     <span>-</span>
-    <nuxt-link to="/data-privacy">{{ $t('site.data-privacy') }}</nuxt-link>
+    <a href="https://human-connection.org/datenschutz/" target="_blank">
+      {{ $t('site.data-privacy') }}
+    </a>
     <span>-</span>
-    <nuxt-link to="/changelog">{{ $t('site.changelog') }}</nuxt-link>
+    <a href="https://faq.human-connection.org/" target="_blank">
+      {{ $t('site.faq') }}
+    </a>
+    <span>-</span>
+    <a
+      href="https://github.com/Human-Connection/Human-Connection/blob/master/CHANGELOG.md"
+      target="_blank"
+    >
+      {{ version }}
+    </a>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return { version: `v${process.env.release}` }
+  },
+}
+</script>
 
 <style lang="scss" scoped>
 .ds-footer {

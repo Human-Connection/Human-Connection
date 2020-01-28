@@ -6,20 +6,19 @@ addons:
       - libgconf-2-4
   snaps:
     - docker
-    - chromium
 
-before_install:
+install:
   - yarn global add wait-on
   # Install Codecov
   - yarn install
-  - cp cypress.env.template.json cypress.env.json
+  - cp backend/.env.template backend/.env
 
-install:
+before_script:
   - docker-compose -f docker-compose.yml build --parallel
   - docker-compose -f docker-compose.yml -f docker-compose.build-and-test.yml build # just tagging, just be quite fast
   - docker-compose -f docker-compose.yml -f docker-compose.build-and-test.yml up -d
   - wait-on http://localhost:7474
-  - docker-compose  -f docker-compose.yml -f docker-compose.build-and-test.yml exec neo4j db_setup
+  - docker-compose  -f docker-compose.yml -f docker-compose.build-and-test.yml exec backend yarn run db:migrate init
 
 script:
   - export CYPRESS_RETRIES=1
@@ -27,22 +26,18 @@ script:
   - echo "TRAVIS_BRANCH=$TRAVIS_BRANCH, PR=$PR, BRANCH=$BRANCH"
   # Backend
   - docker-compose exec backend yarn run lint
-  - docker-compose exec backend yarn run test:jest --ci --verbose=false --coverage
+  - docker-compose exec backend yarn run test --ci --verbose=false --coverage
   - docker-compose exec backend yarn run db:seed
   - docker-compose exec backend yarn run db:reset
-  # ActivityPub cucumber testing temporarily disabled because it's too buggy
-  # - docker-compose exec backend yarn run test:cucumber --tags "not @wip"
-  # - docker-compose exec backend yarn run db:reset
-  # - docker-compose exec backend yarn run db:seed
   # Frontend
   - docker-compose exec webapp yarn run lint
   - docker-compose exec webapp yarn run test --ci --verbose=false --coverage
-  - docker-compose exec -d backend yarn run test:before:seeder
   # Fullstack
   - docker-compose down
   - docker-compose -f docker-compose.yml up -d
   - wait-on http://localhost:7474
-  - yarn run cypress:run
+  - yarn run cypress:run --record
+  - yarn run cucumber
   # Coverage
   - yarn run codecov
 
@@ -67,14 +62,14 @@ before_deploy:
 
 deploy:
   - provider: script
-    script: scripts/docker_push.sh
+    script: bash scripts/docker_push.sh
     on:
       branch: master
   - provider: script
-    script: scripts/deploy.sh
+    script: bash scripts/deploy.sh
     on:
       branch: master
   - provider: script
-    script: scripts/github_release.sh
+    script: bash scripts/github_release.sh
     on:
       branch: master

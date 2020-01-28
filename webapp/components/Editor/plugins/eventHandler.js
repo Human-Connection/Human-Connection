@@ -5,12 +5,12 @@ export default class EventHandler extends Extension {
   get name() {
     return 'event_handler'
   }
+
   get plugins() {
     return [
       new Plugin({
         props: {
           transformPastedText(text) {
-            // console.log('#### transformPastedText', text)
             return text.trim()
           },
           transformPastedHTML(html) {
@@ -33,7 +33,6 @@ export default class EventHandler extends Extension {
               .replace(/<p>(\s*<br ?\/?>\s*)+/gim, '<p>')
               // remove additional linebreaks when last child inside p tags
               .replace(/(\s*<br ?\/?>\s*)+<\/p>/gim, '</p>')
-            // console.log('#### transformPastedHTML', html)
             return html
           },
           // transformPasted(slice) {

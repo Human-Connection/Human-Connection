@@ -17,7 +17,8 @@ Feature: Create a post
       Human Connection is a free and open-source social network
       for active citizenship.
       """
-    Then I select a category
+    And I select a category
+    And I choose "en" as the language for the post
     And I click on "Save"
     Then I get redirected to ".../my-first-post"
     And the post was saved successfully
