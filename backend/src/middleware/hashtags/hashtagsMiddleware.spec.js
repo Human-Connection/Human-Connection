@@ -48,13 +48,18 @@ beforeAll(() => {
 })
 
 beforeEach(async () => {
-  hashtagingUser = await neode.create('User', {
-    id: 'you',
-    name: 'Al Capone',
-    slug: 'al-capone',
-    email: 'test@example.org',
-    password: '1234',
-  })
+  hashtagingUser = await neode.create(
+    'User',
+    {
+      id: 'you',
+      name: 'Al Capone',
+      slug: 'al-capone',
+    },
+    {
+      password: '1234',
+      email: 'test@example.org',
+    },
+  )
   await neode.create('Category', {
     id: 'cat9',
     name: 'Democracy & Politics',

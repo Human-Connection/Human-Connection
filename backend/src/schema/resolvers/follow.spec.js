@@ -73,20 +73,30 @@ beforeAll(async () => {
 
 beforeEach(async () => {
   user1 = await factory
-    .create('User', {
-      id: 'u1',
-      name: 'user1',
-      email: 'test@example.org',
-      password: '1234',
-    })
+    .create(
+      'User',
+      {
+        id: 'u1',
+        name: 'user1',
+      },
+      {
+        email: 'test@example.org',
+        password: '1234',
+      },
+    )
     .then(user => user.toJson())
   user2 = await factory
-    .create('User', {
-      id: 'u2',
-      name: 'user2',
-      email: 'test2@example.org',
-      password: '1234',
-    })
+    .create(
+      'User',
+      {
+        id: 'u2',
+        name: 'user2',
+      },
+      {
+        email: 'test2@example.org',
+        password: '1234',
+      },
+    )
     .then(user => user.toJson())
 
   authenticatedUser = user1

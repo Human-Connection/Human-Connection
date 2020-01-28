@@ -147,55 +147,90 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       louie,
       dagobert,
     ] = await Promise.all([
-      factory.create('User', {
-        id: 'u1',
-        name: 'Peter Lustig',
-        slug: 'peter-lustig',
-        role: 'admin',
-        email: 'admin@example.org',
-      }),
-      factory.create('User', {
-        id: 'u2',
-        name: 'Bob der Baumeister',
-        slug: 'bob-der-baumeister',
-        role: 'moderator',
-        email: 'moderator@example.org',
-      }),
-      factory.create('User', {
-        id: 'u3',
-        name: 'Jenny Rostock',
-        slug: 'jenny-rostock',
-        role: 'user',
-        email: 'user@example.org',
-      }),
-      factory.create('User', {
-        id: 'u4',
-        name: 'Huey',
-        slug: 'huey',
-        role: 'user',
-        email: 'huey@example.org',
-      }),
-      factory.create('User', {
-        id: 'u5',
-        name: 'Dewey',
-        slug: 'dewey',
-        role: 'user',
-        email: 'dewey@example.org',
-      }),
-      factory.create('User', {
-        id: 'u6',
-        name: 'Louie',
-        slug: 'louie',
-        role: 'user',
-        email: 'louie@example.org',
-      }),
-      factory.create('User', {
-        id: 'u7',
-        name: 'Dagobert',
-        slug: 'dagobert',
-        role: 'user',
-        email: 'dagobert@example.org',
-      }),
+      factory.create(
+        'User',
+        {
+          id: 'u1',
+          name: 'Peter Lustig',
+          slug: 'peter-lustig',
+          role: 'admin',
+        },
+        {
+          email: 'admin@example.org',
+        },
+      ),
+      factory.create(
+        'User',
+        {
+          id: 'u2',
+          name: 'Bob der Baumeister',
+          slug: 'bob-der-baumeister',
+          role: 'moderator',
+        },
+        {
+          email: 'moderator@example.org',
+        },
+      ),
+      factory.create(
+        'User',
+        {
+          id: 'u3',
+          name: 'Jenny Rostock',
+          slug: 'jenny-rostock',
+          role: 'user',
+        },
+        {
+          email: 'user@example.org',
+        },
+      ),
+      factory.create(
+        'User',
+        {
+          id: 'u4',
+          name: 'Huey',
+          slug: 'huey',
+          role: 'user',
+        },
+        {
+          email: 'huey@example.org',
+        },
+      ),
+      factory.create(
+        'User',
+        {
+          id: 'u5',
+          name: 'Dewey',
+          slug: 'dewey',
+          role: 'user',
+        },
+        {
+          email: 'dewey@example.org',
+        },
+      ),
+      factory.create(
+        'User',
+        {
+          id: 'u6',
+          name: 'Louie',
+          slug: 'louie',
+          role: 'user',
+        },
+        {
+          email: 'louie@example.org',
+        },
+      ),
+      factory.create(
+        'User',
+        {
+          id: 'u7',
+          name: 'Dagobert',
+          slug: 'dagobert',
+          role: 'user',
+        },
+        {
+          email: 'dagobert@example.org',
+        },
+      ),
     ])
 
     await Promise.all([

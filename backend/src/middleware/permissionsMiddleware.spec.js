@@ -34,28 +34,48 @@ describe('authorization', () => {
   describe('given two existing users', () => {
     beforeEach(async () => {
       ;[owner, anotherRegularUser, administrator, moderator] = await Promise.all([
-        factory.create('User', {
-          email: 'owner@example.org',
-          name: 'Owner',
-          password: 'iamtheowner',
-        }),
-        factory.create('User', {
-          email: 'another.regular.user@example.org',
-          name: 'Another Regular User',
-          password: 'else',
-        }),
-        factory.create('User', {
-          email: 'admin@example.org',
-          name: 'Admin',
-          password: 'admin',
-          role: 'admin',
-        }),
-        factory.create('User', {
-          email: 'moderator@example.org',
-          name: 'Moderator',
-          password: 'moderator',
-          role: 'moderator',
-        }),
+        factory.create(
+          'User',
+          {
+            name: 'Owner',
+          },
+          {
+            email: 'owner@example.org',
+            password: 'iamtheowner',
+          },
+        ),
+        factory.create(
+          'User',
+          {
+            name: 'Another Regular User',
+          },
+          {
+            email: 'another.regular.user@example.org',
+            password: 'else',
+          },
+        ),
+        factory.create(
+          'User',
+          {
+            name: 'Admin',
+            role: 'admin',
+          },
+          {
+            email: 'admin@example.org',
+            password: 'admin',
+          },
+        ),
+        factory.create(
+          'User',
+          {
+            name: 'Moderator',
+            role: 'moderator',
+          },
+          {
+            email: 'moderator@example.org',
+            password: 'moderator',
+          },
+        ),
       ])
       variables = {}
     })

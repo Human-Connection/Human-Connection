@@ -31,10 +31,14 @@ beforeEach(async () => {
   const admin = await factory.create('User', {
     role: 'admin',
   })
-  await factory.create('User', {
-    email: 'someone@example.org',
-    password: '1234',
-  })
+  await factory.create(
+    'User',
+    {},
+    {
+      email: 'someone@example.org',
+      password: '1234',
+    },
+  )
   await factory.create('Category', {
     id: 'cat9',
     name: 'Democracy & Politics',

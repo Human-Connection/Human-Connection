@@ -19,11 +19,16 @@ beforeAll(async () => {
   // For performance reasons we do this only once
   const users = await Promise.all([
     factory.create('User', { id: 'u1', role: 'user' }),
-    factory.create('User', {
-      id: 'm1',
-      role: 'moderator',
-      password: '1234',
-    }),
+    factory.create(
+      'User',
+      {
+        id: 'm1',
+        role: 'moderator',
+      },
+      {
+        password: '1234',
+      },
+    ),
     factory.create('User', {
       id: 'u2',
       role: 'user',

@@ -63,7 +63,7 @@ describe('AddEmailAddress', () => {
 
   describe('authenticated', () => {
     beforeEach(async () => {
-      user = await factory.create('User', { id: '567', email: 'user@example.org' })
+      user = await factory.create('User', { id: '567' }, { email: 'user@example.org' })
       authenticatedUser = await user.toJson()
     })
 
@@ -128,7 +128,7 @@ describe('AddEmailAddress', () => {
 
       describe('but if another user owns an `EmailAddress` already with that email', () => {
         it('throws UserInputError because of unique constraints', async () => {
-          await factory.create('User', { email: 'new-email@example.org' })
+          await factory.create('User', {}, { email: 'new-email@example.org' })
           await expect(mutate({ mutation, variables })).resolves.toMatchObject({
             data: { AddEmailAddress: null },
             errors: [{ message: 'A user account with this email already exists.' }],
@@ -169,7 +169,7 @@ describe('VerifyEmailAddress', () => {
 
   describe('authenticated', () => {
     beforeEach(async () => {
-      user = await factory.create('User', { id: '567', email: 'user@example.org' })
+      user = await factory.create('User', { id: '567' }, { email: 'user@example.org' })
       authenticatedUser = await user.toJson()
     })
 

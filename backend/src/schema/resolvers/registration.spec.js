@@ -1,4 +1,5 @@
 import Factory from '../../factories'
+import { Factory as RosieFactory } from 'rosie'
 import { gql } from '../../helpers/jest'
 import { getDriver, getNeode } from '../../db/neo4j'
 import createServer from '../../server'
@@ -58,11 +59,16 @@ describe('Signup', () => {
 
     describe('as admin', () => {
       beforeEach(async () => {
-        const admin = await factory.create('User', {
-          role: 'admin',
-          email: 'admin@example.org',
-          password: '1234',
-        })
+        const admin = await factory.create(
+          'User',
+          {
+            role: 'admin',
+          },
+          {
+            email: 'admin@example.org',
+            password: '1234',
+          },
+        )
         authenticatedUser = await admin.toJson()
       })
 
@@ -90,9 +96,9 @@ describe('Signup', () => {
         })
 
         describe('if the email already exists', () => {
-          let email
+          let emailAddress
           beforeEach(async () => {
-            email = await factory.create('EmailAddress', {
+            emailAddress = await factory.create('EmailAddress', {
               email: 'someuser@example.org',
               verifiedAt: null,
             })
@@ -100,7 +106,8 @@ describe('Signup', () => {
 
           describe('and the user has registered already', () => {
             beforeEach(async () => {
-              await factory.create('User', { email })
+              const user = await RosieFactory.build('userWithoutEmailAddress')
+              await emailAddress.relateTo(user, 'belongsTo')
             })
 
             it('throws UserInputError error because of unique constraint violation', async () => {

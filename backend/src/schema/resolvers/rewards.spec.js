@@ -31,22 +31,37 @@ describe('rewards', () => {
   })
 
   beforeEach(async () => {
-    regularUser = await factory.create('User', {
-      id: 'regular-user-id',
-      role: 'user',
-      email: 'user@example.org',
-      password: '1234',
-    })
-    moderator = await factory.create('User', {
-      id: 'moderator-id',
-      role: 'moderator',
-      email: 'moderator@example.org',
-    })
-    administrator = await factory.create('User', {
-      id: 'admin-id',
-      role: 'admin',
-      email: 'admin@example.org',
-    })
+    regularUser = await factory.create(
+      'User',
+      {
+        id: 'regular-user-id',
+        role: 'user',
+      },
+      {
+        email: 'user@example.org',
+        password: '1234',
+      },
+    )
+    moderator = await factory.create(
+      'User',
+      {
+        id: 'moderator-id',
+        role: 'moderator',
+      },
+      {
+        email: 'moderator@example.org',
+      },
+    )
+    administrator = await factory.create(
+      'User',
+      {
+        id: 'admin-id',
+        role: 'admin',
+      },
+      {
+        email: 'admin@example.org',
+      },
+    )
     badge = await factory.create('Badge', {
       id: 'indiegogo_en_rhino',
       type: 'crowdfunding',
@@ -172,10 +187,15 @@ describe('rewards', () => {
           },
           errors: undefined,
         }
-        await factory.create('User', {
-          id: 'regular-user-2-id',
-          email: 'regular2@email.com',
-        })
+        await factory.create(
+          'User',
+          {
+            id: 'regular-user-2-id',
+          },
+          {
+            email: 'regular2@email.com',
+          },
+        )
         await mutate({
           mutation: rewardMutation,
           variables,
