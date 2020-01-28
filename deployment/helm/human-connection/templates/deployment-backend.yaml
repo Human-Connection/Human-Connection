@@ -31,7 +31,7 @@ spec:
             name: {{ .Release.Name }}-secrets
         image: humanconnection/nitro-backend:latest
         imagePullPolicy: {{ .Values.pullPolicy }}
-        name: nitro-backend
+        name: backend
         ports:
         - containerPort: 4000
           protocol: TCP
