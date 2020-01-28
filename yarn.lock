@@ -3212,7 +3212,6 @@ extsprintf@^1.2.0:
 
 faker@Marak/faker.js#master:
   version "4.1.0"
-  uid "3b2fa4aebccee52ae1bafc15d575061fb30c3cf1"
   resolved "https://codeload.github.com/Marak/faker.js/tar.gz/3b2fa4aebccee52ae1bafc15d575061fb30c3cf1"
 
 fast-deep-equal@^2.0.1:
@@ -5885,6 +5884,11 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
   dependencies:
     hash-base "^3.0.0"
     inherits "^2.0.1"
+
+rosie@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/rosie/-/rosie-2.0.1.tgz#c250c4787ce450b72aa9eff26509f68589814fa2"
+  integrity sha1-wlDEeHzkULcqqe/yZQn2hYmBT6I=
 
 rsvp@^4.8.4:
   version "4.8.5"
