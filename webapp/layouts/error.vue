@@ -1,6 +1,6 @@
 <template>
   <div class="error-container">
-    <base-icon class="error-icon" name="exclamation-circle" />
+    <img class="error-image" :src="image" />
     <br />
     <span v-if="error.message === 'This page could not be found'" class="error-message">
       {{ $t('error-pages.default') }}
@@ -14,6 +14,20 @@
 <script>
 export default {
   props: ['error'],
+  computed: {
+    message() {
+      const mapping = {
+        403: 'error-pages.403-default',
+        404: 'error-pages.404-default',
+        500: 'error-pages.500-default',
+        503: 'error-pages.503-default',
+      }
+      return this.error.key || mapping[this.error.statusCode] || 'error-pages.default'
+    },
+    image() {
+      return `/img/svg/errors/error${this.error.statusCode ? this.error.statusCode : '500'}.svg`
+    },
+  },
 }
 </script>
 <style lang="scss">
@@ -27,8 +41,10 @@ export default {
   color: $text-color-softer;
   margin: $space-base;
 }
-.error-icon {
-  font-size: $font-size-xxx-large;
-  color: $text-color-softer;
+.error-image {
+  width: 70%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 </style>
