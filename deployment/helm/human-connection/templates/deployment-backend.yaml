@@ -1,7 +1,8 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name:  {{ .Release.Name }}-backend
+  namespace: human-connection
 spec:
   replicas: 1
   minReadySeconds: 15
@@ -23,23 +24,33 @@ spec:
         human-connection.org/selector: deployment-backend
     spec:
       containers:
-      - name: backend
-        image: humanconnection/nitro-backend:latest
-        imagePullPolicy: {{ .Values.pullPolicy }}
-        ports:
-        - containerPort: 4000
-        envFrom:
+      - envFrom:
         - configMapRef:
             name: {{ .Release.Name }}-configmap
         - secretRef:
             name: {{ .Release.Name }}-secrets
-        # volumeMounts:
-        #   - mountPath: /nitro-backend/public/uploads
-        #     name: uploads
-      # volumes:
-      # - name: uploads
-      #   persistentVolumeClaim:
-      #     claimName: uploads-claim
+        image: humanconnection/nitro-backend:latest
+        imagePullPolicy: {{ .Values.pullPolicy }}
+        name: nitro-backend
+        ports:
+        - containerPort: 4000
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+          - mountPath: /nitro-backend/public/uploads
+            name: uploads
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: uploads
+        persistentVolumeClaim:
+          claimName: uploads-claim
+      dnsPolicy: ClusterFirst
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
 status: {}

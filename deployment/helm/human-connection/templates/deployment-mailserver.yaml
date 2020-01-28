@@ -1,8 +1,9 @@
 {{- if .Values.developmentMailserverDomain }}
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name:  {{ .Release.Name }}-mailserver
+  namespace: human-connection
 spec:
   replicas: 1
   minReadySeconds: 15

@@ -1,7 +1,8 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name:  {{ .Release.Name }}-neo4j
+  namespace: human-connection
 spec:
   replicas: 1
   strategy:
@@ -44,14 +45,12 @@ spec:
         envFrom:
         - configMapRef:
             name: {{ .Release.Name }}-configmap
-        - secretRef:
-            name: {{ .Release.Name }}-secrets
-        # volumeMounts:
-        #   - mountPath: /data/
-        #     name: neo4j-data
-      # volumes:
-      # - name: neo4j-data
-      #   persistentVolumeClaim:
-      #     claimName: neo4j-data-claim
+        volumeMounts:
+          - mountPath: /data/
+            name: neo4j-data
+      volumes:
+      - name: neo4j-data
+        persistentVolumeClaim:
+          claimName: neo4j-data-claim
       restartPolicy: Always
       terminationGracePeriodSeconds: 30

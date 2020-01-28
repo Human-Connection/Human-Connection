@@ -1,20 +1,20 @@
-domain: nitro-staging.human-connection.org
+domain: develop.human-connection.org
 commit: 889a7cdd24dda04a139b2b77d626e984d6db6781
 pullPolicy: Always
 
 # configs
-developmentMailserverDomain: "helm-nitro-mailserver.human-connection.org"
-humanConnectionDomain: "helm-staging.human-connection.org"
-supportEmail: "developer@human-connection.org"
-letsencryptIssuer: "letsencrypt-staging"
+developmentMailserverDomain: "mailserver.human-connection.org"
+humanConnectionDomain: "develop.human-connection.org"
+supportEmail: "devcom@human-connection.org"
+letsencryptIssuer: "letsencrypt-prod"
 smtpHost: "mailserver.human-connection"
 smtpPort: "25"
 smtpUsername:
 smtpPassword:
-sentryDsnWebapp:
-sentryDsnBackend:
+sentryDsnWebapp: "https://f6a31aa8f406426187cb45ae6dacdbeb@nitro-sentry.human-connection.org/7"
+sentryDsnBackend: "https://44e0f3fb04894fbfbcf898f2bcf652de@nitro-sentry.human-connection.org/6"
 neo4jResourceRequestsMemory: "1G"
-neo4jResourceLimitsMemory: "1G"
+neo4jResourceLimitsMemory: "2G"
 neo4jConfig:
   apoc_import_file_enabled: "true"
   dbms_memory_pagecache_size: "490M"
@@ -22,10 +22,6 @@ neo4jConfig:
   dbms_memory_heap_initial__size: "500M"
 
 # secrets
-jwtSecret: b/&&7b78BF&fv/Vd
-privateKeyPassphrase: a7dsf78sadg87ad87sfagsadg78
-mapboxToken: pk.eyJ1IjoiaHVtYW4tY29ubmVjdGlvbiIsImEiOiJjajl0cnBubGoweTVlM3VwZ2lzNTNud3ZtIn0.KZ8KK9l70omjXbEkkbHGsQ
-mongodbUsername:
-mongodbPassword:
-neo4jUsername: neo4j
-neo4jPassword: neo4j
+jwtSecret: "Yi8mJjdiNzhCRiZmdi9WZA=="
+privateKeyPassphrase: "YTdkc2Y3OHNhZGc4N2FkODdzZmFnc2FkZzc4"
+mapboxToken: "cGsuZXlKMUlqb2lhSFZ0WVc0dFkyOXVibVZqZEdsdmJpSXNJbUVpT2lKamFqbDBjbkJ1Ykdvd2VUVmxNM1Z3WjJsek5UTnVkM1p0SW4wLktaOEtLOWw3MG9talhiRWtrYkhHc1E="
