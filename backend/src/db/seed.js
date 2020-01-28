@@ -933,334 +933,140 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       trollingComment.update({ disabled: true, updatedAt: new Date().toISOString(), closed: true }),
     ])
 
-    await Promise.all(
-      [...Array(30).keys()].map(i => {
-        return Factory.build('user')
-      }),
-    )
+    await Factory.buildList('user', 30)
 
-    await Promise.all(
-      [...Array(30).keys()].map(() => {
-        return Factory.build(
-          'post',
-          {
-            image: faker.image.unsplash.objects(),
-          },
-          {
-            categoryIds: ['cat1'],
-            author: jennyRostock,
-          },
-        )
-      }),
-    )
+    await Factory.buildList( 'post', 30, {
+      image: faker.image.unsplash.objects(),
+    }, {
+      categoryIds: ['cat1'],
+      author: jennyRostock,
+    })
 
-    await Promise.all(
-      [...Array(6).keys()].map(() => {
-        return Factory.build(
-          'comment',
-          {},
-          {
-            author: jennyRostock,
-            postId: 'p2',
-          },
-        )
-      }),
-    )
+    await Factory.buildList('comment', 6, {}, {
+      author: jennyRostock,
+      postId: 'p2',
+    })
 
-    await Promise.all(
-      [...Array(4).keys()].map(() => {
-        return Factory.build(
-          'comment',
-          {},
-          {
-            author: jennyRostock,
-            postId: 'p15',
-          },
-        )
-      }),
-    )
+    await Factory.buildList('comment', 4, {}, {
+      author: jennyRostock,
+      postId: 'p15',
+    })
 
-    await Promise.all(
-      [...Array(2).keys()].map(() => {
-        return Factory.build(
-          'comment',
-          {},
-          {
-            author: jennyRostock,
-            postId: 'p4',
-          },
-        )
-      }),
-    )
+    await Factory.buildList( 'comment', 2, {}, {
+      author: jennyRostock,
+      postId: 'p4',
+    })
 
-    await Promise.all(
-      [...Array(21).keys()].map(() => {
-        return Factory.build(
-          'post',
-          {
-            image: faker.image.unsplash.buildings(),
-          },
-          {
-            author: peterLustig,
-          },
-        )
-      }),
-    )
+    await Factory.buildList('post', 21, {
+      image: faker.image.unsplash.buildings(),
+    }, {
+      author: peterLustig,
+    })
 
-    await Promise.all(
-      [...Array(3).keys()].map(() => {
-        return Factory.build(
-          'comment',
-          {},
-          {
-            author: peterLustig,
-            postId: 'p4',
-          },
-        )
-      }),
-    )
+    await Factory.buildList('comment', 3, {}, {
+      author: peterLustig,
+      postId: 'p4',
+    })
 
-    await Promise.all(
-      [...Array(5).keys()].map(() => {
-        return Factory.build(
-          'comment',
-          {},
-          {
-            author: peterLustig,
-            postId: 'p14',
-          },
-        )
-      }),
-    )
+    await Factory.buildList('comment', 5, {}, {
+      author: peterLustig,
+      postId: 'p14',
+    })
 
-    await Promise.all(
-      [...Array(6).keys()].map(() => {
-        return Factory.build(
-          'comment',
-          {},
-          {
-            author: peterLustig,
-            postId: 'p0',
-          },
-        )
-      }),
-    )
+    await Factory.buildList('comment', 6, {}, {
+      author: peterLustig,
+      postId: 'p0',
+    })
 
-    await Promise.all(
-      [...Array(11).keys()].map(() => {
-        return Factory.build(
-          'post',
-          {
-            image: faker.image.unsplash.food(),
-          },
-          {
-            author: dewey,
-          },
-        )
-      }),
-    )
+    await Factory.buildList( 'post', 11, {
+      image: faker.image.unsplash.food(),
+    }, {
+      author: dewey,
+    })
 
-    await Promise.all(
-      [...Array(7).keys()].map(() => {
-        return Factory.build(
-          'comment',
-          {},
-          {
-            author: dewey,
-            postId: 'p2',
-          },
-        )
-      }),
-    )
+    await Factory.buildList( 'comment', 7, {}, {
+      author: dewey,
+      postId: 'p2',
+    })
 
-    await Promise.all(
-      [...Array(5).keys()].map(() => {
-        return Factory.build(
-          'comment',
-          {},
-          {
-            author: dewey,
-            postId: 'p6',
-          },
-        )
-      }),
-    )
+    await Factory.buildList( 'comment', 5, {}, {
+      author: dewey,
+      postId: 'p6',
+    })
 
-    await Promise.all(
-      [...Array(2).keys()].map(() => {
-        return Factory.build(
-          'comment',
-          {},
-          {
-            author: dewey,
-            postId: 'p9',
-          },
-        )
-      }),
-    )
+    await Factory.buildList( 'comment', 2, {}, {
+      author: dewey,
+      postId: 'p9',
+    })
 
-    await Promise.all(
-      [...Array(16).keys()].map(() => {
-        return Factory.build(
-          'post',
-          {
-            image: faker.image.unsplash.technology(),
-          },
-          {
-            author: louie,
-          },
-        )
-      }),
-    )
+    await Factory.buildList('post', 16, {
+      image: faker.image.unsplash.technology(),
+    }, {
+      author: louie,
+    })
 
-    await Promise.all(
-      [...Array(4).keys()].map(() => {
-        return Factory.build(
-          'comment',
-          {},
-          {
-            postId: 'p1',
-            author: louie,
-          },
-        )
-      }),
-    )
+    await Factory.buildList('comment', 4, {}, {
+      postId: 'p1',
+      author: louie,
+    })
 
-    await Promise.all(
-      [...Array(8).keys()].map(() => {
-        return Factory.build(
-          'comment',
-          {},
-          {
-            author: louie,
-            postId: 'p10',
-          },
-        )
-      }),
-    )
+    await Factory.buildList('comment', 8, {}, {
+      author: louie,
+      postId: 'p10',
+    })
 
-    await Promise.all(
-      [...Array(5).keys()].map(() => {
-        return Factory.build(
-          'comment',
-          {},
-          {
-            author: louie,
-            postId: 'p13',
-          },
-        )
-      }),
-    )
+    await Factory.buildList('comment', 5, {}, {
+      author: louie,
+      postId: 'p13',
+    })
 
-    await Promise.all(
-      [...Array(45).keys()].map(() => {
-        return Factory.build(
-          'post',
-          {
-            image: faker.image.unsplash.people(),
-          },
-          {
-            author: bobDerBaumeister,
-          },
-        )
-      }),
-    )
+    await Factory.buildList('post', 45, {
+      image: faker.image.unsplash.people(),
+    }, {
+      author: bobDerBaumeister,
+    })
 
-    await Promise.all(
-      [...Array(2).keys()].map(() => {
-        return Factory.build(
-          'comment',
-          {},
-          {
-            author: bobDerBaumeister,
-            postId: 'p2',
-          },
-        )
-      }),
-    )
+    await Factory.buildList('comment', 2, {}, {
+      author: bobDerBaumeister,
+      postId: 'p2',
+    })
 
-    await Promise.all(
-      [...Array(3).keys()].map(() => {
-        return Factory.build(
-          'comment',
-          {},
-          {
-            author: bobDerBaumeister,
-            postId: 'p12',
-          },
-        )
-      }),
-    )
+    await Factory.buildList( 'comment', 3, {}, {
+      author: bobDerBaumeister,
+      postId: 'p12',
+    })
 
-    await Promise.all(
-      [...Array(7).keys()].map(() => {
-        return Factory.build(
-          'comment',
-          {},
-          {
-            author: bobDerBaumeister,
-            postId: 'p13',
-          },
-        )
-      }),
-    )
+    await Factory.buildList( 'comment', 7, {}, {
+      author: bobDerBaumeister,
+      postId: 'p13',
+    })
 
-    await Promise.all(
-      [...Array(8).keys()].map(() => {
-        return Factory.build(
-          'post',
-          {
-            image: faker.image.unsplash.nature(),
-          },
-          {
-            author: huey,
-          },
-        )
-      }),
-    )
+    await Factory.buildList( 'post', 8, {
+      image: faker.image.unsplash.nature(),
+    }, {
+      author: huey,
+    })
 
-    await Promise.all(
-      [...Array(6).keys()].map(() => {
-        return Factory.build(
-          'comment',
-          {},
-          {
-            author: huey,
-            postId: 'p0',
-          },
-        )
-      }),
-    )
+    await Factory.buildList('comment', 6, {}, {
+      author: huey,
+      postId: 'p0',
+    })
 
-    await Promise.all(
-      [...Array(8).keys()].map(() => {
-        return Factory.build(
-          'comment',
-          {},
-          {
-            author: huey,
-            postId: 'p13',
-          },
-        )
-      }),
-    )
+    await Factory.buildList( 'comment', 8, {}, {
+      author: huey,
+      postId: 'p13',
+    })
 
-    await Promise.all(
-      [...Array(9).keys()].map(() => {
-        return Factory.build(
-          'comment',
-          {},
-          {
-            author: huey,
-            postId: 'p15',
-          },
-        )
-      }),
-    )
+    await Factory.buildList('comment', 9, {}, {
+      author: huey,
+      postId: 'p15',
+    })
 
     await Factory.build('donations')
     /* eslint-disable-next-line no-console */
     console.log('Seeded Data...')
+    await driver.close()
+    await neode.close()
     process.exit(0)
   } catch (err) {
     /* eslint-disable-next-line no-console */
