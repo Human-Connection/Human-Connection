@@ -1,10 +1,9 @@
 import { gql } from '../../../helpers/jest'
-import Factory from '../../../factories'
+import Factory, { cleanDatabase } from '../../../factories'
 import { getNeode, getDriver } from '../../../db/neo4j'
 import { createTestClient } from 'apollo-server-testing'
 import createServer from '../../../server'
 
-const factory = Factory()
 const neode = getNeode()
 const driver = getDriver()
 let authenticatedUser, mutate, variables
@@ -107,7 +106,7 @@ beforeEach(() => {
 })
 
 afterEach(() => {
-  factory.cleanDatabase()
+  cleanDatabase()
 })
 
 describe('userMiddleware', () => {
@@ -182,7 +181,7 @@ describe('userMiddleware', () => {
           },
         },
       ]
-      user = await factory.create('User', {
+      user = await Factory.build('user', {
         id: 'updating-user',
       })
       authenticatedUser = await user.toJson()

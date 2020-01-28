@@ -1,11 +1,10 @@
 import { gql } from '../../helpers/jest'
-import Factory from '../../factories'
+import { cleanDatabase } from '../../factories'
 import { createTestClient } from 'apollo-server-testing'
 import { getNeode, getDriver } from '../../db/neo4j'
 import createServer from '../../server'
 
 let server, query, mutate, notifiedUser, authenticatedUser
-const factory = Factory()
 const driver = getDriver()
 const neode = getNeode()
 const categoryIds = ['cat9']
@@ -36,7 +35,7 @@ const createCommentMutation = gql`
 `
 
 beforeAll(async () => {
-  await factory.cleanDatabase()
+  await cleanDatabase()
   const createServerResult = createServer({
     context: () => {
       return {
@@ -73,7 +72,7 @@ beforeEach(async () => {
 })
 
 afterEach(async () => {
-  await factory.cleanDatabase()
+  await cleanDatabase()
 })
 
 describe('notifications', () => {

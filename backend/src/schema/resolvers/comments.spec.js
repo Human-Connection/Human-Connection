@@ -1,4 +1,4 @@
-import Factory from '../../factories'
+import Factory, { cleanDatabase } from '../../factories'
 import { gql } from '../../helpers/jest'
 import { createTestClient } from 'apollo-server-testing'
 import createServer from '../../server'
@@ -6,12 +6,11 @@ import { getNeode, getDriver } from '../../db/neo4j'
 
 const driver = getDriver()
 const neode = getNeode()
-const factory = Factory()
 
 let variables, mutate, authenticatedUser, commentAuthor, newlyCreatedComment
 
 beforeAll(async () => {
-  await factory.cleanDatabase()
+  await cleanDatabase()
   const { server } = createServer({
     context: () => {
       return {
@@ -33,7 +32,7 @@ beforeEach(async () => {
 })
 
 afterEach(async () => {
-  await factory.cleanDatabase()
+  await cleanDatabase()
 })
 
 const createCommentMutation = gql`
@@ -48,9 +47,9 @@ const createCommentMutation = gql`
   }
 `
 const setupPostAndComment = async () => {
-  commentAuthor = await factory.create('User')
-  await factory.create(
-    'Post',
+  commentAuthor = await Factory.build('user')
+  await Factory.build(
+    'post',
     {
       id: 'p1',
       content: 'Post to be commented',
@@ -59,8 +58,8 @@ const setupPostAndComment = async () => {
       categoryIds: ['cat9'],
     },
   )
-  newlyCreatedComment = await factory.create(
-    'Comment',
+  newlyCreatedComment = await Factory.build(
+    'comment',
     {
       id: 'c456',
       content: 'Comment to be deleted',
@@ -98,7 +97,7 @@ describe('CreateComment', () => {
 
     describe('given a post', () => {
       beforeEach(async () => {
-        await factory.create('Post', { id: 'p1' }, { categoryIds: ['cat9'] })
+        await Factory.build('post', { id: 'p1' }, { categoryIds: ['cat9'] })
         variables = {
           ...variables,
           postId: 'p1',
@@ -151,7 +150,7 @@ describe('UpdateComment', () => {
 
     describe('authenticated but not the author', () => {
       beforeEach(async () => {
-        const randomGuy = await factory.create('User')
+        const randomGuy = await Factory.build('user')
         authenticatedUser = await randomGuy.toJson()
       })
 
@@ -243,7 +242,7 @@ describe('DeleteComment', () => {
 
     describe('authenticated but not the author', () => {
       beforeEach(async () => {
-        const randomGuy = await factory.create('User')
+        const randomGuy = await Factory.build('user')
         authenticatedUser = await randomGuy.toJson()
       })
 

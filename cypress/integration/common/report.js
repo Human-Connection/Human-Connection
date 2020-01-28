@@ -30,7 +30,7 @@ Given("I see David Irving's post on the post page", page => {
 })
 
 Given('I am logged in with a {string} role', role => {
-  cy.factory().create('User', {
+  cy.factory().build('user', {
     termsAndConditionsAgreedVersion: VERSION,
     role
   }, {
@@ -128,7 +128,7 @@ Given('somebody reported the following posts:', table => {
       password: '1234'
     }
     cy.factory()
-      .create('User', {}, submitter)
+      .build('user', {}, submitter)
       .authenticateAs(submitter)
       .mutate(gql`mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
         fileReport(resourceId: $resourceId, reasonCategory: $reasonCategory, reasonDescription: $reasonDescription) {
@@ -167,8 +167,9 @@ Then('I can visit the post page', () => {
 
 When("they have a post someone has reported", () => {
   cy.factory()
-    .create("Post", {
-      authorId: 'annnoying-user',
+    .build("post", {
       title,
+    }, {
+      authorId: 'annnoying-user',
     });
 })

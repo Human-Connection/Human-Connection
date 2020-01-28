@@ -12,7 +12,6 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
 ;(async function() {
   let authenticatedUser = null
   const driver = getDriver()
-  const factory = Factory()
   const neode = getNeode()
 
   try {
@@ -28,7 +27,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
     const { mutate } = createTestClient(server)
 
     const [Hamburg, Berlin, Germany, Paris, France] = await Promise.all([
-      factory.create('Location', {
+      Factory.build('location', {
         id: 'region.5127278006398860',
         name: 'Hamburg',
         type: 'region',
@@ -44,7 +43,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         namePL: 'Hamburg',
         nameRU: 'Гамбург',
       }),
-      factory.create('Location', {
+      Factory.build('location', {
         id: 'region.14880313158564380',
         type: 'region',
         name: 'Berlin',
@@ -60,7 +59,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         namePL: 'Berlin',
         nameRU: 'Берлин',
       }),
-      factory.create('Location', {
+      Factory.build('location', {
         id: 'country.10743216036480410',
         name: 'Germany',
         type: 'country',
@@ -74,7 +73,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         nameEN: 'Germany',
         nameRU: 'Германия',
       }),
-      factory.create('Location', {
+      Factory.build('location', {
         id: 'region.9397217726497330',
         name: 'Paris',
         type: 'region',
@@ -90,7 +89,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         namePL: 'Paryż',
         nameRU: 'Париж',
       }),
-      factory.create('Location', {
+      Factory.build('location', {
         id: 'country.9759535382641660',
         name: 'France',
         type: 'country',
@@ -112,27 +111,27 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
     ])
 
     const [racoon, rabbit, wolf, bear, turtle, rhino] = await Promise.all([
-      factory.create('Badge', {
+      Factory.build('badge', {
         id: 'indiegogo_en_racoon',
         icon: '/img/badges/indiegogo_en_racoon.svg',
       }),
-      factory.create('Badge', {
+      Factory.build('badge', {
         id: 'indiegogo_en_rabbit',
         icon: '/img/badges/indiegogo_en_rabbit.svg',
       }),
-      factory.create('Badge', {
+      Factory.build('badge', {
         id: 'indiegogo_en_wolf',
         icon: '/img/badges/indiegogo_en_wolf.svg',
       }),
-      factory.create('Badge', {
+      Factory.build('badge', {
         id: 'indiegogo_en_bear',
         icon: '/img/badges/indiegogo_en_bear.svg',
       }),
-      factory.create('Badge', {
+      Factory.build('badge', {
         id: 'indiegogo_en_turtle',
         icon: '/img/badges/indiegogo_en_turtle.svg',
       }),
-      factory.create('Badge', {
+      Factory.build('badge', {
         id: 'indiegogo_en_rhino',
         icon: '/img/badges/indiegogo_en_rhino.svg',
       }),
@@ -147,8 +146,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       louie,
       dagobert,
     ] = await Promise.all([
-      factory.create(
-        'User',
+      Factory.build(
+        'user',
         {
           id: 'u1',
           name: 'Peter Lustig',
@@ -159,8 +158,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           email: 'admin@example.org',
         },
       ),
-      factory.create(
-        'User',
+      Factory.build(
+        'user',
         {
           id: 'u2',
           name: 'Bob der Baumeister',
@@ -171,8 +170,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           email: 'moderator@example.org',
         },
       ),
-      factory.create(
-        'User',
+      Factory.build(
+        'user',
         {
           id: 'u3',
           name: 'Jenny Rostock',
@@ -183,8 +182,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           email: 'user@example.org',
         },
       ),
-      factory.create(
-        'User',
+      Factory.build(
+        'user',
         {
           id: 'u4',
           name: 'Huey',
@@ -195,8 +194,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           email: 'huey@example.org',
         },
       ),
-      factory.create(
-        'User',
+      Factory.build(
+        'user',
         {
           id: 'u5',
           name: 'Dewey',
@@ -207,8 +206,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           email: 'dewey@example.org',
         },
       ),
-      factory.create(
-        'User',
+      Factory.build(
+        'user',
         {
           id: 'u6',
           name: 'Louie',
@@ -219,8 +218,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           email: 'louie@example.org',
         },
       ),
-      factory.create(
-        'User',
+      Factory.build(
+        'user',
         {
           id: 'u7',
           name: 'Dagobert',
@@ -271,97 +270,97 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
     ])
 
     await Promise.all([
-      factory.create('Category', {
+      Factory.build('category', {
         id: 'cat1',
         name: 'Just For Fun',
         slug: 'just-for-fun',
         icon: 'smile',
       }),
-      factory.create('Category', {
+      Factory.build('category', {
         id: 'cat2',
         name: 'Happiness & Values',
         slug: 'happiness-values',
         icon: 'heart-o',
       }),
-      factory.create('Category', {
+      Factory.build('category', {
         id: 'cat3',
         name: 'Health & Wellbeing',
         slug: 'health-wellbeing',
         icon: 'medkit',
       }),
-      factory.create('Category', {
+      Factory.build('category', {
         id: 'cat4',
         name: 'Environment & Nature',
         slug: 'environment-nature',
         icon: 'tree',
       }),
-      factory.create('Category', {
+      Factory.build('category', {
         id: 'cat5',
         name: 'Animal Protection',
         slug: 'animal-protection',
         icon: 'paw',
       }),
-      factory.create('Category', {
+      Factory.build('category', {
         id: 'cat6',
         name: 'Human Rights & Justice',
         slug: 'human-rights-justice',
         icon: 'balance-scale',
       }),
-      factory.create('Category', {
+      Factory.build('category', {
         id: 'cat7',
         name: 'Education & Sciences',
         slug: 'education-sciences',
         icon: 'graduation-cap',
       }),
-      factory.create('Category', {
+      Factory.build('category', {
         id: 'cat8',
         name: 'Cooperation & Development',
         slug: 'cooperation-development',
         icon: 'users',
       }),
-      factory.create('Category', {
+      Factory.build('category', {
         id: 'cat9',
         name: 'Democracy & Politics',
         slug: 'democracy-politics',
         icon: 'university',
       }),
-      factory.create('Category', {
+      Factory.build('category', {
         id: 'cat10',
         name: 'Economy & Finances',
         slug: 'economy-finances',
         icon: 'money',
       }),
-      factory.create('Category', {
+      Factory.build('category', {
         id: 'cat11',
         name: 'Energy & Technology',
         slug: 'energy-technology',
         icon: 'flash',
       }),
-      factory.create('Category', {
+      Factory.build('category', {
         id: 'cat12',
         name: 'IT, Internet & Data Privacy',
         slug: 'it-internet-data-privacy',
         icon: 'mouse-pointer',
       }),
-      factory.create('Category', {
+      Factory.build('category', {
         id: 'cat13',
         name: 'Art, Culture & Sport',
         slug: 'art-culture-sport',
         icon: 'paint-brush',
       }),
-      factory.create('Category', {
+      Factory.build('category', {
         id: 'cat14',
         name: 'Freedom of Speech',
         slug: 'freedom-of-speech',
         icon: 'bullhorn',
       }),
-      factory.create('Category', {
+      Factory.build('category', {
         id: 'cat15',
         name: 'Consumption & Sustainability',
         slug: 'consumption-sustainability',
         icon: 'shopping-cart',
       }),
-      factory.create('Category', {
+      Factory.build('category', {
         id: 'cat16',
         name: 'Global Peace & Nonviolence',
         slug: 'global-peace-nonviolence',
@@ -370,23 +369,23 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
     ])
 
     const [environment, nature, democracy, freedom] = await Promise.all([
-      factory.create('Tag', {
+      Factory.build('tag', {
         id: 'Environment',
       }),
-      factory.create('Tag', {
+      Factory.build('tag', {
         id: 'Nature',
       }),
-      factory.create('Tag', {
+      Factory.build('tag', {
         id: 'Democracy',
       }),
-      factory.create('Tag', {
+      Factory.build('tag', {
         id: 'Freedom',
       }),
     ])
 
     const [p0, p1, p3, p4, p5, p6, p9, p10, p11, p13, p14, p15] = await Promise.all([
-      factory.create(
-        'Post',
+      Factory.build(
+        'post',
         {
           id: 'p0',
           language: sample(languages),
@@ -399,8 +398,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           author: peterLustig,
         },
       ),
-      factory.create(
-        'Post',
+      Factory.build(
+        'post',
         {
           id: 'p1',
           language: sample(languages),
@@ -412,8 +411,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           author: bobDerBaumeister,
         },
       ),
-      factory.create(
-        'Post',
+      Factory.build(
+        'post',
         {
           id: 'p3',
           language: sample(languages),
@@ -423,8 +422,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           author: huey,
         },
       ),
-      factory.create(
-        'Post',
+      Factory.build(
+        'post',
         {
           id: 'p4',
           language: sample(languages),
@@ -434,8 +433,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           author: dewey,
         },
       ),
-      factory.create(
-        'Post',
+      Factory.build(
+        'post',
         {
           id: 'p5',
           language: sample(languages),
@@ -445,8 +444,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           author: louie,
         },
       ),
-      factory.create(
-        'Post',
+      Factory.build(
+        'post',
         {
           id: 'p6',
           language: sample(languages),
@@ -458,8 +457,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           author: peterLustig,
         },
       ),
-      factory.create(
-        'Post',
+      Factory.build(
+        'post',
         {
           id: 'p9',
           language: sample(languages),
@@ -469,8 +468,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           author: huey,
         },
       ),
-      factory.create(
-        'Post',
+      Factory.build(
+        'post',
         {
           id: 'p10',
           imageBlurred: true,
@@ -480,8 +479,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           categoryIds: ['cat10'],
         },
       ),
-      factory.create(
-        'Post',
+      Factory.build(
+        'post',
         {
           id: 'p11',
           language: sample(languages),
@@ -493,8 +492,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           author: louie,
         },
       ),
-      factory.create(
-        'Post',
+      Factory.build(
+        'post',
         {
           id: 'p13',
           language: sample(languages),
@@ -504,8 +503,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           categoryIds: ['cat13'],
         },
       ),
-      factory.create(
-        'Post',
+      Factory.build(
+        'post',
         {
           id: 'p14',
           language: sample(languages),
@@ -517,8 +516,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           categoryIds: ['cat14'],
         },
       ),
-      factory.create(
-        'Post',
+      Factory.build(
+        'post',
         {
           id: 'p15',
           language: sample(languages),
@@ -649,8 +648,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
     authenticatedUser = null
 
     const comments = await Promise.all([
-      factory.create(
-        'Comment',
+      Factory.build(
+        'comment',
         {
           id: 'c1',
         },
@@ -659,8 +658,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           postId: 'p1',
         },
       ),
-      factory.create(
-        'Comment',
+      Factory.build(
+        'comment',
         {
           id: 'c2',
         },
@@ -669,8 +668,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           postId: 'p1',
         },
       ),
-      factory.create(
-        'Comment',
+      Factory.build(
+        'comment',
         {
           id: 'c3',
         },
@@ -679,8 +678,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           postId: 'p3',
         },
       ),
-      factory.create(
-        'Comment',
+      Factory.build(
+        'comment',
         {
           id: 'c5',
         },
@@ -689,8 +688,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           postId: 'p3',
         },
       ),
-      factory.create(
-        'Comment',
+      Factory.build(
+        'comment',
         {
           id: 'c6',
         },
@@ -699,8 +698,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           postId: 'p4',
         },
       ),
-      factory.create(
-        'Comment',
+      Factory.build(
+        'comment',
         {
           id: 'c7',
         },
@@ -709,8 +708,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           postId: 'p2',
         },
       ),
-      factory.create(
-        'Comment',
+      Factory.build(
+        'comment',
         {
           id: 'c8',
         },
@@ -719,8 +718,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           postId: 'p15',
         },
       ),
-      factory.create(
-        'Comment',
+      Factory.build(
+        'comment',
         {
           id: 'c9',
         },
@@ -729,8 +728,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           postId: 'p15',
         },
       ),
-      factory.create(
-        'Comment',
+      Factory.build(
+        'comment',
         {
           id: 'c10',
         },
@@ -739,8 +738,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           postId: 'p15',
         },
       ),
-      factory.create(
-        'Comment',
+      Factory.build(
+        'comment',
         {
           id: 'c11',
         },
@@ -749,8 +748,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           postId: 'p15',
         },
       ),
-      factory.create(
-        'Comment',
+      Factory.build(
+        'comment',
         {
           id: 'c12',
         },
@@ -825,10 +824,10 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
     ])
 
     const reports = await Promise.all([
-      factory.create('Report'),
-      factory.create('Report'),
-      factory.create('Report'),
-      factory.create('Report'),
+      Factory.build('report'),
+      Factory.build('report'),
+      Factory.build('report'),
+      Factory.build('report'),
     ])
     const reportAgainstDagobert = reports[0]
     const reportAgainstTrollingPost = reports[1]
@@ -936,14 +935,14 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
 
     await Promise.all(
       [...Array(30).keys()].map(i => {
-        return factory.create('User')
+        return Factory.build('user')
       }),
     )
 
     await Promise.all(
       [...Array(30).keys()].map(() => {
-        return factory.create(
-          'Post',
+        return Factory.build(
+          'post',
           {
             image: faker.image.unsplash.objects(),
           },
@@ -957,8 +956,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
 
     await Promise.all(
       [...Array(6).keys()].map(() => {
-        return factory.create(
-          'Comment',
+        return Factory.build(
+          'comment',
           {},
           {
             author: jennyRostock,
@@ -970,8 +969,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
 
     await Promise.all(
       [...Array(4).keys()].map(() => {
-        return factory.create(
-          'Comment',
+        return Factory.build(
+          'comment',
           {},
           {
             author: jennyRostock,
@@ -983,8 +982,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
 
     await Promise.all(
       [...Array(2).keys()].map(() => {
-        return factory.create(
-          'Comment',
+        return Factory.build(
+          'comment',
           {},
           {
             author: jennyRostock,
@@ -996,8 +995,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
 
     await Promise.all(
       [...Array(21).keys()].map(() => {
-        return factory.create(
-          'Post',
+        return Factory.build(
+          'post',
           {
             image: faker.image.unsplash.buildings(),
           },
@@ -1010,8 +1009,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
 
     await Promise.all(
       [...Array(3).keys()].map(() => {
-        return factory.create(
-          'Comment',
+        return Factory.build(
+          'comment',
           {},
           {
             author: peterLustig,
@@ -1023,8 +1022,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
 
     await Promise.all(
       [...Array(5).keys()].map(() => {
-        return factory.create(
-          'Comment',
+        return Factory.build(
+          'comment',
           {},
           {
             author: peterLustig,
@@ -1036,8 +1035,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
 
     await Promise.all(
       [...Array(6).keys()].map(() => {
-        return factory.create(
-          'Comment',
+        return Factory.build(
+          'comment',
           {},
           {
             author: peterLustig,
@@ -1049,8 +1048,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
 
     await Promise.all(
       [...Array(11).keys()].map(() => {
-        return factory.create(
-          'Post',
+        return Factory.build(
+          'post',
           {
             image: faker.image.unsplash.food(),
           },
@@ -1063,8 +1062,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
 
     await Promise.all(
       [...Array(7).keys()].map(() => {
-        return factory.create(
-          'Comment',
+        return Factory.build(
+          'comment',
           {},
           {
             author: dewey,
@@ -1076,8 +1075,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
 
     await Promise.all(
       [...Array(5).keys()].map(() => {
-        return factory.create(
-          'Comment',
+        return Factory.build(
+          'comment',
           {},
           {
             author: dewey,
@@ -1089,8 +1088,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
 
     await Promise.all(
       [...Array(2).keys()].map(() => {
-        return factory.create(
-          'Comment',
+        return Factory.build(
+          'comment',
           {},
           {
             author: dewey,
@@ -1102,8 +1101,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
 
     await Promise.all(
       [...Array(16).keys()].map(() => {
-        return factory.create(
-          'Post',
+        return Factory.build(
+          'post',
           {
             image: faker.image.unsplash.technology(),
           },
@@ -1116,8 +1115,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
 
     await Promise.all(
       [...Array(4).keys()].map(() => {
-        return factory.create(
-          'Comment',
+        return Factory.build(
+          'comment',
           {},
           {
             postId: 'p1',
@@ -1129,8 +1128,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
 
     await Promise.all(
       [...Array(8).keys()].map(() => {
-        return factory.create(
-          'Comment',
+        return Factory.build(
+          'comment',
           {},
           {
             author: louie,
@@ -1142,8 +1141,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
 
     await Promise.all(
       [...Array(5).keys()].map(() => {
-        return factory.create(
-          'Comment',
+        return Factory.build(
+          'comment',
           {},
           {
             author: louie,
@@ -1155,8 +1154,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
 
     await Promise.all(
       [...Array(45).keys()].map(() => {
-        return factory.create(
-          'Post',
+        return Factory.build(
+          'post',
           {
             image: faker.image.unsplash.people(),
           },
@@ -1169,8 +1168,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
 
     await Promise.all(
       [...Array(2).keys()].map(() => {
-        return factory.create(
-          'Comment',
+        return Factory.build(
+          'comment',
           {},
           {
             author: bobDerBaumeister,
@@ -1182,8 +1181,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
 
     await Promise.all(
       [...Array(3).keys()].map(() => {
-        return factory.create(
-          'Comment',
+        return Factory.build(
+          'comment',
           {},
           {
             author: bobDerBaumeister,
@@ -1195,8 +1194,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
 
     await Promise.all(
       [...Array(7).keys()].map(() => {
-        return factory.create(
-          'Comment',
+        return Factory.build(
+          'comment',
           {},
           {
             author: bobDerBaumeister,
@@ -1208,8 +1207,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
 
     await Promise.all(
       [...Array(8).keys()].map(() => {
-        return factory.create(
-          'Post',
+        return Factory.build(
+          'post',
           {
             image: faker.image.unsplash.nature(),
           },
@@ -1222,8 +1221,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
 
     await Promise.all(
       [...Array(6).keys()].map(() => {
-        return factory.create(
-          'Comment',
+        return Factory.build(
+          'comment',
           {},
           {
             author: huey,
@@ -1235,8 +1234,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
 
     await Promise.all(
       [...Array(8).keys()].map(() => {
-        return factory.create(
-          'Comment',
+        return Factory.build(
+          'comment',
           {},
           {
             author: huey,
@@ -1248,8 +1247,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
 
     await Promise.all(
       [...Array(9).keys()].map(() => {
-        return factory.create(
-          'Comment',
+        return Factory.build(
+          'comment',
           {},
           {
             author: huey,
@@ -1259,7 +1258,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       }),
     )
 
-    await factory.create('Donations')
+    await Factory.build('donations')
     /* eslint-disable-next-line no-console */
     console.log('Seeded Data...')
     process.exit(0)

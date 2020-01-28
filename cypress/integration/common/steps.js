@@ -25,14 +25,12 @@ const narratorParams = {
   name: "Peter Pan",
   slug: "peter-pan",
   avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/nerrsoft/128.jpg",
-  ...loginCredentials,
   ...termsAndConditionsAgreedVersion,
 };
 
 const annoyingParams = {
   email: "spammy-spammer@example.org",
   password: "1234",
-  ...termsAndConditionsAgreedVersion
 };
 
 Given("I am logged in", () => {
@@ -48,44 +46,44 @@ Given("we have a selection of categories", () => {
 });
 
 Given("we have a selection of tags and categories as well as posts", () => {
-  cy.createCategories("cat12")
+  cy.createCategories("cat12", "cat121", "cat122")
     .factory()
-    .create("Tag", {
+    .build("tag", {
       id: "Ecology"
     })
-    .create("Tag", {
+    .build("tag", {
       id: "Nature"
     })
-    .create("Tag", {
+    .build("tag", {
       id: "Democracy"
     });
 
   cy.factory()
-    .create("User", {
+    .build("user", {
       id: 'a1'
     })
-    .create("Post", {
+    .build("post", {}, {
       authorId: 'a1',
       tagIds: ["Ecology", "Nature", "Democracy"],
       categoryIds: ["cat12"]
     })
-    .create("Post", {
+    .build("post", {}, {
       authorId: 'a1',
       tagIds: ["Nature", "Democracy"],
       categoryIds: ["cat121"]
     });
 
   cy.factory()
-    .create("User", {
+    .build("user", {
       id: 'a2'
     })
-    .create("Post", {
+    .build("post", {}, {
       authorId: 'a2',
       tagIds: ['Nature', 'Democracy'],
       categoryIds: ["cat12"]
     });
   cy.factory()
-    .create("Post", {
+    .build("post", {}, {
       authorId: narratorParams.id,
       tagIds: ['Democracy'],
       categoryIds: ["cat122"]
@@ -94,7 +92,7 @@ Given("we have a selection of tags and categories as well as posts", () => {
 
 Given("we have the following user accounts:", table => {
   table.hashes().forEach(params => {
-    cy.factory().create("User", {
+    cy.factory().build("user", {
       ...params,
       ...termsAndConditionsAgreedVersion
     });
@@ -102,15 +100,14 @@ Given("we have the following user accounts:", table => {
 });
 
 Given("I have a user account", () => {
-  cy.factory().create("User", narratorParams);
+  cy.factory().build("user", narratorParams);
 });
 
 Given("my user account has the role {string}", role => {
-  cy.factory().create("User", {
+  cy.factory().build("user", {
     role,
-    ...loginCredentials,
     ...termsAndConditionsAgreedVersion,
-  });
+  }, loginCredentials);
 });
 
 When("I log out", cy.logout);
@@ -193,7 +190,7 @@ When("I press {string}", label => {
 });
 
 Given("we have the following posts in our database:", table => {
-  cy.factory().create('Category', {
+  cy.factory().build('category', {
     id: `cat-456`,
     name: "Just For Fun",
     slug: `just-for-fun`,
@@ -208,9 +205,8 @@ Given("we have the following posts in our database:", table => {
       deleted: Boolean(postAttributes.deleted),
       disabled: Boolean(postAttributes.disabled),
       pinned: Boolean(postAttributes.pinned),
-      categoryIds: ['cat-456']
     }
-    cy.factory().create("Post", postAttributes);
+    cy.factory().build("post", postAttributes, { categoryIds: ['cat-456'] });
   })
 });
 
@@ -234,7 +230,7 @@ Given("I previously created a post", () => {
   lastPost.title = "previously created post";
   lastPost.content = "with some content";
   cy.factory()
-    .create("Post", lastPost);
+    .build("post", lastPost);
 });
 
 When("I choose {string} as the title of the post", title => {
@@ -302,10 +298,9 @@ Then(
 Given("my user account has the following login credentials:", table => {
   loginCredentials = table.hashes()[0];
   cy.debug();
-  cy.factory().create("User", {
+  cy.factory().build("user", {
     ...termsAndConditionsAgreedVersion,
-    ...loginCredentials
-  });
+  }, loginCredentials);
 });
 
 When("I fill the password form with:", table => {
@@ -412,12 +407,11 @@ Then("there are no notifications in the top menu", () => {
 });
 
 Given("there is an annoying user called {string}", name => {
-  cy.factory().create("User", {
-    ...annoyingParams,
+  cy.factory().build("user", {
     id: "annoying-user",
     name,
     ...termsAndConditionsAgreedVersion,
-  });
+  }, annoyingParams);
 });
 
 Given("there is an annoying user who has muted me", () => {
@@ -484,9 +478,10 @@ Given("I follow the user {string}", name => {
 Given('"Spammy Spammer" wrote a post {string}', title => {
   cy.createCategories("cat21")
     .factory()
-    .create("Post", {
-      authorId: 'annoying-user',
+    .build("post", {
       title,
+    }, {
+      authorId: 'annoying-user',
       categoryIds: ["cat21"]
     });
 });
@@ -507,9 +502,10 @@ Then("nobody is following the user profile anymore", () => {
 Given("I wrote a post {string}", title => {
   cy.createCategories(`cat213`, title)
     .factory()
-    .create("Post", {
-      authorId: narratorParams.id,
+    .build("post", {
       title,
+    }, {
+      authorId: narratorParams.id,
       categoryIds: ["cat213"]
     });
 });

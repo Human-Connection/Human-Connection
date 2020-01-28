@@ -1,10 +1,9 @@
-import Factory from '../../factories'
+import Factory, { cleanDatabase } from '../../factories'
 import { gql } from '../../helpers/jest'
 import { getDriver } from '../../db/neo4j'
 import { createTestClient } from 'apollo-server-testing'
 import createServer from '../.././server'
 
-const factory = Factory()
 const driver = getDriver()
 let authenticatedUser
 let user
@@ -32,22 +31,22 @@ beforeEach(async () => {
 })
 
 afterEach(async () => {
-  await factory.cleanDatabase()
+  await cleanDatabase()
 })
 
 describe('given some notifications', () => {
   beforeEach(async () => {
     const categoryIds = ['cat1']
-    author = await factory.create('User', { id: 'author' })
-    user = await factory.create('User', { id: 'you' })
+    author = await Factory.build('user', { id: 'author' })
+    user = await Factory.build('user', { id: 'you' })
     const [neighbor] = await Promise.all([
-      factory.create('User', { id: 'neighbor' }),
-      factory.create('Category', { id: 'cat1' }),
+      Factory.build('user', { id: 'neighbor' }),
+      Factory.build('category', { id: 'cat1' }),
     ])
     const [post1, post2, post3] = await Promise.all([
-      factory.create('Post', { id: 'p1', content: 'Not for you' }, { author, categoryIds }),
-      factory.create(
-        'Post',
+      Factory.build('post', { id: 'p1', content: 'Not for you' }, { author, categoryIds }),
+      Factory.build(
+        'post',
         {
           id: 'p2',
           content: 'Already seen post mention',
@@ -57,8 +56,8 @@ describe('given some notifications', () => {
           categoryIds,
         },
       ),
-      factory.create(
-        'Post',
+      Factory.build(
+        'post',
         {
           id: 'p3',
           content: 'You have been mentioned in a post',
@@ -70,8 +69,8 @@ describe('given some notifications', () => {
       ),
     ])
     const [comment1, comment2, comment3] = await Promise.all([
-      factory.create(
-        'Comment',
+      Factory.build(
+        'comment',
         {
           id: 'c1',
           content: 'You have seen this comment mentioning already',
@@ -81,8 +80,8 @@ describe('given some notifications', () => {
           postId: 'p3',
         },
       ),
-      factory.create(
-        'Comment',
+      Factory.build(
+        'comment',
         {
           id: 'c2',
           content: 'You have been mentioned in a comment',
@@ -92,8 +91,8 @@ describe('given some notifications', () => {
           postId: 'p3',
         },
       ),
-      factory.create(
-        'Comment',
+      Factory.build(
+        'comment',
         {
           id: 'c3',
           content: 'Somebody else was mentioned in a comment',

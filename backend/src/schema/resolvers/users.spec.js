@@ -1,10 +1,9 @@
-import Factory from '../../factories'
+import Factory, { cleanDatabase } from '../../factories'
 import { gql } from '../../helpers/jest'
 import { getNeode, getDriver } from '../../db/neo4j'
 import createServer from '../../server'
 import { createTestClient } from 'apollo-server-testing'
 
-const factory = Factory()
 const categoryIds = ['cat9']
 let user
 
@@ -31,13 +30,13 @@ beforeAll(() => {
 })
 
 afterEach(async () => {
-  await factory.cleanDatabase()
+  await cleanDatabase()
 })
 
 describe('User', () => {
   describe('query by email address', () => {
     beforeEach(async () => {
-      await factory.create('User', { name: 'Johnny' }, { email: 'any-email-address@example.org' })
+      await Factory.build('user', { name: 'Johnny' }, { email: 'any-email-address@example.org' })
     })
 
     const userQuery = gql`
@@ -57,8 +56,8 @@ describe('User', () => {
 
     describe('as admin', () => {
       beforeEach(async () => {
-        const admin = await factory.create(
-          'User',
+        const admin = await Factory.build(
+          'user',
           {
             role: 'admin',
           },
@@ -128,8 +127,8 @@ describe('UpdateUser', () => {
   `
 
   beforeEach(async () => {
-    user = await factory.create(
-      'User',
+    user = await Factory.build(
+      'user',
       {
         id: 'u47',
         name: 'John Doe',
@@ -145,8 +144,8 @@ describe('UpdateUser', () => {
 
   describe('as another user', () => {
     beforeEach(async () => {
-      const someoneElse = await factory.create(
-        'User',
+      const someoneElse = await Factory.build(
+        'user',
         {
           name: 'James Doe',
         },
@@ -277,13 +276,13 @@ describe('DeleteUser', () => {
   beforeEach(async () => {
     variables = { id: ' u343', resource: [] }
 
-    user = await factory.create('User', {
+    user = await Factory.build('user', {
       name: 'My name should be deleted',
       about: 'along with my about',
       id: 'u343',
     })
-    await factory.create(
-      'User',
+    await Factory.build(
+      'user',
       {
         id: 'not-my-account',
       },
@@ -323,13 +322,13 @@ describe('DeleteUser', () => {
 
       describe('given posts and comments', () => {
         beforeEach(async () => {
-          await factory.create('Category', {
+          await Factory.build('category', {
             id: 'cat9',
             name: 'Democracy & Politics',
             icon: 'university',
           })
-          await factory.create(
-            'Post',
+          await Factory.build(
+            'post',
             {
               id: 'p139',
               content: 'Post by user u343',
@@ -339,8 +338,8 @@ describe('DeleteUser', () => {
               categoryIds,
             },
           )
-          await factory.create(
-            'Comment',
+          await Factory.build(
+            'comment',
             {
               id: 'c155',
               content: 'Comment by user u343',
@@ -349,8 +348,8 @@ describe('DeleteUser', () => {
               author: user,
             },
           )
-          await factory.create(
-            'Comment',
+          await Factory.build(
+            'comment',
             {
               id: 'c156',
               content: "A comment by someone else on user u343's post",
@@ -556,7 +555,7 @@ describe('DeleteUser', () => {
 
       describe('connected `SocialMedia` nodes', () => {
         beforeEach(async () => {
-          const socialMedia = await factory.create('SocialMedia')
+          const socialMedia = await Factory.build('socialMedia')
           await socialMedia.relateTo(user, 'ownedBy')
         })
 

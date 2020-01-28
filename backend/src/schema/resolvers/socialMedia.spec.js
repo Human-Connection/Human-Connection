@@ -1,11 +1,10 @@
 import { createTestClient } from 'apollo-server-testing'
 import createServer from '../../server'
-import Factory from '../../factories'
+import Factory, { cleanDatabase } from '../../factories'
 import { gql } from '../../helpers/jest'
 import { getDriver } from '../../db/neo4j'
 
 const driver = getDriver()
-const factory = Factory()
 
 describe('SocialMedia', () => {
   let socialMediaAction, someUser, ownerNode, owner
@@ -14,14 +13,14 @@ describe('SocialMedia', () => {
   const newUrl = 'https://twitter.com/bullerby'
 
   const setUpSocialMedia = async () => {
-    const socialMediaNode = await factory.create('SocialMedia', { url })
+    const socialMediaNode = await Factory.build('socialMedia', { url })
     await socialMediaNode.relateTo(ownerNode, 'ownedBy')
     return socialMediaNode.toJson()
   }
 
   beforeEach(async () => {
-    const someUserNode = await factory.create(
-      'User',
+    const someUserNode = await Factory.build(
+      'user',
       {
         name: 'Kalle Blomqvist',
       },
@@ -32,8 +31,8 @@ describe('SocialMedia', () => {
     )
 
     someUser = await someUserNode.toJson()
-    ownerNode = await factory.create(
-      'User',
+    ownerNode = await Factory.build(
+      'user',
       {
         name: 'Pippi Langstrumpf',
       },
@@ -63,7 +62,7 @@ describe('SocialMedia', () => {
   })
 
   afterEach(async () => {
-    await factory.cleanDatabase()
+    await cleanDatabase()
   })
 
   describe('create social media', () => {

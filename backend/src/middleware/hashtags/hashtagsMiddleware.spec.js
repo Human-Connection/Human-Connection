@@ -1,5 +1,5 @@
 import { gql } from '../../helpers/jest'
-import Factory from '../../factories'
+import { cleanDatabase } from '../../factories'
 import { createTestClient } from 'apollo-server-testing'
 import { getNeode, getDriver } from '../../db/neo4j'
 import createServer from '../../server'
@@ -9,7 +9,6 @@ let query
 let mutate
 let hashtagingUser
 let authenticatedUser
-const factory = Factory()
 const driver = getDriver()
 const neode = getNeode()
 const categoryIds = ['cat9']
@@ -68,7 +67,7 @@ beforeEach(async () => {
 })
 
 afterEach(async () => {
-  await factory.cleanDatabase()
+  await cleanDatabase()
 })
 
 describe('hashtags', () => {

@@ -1,11 +1,10 @@
-import Factory from '../factories'
+import { cleanDatabase } from '../factories'
 import { getNeode } from '../db/neo4j'
 
-const factory = Factory()
 const neode = getNeode()
 
 afterEach(async () => {
-  await factory.cleanDatabase()
+  await cleanDatabase()
 })
 
 describe('role', () => {
