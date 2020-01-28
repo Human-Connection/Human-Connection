@@ -127,6 +127,10 @@ export default {
   display: flex;
   align-items: center;
   padding-left: $space-xx-small;
+
+  > .user-avatar {
+    margin-right: $space-xx-small;
+  }
 }
 .avatar-menu-popover {
   padding-top: $space-x-small;

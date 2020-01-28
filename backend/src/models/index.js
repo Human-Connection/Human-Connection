@@ -13,4 +13,5 @@ export default {
   Location: require('./Location.js').default,
   Donations: require('./Donations.js').default,
   Report: require('./Report.js').default,
+  Migration: require('./Migration.js').default,
 }

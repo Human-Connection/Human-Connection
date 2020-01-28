@@ -212,6 +212,7 @@ Given("we have the following posts in our database:", table => {
       ...postAttributes,
       deleted: Boolean(postAttributes.deleted),
       disabled: Boolean(postAttributes.disabled),
+      pinned: Boolean(postAttributes.pinned),
       categoryIds: ['cat-456']
     }
     cy.factory().create("Post", postAttributes);
