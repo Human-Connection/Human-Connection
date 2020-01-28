@@ -88,13 +88,17 @@ describe('slugifyMiddleware', () => {
 
     describe('if slug exists', () => {
       beforeEach(async () => {
-        await factory.create('Post', {
-          title: 'Pre-existing post',
-          slug: 'pre-existing-post',
-          content: 'as Someone else content',
-        }, {
-          categoryIds,
-        })
+        await factory.create(
+          'Post',
+          {
+            title: 'Pre-existing post',
+            slug: 'pre-existing-post',
+            content: 'as Someone else content',
+          },
+          {
+            categoryIds,
+          },
+        )
       })
 
       it('chooses another slug', async () => {

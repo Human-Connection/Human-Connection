@@ -46,40 +46,63 @@ describe('given some notifications', () => {
     ])
     const [post1, post2, post3] = await Promise.all([
       factory.create('Post', { id: 'p1', content: 'Not for you' }, { author, categoryIds }),
-      factory.create('Post', {
-        id: 'p2',
-        content: 'Already seen post mention',
-      }, {
-        author,
-        categoryIds,
-      }),
-      factory.create('Post', {
-        id: 'p3',
-        content: 'You have been mentioned in a post',
-      }, {
-        author,
-        categoryIds,
-      }),
+      factory.create(
+        'Post',
+        {
+          id: 'p2',
+          content: 'Already seen post mention',
+        },
+        {
+          author,
+          categoryIds,
+        },
+      ),
+      factory.create(
+        'Post',
+        {
+          id: 'p3',
+          content: 'You have been mentioned in a post',
+        },
+        {
+          author,
+          categoryIds,
+        },
+      ),
     ])
     const [comment1, comment2, comment3] = await Promise.all([
-      factory.create('Comment', {
-        author,
-        postId: 'p3',
-        id: 'c1',
-        content: 'You have seen this comment mentioning already',
-      }),
-      factory.create('Comment', {
-        author,
-        postId: 'p3',
-        id: 'c2',
-        content: 'You have been mentioned in a comment',
-      }),
-      factory.create('Comment', {
-        author,
-        postId: 'p3',
-        id: 'c3',
-        content: 'Somebody else was mentioned in a comment',
-      }),
+      factory.create(
+        'Comment',
+        {
+          id: 'c1',
+          content: 'You have seen this comment mentioning already',
+        },
+        {
+          author,
+          postId: 'p3',
+        },
+      ),
+      factory.create(
+        'Comment',
+        {
+          id: 'c2',
+          content: 'You have been mentioned in a comment',
+        },
+        {
+          author,
+          postId: 'p3',
+        },
+      ),
+      factory.create(
+        'Comment',
+        {
+          id: 'c3',
+          content: 'Somebody else was mentioned in a comment',
+        },
+        {
+          author,
+          postId: 'p3',
+        },
+      ),
     ])
     await Promise.all([
       post1.relateTo(neighbor, 'notified', {

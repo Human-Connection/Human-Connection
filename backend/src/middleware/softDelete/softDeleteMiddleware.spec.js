@@ -50,51 +50,73 @@ beforeAll(async () => {
 
   await Promise.all([
     user.relateTo(troll, 'following'),
-    factory.create('Post', {
-      id: 'p1',
-      title: 'Deleted post',
-      slug: 'deleted-post',
-      deleted: true,
-    }, {
-      author: user,
-      categoryIds,
-    }),
-    factory.create('Post', {
-      id: 'p3',
-      title: 'Publicly visible post',
-      slug: 'publicly-visible-post',
-      deleted: false,
-    }, {
-      author: user,
-      categoryIds,
-    }),
+    factory.create(
+      'Post',
+      {
+        id: 'p1',
+        title: 'Deleted post',
+        slug: 'deleted-post',
+        deleted: true,
+      },
+      {
+        author: user,
+        categoryIds,
+      },
+    ),
+    factory.create(
+      'Post',
+      {
+        id: 'p3',
+        title: 'Publicly visible post',
+        slug: 'publicly-visible-post',
+        deleted: false,
+      },
+      {
+        author: user,
+        categoryIds,
+      },
+    ),
   ])
 
   const resources = await Promise.all([
-    factory.create('Comment', {
-      author: user,
-      id: 'c2',
-      postId: 'p3',
-      content: 'Enabled comment on public post',
-    }),
-    factory.create('Post', {
-      id: 'p2',
-      title: 'Disabled post',
-      content: 'This is an offensive post content',
-      contentExcerpt: 'This is an offensive post content',
-      image: '/some/offensive/image.jpg',
-      deleted: false,
-    }, {
-      author: troll,
-      categoryIds,
-    }),
-    factory.create('Comment', {
-      id: 'c1',
-      author: troll,
-      postId: 'p3',
-      content: 'Disabled comment',
-      contentExcerpt: 'Disabled comment',
-    }),
+    factory.create(
+      'Comment',
+      {
+        id: 'c2',
+        content: 'Enabled comment on public post',
+      },
+      {
+        author: user,
+        postId: 'p3',
+      },
+    ),
+    factory.create(
+      'Post',
+      {
+        id: 'p2',
+        title: 'Disabled post',
+        content: 'This is an offensive post content',
+        contentExcerpt: 'This is an offensive post content',
+        image: '/some/offensive/image.jpg',
+        deleted: false,
+      },
+      {
+        author: troll,
+        categoryIds,
+      },
+    ),
+    factory.create(
+      'Comment',
+      {
+        id: 'c1',
+        content: 'Disabled comment',
+        contentExcerpt: 'Disabled comment',
+      },
+      {
+        author: troll,
+        postId: 'p3',
+      },
+    ),
   ])
 
   const { server } = createServer({

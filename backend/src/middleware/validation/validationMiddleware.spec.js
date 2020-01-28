@@ -119,16 +119,24 @@ beforeEach(async () => {
   moderatingUser = users[1]
   commentingUser = users[2]
   const posts = await Promise.all([
-    factory.create('Post', {
-      id: 'offensive-post',
-    }, {
-      authorId: 'moderating-user',
-    }),
-    factory.create('Post', {
-      id: 'post-4-commenting',
-    }, {
-      authorId: 'commenting-user',
-    }),
+    factory.create(
+      'Post',
+      {
+        id: 'offensive-post',
+      },
+      {
+        authorId: 'moderating-user',
+      },
+    ),
+    factory.create(
+      'Post',
+      {
+        id: 'post-4-commenting',
+      },
+      {
+        authorId: 'commenting-user',
+      },
+    ),
   ])
   offensivePost = posts[0]
 })
@@ -184,10 +192,15 @@ describe('validateCreateComment', () => {
   describe('validateUpdateComment', () => {
     let updateCommentVariables
     beforeEach(async () => {
-      await factory.create('Comment', {
-        id: 'comment-id',
-        authorId: 'commenting-user',
-      })
+      await factory.create(
+        'Comment',
+        {
+          id: 'comment-id',
+        },
+        {
+          authorId: 'commenting-user',
+        },
+      )
       updateCommentVariables = {
         id: 'whatever',
         content: '',

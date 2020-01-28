@@ -49,18 +49,27 @@ const createCommentMutation = gql`
 `
 const setupPostAndComment = async () => {
   commentAuthor = await factory.create('User')
-  await factory.create('Post', {
-    id: 'p1',
-    content: 'Post to be commented',
-  }, {
-    categoryIds: ['cat9'],
-  })
-  newlyCreatedComment = await factory.create('Comment', {
-    id: 'c456',
-    postId: 'p1',
-    author: commentAuthor,
-    content: 'Comment to be deleted',
-  })
+  await factory.create(
+    'Post',
+    {
+      id: 'p1',
+      content: 'Post to be commented',
+    },
+    {
+      categoryIds: ['cat9'],
+    },
+  )
+  newlyCreatedComment = await factory.create(
+    'Comment',
+    {
+      id: 'c456',
+      content: 'Comment to be deleted',
+    },
+    {
+      postId: 'p1',
+      author: commentAuthor,
+    },
+  )
   variables = {
     ...variables,
     id: 'c456',
@@ -89,7 +98,7 @@ describe('CreateComment', () => {
 
     describe('given a post', () => {
       beforeEach(async () => {
-        await factory.create('Post', { id: 'p1' }, { categoryIds: ['cat9'] } )
+        await factory.create('Post', { id: 'p1' }, { categoryIds: ['cat9'] })
         variables = {
           ...variables,
           postId: 'p1',

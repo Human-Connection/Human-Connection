@@ -8,17 +8,17 @@ const neode = getNeode()
 
 Factory.define('post')
   .option('categoryIds', [])
-  .option('categories', ['categoryIds'], (categoryIds) => {
+  .option('categories', ['categoryIds'], categoryIds => {
     if (categoryIds.length) return Promise.all(categoryIds.map(id => neode.find('Category', id)))
     // there must be at least one category
     return Promise.all([Factory.build('category')])
   })
   .option('tagIds', [])
-  .option('tags', ['tagIds'], (tagIds) => {
+  .option('tags', ['tagIds'], tagIds => {
     return Promise.all(tagIds.map(id => neode.find('Tag', id)))
   })
   .option('authorId', null)
-  .option('author', ['authorId'], (authorId) => {
+  .option('author', ['authorId'], authorId => {
     if (authorId) return neode.find('User', authorId)
     return Factory.build('user')
   })
@@ -33,7 +33,7 @@ Factory.define('post')
     imageBlurred: false,
     imageAspectRatio: 1.333,
   })
-  .attr('pinned', ['pinned'], (pinned) => {
+  .attr('pinned', ['pinned'], pinned => {
     // Convert false to null
     return pinned || null
   })

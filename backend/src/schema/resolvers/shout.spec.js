@@ -88,18 +88,26 @@ describe('shout and unshout posts', () => {
     describe('authenticated', () => {
       beforeEach(async () => {
         authenticatedUser = await currentUser.toJson()
-        await factory.create('Post', {
-          name: 'Other user post',
-          id: 'another-user-post-id',
-        }, {
-          author: postAuthor,
-        })
-        await factory.create('Post', {
-          name: 'current user post',
-          id: 'current-user-post-id',
-        }, {
-          author: currentUser,
-        })
+        await factory.create(
+          'Post',
+          {
+            name: 'Other user post',
+            id: 'another-user-post-id',
+          },
+          {
+            author: postAuthor,
+          },
+        )
+        await factory.create(
+          'Post',
+          {
+            name: 'current user post',
+            id: 'current-user-post-id',
+          },
+          {
+            author: currentUser,
+          },
+        )
         variables = {}
       })
 
@@ -156,12 +164,16 @@ describe('shout and unshout posts', () => {
     describe('authenticated', () => {
       beforeEach(async () => {
         authenticatedUser = await currentUser.toJson()
-        await factory.create('Post', {
-          name: 'Posted By Another User',
-          id: 'posted-by-another-user',
-        }, {
-          author: postAuthor,
-        })
+        await factory.create(
+          'Post',
+          {
+            name: 'Posted By Another User',
+            id: 'posted-by-another-user',
+          },
+          {
+            author: postAuthor,
+          },
+        )
         await mutate({
           mutation: mutationShoutPost,
           variables: { id: 'posted-by-another-user' },
