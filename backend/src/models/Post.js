@@ -42,5 +42,4 @@ export default {
   imageBlurred: { type: 'boolean', default: false },
   imageAspectRatio: { type: 'float', default: 1.0 },
   pinned: { type: 'boolean', default: null, valid: [null, true] },
-  pinnedAt: { type: 'string', isoDate: true },
 }

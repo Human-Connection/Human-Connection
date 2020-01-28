@@ -357,9 +357,10 @@ describe('file a report on a resource', () => {
         describe('reported resource is a post', () => {
           beforeEach(async () => {
             await factory.create('Post', {
-              author: currentUser,
               id: 'post-to-report-id',
               title: 'This is a post that is going to be reported',
+            }, {
+              author: currentUser,
               categoryIds,
             })
           })
@@ -409,15 +410,15 @@ describe('file a report on a resource', () => {
         })
 
         describe('reported resource is a comment', () => {
-          let createPostVariables
           beforeEach(async () => {
-            createPostVariables = {
+            await factory.create('Post', {
               id: 'p1',
               title: 'post to comment on',
               content: 'please comment on me',
+            }, {
               categoryIds,
-            }
-            await factory.create('Post', { ...createPostVariables, author: currentUser })
+              author: currentUser
+            })
             await factory.create('Comment', {
               author: currentUser,
               postId: 'p1',
@@ -571,22 +572,25 @@ describe('file a report on a resource', () => {
 
       await Promise.all([
         factory.create('Post', {
-          author: abusiveUser,
           id: 'abusive-post-1',
-          categoryIds,
           content: 'Interesting Knowledge',
+        }, {
+          categoryIds,
+          author: abusiveUser,
         }),
         factory.create('Post', {
-          author: moderator,
           id: 'post-2',
-          categoryIds,
           content: 'More things to do …',
+        }, {
+          author: moderator,
+          categoryIds,
         }),
         factory.create('Post', {
-          author: currentUser,
           id: 'post-3',
-          categoryIds,
           content: 'I am at school …',
+        }, {
+          categoryIds,
+          author: currentUser,
         }),
       ])
       await Promise.all([

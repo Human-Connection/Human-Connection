@@ -114,10 +114,11 @@ describe('Post', () => {
         ),
       ])
       ;[happyPost, cryPost] = await Promise.all([
-        factory.create('Post', { id: 'happy-post', categoryIds: ['cat4'] }),
-        factory.create('Post', { id: 'cry-post', categoryIds: ['cat15'] }),
+        factory.create('Post', { id: 'happy-post' }, { categoryIds: ['cat4'] }),
+        factory.create('Post', { id: 'cry-post'} , { categoryIds: ['cat15'] }),
         factory.create('Post', {
           id: 'post-by-followed-user',
+        }, {
           categoryIds: ['cat9'],
           author: followedUser,
         }),
@@ -352,10 +353,11 @@ describe('UpdatePost', () => {
   beforeEach(async () => {
     author = await factory.create('User', { slug: 'the-author' })
     newlyCreatedPost = await factory.create('Post', {
-      author,
       id: 'p9876',
       title: 'Old title',
       content: 'Old content',
+    }, {
+      author,
       categoryIds,
     })
 
@@ -541,6 +543,7 @@ describe('UpdatePost', () => {
         beforeEach(async () => {
           await factory.create('Post', {
             id: 'created-and-pinned-by-same-admin',
+          }, {
             author: admin,
           })
           variables = { ...variables, id: 'created-and-pinned-by-same-admin' }
@@ -606,6 +609,7 @@ describe('UpdatePost', () => {
           authenticatedUser = await otherAdmin.toJson()
           await factory.create('Post', {
             id: 'created-by-one-admin-pinned-by-different-one',
+          }, {
             author: otherAdmin,
           })
         })
@@ -666,6 +670,7 @@ describe('UpdatePost', () => {
         beforeEach(async () => {
           await factory.create('Post', {
             id: 'only-pinned-post',
+          }, {
             author: admin,
           })
           await mutate({ mutation: pinPostMutation, variables })
@@ -887,10 +892,11 @@ describe('DeletePost', () => {
     author = await factory.create('User')
     await factory.create('Post', {
       id: 'p4711',
-      author,
       title: 'I will be deleted',
       content: 'To be deleted',
       image: 'path/to/some/image',
+    }, {
+      author,
       categoryIds,
     })
     variables = { ...variables, id: 'p4711' }
@@ -999,8 +1005,9 @@ describe('emotions', () => {
   beforeEach(async () => {
     author = await neode.create('User', { id: 'u257' })
     postToEmote = await factory.create('Post', {
-      author,
       id: 'p1376',
+    }, {
+      author,
       categoryIds,
     })
 

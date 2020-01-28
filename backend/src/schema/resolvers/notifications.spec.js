@@ -45,18 +45,20 @@ describe('given some notifications', () => {
       factory.create('Category', { id: 'cat1' }),
     ])
     const [post1, post2, post3] = await Promise.all([
-      factory.create('Post', { author, id: 'p1', categoryIds, content: 'Not for you' }),
+      factory.create('Post', { id: 'p1', content: 'Not for you' }, { author, categoryIds }),
       factory.create('Post', {
-        author,
         id: 'p2',
-        categoryIds,
         content: 'Already seen post mention',
+      }, {
+        author,
+        categoryIds,
       }),
       factory.create('Post', {
-        author,
         id: 'p3',
-        categoryIds,
         content: 'You have been mentioned in a post',
+      }, {
+        author,
+        categoryIds,
       }),
     ])
     const [comment1, comment2, comment3] = await Promise.all([

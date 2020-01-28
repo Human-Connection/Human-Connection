@@ -52,6 +52,7 @@ const setupPostAndComment = async () => {
   await factory.create('Post', {
     id: 'p1',
     content: 'Post to be commented',
+  }, {
     categoryIds: ['cat9'],
   })
   newlyCreatedComment = await factory.create('Comment', {
@@ -88,7 +89,7 @@ describe('CreateComment', () => {
 
     describe('given a post', () => {
       beforeEach(async () => {
-        await factory.create('Post', { categoryIds: ['cat9'], id: 'p1' })
+        await factory.create('Post', { id: 'p1' }, { categoryIds: ['cat9'] } )
         variables = {
           ...variables,
           postId: 'p1',

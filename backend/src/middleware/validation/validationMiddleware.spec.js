@@ -121,10 +121,12 @@ beforeEach(async () => {
   const posts = await Promise.all([
     factory.create('Post', {
       id: 'offensive-post',
+    }, {
       authorId: 'moderating-user',
     }),
     factory.create('Post', {
       id: 'post-4-commenting',
+    }, {
       authorId: 'commenting-user',
     }),
   ])
