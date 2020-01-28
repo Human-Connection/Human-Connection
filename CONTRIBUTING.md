@@ -115,11 +115,10 @@ compensation for your contribution! :tada:
 
 Before you can benefit from the Open-Source bounty program you **must get one
 pull request approved and merged for free**. You can choose something really
-quick and easy, e.g. a fixing a typo in our [documentation](https://docs.human-connection.org/human-connection/)
-would be enough. But getting at least one pull request merged will make you get
-in touch with the team, learn the workflow and understand this contribution
-guide. Please join our our [community chat](https://human-connection.org/discord),
-too.
+quick and easy. What's important is starting a working relationship with the
+team, learning the workflow, and understanding this contribution guide. You can
+filter issues by 'good first issue', to get an idea where to start. Please join
+our our [community chat](https://human-connection.org/discord), too.
 
 You can filter Github issues with label [bounty](https://github.com/Human-Connection/Human-Connection/issues?q=is%3Aopen+is%3Aissue+label%3Abounty). These issues should have a second label `€<amount>`
 which indicate their respective financial compensation in Euros.
