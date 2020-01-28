@@ -80,19 +80,29 @@ describe('moderate resources', () => {
       closed: false,
     }
     authenticatedUser = null
-    moderator = await factory.create('User', {
-      id: 'moderator-id',
-      name: 'Moderator',
-      email: 'moderator@example.org',
-      password: '1234',
-      role: 'moderator',
-    })
-    nonModerator = await factory.create('User', {
-      id: 'non-moderator',
-      name: 'Non Moderator',
-      email: 'non.moderator@example.org',
-      password: '1234',
-    })
+    moderator = await factory.create(
+      'User',
+      {
+        id: 'moderator-id',
+        name: 'Moderator',
+        role: 'moderator',
+      },
+      {
+        email: 'moderator@example.org',
+        password: '1234',
+      },
+    )
+    nonModerator = await factory.create(
+      'User',
+      {
+        id: 'non-moderator',
+        name: 'Non Moderator',
+      },
+      {
+        email: 'non.moderator@example.org',
+        password: '1234',
+      },
+    )
   })
 
   afterEach(async () => {

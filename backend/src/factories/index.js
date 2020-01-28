@@ -40,10 +40,11 @@ export default function Factory(options = {}) {
     factories,
     lastResponse: null,
     neodeInstance,
-    async create(node, args = {}) {
+    async create(node, args = {}, options = {}) {
       const { factory } = this.factories[node](args)
       this.lastResponse = await factory({
         args,
+        options,
         neodeInstance,
         factoryInstance: this,
       })

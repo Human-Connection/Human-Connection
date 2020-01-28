@@ -146,7 +146,7 @@ describe('userMiddleware', () => {
   })
 
   describe('UpdateUser', () => {
-    let user, userParams
+    let user
     beforeEach(async () => {
       newlyCreatedNodesWithLocales = [
         {
@@ -182,10 +182,9 @@ describe('userMiddleware', () => {
           },
         },
       ]
-      userParams = {
+      user = await factory.create('User', {
         id: 'updating-user',
-      }
-      user = await factory.create('User', userParams)
+      })
       authenticatedUser = await user.toJson()
     })
 

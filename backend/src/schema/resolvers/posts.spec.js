@@ -56,12 +56,17 @@ beforeAll(async () => {
 
 beforeEach(async () => {
   variables = {}
-  user = await factory.create('User', {
-    id: 'current-user',
-    name: 'TestUser',
-    email: 'test@example.org',
-    password: '1234',
-  })
+  user = await factory.create(
+    'User',
+    {
+      id: 'current-user',
+      name: 'TestUser',
+    },
+    {
+      email: 'test@example.org',
+      password: '1234',
+    },
+  )
   await Promise.all([
     neode.create('Category', {
       id: 'cat9',
@@ -96,12 +101,17 @@ describe('Post', () => {
     let followedUser, happyPost, cryPost
     beforeEach(async () => {
       ;[followedUser] = await Promise.all([
-        factory.create('User', {
-          id: 'followed-by-me',
-          email: 'followed@example.org',
-          name: 'Followed User',
-          password: '1234',
-        }),
+        factory.create(
+          'User',
+          {
+            id: 'followed-by-me',
+            name: 'Followed User',
+          },
+          {
+            email: 'followed@example.org',
+            password: '1234',
+          },
+        ),
       ])
       ;[happyPost, cryPost] = await Promise.all([
         factory.create('Post', { id: 'happy-post', categoryIds: ['cat4'] }),

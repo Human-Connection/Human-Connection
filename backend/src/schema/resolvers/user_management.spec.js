@@ -127,15 +127,20 @@ describe('currentUser', () => {
   describe('authenticated', () => {
     describe('and corresponding user in the database', () => {
       beforeEach(async () => {
-        await factory.create('User', {
-          id: 'u3',
-          // the `id` is the only thing that has to match the decoded JWT bearer token
-          avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/jimmuirhead/128.jpg',
-          email: 'test@example.org',
-          name: 'Matilde Hermiston',
-          slug: 'matilde-hermiston',
-          role: 'user',
-        })
+        await factory.create(
+          'User',
+          {
+            id: 'u3',
+            // the `id` is the only thing that has to match the decoded JWT bearer token
+            avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/jimmuirhead/128.jpg',
+            name: 'Matilde Hermiston',
+            slug: 'matilde-hermiston',
+            role: 'user',
+          },
+          {
+            email: 'test@example.org',
+          },
+        )
         const userBearerToken = encode({ id: 'u3' })
         req = { headers: { authorization: `Bearer ${userBearerToken}` } }
       })
@@ -172,10 +177,13 @@ describe('login', () => {
 
   beforeEach(async () => {
     variables = { email: 'test@example.org', password: '1234' }
-    user = await factory.create('User', {
-      ...variables,
-      id: 'acb2d923-f3af-479e-9f00-61b12e864666',
-    })
+    user = await factory.create(
+      'User',
+      {
+        id: 'acb2d923-f3af-479e-9f00-61b12e864666',
+      },
+      variables,
+    )
   })
 
   describe('ask for a `token`', () => {

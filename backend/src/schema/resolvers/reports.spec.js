@@ -84,24 +84,39 @@ describe('file a report on a resource', () => {
 
     describe('authenticated', () => {
       beforeEach(async () => {
-        currentUser = await factory.create('User', {
-          id: 'current-user-id',
-          role: 'user',
-          email: 'test@example.org',
-          password: '1234',
-        })
-        otherReportingUser = await factory.create('User', {
-          id: 'other-reporting-user-id',
-          role: 'user',
-          email: 'reporting@example.org',
-          password: '1234',
-        })
-        await factory.create('User', {
-          id: 'abusive-user-id',
-          role: 'user',
-          name: 'abusive-user',
-          email: 'abusive-user@example.org',
-        })
+        currentUser = await factory.create(
+          'User',
+          {
+            id: 'current-user-id',
+            role: 'user',
+          },
+          {
+            email: 'test@example.org',
+            password: '1234',
+          },
+        )
+        otherReportingUser = await factory.create(
+          'User',
+          {
+            id: 'other-reporting-user-id',
+            role: 'user',
+          },
+          {
+            email: 'reporting@example.org',
+            password: '1234',
+          },
+        )
+        await factory.create(
+          'User',
+          {
+            id: 'abusive-user-id',
+            role: 'user',
+            name: 'abusive-user',
+          },
+          {
+            email: 'abusive-user@example.org',
+          },
+        )
         await instance.create('Category', {
           id: 'cat9',
           name: 'Democracy & Politics',
@@ -515,24 +530,39 @@ describe('file a report on a resource', () => {
 
     beforeEach(async () => {
       authenticatedUser = null
-      moderator = await factory.create('User', {
-        id: 'moderator-1',
-        role: 'moderator',
-        email: 'moderator@example.org',
-        password: '1234',
-      })
-      currentUser = await factory.create('User', {
-        id: 'current-user-id',
-        role: 'user',
-        email: 'current.user@example.org',
-        password: '1234',
-      })
-      abusiveUser = await factory.create('User', {
-        id: 'abusive-user-1',
-        role: 'user',
-        name: 'abusive-user',
-        email: 'abusive-user@example.org',
-      })
+      moderator = await factory.create(
+        'User',
+        {
+          id: 'moderator-1',
+          role: 'moderator',
+        },
+        {
+          email: 'moderator@example.org',
+          password: '1234',
+        },
+      )
+      currentUser = await factory.create(
+        'User',
+        {
+          id: 'current-user-id',
+          role: 'user',
+        },
+        {
+          email: 'current.user@example.org',
+          password: '1234',
+        },
+      )
+      abusiveUser = await factory.create(
+        'User',
+        {
+          id: 'abusive-user-1',
+          role: 'user',
+          name: 'abusive-user',
+        },
+        {
+          email: 'abusive-user@example.org',
+        },
+      )
       await instance.create('Category', {
         id: 'cat9',
         name: 'Democracy & Politics',

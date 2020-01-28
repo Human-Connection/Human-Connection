@@ -53,13 +53,18 @@ beforeAll(async () => {
 })
 
 beforeEach(async () => {
-  notifiedUser = await neode.create('User', {
-    id: 'you',
-    name: 'Al Capone',
-    slug: 'al-capone',
-    email: 'test@example.org',
-    password: '1234',
-  })
+  notifiedUser = await neode.create(
+    'User',
+    {
+      id: 'you',
+      name: 'Al Capone',
+      slug: 'al-capone',
+    },
+    {
+      email: 'test@example.org',
+      password: '1234',
+    },
+  )
   await neode.create('Category', {
     id: 'cat9',
     name: 'Democracy & Politics',
@@ -143,13 +148,18 @@ describe('notifications', () => {
         describe('commenter is not me', () => {
           beforeEach(async () => {
             commentContent = 'Commenters comment.'
-            commentAuthor = await neode.create('User', {
-              id: 'commentAuthor',
-              name: 'Mrs Comment',
-              slug: 'mrs-comment',
-              email: 'commentauthor@example.org',
-              password: '1234',
-            })
+            commentAuthor = await neode.create(
+              'User',
+              {
+                id: 'commentAuthor',
+                name: 'Mrs Comment',
+                slug: 'mrs-comment',
+              },
+              {
+                email: 'commentauthor@example.org',
+                password: '1234',
+              },
+            )
           })
 
           it('sends me a notification', async () => {
@@ -224,13 +234,18 @@ describe('notifications', () => {
       })
 
       beforeEach(async () => {
-        postAuthor = await neode.create('User', {
-          id: 'postAuthor',
-          name: 'Mrs Post',
-          slug: 'mrs-post',
-          email: 'post-author@example.org',
-          password: '1234',
-        })
+        postAuthor = await neode.create(
+          'User',
+          {
+            id: 'postAuthor',
+            name: 'Mrs Post',
+            slug: 'mrs-post',
+          },
+          {
+            email: 'post-author@example.org',
+            password: '1234',
+          },
+        )
       })
 
       describe('mentions me in a post', () => {
@@ -428,23 +443,33 @@ describe('notifications', () => {
           beforeEach(async () => {
             commentContent =
               'One mention about me with <a data-mention-id="you" class="mention" href="/profile/you" target="_blank">@al-capone</a>.'
-            commentAuthor = await neode.create('User', {
-              id: 'commentAuthor',
-              name: 'Mrs Comment',
-              slug: 'mrs-comment',
-              email: 'comment-author@example.org',
-              password: '1234',
-            })
+            commentAuthor = await neode.create(
+              'User',
+              {
+                id: 'commentAuthor',
+                name: 'Mrs Comment',
+                slug: 'mrs-comment',
+              },
+              {
+                email: 'comment-author@example.org',
+                password: '1234',
+              },
+            )
           })
 
           it('sends only one notification with reason mentioned_in_comment', async () => {
-            postAuthor = await neode.create('User', {
-              id: 'MrPostAuthor',
-              name: 'Mr Author',
-              slug: 'mr-author',
-              email: 'post-author@example.org',
-              password: '1234',
-            })
+            postAuthor = await neode.create(
+              'User',
+              {
+                id: 'MrPostAuthor',
+                name: 'Mr Author',
+                slug: 'mr-author',
+              },
+              {
+                email: 'post-author@example.org',
+                password: '1234',
+              },
+            )
 
             await createCommentOnPostAction()
             const expected = expect.objectContaining({
@@ -514,13 +539,18 @@ describe('notifications', () => {
             await postAuthor.relateTo(notifiedUser, 'blocked')
             commentContent =
               'One mention about me with <a data-mention-id="you" class="mention" href="/profile/you" target="_blank">@al-capone</a>.'
-            commentAuthor = await neode.create('User', {
-              id: 'commentAuthor',
-              name: 'Mrs Comment',
-              slug: 'mrs-comment',
-              email: 'comment-author@example.org',
-              password: '1234',
-            })
+            commentAuthor = await neode.create(
+              'User',
+              {
+                id: 'commentAuthor',
+                name: 'Mrs Comment',
+                slug: 'mrs-comment',
+              },
+              {
+                email: 'comment-author@example.org',
+                password: '1234',
+              },
+            )
           })
 
           it('sends no notification', async () => {

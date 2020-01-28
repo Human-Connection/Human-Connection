@@ -13,7 +13,7 @@ Factory.define('socialMedia')
 
 export default function create() {
   return {
-    factory: async ({ args, neodeInstance }) => {
+    factory: async ({ args }) => {
       return Factory.build('socialMedia', args)
     },
   }

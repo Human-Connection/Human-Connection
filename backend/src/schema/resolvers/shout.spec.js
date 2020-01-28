@@ -47,19 +47,29 @@ describe('shout and unshout posts', () => {
     query = createTestClient(server).query
   })
   beforeEach(async () => {
-    currentUser = await factory.create('User', {
-      id: 'current-user-id',
-      name: 'Current User',
-      email: 'current.user@example.org',
-      password: '1234',
-    })
+    currentUser = await factory.create(
+      'User',
+      {
+        id: 'current-user-id',
+        name: 'Current User',
+      },
+      {
+        email: 'current.user@example.org',
+        password: '1234',
+      },
+    )
 
-    postAuthor = await factory.create('User', {
-      id: 'id-of-another-user',
-      name: 'Another User',
-      email: 'another.user@example.org',
-      password: '1234',
-    })
+    postAuthor = await factory.create(
+      'User',
+      {
+        id: 'id-of-another-user',
+        name: 'Another User',
+      },
+      {
+        email: 'another.user@example.org',
+        password: '1234',
+      },
+    )
   })
   afterEach(async () => {
     await factory.cleanDatabase()

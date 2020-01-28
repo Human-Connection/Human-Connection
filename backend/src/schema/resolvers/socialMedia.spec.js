@@ -2,40 +2,46 @@ import { createTestClient } from 'apollo-server-testing'
 import createServer from '../../server'
 import Factory from '../../factories'
 import { gql } from '../../helpers/jest'
-import { getNeode, getDriver } from '../../db/neo4j'
+import { getDriver } from '../../db/neo4j'
 
 const driver = getDriver()
 const factory = Factory()
-const neode = getNeode()
 
 describe('SocialMedia', () => {
   let socialMediaAction, someUser, ownerNode, owner
-
-  const ownerParams = {
-    email: 'pippi@example.com',
-    password: '1234',
-    name: 'Pippi Langstrumpf',
-  }
-
-  const userParams = {
-    email: 'kalle@example.com',
-    password: 'abcd',
-    name: 'Kalle Blomqvist',
-  }
 
   const url = 'https://twitter.com/pippi-langstrumpf'
   const newUrl = 'https://twitter.com/bullerby'
 
   const setUpSocialMedia = async () => {
-    const socialMediaNode = await neode.create('SocialMedia', { url })
+    const socialMediaNode = await factory.create('SocialMedia', { url })
     await socialMediaNode.relateTo(ownerNode, 'ownedBy')
     return socialMediaNode.toJson()
   }
 
   beforeEach(async () => {
-    const someUserNode = await neode.create('User', userParams)
+    const someUserNode = await factory.create(
+      'User',
+      {
+        name: 'Kalle Blomqvist',
+      },
+      {
+        email: 'kalle@example.com',
+        password: 'abcd',
+      },
+    )
+
     someUser = await someUserNode.toJson()
-    ownerNode = await neode.create('User', ownerParams)
+    ownerNode = await factory.create(
+      'User',
+      {
+        name: 'Pippi Langstrumpf',
+      },
+      {
+        email: 'pippi@example.com',
+        password: '1234',
+      },
+    )
     owner = await ownerNode.toJson()
 
     socialMediaAction = async (user, mutation, variables) => {

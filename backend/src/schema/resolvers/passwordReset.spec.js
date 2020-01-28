@@ -45,9 +45,13 @@ afterEach(async () => {
 describe('passwordReset', () => {
   describe('given a user', () => {
     beforeEach(async () => {
-      await factory.create('User', {
-        email: 'user@example.org',
-      })
+      await factory.create(
+        'User',
+        {},
+        {
+          email: 'user@example.org',
+        },
+      )
     })
 
     describe('requestPasswordReset', () => {
@@ -123,11 +127,16 @@ describe('resetPassword', () => {
 
   describe('given a user', () => {
     beforeEach(async () => {
-      await factory.create('User', {
-        email: 'user@example.org',
-        role: 'user',
-        password: '1234',
-      })
+      await factory.create(
+        'User',
+        {
+          role: 'user',
+        },
+        {
+          email: 'user@example.org',
+          password: '1234',
+        },
+      )
     })
 
     describe('invalid email', () => {

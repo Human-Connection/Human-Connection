@@ -65,14 +65,19 @@ describe('decode', () => {
     describe('and corresponding user in the database', () => {
       let user
       beforeEach(async () => {
-        user = await factory.create('User', {
-          role: 'user',
-          name: 'Jenny Rostock',
-          avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/sasha_shestakov/128.jpg',
-          id: 'u3',
-          email: 'user@example.org',
-          slug: 'jenny-rostock',
-        })
+        user = await factory.create(
+          'User',
+          {
+            role: 'user',
+            name: 'Jenny Rostock',
+            avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/sasha_shestakov/128.jpg',
+            id: 'u3',
+            slug: 'jenny-rostock',
+          },
+          {
+            email: 'user@example.org',
+          },
+        )
       })
 
       it('returns user object except email', async () => {

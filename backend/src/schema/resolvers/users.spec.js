@@ -37,7 +37,7 @@ afterEach(async () => {
 describe('User', () => {
   describe('query by email address', () => {
     beforeEach(async () => {
-      await factory.create('User', { name: 'Johnny', email: 'any-email-address@example.org' })
+      await factory.create('User', { name: 'Johnny' }, { email: 'any-email-address@example.org' })
     })
 
     const userQuery = gql`
@@ -57,11 +57,16 @@ describe('User', () => {
 
     describe('as admin', () => {
       beforeEach(async () => {
-        const admin = await factory.create('User', {
-          role: 'admin',
-          email: 'admin@example.org',
-          password: '1234',
-        })
+        const admin = await factory.create(
+          'User',
+          {
+            role: 'admin',
+          },
+          {
+            email: 'admin@example.org',
+            password: '1234',
+          },
+        )
         authenticatedUser = await admin.toJson()
       })
 
@@ -91,19 +96,9 @@ describe('User', () => {
 })
 
 describe('UpdateUser', () => {
-  let userParams, variables
+  let variables
 
   beforeEach(async () => {
-    userParams = {
-      email: 'user@example.org',
-      password: '1234',
-      id: 'u47',
-      name: 'John Doe',
-      termsAndConditionsAgreedVersion: null,
-      termsAndConditionsAgreedAt: null,
-      allowEmbedIframes: false,
-    }
-
     variables = {
       id: 'u47',
       name: 'John Doughnut',
@@ -133,18 +128,33 @@ describe('UpdateUser', () => {
   `
 
   beforeEach(async () => {
-    user = await factory.create('User', userParams)
+    user = await factory.create(
+      'User',
+      {
+        id: 'u47',
+        name: 'John Doe',
+        termsAndConditionsAgreedVersion: null,
+        termsAndConditionsAgreedAt: null,
+        allowEmbedIframes: false,
+      },
+      {
+        email: 'user@example.org',
+      },
+    )
   })
 
   describe('as another user', () => {
     beforeEach(async () => {
-      const someoneElseParams = {
-        email: 'someone-else@example.org',
-        password: '1234',
-        name: 'James Doe',
-      }
+      const someoneElse = await factory.create(
+        'User',
+        {
+          name: 'James Doe',
+        },
+        {
+          email: 'someone-else@example.org',
+        },
+      )
 
-      const someoneElse = await factory.create('User', someoneElseParams)
       authenticatedUser = await someoneElse.toJson()
     })
 
@@ -272,11 +282,15 @@ describe('DeleteUser', () => {
       about: 'along with my about',
       id: 'u343',
     })
-    await factory.create('User', {
-      email: 'friends-account@example.org',
-      password: '1234',
-      id: 'not-my-account',
-    })
+    await factory.create(
+      'User',
+      {
+        id: 'not-my-account',
+      },
+      {
+        email: 'friends-account@example.org',
+      },
+    )
   })
 
   describe('unauthenticated', () => {

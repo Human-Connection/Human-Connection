@@ -13,8 +13,9 @@ function createUser (slug) {
   debug(`creating user ${slug}`)
   return factory.create('User', {
     name: slug,
-    email: 'example@test.org',
+  }, {
     password: '1234'
+    email: 'example@test.org',
   })
   // await login({ email: 'example@test.org', password: '1234' })
 }
