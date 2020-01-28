@@ -328,23 +328,37 @@ describe('DeleteUser', () => {
             name: 'Democracy & Politics',
             icon: 'university',
           })
-          await factory.create('Post', {
-            id: 'p139',
-            content: 'Post by user u343',
-          }, {
-            author: user,
-            categoryIds,
-          })
-          await factory.create('Comment', {
-            author: user,
-            id: 'c155',
-            content: 'Comment by user u343',
-          })
-          await factory.create('Comment', {
-            postId: 'p139',
-            id: 'c156',
-            content: "A comment by someone else on user u343's post",
-          })
+          await factory.create(
+            'Post',
+            {
+              id: 'p139',
+              content: 'Post by user u343',
+            },
+            {
+              author: user,
+              categoryIds,
+            },
+          )
+          await factory.create(
+            'Comment',
+            {
+              id: 'c155',
+              content: 'Comment by user u343',
+            },
+            {
+              author: user,
+            },
+          )
+          await factory.create(
+            'Comment',
+            {
+              id: 'c156',
+              content: "A comment by someone else on user u343's post",
+            },
+            {
+              postId: 'p139',
+            },
+          )
         })
 
         it("deletes my account, but doesn't delete posts or comments by default", async () => {

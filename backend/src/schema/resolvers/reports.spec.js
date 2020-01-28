@@ -356,13 +356,17 @@ describe('file a report on a resource', () => {
 
         describe('reported resource is a post', () => {
           beforeEach(async () => {
-            await factory.create('Post', {
-              id: 'post-to-report-id',
-              title: 'This is a post that is going to be reported',
-            }, {
-              author: currentUser,
-              categoryIds,
-            })
+            await factory.create(
+              'Post',
+              {
+                id: 'post-to-report-id',
+                title: 'This is a post that is going to be reported',
+              },
+              {
+                author: currentUser,
+                categoryIds,
+              },
+            )
           })
 
           it('returns type "Post"', async () => {
@@ -411,20 +415,29 @@ describe('file a report on a resource', () => {
 
         describe('reported resource is a comment', () => {
           beforeEach(async () => {
-            await factory.create('Post', {
-              id: 'p1',
-              title: 'post to comment on',
-              content: 'please comment on me',
-            }, {
-              categoryIds,
-              author: currentUser
-            })
-            await factory.create('Comment', {
-              author: currentUser,
-              postId: 'p1',
-              id: 'comment-to-report-id',
-              content: 'Post comment to be reported.',
-            })
+            await factory.create(
+              'Post',
+              {
+                id: 'p1',
+                title: 'post to comment on',
+                content: 'please comment on me',
+              },
+              {
+                categoryIds,
+                author: currentUser,
+              },
+            )
+            await factory.create(
+              'Comment',
+              {
+                id: 'comment-to-report-id',
+                content: 'Post comment to be reported.',
+              },
+              {
+                author: currentUser,
+                postId: 'p1',
+              },
+            )
           })
 
           it('returns type "Comment"', async () => {
@@ -571,34 +584,51 @@ describe('file a report on a resource', () => {
       })
 
       await Promise.all([
-        factory.create('Post', {
-          id: 'abusive-post-1',
-          content: 'Interesting Knowledge',
-        }, {
-          categoryIds,
-          author: abusiveUser,
-        }),
-        factory.create('Post', {
-          id: 'post-2',
-          content: 'More things to do …',
-        }, {
-          author: moderator,
-          categoryIds,
-        }),
-        factory.create('Post', {
-          id: 'post-3',
-          content: 'I am at school …',
-        }, {
-          categoryIds,
-          author: currentUser,
-        }),
+        factory.create(
+          'Post',
+          {
+            id: 'abusive-post-1',
+            content: 'Interesting Knowledge',
+          },
+          {
+            categoryIds,
+            author: abusiveUser,
+          },
+        ),
+        factory.create(
+          'Post',
+          {
+            id: 'post-2',
+            content: 'More things to do …',
+          },
+          {
+            author: moderator,
+            categoryIds,
+          },
+        ),
+        factory.create(
+          'Post',
+          {
+            id: 'post-3',
+            content: 'I am at school …',
+          },
+          {
+            categoryIds,
+            author: currentUser,
+          },
+        ),
       ])
       await Promise.all([
-        factory.create('Comment', {
-          author: currentUser,
-          id: 'abusive-comment-1',
-          postId: 'post-1',
-        }),
+        factory.create(
+          'Comment',
+          {
+            id: 'abusive-comment-1',
+          },
+          {
+            postId: 'post-2',
+            author: currentUser,
+          },
+        ),
       ])
       authenticatedUser = await currentUser.toJson()
       await Promise.all([
