@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name:  {{ .Release.Name }}-webapp
-  namespace: human-connection
 spec:
   replicas: 2
   minReadySeconds: 15
@@ -19,8 +18,8 @@ spec:
     spec:
       containers:
       - name: webapp
-        image: humanconnection/nitro-web:latest
-        imagePullPolicy: {{ .Values.pullPolicy }}
+        image: humanconnection/nitro-web:0.2.2
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         envFrom:
         - configMapRef:
             name: {{ .Release.Name }}-configmap

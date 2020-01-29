@@ -3,7 +3,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name:  {{ .Release.Name }}-mailserver
-  namespace: human-connection
 spec:
   replicas: 1
   minReadySeconds: 15
@@ -20,7 +19,7 @@ spec:
       containers:
       - name: mailserver
         image: djfarrelly/maildev
-        imagePullPolicy: {{ .Values.pullPolicy }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         ports:
         - containerPort: 80
         - containerPort: 25

@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name:  {{ .Release.Name }}-neo4j
-  namespace: human-connection
 spec:
   replicas: 1
   strategy:
@@ -23,8 +22,8 @@ spec:
     spec:
       containers:
       - name: neo4j
-        image: humanconnection/neo4j:latest
-        imagePullPolicy: {{ .Values.pullPolicy }}
+        image: humanconnection/neo4j:0.2.2
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         ports:
         - containerPort: 7687
         - containerPort: 7474
@@ -36,12 +35,10 @@ spec:
         env:
         - name: NEO4J_dbms_security_procedures_unrestricted
           value: "algo.*,apoc.*"
-        - name: SECURE_FILE_PERMISSIONS
-          value: "yes"
           {{- range $key, $val := .Values.neo4jConfig }}
         - name: NEO4J_{{ $key }}
           value: {{ $val | quote }}
-          {{- end}}
+          {{- end }}
         envFrom:
         - configMapRef:
             name: {{ .Release.Name }}-configmap

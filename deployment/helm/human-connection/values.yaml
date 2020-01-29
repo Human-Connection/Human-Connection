@@ -1,24 +1,32 @@
 domain: develop.human-connection.org
 commit: 889a7cdd24dda04a139b2b77d626e984d6db6781
-pullPolicy: Always
 
 # configs
+application:
+  initializeCommand: "yarn prod:migrate init"
+  migrationsCommand: "yarn prod:migrate up"
 developmentMailserverDomain: "mailserver.human-connection.org"
 humanConnectionDomain: "develop.human-connection.org"
-supportEmail: "devcom@human-connection.org"
+image:
+  pullPolicy: Always
 letsencryptIssuer: "letsencrypt-prod"
-smtpHost: "mailserver.human-connection"
-smtpPort: "25"
-smtpUsername:
-smtpPassword:
-neo4jResourceRequestsMemory: "1G"
-neo4jResourceLimitsMemory: "2G"
 neo4jConfig:
   apoc_import_file_enabled: "true"
   dbms_memory_pagecache_size: "490M"
   dbms_memory_heap_max__size: "500M"
   dbms_memory_heap_initial__size: "500M"
-
+neo4jResourceLimitsMemory: "2G"
+neo4jResourceRequestsMemory: "1G"
+supportEmail: "devcom@human-connection.org"
+smtpHost: "mailserver.human-connection"
+smtpPort: "25"
+smtpUsername:
+smtpPassword:
+volumes:
+  uploads:
+    storage: 5Gi
+  neo4jData:
+    storage: 8Gi
 # secrets
 jwtSecret: "Yi8mJjdiNzhCRiZmdi9WZA=="
 privateKeyPassphrase: "YTdkc2Y3OHNhZGc4N2FkODdzZmFnc2FkZzc4"
