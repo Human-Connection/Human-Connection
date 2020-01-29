@@ -2,10 +2,7 @@
   <div class="error-container">
     <img class="error-image" :src="image" />
     <br />
-    <span v-if="error.message === 'This page could not be found'" class="error-message">
-      {{ $t('error-pages.default') }}
-    </span>
-    <span v-else class="error-message">{{ $t(error.message) }}</span>
+    <span class="error-message">{{ $t(message) }}</span>
     <br />
     <nuxt-link to="/">{{ $t('error-pages.back-to-index') }}</nuxt-link>
   </div>
