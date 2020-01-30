@@ -435,8 +435,8 @@
       "name": "Take action"
     },
     "menu": {
-      "edit": "Edit Post",
-      "delete": "Delete Post",
+      "edit": "Edit post",
+      "delete": "Delete post",
       "pin": "Pin post",
       "pinnedSuccessfully": "Post pinned successfully!",
       "unpin": "Unpin post",

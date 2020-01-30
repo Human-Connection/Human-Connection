@@ -1,5 +1,5 @@
-import Factory from '../seed/factories/index'
-import { getDriver, getNeode } from '../bootstrap/neo4j'
+import Factory from '../factories/index'
+import { getDriver, getNeode } from '../db/neo4j'
 import decode from './decode'
 
 const factory = Factory()

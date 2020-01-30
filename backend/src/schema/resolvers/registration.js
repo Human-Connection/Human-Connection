@@ -1,5 +1,5 @@
 import { UserInputError } from 'apollo-server'
-import { getNeode } from '../../bootstrap/neo4j'
+import { getNeode } from '../../db/neo4j'
 import fileUpload from './fileUpload'
 import encryptPassword from '../../helpers/encryptPassword'
 import generateNonce from './helpers/generateNonce'

@@ -1,5 +1,5 @@
 export default {
-  email: { type: 'string', primary: true, lowercase: true, email: true },
+  email: { type: 'string', lowercase: true, email: true },
   createdAt: { type: 'string', isoDate: true, default: () => new Date().toISOString() },
   nonce: { type: 'string', token: true },
   belongsTo: {

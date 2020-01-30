@@ -1,4 +1,4 @@
-import { getDriver, getNeode } from '../../bootstrap/neo4j'
+import { getDriver, getNeode } from '../db/neo4j'
 
 const factories = {
   Badge: require('./badges.js').default,
