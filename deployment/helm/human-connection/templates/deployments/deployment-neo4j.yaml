@@ -23,7 +23,7 @@ spec:
       containers:
       - name: neo4j
         image: humanconnection/neo4j:0.2.2
-        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        imagePullPolicy: {{ .Values.pullPolicy }}
         ports:
         - containerPort: 7687
         - containerPort: 7474
@@ -32,13 +32,6 @@ spec:
             memory: {{ .Values.neo4jResourceRequestsMemory | default "1G" | quote }}
           limits:
             memory: {{ .Values.neo4jResourceLimitsMemory | default "1G" | quote }}
-        env:
-        - name: NEO4J_dbms_security_procedures_unrestricted
-          value: "algo.*,apoc.*"
-          {{- range $key, $val := .Values.neo4jConfig }}
-        - name: NEO4J_{{ $key }}
-          value: {{ $val | quote }}
-          {{- end }}
         envFrom:
         - configMapRef:
             name: {{ .Release.Name }}-configmap

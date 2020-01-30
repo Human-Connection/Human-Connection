@@ -15,7 +15,7 @@ spec:
       containers:
       - name: db-migrations-job
         image: humanconnection/nitro-backend:latest
-        command: ["/bin/sh", "-c", "{{ .Values.application.migrationsCommand }}"]
+        command: ["/bin/sh", "-c", "{{ .Values.dbMigrations }}"]
         envFrom:
           - configMapRef:
               name: {{ .Release.Name }}-configmap
