@@ -26,10 +26,6 @@ spec:
       - name: backend
         image: humanconnection/nitro-backend:latest
         imagePullPolicy: {{ .Values.image.pullPolicy }}
-        lifecycle:
-          postStart:
-            exec:
-              command: ["/bin/sh", "-c", "{{ .Values.application.initializeCommand }}", "&&", "{{ .Values.application.migrationsCommand }}"]
         envFrom:
         - configMapRef:
             name: {{ .Release.Name }}-configmap
