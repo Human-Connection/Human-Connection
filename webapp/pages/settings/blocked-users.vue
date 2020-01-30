@@ -1,22 +1,25 @@
 <template>
   <div>
     <ds-space>
-      <ds-card :header="$t('settings.muted-users.name')">
+      <ds-card :header="$t('settings.blocked-users.name')">
         <ds-text>
-          {{ $t('settings.muted-users.explanation.intro') }}
+          {{ $t('settings.blocked-users.explanation.intro') }}
         </ds-text>
         <ds-list>
           <ds-list-item>
-            {{ $t('settings.muted-users.explanation.your-perspective') }}
+            {{ $t('settings.blocked-users.explanation.your-perspective') }}
           </ds-list-item>
           <ds-list-item>
-            {{ $t('settings.muted-users.explanation.search') }}
+            {{ $t('settings.blocked-users.explanation.their-perspective') }}
+          </ds-list-item>
+          <ds-list-item>
+            {{ $t('settings.blocked-users.explanation.notifications') }}
           </ds-list-item>
         </ds-list>
       </ds-card>
     </ds-space>
-    <ds-card v-if="mutedUsers && mutedUsers.length">
-      <ds-table :data="mutedUsers" :fields="fields" condensed>
+    <ds-card v-if="blockedUsers && blockedUsers.length">
+      <ds-table :data="blockedUsers" :fields="fields" condensed>
         <template #avatar="scope">
           <nuxt-link
             :to="{
@@ -48,20 +51,20 @@
           </nuxt-link>
         </template>
 
-        <template #unmuteUser="scope">
-          <base-button circle size="small" @click="unmuteUser(scope)" icon="user-plus" />
+        <template #unblockUser="scope">
+          <base-button circle size="small" @click="unblockUser(scope)" icon="user-plus" />
         </template>
       </ds-table>
     </ds-card>
     <ds-card v-else>
       <ds-space>
         <ds-placeholder>
-          {{ $t('settings.muted-users.empty') }}
+          {{ $t('settings.blocked-users.empty') }}
         </ds-placeholder>
       </ds-space>
       <ds-space>
         <ds-text align="center">
-          {{ $t('settings.muted-users.how-to') }}
+          {{ $t('settings.blocked-users.how-to') }}
         </ds-text>
       </ds-space>
     </ds-card>
@@ -69,7 +72,7 @@
 </template>
 
 <script>
-import { mutedUsers, unmuteUser } from '~/graphql/settings/MutedUsers'
+import { blockedUsers, unblockUser } from '~/graphql/settings/BlockedUsers'
 import UserAvatar from '~/components/_new/generic/UserAvatar/UserAvatar'
 
 export default {
@@ -78,31 +81,31 @@ export default {
   },
   data() {
     return {
-      mutedUsers: [],
+      blockedUsers: [],
     }
   },
   computed: {
     fields() {
       return {
         avatar: '',
-        name: this.$t('settings.muted-users.columns.name'),
-        slug: this.$t('settings.muted-users.columns.slug'),
-        unmuteUser: this.$t('settings.muted-users.columns.unmute'),
+        name: this.$t('settings.blocked-users.columns.name'),
+        slug: this.$t('settings.blocked-users.columns.slug'),
+        unblockUser: this.$t('settings.blocked-users.columns.unblock'),
       }
     },
   },
   apollo: {
-    mutedUsers: { query: mutedUsers, fetchPolicy: 'cache-and-network' },
+    blockedUsers: { query: blockedUsers, fetchPolicy: 'cache-and-network' },
   },
   methods: {
-    async unmuteUser(user) {
+    async unblockUser(user) {
       await this.$apollo.mutate({
-        mutation: unmuteUser(),
+        mutation: unblockUser(),
         variables: { id: user.row.id },
       })
-      this.$apollo.queries.mutedUsers.refetch()
+      this.$apollo.queries.blockedUsers.refetch()
       const { name } = user.row
-      this.$toast.success(this.$t('settings.muted-users.unmuted', { name }))
+      this.$toast.success(this.$t('settings.blocked-user.unblocked', { name }))
     },
   },
 }

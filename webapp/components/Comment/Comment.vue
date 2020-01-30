@@ -33,7 +33,7 @@
         </client-only>
       </ds-space>
       <div v-if="openEditCommentMenu">
-        <hc-comment-form
+        <comment-form
           :update="true"
           :post="post"
           :comment="comment"
@@ -64,7 +64,7 @@ import { COMMENT_MAX_UNTRUNCATED_LENGTH, COMMENT_TRUNCATE_TO_LENGTH } from '~/co
 import UserTeaser from '~/components/UserTeaser/UserTeaser'
 import ContentMenu from '~/components/ContentMenu/ContentMenu'
 import ContentViewer from '~/components/Editor/ContentViewer'
-import HcCommentForm from '~/components/CommentForm/CommentForm'
+import CommentForm from '~/components/CommentForm/CommentForm'
 import CommentMutations from '~/graphql/CommentMutations'
 import scrollToAnchor from '~/mixins/scrollToAnchor.js'
 
@@ -85,7 +85,7 @@ export default {
     UserTeaser,
     ContentMenu,
     ContentViewer,
-    HcCommentForm,
+    CommentForm,
   },
   props: {
     routeHash: { type: String, default: () => '' },

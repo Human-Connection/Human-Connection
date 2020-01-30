@@ -24,6 +24,8 @@
               class="user-content-menu"
               @mute="muteUser"
               @unmute="unmuteUser"
+              @block="blockUser"
+              @unblock="unblockUser"
             />
           </client-only>
           <ds-space margin="small">
@@ -64,20 +66,21 @@
               </client-only>
             </ds-flex-item>
           </ds-flex>
-          <ds-space margin="small">
-            <template v-if="!myProfile">
-              <hc-follow-button
-                v-if="!user.isMuted"
-                :follow-id="user.id"
-                :is-followed="user.followedByCurrentUser"
-                @optimistic="optimisticFollow"
-                @update="updateFollow"
-              />
-              <base-button v-else @click="unmuteUser(user)" class="unblock-user-button">
-                {{ $t('settings.muted-users.unmute') }}
-              </base-button>
-            </template>
-          </ds-space>
+          <div v-if="!myProfile" class="action-buttons">
+            <base-button v-if="user.blocked" @click="unblockUser(user)">
+              {{ $t('settings.blocked-users.unblock') }}
+            </base-button>
+            <base-button v-if="user.isMuted" @click="unmuteUser(user)">
+              {{ $t('settings.muted-users.unmute') }}
+            </base-button>
+            <hc-follow-button
+              v-if="!(user.blocked || user.isMuted)"
+              :follow-id="user.id"
+              :is-followed="user.followedByCurrentUser"
+              @optimistic="optimisticFollow"
+              @update="updateFollow"
+            />
+          </div>
           <template v-if="user.about">
             <hr />
             <ds-space margin-top="small" margin-bottom="small">
@@ -285,6 +288,7 @@ import MasonryGridItem from '~/components/MasonryGrid/MasonryGridItem.vue'
 import { profilePagePosts } from '~/graphql/PostQuery'
 import UserQuery from '~/graphql/User'
 import { muteUser, unmuteUser } from '~/graphql/settings/MutedUsers'
+import { blockUser, unblockUser } from '~/graphql/settings/BlockedUsers'
 import PostMutations from '~/graphql/PostMutations'
 import UpdateQuery from '~/components/utils/UpdateQuery'
 
@@ -415,6 +419,24 @@ export default {
         this.$apollo.queries.User.refetch()
         this.resetPostList()
         this.$apollo.queries.profilePagePosts.refetch()
+      }
+    },
+    async blockUser(user) {
+      try {
+        await this.$apollo.mutate({ mutation: blockUser(), variables: { id: user.id } })
+      } catch (error) {
+        this.$toast.error(error.message)
+      } finally {
+        this.$apollo.queries.User.refetch()
+      }
+    },
+    async unblockUser(user) {
+      try {
+        this.$apollo.mutate({ mutation: unblockUser(), variables: { id: user.id } })
+      } catch (error) {
+        this.$toast.error(error.message)
+      } finally {
+        this.$apollo.queries.User.refetch()
       }
     },
     pinPost(post) {
@@ -559,8 +581,13 @@ export default {
 .profile-post-add-button {
   box-shadow: $box-shadow-x-large;
 }
-.unblock-user-button {
-  display: block;
-  width: 100%;
+.action-buttons {
+  margin: $space-small 0;
+
+  > .base-button {
+    display: block;
+    width: 100%;
+    margin-bottom: $space-x-small;
+  }
 }
 </style>
