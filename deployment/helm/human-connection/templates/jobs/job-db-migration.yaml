@@ -10,7 +10,7 @@ metadata:
     helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
   annotations:
     "helm.sh/hook": post-upgrade
-    "helm.sh/hook-weight": "0"
+    "helm.sh/hook-weight": "5"
     "helm.sh/hook-delete-policy": hook-succeeded, hook-failed
 spec:
   template:
@@ -20,7 +20,7 @@ spec:
       restartPolicy: Never
       containers:
       - name: db-migrations-job
-        image: "{{ .Values.backendImage }}:{{ .Chart.AppVersion }}"
+        image: "{{ .Values.backendImage }}:latest"
         command: ["/bin/sh", "-c", "{{ .Values.dbMigrations }}"]
         envFrom:
           - configMapRef:
