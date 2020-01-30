@@ -91,7 +91,7 @@
         />
         <ds-space margin-bottom="large" />
         <comment-form
-          v-if="showNewCommentForm && !post.author.isBlocked"
+          v-if="showNewCommentForm && !post.author.blocked"
           :post="post"
           @createComment="createComment"
         />
@@ -99,7 +99,7 @@
           {{ $t('settings.blocked-users.explanation.commenting-disabled') }}
           <br />
           {{ $t('settings.blocked-users.explanation.commenting-explanation') }}
-          <a href="https://support.human-connection.org/kb/">FAQ</a>
+          <a href="https://support.human-connection.org/kb/" target="_blank">FAQ</a>
         </ds-placeholder>
       </ds-section>
     </ds-card>

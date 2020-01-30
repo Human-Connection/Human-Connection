@@ -22,7 +22,7 @@ export const blockUser = () => {
       blockUser(id: $id) {
         id
         name
-        isBlocked
+        blocked
         followedByCurrentUser
       }
     }
@@ -35,7 +35,7 @@ export const unblockUser = () => {
       unblockUser(id: $id) {
         id
         name
-        isBlocked
+        blocked
         followedByCurrentUser
       }
     }

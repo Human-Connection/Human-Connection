@@ -161,7 +161,7 @@ export default {
               callback: () => {
                 this.$emit('unmute', this.resource)
               },
-              icon: 'user-plus',
+              icon: 'eye',
             })
           } else {
             routes.push({
@@ -169,10 +169,10 @@ export default {
               callback: () => {
                 this.$emit('mute', this.resource)
               },
-              icon: 'user-times',
+              icon: 'eye-slash',
             })
           }
-          if (this.resource.isBlocked) {
+          if (this.resource.blocked) {
             routes.push({
               label: this.$t(`settings.blocked-users.unblock`),
               callback: () => {

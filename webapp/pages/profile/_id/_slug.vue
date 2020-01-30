@@ -66,27 +66,21 @@
               </client-only>
             </ds-flex-item>
           </ds-flex>
-          <ds-space margin="small">
-            <template v-if="!myProfile">
-              <base-button
-                v-if="user.isBlocked"
-                @click="unblockUser(user)"
-                class="unblock-user-button"
-              >
-                {{ $t('settings.blocked-users.unblock') }}
-              </base-button>
-              <base-button v-if="user.isMuted" @click="unmuteUser(user)" class="unmute-user-button">
-                {{ $t('settings.muted-users.unmute') }}
-              </base-button>
-              <hc-follow-button
-                v-if="!(user.isBlocked || user.isMuted)"
-                :follow-id="user.id"
-                :is-followed="user.followedByCurrentUser"
-                @optimistic="optimisticFollow"
-                @update="updateFollow"
-              />
-            </template>
-          </ds-space>
+          <div v-if="!myProfile" class="action-buttons">
+            <base-button v-if="user.blocked" @click="unblockUser(user)">
+              {{ $t('settings.blocked-users.unblock') }}
+            </base-button>
+            <base-button v-if="user.isMuted" @click="unmuteUser(user)">
+              {{ $t('settings.muted-users.unmute') }}
+            </base-button>
+            <hc-follow-button
+              v-if="!(user.blocked || user.isMuted)"
+              :follow-id="user.id"
+              :is-followed="user.followedByCurrentUser"
+              @optimistic="optimisticFollow"
+              @update="updateFollow"
+            />
+          </div>
           <template v-if="user.about">
             <hr />
             <ds-space margin-top="small" margin-bottom="small">
@@ -587,10 +581,13 @@ export default {
 .profile-post-add-button {
   box-shadow: $box-shadow-x-large;
 }
-.unblock-user-button,
-.unmute-user-button {
-  display: block;
-  width: 100%;
-  margin-bottom: $space-x-small;
+.action-buttons {
+  margin: $space-small 0;
+
+  > .base-button {
+    display: block;
+    width: 100%;
+    margin-bottom: $space-x-small;
+  }
 }
 </style>
