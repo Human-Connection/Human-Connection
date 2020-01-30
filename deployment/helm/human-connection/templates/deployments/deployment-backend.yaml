@@ -30,8 +30,8 @@ spec:
     spec:
       containers:
       - name: backend
-        image: humanconnection/nitro-backend:latest
-        imagePullPolicy: {{ .Values.pullPolicy }}
+        image: "{{ .Values.backendImage }}:{{ .Chart.AppVersion }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         envFrom:
         - configMapRef:
             name: {{ .Release.Name }}-configmap

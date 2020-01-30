@@ -20,7 +20,7 @@ spec:
       restartPolicy: Never
       containers:
       - name: db-migrations-job
-        image: humanconnection/nitro-backend:latest
+        image: "{{ .Values.backendImage }}:{{ .Chart.AppVersion }}"
         command: ["/bin/sh", "-c", "{{ .Values.dbMigrations }}"]
         envFrom:
           - configMapRef:

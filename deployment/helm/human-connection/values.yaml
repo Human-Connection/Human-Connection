@@ -6,8 +6,18 @@ commit: 889a7cdd24dda04a139b2b77d626e984d6db6781
 dbInitializion: "yarn prod:migrate init"
 # dbMigrations runs the database migrations in a post-upgrade hook.
 dbMigrations: "yarn prod:migrate up"
-# pullPolicy indicates when, if ever, pods pull a new image from docker hub.
-pullPolicy: Always
+# bakendImage is the docker image for the backend deployment
+backendImage: humanconnection/nitro-backend
+# maintenanceImage is the docker image for the maintenance deployment
+maintenanceImage: humanconnection/maintenance
+# neo4jImage is the docker image for the neo4j deployment
+neo4jImage: humanconnection/neo4j
+# webappImage is the docker image for the webapp deployment
+webappImage: humanconnection/nitro-web
+# image configures pullPolicy related to the docker images
+image:
+  # pullPolicy indicates when, if ever, pods pull a new image from docker hub.
+  pullPolicy: IfNotPresent
 # letsencryptIssuer is used by cert-manager to set up certificates with the given provider.
 letsencryptIssuer: "letsencrypt-prod"
 # neo4jConfig changes any default neo4j config/adds it.

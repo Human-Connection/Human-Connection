@@ -24,7 +24,7 @@ spec:
           env:
             - name: HOST
               value: 0.0.0.0
-          image: humanconnection/maintenance:latest
+          image: "{{ .Values.maintenanceImage }}:{{ .Chart.AppVersion }}"
           ports:
             - containerPort: 80
           imagePullPolicy: Always

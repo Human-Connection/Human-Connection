@@ -25,7 +25,7 @@ spec:
       containers:
       - name: webapp
         image: humanconnection/nitro-web:0.2.2
-        imagePullPolicy: {{ .Values.pullPolicy }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         envFrom:
         - configMapRef:
             name: {{ .Release.Name }}-configmap

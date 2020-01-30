@@ -28,8 +28,8 @@ spec:
     spec:
       containers:
       - name: neo4j
-        image: humanconnection/neo4j:0.2.2
-        imagePullPolicy: {{ .Values.pullPolicy }}
+        image: "{{ .Values.neo4jImage }}:{{ .Chart.AppVersion }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         ports:
         - containerPort: 7687
         - containerPort: 7474

@@ -25,7 +25,7 @@ spec:
       containers:
       - name: mailserver
         image: djfarrelly/maildev
-        imagePullPolicy: {{ .Values.pullPolicy }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         ports:
         - containerPort: 80
         - containerPort: 25
