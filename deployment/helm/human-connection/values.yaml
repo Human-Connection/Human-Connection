@@ -23,9 +23,9 @@ letsencryptIssuer: "letsencrypt-prod"
 # neo4jConfig changes any default neo4j config/adds it.
 neo4jConfig:
   # acceptLicenseAgreement is used to agree to the license agreement for neo4j's enterprise edition.
-  acceptLicenseAgreement: "yes"
+  acceptLicenseAgreement: \"yes\"
   # apocImportFileEnabled enables the import of files to neo4j using the plugin apoc 
-  apocImportFileEnabled: "true"
+  apocImportFileEnabled: \"true\"
   # dbmsMemoryHeapInitialSize configures initial heap size. By default, it is calculated based on available system resources.(valid units are `k`, `K`, `m`, `M`, `g`, `G`)
   dbmsMemoryHeapInitialSize: "500M"
   # dbmsMemoryHeapMaxSize configures maximum heap size. By default it is calculated based on available system resources.(valid units are `k`, `K`, `m`, `M`, `g`, `G`)
@@ -39,9 +39,9 @@ neo4jResourceRequestsMemory: "1G"
 # supportEmail is used for letsencrypt certs.
 supportEmail: "devcom@human-connection.org"
 # smtpHost is the host for the mailserver.
-smtpHost: "mailserver.human-connection"
+smtpHost: "mailserver.human-connection.org"
 # smtpPort is the port to be used for the mailserver.
-smtpPort: "25"
+smtpPort: \"25\"
 # jwtSecret is used to encode/decode a user's JWT for authentication
 jwtSecret: "Yi8mJjdiNzhCRiZmdi9WZA=="
 # privateKeyPassphrase is used for activity pub
