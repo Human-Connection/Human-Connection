@@ -279,8 +279,9 @@
         },
         "comment": {
             "submit": "Kommentiere",
-            "submitted": "Kommentar gesendet",
-            "updated": "Änderungen gespeichert"
+            "submitted": "Kommentar gesendet!",
+            "updated": "Änderungen gespeichert",
+            "reply": "Antworten"
         },
         "edited": "bearbeitet"
     },

@@ -84,14 +84,16 @@
       </ds-space>
       <!-- Comments -->
       <ds-section slot="footer">
-        <hc-comment-list
+        <comment-list
           :post="post"
           :routeHash="$route.hash"
           @toggleNewCommentForm="toggleNewCommentForm"
+          @reply="reply"
         />
         <ds-space margin-bottom="large" />
         <comment-form
           v-if="showNewCommentForm && !post.author.blocked"
+          ref="commentForm"
           :post="post"
           @createComment="createComment"
         />
@@ -114,7 +116,7 @@ import ContentMenu from '~/components/ContentMenu/ContentMenu'
 import UserTeaser from '~/components/UserTeaser/UserTeaser'
 import HcShoutButton from '~/components/ShoutButton.vue'
 import CommentForm from '~/components/CommentForm/CommentForm'
-import HcCommentList from '~/components/CommentList/CommentList'
+import CommentList from '~/components/CommentList/CommentList'
 import { postMenuModalsData, deletePostMutation } from '~/components/utils/PostHelpers'
 import PostQuery from '~/graphql/PostQuery'
 import HcEmotions from '~/components/Emotions/Emotions'
@@ -133,7 +135,7 @@ export default {
     HcShoutButton,
     ContentMenu,
     CommentForm,
-    HcCommentList,
+    CommentList,
     HcEmotions,
     ContentViewer,
   },
@@ -170,6 +172,9 @@ export default {
     },
   },
   methods: {
+    reply(message) {
+      this.$refs.commentForm && this.$refs.commentForm.reply(message)
+    },
     isAuthor(id) {
       return this.$store.getters['auth/user'].id === id
     },

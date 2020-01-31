@@ -54,6 +54,15 @@
         </button>
       </div>
       <ds-space margin-bottom="small" />
+      <base-button
+        :title="this.$t('post.comment.reply')"
+        icon="level-down"
+        class="reply-button"
+        circle
+        size="small"
+        v-scroll-to="'.editor'"
+        @click.prevent="reply"
+      ></base-button>
     </ds-card>
   </div>
 </template>
@@ -67,6 +76,7 @@ import ContentViewer from '~/components/Editor/ContentViewer'
 import CommentForm from '~/components/CommentForm/CommentForm'
 import CommentMutations from '~/graphql/CommentMutations'
 import scrollToAnchor from '~/mixins/scrollToAnchor.js'
+import BaseButton from '~/components/_new/generic/BaseButton/BaseButton'
 
 export default {
   mixins: [scrollToAnchor],
@@ -86,6 +96,7 @@ export default {
     ContentMenu,
     ContentViewer,
     CommentForm,
+    BaseButton,
   },
   props: {
     routeHash: { type: String, default: () => '' },
@@ -105,7 +116,6 @@ export default {
       if (this.isLongComment && this.isCollapsed) {
         return this.$filters.truncate(this.comment.content, COMMENT_TRUNCATE_TO_LENGTH)
       }
-
       return this.comment.content
     },
     displaysComment() {
@@ -141,6 +151,10 @@ export default {
     },
   },
   methods: {
+    reply() {
+      const message = { slug: this.comment.author.slug, id: this.comment.author.id }
+      this.$emit('reply', message)
+    },
     checkAnchor(anchor) {
       return `#${this.anchor}` === anchor
     },
@@ -191,6 +205,14 @@ export default {
 
 .float-right {
   float: right;
+}
+
+.reply-button {
+  float: right;
+  top: 0px;
+}
+.reply-button:after {
+  clear: both;
 }
 
 @keyframes highlight {

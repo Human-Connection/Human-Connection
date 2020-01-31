@@ -55,7 +55,19 @@ export default function create() {
       if (authorId) author = await neodeInstance.find('User', authorId)
       author = author || (await factoryInstance.create('User'))
       const post = await neodeInstance.create('Post', args)
+
+      const { commentContent } = args
+      let comment
+      delete args.commentContent
+      if (commentContent)
+        comment = await factoryInstance.create('Comment', {
+          contentExcerpt: commentContent,
+          post,
+          author,
+        })
+
       await post.relateTo(author, 'author')
+      if (comment) await post.relateTo(comment, 'comments')
 
       if (args.pinned) {
         args.pinnedAt = args.pinnedAt || new Date().toISOString()
