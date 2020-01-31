@@ -57,11 +57,11 @@
       <base-button
         :title="this.$t('post.comment.reply')"
         icon="level-down"
-        @click.prevent="reply"
-        v-scroll-to="'.editor'"
-        circle
         class="reply-button"
+        circle
         size="small"
+        v-scroll-to="'.editor'"
+        @click.prevent="reply"
       ></base-button>
     </ds-card>
   </div>

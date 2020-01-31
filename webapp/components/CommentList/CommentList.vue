@@ -7,16 +7,16 @@
     <ds-space margin-bottom="large" />
     <div v-if="post.comments && post.comments.length" id="comments" class="comments">
       <comment
-        @reply="reply"
         v-for="comment in post.comments"
         :key="comment.id"
         :comment="comment"
         :post="post"
         :routeHash="routeHash"
+        class="comment-tag"
         @deleteComment="updateCommentList"
         @updateComment="updateCommentList"
         @toggleNewCommentForm="toggleNewCommentForm"
-        class="comment-tag"
+        @reply="reply"
       />
     </div>
   </div>
