@@ -77,12 +77,18 @@ export default {
     relationship: 'BLOCKED',
     target: 'User',
     direction: 'out',
+    properties: {
+      createdAt: { type: 'string', isoDate: true, default: () => new Date().toISOString() },
+    },
   },
   muted: {
     type: 'relationship',
     relationship: 'MUTED',
     target: 'User',
     direction: 'out',
+    properties: {
+      createdAt: { type: 'string', isoDate: true, default: () => new Date().toISOString() },
+    },
   },
   notifications: {
     type: 'relationship',

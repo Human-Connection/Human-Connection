@@ -71,7 +71,7 @@ export default {
   },
   computed: {
     emptyText() {
-      return this.isActive && !this.pending ? this.$t('search.failed') : this.$t('search.hint')
+      return this.isActive && !this.loading ? this.$t('search.failed') : this.$t('search.hint')
     },
     isActive() {
       return !isEmpty(this.previousSearchTerm)
@@ -104,7 +104,7 @@ export default {
      */
     onEnter(event) {
       clearTimeout(this.searchProcess)
-      if (!this.pending) {
+      if (!this.loading) {
         this.previousSearchTerm = this.unprocessedSearchInput
         this.$emit('query', this.unprocessedSearchInput)
       }

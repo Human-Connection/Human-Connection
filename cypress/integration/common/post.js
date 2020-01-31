@@ -23,7 +23,7 @@ Then("I click on the reply button", () => {
 });
 
 Then("my comment should be successfully created", () => {
-  cy.get(".iziToast-message").contains("Comment Submitted");
+  cy.get(".iziToast-message").contains("Comment submitted!");
 });
 
 Then("I should see my comment", () => {

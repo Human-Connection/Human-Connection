@@ -92,11 +92,17 @@
         />
         <ds-space margin-bottom="large" />
         <comment-form
+          v-if="showNewCommentForm && !post.author.blocked"
           ref="commentForm"
-          v-if="showNewCommentForm"
           :post="post"
           @createComment="createComment"
         />
+        <ds-placeholder v-else>
+          {{ $t('settings.blocked-users.explanation.commenting-disabled') }}
+          <br />
+          {{ $t('settings.blocked-users.explanation.commenting-explanation') }}
+          <a href="https://support.human-connection.org/kb/" target="_blank">FAQ</a>
+        </ds-placeholder>
       </ds-section>
     </ds-card>
   </transition>
@@ -145,6 +151,8 @@ export default {
       title: 'loading',
       showNewCommentForm: true,
       blurred: false,
+      blocked: null,
+      postAuthor: null,
     }
   },
   mounted() {
@@ -222,6 +230,7 @@ export default {
         this.post = Post[0] || {}
         this.title = this.post.title
         this.blurred = this.post.imageBlurred
+        this.postAuthor = this.post.author
       },
       fetchPolicy: 'cache-and-network',
     },
