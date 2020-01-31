@@ -422,8 +422,8 @@
     },
     "comment": {
       "submit": "Comment",
-      "submitted": "Comment Submitted",
-      "updated": "Changes Saved",
+      "submitted": "Comment submitted!",
+      "updated": "Changes saved!",
       "reply": "Reply"
     },
     "edited": "edited"
