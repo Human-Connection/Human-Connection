@@ -2,7 +2,7 @@ import faker from 'faker'
 import sample from 'lodash/sample'
 import { createTestClient } from 'apollo-server-testing'
 import createServer from '../server'
-import Factory from '../factories'
+import Factory from '../db/factories'
 import { getNeode, getDriver } from '../db/neo4j'
 import { gql } from '../helpers/jest'
 

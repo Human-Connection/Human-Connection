@@ -1,6 +1,6 @@
 // features/support/steps.js
 import { Given, When, Then, After, AfterAll } from 'cucumber'
-import Factory, { cleanDatabase } from '../../backend/src/factories'
+import Factory, { cleanDatabase } from '../../backend/src/db/factories'
 import dotenv from 'dotenv'
 import expect from 'expect'
 

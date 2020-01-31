@@ -3,7 +3,7 @@ import { Given, When, Then, AfterAll } from 'cucumber'
 import { expect } from 'chai'
 // import { client } from '../../../src/activitypub/apollo-client'
 import { GraphQLClient } from 'graphql-request'
-import Factory from '../../../src/factories'
+import Factory from '../../../src/db/factories'
 const debug = require('debug')('ea:test:steps')
 
 const client = new GraphQLClient(host)

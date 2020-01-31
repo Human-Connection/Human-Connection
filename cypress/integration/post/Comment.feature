@@ -4,10 +4,13 @@ Feature: Post Comment
   To be able to express my thoughts and emotions about these, discuss, and add give further information.
 
   Background:
-    Given we have the following posts in our database:
-      | id         | title                                         | slug       |
-      | bWBjpkTKZp | 101 Essays that will change the way you think | 101-essays |
-    And I have a user account
+    Given I have a user account
+    And we have the following posts in our database:
+      | id         | title                                         | slug       | authorId        |
+      | bWBjpkTKZp | 101 Essays that will change the way you think | 101-essays | id-of-peter-pan |
+    And we have the following comments in our database:
+      | postId     | content                | authorId        |
+      | bWBjpkTKZp | @peter-pan reply to me | id-of-peter-pan |
     And I am logged in
 
   Scenario: Comment creation
@@ -36,3 +39,8 @@ Feature: Post Comment
     Then my comment should be successfully created
     And I should see an abreviated version of my comment
     And the editor should be cleared
+
+  Scenario: Direct reply to Comment
+    Given I visit "post/bWBjpkTKZp/101-essays"
+    And I click on the reply button
+    Then it should create a mention in the CommentForm

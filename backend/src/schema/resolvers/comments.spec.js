@@ -1,4 +1,4 @@
-import Factory, { cleanDatabase } from '../../factories'
+import Factory, { cleanDatabase } from '../../db/factories'
 import { gql } from '../../helpers/jest'
 import { createTestClient } from 'apollo-server-testing'
 import createServer from '../../server'

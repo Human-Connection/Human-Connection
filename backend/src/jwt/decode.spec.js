@@ -1,4 +1,4 @@
-import Factory, { cleanDatabase } from '../factories'
+import Factory, { cleanDatabase } from '../db/factories'
 import { getDriver, getNeode } from '../db/neo4j'
 import decode from './decode'
 

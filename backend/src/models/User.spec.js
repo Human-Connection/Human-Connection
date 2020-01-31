@@ -1,4 +1,4 @@
-import { cleanDatabase } from '../factories'
+import { cleanDatabase } from '../db/factories'
 import { getNeode } from '../db/neo4j'
 
 const neode = getNeode()

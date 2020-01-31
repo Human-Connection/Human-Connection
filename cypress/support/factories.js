@@ -1,4 +1,4 @@
-import Factory, { cleanDatabase } from '../../backend/src/factories'
+import Factory, { cleanDatabase } from '../../backend/src/db/factories'
 import { getDriver, getNeode } from '../../backend/src/db/neo4j'
 
 const neo4jConfigs = {
@@ -6,10 +6,7 @@ const neo4jConfigs = {
   username: Cypress.env('NEO4J_USERNAME'),
   password: Cypress.env('NEO4J_PASSWORD')
 }
-const neo4jDriver = getDriver(neo4jConfigs)
 const neodeInstance = getNeode(neo4jConfigs)
-const factoryOptions = { neo4jDriver, neodeInstance }
-const factory = Factory(factoryOptions)
 
 beforeEach(async () => {
   await cleanDatabase()
@@ -18,6 +15,7 @@ beforeEach(async () => {
 Cypress.Commands.add('neode', () => {
   return neodeInstance
 })
+
 Cypress.Commands.add(
   'first',
   { prevSubject: true },
@@ -33,15 +31,13 @@ Cypress.Commands.add(
   }
 )
 
-Cypress.Commands.add('factory', () => {
-  return Factory(factoryOptions)
-})
+Cypress.Commands.add('factory', () => Factory)
 
 Cypress.Commands.add(
   'build',
   { prevSubject: true },
   async (factory, name, atrributes, options) => {
-    await Factory.build(name, atrributes, options)
+    await factory.build(name, atrributes, options)
     return factory
   }
 )

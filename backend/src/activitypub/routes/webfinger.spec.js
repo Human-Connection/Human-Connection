@@ -1,5 +1,5 @@
 import { handler } from './webfinger'
-import Factory, { cleanDatabase } from '../../factories'
+import Factory, { cleanDatabase } from '../../db/factories'
 import { getDriver } from '../../db/neo4j'
 
 let resource, res, json, status, contentType

@@ -3,7 +3,7 @@ import faker from 'faker'
 import slugify from 'slug'
 import { hashSync } from 'bcryptjs'
 import { Factory } from 'rosie'
-import { getDriver, getNeode } from './db/neo4j'
+import { getDriver, getNeode } from './neo4j'
 
 const neode = getNeode()
 
@@ -26,8 +26,8 @@ export const cleanDatabase = async (options = {}) => {
 
 Factory.define('category')
   .attr('id', uuid)
-  .attr('icon', 'img/badges/fundraisingbox_de_airship.svg')
-  .attr('name', 'Some category name')
+  .attr('icon', 'globe')
+  .attr('name', 'global-peace-nonviolence')
   .after((buildObject, options) => {
     return neode.create('Category', buildObject)
   })

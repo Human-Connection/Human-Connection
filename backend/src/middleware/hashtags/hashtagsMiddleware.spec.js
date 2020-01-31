@@ -1,5 +1,5 @@
 import { gql } from '../../helpers/jest'
-import { cleanDatabase } from '../../factories'
+import { cleanDatabase } from '../../db/factories'
 import { createTestClient } from 'apollo-server-testing'
 import { getNeode, getDriver } from '../../db/neo4j'
 import createServer from '../../server'
