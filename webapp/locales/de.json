@@ -70,6 +70,11 @@
                 "passwordStrength4": "Sehr sicheres Passwort"
             }
         },
+        "privacy": {
+          "name": "Privatsphäre",
+          "make-shouts-public": "Teile von mir empfohlene Artikel öffentlich auf meinem Profil",
+          "success-update": "Privatsphäre-Einstellungen gespeichert"
+        },
         "invites": {
             "name": "Einladungen"
         },
@@ -143,27 +148,44 @@
             "successDelete": "Social-Media gelöscht. Profil aktualisiert!"
         },
         "muted-users": {
-            "name": "Stummgeschaltete Benutzer",
-            "explanation": {
-                "intro": "Wenn ein anderer Benutzer von dir stummgeschaltet wurde, dann passiert folgendes:",
-                "your-perspective": "In deiner Beitragsübersicht tauchen keine Beiträge der stummgeschalteten Person mehr auf.",
-                "search": "Die Beiträge von stummgeschalteten Personen verschwinden aus deinen Suchergebnissen."
-            },
-            "columns": {
-                "name": "Name",
-                "slug": "Alias",
-                "unmute": "Entsperren"
-            },
-            "empty": "Bislang hast du niemanden stummgeschaltet.",
-            "how-to": "Du kannst andere Benutzer auf deren Profilseite über das Inhaltsmenü stummschalten.",
-            "mute": "Stumm schalten",
-            "unmute": "Stummschaltung aufheben",
-            "unmuted": "{name} ist nicht mehr stummgeschaltet"
+          "name": "Stummgeschaltete Benutzer",
+          "explanation": {
+            "intro": "Wenn ein anderer Benutzer von dir stummgeschaltet wurde, dann passiert folgendes:",
+            "your-perspective": "In deiner Beitragsübersicht tauchen keine Beiträge der stummgeschalteten Person mehr auf.",
+            "search": "Die Beiträge von stummgeschalteten Personen verschwinden aus deinen Suchergebnissen."
+          },
+          "columns": {
+            "name": "Name",
+            "slug": "Alias",
+            "unmute": "Entsperren"
+          },
+          "empty": "Bislang hast du niemanden stummgeschaltet.",
+          "how-to": "Du kannst andere Benutzer auf deren Profilseite über das Inhaltsmenü stummschalten.",
+          "mute": "Stumm schalten",
+          "unmute": "Stummschaltung aufheben",
+          "unmuted": "{name} ist nicht mehr stummgeschaltet"
         },
-        "privacy": {
-            "name": "Privatsphäre",
-            "make-shouts-public": "Teile von mir empfohlene Artikel öffentlich auf meinem Profil",
-            "success-update": "Privatsphäre-Einstellungen gespeichert"
+        "blocked-users": {
+          "name": "Blocked users",
+          "explanation": {
+            "intro": "Wenn ein anderer Benutzer von dir blockiert wurde, dann passiert folgendes:",
+            "your-perspective": "Du kannst keine Beiträge der blockierten Person mehr kommentieren.",
+            "their-perspective": "Die blockierte Person kann deine Beiträge nicht mehr kommentieren",
+            "notifications": "Von dir blockierte Personen erhalten keine Benachrichtigungen mehr, wenn sie in deinen Beiträgen erwähnt werden.",
+            "closing": "Das sollte fürs Erste genügen, damit blockierte Benutzer dich nicht mehr länger belästigen können.",
+            "commenting-disabled": "Du kannst den Beitrag derzeit nicht kommentieren.",
+            "commenting-explanation": "Dafür kann es mehrere Gründe geben, bitte schau in unsere "
+          },
+          "columns": {
+            "name": "Name",
+            "slug": "Alias",
+            "unblock": "Entsperren"
+          },
+          "empty": "Bislang hast du niemanden blockiert.",
+          "how-to": "Du kannst andere Benutzer auf deren Profilseite über das Inhaltsmenü blockieren.",
+          "block": "Nutzer blockieren",
+          "unblock": "Nutzer entsperren",
+          "unblocked": "{name} ist wieder entsperrt"
         }
     },
     "admin": {

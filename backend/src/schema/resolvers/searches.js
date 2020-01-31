@@ -20,7 +20,7 @@ export default {
       AND NOT (
         author.deleted = true OR author.disabled = true
         OR resource.deleted = true OR resource.disabled = true
-        OR (:User { id: $thisUserId })-[:BLOCKED]-(author)
+        OR (:User {id: $thisUserId})-[:MUTED]->(author)
       )
       WITH resource, author,
       [(resource)<-[:COMMENTS]-(comment:Comment) | comment] as comments,
@@ -40,8 +40,7 @@ export default {
       YIELD node as resource, score
       MATCH (resource)
       WHERE score >= 0.5
-      AND NOT (resource.deleted = true OR resource.disabled = true
-      OR (:User { id: $thisUserId })-[:BLOCKED]-(resource))
+      AND NOT (resource.deleted = true OR resource.disabled = true)
       RETURN resource {.*, __typename: labels(resource)[0]}
       LIMIT $limit
       `
