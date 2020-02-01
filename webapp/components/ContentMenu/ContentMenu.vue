@@ -161,13 +161,30 @@ export default {
               callback: () => {
                 this.$emit('unmute', this.resource)
               },
-              icon: 'user-plus',
+              icon: 'eye',
             })
           } else {
             routes.push({
               label: this.$t(`settings.muted-users.mute`),
               callback: () => {
                 this.$emit('mute', this.resource)
+              },
+              icon: 'eye-slash',
+            })
+          }
+          if (this.resource.blocked) {
+            routes.push({
+              label: this.$t(`settings.blocked-users.unblock`),
+              callback: () => {
+                this.$emit('unblock', this.resource)
+              },
+              icon: 'user-plus',
+            })
+          } else {
+            routes.push({
+              label: this.$t(`settings.blocked-users.block`),
+              callback: () => {
+                this.$emit('block', this.resource)
               },
               icon: 'user-times',
             })

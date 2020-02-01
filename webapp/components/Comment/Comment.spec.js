@@ -1,17 +1,15 @@
-import { config, shallowMount } from '@vue/test-utils'
+import { config, mount } from '@vue/test-utils'
 import Comment from './Comment.vue'
 import Vuex from 'vuex'
 
 const localVue = global.localVue
+localVue.directive('scrollTo', jest.fn())
 
 config.stubs['client-only'] = '<span><slot /></span>'
+config.stubs['nuxt-link'] = '<span><slot /></span>'
 
 describe('Comment.vue', () => {
-  let propsData
-  let mocks
-  let getters
-  let wrapper
-  let Wrapper
+  let propsData, mocks, stubs, getters, wrapper, Wrapper
 
   beforeEach(() => {
     propsData = {}
@@ -39,6 +37,9 @@ describe('Comment.vue', () => {
         }),
       },
     }
+    stubs = {
+      ContentViewer: true,
+    }
     getters = {
       'auth/user': () => {
         return {}
@@ -47,18 +48,19 @@ describe('Comment.vue', () => {
     }
   })
 
-  describe('shallowMount', () => {
+  describe('mount', () => {
     beforeEach(jest.useFakeTimers)
 
     Wrapper = () => {
       const store = new Vuex.Store({
         getters,
       })
-      return shallowMount(Comment, {
+      return mount(Comment, {
         store,
         propsData,
         mocks,
         localVue,
+        stubs,
       })
     }
 
@@ -68,6 +70,7 @@ describe('Comment.vue', () => {
           id: '2',
           contentExcerpt: 'Hello I am a comment content',
           content: 'Hello I am comment content',
+          author: { id: 'commentAuthorId', slug: 'ogerly' },
         }
       })
 
@@ -197,6 +200,24 @@ describe('Comment.vue', () => {
               ],
             ])
           })
+        })
+      })
+
+      describe('click reply button', () => {
+        beforeEach(async () => {
+          wrapper = Wrapper()
+          await wrapper.find('.reply-button').trigger('click')
+        })
+
+        it('emits "reply"', () => {
+          expect(wrapper.emitted('reply')).toEqual([
+            [
+              {
+                id: 'commentAuthorId',
+                slug: 'ogerly',
+              },
+            ],
+          ])
         })
       })
     })

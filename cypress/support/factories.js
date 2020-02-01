@@ -1,5 +1,5 @@
-import Factory from '../../backend/src/seed/factories'
-import { getDriver, getNeode } from '../../backend/src/bootstrap/neo4j'
+import Factory from '../../backend/src/factories'
+import { getDriver, getNeode } from '../../backend/src/db/neo4j'
 
 const neo4jConfigs = {
   uri: Cypress.env('NEO4J_URI'),

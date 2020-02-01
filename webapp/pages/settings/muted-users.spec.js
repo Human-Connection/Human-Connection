@@ -46,7 +46,7 @@ describe('muted-users.vue', () => {
       expect(wrapper.is('div')).toBe(true)
     })
 
-    describe('given a list of blocked users', () => {
+    describe('given a list of muted users', () => {
       beforeEach(() => {
         const mutedUsers = [{ id: 'u1', name: 'John Doe', slug: 'john-doe', avatar: '' }]
         wrapper.setData({ mutedUsers })
@@ -54,7 +54,7 @@ describe('muted-users.vue', () => {
 
       describe('click unmute', () => {
         beforeEach(() => {
-          wrapper.find('button').trigger('click')
+          wrapper.find('.base-button').trigger('click')
         })
 
         it('calls unmute mutation with given user', () => {

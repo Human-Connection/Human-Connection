@@ -15,7 +15,6 @@
 /* globals Cypress cy */
 import "cypress-file-upload";
 import helpers from "./helpers";
-import users from "../fixtures/users.json";
 import { GraphQLClient, request } from 'graphql-request'
 import { gql } from '../../backend/src/helpers/jest'
 import config from '../../backend/src/config'

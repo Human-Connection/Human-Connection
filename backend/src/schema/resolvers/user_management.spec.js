@@ -1,11 +1,11 @@
 import jwt from 'jsonwebtoken'
 import CONFIG from './../../config'
-import Factory from '../../seed/factories'
+import Factory from '../../factories'
 import { gql } from '../../helpers/jest'
 import { createTestClient } from 'apollo-server-testing'
 import createServer, { context } from '../../server'
 import encode from '../../jwt/encode'
-import { getNeode } from '../../bootstrap/neo4j'
+import { getNeode } from '../../db/neo4j'
 
 const factory = Factory()
 const neode = getNeode()

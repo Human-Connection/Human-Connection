@@ -11,7 +11,7 @@
         "
         @click.prevent="toggleMenu"
       >
-        <user-avatar :user="user" />
+        <user-avatar :user="user" size="small" />
         <base-icon class="dropdown-arrow" name="angle-down" />
       </a>
     </template>
@@ -127,6 +127,10 @@ export default {
   display: flex;
   align-items: center;
   padding-left: $space-xx-small;
+
+  > .user-avatar {
+    margin-right: $space-xx-small;
+  }
 }
 .avatar-menu-popover {
   padding-top: $space-x-small;

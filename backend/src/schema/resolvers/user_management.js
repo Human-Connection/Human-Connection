@@ -1,7 +1,7 @@
 import encode from '../../jwt/encode'
 import bcrypt from 'bcryptjs'
 import { AuthenticationError } from 'apollo-server'
-import { getNeode } from '../../bootstrap/neo4j'
+import { getNeode } from '../../db/neo4j'
 import normalizeEmail from './helpers/normalizeEmail'
 import log from './helpers/databaseLogger'
 

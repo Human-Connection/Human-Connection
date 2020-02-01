@@ -2,8 +2,8 @@ import faker from 'faker'
 import sample from 'lodash/sample'
 import { createTestClient } from 'apollo-server-testing'
 import createServer from '../server'
-import Factory from './factories'
-import { getNeode, getDriver } from '../bootstrap/neo4j'
+import Factory from '../factories'
+import { getNeode, getDriver } from '../db/neo4j'
 import { gql } from '../helpers/jest'
 
 const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
