@@ -4,6 +4,12 @@ export default {
   id: { type: 'string', primary: true, default: uuid },
   activityId: { type: 'string', allow: [null] },
   objectId: { type: 'string', allow: [null] },
+  image: {
+    type: 'relationship',
+    relationship: 'TEASER_IMAGE',
+    target: 'Image',
+    direction: 'out',
+  },
   author: {
     type: 'relationship',
     relationship: 'WROTE',
@@ -14,7 +20,6 @@ export default {
   slug: { type: 'string', allow: [null], unique: 'true' },
   content: { type: 'string', disallow: [null], min: 3 },
   contentExcerpt: { type: 'string', allow: [null] },
-  image: { type: 'string', allow: [null] },
   deleted: { type: 'boolean', default: false },
   disabled: { type: 'boolean', default: false },
   notified: {
@@ -39,8 +44,6 @@ export default {
     default: () => new Date().toISOString(),
   },
   language: { type: 'string', allow: [null] },
-  imageBlurred: { type: 'boolean', default: false },
-  imageAspectRatio: { type: 'float', default: 1.0 },
   comments: {
     type: 'relationship',
     relationship: 'COMMENTS',

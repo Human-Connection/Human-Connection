@@ -24,6 +24,19 @@ export const cleanDatabase = async (options = {}) => {
   }
 }
 
+Factory.define('image')
+  .attr('url', faker.image.unsplash.imageUrl)
+  .attr('urlW34', () => faker.image.unsplash.imageUrl(34))
+  .attr('urlW160', () => faker.image.unsplash.imageUrl(160))
+  .attr('urlW320', () => faker.image.unsplash.imageUrl(320))
+  .attr('urlW640', () => faker.image.unsplash.imageUrl(640))
+  .attr('urlW1024', () => faker.image.unsplash.imageUrl(1024))
+  .attr('aspectRatio', 1)
+  .attr('alt', faker.lorem.sentence)
+  .after((buildObject, options) => {
+    return neode.create('Image', buildObject)
+  })
+
 Factory.define('category')
   .attr('id', uuid)
   .attr('icon', 'img/badges/fundraisingbox_de_airship.svg')
@@ -93,16 +106,14 @@ Factory.define('post')
     if (authorId) return neode.find('User', authorId)
     return Factory.build('user')
   })
+  .option('image', null)
   .option('pinnedBy', null)
   .attrs({
     id: uuid,
     title: faker.lorem.sentence,
     content: faker.lorem.paragraphs,
-    image: faker.image.unsplash.imageUrl,
     visibility: 'public',
     deleted: false,
-    imageBlurred: false,
-    imageAspectRatio: 1.333,
   })
   .attr('pinned', ['pinned'], pinned => {
     // Convert false to null
@@ -115,17 +126,19 @@ Factory.define('post')
     return slug || slugify(title, { lower: true })
   })
   .after(async (buildObject, options) => {
-    const [post, author, categories, tags] = await Promise.all([
+    const [post, author, categories, tags, image] = await Promise.all([
       neode.create('Post', buildObject),
       options.author,
       options.categories,
       options.tags,
+      options.image,
     ])
     await Promise.all([
       post.relateTo(author, 'author'),
       Promise.all(categories.map(c => c.relateTo(post, 'post'))),
       Promise.all(tags.map(t => t.relateTo(post, 'post'))),
     ])
+    if(image) await post.relateTo(image, 'image')
     if (buildObject.pinned) {
       const pinnedBy = await (options.pinnedBy || Factory.build('user', { role: 'admin' }))
       await pinnedBy.relateTo(post, 'pinned')
