@@ -94,6 +94,14 @@ export default {
     HcRibbon,
     ContentMenu,
   },
+  data(){
+    return {
+      views: {
+        grid:   true,
+        list:   false,
+      }
+    }
+  },
   props: {
     post: {
       type: Object,
@@ -157,11 +165,16 @@ export default {
 }
 </script>
 <style lang="scss">
+.grid-to-list {
+  display: table;
+}
 .post-card {
   justify-content: space-between;
   position: relative;
   z-index: 1;
   cursor: pointer;
+  margin-top: 20px;
+
 
   &.--pinned {
     border: 1px solid $color-warning;
@@ -176,7 +189,9 @@ export default {
     max-height: 2000px;
     object-fit: contain;
   }
-
+.ds-card-image-list {
+    display: none;
+  }
   > .ds-card-content {
     flex-grow: 0;
   }
