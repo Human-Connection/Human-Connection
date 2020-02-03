@@ -1721,14 +1721,15 @@
     jimp-compact "^0.8.0"
     workbox-cdn "^4.3.1"
 
-"@nuxtjs/sentry@^3.1.0":
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/@nuxtjs/sentry/-/sentry-3.1.0.tgz#2ec9097d62054b943ba3edd0a722fe0ac214592e"
-  integrity sha512-oEpcnNWoz7Uw+L1W9YAxL0ccW28xDPwcHauF4XhhGa7ZbhKQ8hZqgR9kPn7rCNuWRWL3WZR+oWpxLst4+Uy6Cw==
+"@nuxtjs/sentry@^3.2.1":
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/@nuxtjs/sentry/-/sentry-3.2.1.tgz#86ae4ff347603d43a42f6494eb2e0cc85a475296"
+  integrity sha512-QtuF7yJeIFXFhyRlIjnYVlDTmdbe8isKifr0muAeYxRVX5EYPEq52lV/GZKg1olcHDSaeLmX6I5VBoKvNLOwIQ==
   dependencies:
     "@sentry/browser" "^5.11.2"
     "@sentry/integrations" "^5.11.1"
     "@sentry/node" "^5.11.2"
+    "@sentry/types" "^5.11.0"
     "@sentry/webpack-plugin" "^1.9.3"
     consola "^2.11.3"
     deepmerge "^4.2.2"
@@ -2076,7 +2077,7 @@
     lru_map "^0.3.3"
     tslib "^1.9.3"
 
-"@sentry/types@5.11.0":
+"@sentry/types@5.11.0", "@sentry/types@^5.11.0":
   version "5.11.0"
   resolved "https://registry.yarnpkg.com/@sentry/types/-/types-5.11.0.tgz#40f0f3174362928e033ddd9725d55e7c5cb7c5b6"
   integrity sha512-1Uhycpmeo1ZK2GLvrtwZhTwIodJHcyIS6bn+t4IMkN9MFoo6ktbAfhvexBDW/IDtdLlCGJbfm8nIZerxy0QUpg==
