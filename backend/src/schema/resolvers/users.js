@@ -1,6 +1,6 @@
 import { neo4jgraphql } from 'neo4j-graphql-js'
 import fileUpload from './fileUpload'
-import { getNeode } from '../../bootstrap/neo4j'
+import { getNeode } from '../../db/neo4j'
 import { UserInputError, ForbiddenError } from 'apollo-server'
 import Resolver from './helpers/Resolver'
 import log from './helpers/databaseLogger'
@@ -23,11 +23,33 @@ export const getMutedUsers = async context => {
   return mutedUsers
 }
 
+export const getBlockedUsers = async context => {
+  const { neode } = context
+  const userModel = neode.model('User')
+  let blockedUsers = neode
+    .query()
+    .match('user', userModel)
+    .where('user.id', context.user.id)
+    .relationship(userModel.relationships().get('blocked'))
+    .to('blocked', userModel)
+    .return('blocked')
+  blockedUsers = await blockedUsers.execute()
+  blockedUsers = blockedUsers.records.map(r => r.get('blocked').properties)
+  return blockedUsers
+}
+
 export default {
   Query: {
     mutedUsers: async (object, args, context, resolveInfo) => {
       try {
         return getMutedUsers(context)
+      } catch (e) {
+        throw new UserInputError(e.message)
+      }
+    },
+    blockedUsers: async (object, args, context, resolveInfo) => {
+      try {
+        return getBlockedUsers(context)
       } catch (e) {
         throw new UserInputError(e.message)
       }
@@ -86,7 +108,7 @@ export default {
       const unmutedUser = await neode.find('User', params.id)
       return unmutedUser.toJson()
     },
-    block: async (object, args, context, resolveInfo) => {
+    blockUser: async (object, args, context, resolveInfo) => {
       const { user: currentUser } = context
       if (currentUser.id === args.id) return null
       await neode.cypher(
@@ -103,7 +125,7 @@ export default {
       await user.relateTo(blockedUser, 'blocked')
       return blockedUser.toJson()
     },
-    unblock: async (object, args, context, resolveInfo) => {
+    unblockUser: async (object, args, context, resolveInfo) => {
       const { user: currentUser } = context
       if (currentUser.id === args.id) return null
       await neode.cypher(
@@ -229,7 +251,7 @@ export default {
       boolean: {
         followedByCurrentUser:
           'MATCH (this)<-[:FOLLOWS]-(u:User {id: $cypherParams.currentUserId}) RETURN COUNT(u) >= 1',
-        isBlocked:
+        blocked:
           'MATCH (this)<-[:BLOCKED]-(u:User {id: $cypherParams.currentUserId}) RETURN COUNT(u) >= 1',
         isMuted:
           'MATCH (this)<-[:MUTED]-(u:User {id: $cypherParams.currentUserId}) RETURN COUNT(u) >= 1',

@@ -21,11 +21,15 @@ export default function create() {
         categoryIds: [],
         imageBlurred: false,
         imageAspectRatio: 1.333,
+        pinned: null,
       }
       args = {
         ...defaults,
         ...args,
       }
+      // Convert false to null
+      args.pinned = args.pinned || null
+
       args.slug = args.slug || slugify(args.title, { lower: true })
       args.contentExcerpt = args.contentExcerpt || args.content
 
@@ -50,9 +54,33 @@ export default function create() {
       if (author && authorId) throw new Error('You provided both author and authorId')
       if (authorId) author = await neodeInstance.find('User', authorId)
       author = author || (await factoryInstance.create('User'))
-
       const post = await neodeInstance.create('Post', args)
+
+      const { commentContent } = args
+      let comment
+      delete args.commentContent
+      if (commentContent)
+        comment = await factoryInstance.create('Comment', {
+          contentExcerpt: commentContent,
+          post,
+          author,
+        })
+
       await post.relateTo(author, 'author')
+      if (comment) await post.relateTo(comment, 'comments')
+
+      if (args.pinned) {
+        args.pinnedAt = args.pinnedAt || new Date().toISOString()
+        if (!args.pinnedBy) {
+          const admin = await factoryInstance.create('User', {
+            role: 'admin',
+            updatedAt: new Date().toISOString(),
+          })
+          await admin.relateTo(post, 'pinned')
+          args.pinnedBy = admin
+        }
+      }
+
       await Promise.all(categories.map(c => c.relateTo(post, 'post')))
       await Promise.all(tags.map(t => t.relateTo(post, 'post')))
       return post

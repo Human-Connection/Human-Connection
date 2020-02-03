@@ -1,6 +1,6 @@
 <template>
   <div class="user-teaser" v-if="displayAnonymous">
-    <user-avatar v-if="showAvatar" />
+    <user-avatar v-if="showAvatar" size="small" />
     <span class="info anonymous">{{ $t('profile.userAnonym') }}</span>
   </div>
   <dropdown
@@ -158,8 +158,6 @@ export default {
 .user-teaser {
   display: flex;
   flex-wrap: nowrap;
-  z-index: $z-index-post-card-link;
-  position: relative;
 
   > .user-avatar {
     flex-shrink: 0;

@@ -1,7 +1,7 @@
 import { createTestClient } from 'apollo-server-testing'
-import Factory from '../../seed/factories'
+import Factory from '../../factories'
 import { gql } from '../../helpers/jest'
-import { getNeode, getDriver } from '../../bootstrap/neo4j'
+import { getNeode, getDriver } from '../../db/neo4j'
 import createServer from '../../server'
 
 const driver = getDriver()
@@ -682,58 +682,62 @@ describe('UpdatePost', () => {
       })
 
       describe('PostOrdering', () => {
-        let pinnedPost, admin
         beforeEach(async () => {
-          ;[pinnedPost] = await Promise.all([
-            neode.create('Post', {
-              id: 'im-a-pinned-post',
-              pinned: true,
-            }),
-            neode.create('Post', {
-              id: 'i-was-created-after-pinned-post',
-              createdAt: '2019-10-22T17:26:29.070Z', // this should always be 3rd
-            }),
-          ])
-          admin = await user.update({
-            role: 'admin',
-            name: 'Admin',
-            updatedAt: new Date().toISOString(),
+          await factory.create('Post', {
+            id: 'im-a-pinned-post',
+            createdAt: '2019-11-22T17:26:29.070Z',
+            pinned: true,
           })
-          await admin.relateTo(pinnedPost, 'pinned')
+          await factory.create('Post', {
+            id: 'i-was-created-before-pinned-post',
+            // fairly old, so this should be 3rd
+            createdAt: '2019-10-22T17:26:29.070Z',
+          })
         })
 
-        it('pinned post appear first even when created before other posts', async () => {
-          const postOrderingQuery = gql`
-            query($orderBy: [_PostOrdering]) {
-              Post(orderBy: $orderBy) {
-                id
-                pinnedAt
+        describe('order by `pinned_asc` and `createdAt_desc`', () => {
+          beforeEach(() => {
+            // this is the ordering in the frontend
+            variables = { orderBy: ['pinned_asc', 'createdAt_desc'] }
+          })
+
+          it('pinned post appear first even when created before other posts', async () => {
+            const postOrderingQuery = gql`
+              query($orderBy: [_PostOrdering]) {
+                Post(orderBy: $orderBy) {
+                  id
+                  pinned
+                  createdAt
+                  pinnedAt
+                }
               }
-            }
-          `
-          const expected = {
-            data: {
-              Post: [
-                {
-                  id: 'im-a-pinned-post',
-                  pinnedAt: expect.any(String),
-                },
-                {
-                  id: 'p9876',
-                  pinnedAt: null,
-                },
-                {
-                  id: 'i-was-created-after-pinned-post',
-                  pinnedAt: null,
-                },
-              ],
-            },
-            errors: undefined,
-          }
-          variables = { orderBy: ['pinned_desc', 'createdAt_desc'] }
-          await expect(query({ query: postOrderingQuery, variables })).resolves.toMatchObject(
-            expected,
-          )
+            `
+            await expect(query({ query: postOrderingQuery, variables })).resolves.toMatchObject({
+              data: {
+                Post: [
+                  {
+                    id: 'im-a-pinned-post',
+                    pinned: true,
+                    createdAt: '2019-11-22T17:26:29.070Z',
+                    pinnedAt: expect.any(String),
+                  },
+                  {
+                    id: 'p9876',
+                    pinned: null,
+                    createdAt: expect.any(String),
+                    pinnedAt: null,
+                  },
+                  {
+                    id: 'i-was-created-before-pinned-post',
+                    pinned: null,
+                    createdAt: '2019-10-22T17:26:29.070Z',
+                    pinnedAt: null,
+                  },
+                ],
+              },
+              errors: undefined,
+            })
+          })
         })
       })
     })

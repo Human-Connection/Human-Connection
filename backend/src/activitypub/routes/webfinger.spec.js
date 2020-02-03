@@ -1,6 +1,6 @@
 import { handler } from './webfinger'
-import Factory from '../../seed/factories'
-import { getDriver } from '../../bootstrap/neo4j'
+import Factory from '../../factories'
+import { getDriver } from '../../db/neo4j'
 
 let resource, res, json, status, contentType
 

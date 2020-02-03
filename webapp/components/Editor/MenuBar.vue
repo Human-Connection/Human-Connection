@@ -6,6 +6,12 @@
       <menu-bar-button :isActive="isActive.italic()" :onClick="commands.italic" icon="italic" />
 
       <menu-bar-button
+        :isActive="isActive.underline()"
+        :onClick="commands.underline"
+        icon="underline"
+      />
+
+      <menu-bar-button
         ref="linkButton"
         :isActive="isActive.link()"
         :onClick="event => toggleLinkInput(getMarkAttrs('link'), event.currentTarget)"

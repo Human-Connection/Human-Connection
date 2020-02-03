@@ -1,6 +1,6 @@
-import Factory from '../../seed/factories'
+import Factory from '../../factories'
 import { gql } from '../../helpers/jest'
-import { getDriver } from '../../bootstrap/neo4j'
+import { getDriver } from '../../db/neo4j'
 import { createTestClient } from 'apollo-server-testing'
 import createServer from '../.././server'
 

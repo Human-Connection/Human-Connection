@@ -17,7 +17,7 @@
     </ds-space>
     <ds-card v-if="mutedUsers && mutedUsers.length">
       <ds-table :data="mutedUsers" :fields="fields" condensed>
-        <template slot="avatar" slot-scope="scope">
+        <template #avatar="scope">
           <nuxt-link
             :to="{
               name: 'profile-id-slug',
@@ -27,7 +27,7 @@
             <user-avatar :user="scope.row" size="small" />
           </nuxt-link>
         </template>
-        <template slot="name" slot-scope="scope">
+        <template #name="scope">
           <nuxt-link
             :to="{
               name: 'profile-id-slug',
@@ -37,7 +37,7 @@
             <b>{{ scope.row.name | truncate(20) }}</b>
           </nuxt-link>
         </template>
-        <template slot="slug" slot-scope="scope">
+        <template #slug="scope">
           <nuxt-link
             :to="{
               name: 'profile-id-slug',
@@ -48,7 +48,7 @@
           </nuxt-link>
         </template>
 
-        <template slot="unmuteUser" slot-scope="scope">
+        <template #unmuteUser="scope">
           <base-button circle size="small" @click="unmuteUser(scope)" icon="user-plus" />
         </template>
       </ds-table>
