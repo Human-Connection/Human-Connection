@@ -50,7 +50,7 @@ const notifyUsersOfMention = async (label, id, idsOfUsers, reason, context) => {
         MATCH (post: Post { id: $id })<-[:WROTE]-(author: User)
         MATCH (user: User)
         WHERE user.id in $idsOfUsers
-        AND NOT (user)<-[:BLOCKED]-(author)
+        AND NOT (user)-[:BLOCKED]-(author)
         MERGE (post)-[notification:NOTIFIED {reason: $reason}]->(user)
       `
       break
@@ -60,8 +60,8 @@ const notifyUsersOfMention = async (label, id, idsOfUsers, reason, context) => {
       MATCH (postAuthor: User)-[:WROTE]->(post: Post)<-[:COMMENTS]-(comment: Comment { id: $id })<-[:WROTE]-(author: User)
       MATCH (user: User)
       WHERE user.id in $idsOfUsers
-      AND NOT (user)<-[:BLOCKED]-(author)
-      AND NOT (user)<-[:BLOCKED]-(postAuthor)
+      AND NOT (user)-[:BLOCKED]-(author)
+      AND NOT (user)-[:BLOCKED]-(postAuthor)
       MERGE (comment)-[notification:NOTIFIED {reason: $reason}]->(user)
       `
       break

@@ -84,9 +84,24 @@
       </ds-space>
       <!-- Comments -->
       <ds-section slot="footer">
-        <hc-comment-list :post="post" @toggleNewCommentForm="toggleNewCommentForm" />
+        <comment-list
+          :post="post"
+          @toggleNewCommentForm="toggleNewCommentForm"
+          @reply="reply"
+        />
         <ds-space margin-bottom="large" />
-        <hc-comment-form v-if="showNewCommentForm" :post="post" @createComment="createComment" />
+        <comment-form
+          v-if="showNewCommentForm && !post.author.blocked"
+          ref="commentForm"
+          :post="post"
+          @createComment="createComment"
+        />
+        <ds-placeholder v-else>
+          {{ $t('settings.blocked-users.explanation.commenting-disabled') }}
+          <br />
+          {{ $t('settings.blocked-users.explanation.commenting-explanation') }}
+          <a href="https://support.human-connection.org/kb/" target="_blank">FAQ</a>
+        </ds-placeholder>
       </ds-section>
     </ds-card>
   </transition>
@@ -99,8 +114,8 @@ import HcHashtag from '~/components/Hashtag/Hashtag'
 import ContentMenu from '~/components/ContentMenu/ContentMenu'
 import UserTeaser from '~/components/UserTeaser/UserTeaser'
 import HcShoutButton from '~/components/ShoutButton.vue'
-import HcCommentForm from '~/components/CommentForm/CommentForm'
-import HcCommentList from '~/components/CommentList/CommentList'
+import CommentForm from '~/components/CommentForm/CommentForm'
+import CommentList from '~/components/CommentList/CommentList'
 import { postMenuModalsData, deletePostMutation } from '~/components/utils/PostHelpers'
 import PostQuery from '~/graphql/PostQuery'
 import HcEmotions from '~/components/Emotions/Emotions'
@@ -118,8 +133,8 @@ export default {
     UserTeaser,
     HcShoutButton,
     ContentMenu,
-    HcCommentForm,
-    HcCommentList,
+    CommentForm,
+    CommentList,
     HcEmotions,
     ContentViewer,
   },
@@ -135,14 +150,9 @@ export default {
       title: 'loading',
       showNewCommentForm: true,
       blurred: false,
+      blocked: null,
+      postAuthor: null,
     }
-  },
-  watch: {
-    Post(post) {
-      this.post = post[0] || {}
-      this.title = this.post.title
-      this.blurred = this.post.imageBlurred
-    },
   },
   mounted() {
     setTimeout(() => {
@@ -161,6 +171,9 @@ export default {
     },
   },
   methods: {
+    reply(message) {
+      this.$refs.commentForm && this.$refs.commentForm.reply(message)
+    },
     isAuthor(id) {
       return this.$store.getters['auth/user'].id === id
     },
@@ -211,6 +224,12 @@ export default {
         return {
           id: this.$route.params.id,
         }
+      },
+      update({ Post }) {
+        this.post = Post[0] || {}
+        this.title = this.post.title
+        this.blurred = this.post.imageBlurred
+        this.postAuthor = this.post.author
       },
       fetchPolicy: 'cache-and-network',
     },

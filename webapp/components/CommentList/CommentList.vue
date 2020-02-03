@@ -13,6 +13,7 @@
         @deleteComment="updateCommentList"
         @updateComment="updateCommentList"
         @toggleNewCommentForm="toggleNewCommentForm"
+        @reply="reply"
       />
     </div>
   </div>
@@ -35,6 +36,9 @@ export default {
     },
   },
   methods: {
+    reply(message) {
+      this.$emit('reply', message)
+    },
     checkAnchor(anchor) {
       return anchor === '#comments'
     },

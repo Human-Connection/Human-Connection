@@ -9,10 +9,10 @@ Feature: Report and Moderate
 
   Background:
     Given we have the following user accounts:
-      | id            | name                                           | 
-      | u67           | David Irving                                   |
+      | id            | name                                          |
+      | u67           | David Irving                                  |
       | annoying-user | I'm gonna mute Moderators and Admins HA HA HA |
-    
+
     Given we have the following posts in our database:
       | authorId      | id | title                         | content                                              |
       | u67           | p1 | The Truth about the Holocaust | It never existed!                                    |

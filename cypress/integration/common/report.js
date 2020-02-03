@@ -170,5 +170,4 @@ When("they have a post someone has reported", () => {
       authorId: 'annnoying-user',
       title,
     });
-    
 })

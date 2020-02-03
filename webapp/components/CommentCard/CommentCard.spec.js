@@ -3,15 +3,13 @@ import CommentCard from './CommentCard.vue'
 import Vuex from 'vuex'
 
 const localVue = global.localVue
+localVue.directive('scrollTo', jest.fn())
 
 config.stubs['client-only'] = '<span><slot /></span>'
+config.stubs['nuxt-link'] = '<span><slot /></span>'
 
 describe('CommentCard.vue', () => {
-  let propsData
-  let mocks
-  let getters
-  let wrapper
-  let Wrapper
+  let propsData, mocks, stubs, getters, wrapper, Wrapper
 
   beforeEach(() => {
     propsData = {
@@ -46,6 +44,9 @@ describe('CommentCard.vue', () => {
         }),
       },
     }
+    stubs = {
+      ContentViewer: true,
+    }
     getters = {
       'auth/user': () => {
         return {}
@@ -54,7 +55,7 @@ describe('CommentCard.vue', () => {
     }
   })
 
-  describe('shallowMount', () => {
+  describe('mount', () => {
     beforeEach(jest.useFakeTimers)
 
     Wrapper = () => {
@@ -66,6 +67,7 @@ describe('CommentCard.vue', () => {
         propsData,
         mocks,
         localVue,
+        stubs,
       })
     }
 
@@ -75,7 +77,7 @@ describe('CommentCard.vue', () => {
           id: '2',
           contentExcerpt: 'Hello I am a comment content',
           content: 'Hello I am comment content',
-          author: { id: 'some-user' },
+          author: { id: 'commentAuthorId', slug: 'ogerly' },
         }
       })
 
@@ -205,6 +207,24 @@ describe('CommentCard.vue', () => {
               ],
             ])
           })
+        })
+      })
+
+      describe('click reply button', () => {
+        beforeEach(async () => {
+          wrapper = Wrapper()
+          await wrapper.find('.reply-button').trigger('click')
+        })
+
+        it('emits "reply"', () => {
+          expect(wrapper.emitted('reply')).toEqual([
+            [
+              {
+                id: 'commentAuthorId',
+                slug: 'ogerly',
+              },
+            ],
+          ])
         })
       })
     })

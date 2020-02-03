@@ -24,7 +24,7 @@
         />
       </client-only>
     </header>
-    <hc-comment-form
+    <comment-form
       v-if="editingComment"
       :update="true"
       :postId="postId"
@@ -39,6 +39,15 @@
         {{ isCollapsed ? $t('comment.show.more') : $t('comment.show.less') }}
       </base-button>
     </template>
+    <base-button
+      :title="this.$t('post.comment.reply')"
+      icon="level-down"
+      class="reply-button"
+      circle
+      size="small"
+      v-scroll-to="'.editor'"
+      @click.prevent="reply"
+    />
   </base-card>
 </template>
 
@@ -48,7 +57,7 @@ import { COMMENT_MAX_UNTRUNCATED_LENGTH, COMMENT_TRUNCATE_TO_LENGTH } from '~/co
 import UserTeaser from '~/components/UserTeaser/UserTeaser'
 import ContentMenu from '~/components/ContentMenu/ContentMenu'
 import ContentViewer from '~/components/Editor/ContentViewer'
-import HcCommentForm from '~/components/CommentForm/CommentForm'
+import CommentForm from '~/components/CommentForm/CommentForm'
 import CommentMutations from '~/graphql/CommentMutations'
 import scrollToAnchor from '~/mixins/scrollToAnchor.js'
 
@@ -57,7 +66,7 @@ export default {
     UserTeaser,
     ContentMenu,
     ContentViewer,
-    HcCommentForm,
+    CommentForm,
   },
   mixins: [scrollToAnchor],
   data() {
@@ -139,6 +148,10 @@ export default {
     checkAnchor(anchor) {
       return `#${this.anchor}` === anchor
     },
+    reply() {
+      const message = { slug: this.comment.author.slug, id: this.comment.author.id }
+      this.$emit('reply', message)
+    },
     editComment(editing) {
       this.editingComment = editing
       this.$emit('toggleNewCommentForm', !editing)
@@ -182,6 +195,14 @@ export default {
   > .base-button {
     align-self: flex-end;
   }
+}
+
+.reply-button {
+  float: right;
+  top: 0px;
+}
+.reply-button:after {
+  clear: both;
 }
 
 @keyframes highlight {

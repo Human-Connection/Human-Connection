@@ -132,7 +132,7 @@ export default {
       )
     },
     isPinned() {
-      return this.post && this.post.pinnedBy
+      return this.post && this.post.pinned
     },
   },
   methods: {
@@ -193,6 +193,8 @@ export default {
   /* workaround to avoid jumping layout when user-teaser is rendered */
   .user-wrapper {
     height: 36px;
+    position: relative;
+    z-index: $z-index-post-card-link;
   }
 
   .content-menu {

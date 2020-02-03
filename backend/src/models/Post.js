@@ -11,7 +11,7 @@ export default {
     direction: 'in',
   },
   title: { type: 'string', disallow: [null], min: 3 },
-  slug: { type: 'string', allow: [null] },
+  slug: { type: 'string', allow: [null], unique: 'true' },
   content: { type: 'string', disallow: [null], min: 3 },
   contentExcerpt: { type: 'string', allow: [null] },
   image: { type: 'string', allow: [null] },
@@ -41,4 +41,16 @@ export default {
   language: { type: 'string', allow: [null] },
   imageBlurred: { type: 'boolean', default: false },
   imageAspectRatio: { type: 'float', default: 1.0 },
+  comments: {
+    type: 'relationship',
+    relationship: 'COMMENTS',
+    target: 'Comment',
+    direction: 'in',
+    properties: {
+      createdAt: { type: 'string', isoDate: true, default: () => new Date().toISOString() },
+      updatedAt: { type: 'string', isoDate: true, default: () => new Date().toISOString() },
+    },
+  },
+  pinned: { type: 'boolean', default: null, valid: [null, true] },
+  pinnedAt: { type: 'string', isoDate: true },
 }

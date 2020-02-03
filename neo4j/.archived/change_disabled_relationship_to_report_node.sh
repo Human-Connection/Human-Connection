@@ -23,7 +23,6 @@ DELETE disabled
 CREATE (moderator)-[review:REVIEWED]->(report:Report)-[:BELONGS_TO]->(disabledResource)
 SET review.createdAt = toString(datetime()), review.updatedAt = review.createdAt, review.disable = true
 SET report.id = randomUUID(), report.createdAt = toString(datetime()), report.updatedAt = report.createdAt, report.rule = 'latestReviewUpdatedAtRules', report.closed = false
-
 // if disabledResource has no filed report, then create a moderators default filed report
 WITH moderator, disabledResource, report
 OPTIONAL MATCH (disabledResourceReporter:User)-[existingFiledReport:FILED]->(disabledResource)
@@ -36,7 +35,6 @@ FOREACH(disabledResource IN CASE WHEN existingFiledReport IS NOT NULL THEN [1] E
   SET moveModeratorReport = existingFiledReport
   DELETE existingFiledReport
 )
-
 RETURN disabledResource {.id};
 " | cypher-shell
 
@@ -49,7 +47,5 @@ ON CREATE SET report.id = randomUUID(), report.createdAt = toString(datetime()),
 CREATE (reporter)-[filed:FILED]->(report)
 SET report = oldReport
 DELETE oldReport
-
 RETURN notDisabledResource {.id};
 " | cypher-shell
-
