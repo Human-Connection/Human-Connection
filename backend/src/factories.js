@@ -138,7 +138,7 @@ Factory.define('post')
       Promise.all(categories.map(c => c.relateTo(post, 'post'))),
       Promise.all(tags.map(t => t.relateTo(post, 'post'))),
     ])
-    if(image) await post.relateTo(image, 'image')
+    if (image) await post.relateTo(image, 'image')
     if (buildObject.pinned) {
       const pinnedBy = await (options.pinnedBy || Factory.build('user', { role: 'admin' }))
       await pinnedBy.relateTo(post, 'pinned')

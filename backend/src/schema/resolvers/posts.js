@@ -166,12 +166,19 @@ export default {
           `
             MATCH (post:Post {id: $postId})
             OPTIONAL MATCH (post)<-[:COMMENTS]-(comment:Comment)
+            OPTIONAL MATCH (post)-[:TEASER_IMAGE]->(image:Image)
             SET post.deleted        = TRUE
             SET post.content        = 'UNAVAILABLE'
             SET post.contentExcerpt = 'UNAVAILABLE'
             SET post.title          = 'UNAVAILABLE'
             SET comment.deleted     = TRUE
-            REMOVE post.image
+            SET image.alt      = 'UNAVAILABLE'
+            SET image.url      = 'UNAVAILABLE'
+            SET image.urlW34   = 'UNAVAILABLE'
+            SET image.urlW160  = 'UNAVAILABLE'
+            SET image.urlW320  = 'UNAVAILABLE'
+            SET image.urlW640  = 'UNAVAILABLE'
+            SET image.urlW1024 = 'UNAVAILABLE'
             RETURN post
           `,
           { postId: args.id },
@@ -311,16 +318,7 @@ export default {
   },
   Post: {
     ...Resolver('Post', {
-      undefinedToNull: [
-        'activityId',
-        'objectId',
-        'image',
-        'language',
-        'pinnedAt',
-        'pinned',
-        'imageBlurred',
-        'imageAspectRatio',
-      ],
+      undefinedToNull: ['activityId', 'objectId', 'language', 'pinnedAt', 'pinned'],
       hasMany: {
         tags: '-[:TAGGED]->(related:Tag)',
         categories: '-[:CATEGORIZED]->(related:Category)',
@@ -331,6 +329,7 @@ export default {
       hasOne: {
         author: '<-[:WROTE]-(related:User)',
         pinnedBy: '<-[:PINNED]-(related:User)',
+        image: '-[:TEASER_IMAGE]->(related:Image)',
       },
       count: {
         commentsCount:

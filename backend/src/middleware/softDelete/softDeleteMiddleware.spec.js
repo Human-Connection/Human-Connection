@@ -96,12 +96,14 @@ beforeAll(async () => {
         title: 'Disabled post',
         content: 'This is an offensive post content',
         contentExcerpt: 'This is an offensive post content',
-        image: '/some/offensive/image.jpg',
         deleted: false,
       },
       {
         author: troll,
         categoryIds,
+        image: Factory.build('image', {
+          url: '/some/offensive/image.jpg',
+        }),
       },
     ),
     Factory.build(
@@ -229,7 +231,9 @@ describe('softDeleteMiddleware', () => {
               contributions {
                 title
                 slug
-                image
+                image {
+                  url
+                }
                 content
                 contentExcerpt
               }
@@ -265,7 +269,8 @@ describe('softDeleteMiddleware', () => {
           expect(subject.content).toEqual('This is an offensive post content'))
         it('displays contentExcerpt', () =>
           expect(subject.contentExcerpt).toEqual('This is an offensive post content'))
-        it('displays image', () => expect(subject.image).toEqual('/some/offensive/image.jpg'))
+        it('displays image.url', () =>
+          expect(subject.image.url).toEqual('/some/offensive/image.jpg'))
       })
 
       describe('Comment', () => {

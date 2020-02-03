@@ -897,7 +897,9 @@ describe('DeletePost', () => {
         deleted
         content
         contentExcerpt
-        image
+        image {
+          url
+        }
         comments {
           deleted
           content
@@ -915,11 +917,14 @@ describe('DeletePost', () => {
         id: 'p4711',
         title: 'I will be deleted',
         content: 'To be deleted',
-        image: 'path/to/some/image',
       },
       {
         author,
         categoryIds,
+        image: Factory.build('image', {
+          alt: 'Some image description',
+          url: '/path/to/some/image',
+        }),
       },
     )
     variables = { ...variables, id: 'p4711' }
@@ -946,6 +951,24 @@ describe('DeletePost', () => {
   describe('authenticated as author', () => {
     beforeEach(async () => {
       authenticatedUser = await author.toJson()
+    })
+
+    it('blacks out teaser image attributes', async () => {
+      let [image] = await neode.all('Image')
+      await expect(image.toJson()).resolves.toMatchObject({
+        alt: 'Some image description',
+        url: '/path/to/some/image',
+        urlW34: expect.any(String),
+        urlW1024: expect.any(String),
+      })
+      await mutate({ mutation: deletePostMutation, variables })
+      ;[image] = await neode.all('Image')
+      await expect(image.toJson()).resolves.toMatchObject({
+        url: 'UNAVAILABLE',
+        urlW34: 'UNAVAILABLE',
+        urlW1024: 'UNAVAILABLE',
+      })
+      // what should happen to the actual file on disk or object storage here?
     })
 
     it('marks the post as deleted and blacks out attributes', async () => {

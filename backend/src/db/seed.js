@@ -460,7 +460,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           image: Factory.build('image', {
             url: faker.image.unsplash.buildings(300, 857),
             aspectRatio: 300 / 857,
-          })
+          }),
         },
       ),
       Factory.build(
@@ -484,7 +484,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           categoryIds: ['cat10'],
           image: Factory.build('image', {
             blurred: true,
-          })
+          }),
         },
       ),
       Factory.build(
@@ -499,7 +499,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           image: Factory.build('image', {
             url: faker.image.unsplash.people(300, 901),
             aspectRatio: 300 / 901,
-          })
+          }),
         },
       ),
       Factory.build(
@@ -956,7 +956,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         author: jennyRostock,
         image: Factory.build('image', {
           url: faker.image.unsplash.objects(),
-        })
+        }),
       },
     )
 
@@ -993,13 +993,12 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
     await Factory.buildList(
       'post',
       21,
-      {
-      },
+      {},
       {
         author: peterLustig,
         image: Factory.build('image', {
           url: faker.image.unsplash.buildings(),
-        })
+        }),
       },
     )
 
@@ -1036,13 +1035,12 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
     await Factory.buildList(
       'post',
       11,
-      {
-      },
+      {},
       {
         author: dewey,
         image: Factory.build('image', {
           url: faker.image.unsplash.food(),
-        })
+        }),
       },
     )
 
@@ -1079,13 +1077,12 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
     await Factory.buildList(
       'post',
       16,
-      {
-      },
+      {},
       {
         author: louie,
         image: Factory.build('image', {
           url: faker.image.unsplash.technology(),
-        })
+        }),
       },
     )
 
@@ -1122,13 +1119,12 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
     await Factory.buildList(
       'post',
       45,
-      {
-      },
+      {},
       {
         author: bobDerBaumeister,
         image: Factory.build('image', {
           url: faker.image.unsplash.people(),
-        })
+        }),
       },
     )
 
@@ -1165,13 +1161,12 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
     await Factory.buildList(
       'post',
       8,
-      {
-      },
+      {},
       {
         author: huey,
         image: Factory.build('image', {
           url: faker.image.unsplash.nature(),
-        })
+        }),
       },
     )
 
