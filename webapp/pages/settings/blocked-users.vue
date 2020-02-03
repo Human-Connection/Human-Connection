@@ -105,7 +105,7 @@ export default {
       })
       this.$apollo.queries.blockedUsers.refetch()
       const { name } = user.row
-      this.$toast.success(this.$t('settings.blocked-user.unblocked', { name }))
+      this.$toast.success(this.$t('settings.blocked-users.unblocked', { name }))
     },
   },
 }
