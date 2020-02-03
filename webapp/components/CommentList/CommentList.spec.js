@@ -1,6 +1,6 @@
 import { config, mount } from '@vue/test-utils'
 import CommentList from './CommentList'
-import Comment from '~/components/Comment/Comment'
+import CommentCard from '~/components/CommentCard/CommentCard'
 import Vuex from 'vuex'
 import Vue from 'vue'
 
@@ -107,7 +107,7 @@ describe('CommentList.vue', () => {
       })
 
       it('Comment emitted reply()', () => {
-        wrapper.find(Comment).vm.$emit('reply', {
+        wrapper.find(CommentCard).vm.$emit('reply', {
           id: 'commentAuthorId',
           slug: 'ogerly',
         })

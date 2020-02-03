@@ -1,4 +1,4 @@
-import { config, shallowMount } from '@vue/test-utils'
+import { config, mount } from '@vue/test-utils'
 import CommentCard from './CommentCard.vue'
 import Vuex from 'vuex'
 
@@ -62,7 +62,7 @@ describe('CommentCard.vue', () => {
       const store = new Vuex.Store({
         getters,
       })
-      return shallowMount(CommentCard, {
+      return mount(CommentCard, {
         store,
         propsData,
         mocks,

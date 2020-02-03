@@ -84,11 +84,7 @@
       </ds-space>
       <!-- Comments -->
       <ds-section slot="footer">
-        <comment-list
-          :post="post"
-          @toggleNewCommentForm="toggleNewCommentForm"
-          @reply="reply"
-        />
+        <comment-list :post="post" @toggleNewCommentForm="toggleNewCommentForm" @reply="reply" />
         <ds-space margin-bottom="large" />
         <comment-form
           v-if="showNewCommentForm && !post.author.blocked"

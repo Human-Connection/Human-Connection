@@ -46,7 +46,7 @@
       circle
       size="small"
       v-scroll-to="'.editor'"
-      @click.prevent="reply"
+      @click="reply"
     />
   </base-card>
 </template>
