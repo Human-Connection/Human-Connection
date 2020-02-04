@@ -1,8 +1,7 @@
 Feature: Mute a User
   As a user
   I'd like to have a button to mute another user
-  To prevent him from seeing and interacting with my contributions and also to avoid seeing his/her posts
-
+  To prevent him from seeing and interacting with my contributions
   Background:
     Given I have a user account
     And there is an annoying user called "Spammy Spammer"
@@ -22,9 +21,9 @@ Feature: Mute a User
     When I visit the profile page of the annoying user
     And I click on "Mute user" from the content menu in the user info box
     Then the list of posts of this user is empty
-    And nobody is following the user profile anymore
+    And I get removed from his follower collection
 
-  Scenario: Posts of muted users are filtered from search results
+  Scenario: Posts of muted users are filtered from search results, users are not
     Given we have the following posts in our database:
       | id                 | title                    | content                   |
       | im-not-muted | Post that should be seen | cause I'm not muted |
@@ -36,18 +35,17 @@ Feature: Mute a User
     When I mute the user "Spammy Spammer"
     And I refresh the page
     And I search for "Spam"
-    Then the search has no results
+    Then the search should not contain posts by the annoying user
+    But the search should contain the annoying user
     But I search for "not muted"
     Then I should see the following posts in the select dropdown:
       | title                    |
       | Post that should be seen |
-
+  
   Scenario: Muted users can still see my posts
     Given I previously created a post
     And I mute the user "Spammy Spammer"
-    Given I log out
-    And I am logged in as the muted user 
-    When I search for "previously created"
+    And the "muted" user searches for "previously created"
     Then I should see the following posts in the select dropdown:
       | title                   |
       | previously created post |

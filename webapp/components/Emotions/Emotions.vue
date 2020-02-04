@@ -105,7 +105,7 @@ export default {
           postId: this.post.id,
         }
       },
-      result({ data: { PostsEmotionsByCurrentUser } }) {
+      update({ PostsEmotionsByCurrentUser }) {
         this.selectedEmotions = PostsEmotionsByCurrentUser
       },
     },

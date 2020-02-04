@@ -12,9 +12,11 @@
         :comment="comment"
         :post="post"
         :routeHash="routeHash"
+        class="comment-tag"
         @deleteComment="updateCommentList"
         @updateComment="updateCommentList"
         @toggleNewCommentForm="toggleNewCommentForm"
+        @reply="reply"
       />
     </div>
   </div>
@@ -35,6 +37,9 @@ export default {
     post: { type: Object, default: () => {} },
   },
   methods: {
+    reply(message) {
+      this.$emit('reply', message)
+    },
     checkAnchor(anchor) {
       return anchor === '#comments'
     },

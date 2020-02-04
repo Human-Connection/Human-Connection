@@ -29,6 +29,7 @@ export default i18n => {
           ...user
           ...userCounts
           ...locationAndBadges
+          blocked
         }
         comments(orderBy: createdAt_asc) {
           ...comment

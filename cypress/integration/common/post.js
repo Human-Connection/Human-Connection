@@ -17,8 +17,13 @@ Then("I click on the {string} button", text => {
     .click();
 });
 
+Then("I click on the reply button", () => {
+  cy.get(".reply-button")
+    .click();
+});
+
 Then("my comment should be successfully created", () => {
-  cy.get(".iziToast-message").contains("Comment Submitted");
+  cy.get(".iziToast-message").contains("Comment submitted!");
 });
 
 Then("I should see my comment", () => {
@@ -44,6 +49,12 @@ Then("I should see an abreviated version of my comment", () => {
 Then("the editor should be cleared", () => {
   cy.get(".ProseMirror p").should("have.class", "is-empty");
 });
+
+Then("it should create a mention in the CommentForm", () => {
+  cy.get(".ProseMirror a")
+    .should('have.class', 'mention')
+    .should('contain', '@peter-pan')
+})
 
 When("I open the content menu of post {string}", (title)=> {
   cy.contains('.post-card', title)
