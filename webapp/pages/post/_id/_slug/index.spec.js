@@ -54,21 +54,17 @@ describe('PostSlug', () => {
     }
     jest.useFakeTimers()
     wrapper = Wrapper()
+    const author = { id: '1stUser', slug: '1st-user'}
     wrapper.setData({
       post: {
         id: '1',
-        author: {
-          id: '1stUser',
-        },
+        author,
         comments: [
           {
             id: 'comment134',
             contentExcerpt: 'this is a comment',
             content: 'this is a comment',
-            author: {
-              id: '1stUser',
-              slug: '1st-user',
-            },
+            author,
           },
         ],
       },
@@ -86,6 +82,22 @@ describe('PostSlug', () => {
         stubs,
       })
     }
+
+    describe('given author is `null`', () => {
+      beforeEach(() => {
+        wrapper.setData({
+          post: {
+            id: '1',
+            author: null,
+          },
+          ready: true,
+        })
+      })
+
+      it('displays anonymous user', () => {
+        expect(wrapper.text()).toContain('Anonymous')
+      })
+    })
 
     describe('test Post callbacks', () => {
       describe('deletion of Post from Page by invoking "deletePostCallback()"', () => {
