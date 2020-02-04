@@ -6206,12 +6206,12 @@ metascraper-lang-detector@^4.10.2:
     franc "~4.0.0"
     iso-639-3 "~1.1.0"
 
-metascraper-lang@^5.10.6:
-  version "5.10.6"
-  resolved "https://registry.yarnpkg.com/metascraper-lang/-/metascraper-lang-5.10.6.tgz#d4130257f6604095e9af8d796a6bde5815f6c667"
-  integrity sha512-JDhNbP1iSnPV7d6PklIIdBSzlwqbtvH+n810Isa5/PGuvUkJzNkTAUN+eTM1i6YcTlMp1N2gYsQG9uwfpMwFog==
+metascraper-lang@^5.10.7:
+  version "5.10.7"
+  resolved "https://registry.yarnpkg.com/metascraper-lang/-/metascraper-lang-5.10.7.tgz#fe07c359b757ef3c5ba0a330da97173945196fde"
+  integrity sha512-ulLq7g+X4F9XzoScNflkhwWUuoSycbOqJ8j7vT6E/sHYPid+BdUnw2yaxAqXOdsrsbUEWzkiDwrJiq37XWCpDA==
   dependencies:
-    "@metascraper/helpers" "^5.10.6"
+    "@metascraper/helpers" "^5.10.7"
 
 metascraper-logo@^5.10.6:
   version "5.10.6"
