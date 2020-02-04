@@ -6258,12 +6258,12 @@ metascraper-video@^5.10.6:
     "@metascraper/helpers" "^5.10.6"
     lodash "~4.17.15"
 
-metascraper-youtube@^5.10.6:
-  version "5.10.6"
-  resolved "https://registry.yarnpkg.com/metascraper-youtube/-/metascraper-youtube-5.10.6.tgz#6cacabb1791b06ed98a7da69aa00c1c6c50a2dfe"
-  integrity sha512-Yl5kEFawqpSGmVSG2yTVZj7mGfRSFGQ2A4cxpqSbaPIUCGJwG9BUJkMzyUG0m6jGrg0zI5CmeZGNBAXzgKGz4g==
+metascraper-youtube@^5.10.7:
+  version "5.10.7"
+  resolved "https://registry.yarnpkg.com/metascraper-youtube/-/metascraper-youtube-5.10.7.tgz#6c3313563ee57cb71c496fa99c129ad41fe22291"
+  integrity sha512-T4ZawYpW/2lyoVUY9RM92YCxkuyhNDXFxg8XAG9u2hoNZ5elrHLOv67ao5zMHa7IXZY3A7IGDOBd1NfoShnToA==
   dependencies:
-    "@metascraper/helpers" "^5.10.6"
+    "@metascraper/helpers" "^5.10.7"
     get-video-id "~3.1.4"
     is-reachable "~4.0.0"
     p-locate "~4.1.0"
