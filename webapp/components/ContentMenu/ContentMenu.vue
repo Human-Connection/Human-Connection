@@ -161,7 +161,7 @@ export default {
               callback: () => {
                 this.$emit('unmute', this.resource)
               },
-              icon: 'eye',
+              icon: 'microphone',
             })
           } else {
             routes.push({
@@ -169,7 +169,7 @@ export default {
               callback: () => {
                 this.$emit('mute', this.resource)
               },
-              icon: 'eye-slash',
+              icon: 'microphone-slash',
             })
           }
           if (this.resource.blocked) {
