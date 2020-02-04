@@ -13,6 +13,7 @@ export default {
       type: String,
       required: true,
       validator(value) {
+        if (!iconNames.includes(value)) console.log(value)
         return iconNames.includes(value)
       },
     },

@@ -26,7 +26,9 @@ export default () => {
           content
           contentExcerpt
           language
-          imageBlurred
+          image {
+            blurred
+          }
         }
       }
     `,
@@ -59,13 +61,15 @@ export default () => {
           content
           contentExcerpt
           language
-          imageBlurred
+          image {
+            blurred
+            aspectRatio
+          }
           pinnedBy {
             id
             name
             role
           }
-          imageAspectRatio
         }
       }
     `,

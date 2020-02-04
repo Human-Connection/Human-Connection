@@ -44,14 +44,16 @@ export const postFragment = gql`
     disabled
     deleted
     slug
-    image
     language
-    imageBlurred
+    image {
+      url
+      blurred
+      aspectRatio
+    }
     author {
       ...user
     }
     pinnedAt
-    imageAspectRatio
     pinned
   }
 `

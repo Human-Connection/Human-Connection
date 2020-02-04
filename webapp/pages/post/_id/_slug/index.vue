@@ -3,15 +3,15 @@
     <ds-card
       :lang="post.language"
       v-if="post && ready"
-      :image="post.image | proxyApiUrl"
+      :image="post.image && post.image.url | proxyApiUrl"
       :class="{
         'post-page': true,
         'disabled-content': post.disabled,
         '--blur-image': blurred,
       }"
     >
-      <aside v-show="post.imageBlurred" class="blur-toggle">
-        <img v-show="blurred" :src="post.image | proxyApiUrl" class="preview" />
+      <aside v-show="post.image && post.image.blurred" class="blur-toggle">
+        <img v-show="blurred" :src="post.image && post.image.url | proxyApiUrl" class="preview" />
         <base-button
           :icon="blurred ? 'eye' : 'eye-slash'"
           filled
@@ -30,7 +30,7 @@
           resource-type="contribution"
           :resource="post"
           :modalsData="menuModalsData"
-          :is-owner="isAuthor(post.author ? post.author.id : null)"
+          :is-owner="isAuthor"
           @pinPost="pinPost"
           @unpinPost="unpinPost"
         />
@@ -74,7 +74,7 @@
           >
             <hc-shout-button
               v-if="post.author"
-              :disabled="isAuthor(post.author.id)"
+              :disabled="isAuthor"
               :count="post.shoutedCount"
               :is-shouted="post.shoutedByCurrentUser"
               :post-id="post.id"
@@ -92,7 +92,7 @@
         />
         <ds-space margin-bottom="large" />
         <comment-form
-          v-if="showNewCommentForm && !post.author.blocked"
+          v-if="showNewCommentForm && !isBlocked"
           ref="commentForm"
           :post="post"
           @createComment="createComment"
@@ -170,13 +170,20 @@ export default {
         this.deletePostCallback,
       )
     },
+    isBlocked() {
+      const { author } = this.post
+      if (!author) return false
+      return author.blocked
+    },
+    isAuthor() {
+      const { author } = this.post
+      if (!author) return false
+      return this.$store.getters['auth/user'].id === author.id
+    },
   },
   methods: {
     reply(message) {
       this.$refs.commentForm && this.$refs.commentForm.reply(message)
-    },
-    isAuthor(id) {
-      return this.$store.getters['auth/user'].id === id
     },
     async deletePostCallback() {
       try {
@@ -229,8 +236,10 @@ export default {
       update({ Post }) {
         this.post = Post[0] || {}
         this.title = this.post.title
-        this.blurred = this.post.imageBlurred
         this.postAuthor = this.post.author
+        const { image } = this.post
+        if(!image) return
+        this.blurred = image.blurred
       },
       fetchPolicy: 'cache-and-network',
     },
