@@ -424,6 +424,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         {
           categoryIds: ['cat3'],
           author: huey,
+          image: Factory.build('image'),
         },
       ),
       Factory.build(
@@ -435,6 +436,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         {
           categoryIds: ['cat4'],
           author: dewey,
+          image: Factory.build('image'),
         },
       ),
       Factory.build(
@@ -446,6 +448,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         {
           categoryIds: ['cat5'],
           author: louie,
+          image: Factory.build('image'),
         },
       ),
       Factory.build(
@@ -472,6 +475,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         {
           categoryIds: ['cat9'],
           author: huey,
+          image: Factory.build('image'),
         },
       ),
       Factory.build(
@@ -511,6 +515,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         {
           author: bobDerBaumeister,
           categoryIds: ['cat13'],
+          image: Factory.build('image'),
         },
       ),
       Factory.build(
@@ -537,6 +542,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         {
           author: huey,
           categoryIds: ['cat15'],
+          image: Factory.build('image'),
         },
       ),
     ])
@@ -996,6 +1002,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       {},
       {
         author: peterLustig,
+        categoryIds: ['cat1'],
         image: Factory.build('image', {
           url: faker.image.unsplash.buildings(),
         }),
@@ -1038,6 +1045,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       {},
       {
         author: dewey,
+        categoryIds: ['cat1'],
         image: Factory.build('image', {
           url: faker.image.unsplash.food(),
         }),
@@ -1080,6 +1088,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       {},
       {
         author: louie,
+        categoryIds: ['cat1'],
         image: Factory.build('image', {
           url: faker.image.unsplash.technology(),
         }),
@@ -1122,6 +1131,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       {},
       {
         author: bobDerBaumeister,
+        categoryIds: ['cat1'],
         image: Factory.build('image', {
           url: faker.image.unsplash.people(),
         }),
@@ -1164,6 +1174,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       {},
       {
         author: huey,
+        categoryIds: ['cat1'],
         image: Factory.build('image', {
           url: faker.image.unsplash.nature(),
         }),

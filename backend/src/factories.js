@@ -39,8 +39,8 @@ Factory.define('image')
 
 Factory.define('category')
   .attr('id', uuid)
-  .attr('icon', 'img/badges/fundraisingbox_de_airship.svg')
-  .attr('name', 'Some category name')
+  .attr('icon', 'smile')
+  .attr('name', 'just-for-fun')
   .after((buildObject, options) => {
     return neode.create('Category', buildObject)
   })
