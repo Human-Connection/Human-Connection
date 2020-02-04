@@ -1721,10 +1721,10 @@
     jimp-compact "^0.8.0"
     workbox-cdn "^4.3.1"
 
-"@nuxtjs/sentry@^3.1.0":
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/@nuxtjs/sentry/-/sentry-3.1.0.tgz#2ec9097d62054b943ba3edd0a722fe0ac214592e"
-  integrity sha512-oEpcnNWoz7Uw+L1W9YAxL0ccW28xDPwcHauF4XhhGa7ZbhKQ8hZqgR9kPn7rCNuWRWL3WZR+oWpxLst4+Uy6Cw==
+"@nuxtjs/sentry@^3.2.2":
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/@nuxtjs/sentry/-/sentry-3.2.2.tgz#ee0add861b18844f8367e1e30d5c7bac1e5f5c91"
+  integrity sha512-eoHSoN9+QiHwIBY8aa8sVgZnh9X73BqlZy0qtO3LthM2awROFEYJ3sqIGkhrucgTrRM8na6LAFNEvd64QI9sCw==
   dependencies:
     "@sentry/browser" "^5.11.2"
     "@sentry/integrations" "^5.11.1"
