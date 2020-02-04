@@ -6183,12 +6183,12 @@ metascraper-date@^5.10.7:
   dependencies:
     "@metascraper/helpers" "^5.10.7"
 
-metascraper-description@^5.10.6:
-  version "5.10.6"
-  resolved "https://registry.yarnpkg.com/metascraper-description/-/metascraper-description-5.10.6.tgz#ebb4459a4e1acdc473534d1b898b7958b1769eb6"
-  integrity sha512-d3d6UMsNnD8Dy7gxA05iTOj5QmJrFQTw1+IrW9CiOfdNsYq0H+m265a9lRaXcyJdqkzmGnv/d52C0BtUDOrkRw==
+metascraper-description@^5.11.0:
+  version "5.11.0"
+  resolved "https://registry.yarnpkg.com/metascraper-description/-/metascraper-description-5.11.0.tgz#1f7edfae7ffc353512975cafaa5b862fc5141709"
+  integrity sha512-or62L9EbIwBxjsu6gShTKi1z1XQ4Hvml8MrdydL4tiSUJpwf+lXc6gVOP8+nlKPPRkiAhXt2M9k4mfkGoX0erQ==
   dependencies:
-    "@metascraper/helpers" "^5.10.6"
+    "@metascraper/helpers" "^5.10.7"
 
 metascraper-image@^5.10.7:
   version "5.10.7"
