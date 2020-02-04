@@ -12,8 +12,7 @@ title: 🐛 [Refactor]
 <!-- What is the purpose of this refactoring? If it's removing depcrecated code, please link to the deprecation notice. -->
 
 ### Implementation
-<!-- Please, docment any ideas of how the code should be refactored. -->
+<!-- Please, document any ideas of how the code should be refactored. -->
 
 ### Additional context
 <!-- Add other context or background about the feature request here.-->
-
