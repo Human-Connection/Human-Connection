@@ -7,23 +7,23 @@
     @submit="submit"
   >
     <template slot-scope="{ errors }">
-      <ds-button
+      <base-button
         v-if="(contribution && contribution.image) || form.teaserImage"
         @click.prevent="deleteImage"
         icon="close"
         class="delete-image"
-      ></ds-button>
+      ></base-button>
       <hc-teaser-image
+        :class="{ '--blur-image': form.blurImage }"
         ref="deleteImage"
         :contribution="contribution"
         @addTeaserImage="addTeaserImage"
-        :class="{ '--blur-image': form.blurImage }"
         @addImageAspectRatio="addImageAspectRatio"
       >
         <img
           v-if="contribution"
           class="contribution-image"
-          :src="contribution.image || proxyApiUrl"
+          :src="contribution.image | proxyApiUrl"
         />
       </hc-teaser-image>
 

@@ -235,7 +235,7 @@ describe('ContributionForm.vue', () => {
           expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
         })
 
-        it('deleted a teaser image', async () => {
+        it('deletes a teaser image', async () => {
           expectedParams.variables.imageUpload = imageUpload
           wrapper.find(TeaserImage).vm.$emit('addTeaserImage', imageUpload)
           wrapper.find(TeaserImage).vm.$emit('deleteImage', null)

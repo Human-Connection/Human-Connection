@@ -16,7 +16,7 @@ describe('MasonryGrid', () => {
   it('adds the "reset-grid-height" class when itemsCalculating is more than 0', () => {
     wrapper.setData({ itemsCalculating: 1 })
 
-    expect(wrapper.classes()).toContain('reset-grid-height')
+    expect(wrapper.classes()).toContain('ds-grid')
   })
 
   it('removes the "reset-grid-height" class when itemsCalculating is 0', () => {
