@@ -73,12 +73,10 @@ describe('NotificationList.vue', () => {
 
     describe('click on a notification', () => {
       beforeEach(() => {
-        // Wolle wrapper.find('.notification-link-for-test').trigger('click')
-        wrapper.getByTestId('notification-link').trigger('click')
-        expect(wrapper.attributes('id')).toBe('foo')
+        wrapper.find('.notification .notifications-card').trigger('click')
       })
 
-      it.only("emits 'markAsRead' with the id of the notification source", () => {
+      it("emits 'markAsRead' with the id of the notification source", () => {
         expect(wrapper.emitted('markAsRead')[0]).toEqual(['post-1'])
       })
     })

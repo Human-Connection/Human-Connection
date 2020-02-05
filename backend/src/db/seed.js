@@ -746,31 +746,31 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
     ])
     // notify first report filers
     await Promise.all([
-      reportAgainstDagobert.relateTo(jennyRostock, 'notified', {
+      jennyRostock.relateTo(reportAgainstDagobert, 'notified', {
         read: false,
         reason: 'filed_report_on_resource',
       }),
-      reportAgainstHuey.relateTo(jennyRostock, 'notified', {
+      jennyRostock.relateTo(reportAgainstHuey, 'notified', {
         read: false,
         reason: 'filed_report_on_resource',
       }),
-      reportAgainstTrollingPostP2.relateTo(jennyRostock, 'notified', {
+      jennyRostock.relateTo(reportAgainstTrollingPostP2, 'notified', {
         read: false,
         reason: 'filed_report_on_resource',
       }),
-      reportAgainstTrollingPostP9.relateTo(jennyRostock, 'notified', {
+      jennyRostock.relateTo(reportAgainstTrollingPostP9, 'notified', {
         read: false,
         reason: 'filed_report_on_resource',
       }),
-      reportAgainstTrollingCommentC1.relateTo(huey, 'notified', {
+      huey.relateTo(reportAgainstTrollingCommentC1, 'notified', {
         read: false,
         reason: 'filed_report_on_resource',
       }),
-      reportAgainstTrollingCommentC2.relateTo(jennyRostock, 'notified', {
+      jennyRostock.relateTo(reportAgainstTrollingCommentC2, 'notified', {
         read: false,
         reason: 'filed_report_on_resource',
       }),
-      reportAgainstDewey.relateTo(dagobert, 'notified', {
+      dagobert.relateTo(reportAgainstDewey, 'notified', {
         read: false,
         reason: 'filed_report_on_resource',
       }),
@@ -801,15 +801,15 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
     ])
     // notify second report filers
     await Promise.all([
-      reportAgainstDagobert.relateTo(louie, 'notified', {
+      louie.relateTo(reportAgainstDagobert, 'notified', {
         read: false,
         reason: 'filed_report_on_resource',
       }),
-      reportAgainstTrollingPostP2.relateTo(peterLustig, 'notified', {
+      peterLustig.relateTo(reportAgainstTrollingPostP2, 'notified', {
         read: false,
         reason: 'filed_report_on_resource',
       }),
-      reportAgainstTrollingCommentC1.relateTo(bobDerBaumeister, 'notified', {
+      bobDerBaumeister.relateTo(reportAgainstTrollingCommentC1, 'notified', {
         read: false,
         reason: 'filed_report_on_resource',
       }),

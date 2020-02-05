@@ -28,7 +28,7 @@ beforeAll(() => {
 
 beforeEach(async () => {
   authenticatedUser = null
-  variables = { orderBy: 'createdAt_asc' }
+  variables = { orderBy: 'updatedAt_desc' }
 })
 
 afterEach(async () => {
@@ -94,37 +94,37 @@ describe('given some notifications', () => {
       }),
     ])
     await Promise.all([
-      post1.relateTo(neighbor, 'notified', {
+      neighbor.relateTo(post1, 'notified', {
         createdAt: '2019-08-29T17:33:48.651Z',
         updatedAt: '2019-08-29T17:33:48.651Z',
         read: false,
         reason: 'mentioned_in_post',
       }),
-      post2.relateTo(user, 'notified', {
+      user.relateTo(post2, 'notified', {
         createdAt: '2019-08-30T17:33:48.651Z',
         updatedAt: '2019-08-30T17:33:48.651Z',
         read: true,
         reason: 'mentioned_in_post',
       }),
-      post3.relateTo(user, 'notified', {
+      user.relateTo(post3, 'notified', {
         createdAt: '2019-08-31T17:33:48.651Z',
         updatedAt: '2019-08-31T17:33:48.651Z',
         read: false,
         reason: 'mentioned_in_post',
       }),
-      comment1.relateTo(user, 'notified', {
+      user.relateTo(comment1, 'notified', {
         createdAt: '2019-08-30T15:33:48.651Z',
         updatedAt: '2019-08-30T15:33:48.651Z',
         read: true,
         reason: 'mentioned_in_comment',
       }),
-      comment2.relateTo(user, 'notified', {
+      user.relateTo(comment2, 'notified', {
         createdAt: '2019-08-30T19:33:48.651Z',
         updatedAt: '2019-08-30T19:33:48.651Z',
         read: false,
         reason: 'mentioned_in_comment',
       }),
-      comment3.relateTo(neighbor, 'notified', {
+      neighbor.relateTo(comment3, 'notified', {
         createdAt: '2019-09-01T17:33:48.651Z',
         updatedAt: '2019-09-01T17:33:48.651Z',
         read: false,
@@ -165,19 +165,19 @@ describe('given some notifications', () => {
       reportOnComment.relateTo(comment4, 'belongsTo'),
     ])
     await Promise.all([
-      reportOnUser.relateTo(user, 'notified', {
+      user.relateTo(reportOnUser, 'notified', {
         createdAt: '2020-01-15T16:33:48.651Z',
         updatedAt: '2020-01-15T16:33:48.651Z',
         read: false,
         reason: 'filed_report_on_resource',
       }),
-      reportOnPost.relateTo(user, 'notified', {
+      user.relateTo(reportOnPost, 'notified', {
         createdAt: '2020-01-16T10:33:48.651Z',
         updatedAt: '2020-01-16T10:33:48.651Z',
         read: true,
         reason: 'filed_report_on_resource',
       }),
-      reportOnComment.relateTo(user, 'notified', {
+      user.relateTo(reportOnComment, 'notified', {
         createdAt: '2020-01-14T12:33:48.651Z',
         updatedAt: '2020-01-14T12:33:48.651Z',
         read: false,
@@ -245,7 +245,7 @@ describe('given some notifications', () => {
         it('returns all notifications of current user', async () => {
           const expected = {
             data: {
-              notifications: expect.arrayContaining([
+              notifications: [
                 {
                   createdAt: '2020-01-16T10:33:48.651Z',
                   updatedAt: '2020-01-16T10:33:48.651Z',
@@ -348,7 +348,7 @@ describe('given some notifications', () => {
                     content: 'You have seen this comment mentioning already',
                   },
                 }),
-              ]),
+              ],
             },
             errors: undefined,
           }
@@ -363,27 +363,7 @@ describe('given some notifications', () => {
         it('returns only unread notifications of current user', async () => {
           const expected = {
             data: {
-              notifications: expect.arrayContaining([
-                {
-                  createdAt: '2019-08-30T19:33:48.651Z',
-                  updatedAt: '2019-08-30T19:33:48.651Z',
-                  read: false,
-                  reason: 'mentioned_in_comment',
-                  from: {
-                    __typename: 'Comment',
-                    content: 'You have been mentioned in a comment',
-                  },
-                },
-                {
-                  createdAt: '2019-08-31T17:33:48.651Z',
-                  updatedAt: '2019-08-31T17:33:48.651Z',
-                  read: false,
-                  reason: 'mentioned_in_post',
-                  from: {
-                    __typename: 'Post',
-                    content: 'You have been mentioned in a post',
-                  },
-                },
+              notifications: [
                 {
                   createdAt: '2020-01-15T16:33:48.651Z',
                   updatedAt: '2020-01-15T16:33:48.651Z',
@@ -427,7 +407,27 @@ describe('given some notifications', () => {
                     ],
                   },
                 },
-              ]),
+                {
+                  createdAt: '2019-08-31T17:33:48.651Z',
+                  updatedAt: '2019-08-31T17:33:48.651Z',
+                  read: false,
+                  reason: 'mentioned_in_post',
+                  from: {
+                    __typename: 'Post',
+                    content: 'You have been mentioned in a post',
+                  },
+                },
+                {
+                  createdAt: '2019-08-30T19:33:48.651Z',
+                  updatedAt: '2019-08-30T19:33:48.651Z',
+                  read: false,
+                  reason: 'mentioned_in_comment',
+                  from: {
+                    __typename: 'Comment',
+                    content: 'You have been mentioned in a comment',
+                  },
+                },
+              ],
             },
             errors: undefined,
           }
