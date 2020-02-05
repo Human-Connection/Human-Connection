@@ -40,8 +40,7 @@
     </template>
     <template #post="scope">
       <nuxt-link
-        data-testid="notification-link"
-        class="notification-link-for-test"
+        data-test="notification-title-link"
         :class="{ 'notification-status': scope.row.read }"
         :to="scope.row.linkTo"
         @click.native="markNotificationAsRead(scope.row.id)"
@@ -121,11 +120,9 @@ export default {
       }
     },
     notificationsData() {
-      const data = []
-      this.notifications.forEach(notification => {
-        data.push(extractNotificationDataOfCurrentUser(notification, this.currentUser))
-      })
-      return data
+      return this.notifications.map(notification =>
+        extractNotificationDataOfCurrentUser(notification, this.currentUser),
+      )
     },
   },
   methods: {

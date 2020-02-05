@@ -63,7 +63,7 @@ describe('Notification', () => {
 
     it('renders reason', () => {
       wrapper = Wrapper()
-      expect(wrapper.find('.reason-text-for-test').text()).toEqual(
+      expect(wrapper.find('[data-test="reason-text"]').text()).toEqual(
         'notifications.reason.commented_on_post',
       )
     })
@@ -113,7 +113,7 @@ describe('Notification', () => {
 
     it('renders reason', () => {
       wrapper = Wrapper()
-      expect(wrapper.find('.reason-text-for-test').text()).toEqual(
+      expect(wrapper.find('[data-test="reason-text"]').text()).toEqual(
         'notifications.reason.mentioned_in_post',
       )
     })
@@ -163,7 +163,7 @@ describe('Notification', () => {
 
     it('renders reason', () => {
       wrapper = Wrapper()
-      expect(wrapper.find('.reason-text-for-test').text()).toEqual(
+      expect(wrapper.find('[data-test="reason-text"]').text()).toEqual(
         'notifications.reason.mentioned_in_comment',
       )
     })
@@ -225,7 +225,7 @@ describe('Notification', () => {
 
     it('renders reason', () => {
       wrapper = Wrapper()
-      expect(wrapper.find('.reason-text-for-test').text()).toEqual(
+      expect(wrapper.find('[data-test="reason-text"]').text()).toEqual(
         'notifications.reason.filed_report_on_resource.user',
       )
     })

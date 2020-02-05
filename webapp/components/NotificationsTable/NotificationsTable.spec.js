@@ -106,7 +106,7 @@ describe('NotificationsTable.vue', () => {
         })
 
         it('renders a link to the post', () => {
-          const postLink = firstRowNotification.find('a.notification-link-for-test')
+          const postLink = firstRowNotification.find('[data-test="notification-title-link"]')
           expect(postLink.text()).toEqual(postNotification.from.title)
         })
 
@@ -136,7 +136,7 @@ describe('NotificationsTable.vue', () => {
         })
 
         it('renders a link to the post', () => {
-          const postLink = secondRowNotification.find('a.notification-link-for-test')
+          const postLink = secondRowNotification.find('[data-test="notification-title-link"]')
           expect(postLink.text()).toEqual(commentNotification.from.post.title)
         })
 
@@ -153,7 +153,7 @@ describe('NotificationsTable.vue', () => {
         })
 
         it('renders me as the triggerer', () => {
-          const triggererName = thirdRowNotification.find('.userName-for-test')
+          const triggererName = thirdRowNotification.find('[data-test="userName"]')
           expect(triggererName.text()).toEqual('myName')
         })
 
@@ -166,7 +166,7 @@ describe('NotificationsTable.vue', () => {
         })
 
         it('renders a link to the user', () => {
-          const userLink = thirdRowNotification.find('a.notification-link-for-test')
+          const userLink = thirdRowNotification.find('[data-test="notification-title-link"]')
           expect(userLink.text()).toEqual(reportNotification.from.filed[0].reportedResource.name)
         })
 
@@ -204,7 +204,7 @@ describe('NotificationsTable.vue', () => {
         })
 
         it('clicking on a Post link emits `markNotificationAsRead`', () => {
-          wrapper.find('a.notification-link-for-test').trigger('click')
+          wrapper.find('[data-test="notification-title-link"]').trigger('click')
           expect(wrapper.emitted().markNotificationAsRead[0][0]).toEqual(postNotification.from.id)
         })
 

@@ -20,14 +20,14 @@
         <div class="info">
           <span class="text">
             <span class="slug">{{ userSlug }}</span>
-            <span class="userName-for-test" v-if="dateTime">{{ userName }}</span>
+            <span data-test="userName" v-if="dateTime">{{ userName }}</span>
           </span>
           <span v-if="dateTime" class="text">
             <base-icon name="clock" />
             <hc-relative-date-time :date-time="dateTime" />
             <slot name="dateTime"></slot>
           </span>
-          <span v-else class="text userName-for-test">{{ userName }}</span>
+          <span v-else data-test="userName" class="text">{{ userName }}</span>
         </div>
       </nuxt-link>
     </template>

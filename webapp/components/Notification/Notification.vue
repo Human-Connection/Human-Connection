@@ -4,7 +4,7 @@
       <ds-space margin-bottom="x-small">
         <user-teaser :user="notificationData.triggerer" :date-time="notificationData.createdAt" />
       </ds-space>
-      <ds-text class="reason-text-for-test" color="soft">
+      <ds-text data-test="reason-text" color="soft">
         <base-icon
           v-if="notificationData.report"
           name="balance-scale"
@@ -26,10 +26,7 @@
       </ds-text>
     </client-only>
     <ds-space margin-bottom="x-small" />
-    <nuxt-link
-      :to="notificationData.linkTo"
-      @click.native="$emit('read')"
-    >
+    <nuxt-link :to="notificationData.linkTo" @click.native="$emit('read')">
       <ds-space margin-bottom="x-small">
         <ds-card
           :header="(notificationData.post || notificationData.comment) && notificationData.title"
