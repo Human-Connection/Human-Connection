@@ -53,8 +53,7 @@ const notifyUsersOfMention = async (label, id, idsOfUsers, reason, context) => {
         WHERE user.id in $idsOfUsers
         AND NOT (user)-[:BLOCKED]-(author)
         MERGE (post)-[notification:NOTIFIED {reason: $reason}]->(user)
-        WITH notification, user,
-        post {.*, __typename: labels(post)[0], author: properties(author) } AS finalResource
+        WITH post AS resource, notification, user
       `
       break
     }
@@ -66,14 +65,17 @@ const notifyUsersOfMention = async (label, id, idsOfUsers, reason, context) => {
       AND NOT (user)-[:BLOCKED]-(commenter)
       AND NOT (user)-[:BLOCKED]-(postAuthor)
       MERGE (comment)-[notification:NOTIFIED {reason: $reason}]->(user)
-      WITH notification, user,
-      comment {.*, __typename: labels(comment)[0], author: properties(commenter), post:  post {.*, author: properties(postAuthor)} } AS finalResource
+      WITH comment AS resource, notification, user
       `
       break
     }
   }
   mentionedCypher += `
-    WITH notification, finalResource, user
+    WITH notification, user, resource,
+    [(resource)<-[:WROTE]-(author:User) | author {.*}] AS authors,
+    [(resource)-[:COMMENTS]->(post:Post)<-[:WROTE]-(author:User) | post{.*, author: properties(author)} ] AS posts
+    WITH resource, user, notification, authors, posts,
+    resource {.*, __typename: labels(resource)[0], author: authors[0], post: posts[0]} AS finalResource
     SET notification.read = FALSE
     SET notification.createdAt = COALESCE(notification.createdAt, toString(datetime()))
     SET notification.updatedAt = toString(datetime())
