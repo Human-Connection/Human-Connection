@@ -7,20 +7,16 @@
     @submit="submit"
   >
     <template slot-scope="{ errors }">
-      <hc-teaser-image
-        :contribution="contribution"
-        @addTeaserImage="addTeaserImage"
-        :class="{ '--blur-image': form.blurImage }"
-        @addImageAspectRatio="addImageAspectRatio"
-      >
-        <img
-          v-if="contribution"
-          class="contribution-image"
-          :src="contribution.image | proxyApiUrl"
-        />
-      </hc-teaser-image>
-
-      <ds-card>
+      <base-card>
+        <section class="card-image">
+          <img v-if="contribution" class="preview-image" :src="contribution.image | proxyApiUrl" />
+          <teaser-image
+            :contribution="contribution"
+            :class="{ '--blur-image': form.blurImage }"
+            @addTeaserImage="addTeaserImage"
+            @addImageAspectRatio="addImageAspectRatio"
+          />
+        </section>
         <div class="blur-toggle">
           <label for="blur-img">{{ $t('contribution.inappropriatePicture') }}</label>
           <input type="checkbox" id="blur-img" v-model="form.blurImage" />
@@ -99,7 +95,7 @@
         </ds-text>
 
         <ds-space />
-        <div slot="footer" style="text-align: right">
+        <div style="text-align: right">
           <base-button data-test="cancel-button" :disabled="loading" @click="$router.back()" danger>
             {{ $t('actions.cancel') }}
           </base-button>
@@ -108,7 +104,7 @@
           </base-button>
         </div>
         <ds-space margin-bottom="large" />
-      </ds-card>
+      </base-card>
     </template>
   </ds-form>
 </template>
@@ -121,14 +117,14 @@ import HcEditor from '~/components/Editor/Editor'
 import locales from '~/locales'
 import PostMutations from '~/graphql/PostMutations.js'
 import HcCategoriesSelect from '~/components/CategoriesSelect/CategoriesSelect'
-import HcTeaserImage from '~/components/TeaserImage/TeaserImage'
+import TeaserImage from '~/components/TeaserImage/TeaserImage'
 import UserTeaser from '~/components/UserTeaser/UserTeaser'
 
 export default {
   components: {
     HcEditor,
     HcCategoriesSelect,
-    HcTeaserImage,
+    TeaserImage,
     UserTeaser,
   },
   props: {
@@ -297,8 +293,14 @@ export default {
 
 <style lang="scss">
 .contribution-form {
-  .ds-card-image.--blur-image img {
-    filter: blur(32px);
+  .card-image {
+    position: relative;
+  }
+
+  .preview-image {
+    width: 100%;
+    max-height: 2000px;
+    object-fit: contain;
   }
 
   .blur-toggle {

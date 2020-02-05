@@ -28,20 +28,9 @@ describe('TeaserImage.vue', () => {
       const message = 'File upload failed'
       const fileError = { status: 'error' }
 
-      it('defaults to error false', () => {
-        expect(wrapper.vm.error).toEqual(false)
-      })
-
       it('shows an error toaster when verror is called', () => {
-        wrapper.vm.verror(fileError, message)
+        wrapper.vm.onDropzoneError(fileError, message)
         expect(mocks.$toast.error).toHaveBeenCalledWith(fileError.status, message)
-      })
-
-      it('changes error status from false to true to false', () => {
-        wrapper.vm.verror(fileError, message)
-        expect(wrapper.vm.error).toEqual(true)
-        jest.runAllTimers()
-        expect(wrapper.vm.error).toEqual(false)
       })
     })
   })

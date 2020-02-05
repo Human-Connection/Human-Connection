@@ -1,15 +1,20 @@
 <template>
-  <vue-dropzone
-    :options="dropzoneOptions"
-    ref="el"
-    id="postdropzone"
-    class="ds-card-image"
-    :use-custom-slot="true"
-    @vdropzone-error="verror"
-    @vdropzone-thumbnail="transformImage"
-  >
-    <div class="crop-overlay" ref="cropperOverlay" v-show="showCropper">
-      <base-button @click="cropImage" class="crop-confirm" filled>
+  <!-- TODO: rename to ImageUploader when delete-teaser-image PR is merged -->
+  <div class="image-uploader">
+    <vue-dropzone
+      v-show="!showCropper"
+      id="postdropzone"
+      :options="dropzoneOptions"
+      :use-custom-slot="true"
+      @vdropzone-error="onDropzoneError"
+      @vdropzone-thumbnail="initCropper"
+    >
+      <loading-spinner v-if="isLoadingImage" />
+      <base-icon v-else name="image" />
+    </vue-dropzone>
+    <div v-show="showCropper" class="crop-overlay">
+      <img id="cropping-image" />
+      <base-button class="crop-confirm" filled @click="cropImage">
         {{ $t('contribution.teaserImage.cropperConfirm') }}
       </base-button>
       <base-button
@@ -19,36 +24,22 @@
         circle
         danger
         filled
-        @click="cancelCrop"
+        @click="closeCropper"
       />
     </div>
-    <div
-      :class="{
-        'hc-attachments-upload-area-post': true,
-        'hc-attachments-upload-area-update-post': contribution,
-      }"
-    >
-      <slot></slot>
-      <div
-        :class="{
-          'hc-drag-marker-post': true,
-          'hc-drag-marker-update-post': contribution,
-        }"
-      >
-        <base-icon name="image" />
-      </div>
-    </div>
-  </vue-dropzone>
+  </div>
 </template>
 
 <script>
-import vueDropzone from 'nuxt-dropzone'
+import VueDropzone from 'nuxt-dropzone'
 import Cropper from 'cropperjs'
+import LoadingSpinner from '~/components/_new/generic/LoadingSpinner/LoadingSpinner'
 import 'cropperjs/dist/cropper.css'
 
 export default {
   components: {
-    vueDropzone,
+    LoadingSpinner,
+    VueDropzone,
   },
   props: {
     contribution: { type: Object, default: () => {} },
@@ -58,181 +49,135 @@ export default {
       dropzoneOptions: {
         url: () => '',
         maxFilesize: 5.0,
-        previewTemplate: this.template(),
+        previewTemplate: '<img class="preview-image" />',
       },
-      image: null,
-      file: null,
-      editor: null,
       cropper: null,
-      thumbnailElement: null,
-      oldImage: null,
-      error: false,
+      file: null,
       showCropper: false,
+      isLoadingImage: false,
     }
   },
   methods: {
-    template() {
-      return `<div class="dz-preview dz-file-preview">
-                <div class="dz-image">
-                  <div data-dz-thumbnail-bg></div>
-                </div>
-              </div>
-	     `
-    },
-    verror(file, message) {
-      this.error = true
+    onDropzoneError(file, message) {
       this.$toast.error(file.status, message)
-      setTimeout(() => {
-        this.error = false
-      }, 2000)
-    },
-    transformImage(file) {
-      this.file = file
-      this.showCropper = true
-      this.initEditor()
-      this.initCropper()
-    },
-    initEditor() {
-      this.editor = this.$refs.cropperOverlay
-      this.clearImages()
-      this.thumbnailElement.appendChild(this.editor)
     },
     clearImages() {
-      this.thumbnailElement = document.querySelectorAll('#postdropzone')[0]
-      const thumbnailPreview = document.querySelectorAll('.thumbnail-preview')[0]
-      if (thumbnailPreview) thumbnailPreview.remove()
-      const contributionImage = document.querySelectorAll('.contribution-image')[0]
-      this.oldImage = contributionImage
-      if (contributionImage) contributionImage.remove()
+      const images = document.querySelectorAll('.preview-image')
+      images.forEach((image, index) => {
+        if (index === images.length - 1) image.src = ''
+        else image.remove()
+      })
     },
-    initCropper() {
-      this.image = new Image()
-      this.image.src = URL.createObjectURL(this.file)
-      this.editor.appendChild(this.image)
-      this.cropper = new Cropper(this.image, { zoomable: false, autoCropArea: 0.9 })
+    initCropper(file) {
+      this.showCropper = true
+      this.file = file
+      this.clearImages()
+
+      const imageElement = document.querySelector('#cropping-image')
+      imageElement.src = URL.createObjectURL(file)
+      this.cropper = new Cropper(imageElement, { zoomable: false, autoCropArea: 0.9 })
     },
     cropImage() {
-      this.showCropper = false
+      this.isLoadingImage = true
       const canvas = this.cropper.getCroppedCanvas()
       canvas.toBlob(blob => {
         const imageAspectRatio = canvas.width / canvas.height
-        this.setupPreview(canvas)
-        this.removeCropper()
         const croppedImageFile = new File([blob], this.file.name, { type: this.file.type })
         this.$emit('addTeaserImage', croppedImageFile)
         this.$emit('addImageAspectRatio', imageAspectRatio)
+        this.setupPreview(canvas.toDataURL())
       }, 'image/jpeg')
+
+      this.closeCropper()
     },
-    setupPreview(canvas) {
-      this.image = new Image()
-      this.image.src = canvas.toDataURL()
-      this.image.classList.add('thumbnail-preview')
-      this.thumbnailElement.appendChild(this.image)
+    setupPreview(url) {
+      const previewElement = document.querySelector('.preview-image')
+      previewElement.src = url
+      this.$nextTick((this.isLoadingImage = false))
     },
-    cancelCrop() {
+    closeCropper() {
       this.showCropper = false
-      if (this.oldImage) this.thumbnailElement.appendChild(this.oldImage)
-      this.removeCropper()
-    },
-    removeCropper() {
-      this.editor.removeChild(document.querySelectorAll('.cropper-container')[0])
+      this.cropper.destroy()
     },
   },
 }
 </script>
 <style lang="scss">
-#postdropzone {
-  width: 100%;
-  min-height: 400px;
-  background-color: $background-color-softest;
-}
-
-.hc-attachments-upload-area-post {
+.image-uploader {
   position: relative;
-  display: flex;
-  justify-content: center;
+  min-height: 200px;
+  overflow: hidden;
   cursor: pointer;
-}
 
-.hc-attachments-upload-area-update-post img {
-  object-fit: cover;
-  object-position: center;
-  display: block;
-  width: 100%;
-}
+  &:only-child {
+    background-color: $color-neutral-85;
+  }
 
-.hc-attachments-upload-area-update-post:hover {
-  opacity: 0.7;
-}
+  &:disabled {
+    pointer-events: none;
+  }
 
-.hc-drag-marker-post {
-  position: absolute;
-  width: 122px;
-  height: 122px;
-  border-radius: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 180px 5px;
-  color: hsl(0, 0%, 25%);
-  transition: all 0.2s ease-out;
-  font-size: 60px;
-  background-color: $background-color-softest;
-  opacity: 0.65;
+  &.--blur-image img {
+    filter: blur(22px);
+  }
 
-  &:before {
+  .preview-image + & {
     position: absolute;
-    content: '';
     top: 0;
-    left: 0;
-    bottom: 0;
     right: 0;
-    border-radius: 100%;
-    border: 20px solid $text-color-base;
-    visibility: hidden;
+    bottom: 0;
+    left: 0;
   }
 
-  &:after {
+  > .crop-overlay {
+    width: 100%;
+    height: 400px;
+    font-size: $font-size-base;
+
+    > .img {
+      display: block;
+      max-width: 100%;
+    }
+
+    > .crop-confirm {
+      position: absolute;
+      left: 10px;
+      top: 10px;
+      z-index: 1;
+    }
+
+    > .crop-cancel {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      z-index: 1;
+    }
+  }
+
+  .dz-message {
     position: absolute;
-    content: '';
-    top: 10px;
-    left: 10px;
-    bottom: 10px;
-    right: 10px;
-    border-radius: 100%;
-    border: $border-size-base dashed $text-color-base;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+
+    &:hover {
+      > .base-icon {
+        opacity: 1;
+      }
+    }
+
+    > .base-icon {
+      position: absolute;
+      padding: $space-small;
+      border-radius: 100%;
+      border: $border-size-base dashed $color-neutral-20;
+      background-color: $color-neutral-95;
+      font-size: 60px;
+      opacity: 0.7;
+    }
   }
-
-  .hc-attachments-upload-area-post:hover & {
-    opacity: 1;
-  }
-}
-
-.hc-drag-marker-update-post {
-  opacity: 0;
-}
-
-.contribution-form-footer {
-  border-top: $border-size-base solid $border-color-softest;
-}
-
-.crop-overlay {
-  max-height: 2000px;
-  position: relative;
-  width: 100%;
-  background-color: #000;
-}
-
-.crop-confirm {
-  position: absolute;
-  left: 10px;
-  top: 10px;
-  z-index: 1;
-}
-.crop-cancel {
-  position: absolute;
-  right: 10px;
-  top: 10px;
-  z-index: 1;
 }
 </style>
