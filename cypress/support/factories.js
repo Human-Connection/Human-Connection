@@ -1,9 +1,13 @@
-import Factory from '../../backend/src/seed/factories'
-import { getDriver, getNeode } from '../../backend/src/bootstrap/neo4j'
-import neode from 'neode'
+import Factory from '../../backend/src/factories'
+import { getDriver, getNeode } from '../../backend/src/db/neo4j'
 
-const neo4jDriver = getDriver()
-const neodeInstance = getNeode()
+const neo4jConfigs = {
+  uri: Cypress.env('NEO4J_URI'),
+  username: Cypress.env('NEO4J_USERNAME'),
+  password: Cypress.env('NEO4J_PASSWORD')
+}
+const neo4jDriver = getDriver(neo4jConfigs)
+const neodeInstance = getNeode(neo4jConfigs)
 const factoryOptions = { neo4jDriver, neodeInstance }
 const factory = Factory(factoryOptions)
 

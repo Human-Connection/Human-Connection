@@ -12,13 +12,13 @@
   <div v-else :class="{ comment: true, 'disabled-content': comment.deleted || comment.disabled }">
     <ds-card :id="anchor" :class="{ 'comment--target': isTarget }">
       <ds-space margin-bottom="small" margin-top="small">
-        <hc-user :user="author" :date-time="comment.createdAt">
+        <user-teaser :user="author" :date-time="comment.createdAt">
           <template v-slot:dateTime>
             <ds-text v-if="comment.createdAt !== comment.updatedAt">
               ({{ $t('comment.edited') }})
             </ds-text>
           </template>
-        </hc-user>
+        </user-teaser>
         <client-only>
           <content-menu
             v-show="!openEditCommentMenu"
@@ -33,7 +33,7 @@
         </client-only>
       </ds-space>
       <div v-if="openEditCommentMenu">
-        <hc-comment-form
+        <comment-form
           :update="true"
           :post="post"
           :comment="comment"
@@ -54,6 +54,15 @@
         </button>
       </div>
       <ds-space margin-bottom="small" />
+      <base-button
+        :title="this.$t('post.comment.reply')"
+        icon="level-down"
+        class="reply-button"
+        circle
+        size="small"
+        v-scroll-to="'.editor'"
+        @click.prevent="reply"
+      ></base-button>
     </ds-card>
   </div>
 </template>
@@ -61,12 +70,13 @@
 <script>
 import { mapGetters } from 'vuex'
 import { COMMENT_MAX_UNTRUNCATED_LENGTH, COMMENT_TRUNCATE_TO_LENGTH } from '~/constants/comment'
-import HcUser from '~/components/User/User'
+import UserTeaser from '~/components/UserTeaser/UserTeaser'
 import ContentMenu from '~/components/ContentMenu/ContentMenu'
 import ContentViewer from '~/components/Editor/ContentViewer'
-import HcCommentForm from '~/components/CommentForm/CommentForm'
+import CommentForm from '~/components/CommentForm/CommentForm'
 import CommentMutations from '~/graphql/CommentMutations'
 import scrollToAnchor from '~/mixins/scrollToAnchor.js'
+import BaseButton from '~/components/_new/generic/BaseButton/BaseButton'
 
 export default {
   mixins: [scrollToAnchor],
@@ -82,10 +92,11 @@ export default {
     }
   },
   components: {
-    HcUser,
+    UserTeaser,
     ContentMenu,
     ContentViewer,
-    HcCommentForm,
+    CommentForm,
+    BaseButton,
   },
   props: {
     routeHash: { type: String, default: () => '' },
@@ -105,7 +116,6 @@ export default {
       if (this.isLongComment && this.isCollapsed) {
         return this.$filters.truncate(this.comment.content, COMMENT_TRUNCATE_TO_LENGTH)
       }
-
       return this.comment.content
     },
     displaysComment() {
@@ -141,6 +151,10 @@ export default {
     },
   },
   methods: {
+    reply() {
+      const message = { slug: this.comment.author.slug, id: this.comment.author.id }
+      this.$emit('reply', message)
+    },
     checkAnchor(anchor) {
       return `#${this.anchor}` === anchor
     },
@@ -191,6 +205,14 @@ export default {
 
 .float-right {
   float: right;
+}
+
+.reply-button {
+  float: right;
+  top: 0px;
+}
+.reply-button:after {
+  clear: both;
 }
 
 @keyframes highlight {

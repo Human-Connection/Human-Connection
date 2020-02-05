@@ -4,7 +4,7 @@ import { action } from '@storybook/addon-actions'
 import NotificationsTable from '~/components/NotificationsTable/NotificationsTable'
 import helpers from '~/storybook/helpers'
 import { post } from '~/components/PostCard/PostCard.story.js'
-import { user } from '~/components/User/User.story.js'
+import { user } from '~/components/UserTeaser/UserTeaser.story.js'
 
 helpers.init()
 export const notifications = [

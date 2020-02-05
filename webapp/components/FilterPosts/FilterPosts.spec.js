@@ -150,7 +150,7 @@ describe('FilterPosts.vue', () => {
     describe('click on an "emotions-buttons" button', () => {
       it('calls TOGGLE_EMOTION when clicked', () => {
         const wrapper = openFilterPosts()
-        happyEmotionButton = wrapper.findAll('button.emotions-buttons').at(1)
+        happyEmotionButton = wrapper.findAll('.emotion-button .base-button').at(1)
         happyEmotionButton.trigger('click')
         expect(mutations['posts/TOGGLE_EMOTION']).toHaveBeenCalledWith({}, 'happy')
       })
@@ -158,7 +158,7 @@ describe('FilterPosts.vue', () => {
       it('sets the attribute `src` to colorized image', () => {
         getters['posts/filteredByEmotions'] = jest.fn(() => ['happy'])
         const wrapper = openFilterPosts()
-        happyEmotionButton = wrapper.findAll('button.emotions-buttons').at(1)
+        happyEmotionButton = wrapper.findAll('.emotion-button .base-button').at(1)
         const happyEmotionButtonImage = happyEmotionButton.find('img')
         expect(happyEmotionButtonImage.attributes().src).toEqual('/img/svg/emoji/happy_color.svg')
       })

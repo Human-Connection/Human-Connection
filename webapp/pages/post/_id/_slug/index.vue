@@ -12,13 +12,18 @@
     >
       <aside v-show="post.imageBlurred" class="blur-toggle">
         <img v-show="blurred" :src="post.image | proxyApiUrl" class="preview" />
-        <ds-button :icon="blurred ? 'eye' : 'eye-slash'" primary @click="blurred = !blurred" />
+        <base-button
+          :icon="blurred ? 'eye' : 'eye-slash'"
+          filled
+          circle
+          @click="blurred = !blurred"
+        />
       </aside>
-      <hc-user :user="post.author" :date-time="post.createdAt">
+      <user-teaser :user="post.author" :date-time="post.createdAt">
         <template v-slot:dateTime>
           <ds-text v-if="post.createdAt !== post.updatedAt">({{ $t('post.edited') }})</ds-text>
         </template>
-      </hc-user>
+      </user-teaser>
       <client-only>
         <content-menu
           placement="bottom-end"
@@ -59,13 +64,9 @@
       </div>
       <ds-space margin-top="x-large">
         <ds-flex :gutter="{ lg: 'small' }">
-          <ds-flex-item
-            :width="{ lg: '75%', md: '75%', sm: '75%' }"
-            class="emotions-buttons-mobile"
-          >
+          <ds-flex-item :width="{ lg: '75%', md: '75%', sm: '75%', base: '100%' }">
             <hc-emotions :post="post" />
           </ds-flex-item>
-          <ds-flex-item :width="{ lg: '10%', md: '3%', sm: '3%' }" />
           <!-- Shout Button -->
           <ds-flex-item
             :width="{ lg: '15%', md: '22%', sm: '22%', base: '100%' }"
@@ -83,13 +84,25 @@
       </ds-space>
       <!-- Comments -->
       <ds-section slot="footer">
-        <hc-comment-list
+        <comment-list
           :post="post"
           :routeHash="$route.hash"
           @toggleNewCommentForm="toggleNewCommentForm"
+          @reply="reply"
         />
         <ds-space margin-bottom="large" />
-        <hc-comment-form v-if="showNewCommentForm" :post="post" @createComment="createComment" />
+        <comment-form
+          v-if="showNewCommentForm && !post.author.blocked"
+          ref="commentForm"
+          :post="post"
+          @createComment="createComment"
+        />
+        <ds-placeholder v-else>
+          {{ $t('settings.blocked-users.explanation.commenting-disabled') }}
+          <br />
+          {{ $t('settings.blocked-users.explanation.commenting-explanation') }}
+          <a href="https://support.human-connection.org/kb/" target="_blank">FAQ</a>
+        </ds-placeholder>
       </ds-section>
     </ds-card>
   </transition>
@@ -100,10 +113,10 @@ import ContentViewer from '~/components/Editor/ContentViewer'
 import HcCategory from '~/components/Category'
 import HcHashtag from '~/components/Hashtag/Hashtag'
 import ContentMenu from '~/components/ContentMenu/ContentMenu'
-import HcUser from '~/components/User/User'
+import UserTeaser from '~/components/UserTeaser/UserTeaser'
 import HcShoutButton from '~/components/ShoutButton.vue'
-import HcCommentForm from '~/components/CommentForm/CommentForm'
-import HcCommentList from '~/components/CommentList/CommentList'
+import CommentForm from '~/components/CommentForm/CommentForm'
+import CommentList from '~/components/CommentList/CommentList'
 import { postMenuModalsData, deletePostMutation } from '~/components/utils/PostHelpers'
 import PostQuery from '~/graphql/PostQuery'
 import HcEmotions from '~/components/Emotions/Emotions'
@@ -118,11 +131,11 @@ export default {
   components: {
     HcCategory,
     HcHashtag,
-    HcUser,
+    UserTeaser,
     HcShoutButton,
     ContentMenu,
-    HcCommentForm,
-    HcCommentList,
+    CommentForm,
+    CommentList,
     HcEmotions,
     ContentViewer,
   },
@@ -138,14 +151,9 @@ export default {
       title: 'loading',
       showNewCommentForm: true,
       blurred: false,
+      blocked: null,
+      postAuthor: null,
     }
-  },
-  watch: {
-    Post(post) {
-      this.post = post[0] || {}
-      this.title = this.post.title
-      this.blurred = this.post.imageBlurred
-    },
   },
   mounted() {
     setTimeout(() => {
@@ -164,6 +172,9 @@ export default {
     },
   },
   methods: {
+    reply(message) {
+      this.$refs.commentForm && this.$refs.commentForm.reply(message)
+    },
     isAuthor(id) {
       return this.$store.getters['auth/user'].id === id
     },
@@ -214,6 +225,12 @@ export default {
         return {
           id: this.$route.params.id,
         }
+      },
+      update({ Post }) {
+        this.post = Post[0] || {}
+        this.title = this.post.title
+        this.blurred = this.post.imageBlurred
+        this.postAuthor = this.post.author
       },
       fetchPolicy: 'cache-and-network',
     },

@@ -1,20 +1,12 @@
 import express from 'express'
 import helmet from 'helmet'
 import { ApolloServer } from 'apollo-server-express'
-import CONFIG, { requiredConfigs } from './config'
+import CONFIG from './config'
 import middleware from './middleware'
-import { getNeode, getDriver } from './bootstrap/neo4j'
+import { getNeode, getDriver } from './db/neo4j'
 import decode from './jwt/decode'
 import schema from './schema'
 import webfinger from './activitypub/routes/webfinger'
-
-// check required configs and throw error
-// TODO check this directly in config file - currently not possible due to testsetup
-Object.entries(requiredConfigs).map(entry => {
-  if (!entry[1]) {
-    throw new Error(`ERROR: "${entry[0]}" env variable is missing.`)
-  }
-})
 
 const driver = getDriver()
 const neode = getNeode()

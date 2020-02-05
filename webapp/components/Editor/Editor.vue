@@ -141,7 +141,6 @@ export default {
   methods: {
     openSuggestionList({ items, query, range, command, virtualNode }, suggestionType) {
       this.suggestionType = suggestionType
-
       this.query = this.sanitizeQuery(query)
       this.filteredItems = items
       this.suggestionRange = range
@@ -237,6 +236,9 @@ export default {
       const content = e.getHTML()
       this.$emit('input', content)
     },
+    insertReply(message) {
+      this.editor.commands.mention({ id: message.id, label: message.slug })
+    },
     toggleLinkInput(attrs, element) {
       if (!this.isLinkInputActive && attrs && element) {
         this.$refs.linkInput.linkUrl = attrs.href
@@ -325,86 +327,5 @@ li > p {
   p {
     margin: 0 0 $space-x-small;
   }
-}
-
-.ProseMirror[contenteditable='false'] {
-  .embed-close-button {
-    display: none;
-  }
-}
-
-.embed-container {
-  position: relative;
-  padding: 0;
-  margin: $space-small auto;
-  overflow: hidden;
-  border-radius: $border-radius-base;
-  border: 1px solid $color-neutral-70;
-  background-color: $color-neutral-90;
-}
-
-.embed-content {
-  width: 100%;
-  height: 100%;
-
-  h4 {
-    margin: $space-small 0 0 $space-small;
-  }
-
-  p,
-  a {
-    display: block;
-    margin: 0 0 0 $space-small;
-  }
-}
-
-.embed-preview-image {
-  width: 100%;
-  height: auto;
-  max-height: 450px;
-}
-
-.embed-preview-image--clickable {
-  cursor: pointer;
-}
-
-.embed-html {
-  width: 100%;
-
-  iframe {
-    width: 100%;
-  }
-}
-
-.embed-overlay {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-
-  padding: $space-large;
-  background-color: $color-neutral-100;
-}
-
-.embed-buttons {
-  button {
-    margin-right: $space-small;
-  }
-}
-
-.embed-checkbox {
-  display: flex;
-
-  input {
-    margin-right: $space-small;
-  }
-}
-
-.embed-close-button {
-  position: absolute;
-  top: $space-x-small;
-  right: $space-x-small;
-  background-color: rgba(250, 249, 250, 0.6);
 }
 </style>

@@ -20,14 +20,14 @@
     <!-- Username, Image & Date of Post -->
     <div class="user-wrapper">
       <client-only>
-        <hc-user :user="post.author" :trunc="35" :date-time="post.createdAt" />
+        <user-teaser :user="post.author" :date-time="post.createdAt" />
       </client-only>
       <hc-ribbon v-if="isPinned" class="ribbon--pinned" :text="$t('post.pinned')" />
       <hc-ribbon v-else :text="$t('post.name')" />
     </div>
     <ds-space margin-bottom="small" />
     <!-- Post Title -->
-    <ds-heading tag="h3" no-margin class="hyphenate-text">{{ post.title }}</ds-heading>
+    <ds-heading tag="h3" class="hyphenate-text post-title">{{ post.title }}</ds-heading>
     <ds-space margin-bottom="small" />
     <!-- Post Content Excerpt -->
     <!-- eslint-disable vue/no-v-html -->
@@ -78,7 +78,7 @@
 </template>
 
 <script>
-import HcUser from '~/components/User/User'
+import UserTeaser from '~/components/UserTeaser/UserTeaser'
 import ContentMenu from '~/components/ContentMenu/ContentMenu'
 import HcCategory from '~/components/Category'
 import HcRibbon from '~/components/Ribbon'
@@ -89,7 +89,7 @@ import { postMenuModalsData, deletePostMutation } from '~/components/utils/PostH
 export default {
   name: 'HcPostCard',
   components: {
-    HcUser,
+    UserTeaser,
     HcCategory,
     HcRibbon,
     ContentMenu,
@@ -132,7 +132,7 @@ export default {
       )
     },
     isPinned() {
-      return this.post && this.post.pinnedBy
+      return this.post && this.post.pinned
     },
   },
   methods: {
@@ -186,9 +186,15 @@ export default {
     height: 75px;
   }
 
-  /* workaround to avoid jumping layout when hc-user is rendered */
+  .post-title {
+    margin-top: $space-large;
+  }
+
+  /* workaround to avoid jumping layout when user-teaser is rendered */
   .user-wrapper {
     height: 36px;
+    position: relative;
+    z-index: $z-index-post-card-link;
   }
 
   .content-menu {

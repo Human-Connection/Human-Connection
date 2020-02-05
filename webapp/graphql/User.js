@@ -23,7 +23,8 @@ export default i18n => {
         locationName
         createdAt
         followedByCurrentUser
-        isBlocked
+        isMuted
+        blocked
         following(first: 7) {
           ...user
           ...userCounts

@@ -2,7 +2,7 @@ import { config, mount, createLocalVue } from '@vue/test-utils'
 import BlockedUsers from './blocked-users.vue'
 import Styleguide from '@human-connection/styleguide'
 import Filters from '~/plugins/vue-filters'
-import { Unblock } from '~/graphql/settings/BlockedUsers'
+import { unblockUser } from '~/graphql/settings/BlockedUsers'
 
 const localVue = createLocalVue()
 
@@ -54,12 +54,12 @@ describe('blocked-users.vue', () => {
 
       describe('click unblock', () => {
         beforeEach(() => {
-          wrapper.find('button').trigger('click')
+          wrapper.find('.base-button').trigger('click')
         })
 
         it('calls unblock mutation with given user', () => {
           expect(mocks.$apollo.mutate).toHaveBeenCalledWith({
-            mutation: Unblock(),
+            mutation: unblockUser(),
             variables: { id: 'u1' },
           })
         })

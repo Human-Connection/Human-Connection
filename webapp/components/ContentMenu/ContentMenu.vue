@@ -155,7 +155,24 @@ export default {
             icon: 'edit',
           })
         } else {
-          if (this.resource.isBlocked) {
+          if (this.resource.isMuted) {
+            routes.push({
+              label: this.$t(`settings.muted-users.unmute`),
+              callback: () => {
+                this.$emit('unmute', this.resource)
+              },
+              icon: 'microphone',
+            })
+          } else {
+            routes.push({
+              label: this.$t(`settings.muted-users.mute`),
+              callback: () => {
+                this.$emit('mute', this.resource)
+              },
+              icon: 'microphone-slash',
+            })
+          }
+          if (this.resource.blocked) {
             routes.push({
               label: this.$t(`settings.blocked-users.unblock`),
               callback: () => {

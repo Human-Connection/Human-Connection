@@ -1,5 +1,5 @@
 import { rule, shield, deny, allow, or } from 'graphql-shield'
-import { getNeode } from '../bootstrap/neo4j'
+import { getNeode } from '../db/neo4j'
 import CONFIG from '../config'
 
 const debug = !!CONFIG.DEBUG
@@ -101,6 +101,7 @@ export default shield(
       Badge: allow,
       PostsEmotionsCountByEmotion: allow,
       PostsEmotionsByCurrentUser: isAuthenticated,
+      mutedUsers: isAuthenticated,
       blockedUsers: isAuthenticated,
       notifications: isAuthenticated,
       Donations: isAuthenticated,
@@ -137,8 +138,10 @@ export default shield(
       resetPassword: allow,
       AddPostEmotions: isAuthenticated,
       RemovePostEmotions: isAuthenticated,
-      block: isAuthenticated,
-      unblock: isAuthenticated,
+      muteUser: isAuthenticated,
+      unmuteUser: isAuthenticated,
+      blockUser: isAuthenticated,
+      unblockUser: isAuthenticated,
       markAsRead: isAuthenticated,
       AddEmailAddress: isAuthenticated,
       VerifyEmailAddress: isAuthenticated,

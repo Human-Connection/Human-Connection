@@ -7,11 +7,10 @@
     condensed
   >
     <template #submitter="scope">
-      <hc-user
+      <user-teaser
         :user="scope.row.submitter"
         :showAvatar="false"
         :showPopover="false"
-        :trunc="30"
         data-test="filing-user"
       />
     </template>
@@ -29,12 +28,12 @@
   </ds-table>
 </template>
 <script>
-import HcUser from '~/components/User/User'
+import UserTeaser from '~/components/UserTeaser/UserTeaser'
 import HcRelativeDateTime from '~/components/RelativeDateTime'
 
 export default {
   components: {
-    HcUser,
+    UserTeaser,
     HcRelativeDateTime,
   },
   props: {

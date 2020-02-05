@@ -6,7 +6,6 @@ addons:
       - libgconf-2-4
   snaps:
     - docker
-    - chromium
 
 install:
   - yarn global add wait-on
@@ -19,7 +18,7 @@ before_script:
   - docker-compose -f docker-compose.yml -f docker-compose.build-and-test.yml build # just tagging, just be quite fast
   - docker-compose -f docker-compose.yml -f docker-compose.build-and-test.yml up -d
   - wait-on http://localhost:7474
-  - docker-compose  -f docker-compose.yml -f docker-compose.build-and-test.yml exec neo4j db_setup
+  - docker-compose  -f docker-compose.yml -f docker-compose.build-and-test.yml exec backend yarn run db:migrate init
 
 script:
   - export CYPRESS_RETRIES=1
@@ -68,9 +67,5 @@ deploy:
       branch: master
   - provider: script
     script: bash scripts/deploy.sh
-    on:
-      branch: master
-  - provider: script
-    script: bash scripts/github_release.sh
     on:
       branch: master

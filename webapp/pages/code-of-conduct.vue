@@ -56,7 +56,7 @@ export default {
         },
         {
           key: 'consequences',
-          items: [...Array(9).keys()],
+          items: [...Array(8).keys()],
         },
       ],
     }

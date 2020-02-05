@@ -1,4 +1,5 @@
 import { shallowMount } from '@vue/test-utils'
+import Vue from 'vue'
 import Upload from '.'
 
 const localVue = global.localVue
@@ -57,8 +58,9 @@ describe('Upload', () => {
       expect(mocks.$toast.error).toHaveBeenCalledWith(fileError.status, message)
     })
 
-    it('changes error status from false to true to false', () => {
+    it('changes error status from false to true to false', async () => {
       wrapper.vm.verror(fileError, message)
+      await Vue.nextTick()
       expect(wrapper.vm.error).toEqual(true)
       jest.runAllTimers()
       expect(wrapper.vm.error).toEqual(false)

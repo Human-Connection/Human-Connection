@@ -1,12 +1,27 @@
 import { neo4jgraphql } from 'neo4j-graphql-js'
 import fileUpload from './fileUpload'
-import { getNeode } from '../../bootstrap/neo4j'
+import { getNeode } from '../../db/neo4j'
 import { UserInputError, ForbiddenError } from 'apollo-server'
 import Resolver from './helpers/Resolver'
 import log from './helpers/databaseLogger'
 import createOrUpdateLocations from './users/location'
 
 const neode = getNeode()
+
+export const getMutedUsers = async context => {
+  const { neode } = context
+  const userModel = neode.model('User')
+  let mutedUsers = neode
+    .query()
+    .match('user', userModel)
+    .where('user.id', context.user.id)
+    .relationship(userModel.relationships().get('muted'))
+    .to('muted', userModel)
+    .return('muted')
+  mutedUsers = await mutedUsers.execute()
+  mutedUsers = mutedUsers.records.map(r => r.get('muted').properties)
+  return mutedUsers
+}
 
 export const getBlockedUsers = async context => {
   const { neode } = context
@@ -23,24 +38,15 @@ export const getBlockedUsers = async context => {
   return blockedUsers
 }
 
-export const getBlockedByUsers = async context => {
-  if (context.user.role === 'moderator' || context.user.role === 'admin') return []
-  const { neode } = context
-  const userModel = neode.model('User')
-  let blockedByUsers = neode
-    .query()
-    .match('user', userModel)
-    .relationship(userModel.relationships().get('blocked'))
-    .to('blocked', userModel)
-    .where('blocked.id', context.user.id)
-    .return('user')
-  blockedByUsers = await blockedByUsers.execute()
-  blockedByUsers = blockedByUsers.records.map(r => r.get('user').properties)
-  return blockedByUsers
-}
-
 export default {
   Query: {
+    mutedUsers: async (object, args, context, resolveInfo) => {
+      try {
+        return getMutedUsers(context)
+      } catch (e) {
+        throw new UserInputError(e.message)
+      }
+    },
     blockedUsers: async (object, args, context, resolveInfo) => {
       try {
         return getBlockedUsers(context)
@@ -72,7 +78,37 @@ export default {
     },
   },
   Mutation: {
-    block: async (object, args, context, resolveInfo) => {
+    muteUser: async (_parent, params, context, _resolveInfo) => {
+      const { user: currentUser } = context
+      if (currentUser.id === params.id) return null
+      await neode.cypher(
+        `
+          MATCH(u:User {id: $currentUser.id})-[previousRelationship:FOLLOWS]->(b:User {id: $params.id})
+          DELETE previousRelationship
+        `,
+        { currentUser, params },
+      )
+      const [user, mutedUser] = await Promise.all([
+        neode.find('User', currentUser.id),
+        neode.find('User', params.id),
+      ])
+      await user.relateTo(mutedUser, 'muted')
+      return mutedUser.toJson()
+    },
+    unmuteUser: async (_parent, params, context, _resolveInfo) => {
+      const { user: currentUser } = context
+      if (currentUser.id === params.id) return null
+      await neode.cypher(
+        `
+          MATCH(u:User {id: $currentUser.id})-[previousRelationship:MUTED]->(b:User {id: $params.id})
+          DELETE previousRelationship
+        `,
+        { currentUser, params },
+      )
+      const unmutedUser = await neode.find('User', params.id)
+      return unmutedUser.toJson()
+    },
+    blockUser: async (object, args, context, resolveInfo) => {
       const { user: currentUser } = context
       if (currentUser.id === args.id) return null
       await neode.cypher(
@@ -89,7 +125,7 @@ export default {
       await user.relateTo(blockedUser, 'blocked')
       return blockedUser.toJson()
     },
-    unblock: async (object, args, context, resolveInfo) => {
+    unblockUser: async (object, args, context, resolveInfo) => {
       const { user: currentUser } = context
       if (currentUser.id === args.id) return null
       await neode.cypher(
@@ -215,8 +251,10 @@ export default {
       boolean: {
         followedByCurrentUser:
           'MATCH (this)<-[:FOLLOWS]-(u:User {id: $cypherParams.currentUserId}) RETURN COUNT(u) >= 1',
-        isBlocked:
+        blocked:
           'MATCH (this)<-[:BLOCKED]-(u:User {id: $cypherParams.currentUserId}) RETURN COUNT(u) >= 1',
+        isMuted:
+          'MATCH (this)<-[:MUTED]-(u:User {id: $cypherParams.currentUserId}) RETURN COUNT(u) >= 1',
       },
       count: {
         contributionsCount:

@@ -1,7 +1,8 @@
 import dotenv from 'dotenv'
-import path from 'path'
-
-dotenv.config({ path: path.resolve(__dirname, '../../.env') })
+if (require.resolve) {
+  // are we in a nodejs environment?
+  dotenv.config({ path: require.resolve('../../.env') })
+}
 
 const {
   MAPBOX_TOKEN,
@@ -25,6 +26,15 @@ export const requiredConfigs = {
   MAPBOX_TOKEN,
   JWT_SECRET,
   PRIVATE_KEY_PASSPHRASE,
+}
+
+if (require.resolve) {
+  // are we in a nodejs environment?
+  Object.entries(requiredConfigs).map(entry => {
+    if (!entry[1]) {
+      throw new Error(`ERROR: "${entry[0]}" env variable is missing.`)
+    }
+  })
 }
 
 export const smtpConfigs = {
