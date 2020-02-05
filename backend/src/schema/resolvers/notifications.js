@@ -51,10 +51,10 @@ export default {
           MATCH (resource {deleted: false, disabled: false})-[notification:NOTIFIED]->(user:User {id:$id})
           ${whereClause}
           WITH user, notification, resource,
-          [(resource)<-[:WROTE]-(author:User) | author {.*}] as authors,
-          [(resource)-[:COMMENTS]->(post:Post)<-[:WROTE]-(author:User) | post{.*, author: properties(author)} ] as posts
+          [(resource)<-[:WROTE]-(author:User) | author {.*}] AS authors,
+          [(resource)-[:COMMENTS]->(post:Post)<-[:WROTE]-(author:User) | post{.*, author: properties(author)} ] AS posts
           WITH resource, user, notification, authors, posts,
-          resource {.*, __typename: labels(resource)[0], author: authors[0], post: posts[0]} as finalResource
+          resource {.*, __typename: labels(resource)[0], author: authors[0], post: posts[0]} AS finalResource
           RETURN notification {.*, from: finalResource, to: properties(user)}
           ${orderByClause}
           ${offset} ${limit}
@@ -82,10 +82,10 @@ export default {
             MATCH (resource {id: $resourceId})-[notification:NOTIFIED {read: FALSE}]->(user:User {id:$id})
             SET notification.read = TRUE
             WITH user, notification, resource,
-            [(resource)<-[:WROTE]-(author:User) | author {.*}] as authors,
-            [(resource)-[:COMMENTS]->(post:Post)<-[:WROTE]-(author:User) | post{.*, author: properties(author)} ] as posts
+            [(resource)<-[:WROTE]-(author:User) | author {.*}] AS authors,
+            [(resource)-[:COMMENTS]->(post:Post)<-[:WROTE]-(author:User) | post{.*, author: properties(author)} ] AS posts
             WITH resource, user, notification, authors, posts,
-            resource {.*, __typename: labels(resource)[0], author: authors[0], post: posts[0]} as finalResource
+            resource {.*, __typename: labels(resource)[0], author: authors[0], post: posts[0]} AS finalResource
             RETURN notification {.*, from: finalResource, to: properties(user)}
           `,
           { resourceId: args.id, id: currentUser.id },

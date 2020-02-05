@@ -54,7 +54,7 @@ const notifyUsersOfMention = async (label, id, idsOfUsers, reason, context) => {
         AND NOT (user)-[:BLOCKED]-(author)
         MERGE (post)-[notification:NOTIFIED {reason: $reason}]->(user)
         WITH notification, user,
-        post {.*, __typename: labels(post)[0], author: properties(author) } as finalResource
+        post {.*, __typename: labels(post)[0], author: properties(author) } AS finalResource
       `
       break
     }
@@ -67,7 +67,7 @@ const notifyUsersOfMention = async (label, id, idsOfUsers, reason, context) => {
       AND NOT (user)-[:BLOCKED]-(postAuthor)
       MERGE (comment)-[notification:NOTIFIED {reason: $reason}]->(user)
       WITH notification, user,
-      comment {.*, __typename: labels(comment)[0], author: properties(commenter), post:  post {.*, author: properties(postAuthor)} } as finalResource
+      comment {.*, __typename: labels(comment)[0], author: properties(commenter), post:  post {.*, author: properties(postAuthor)} } AS finalResource
       `
       break
     }
@@ -101,24 +101,26 @@ const notifyUsersOfMention = async (label, id, idsOfUsers, reason, context) => {
 const notifyUsersOfComment = async (label, commentId, postAuthorId, reason, context) => {
   await validateNotifyUsers(label, reason)
   const session = context.driver.session()
-
+  const writeTxResultPromise = await session.writeTransaction(async transaction => {
+    const notificationTransactionResponse = await transaction.run(
+      `
+      MATCH (postAuthor:User {id: $postAuthorId})-[:WROTE]->(post:Post)<-[:COMMENTS]-(comment:Comment { id: $commentId })<-[:WROTE]-(commenter:User)
+      WHERE NOT (postAuthor)-[:BLOCKED]-(commenter)
+      MERGE (comment)-[notification:NOTIFIED {reason: $reason}]->(postAuthor)
+      SET notification.read = FALSE
+      SET notification.createdAt = COALESCE(notification.createdAt, toString(datetime()))
+      SET notification.updatedAt = toString(datetime())
+      WITH notification, postAuthor, post,
+      comment {.*, __typename: labels(comment)[0], author: properties(commenter), post:  post {.*, author: properties(postAuthor) } } AS finalResource
+      RETURN notification {.*, from: finalResource, to: properties(postAuthor)}
+    `,
+      { commentId, postAuthorId, reason },
+    )
+    return notificationTransactionResponse.records.map(record => record.get('notification'))
+  })
   try {
-    await session.writeTransaction(async transaction => {
-      await transaction.run(
-        `
-        MATCH (postAuthor:User {id: $postAuthorId})-[:WROTE]->(post:Post)<-[:COMMENTS]-(comment:Comment { id: $commentId })<-[:WROTE]-(commenter:User)
-        WHERE NOT (postAuthor)-[:BLOCKED]-(commenter)
-        MERGE (comment)-[notification:NOTIFIED {reason: $reason}]->(postAuthor)
-        SET notification.read = FALSE
-        SET (
-        CASE
-        WHEN notification.createdAt IS NULL
-        THEN notification END ).createdAt = toString(datetime())
-        SET notification.updatedAt = toString(datetime())
-      `,
-        { commentId, postAuthorId, reason },
-      )
-    })
+    const [notification] = await writeTxResultPromise
+    return pubsub.publish(NOTIFICATION_ADDED, { notificationAdded: notification })
   } finally {
     session.close()
   }
