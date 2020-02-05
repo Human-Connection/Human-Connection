@@ -49,7 +49,6 @@ export const serverConfigs = {
   CLIENT_URI,
   GRAPHQL_URI,
   PUBLIC_REGISTRATION: process.env.PUBLIC_REGISTRATION === 'true',
-  SUBSCRIPTIONS_PATH: '/subscriptions',
 }
 
 export const developmentConfigs = {

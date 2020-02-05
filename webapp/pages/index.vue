@@ -74,15 +74,6 @@ import { mapGetters, mapMutations } from 'vuex'
 import { filterPosts } from '~/graphql/PostQuery.js'
 import PostMutations from '~/graphql/PostMutations'
 import UpdateQuery from '~/components/utils/UpdateQuery'
-import gql from 'graphql-tag'
-import {
-  userFragment,
-  postFragment,
-  postCountsFragment,
-  userCountsFragment,
-  locationAndBadgesFragment,
-  tagsCategoriesAndPinnedFragment,
-} from '~/graphql/Fragments'
 
 export default {
   components: {
@@ -222,35 +213,6 @@ export default {
         this.posts = Post
       },
       fetchPolicy: 'cache-and-network',
-      subscribeToMore: {
-        document: gql`
-          ${userFragment}
-          ${userCountsFragment}
-          ${locationAndBadgesFragment('EN')}
-          ${postFragment}
-          ${postCountsFragment}
-          ${tagsCategoriesAndPinnedFragment}
-
-          subscription Post {
-            postAdded {
-              ...post
-              ...postCounts
-              ...tagsCategoriesAndPinned
-              author {
-                ...user
-                ...userCounts
-                ...locationAndBadges
-              }
-            }
-          }
-        `,
-        updateQuery: (previousResult, { subscriptionData }) => {
-          const {
-            data: { postAdded: newPost },
-          } = subscriptionData
-          return { Post: [newPost, ...previousResult.Post] }
-        },
-      },
     },
   },
 }
