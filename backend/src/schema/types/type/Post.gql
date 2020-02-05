@@ -245,3 +245,7 @@ type Query {
       """
     )
 }
+
+type Subscription {
+  postAdded: Post
+}

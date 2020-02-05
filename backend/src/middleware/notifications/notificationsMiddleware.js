@@ -1,9 +1,10 @@
 import extractMentionedUsers from './mentions/extractMentionedUsers'
 import { validateNotifyUsers } from '../validation/validationMiddleware'
-import { PubSub } from 'apollo-server'
-
-const pubsub = new PubSub()
-const NOTIFICATION_ADDED = 'NOTIFICATION_ADDED'
+import {
+  pubsub,
+  NOTIFICATION_ADDED,
+  transformReturnType,
+} from '../../schema/resolvers/notifications'
 
 const handleContentDataOfPost = async (resolve, root, args, context, resolveInfo) => {
   const idsOfUsers = extractMentionedUsers(args.content)
@@ -56,6 +57,7 @@ const notifyUsersOfMention = async (label, id, idsOfUsers, reason, context) => {
         WHERE user.id in $idsOfUsers
         AND NOT (user)-[:BLOCKED]-(author)
         MERGE (post)-[notification:NOTIFIED {reason: $reason}]->(user)
+        WITH notification, post AS resource, user
       `
       break
     }
@@ -67,6 +69,7 @@ const notifyUsersOfMention = async (label, id, idsOfUsers, reason, context) => {
       AND NOT (user)-[:BLOCKED]-(author)
       AND NOT (user)-[:BLOCKED]-(postAuthor)
       MERGE (comment)-[notification:NOTIFIED {reason: $reason}]->(user)
+      WITH notification, comment AS resource, user
       `
       break
     }
@@ -78,12 +81,16 @@ const notifyUsersOfMention = async (label, id, idsOfUsers, reason, context) => {
     WHEN notification.createdAt IS NULL
     THEN notification END ).createdAt = toString(datetime())
     SET notification.updatedAt = toString(datetime())
-    RETURN notification
+    RETURN notification, resource, user, labels(resource)[0] AS type
   `
   const session = context.driver.session()
   const writeTxResultPromise = session.writeTransaction(async transaction => {
-    const notificationTransactionResponse = await transaction.run(mentionedCypher, { id, idsOfUsers, reason })
-    return notificationTransactionResponse.records.map(record => record.get('notification').properties)
+    const notificationTransactionResponse = await transaction.run(mentionedCypher, {
+      id,
+      idsOfUsers,
+      reason,
+    })
+    return notificationTransactionResponse.records.map(transformReturnType)
   })
   try {
     const [notification] = await writeTxResultPromise

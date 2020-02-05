@@ -70,6 +70,7 @@ export const notificationQuery = i18n => {
         read
         reason
         createdAt
+        updatedAt
         from {
           __typename
           ... on Post {
@@ -108,6 +109,7 @@ export const markAsReadMutation = i18n => {
         read
         reason
         createdAt
+        updatedAt
         from {
           __typename
           ... on Post {
@@ -137,12 +139,13 @@ export const notificationAdded = () => {
     ${commentFragment}
     ${postFragment}
 
-    subscription notifications {
-      notificationAdded {
+    subscription notifications($userId: ID!) {
+      notificationAdded(userId: $userId) {
         id
         read
         reason
         createdAt
+        updatedAt
         from {
           __typename
           ... on Post {

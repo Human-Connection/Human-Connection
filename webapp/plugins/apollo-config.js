@@ -17,7 +17,7 @@ export default ({ app }) => {
     credentials: true,
     tokenName: 'human-connection-token',
     persisting: false,
-    websocketsOnly: true,
+    websocketsOnly: false,
     cache: new InMemoryCache({ fragmentMatcher }),
   }
 }

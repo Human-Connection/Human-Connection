@@ -1,16 +1,14 @@
 import log from './helpers/databaseLogger'
 import { PubSub } from 'apollo-server'
+import { withFilter } from 'graphql-subscriptions'
 
-const pubsub = new PubSub()
-const NOTIFICATION_ADDED = 'NOTIFICATION_ADDED'
-
-const resourceTypes = ['Post', 'Comment']
-
-const transformReturnType = record => {
+export const pubsub = new PubSub()
+export const NOTIFICATION_ADDED = 'NOTIFICATION_ADDED'
+export const transformReturnType = record => {
   return {
     ...record.get('notification').properties,
     from: {
-      __typename: record.get('resource').labels.find(l => resourceTypes.includes(l)),
+      __typename: record.get('type'),
       ...record.get('resource').properties,
     },
     to: {
@@ -22,7 +20,12 @@ const transformReturnType = record => {
 export default {
   Subscription: {
     notificationAdded: {
-      subscribe: () => pubsub.asyncIterator([NOTIFICATION_ADDED]),
+      subscribe: withFilter(
+        () => pubsub.asyncIterator(NOTIFICATION_ADDED),
+        (payload, variables) => {
+          return payload.notificationAdded.to.id === variables.userId
+        },
+      ),
     },
   },
   Query: {
@@ -90,7 +93,7 @@ export default {
           ` 
             MATCH (resource {id: $resourceId})-[notification:NOTIFIED {read: FALSE}]->(user:User {id:$id})
             SET notification.read = TRUE
-            RETURN resource, notification, user
+            RETURN resource, notification, user, labels(resource)[0] AS type
           `,
           { resourceId: args.id, id: currentUser.id },
         )

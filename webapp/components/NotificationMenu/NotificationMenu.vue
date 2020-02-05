@@ -22,13 +22,12 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import unionBy from 'lodash/unionBy'
-import { NOTIFICATIONS_POLL_INTERVAL } from '~/constants/notifications'
-import { notificationQuery, markAsReadMutation } from '~/graphql/User'
+import { notificationQuery, markAsReadMutation, notificationAdded } from '~/graphql/User'
 import CounterIcon from '~/components/_new/generic/CounterIcon/CounterIcon'
 import Dropdown from '~/components/Dropdown'
 import NotificationList from '../NotificationList/NotificationList'
-import { notificationAdded } from '~/graphql/User'
 
 export default {
   name: 'NotificationMenu',
@@ -59,6 +58,9 @@ export default {
     },
   },
   computed: {
+    ...mapGetters({
+      user: 'auth/user',
+    }),
     unreadNotificationsCount() {
       const result = this.notifications.reduce((count, notification) => {
         return notification.read ? count : count + 1
@@ -77,17 +79,24 @@ export default {
           orderBy: 'updatedAt_desc',
         }
       },
-      // pollInterval: NOTIFICATIONS_POLL_INTERVAL,
-      // update({ notifications }) {
-      //   return unionBy(notifications, this.notifications, notification => notification.id).sort(
-      //     (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
-      //   )
-      // },
       subscribeToMore: {
         document: notificationAdded(),
+        variables() {
+          return {
+            userId: this.user.id,
+          }
+        },
         updateQuery: (previousResult, { subscriptionData }) => {
-          const { data: { notificationAdded: newNotification } } = subscriptionData
-          return { notifications: [newNotification, ...previousResult.notifications] }
+          const {
+            data: { notificationAdded: newNotification },
+          } = subscriptionData
+          return {
+            notifications: unionBy(
+              [newNotification],
+              previousResult.notifications,
+              notification => notification.id,
+            ).sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)),
+          }
         },
       },
       error(error) {

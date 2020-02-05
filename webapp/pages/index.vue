@@ -78,7 +78,6 @@ import gql from 'graphql-tag'
 import {
   userFragment,
   postFragment,
-  commentFragment,
   postCountsFragment,
   userCountsFragment,
   locationAndBadgesFragment,
@@ -225,30 +224,33 @@ export default {
       fetchPolicy: 'cache-and-network',
       subscribeToMore: {
         document: gql`
-    ${userFragment}
-    ${userCountsFragment}
-    ${locationAndBadgesFragment('EN')}
-    ${postFragment}
-    ${postCountsFragment}
-    ${tagsCategoriesAndPinnedFragment}
+          ${userFragment}
+          ${userCountsFragment}
+          ${locationAndBadgesFragment('EN')}
+          ${postFragment}
+          ${postCountsFragment}
+          ${tagsCategoriesAndPinnedFragment}
 
-        subscription Post {
-          postAdded {
-            ...post
-            ...postCounts
-            ...tagsCategoriesAndPinned
-            author {
-              ...user
-              ...userCounts
-              ...locationAndBadges
+          subscription Post {
+            postAdded {
+              ...post
+              ...postCounts
+              ...tagsCategoriesAndPinned
+              author {
+                ...user
+                ...userCounts
+                ...locationAndBadges
+              }
             }
           }
-        }`,
+        `,
         updateQuery: (previousResult, { subscriptionData }) => {
-          const { data: { postAdded: newPost } } = subscriptionData
+          const {
+            data: { postAdded: newPost },
+          } = subscriptionData
           return { Post: [newPost, ...previousResult.Post] }
         },
-      }
+      },
     },
   },
 }

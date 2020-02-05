@@ -1,15 +1,13 @@
 import uuid from 'uuid/v4'
 import { neo4jgraphql } from 'neo4j-graphql-js'
 import { isEmpty } from 'lodash'
-import { UserInputError } from 'apollo-server'
+import { UserInputError, PubSub } from 'apollo-server'
 import fileUpload from './fileUpload'
 import Resolver from './helpers/Resolver'
 import { filterForMutedUsers } from './helpers/filterForMutedUsers'
-import { PubSub } from 'apollo-server'
 
 const pubsub = new PubSub()
 const POST_ADDED = 'POST_ADDED'
-
 
 const maintainPinnedPosts = params => {
   const pinnedPostFilter = { pinned: true }
