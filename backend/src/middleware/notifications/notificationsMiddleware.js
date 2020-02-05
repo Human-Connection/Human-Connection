@@ -1,10 +1,6 @@
 import extractMentionedUsers from './mentions/extractMentionedUsers'
 import { validateNotifyUsers } from '../validation/validationMiddleware'
-import {
-  pubsub,
-  NOTIFICATION_ADDED,
-  transformReturnType,
-} from '../../schema/resolvers/notifications'
+import { pubsub, NOTIFICATION_ADDED } from '../../schema/resolvers/notifications'
 
 const handleContentDataOfPost = async (resolve, root, args, context, resolveInfo) => {
   const idsOfUsers = extractMentionedUsers(args.content)
@@ -57,31 +53,31 @@ const notifyUsersOfMention = async (label, id, idsOfUsers, reason, context) => {
         WHERE user.id in $idsOfUsers
         AND NOT (user)-[:BLOCKED]-(author)
         MERGE (post)-[notification:NOTIFIED {reason: $reason}]->(user)
-        WITH notification, post AS resource, user
+        WITH notification, user,
+        post {.*, __typename: labels(post)[0], author: properties(author) } as finalResource
       `
       break
     }
     case 'mentioned_in_comment': {
       mentionedCypher = `
-      MATCH (postAuthor: User)-[:WROTE]->(post: Post)<-[:COMMENTS]-(comment: Comment { id: $id })<-[:WROTE]-(author: User)
+      MATCH (postAuthor: User)-[:WROTE]->(post: Post)<-[:COMMENTS]-(comment: Comment { id: $id })<-[:WROTE]-(commenter: User)
       MATCH (user: User)
       WHERE user.id in $idsOfUsers
-      AND NOT (user)-[:BLOCKED]-(author)
+      AND NOT (user)-[:BLOCKED]-(commenter)
       AND NOT (user)-[:BLOCKED]-(postAuthor)
       MERGE (comment)-[notification:NOTIFIED {reason: $reason}]->(user)
-      WITH notification, comment AS resource, user
+      WITH notification, user,
+      comment {.*, __typename: labels(comment)[0], author: properties(commenter), post:  post {.*, author: properties(postAuthor)} } as finalResource
       `
       break
     }
   }
   mentionedCypher += `
+    WITH notification, finalResource, user
     SET notification.read = FALSE
-    SET (
-    CASE
-    WHEN notification.createdAt IS NULL
-    THEN notification END ).createdAt = toString(datetime())
+    SET notification.createdAt = COALESCE(notification.createdAt, toString(datetime()))
     SET notification.updatedAt = toString(datetime())
-    RETURN notification, resource, user, labels(resource)[0] AS type
+    RETURN notification {.*, from: finalResource, to: properties(user)}
   `
   const session = context.driver.session()
   const writeTxResultPromise = session.writeTransaction(async transaction => {
@@ -90,7 +86,7 @@ const notifyUsersOfMention = async (label, id, idsOfUsers, reason, context) => {
       idsOfUsers,
       reason,
     })
-    return notificationTransactionResponse.records.map(transformReturnType)
+    return notificationTransactionResponse.records.map(record => record.get('notification'))
   })
   try {
     const [notification] = await writeTxResultPromise

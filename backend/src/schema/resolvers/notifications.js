@@ -4,18 +4,6 @@ import { withFilter } from 'graphql-subscriptions'
 
 export const pubsub = new PubSub()
 export const NOTIFICATION_ADDED = 'NOTIFICATION_ADDED'
-export const transformReturnType = record => {
-  return {
-    ...record.get('notification').properties,
-    from: {
-      __typename: record.get('type'),
-      ...record.get('resource').properties,
-    },
-    to: {
-      ...record.get('user').properties,
-    },
-  }
-}
 
 export default {
   Subscription: {
@@ -93,12 +81,19 @@ export default {
           ` 
             MATCH (resource {id: $resourceId})-[notification:NOTIFIED {read: FALSE}]->(user:User {id:$id})
             SET notification.read = TRUE
-            RETURN resource, notification, user, labels(resource)[0] AS type
+            WITH user, notification, resource,
+            [(resource)<-[:WROTE]-(author:User) | author {.*}] as authors,
+            [(resource)-[:COMMENTS]->(post:Post)<-[:WROTE]-(author:User) | post{.*, author: properties(author)} ] as posts
+            WITH resource, user, notification, authors, posts,
+            resource {.*, __typename: labels(resource)[0], author: authors[0], post: posts[0]} as finalResource
+            RETURN notification {.*, from: finalResource, to: properties(user)}
           `,
           { resourceId: args.id, id: currentUser.id },
         )
         log(markNotificationAsReadTransactionResponse)
-        return markNotificationAsReadTransactionResponse.records.map(transformReturnType)
+        return markNotificationAsReadTransactionResponse.records.map(record =>
+          record.get('notification'),
+        )
       })
       try {
         const [notifications] = await writeTxResultPromise
