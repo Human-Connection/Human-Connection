@@ -31,6 +31,7 @@ const narratorParams = {
 
 const annoyingParams = {
   email: "spammy-spammer@example.org",
+  slug: 'spammy-spammer',
   password: "1234",
   ...termsAndConditionsAgreedVersion
 };
@@ -39,8 +40,12 @@ Given("I am logged in", () => {
   cy.login(loginCredentials);
 });
 
-Given("I am logged in as the muted user", () => {
-  cy.login({ email: annoyingParams.email, password: '1234' });
+Given("the {string} user searches for {string}", (_, postTitle) => {
+  cy.logout()
+    .login({ email: annoyingParams.email, password: '1234' })
+    .get(".searchable-input .ds-select-search")
+    .focus()
+    .type(postTitle);
 });
 
 Given("we have a selection of categories", () => {
@@ -122,6 +127,12 @@ When("I visit {string}", page => {
 When("I visit the {string} page", page => {
   cy.openPage(page);
 });
+
+When("a blocked user visits the post page of one of my authored posts", () => {
+  cy.logout()
+    .login({ email: annoyingParams.email, password: annoyingParams.password })
+    .openPage('/post/previously-created-post')
+})
 
 Given("I am on the {string} page", page => {
   cy.openPage(page);
@@ -486,7 +497,7 @@ Given("I follow the user {string}", name => {
     });
 });
 
-Given('"Spammy Spammer" wrote a post {string}', title => {
+Given('{string} wrote a post {string}', (_, title) => {
   cy.createCategories("cat21")
     .factory()
     .create("Post", {
@@ -501,7 +512,7 @@ Then("the list of posts of this user is empty", () => {
   cy.get(".main-container").find(".ds-space.hc-empty");
 });
 
-Then("nobody is following the user profile anymore", () => {
+Then("I get removed from his follower collection", () => {
   cy.get(".ds-card-content").not(".post-link");
   cy.get(".main-container").contains(
     ".ds-card-content",
@@ -533,6 +544,20 @@ When("I mute the user {string}", name => {
     });
 });
 
+When("I block the user {string}", name => {
+  cy.neode()
+    .first("User", {
+      name
+    })
+    .then(blockedUser => {
+      cy.neode()
+        .first("User", {
+          name: narratorParams.name
+        })
+        .relateTo(blockedUser, "blocked");
+    });
+});
+
 When("I log in with:", table => {
   const [firstRow] = table.hashes();
   const {
@@ -551,3 +576,11 @@ Then("I see only one post with the title {string}", title => {
     .should("have.length", 1);
   cy.get(".main-container").contains(".post-link", title);
 });
+
+Then("they should not see the comment from", () => {
+  cy.get(".ds-card-footer").children().should('not.have.class', 'comment-form')
+})
+
+Then("they should see a text explaining commenting is not possible", () => {
+  cy.get('.ds-placeholder').should('contain', "Commenting is not possible at this time on this post.")
+})

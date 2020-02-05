@@ -34,12 +34,11 @@ export function up(next) {
                 return txc
                   .run(
                     `
-                  MATCH (oldUser:User)-[:PRIMARY_EMAIL]->(oldEmail:EmailAddress {email: $email}), (oldUser)-[previousRelationship]-(oldEmail)
+                  MATCH (oldUser:User)-[:PRIMARY_EMAIL]->(oldEmail:EmailAddress {email: $email})
                   MATCH (user:User)-[:PRIMARY_EMAIL]->(email:EmailAddress {email: $normalizedEmail})
-                  DELETE previousRelationship
                   WITH oldUser, oldEmail, user, email
-                  CALL apoc.refactor.mergeNodes([user, oldUser], { properties: 'discard', mergeRels: true }) YIELD node as mergedUser
-                  CALL apoc.refactor.mergeNodes([email, oldEmail], { properties: 'discard', mergeRels: true }) YIELD node as mergedEmail
+                  CALL apoc.refactor.mergeNodes([user, oldUser], { properties: { createdAt: 'overwrite', \`.*\`: 'discard' }, mergeRels: true }) YIELD node as mergedUser
+                  CALL apoc.refactor.mergeNodes([email, oldEmail], { properties: { createdAt: 'overwrite', verifiedAt: 'overwrite', \`.*\`: 'discard' }, mergeRels: true }) YIELD node as mergedEmail
                   RETURN user {.*}, email {.*}
               `,
                     { email, normalizedEmail },

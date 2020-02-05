@@ -1,8 +1,8 @@
 import { config, mount, createLocalVue } from '@vue/test-utils'
-import MutedUsers from './muted-users.vue'
+import BlockedUsers from './blocked-users.vue'
 import Styleguide from '@human-connection/styleguide'
 import Filters from '~/plugins/vue-filters'
-import { unmuteUser } from '~/graphql/settings/MutedUsers'
+import { unblockUser } from '~/graphql/settings/BlockedUsers'
 
 const localVue = createLocalVue()
 
@@ -11,7 +11,7 @@ localVue.use(Filters)
 
 config.stubs['nuxt-link'] = '<span><slot /></span>'
 
-describe('muted-users.vue', () => {
+describe('blocked-users.vue', () => {
   let wrapper
   let mocks
 
@@ -21,7 +21,7 @@ describe('muted-users.vue', () => {
       $apollo: {
         mutate: jest.fn(),
         queries: {
-          mutedUsers: {
+          blockedUsers: {
             refetch: jest.fn(),
           },
         },
@@ -35,7 +35,7 @@ describe('muted-users.vue', () => {
 
   describe('mount', () => {
     const Wrapper = () => {
-      return mount(MutedUsers, { mocks, localVue })
+      return mount(BlockedUsers, { mocks, localVue })
     }
 
     beforeEach(() => {
@@ -46,20 +46,20 @@ describe('muted-users.vue', () => {
       expect(wrapper.is('div')).toBe(true)
     })
 
-    describe('given a list of muted users', () => {
+    describe('given a list of blocked users', () => {
       beforeEach(() => {
-        const mutedUsers = [{ id: 'u1', name: 'John Doe', slug: 'john-doe', avatar: '' }]
-        wrapper.setData({ mutedUsers })
+        const blockedUsers = [{ id: 'u1', name: 'John Doe', slug: 'john-doe', avatar: '' }]
+        wrapper.setData({ blockedUsers })
       })
 
-      describe('click unmute', () => {
+      describe('click unblock', () => {
         beforeEach(() => {
           wrapper.find('.base-button').trigger('click')
         })
 
-        it('calls unmute mutation with given user', () => {
+        it('calls unblock mutation with given user', () => {
           expect(mocks.$apollo.mutate).toHaveBeenCalledWith({
-            mutation: unmuteUser(),
+            mutation: unblockUser(),
             variables: { id: 'u1' },
           })
         })
