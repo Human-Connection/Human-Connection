@@ -16,14 +16,6 @@
         </ds-flex-item>
       </div>
     </ds-flex>
-    <p class="small-info">
-      {{
-        $t('contribution.categories.infoSelectedNoOfMaxCategories', {
-          chosen: selectedCount,
-          max: selectedMax,
-        })
-      }}
-    </p>
   </div>
 </template>
 

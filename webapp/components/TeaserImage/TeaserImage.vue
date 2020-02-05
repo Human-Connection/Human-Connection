@@ -106,7 +106,6 @@ export default {
 .image-uploader {
   position: relative;
   min-height: 200px;
-  overflow: hidden;
   cursor: pointer;
 
   &:only-child {
@@ -115,10 +114,6 @@ export default {
 
   &:disabled {
     pointer-events: none;
-  }
-
-  &.--blur-image img {
-    filter: blur(22px);
   }
 
   .preview-image + & {
