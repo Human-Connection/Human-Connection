@@ -1,13 +1,12 @@
 import { gql } from '../../helpers/jest'
 import Factory from '../../factories'
 import { createTestClient } from 'apollo-server-testing'
-import { getNeode, getDriver } from '../../db/neo4j'
+import { getDriver } from '../../db/neo4j'
 import createServer from '../../server'
 
 let server, query, mutate, notifiedUser, authenticatedUser
 const factory = Factory()
 const driver = getDriver()
-const neode = getNeode()
 const categoryIds = ['cat9']
 const createPostMutation = gql`
   mutation($id: ID, $title: String!, $postContent: String!, $categoryIds: [ID]!) {
@@ -52,7 +51,6 @@ beforeAll(async () => {
     context: () => {
       return {
         user: authenticatedUser,
-        neode: neode,
         driver,
       }
     },
@@ -64,14 +62,14 @@ beforeAll(async () => {
 })
 
 beforeEach(async () => {
-  notifiedUser = await neode.create('User', {
+  notifiedUser = await factory.create('User', {
     id: 'you',
     name: 'Al Capone',
     slug: 'al-capone',
     email: 'test@example.org',
     password: '1234',
   })
-  await neode.create('Category', {
+  await factory.create('Category', {
     id: 'cat9',
     name: 'Democracy & Politics',
     icon: 'university',
@@ -175,7 +173,7 @@ describe('notifications', () => {
         describe('commenter is not me', () => {
           beforeEach(async () => {
             commentContent = 'Commenters comment.'
-            commentAuthor = await neode.create('User', {
+            commentAuthor = await factory.create('User', {
               id: 'commentAuthor',
               name: 'Mrs Comment',
               slug: 'mrs-comment',
@@ -256,7 +254,7 @@ describe('notifications', () => {
       })
 
       beforeEach(async () => {
-        postAuthor = await neode.create('User', {
+        postAuthor = await factory.create('User', {
           id: 'postAuthor',
           name: 'Mrs Post',
           slug: 'mrs-post',
@@ -460,7 +458,7 @@ describe('notifications', () => {
           beforeEach(async () => {
             commentContent =
               'One mention about me with <a data-mention-id="you" class="mention" href="/profile/you" target="_blank">@al-capone</a>.'
-            commentAuthor = await neode.create('User', {
+            commentAuthor = await factory.create('User', {
               id: 'commentAuthor',
               name: 'Mrs Comment',
               slug: 'mrs-comment',
@@ -470,11 +468,11 @@ describe('notifications', () => {
           })
 
           it('sends only one notification with reason mentioned_in_comment', async () => {
-            postAuthor = await neode.create('User', {
-              id: 'MrPostAuthor',
+            postAuthor = await factory.create('User', {
+              id: 'MrAuthor',
               name: 'Mr Author',
               slug: 'mr-author',
-              email: 'post-author@example.org',
+              email: 'mr-author@example.org',
               password: '1234',
             })
 
@@ -546,7 +544,7 @@ describe('notifications', () => {
             await postAuthor.relateTo(notifiedUser, 'blocked')
             commentContent =
               'One mention about me with <a data-mention-id="you" class="mention" href="/profile/you" target="_blank">@al-capone</a>.'
-            commentAuthor = await neode.create('User', {
+            commentAuthor = await factory.create('User', {
               id: 'commentAuthor',
               name: 'Mrs Comment',
               slug: 'mrs-comment',
@@ -630,7 +628,7 @@ describe('notifications', () => {
 
       describe('user', () => {
         it('sends me a notification for filing a report on a user', async () => {
-          await neode.create('User', reportedUserOrAuthorData)
+          await factory.create('User', reportedUserOrAuthorData)
           resourceId = 'reportedUser'
           await fileReportAction()
 
@@ -655,7 +653,7 @@ describe('notifications', () => {
         beforeEach(async () => {
           title = 'My post'
           postContent = 'My post content.'
-          postAuthor = await neode.create('User', reportedUserOrAuthorData)
+          postAuthor = await factory.create('User', reportedUserOrAuthorData)
         })
 
         describe('post', () => {
@@ -684,7 +682,7 @@ describe('notifications', () => {
         describe('comment', () => {
           beforeEach(async () => {
             commentContent = "Commenter's comment."
-            commentAuthor = await neode.create('User', {
+            commentAuthor = await factory.create('User', {
               id: 'commentAuthor',
               name: 'Mrs Comment',
               slug: 'mrs-comment',

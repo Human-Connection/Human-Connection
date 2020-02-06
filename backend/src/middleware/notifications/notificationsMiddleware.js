@@ -1,7 +1,7 @@
 import extractMentionedUsers from './mentions/extractMentionedUsers'
 import { validateNotifyUsers } from '../validation/validationMiddleware'
 
-const debug = require('debug')('backend:notificationsMiddleware')
+const debug = require('debug')('human-connection-backend:notificationsMiddleware')
 
 const handleContentDataOfPost = async (resolve, root, args, context, resolveInfo) => {
   const idsOfUsers = extractMentionedUsers(args.content)
@@ -73,7 +73,8 @@ const notifyUsersOfMention = async (label, id, idsOfUsers, reason, context) => {
   }
   mentionedCypher += `
     SET notification.read = FALSE
-    SET ( CASE WHEN notification.createdAt IS NULL THEN notification END ).createdAt = toString(datetime())
+    // Wolle SET ( CASE WHEN notification.createdAt IS NULL THEN notification END ).createdAt = toString(datetime())
+    SET notification.createdAt = COALESCE(notification.createdAt, toString(datetime()))
     SET notification.updatedAt = toString(datetime())
   `
   const session = context.driver.session()
@@ -100,7 +101,7 @@ const notifyUsersOfComment = async (label, commentId, postAuthorId, reason, cont
           WHERE NOT (postAuthor)-[:BLOCKED]-(commenter)
           MERGE (comment)-[notification:NOTIFIED {reason: $reason}]->(postAuthor)
           SET notification.read = FALSE
-          SET ( CASE WHEN notification.createdAt IS NULL THEN notification END ).createdAt = toString(datetime())
+          SET notification.createdAt = COALESCE(notification.createdAt, toString(datetime()))
           SET notification.updatedAt = toString(datetime())
         `,
         { commentId, postAuthorId, reason },

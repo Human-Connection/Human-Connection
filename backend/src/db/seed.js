@@ -553,7 +553,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
     ])
     authenticatedUser = null
 
-    const comments = await Promise.all([
+    const [trollingCommentC1, trollingCommentC2] = await Promise.all([
       factory.create('Comment', {
         author: jennyRostock,
         id: 'c1',
@@ -610,8 +610,6 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         postId: 'p15',
       }),
     ])
-    const trollingCommentC1 = comments[0]
-    const trollingCommentC2 = comments[1]
 
     await Promise.all([
       democracy.relateTo(p3, 'post'),

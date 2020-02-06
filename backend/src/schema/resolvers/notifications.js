@@ -49,14 +49,16 @@ export default {
         const notificationsTransactionResponse = await transaction.run(
           ` 
             MATCH (resource)-[notification:NOTIFIED]->(user:User {id:$id})
-            WHERE ((labels(resource)[0] in ["Post", "Comment"] AND NOT resource.deleted AND NOT resource.disabled) OR labels(resource)[0] in ["Report"])
+            WHERE
+              ((labels(resource)[0] in ["Post", "Comment"] AND NOT resource.deleted AND NOT resource.disabled)
+              OR labels(resource)[0] in ["Report"])
               ${whereClause}
             WITH user, notification, resource,
-            [(resource)<-[:WROTE]-(author:User) | author {.*}] as authors,
-            [(resource)-[:COMMENTS]->(post:Post)<-[:WROTE]-(author:User) | post {.*, author: properties(author)} ] as posts,
-            [(reportedResource)<-[:BELONGS_TO]-(resource)<-[file:FILED]-(user) | file {.*, reportedResource: apoc.map.merge(properties(reportedResource), {__typename: labels(reportedResource)[0]})} ] as files
+            [(resource)<-[:WROTE]-(author:User) | author {.*}] AS authors,
+            [(resource)-[:COMMENTS]->(post:Post)<-[:WROTE]-(author:User) | post {.*, author: properties(author)} ] AS posts,
+            [(reportedResource)<-[:BELONGS_TO]-(resource)<-[file:FILED]-(user) | file {.*, reportedResource: apoc.map.merge(properties(reportedResource), {__typename: labels(reportedResource)[0]})} ] AS files
             WITH resource, user, notification, authors, posts, files,
-            resource {.*, __typename: labels(resource)[0], author: authors[0], post: posts[0], filed: files, resource: files[0].reportedResource} as finalResource
+            resource {.*, __typename: labels(resource)[0], author: authors[0], post: posts[0], filed: files, resource: files[0].reportedResource} AS finalResource
             RETURN notification {.*, from: finalResource, to: properties(user)}
             ${orderByClause}
             ${offset} ${limit}
