@@ -3,7 +3,6 @@ type Report {
   createdAt: String!
   updatedAt: String!
   rule: ReportRule!
-  disable: Boolean!
   closed: Boolean!
   filed: [FILED]
   reviewed: [REVIEWED]!
