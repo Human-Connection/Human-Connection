@@ -8,7 +8,8 @@ export default {
       // see http://lucene.apache.org/core/8_3_1/queryparser/org/apache/lucene/queryparser/classic/package-summary.html#package.description
       const myQuery = query
         .replace(/\s+/g, ' ')
-        .replace(/[[@#:*~\\$|^\]?/"'(){}+?!,.-;]/g, '')
+        .replace(/[[@#:*~\\$|^\]?/"'(){}+?!,.;]/g, '')
+        .replace(/-/g, ' ')
         .split(' ')
         .map(s => (s.toLowerCase().match(/^(not|and|or)$/) ? '"' + s + '"' : s + '*'))
         .join(' ')
