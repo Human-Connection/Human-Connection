@@ -112,6 +112,25 @@ export default {
         session.close()
       }
     },
+    filedReports: async (parent, args, context, resolveInfo) => {
+      const { driver, user } = context
+      const session = driver.session()
+      const filedReportsReadTxPromise = session.readTransaction(async transaction => {
+        const allReportsTransactionResponse = await transaction.run(`
+            MATCH (:User {id: $userId})-[filed:FILED]->(:Report)-[:BELONGS_TO]->(resource)
+            WITH resource {.*, __typename: labels(resource)[0] } as resourceWithType, filed
+            RETURN filed { .createdAt, .reasonDescription, .reasonCategory, resource: resourceWithType }
+          `, { userId: user.id })
+        log(allReportsTransactionResponse)
+        return allReportsTransactionResponse.records.map(record => record.get('filed'))
+      })
+      try {
+        const filedReports = await filedReportsReadTxPromise
+        return filedReports
+      } finally {
+        session.close()
+      }
+    }
   },
   Report: {
     filed: async (parent, _params, context, _resolveInfo) => {

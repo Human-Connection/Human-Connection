@@ -91,6 +91,7 @@ export default shield(
       Category: allow,
       Tag: allow,
       reports: isModerator,
+      filedReports: isAuthenticated,
       statistics: allow,
       currentUser: allow,
       Post: allow,

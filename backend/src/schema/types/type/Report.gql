@@ -9,6 +9,13 @@ type Report {
   resource: ReportedResource
 }
 
+type FiledReport {
+  createdAt: String,
+  reasonDescription: String,
+  reasonCategory: String,
+  resource: ReportedResource,
+}
+
 union ReportedResource = User | Post | Comment
 
 enum ReportRule {
@@ -21,6 +28,7 @@ type Mutation {
 
 type Query {
   reports(orderBy: ReportOrdering, first: Int, offset: Int, reviewed: Boolean, closed: Boolean): [Report]
+  filedReports: [FiledReport]
 }
 
 enum ReportOrdering {
