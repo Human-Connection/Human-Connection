@@ -19,7 +19,6 @@ export default {
     direction: 'in',
     properties: {
       createdAt: { type: 'string', isoDate: true, default: () => new Date().toISOString() },
-      resourceId: { type: 'string', primary: true, default: uuid },
       reasonCategory: {
         type: 'string',
         valid: [

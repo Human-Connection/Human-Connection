@@ -17,7 +17,7 @@ export default {
       let createdRelationshipWithNestedAttributes = null // return value
       const session = driver.session()
       try {
-        const cypher = ` 
+        const cypher = `
             MATCH (moderator:User {id: $moderatorId})
             MATCH (resource {id: $params.resourceId})<-[:BELONGS_TO]-(report:Report {closed: false})
             WHERE resource:User OR resource:Post OR resource:Comment

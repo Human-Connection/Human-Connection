@@ -104,32 +104,32 @@ describe('given some notifications', () => {
       ),
     ])
     await Promise.all([
-      post1.relateTo(neighbor, 'notified', {
+      neighbor.relateTo(post1, 'notified', {
         createdAt: '2019-08-29T17:33:48.651Z',
         read: false,
         reason: 'mentioned_in_post',
       }),
-      post2.relateTo(user, 'notified', {
+      user.relateTo(post2, 'notified', {
         createdAt: '2019-08-30T17:33:48.651Z',
         read: true,
         reason: 'mentioned_in_post',
       }),
-      post3.relateTo(user, 'notified', {
+      user.relateTo(post3, 'notified', {
         createdAt: '2019-08-31T17:33:48.651Z',
         read: false,
         reason: 'mentioned_in_post',
       }),
-      comment1.relateTo(user, 'notified', {
+      user.relateTo(comment1, 'notified', {
         createdAt: '2019-08-30T15:33:48.651Z',
         read: true,
         reason: 'mentioned_in_comment',
       }),
-      comment2.relateTo(user, 'notified', {
+      user.relateTo(comment2, 'notified', {
         createdAt: '2019-08-30T19:33:48.651Z',
         read: false,
         reason: 'mentioned_in_comment',
       }),
-      comment3.relateTo(neighbor, 'notified', {
+      neighbor.relateTo(comment3, 'notified', {
         createdAt: '2019-09-01T17:33:48.651Z',
         read: false,
         reason: 'mentioned_in_comment',

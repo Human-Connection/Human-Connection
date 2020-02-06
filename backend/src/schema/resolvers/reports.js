@@ -23,7 +23,7 @@ export default {
             MATCH (resource {id: $resourceId})
             WHERE resource:User OR resource:Post OR resource:Comment
             MERGE (resource)<-[:BELONGS_TO]-(report:Report {closed: false})
-            ON CREATE SET report.id = randomUUID(), report.createdAt = $createdAt, report.updatedAt = report.createdAt, report.rule = 'latestReviewUpdatedAtRules', report.disable = resource.disabled, report.closed = false
+            ON CREATE SET report.id = randomUUID(), report.createdAt = $createdAt, report.updatedAt = report.createdAt, report.rule = 'latestReviewUpdatedAtRules', report.closed = false
             WITH submitter, resource, report
             CREATE (report)<-[filed:FILED {createdAt: $createdAt, reasonCategory: $reasonCategory, reasonDescription: $reasonDescription}]-(submitter)
 
@@ -107,6 +107,29 @@ export default {
       try {
         const reports = await reportReadTxPromise
         return reports
+      } finally {
+        session.close()
+      }
+    },
+    filedReports: async (parent, args, context, resolveInfo) => {
+      const { driver, user } = context
+      const session = driver.session()
+      const filedReportsReadTxPromise = session.readTransaction(async transaction => {
+        const allReportsTransactionResponse = await transaction.run(
+          `
+            MATCH (:User {id: $userId})-[filed:FILED]->(:Report)-[:BELONGS_TO]->(resource)
+            WITH resource {.*, __typename: labels(resource)[0] } as resourceWithType, filed
+            RETURN filed { .createdAt, .reasonDescription, .reasonCategory, resource: resourceWithType }
+            ORDER BY filed.createdAt DESC
+          `,
+          { userId: user.id },
+        )
+        log(allReportsTransactionResponse)
+        return allReportsTransactionResponse.records.map(record => record.get('filed'))
+      })
+      try {
+        const filedReports = await filedReportsReadTxPromise
+        return filedReports
       } finally {
         session.close()
       }

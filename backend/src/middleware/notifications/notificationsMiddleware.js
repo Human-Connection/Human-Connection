@@ -22,13 +22,38 @@ const handleContentDataOfComment = async (resolve, root, args, context, resolveI
   return comment
 }
 
+const notifyAuthor = async (resolve, root, args, context, resolveInfo) => {
+  const { resourceId, disable } = args
+  const reason = disable ? 'moderation_disabled' : 'moderation_enabled'
+  const review = await resolve(root, args, context, resolveInfo)
+  const session = context.driver.session()
+  const notifyAuthorPromise = session.writeTransaction(transaction => {
+    return transaction.run(
+      `
+          MATCH (author:User)-[:WROTE]->(resource {id: $resourceId})
+          CREATE (resource)-[notification:NOTIFIED]->(author)
+          SET notification.reason = $reason
+          SET notification.createdAt = toString(datetime())
+          SET notification.read = FALSE
+        `,
+      { resourceId, reason },
+    )
+  })
+  try {
+    await notifyAuthorPromise
+    return review
+  } finally {
+    session.close()
+  }
+}
+
 const postAuthorOfComment = async (commentId, { context }) => {
   const session = context.driver.session()
   let postAuthorId
   try {
     postAuthorId = await session.readTransaction(transaction => {
       return transaction.run(
-        ` 
+        `
           MATCH (author:User)-[:WROTE]->(:Post)<-[:COMMENTS]-(:Comment { id: $commentId })
           RETURN author { .id } as authorId
         `,
@@ -117,5 +142,6 @@ export default {
     UpdatePost: handleContentDataOfPost,
     CreateComment: handleContentDataOfComment,
     UpdateComment: handleContentDataOfComment,
+    review: notifyAuthor,
   },
 }

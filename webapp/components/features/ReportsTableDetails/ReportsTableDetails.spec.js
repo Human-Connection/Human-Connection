@@ -1,6 +1,6 @@
 import { config, mount, RouterLinkStub } from '@vue/test-utils'
 import Vuex from 'vuex'
-import FiledReportsTable from './FiledReportsTable'
+import ReportsTableDetails from './ReportsTableDetails'
 import { reports } from '~/components/features/ReportList/ReportList.story.js'
 
 const localVue = global.localVue
@@ -9,7 +9,7 @@ localVue.filter('truncate', string => string)
 
 config.stubs['client-only'] = '<span><slot /></span>'
 
-describe('FiledReportsTable.vue', () => {
+describe('ReportsTableDetails.vue', () => {
   let wrapper, mocks, propsData, stubs, filed
 
   beforeEach(() => {
@@ -32,7 +32,7 @@ describe('FiledReportsTable.vue', () => {
           },
         },
       })
-      return mount(FiledReportsTable, {
+      return mount(ReportsTableDetails, {
         propsData,
         mocks,
         localVue,

@@ -71,19 +71,19 @@
 
     <tr class="row">
       <td colspan="100%">
-        <filed-reports-table :filed="report.filed" v-if="showFiledReports" />
+        <reports-table-details :filed="report.filed" v-if="showFiledReports" />
       </td>
     </tr>
   </tbody>
 </template>
 
 <script>
-import FiledReportsTable from '~/components/features/FiledReportsTable/FiledReportsTable'
+import ReportsTableDetails from '~/components/features/ReportsTableDetails/ReportsTableDetails'
 import UserTeaser from '~/components/UserTeaser/UserTeaser'
 
 export default {
   components: {
-    FiledReportsTable,
+    ReportsTableDetails,
     UserTeaser,
   },
   props: {

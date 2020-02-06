@@ -178,6 +178,8 @@
   },
   "notifications": {
     "reason": {
+      "moderation_enabled": "Your {resourceType} has been re-enabled …",
+      "moderation_disabled": "Your  {resourceType} has been disabled …",
       "mentioned_in_post": "Mentioned you in a post …",
       "mentioned_in_comment": "Mentioned you in a comment …",
       "commented_on_post": "Commented on your post …"
@@ -187,6 +189,7 @@
     "pageLink": "All notifications",
     "post": "Post",
     "user": "User",
+    "moderation": "Moderation",
     "content": "Content",
     "filterLabel": {
       "all": "All",
@@ -240,6 +243,15 @@
       "slug": {
         "regex": "Allowed characters are only lowercase letters, numbers, underscores and hyphens.",
         "alreadyTaken": "This user name is already taken."
+      }
+    },
+    "filed-reports": {
+      "name": "Filed Reports",
+      "empty": "You have not reported anything recently.",
+      "columns": {
+        "resource": "Resource",
+        "reasonDescription": "Description",
+        "reasonCategory": "Category"
       }
     },
     "security": {

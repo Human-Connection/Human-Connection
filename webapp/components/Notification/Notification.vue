@@ -4,8 +4,8 @@
       <ds-space margin-bottom="x-small">
         <user-teaser :user="from.author" :date-time="from.createdAt" />
       </ds-space>
-      <ds-text class="reason-text-for-test" color="soft">
-        {{ $t(`notifications.reason.${notification.reason}`) }}
+      <ds-text data-test="reason-text" color="soft">
+        {{ $t(notificationReason) }}
       </ds-text>
     </client-only>
     <ds-space margin-bottom="x-small" />
@@ -51,6 +51,12 @@ export default {
   computed: {
     from() {
       return this.notification.from
+    },
+    notificationReason() {
+      const resourceType = this.isComment
+        ? this.$t('notifications.comment')
+        : this.$t('notifications.post')
+      return this.$t(`notifications.reason.${this.notification.reason}`, { resourceType })
     },
     isComment() {
       return this.from.__typename === 'Comment'

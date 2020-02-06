@@ -21,12 +21,14 @@ enum NotificationReason {
   mentioned_in_post
   mentioned_in_comment
   commented_on_post
+  moderation_disabled
+  moderation_enabled
 }
 
 type Query {
   notifications(read: Boolean, orderBy: NotificationOrdering, first: Int, offset: Int): [NOTIFIED]
 }
-  
+
 type Mutation {
   markAsRead(id: ID!): NOTIFIED
 }

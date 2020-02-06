@@ -829,33 +829,34 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       Factory.build('report'),
       Factory.build('report'),
     ])
-    const reportAgainstDagobert = reports[0]
-    const reportAgainstTrollingPost = reports[1]
-    const reportAgainstTrollingComment = reports[2]
-    const reportAgainstDewey = reports[3]
+
+    const [
+      reportAgainstDagobert,
+      reportAgainstTrollingPost,
+      reportAgainstTrollingComment,
+      reportAgainstDewey,
+    ] = reports
 
     // report resource first time
     await Promise.all([
       reportAgainstDagobert.relateTo(jennyRostock, 'filed', {
-        resourceId: 'u7',
         reasonCategory: 'discrimination_etc',
         reasonDescription: 'This user is harassing me with bigoted remarks!',
       }),
       reportAgainstDagobert.relateTo(dagobert, 'belongsTo'),
+
       reportAgainstTrollingPost.relateTo(jennyRostock, 'filed', {
-        resourceId: 'p2',
         reasonCategory: 'doxing',
         reasonDescription: "This shouldn't be shown to anybody else! It's my private thing!",
       }),
       reportAgainstTrollingPost.relateTo(p2, 'belongsTo'),
+
       reportAgainstTrollingComment.relateTo(huey, 'filed', {
-        resourceId: 'c1',
         reasonCategory: 'other',
         reasonDescription: 'This comment is bigoted',
       }),
       reportAgainstTrollingComment.relateTo(trollingComment, 'belongsTo'),
       reportAgainstDewey.relateTo(dagobert, 'filed', {
-        resourceId: 'u5',
         reasonCategory: 'discrimination_etc',
         reasonDescription: 'This user is harassing me!',
       }),
@@ -865,72 +866,79 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
     // report resource a second time
     await Promise.all([
       reportAgainstDagobert.relateTo(louie, 'filed', {
-        resourceId: 'u7',
         reasonCategory: 'discrimination_etc',
         reasonDescription: 'this user is attacking me for who I am!',
       }),
       reportAgainstDagobert.relateTo(dagobert, 'belongsTo'),
       reportAgainstTrollingPost.relateTo(peterLustig, 'filed', {
-        resourceId: 'p2',
         reasonCategory: 'discrimination_etc',
         reasonDescription: 'This post is bigoted',
       }),
       reportAgainstTrollingPost.relateTo(p2, 'belongsTo'),
 
       reportAgainstTrollingComment.relateTo(bobDerBaumeister, 'filed', {
-        resourceId: 'c1',
         reasonCategory: 'pornographic_content_links',
         reasonDescription: 'This comment is porno!!!',
       }),
       reportAgainstTrollingComment.relateTo(trollingComment, 'belongsTo'),
     ])
 
-    const disableVariables = {
-      resourceId: 'undefined-resource',
-      disable: true,
-      closed: false,
-    }
-
     // review resource first time
+    authenticatedUser = await bobDerBaumeister.toJson()
     await Promise.all([
-      reportAgainstDagobert.relateTo(bobDerBaumeister, 'reviewed', {
-        ...disableVariables,
-        resourceId: 'u7',
+      mutate({
+        query: Factory.mutations.review,
+        variables: {
+          resourceId: 'u7',
+          disable: true,
+          closed: false,
+        },
       }),
-      dagobert.update({ disabled: true, updatedAt: new Date().toISOString() }),
-      reportAgainstTrollingPost.relateTo(peterLustig, 'reviewed', {
-        ...disableVariables,
-        resourceId: 'p2',
+      mutate({
+        query: Factory.mutations.review,
+        variables: {
+          resourceId: 'c1',
+          disable: true,
+          closed: false,
+        },
       }),
-      p2.update({ disabled: true, updatedAt: new Date().toISOString() }),
-      reportAgainstTrollingComment.relateTo(bobDerBaumeister, 'reviewed', {
-        ...disableVariables,
-        resourceId: 'c1',
+      mutate({
+        query: Factory.mutations.review,
+        variables: {
+          resourceId: 'p2',
+          disable: true,
+          closed: false,
+        },
       }),
-      trollingComment.update({ disabled: true, updatedAt: new Date().toISOString() }),
     ])
 
     // second review of resource and close report
+    authenticatedUser = await peterLustig.toJson()
     await Promise.all([
-      reportAgainstDagobert.relateTo(peterLustig, 'reviewed', {
-        resourceId: 'u7',
-        disable: false,
-        closed: true,
+      mutate({
+        query: Factory.mutations.review,
+        variables: {
+          resourceId: 'u7',
+          disable: false,
+          closed: true,
+        },
       }),
-      dagobert.update({ disabled: false, updatedAt: new Date().toISOString(), closed: true }),
-      reportAgainstTrollingPost.relateTo(bobDerBaumeister, 'reviewed', {
-        resourceId: 'p2',
-        disable: true,
-        closed: true,
+      mutate({
+        query: Factory.mutations.review,
+        variables: {
+          resourceId: 'p2',
+          disable: false,
+          closed: true,
+        },
       }),
-      p2.update({ disabled: true, updatedAt: new Date().toISOString(), closed: true }),
-      reportAgainstTrollingComment.relateTo(peterLustig, 'reviewed', {
-        ...disableVariables,
-        resourceId: 'c1',
-        disable: true,
-        closed: true,
+      mutate({
+        query: Factory.mutations.review,
+        variables: {
+          resourceId: 'c1',
+          disable: false,
+          closed: true,
+        },
       }),
-      trollingComment.update({ disabled: true, updatedAt: new Date().toISOString(), closed: true }),
     ])
 
     await Promise.all([...Array(30).keys()].map(() => Factory.build('user')))

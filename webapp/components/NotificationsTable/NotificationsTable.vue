@@ -2,7 +2,12 @@
   <ds-table v-if="notifications && notifications.length" :data="notifications" :fields="fields">
     <template #icon="scope">
       <base-icon
-        v-if="scope.row.from.post"
+        v-if="isModeration(scope.row)"
+        name="balance-scale"
+        v-tooltip="{ content: $t('notifications.moderation'), placement: 'right' }"
+      />
+      <base-icon
+        v-else-if="isComment(scope.row)"
         name="comment"
         v-tooltip="{ content: $t('notifications.comment'), placement: 'right' }"
       />
@@ -23,7 +28,7 @@
         </client-only>
       </ds-space>
       <ds-text :class="{ 'notification-status': scope.row.read, reason: true }">
-        {{ $t(`notifications.reason.${scope.row.reason}`) }}
+        {{ notificationReason(scope.row) }}
       </ds-text>
     </template>
     <template #post="scope">
@@ -32,8 +37,8 @@
         :class="{ 'notification-status': scope.row.read }"
         :to="{
           name: 'post-id-slug',
-          params: params(scope.row.from),
-          hash: hashParam(scope.row.from),
+          params: params(scope.row),
+          hash: hashParam(scope.row),
         }"
         @click.native="markNotificationAsRead(scope.row.from.id)"
       >
@@ -83,18 +88,27 @@ export default {
     },
   },
   methods: {
-    isComment(notificationSource) {
-      return notificationSource.__typename === 'Comment'
+    notificationReason(notification) {
+      const resourceType = this.isComment(notification)
+        ? this.$t('notifications.comment')
+        : this.$t('notifications.post')
+      return this.$t(`notifications.reason.${notification.reason}`, { resourceType })
     },
-    params(notificationSource) {
-      const post = this.isComment(notificationSource) ? notificationSource.post : notificationSource
+    isModeration(notification) {
+      return ['moderation_disabled', 'moderation_enabled'].includes(notification.reason)
+    },
+    isComment({ from }) {
+      return from.__typename === 'Comment'
+    },
+    params({ from }) {
+      const post = this.isComment({ from }) ? from.post : from
       return {
         id: post.id,
         slug: post.slug,
       }
     },
-    hashParam(notificationSource) {
-      return this.isComment(notificationSource) ? `#commentId-${notificationSource.id}` : ''
+    hashParam({ from }) {
+      return this.isComment({ from }) ? `#commentId-${from.id}` : ''
     },
     markNotificationAsRead(notificationSourceId) {
       this.$emit('markNotificationAsRead', notificationSourceId)

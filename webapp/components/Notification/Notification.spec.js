@@ -4,6 +4,18 @@ import Notification from './Notification.vue'
 import Vuex from 'vuex'
 
 const localVue = global.localVue
+const comment = {
+  __typename: 'Comment',
+  id: 'comment-1',
+  contentExcerpt:
+    '<a href="/profile/u123" target="_blank">@dagobert-duck</a> is the best on this comment.',
+  post: {
+    title: "It's a post title",
+    id: 'post-1',
+    slug: 'its-a-title',
+    contentExcerpt: 'Post content.',
+  },
+}
 
 config.stubs['client-only'] = '<span><slot /></span>'
 
@@ -16,7 +28,7 @@ describe('Notification', () => {
   beforeEach(() => {
     propsData = {}
     mocks = {
-      $t: key => key,
+      $t: jest.fn(key => key),
     }
     stubs = {
       NuxtLink: RouterLinkStub,
@@ -47,23 +59,14 @@ describe('Notification', () => {
       propsData.notification = {
         reason: 'commented_on_post',
         from: {
-          __typename: 'Comment',
-          id: 'comment-1',
-          contentExcerpt:
-            '<a href="/profile/u123" target="_blank">@dagobert-duck</a> is the best on this comment.',
-          post: {
-            title: "It's a post title",
-            id: 'post-1',
-            slug: 'its-a-title',
-            contentExcerpt: 'Post content.',
-          },
+          ...comment,
         },
       }
     })
 
     it('renders reason', () => {
       wrapper = Wrapper()
-      expect(wrapper.find('.reason-text-for-test').text()).toEqual(
+      expect(wrapper.find('[data-test="reason-text"]').text()).toEqual(
         'notifications.reason.commented_on_post',
       )
     })
@@ -113,7 +116,7 @@ describe('Notification', () => {
 
     it('renders reason', () => {
       wrapper = Wrapper()
-      expect(wrapper.find('.reason-text-for-test').text()).toEqual(
+      expect(wrapper.find('[data-test="reason-text"]').text()).toEqual(
         'notifications.reason.mentioned_in_post',
       )
     })
@@ -147,26 +150,18 @@ describe('Notification', () => {
       propsData.notification = {
         reason: 'mentioned_in_comment',
         from: {
-          __typename: 'Comment',
-          id: 'comment-1',
-          contentExcerpt:
-            '<a href="/profile/u123" target="_blank">@dagobert-duck</a> is the best on this comment.',
-          post: {
-            title: "It's a post title",
-            id: 'post-1',
-            slug: 'its-a-title',
-            contentExcerpt: 'Post content.',
-          },
+          ...comment,
         },
       }
     })
 
     it('renders reason', () => {
       wrapper = Wrapper()
-      expect(wrapper.find('.reason-text-for-test').text()).toEqual(
+      expect(wrapper.find('[data-test="reason-text"]').text()).toEqual(
         'notifications.reason.mentioned_in_comment',
       )
     })
+
     it('renders title', () => {
       wrapper = Wrapper()
       expect(wrapper.text()).toContain("It's a post title")
@@ -195,6 +190,73 @@ describe('Notification', () => {
 
       it('has class "read"', () => {
         expect(wrapper.classes()).toContain('read')
+      })
+    })
+  })
+
+  describe('given a notification about a disabled post', () => {
+    beforeEach(() => {
+      propsData.notification = {
+        reason: 'disabled',
+        from: {
+          __typename: 'Post',
+          id: 'disabledPostId',
+          slug: 'disabled-post',
+          title: 'Disabled Post',
+        },
+      }
+    })
+
+    it('renders reason', () => {
+      wrapper = Wrapper()
+      expect(wrapper.find('[data-test="reason-text"]').text()).toEqual(
+        'notifications.reason.disabled',
+      )
+    })
+
+    it('translates resourceType', () => {
+      wrapper = Wrapper()
+      expect(mocks.$t).toHaveBeenCalledWith('notifications.reason.disabled', {
+        resourceType: 'notifications.post',
+      })
+    })
+
+    it('renders title', () => {
+      wrapper = Wrapper()
+      expect(wrapper.text()).toContain('Disabled Post')
+    })
+
+    it('has no class "read"', () => {
+      wrapper = Wrapper()
+      expect(wrapper.classes()).not.toContain('read')
+    })
+
+    describe('that is read', () => {
+      beforeEach(() => {
+        propsData.notification.read = true
+        wrapper = Wrapper()
+      })
+
+      it('has class "read"', () => {
+        expect(wrapper.classes()).toContain('read')
+      })
+    })
+  })
+
+  describe('given a notification about an enabled comment', () => {
+    beforeEach(() => {
+      propsData.notification = {
+        reason: 'enabled',
+        from: {
+          ...comment,
+        },
+      }
+    })
+
+    it('translates resourceType', () => {
+      wrapper = Wrapper()
+      expect(mocks.$t).toHaveBeenCalledWith('notifications.reason.enabled', {
+        resourceType: 'notifications.comment',
       })
     })
   })

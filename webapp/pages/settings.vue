@@ -48,6 +48,10 @@ export default {
           path: `/settings/blocked-users`,
         },
         {
+          name: this.$t('settings.filed-reports.name'),
+          path: `/settings/filed-reports`,
+        },
+        {
           name: this.$t('settings.embeds.name'),
           path: `/settings/embeds`,
         },

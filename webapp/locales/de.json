@@ -663,9 +663,11 @@
     },
     "notifications": {
         "reason": {
-            "mentioned_in_post": "Hat dich in einem Beitrag erwähnt …",
-            "mentioned_in_comment": "Hat dich in einem Kommentar erwähnt …",
-            "commented_on_post": "Hat deinen Beitrag kommentiert …"
+          "moderation_enabled": "Dein {resourceType} wurde freigegeben …",
+          "moderation_disabled": "Dein {resourceType} wurde gesperrt …",
+          "mentioned_in_post": "Hat dich in einem Beitrag erwähnt …",
+          "mentioned_in_comment": "Hat dich in einem Kommentar erwähnt …",
+          "commented_on_post": "Hat deinen Beitrag kommentiert …"
         },
         "comment": "Kommentar",
         "title": "Benachrichtigungen",

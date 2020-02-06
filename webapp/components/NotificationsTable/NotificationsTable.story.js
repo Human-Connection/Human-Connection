@@ -9,6 +9,28 @@ import { user } from '~/components/UserTeaser/UserTeaser.story.js'
 helpers.init()
 export const notifications = [
   {
+    read: false,
+    reason: 'enabled',
+    createdAt: '2019-10-29T15:36:02.106Z',
+    from: {
+      __typename: 'Post',
+      ...post,
+    },
+    __typename: 'NOTIFIED',
+    index: 9,
+  },
+  {
+    read: false,
+    reason: 'disabled',
+    createdAt: '2019-10-29T15:36:02.106Z',
+    from: {
+      __typename: 'Post',
+      ...post,
+    },
+    __typename: 'NOTIFIED',
+    index: 9,
+  },
+  {
     read: true,
     reason: 'mentioned_in_post',
     createdAt: '2019-10-29T15:36:02.106Z',
@@ -34,7 +56,9 @@ export const notifications = [
         '<p><a class="mention" href="/profile/u1" data-mention-id="u1" target="_blank">@peter-lustig</a> </p><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Turpis egestas pretium aenean pharetra magna ac placerat. Tempor id eu nisl nunc mi ipsum faucibus vitae. Nibh praesent tristique magna sit amet purus gravida quis blandit. Magna eget est lorem ipsum dolor. In fermentum posuere urna nec. Eleifend donec pretium vulputate sapien nec sagittis aliquam. Augue interdum velit euismod in pellentesque. Id diam maecenas ultricies mi eget mauris pharetra. Donec pretium vulputate sapien nec. Dolor morbi non arcu risus quis varius quam quisque. Blandit turpis cursus in hac habitasse. Est ultricies integer quis auctor elit sed vulputate mi sit. Nunc consequat interdum varius sit amet mattis vulputate enim. Semper feugiat nibh sed pulvinar. Eget felis eget nunc lobortis mattis aliquam. Ultrices vitae auctor eu augue. Tellus molestie nunc non blandit massa enim nec dui. Pharetra massa massa ultricies mi quis hendrerit dolor. Nisl suscipit adipiscing bibendum est ultricies integer.</p>',
       contentExcerpt:
         '<p><a href="/profile/u1" target="_blank">@peter-lustig</a> </p><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Turpis egestas pretium aenean pharetra …</p>',
-      ...post,
+      post: {
+        ...post,
+      },
       author: user,
     },
     __typename: 'NOTIFIED',
@@ -55,13 +79,16 @@ export const notifications = [
         '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Turpis egestas pretium aenean pharetra magna ac placerat. Tempor id eu nisl nunc mi ipsum faucibus vitae. Nibh praesent tristique magna sit amet purus gravida quis blandit. Magna eget est lorem ipsum dolor. In fermentum posuere urna nec. Eleifend donec pretium vulputate sapien nec sagittis aliquam. Augue interdum velit euismod in pellentesque. Id diam maecenas ultricies mi eget mauris pharetra. Donec pretium vulputate sapien nec. Dolor morbi non arcu risus quis varius quam quisque. Blandit turpis cursus in hac habitasse. Est ultricies integer quis auctor elit sed vulputate mi sit. Nunc consequat interdum varius sit amet mattis vulputate enim. Semper feugiat nibh sed pulvinar. Eget felis eget nunc lobortis mattis aliquam. Ultrices vitae auctor eu augue. Tellus molestie nunc non blandit massa enim nec dui. Pharetra massa massa ultricies mi quis hendrerit dolor. Nisl suscipit adipiscing bibendum est ultricies integer.</p><p><a class="mention" href="/profile/u1" data-mention-id="u1" target="_blank">@peter-lustig</a> </p><p></p>',
       contentExcerpt:
         '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Turpis egestas pretium aenean pharetra magna ac …</p>',
-      ...post,
+      post: {
+        ...post,
+      },
       author: user,
     },
     __typename: 'NOTIFIED',
     index: 2,
   },
 ]
+
 storiesOf('NotificationsTable', module)
   .addDecorator(withA11y)
   .addDecorator(helpers.layout)

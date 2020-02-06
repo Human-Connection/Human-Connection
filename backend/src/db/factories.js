@@ -4,8 +4,21 @@ import slugify from 'slug'
 import { hashSync } from 'bcryptjs'
 import { Factory } from 'rosie'
 import { getDriver, getNeode } from './neo4j'
+import { gql } from '../helpers/jest'
 
 const neode = getNeode()
+
+const mutations = {
+  review: gql`
+    mutation($resourceId: ID!, $disable: Boolean, $closed: Boolean) {
+      review(resourceId: $resourceId, disable: $disable, closed: $closed) {
+        createdAt
+        updatedAt
+        disable
+      }
+    }
+  `,
+}
 
 export const cleanDatabase = async (options = {}) => {
   const { driver = getDriver() } = options
@@ -39,7 +52,7 @@ Factory.define('badge')
     return neode.create('Badge', buildObject)
   })
 
-Factory.define('userWithoutEmailAddress')
+Factory.define('basicUser')
   .option('password', '1234')
   .attrs({
     id: uuid,
@@ -60,17 +73,20 @@ Factory.define('userWithoutEmailAddress')
   .attr('encryptedPassword', ['password'], password => {
     return hashSync(password, 10)
   })
-  .after(async (buildObject, options) => {
+
+Factory.define('userWithoutEmailAddress')
+  .extend('basicUser')
+  .after((buildObject, options) => {
     return neode.create('User', buildObject)
   })
 
 Factory.define('user')
-  .extend('userWithoutEmailAddress')
+  .extend('basicUser')
   .option('email', faker.internet.exampleEmail)
   .after(async (buildObject, options) => {
     const [user, email] = await Promise.all([
-      buildObject,
-      neode.create('EmailAddress', { email: options.email }),
+      neode.create('User', buildObject),
+      Factory.build('emailAddress', { email: options.email }),
     ])
     await Promise.all([user.relateTo(email, 'primaryEmail'), email.relateTo(user, 'belongsTo')])
     return user
@@ -203,9 +219,31 @@ Factory.define('location')
     return neode.create('Location', buildObject)
   })
 
-Factory.define('report').after((buildObject, options) => {
-  return neode.create('Report', buildObject)
-})
+Factory.define('report')
+  .attrs({
+    id: uuid,
+    createdAt: () => new Date().toISOString(),
+    updatedAt: () => new Date().toISOString(),
+    rule: 'latestReviewUpdatedAtRules',
+    closed: false,
+  })
+  .option('filer', () => Factory.build('user'))
+  .option('filed', {
+    reasonCategory: 'discrimination_etc',
+    reasonDescription: 'This discriminates me!',
+  })
+  .option('reportedResource', () => Factory.build('post'))
+  .after(async (buildObject, options) => {
+    const [filer, filed, reportedResource] = await Promise.all([
+      options.filer,
+      options.filed,
+      options.reportedResource,
+    ])
+    const report = await neode.create('Report', buildObject)
+    if (filer) await report.relateTo(filer, 'filed', filed)
+    if (reportedResource) await report.relateTo(reportedResource, 'belongsTo')
+    return report
+  })
 
 Factory.define('tag')
   .attrs({
@@ -222,5 +260,7 @@ Factory.define('socialMedia')
   .after((buildObject, options) => {
     return neode.create('SocialMedia', buildObject)
   })
+
+Factory.mutations = mutations
 
 export default Factory

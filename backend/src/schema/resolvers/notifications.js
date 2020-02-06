@@ -47,7 +47,7 @@ export default {
 
       const readTxResultPromise = session.readTransaction(async transaction => {
         const notificationsTransactionResponse = await transaction.run(
-          ` 
+          `
           MATCH (resource {deleted: false, disabled: false})-[notification:NOTIFIED]->(user:User {id:$id})
           ${whereClause}
           WITH user, notification, resource,
@@ -78,7 +78,7 @@ export default {
       const session = context.driver.session()
       const writeTxResultPromise = session.writeTransaction(async transaction => {
         const markNotificationAsReadTransactionResponse = await transaction.run(
-          ` 
+          `
             MATCH (resource {id: $resourceId})-[notification:NOTIFIED {read: FALSE}]->(user:User {id:$id})
             SET notification.read = TRUE
             RETURN resource, notification, user

@@ -7,8 +7,29 @@ import { getDriver, getNeode } from '../../db/neo4j'
 const instance = getNeode()
 const driver = getDriver()
 
+let authenticatedUser, currentUser, mutate, query
+
+beforeAll(async () => {
+  await cleanDatabase()
+  const { server } = createServer({
+    context: () => {
+      return {
+        driver,
+        neode: instance,
+        user: authenticatedUser,
+      }
+    },
+  })
+  mutate = createTestClient(server).mutate
+  query = createTestClient(server).query
+})
+
+afterEach(async () => {
+  await cleanDatabase()
+})
+
 describe('file a report on a resource', () => {
-  let authenticatedUser, currentUser, mutate, query, moderator, abusiveUser, otherReportingUser
+  let moderator, abusiveUser, otherReportingUser
   const categoryIds = ['cat9']
   const reportMutation = gql`
     mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
@@ -50,25 +71,6 @@ describe('file a report on a resource', () => {
     reasonCategory: 'other',
     reasonDescription: 'Violates code of conduct !!!',
   }
-
-  beforeAll(async () => {
-    await cleanDatabase()
-    const { server } = createServer({
-      context: () => {
-        return {
-          driver,
-          neode: instance,
-          user: authenticatedUser,
-        }
-      },
-    })
-    mutate = createTestClient(server).mutate
-    query = createTestClient(server).query
-  })
-
-  afterEach(async () => {
-    await cleanDatabase()
-  })
 
   describe('report a resource', () => {
     describe('unauthenticated', () => {
@@ -746,6 +748,148 @@ describe('file a report on a resource', () => {
         authenticatedUser = await moderator.toJson()
         const { data } = await query({ query: reportsQuery })
         expect(data).toEqual(expected)
+      })
+    })
+  })
+})
+
+describe('filedReports', () => {
+  const filedReportsQuery = gql`
+    query {
+      filedReports {
+        createdAt
+        reasonDescription
+        reasonCategory
+        resource {
+          __typename
+          ... on Post {
+            id
+            title
+          }
+          ... on Comment {
+            id
+            content
+          }
+          ... on User {
+            id
+            name
+          }
+        }
+      }
+    }
+  `
+
+  describe('unauthenticated', () => {
+    it('throws authorization error', async () => {
+      authenticatedUser = null
+      await expect(query({ query: filedReportsQuery })).resolves.toMatchObject({
+        data: { filedReports: null },
+        errors: [{ message: 'Not Authorised!' }],
+      })
+    })
+  })
+
+  describe('authenticated', () => {
+    beforeEach(async () => {
+      currentUser = await Factory.build('user')
+      authenticatedUser = await currentUser.toJson()
+    })
+
+    describe('given that the authenticated user filed a couple of reports', () => {
+      beforeEach(async () => {
+        const [user, post, comment] = await Promise.all([
+          Factory.build('user', {
+            id: 'u44',
+            name: 'Teri Weissnat',
+          }),
+          Factory.build('post', {
+            id: 'p45',
+            title: 'Autem est laborum.',
+          }),
+          Factory.build('comment', {
+            id: 'c46',
+            content: 'Corrupti voluptas odit.',
+          }),
+        ])
+        await Factory.build(
+          'report',
+          {},
+          {
+            filed: {
+              reasonCategory: 'discrimination_etc',
+              reasonDescription: 'This user annoys me',
+            },
+            filer: currentUser,
+            reportedResource: user,
+            closed: false,
+          },
+        )
+        await Factory.build(
+          'report',
+          {},
+          {
+            filed: {
+              reasonCategory: 'discrimination_etc',
+              reasonDescription: 'This post annoys me',
+            },
+            filer: currentUser,
+            reportedResource: post,
+            closed: false,
+          },
+        )
+        await Factory.build(
+          'report',
+          {},
+          {
+            filed: {
+              reasonCategory: 'discrimination_etc',
+              reasonDescription: 'This comment annoys me',
+            },
+            filer: currentUser,
+            reportedResource: comment,
+            closed: false,
+          },
+        )
+      })
+
+      it('returns the latest filed reports', async () => {
+        await expect(query({ query: filedReportsQuery })).resolves.toMatchObject({
+          data: {
+            filedReports: [
+              {
+                createdAt: expect.any(String),
+                reasonCategory: 'discrimination_etc',
+                reasonDescription: 'This comment annoys me',
+                resource: {
+                  __typename: 'Comment',
+                  id: 'c46',
+                  content: 'Corrupti voluptas odit.',
+                },
+              },
+              {
+                createdAt: expect.any(String),
+                reasonCategory: 'discrimination_etc',
+                reasonDescription: 'This post annoys me',
+                resource: {
+                  __typename: 'Post',
+                  id: 'p45',
+                  title: 'Autem est laborum.',
+                },
+              },
+              {
+                createdAt: expect.any(String),
+                reasonCategory: 'discrimination_etc',
+                reasonDescription: 'This user annoys me',
+                resource: {
+                  __typename: 'User',
+                  id: 'u44',
+                  name: 'Teri Weissnat',
+                },
+              },
+            ],
+          },
+          errors: undefined,
+        })
       })
     })
   })
