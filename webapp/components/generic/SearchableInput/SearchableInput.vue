@@ -89,9 +89,18 @@ export default {
     },
     handleInput(event) {
       clearTimeout(this.searchProcess)
-      this.value = event.target ? event.target.value.replace(/\s+/g, ' ').trim() : ''
+      this.value = event.target ? event.target.value.replace(/[-\s]+/g, ' ').trim() : ''
       this.unprocessedSearchInput = this.value
-      if (isEmpty(this.value) || this.value.replace(/\s+/g, '').length < 3) {
+      if (isEmpty(this.value)) {
+        return
+      }
+      if (this.value.includes(' ')) {
+        this.value = this.value
+          .split(' ')
+          .filter(word => word.length > 2)
+          .join(' ')
+      }
+      if (this.value.length < 3) {
         return
       }
       this.searchProcess = setTimeout(() => {
