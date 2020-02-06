@@ -61,7 +61,7 @@
     "graphql-middleware": "~4.0.2",
     "graphql-middleware-sentry": "^3.2.1",
     "graphql-shield": "~7.0.10",
-    "graphql-tag": "~2.10.2",
+    "graphql-tag": "~2.10.3",
     "helmet": "~3.21.2",
     "jsonwebtoken": "~8.5.1",
     "linkifyjs": "~2.1.8",
