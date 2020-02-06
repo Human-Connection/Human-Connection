@@ -35,7 +35,7 @@
         </client-only>
       </ds-space>
       <ds-text :class="{ 'notification-status': scope.row.read, reason: true }">
-        {{ $t(`notifications.reason.${scope.row.reason}` + scope.row.reasonExtention) }}
+        {{ $t(`notifications.reason.${scope.row.reason}` + scope.row.reasonTranslationExtention) }}
       </ds-text>
     </template>
     <template #post="scope">
@@ -43,7 +43,7 @@
         data-test="notification-title-link"
         :class="{ 'notification-status': scope.row.read }"
         :to="scope.row.linkTo"
-        @click.native="markNotificationAsRead(scope.row.id)"
+        @click.native="markNotificationAsRead(scope.row.notificationSourceId)"
       >
         <b>{{ scope.row.title | truncate(50) }}</b>
       </nuxt-link>

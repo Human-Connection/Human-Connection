@@ -21,7 +21,7 @@
           v-tooltip="{ content: $t('notifications.post'), placement: 'right' }"
         />
         {{
-          $t(`notifications.reason.${notificationData.reason}` + notificationData.reasonExtention)
+          $t(`notifications.reason.${notificationData.reason}` + notificationData.reasonTranslationExtention)
         }}
       </ds-text>
     </client-only>

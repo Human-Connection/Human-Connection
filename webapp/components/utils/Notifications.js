@@ -69,7 +69,7 @@ export const extractNotificationDataOfCurrentUser = (notification, currentUser) 
   let comment = null
   let contentExcerpt = null
   let report = null
-  let reasonExtention = ''
+  let reasonTranslationExtention = ''
   let triggerer
   let title
   let author
@@ -101,16 +101,16 @@ export const extractNotificationDataOfCurrentUser = (notification, currentUser) 
         switch (filed.reportedResource.__typename) {
           case 'User':
             user = filed.reportedResource
-            reasonExtention = '.user'
+            reasonTranslationExtention = '.user'
             break
           case 'Comment':
             comment = filed.reportedResource
             post = filed.reportedResource.post
-            reasonExtention = '.comment'
+            reasonTranslationExtention = '.comment'
             break
           case 'Post':
             post = filed.reportedResource
-            reasonExtention = '.post'
+            reasonTranslationExtention = '.post'
             break
         }
       }
@@ -146,7 +146,7 @@ export const extractNotificationDataOfCurrentUser = (notification, currentUser) 
     createdAt: notification.createdAt,
     read: notification.read,
     reason: notification.reason,
-    id: from.id,
+    notificationSourceId: from.id,
     triggerer,
     user,
     comment,
@@ -155,7 +155,7 @@ export const extractNotificationDataOfCurrentUser = (notification, currentUser) 
     title,
     contentExcerpt,
     report,
-    reasonExtention,
+    reasonTranslationExtention,
     linkTo: { name: linkName, params: linkParams, ...linkHashParam },
   }
   return data
