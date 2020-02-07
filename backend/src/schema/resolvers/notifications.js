@@ -1,9 +1,6 @@
 import log from './helpers/databaseLogger'
-import { PubSub } from 'apollo-server'
 import { withFilter } from 'graphql-subscriptions'
-
-export const pubsub = new PubSub()
-export const NOTIFICATION_ADDED = 'NOTIFICATION_ADDED'
+import { pubsub, NOTIFICATION_ADDED } from '../../server'
 
 export default {
   Subscription: {

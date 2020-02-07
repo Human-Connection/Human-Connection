@@ -1,6 +1,6 @@
 import extractMentionedUsers from './mentions/extractMentionedUsers'
 import { validateNotifyUsers } from '../validation/validationMiddleware'
-import { pubsub, NOTIFICATION_ADDED } from '../../schema/resolvers/notifications'
+import { pubsub, NOTIFICATION_ADDED } from '../../server'
 
 const handleContentDataOfPost = async (resolve, root, args, context, resolveInfo) => {
   const idsOfUsers = extractMentionedUsers(args.content)

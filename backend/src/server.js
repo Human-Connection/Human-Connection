@@ -9,7 +9,30 @@ import { getNeode, getDriver } from './db/neo4j'
 import decode from './jwt/decode'
 import schema from './schema'
 import webfinger from './activitypub/routes/webfinger'
+import { RedisPubSub } from 'graphql-redis-subscriptions'
+import Redis from 'ioredis'
 
+export const NOTIFICATION_ADDED = 'NOTIFICATION_ADDED'
+const { REDIS_DOMAIN, REDIS_PORT, REDIS_PASSWORD } = CONFIG
+let prodPubsub, devPubsub
+const options = {
+  host: REDIS_DOMAIN,
+  port: REDIS_PORT,
+  password: REDIS_PASSWORD,
+  retryStrategy: times => {
+    return Math.min(times * 50, 2000)
+  },
+}
+
+if (options.host && options.port && options.password) {
+  prodPubsub = new RedisPubSub({
+    publisher: new Redis(options),
+    subscriber: new Redis(options),
+  })
+} else {
+  devPubsub = new RedisPubSub()
+}
+export const pubsub = prodPubsub || devPubsub
 const driver = getDriver()
 const neode = getNeode()
 
