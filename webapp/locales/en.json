@@ -821,6 +821,17 @@
       "title": "In addition, we regularly hold events where you can also share your impressions and ask questions. You can find a current overview here:",
       "description": "<a href=\"https://human-connection.org/events/\" target=\"_blank\" > https://human-connection.org/events/ </a>"
     }
+  },
+  "error-pages" : {
+    "profile-not-found": "This profile could not be found",
+    "back-to-index": "Back to index page",
+    "post-not-found": "This post could not be found",
+    "cannot-edit-post": "This post cannot be edited",
+    "404-default": "This page could not be found",
+    "403-default": "Not authorized to this page",
+    "500-default": "Internal Server Error",
+    "503-default": "Service Unavailable",
+    "default": "An error occurred"
   }
 }
 

@@ -311,7 +311,7 @@ Then(
     cy.visit(route, {
       failOnStatusCode: false
     });
-    cy.get(".error").should("contain", message);
+    cy.get(".error-message").should("contain", message);
   }
 );
 
