@@ -6,6 +6,12 @@ type FILED {
   reportedResource: ReportedResource
 }
 
+type FILEDExpose {
+  reasonCategory: ReasonCategory!
+  reasonDescription: String!
+  reportedResource: ReportedResource
+}
+
 # this list equals the strings of an array in file "webapp/constants/modals.js"
 enum ReasonCategory {
   other
