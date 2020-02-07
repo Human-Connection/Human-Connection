@@ -74,15 +74,15 @@ describe('NotificationsTable.vue', () => {
         })
 
         it('for user', () => {
-          expect(wrapper.vm.fields.user).toBeTruthy()
+          expect(wrapper.vm.fields.triggerer).toBeTruthy()
         })
 
         it('for post', () => {
-          expect(wrapper.vm.fields.post).toBeTruthy()
+          expect(wrapper.vm.fields.title).toBeTruthy()
         })
 
         it('for content', () => {
-          expect(wrapper.vm.fields.content).toBeTruthy()
+          expect(wrapper.vm.fields.metadata).toBeTruthy()
         })
       })
 
