@@ -69,13 +69,12 @@ export const extractNotificationDataOfCurrentUser = (notification, currentUser) 
   let comment = null
   let contentExcerpt = null
   let report = null
+  let isUser = false
+  let isPost = false
+  let isComment = false
+  let isReport = false
   let reasonTranslationExtention = ''
-  let triggerer
-  let title
-  let author
-  let linkName
-  let linkParams
-  let linkHashParam
+  let iconName, iconTooltip, triggerer, title, author, linkName, linkParams, linkHashParam
 
   // extract data out of the deep structure of db response
 
@@ -84,10 +83,16 @@ export const extractNotificationDataOfCurrentUser = (notification, currentUser) 
     case 'Comment':
       comment = from
       post = comment.post
+      isComment = true
+      iconName = 'comment'
+      iconTooltip = 'notifications.comment'
       triggerer = comment.author
       break
     case 'Post':
       post = from
+      isPost = true
+      iconName = 'bookmark'
+      iconTooltip = 'notifications.post'
       triggerer = post.author
       break
     case 'Report':
@@ -97,19 +102,25 @@ export const extractNotificationDataOfCurrentUser = (notification, currentUser) 
           reasonCategory: filed.reasonCategory,
           reasonDescription: filed.reasonDescription,
         }
+        isReport = true
+        iconName = 'balance-scale'
+        iconTooltip = 'notifications.report.name'
         triggerer = currentUser
         switch (filed.reportedResource.__typename) {
           case 'User':
             user = filed.reportedResource
+            isUser = true
             reasonTranslationExtention = '.user'
             break
           case 'Comment':
             comment = filed.reportedResource
             post = filed.reportedResource.post
+            isComment = true
             reasonTranslationExtention = '.comment'
             break
           case 'Post':
             post = filed.reportedResource
+            isPost = true
             reasonTranslationExtention = '.post'
             break
         }
@@ -147,6 +158,12 @@ export const extractNotificationDataOfCurrentUser = (notification, currentUser) 
     read: notification.read,
     reason: notification.reason,
     notificationSourceId: from.id,
+    isUser,
+    isPost,
+    isComment,
+    isReport,
+    iconName,
+    iconTooltip,
     triggerer,
     user,
     comment,

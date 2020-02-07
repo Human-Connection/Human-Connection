@@ -6,19 +6,8 @@
       </ds-space>
       <ds-text data-test="reason-text" color="soft">
         <base-icon
-          v-if="notificationData.report"
-          name="balance-scale"
-          v-tooltip="{ content: $t('notifications.report.name'), placement: 'right' }"
-        />
-        <base-icon
-          v-else-if="notificationData.comment"
-          name="comment"
-          v-tooltip="{ content: $t('notifications.comment'), placement: 'right' }"
-        />
-        <base-icon
-          v-else
-          name="bookmark"
-          v-tooltip="{ content: $t('notifications.post'), placement: 'right' }"
+          :name="notificationData.iconName"
+          v-tooltip="{ content: $t(notificationData.iconTooltip), placement: 'right' }"
         />
         {{
           $t(
@@ -32,23 +21,26 @@
     <nuxt-link :to="notificationData.linkTo" @click.native="$emit('read')">
       <ds-space margin-bottom="x-small">
         <ds-card
-          :header="(notificationData.post || notificationData.comment) && notificationData.title"
+          :header="
+            (notificationData.isPost || notificationData.isComment) && notificationData.title
+          "
           hover
           space="x-small"
           class="notifications-card"
         >
-          <div v-if="notificationData.user">
-            <!-- because of different margin above ds-card content without header property -->
-            <ds-space margin-bottom="small" />
-            <user-teaser :user="notificationData.user" />
-          </div>
-          <div v-else-if="notificationData.contentExcerpt">
-            <span v-if="notificationData.comment" class="notification-content-header-text">
+          <!-- because of different margin above ds-card content without header property -->
+          <user-teaser
+            v-if="notificationData.isUser"
+            class="notifications-user-teaser"
+            :user="notificationData.user"
+          />
+          <div v-else>
+            <span v-if="notificationData.isComment" class="notification-content-header-text">
               {{ $t(`notifications.comment`) }}:
             </span>
             {{ notificationData.contentExcerpt | removeHtml }}
           </div>
-          <div v-if="notificationData.report">
+          <div v-if="notificationData.isReport">
             <ds-space margin-bottom="x-small" />
             <span class="notification-content-header-text">
               {{ $t(`notifications.report.category`) }}:
@@ -72,7 +64,7 @@
           </div>
           <!-- because of different margin underneath ds-card content without header property -->
           <ds-space
-            v-if="!(notificationData.post || notificationData.comment)"
+            v-if="!(notificationData.isPost || notificationData.isComment)"
             margin-bottom="base"
           />
         </ds-card>
@@ -118,5 +110,13 @@ export default {
 .notification-content-header-text {
   font-weight: 700;
   margin-right: 0.1rem;
+}
+// Wolle .notifications-card {
+//   > .user-teaser {
+//     margin-top: $space-small;
+//   }
+// }
+.notifications-user-teaser {
+  margin-top: $space-small;
 }
 </style>

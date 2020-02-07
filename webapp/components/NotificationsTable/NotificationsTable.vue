@@ -6,25 +6,12 @@
   >
     <template #icon="scope">
       <base-icon
-        v-if="scope.row.report"
-        name="balance-scale"
-        v-tooltip="{ content: $t('notifications.report.name'), placement: 'right' }"
-        :class="{ 'notification-status': scope.row.read }"
-      />
-      <base-icon
-        v-else-if="scope.row.comment"
-        name="comment"
-        v-tooltip="{ content: $t('notifications.comment'), placement: 'right' }"
-        :class="{ 'notification-status': scope.row.read }"
-      />
-      <base-icon
-        v-else
-        name="bookmark"
-        v-tooltip="{ content: $t('notifications.post'), placement: 'right' }"
+        :name="scope.row.iconName"
+        v-tooltip="{ content: $t(scope.row.iconTooltip), placement: 'right' }"
         :class="{ 'notification-status': scope.row.read }"
       />
     </template>
-    <template #user="scope">
+    <template #triggerer="scope">
       <ds-space margin-bottom="base">
         <client-only>
           <user-teaser
@@ -38,7 +25,7 @@
         {{ $t(`notifications.reason.${scope.row.reason}` + scope.row.reasonTranslationExtention) }}
       </ds-text>
     </template>
-    <template #post="scope">
+    <template #title="scope">
       <nuxt-link
         data-test="notification-title-link"
         :class="{ 'notification-status': scope.row.read }"
@@ -48,17 +35,17 @@
         <b>{{ scope.row.title | truncate(50) }}</b>
       </nuxt-link>
     </template>
-    <template #content="scope">
-      <div v-if="scope.row.user" :class="{ 'notification-status': scope.row.read }">
+    <template #metadata="scope">
+      <div v-if="scope.row.isUser" :class="{ 'notification-status': scope.row.read }">
         <user-teaser :user="scope.row.user" />
       </div>
       <div v-else-if="scope.row.contentExcerpt" :class="{ 'notification-status': scope.row.read }">
-        <span v-if="scope.row.comment" class="notification-content-header-text">
+        <span v-if="scope.row.isComment" class="notification-content-header-text">
           {{ $t(`notifications.comment`) }}:
         </span>
         {{ scope.row.contentExcerpt | removeHtml }}
       </div>
-      <div v-if="scope.row.report" :class="{ 'notification-status': scope.row.read }">
+      <div v-if="scope.row.isReport" :class="{ 'notification-status': scope.row.read }">
         <ds-space margin-bottom="x-small" />
         <span class="notification-content-header-text">
           {{ $t(`notifications.report.category`) }}:
@@ -105,15 +92,15 @@ export default {
           label: ' ',
           width: '3%',
         },
-        user: {
+        triggerer: {
           label: ' ',
           width: '25%',
         },
-        post: {
+        title: {
           label: ' ',
           width: '25%',
         },
-        content: {
+        metadata: {
           label: ' ',
           width: '47%',
         },
