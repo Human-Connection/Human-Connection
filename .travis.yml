@@ -69,7 +69,3 @@ deploy:
     script: bash scripts/deploy.sh
     on:
       branch: master
-  - provider: script
-    script: bash scripts/github_release.sh
-    on:
-      branch: master
