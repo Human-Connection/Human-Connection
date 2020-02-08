@@ -475,8 +475,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           imageBlurred: true,
         },
         {
-          author: dewey,
           categoryIds: ['cat10'],
+          author: dewey,
         },
       ),
       Factory.build(
@@ -499,8 +499,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           language: sample(languages),
         },
         {
-          author: bobDerBaumeister,
           categoryIds: ['cat13'],
+          author: bobDerBaumeister,
         },
       ),
       Factory.build(
@@ -512,8 +512,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           imageAspectRatio: 300 / 450,
         },
         {
-          author: jennyRostock,
           categoryIds: ['cat14'],
+          author: jennyRostock,
         },
       ),
       Factory.build(
@@ -523,8 +523,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           language: sample(languages),
         },
         {
-          author: huey,
           categoryIds: ['cat15'],
+          author: huey,
         },
       ),
     ])
@@ -998,6 +998,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
             image: faker.image.unsplash.buildings(),
           },
           {
+            categoryIds: ['cat1'],
             author: peterLustig,
           },
         ),
@@ -1051,6 +1052,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
             image: faker.image.unsplash.food(),
           },
           {
+            categoryIds: ['cat1'],
             author: dewey,
           },
         ),
@@ -1104,6 +1106,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
             image: faker.image.unsplash.technology(),
           },
           {
+            categoryIds: ['cat1'],
             author: louie,
           },
         ),
@@ -1157,6 +1160,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
             image: faker.image.unsplash.people(),
           },
           {
+            categoryIds: ['cat1'],
             author: bobDerBaumeister,
           },
         ),
@@ -1210,6 +1214,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
             image: faker.image.unsplash.nature(),
           },
           {
+            categoryIds: ['cat1'],
             author: huey,
           },
         ),
