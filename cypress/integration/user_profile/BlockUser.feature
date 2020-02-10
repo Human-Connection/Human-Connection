@@ -20,8 +20,8 @@ Feature: Block a User
     Given I block the user "Harassing User"
     And I previously created a post
     And a blocked user visits the post page of one of my authored posts
-    Then they should not see the comment from
-    And they should see a text explaining commenting is not possible
+    Then they should see a text explaining why commenting is not possible
+    And they should not see the comment form
 
   Scenario: Block a previously followed user
     Given I follow the user "Harassing User"

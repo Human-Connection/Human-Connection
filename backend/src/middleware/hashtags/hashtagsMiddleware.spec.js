@@ -1,5 +1,5 @@
 import { gql } from '../../helpers/jest'
-import Factory from '../../factories'
+import { cleanDatabase } from '../../db/factories'
 import { createTestClient } from 'apollo-server-testing'
 import { getNeode, getDriver } from '../../db/neo4j'
 import createServer from '../../server'
@@ -9,7 +9,6 @@ let query
 let mutate
 let hashtagingUser
 let authenticatedUser
-const factory = Factory()
 const driver = getDriver()
 const neode = getNeode()
 const categoryIds = ['cat9']
@@ -48,13 +47,18 @@ beforeAll(() => {
 })
 
 beforeEach(async () => {
-  hashtagingUser = await neode.create('User', {
-    id: 'you',
-    name: 'Al Capone',
-    slug: 'al-capone',
-    email: 'test@example.org',
-    password: '1234',
-  })
+  hashtagingUser = await neode.create(
+    'User',
+    {
+      id: 'you',
+      name: 'Al Capone',
+      slug: 'al-capone',
+    },
+    {
+      password: '1234',
+      email: 'test@example.org',
+    },
+  )
   await neode.create('Category', {
     id: 'cat9',
     name: 'Democracy & Politics',
@@ -63,7 +67,7 @@ beforeEach(async () => {
 })
 
 afterEach(async () => {
-  await factory.cleanDatabase()
+  await cleanDatabase()
 })
 
 describe('hashtags', () => {
