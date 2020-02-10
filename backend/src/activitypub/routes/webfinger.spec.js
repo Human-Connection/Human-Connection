@@ -1,10 +1,9 @@
 import { handler } from './webfinger'
-import Factory from '../../factories'
+import Factory, { cleanDatabase } from '../../db/factories'
 import { getDriver } from '../../db/neo4j'
 
 let resource, res, json, status, contentType
 
-const factory = Factory()
 const driver = getDriver()
 
 const request = () => {
@@ -28,7 +27,7 @@ const request = () => {
 }
 
 afterEach(async () => {
-  await factory.cleanDatabase()
+  await cleanDatabase()
 })
 
 describe('webfinger', () => {
@@ -90,7 +89,7 @@ describe('webfinger', () => {
 
       describe('given a user for acct', () => {
         beforeEach(async () => {
-          await factory.create('User', { slug: 'some-user' })
+          await Factory.build('user', { slug: 'some-user' })
         })
 
         it('returns user object', async () => {

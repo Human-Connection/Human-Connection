@@ -1,10 +1,9 @@
-import Factory from '../../factories'
+import Factory, { cleanDatabase } from '../../db/factories'
 import { gql } from '../../helpers/jest'
 import { getDriver, getNeode } from '../../db/neo4j'
 import createServer from '../../server'
 import { createTestClient } from 'apollo-server-testing'
 
-const factory = Factory()
 const neode = getNeode()
 
 let mutate
@@ -30,7 +29,7 @@ beforeAll(() => {
 })
 
 afterEach(async () => {
-  await factory.cleanDatabase()
+  await cleanDatabase()
 })
 
 describe('Signup', () => {
@@ -58,11 +57,16 @@ describe('Signup', () => {
 
     describe('as admin', () => {
       beforeEach(async () => {
-        const admin = await factory.create('User', {
-          role: 'admin',
-          email: 'admin@example.org',
-          password: '1234',
-        })
+        const admin = await Factory.build(
+          'user',
+          {
+            role: 'admin',
+          },
+          {
+            email: 'admin@example.org',
+            password: '1234',
+          },
+        )
         authenticatedUser = await admin.toJson()
       })
 
@@ -90,9 +94,9 @@ describe('Signup', () => {
         })
 
         describe('if the email already exists', () => {
-          let email
+          let emailAddress
           beforeEach(async () => {
-            email = await factory.create('EmailAddress', {
+            emailAddress = await Factory.build('emailAddress', {
               email: 'someuser@example.org',
               verifiedAt: null,
             })
@@ -100,7 +104,8 @@ describe('Signup', () => {
 
           describe('and the user has registered already', () => {
             beforeEach(async () => {
-              await factory.create('User', { email })
+              const user = await Factory.build('userWithoutEmailAddress')
+              await emailAddress.relateTo(user, 'belongsTo')
             })
 
             it('throws UserInputError error because of unique constraint violation', async () => {
