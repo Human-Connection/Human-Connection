@@ -1,10 +1,9 @@
 import { createTestClient } from 'apollo-server-testing'
 import createServer from '../.././server'
-import Factory from '../../factories'
+import Factory, { cleanDatabase } from '../../db/factories'
 import { gql } from '../../helpers/jest'
 import { getDriver, getNeode } from '../../db/neo4j'
 
-const factory = Factory()
 const instance = getNeode()
 const driver = getDriver()
 
@@ -53,7 +52,7 @@ describe('file a report on a resource', () => {
   }
 
   beforeAll(async () => {
-    await factory.cleanDatabase()
+    await cleanDatabase()
     const { server } = createServer({
       context: () => {
         return {
@@ -68,7 +67,7 @@ describe('file a report on a resource', () => {
   })
 
   afterEach(async () => {
-    await factory.cleanDatabase()
+    await cleanDatabase()
   })
 
   describe('report a resource', () => {
@@ -84,24 +83,39 @@ describe('file a report on a resource', () => {
 
     describe('authenticated', () => {
       beforeEach(async () => {
-        currentUser = await factory.create('User', {
-          id: 'current-user-id',
-          role: 'user',
-          email: 'test@example.org',
-          password: '1234',
-        })
-        otherReportingUser = await factory.create('User', {
-          id: 'other-reporting-user-id',
-          role: 'user',
-          email: 'reporting@example.org',
-          password: '1234',
-        })
-        await factory.create('User', {
-          id: 'abusive-user-id',
-          role: 'user',
-          name: 'abusive-user',
-          email: 'abusive-user@example.org',
-        })
+        currentUser = await Factory.build(
+          'user',
+          {
+            id: 'current-user-id',
+            role: 'user',
+          },
+          {
+            email: 'test@example.org',
+            password: '1234',
+          },
+        )
+        otherReportingUser = await Factory.build(
+          'user',
+          {
+            id: 'other-reporting-user-id',
+            role: 'user',
+          },
+          {
+            email: 'reporting@example.org',
+            password: '1234',
+          },
+        )
+        await Factory.build(
+          'user',
+          {
+            id: 'abusive-user-id',
+            role: 'user',
+            name: 'abusive-user',
+          },
+          {
+            email: 'abusive-user@example.org',
+          },
+        )
         await instance.create('Category', {
           id: 'cat9',
           name: 'Democracy & Politics',
@@ -341,12 +355,17 @@ describe('file a report on a resource', () => {
 
         describe('reported resource is a post', () => {
           beforeEach(async () => {
-            await factory.create('Post', {
-              author: currentUser,
-              id: 'post-to-report-id',
-              title: 'This is a post that is going to be reported',
-              categoryIds,
-            })
+            await Factory.build(
+              'post',
+              {
+                id: 'post-to-report-id',
+                title: 'This is a post that is going to be reported',
+              },
+              {
+                author: currentUser,
+                categoryIds,
+              },
+            )
           })
 
           it('returns type "Post"', async () => {
@@ -394,21 +413,30 @@ describe('file a report on a resource', () => {
         })
 
         describe('reported resource is a comment', () => {
-          let createPostVariables
           beforeEach(async () => {
-            createPostVariables = {
-              id: 'p1',
-              title: 'post to comment on',
-              content: 'please comment on me',
-              categoryIds,
-            }
-            await factory.create('Post', { ...createPostVariables, author: currentUser })
-            await factory.create('Comment', {
-              author: currentUser,
-              postId: 'p1',
-              id: 'comment-to-report-id',
-              content: 'Post comment to be reported.',
-            })
+            await Factory.build(
+              'post',
+              {
+                id: 'p1',
+                title: 'post to comment on',
+                content: 'please comment on me',
+              },
+              {
+                categoryIds,
+                author: currentUser,
+              },
+            )
+            await Factory.build(
+              'comment',
+              {
+                id: 'comment-to-report-id',
+                content: 'Post comment to be reported.',
+              },
+              {
+                author: currentUser,
+                postId: 'p1',
+              },
+            )
           })
 
           it('returns type "Comment"', async () => {
@@ -457,7 +485,7 @@ describe('file a report on a resource', () => {
 
         describe('reported resource is a tag', () => {
           beforeEach(async () => {
-            await factory.create('Tag', {
+            await Factory.build('tag', {
               id: 'tag-to-report-id',
             })
           })
@@ -515,24 +543,39 @@ describe('file a report on a resource', () => {
 
     beforeEach(async () => {
       authenticatedUser = null
-      moderator = await factory.create('User', {
-        id: 'moderator-1',
-        role: 'moderator',
-        email: 'moderator@example.org',
-        password: '1234',
-      })
-      currentUser = await factory.create('User', {
-        id: 'current-user-id',
-        role: 'user',
-        email: 'current.user@example.org',
-        password: '1234',
-      })
-      abusiveUser = await factory.create('User', {
-        id: 'abusive-user-1',
-        role: 'user',
-        name: 'abusive-user',
-        email: 'abusive-user@example.org',
-      })
+      moderator = await Factory.build(
+        'user',
+        {
+          id: 'moderator-1',
+          role: 'moderator',
+        },
+        {
+          email: 'moderator@example.org',
+          password: '1234',
+        },
+      )
+      currentUser = await Factory.build(
+        'user',
+        {
+          id: 'current-user-id',
+          role: 'user',
+        },
+        {
+          email: 'current.user@example.org',
+          password: '1234',
+        },
+      )
+      abusiveUser = await Factory.build(
+        'user',
+        {
+          id: 'abusive-user-1',
+          role: 'user',
+          name: 'abusive-user',
+        },
+        {
+          email: 'abusive-user@example.org',
+        },
+      )
       await instance.create('Category', {
         id: 'cat9',
         name: 'Democracy & Politics',
@@ -540,31 +583,51 @@ describe('file a report on a resource', () => {
       })
 
       await Promise.all([
-        factory.create('Post', {
-          author: abusiveUser,
-          id: 'abusive-post-1',
-          categoryIds,
-          content: 'Interesting Knowledge',
-        }),
-        factory.create('Post', {
-          author: moderator,
-          id: 'post-2',
-          categoryIds,
-          content: 'More things to do …',
-        }),
-        factory.create('Post', {
-          author: currentUser,
-          id: 'post-3',
-          categoryIds,
-          content: 'I am at school …',
-        }),
+        Factory.build(
+          'post',
+          {
+            id: 'abusive-post-1',
+            content: 'Interesting Knowledge',
+          },
+          {
+            categoryIds,
+            author: abusiveUser,
+          },
+        ),
+        Factory.build(
+          'post',
+          {
+            id: 'post-2',
+            content: 'More things to do …',
+          },
+          {
+            author: moderator,
+            categoryIds,
+          },
+        ),
+        Factory.build(
+          'post',
+          {
+            id: 'post-3',
+            content: 'I am at school …',
+          },
+          {
+            categoryIds,
+            author: currentUser,
+          },
+        ),
       ])
       await Promise.all([
-        factory.create('Comment', {
-          author: currentUser,
-          id: 'abusive-comment-1',
-          postId: 'post-1',
-        }),
+        Factory.build(
+          'comment',
+          {
+            id: 'abusive-comment-1',
+          },
+          {
+            postId: 'post-2',
+            author: currentUser,
+          },
+        ),
       ])
       authenticatedUser = await currentUser.toJson()
       await Promise.all([

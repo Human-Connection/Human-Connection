@@ -4,6 +4,9 @@ if (require.resolve) {
   dotenv.config({ path: require.resolve('../../.env') })
 }
 
+// eslint-disable-next-line no-undef
+const env = typeof Cypress !== 'undefined' ? Cypress.env() : process.env
+
 const {
   MAPBOX_TOKEN,
   JWT_SECRET,
@@ -23,7 +26,7 @@ const {
   REDIS_DOMAIN,
   REDIS_PORT,
   REDIS_PASSWORD,
-} = process.env
+} = env
 
 export const requiredConfigs = {
   MAPBOX_TOKEN,
