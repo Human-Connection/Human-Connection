@@ -355,6 +355,7 @@
             },
             "reportedOn": "Datum",
             "moreDetails": "Details öffnen",
+            "lessDetails": "Details schließen",
             "decideModal": {
               "submit": "Bestätige Entscheidung",
               "cancel": "Abbruch",

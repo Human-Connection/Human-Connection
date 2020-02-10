@@ -12,7 +12,12 @@
           {{ $t('moderation.reports.numberOfUsers', { count: report.filed.length }) }}
         </span>
         <base-button size="small" @click="showFiledReports = !showFiledReports">
-          {{ $t('moderation.reports.moreDetails') }}
+          <ds-text v-if="showFiledReports">
+            {{ $t('moderation.reports.lessDetails') }}
+          </ds-text>
+          <ds-text v-else>
+            {{ $t('moderation.reports.moreDetails') }}
+          </ds-text>
         </base-button>
       </td>
 

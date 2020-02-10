@@ -7,10 +7,10 @@
   >
     <colgroup>
       <col width="4%" />
-      <col width="14%" />
+      <col width="18%" />
       <col width="36%" />
       <col width="14%" />
-      <col width="20%" />
+      <col width="16%" />
       <col width="12%" />
     </colgroup>
     <thead class="ds-table-col ds-table-head-col">

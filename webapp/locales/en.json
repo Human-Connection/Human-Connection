@@ -534,6 +534,7 @@
       },
       "reportedOn": "Date",
       "moreDetails": "View Details",
+      "lessDetails": "Hide Details",
       "decideModal": {
         "submit": "Confirm decision",
         "cancel": "Cancel",
