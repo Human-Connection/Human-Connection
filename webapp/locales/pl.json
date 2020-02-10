@@ -129,9 +129,9 @@
       "contributionsCount": "Usuń {count} moich postów",
       "commentedCount": "Usuń {count} moich komentarzy",
       "accountDescription": "Be aware that your Post and Comments are important to our community. If you still choose to delete them, you have to mark them below.",
-      "accountWarning": "Po usunięcie Twojego konta, nie możesz <b>ZARZĄDZAĆ</b> ani <b>ODZYSKAĆ</b> danych, wpisów oraz komentarzy!",
+      "accountWarning": "Po usunięcie Twojego konta, nie możesz ZARZĄDZAĆ ani ODZYSKAĆ danych, wpisów oraz komentarzy!",
       "success": "Konto zostało usunięte",
-      "pleaseConfirm": "<b class='is-danger'>Uwaga, niebezpieczeństwo!</b> Wpisz <b>{confirm}</b>, aby potwierdzić"
+      "pleaseConfirm": "Uwaga, niebezpieczeństwo! Wpisz „{confirm}”, aby potwierdzić."
     },
     "organizations": {
       "name": "My Organizations"

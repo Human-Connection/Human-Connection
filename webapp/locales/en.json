@@ -278,9 +278,9 @@
       "contributionsCount": "Delete my {count} posts",
       "commentedCount": "Delete my {count} comments",
       "accountDescription": "Be aware that your Posts and Comments are important to our community. If you still choose to delete them, you have to mark them below.",
-      "accountWarning": "You <b>CAN'T MANAGE</b> and <b>CAN'T RECOVER</b> your Account, Posts, or Comments after deleting your account!",
+      "accountWarning": "You CAN'T MANAGE and CAN'T RECOVER your Account, Posts, or Comments after deleting your account!",
       "success": "Account successfully deleted!",
-      "pleaseConfirm": "<b class='is-danger'>Destructive action!</b> Type <b>{confirm}</b> to confirm"
+      "pleaseConfirm": "Destructive action! Type “{confirm}” to confirm."
     },
     "embeds": {
       "name": "Third party providers",

@@ -119,9 +119,9 @@
             "contributionsCount": "Meine {count} Beiträge löschen",
             "commentedCount": "Meine {count} Kommentare löschen",
             "accountDescription": "Sei dir bewusst, dass deine Beiträge und Kommentare für unsere Community wichtig sind. Wenn du sie trotzdem löschen möchtest, musst du sie unten markieren.",
-            "accountWarning": "Dein Konto, deine Beiträge oder Kommentare kannst du nach dem Löschen <b>WEDER VERWALTEN NOCH WIEDERHERSTELLEN!<\/b>",
+            "accountWarning": "Dein Konto, deine Beiträge oder Kommentare kannst du nach dem Löschen WEDER VERWALTEN NOCH WIEDERHERSTELLEN!",
             "success": "Konto erfolgreich gelöscht!",
-            "pleaseConfirm": "<b class='is-danger'>Zerstörerische Aktion!<\/b> Gib <b>{confirm}<\/b> ein, um zu bestätigen."
+            "pleaseConfirm": "Zerstörerische Aktion! Gib „{confirm}“ ein, um zu bestätigen."
         },
         "embeds": {
             "name": "Drittanbieter",
