@@ -60,7 +60,7 @@ export default {
           '.' +
           (report.resource.disabled ? 'disable' : 'enable')
         return {
-          name: 'confirm',
+          name: 'decide',
           data: {
             type: report.resource.__typename,
             resource: report.resource,
