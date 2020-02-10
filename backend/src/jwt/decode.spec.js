@@ -1,8 +1,7 @@
-import Factory from '../factories/index'
+import Factory, { cleanDatabase } from '../db/factories'
 import { getDriver, getNeode } from '../db/neo4j'
 import decode from './decode'
 
-const factory = Factory()
 const driver = getDriver()
 const neode = getNeode()
 
@@ -26,7 +25,7 @@ export const validAuthorizationHeader =
   'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoidXNlciIsImxvY2F0aW9uTmFtZSI6bnVsbCwibmFtZSI6Ikplbm55IFJvc3RvY2siLCJhYm91dCI6bnVsbCwiYXZhdGFyIjoiaHR0cHM6Ly9zMy5hbWF6b25hd3MuY29tL3VpZmFjZXMvZmFjZXMvdHdpdHRlci9zYXNoYV9zaGVzdGFrb3YvMTI4LmpwZyIsImlkIjoidTMiLCJlbWFpbCI6InVzZXJAZXhhbXBsZS5vcmciLCJzbHVnIjoiamVubnktcm9zdG9jayIsImlhdCI6MTU1MDg0NjY4MCwiZXhwIjoxNjM3MjQ2NjgwLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjQwMDAiLCJzdWIiOiJ1MyJ9.eZ_mVKas4Wzoc_JrQTEWXyRn7eY64cdIg4vqQ-F_7Jc'
 
 afterEach(async () => {
-  await factory.cleanDatabase()
+  await cleanDatabase()
 })
 
 describe('decode', () => {
@@ -65,14 +64,19 @@ describe('decode', () => {
     describe('and corresponding user in the database', () => {
       let user
       beforeEach(async () => {
-        user = await factory.create('User', {
-          role: 'user',
-          name: 'Jenny Rostock',
-          avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/sasha_shestakov/128.jpg',
-          id: 'u3',
-          email: 'user@example.org',
-          slug: 'jenny-rostock',
-        })
+        user = await Factory.build(
+          'user',
+          {
+            role: 'user',
+            name: 'Jenny Rostock',
+            avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/sasha_shestakov/128.jpg',
+            id: 'u3',
+            slug: 'jenny-rostock',
+          },
+          {
+            email: 'user@example.org',
+          },
+        )
       })
 
       it('returns user object except email', async () => {
