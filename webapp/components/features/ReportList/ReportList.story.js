@@ -183,11 +183,11 @@ storiesOf('ReportList', module)
       openModal: action('openModal'),
       filter: action('filter'),
     },
-    template: `<ds-card>
+    template: `<base-card>
                 <div class="reports-header">
                   <h3 class="title">Reports</h3>
                   <dropdown-filter @filter="filter" :filterOptions="filterOptions" :selected="selected" />
                 </div>
                 <reports-table :reports="reports" @confirm="openModal" />
-              </ds-card>`,
+              </base-card>`,
   }))

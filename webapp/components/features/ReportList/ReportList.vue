@@ -1,5 +1,5 @@
 <template>
-  <ds-card>
+  <base-card>
     <div class="reports-header">
       <h3 class="title">{{ $t('moderation.reports.name') }}</h3>
       <client-only>
@@ -8,8 +8,9 @@
     </div>
     <reports-table :reports="reports" @confirm="openModal" />
     <pagination-buttons :hasNext="hasNext" :hasPrevious="hasPrevious" @back="back" @next="next" />
-  </ds-card>
+  </base-card>
 </template>
+
 <script>
 import { mapMutations } from 'vuex'
 import DropdownFilter from '~/components/DropdownFilter/DropdownFilter'
@@ -166,7 +167,7 @@ export default {
 .reports-header {
   display: flex;
   justify-content: space-between;
-  margin: $space-small 0;
+  margin-bottom: $space-small;
 
   > .title {
     margin: 0;
