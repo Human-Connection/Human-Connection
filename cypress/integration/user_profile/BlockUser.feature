@@ -44,3 +44,14 @@ Feature: Block a User
     Then I should see the following posts in the select dropdown:
       | title                   |
       | previously created post |
+
+  Scenario: Blocked users cannot see they are blocked in their list
+    Given a user has blocked me 
+    And I navigate to my "Blocked users" settings page
+    Then I should see no users in my blocked users list
+
+  Scenario: Blocked users should not see link or button to unblock, only blocking users
+    Given a user has blocked me
+    When I visit the profile page of the annoying user
+    And I should not see "Unblock user" from the content menu in the user info box
+    And I should not see "Unblock user" button
