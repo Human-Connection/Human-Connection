@@ -4,9 +4,13 @@ apiVersion: v1
 metadata:
   name: uploads-claim
 spec:
+  dataSource:
+    name: uploads-snapshot
+    kind: VolumeSnapshot
+    apiGroup: snapshot.storage.k8s.io
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 8Gi
+      storage:  {{ .Values.uploadsStorage }}
 

@@ -64,7 +64,7 @@ $ helm install cert-manager --namespace cert-manager --version v0.13.0 jetstack/
 Once you are satisfied with the configuration, you can install the app.
 
 ```bash
-# in folder /deployment/helm
+# in folder /deployment/helm/human-connection
 $ helm install develop ./ --namespace human-connection
 ```
 Where `develop` is the release name, in this case develop for our develop server and `human-connection` is the namespace, again customize for your needs. The release name can be anything you want. Just keep in mind that it is used in the templates to prepend the `CLIENT_URI` and other places.
