@@ -1,67 +1,48 @@
 <template>
-  <ds-container width="medium">
-    <ds-space margin="small">
-      <blockquote>
-        <p>{{ $t('quotes.african.quote') }}</p>
-        <b>- {{ $t('quotes.african.author') }}</b>
-      </blockquote>
-    </ds-space>
-    <ds-card class="login-card">
-      <ds-flex gutter="small">
-        <ds-flex-item :width="{ base: '100%', sm: '50%' }" centered>
-          <client-only>
-            <locale-switch class="login-locale-switch" offset="5" />
-          </client-only>
-          <ds-space margin-top="small" margin-bottom="xxx-small" centered>
-            <img
-              class="login-image"
-              alt="Human Connection"
-              src="/img/sign-up/humanconnection.svg"
-            />
-          </ds-space>
-        </ds-flex-item>
-        <ds-flex-item :width="{ base: '100%', sm: '50%' }" centered>
-          <ds-space margin="small">
-            <a :href="$t('login.moreInfoURL')" :title="$t('login.moreInfoHint')" target="_blank">
-              {{ $t('login.moreInfo') }}
-            </a>
-          </ds-space>
-          <ds-space margin="small">
-            <ds-text size="small">{{ $t('login.copy') }}</ds-text>
-          </ds-space>
-          <form :disabled="pending" @submit.prevent="onSubmit">
-            <ds-input
-              v-model="form.email"
-              :disabled="pending"
-              :placeholder="$t('login.email')"
-              type="email"
-              name="email"
-              icon="envelope"
-            />
-            <ds-input
-              v-model="form.password"
-              :disabled="pending"
-              :placeholder="$t('login.password')"
-              icon="lock"
-              icon-right="question-circle"
-              name="password"
-              type="password"
-            />
-            <ds-space margin-bottom="large">
-              <nuxt-link to="/password-reset/request">{{ $t('login.forgotPassword') }}</nuxt-link>
-            </ds-space>
-            <base-button :loading="pending" filled name="submit" type="submit" icon="sign-in">
-              {{ $t('login.login') }}
-            </base-button>
-            <ds-space margin-top="large" margin-bottom="x-small">
-              {{ $t('login.no-account') }}
-              <nuxt-link to="/registration/signup">{{ $t('login.register') }}</nuxt-link>
-            </ds-space>
-          </form>
-        </ds-flex-item>
-      </ds-flex>
-    </ds-card>
-  </ds-container>
+  <section class="login-form">
+    <blockquote>
+      <p>{{ $t('quotes.african.quote') }}</p>
+      <b>- {{ $t('quotes.african.author') }}</b>
+    </blockquote>
+    <base-card>
+      <client-only>
+        <locale-switch class="locale-switch" />
+      </client-only>
+      <a :href="$t('login.moreInfoURL')" :title="$t('login.moreInfo')" target="_blank" class="link">
+        <img class="image" alt="Human Connection" src="/img/sign-up/humanconnection.svg" />
+      </a>
+      <form :disabled="pending" @submit.prevent="onSubmit" class="form">
+        <h2 class="title">{{ $t('login.login') }}</h2>
+        <ds-input
+          v-model="form.email"
+          :disabled="pending"
+          :placeholder="$t('login.email')"
+          type="email"
+          name="email"
+          icon="envelope"
+        />
+        <ds-input
+          v-model="form.password"
+          :disabled="pending"
+          :placeholder="$t('login.password')"
+          icon="lock"
+          icon-right="question-circle"
+          name="password"
+          type="password"
+        />
+        <nuxt-link to="/password-reset/request" class="password-link">
+          {{ $t('login.forgotPassword') }}
+        </nuxt-link>
+        <base-button :loading="pending" filled name="submit" type="submit" icon="sign-in">
+          {{ $t('login.login') }}
+        </base-button>
+        <p class="signup-hint">
+          {{ $t('login.no-account') }}
+          <nuxt-link to="/registration/signup">{{ $t('login.register') }}</nuxt-link>
+        </p>
+      </form>
+    </base-card>
+  </section>
 </template>
 
 <script>
@@ -100,21 +81,51 @@ export default {
 </script>
 
 <style lang="scss">
-.login-image {
-  width: 90%;
-  max-width: 200px;
-}
-.login-card {
-  position: relative;
+.login-form {
+  width: 80vw;
+  max-width: 620px;
+  margin: auto;
 
-  .base-button {
-    display: block;
-    width: 100%;
+  > .base-card {
+    position: relative;
+    display: flex;
+
+    > .locale-switch {
+      position: absolute;
+      top: $space-small;
+      left: $space-small;
+    }
+
+    > .link {
+      flex-basis: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      > .image {
+        width: 90%;
+        max-width: 200px;
+      }
+    }
+
+    > .form {
+      flex-basis: 50%;
+
+      > .title {
+        margin-bottom: $space-small;
+      }
+
+      > .password-link {
+        display: block;
+        margin-bottom: $space-large;
+      }
+
+      > .base-button {
+        display: block;
+        width: 100%;
+        margin-bottom: $space-small;
+      }
+    }
   }
-}
-.login-locale-switch {
-  position: absolute;
-  top: 1em;
-  left: 1em;
 }
 </style>
