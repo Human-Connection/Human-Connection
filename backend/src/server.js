@@ -2,7 +2,6 @@ import express from 'express'
 import http from 'http'
 import helmet from 'helmet'
 import { ApolloServer } from 'apollo-server-express'
-
 import CONFIG from './config'
 import middleware from './middleware'
 import { getNeode, getDriver } from './db/neo4j'
@@ -10,6 +9,7 @@ import decode from './jwt/decode'
 import schema from './schema'
 import webfinger from './activitypub/routes/webfinger'
 import { RedisPubSub } from 'graphql-redis-subscriptions'
+import { PubSub } from 'graphql-subscriptions'
 import Redis from 'ioredis'
 
 export const NOTIFICATION_ADDED = 'NOTIFICATION_ADDED'
@@ -23,14 +23,13 @@ const options = {
     return Math.min(times * 50, 2000)
   },
 }
-
 if (options.host && options.port && options.password) {
   prodPubsub = new RedisPubSub({
     publisher: new Redis(options),
     subscriber: new Redis(options),
   })
 } else {
-  devPubsub = new RedisPubSub()
+  devPubsub = new PubSub()
 }
 export const pubsub = prodPubsub || devPubsub
 const driver = getDriver()
