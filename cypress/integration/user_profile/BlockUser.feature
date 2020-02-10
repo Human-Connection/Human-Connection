@@ -11,6 +11,7 @@ Feature: Block a User
   Scenario: Block a user
     Given I am on the profile page of the annoying user
     When I click on "Block user" from the content menu in the user info box
+    And I "should" see "Unblock user" from the content menu in the user info box
     And I navigate to my "Blocked users" settings page
     Then I can see the following table:
       | Avatar | Name           |
@@ -28,6 +29,7 @@ Feature: Block a User
     When I visit the profile page of the annoying user
     And I click on "Block user" from the content menu in the user info box
     And I get removed from his follower collection
+    And I "should" see "Unblock user" from the content menu in the user info box
 
   Scenario: Posts of blocked users are not filtered from search results
     Given "Harassing User" wrote a post "You can still see my posts"
@@ -53,5 +55,6 @@ Feature: Block a User
   Scenario: Blocked users should not see link or button to unblock, only blocking users
     Given a user has blocked me
     When I visit the profile page of the annoying user
-    And I should not see "Unblock user" from the content menu in the user info box
+    And I "should not" see "Unblock user" from the content menu in the user info box
+    And I should see the "Follow" button
     And I should not see "Unblock user" button

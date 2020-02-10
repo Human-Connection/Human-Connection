@@ -68,7 +68,7 @@ type User {
   RETURN COUNT(u) >= 1
   """
   )
-  hasBlocked: Boolean! @cypher(
+  isBlocked: Boolean! @cypher(
   statement: """
   MATCH (this)<-[:BLOCKED]-(user:User {id: $cypherParams.currentUserId})
   RETURN COUNT(user) >= 1

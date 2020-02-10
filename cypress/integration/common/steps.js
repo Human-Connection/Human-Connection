@@ -591,13 +591,18 @@ Then("I should see no users in my blocked users list", () => {
     .should('contain', "So far, you have not blocked anybody.")
 })
 
-Then("I should not see {string} from the content menu in the user info box", link => {
+Then("I {string} see {string} from the content menu in the user info box", (condition, link) => {
   cy.get(".user-content-menu .base-button").click()
   cy.get(".popover .ds-menu-item-link")
-    .should('not.contain', link)
+    .should(condition === 'should' ? 'contain' : 'not.contain', link)
 })
 
 Then('I should not see {string} button', button => {
-  cy.get('.ds-card-content')
-    .should('not.contain', '.action-buttons')
+  cy.get('.ds-card-content .action-buttons')
+    .should('have.length', 1)
+})
+
+Then('I should see the {string} button', button => {
+  cy.get('.ds-card-content .action-buttons .base-button')
+    .should('contain', button)
 })

@@ -172,7 +172,7 @@ export default {
               icon: 'microphone-slash',
             })
           }
-          if (this.resource.hasBlocked) {
+          if (this.resource.isBlocked) {
             routes.push({
               label: this.$t(`settings.blocked-users.unblock`),
               callback: () => {

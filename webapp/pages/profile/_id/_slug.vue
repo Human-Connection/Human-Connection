@@ -67,14 +67,14 @@
             </ds-flex-item>
           </ds-flex>
           <div v-if="!myProfile" class="action-buttons">
-            <base-button v-if="user.hasBlocked" @click="unblockUser(user)">
+            <base-button v-if="user.isBlocked" @click="unblockUser(user)">
               {{ $t('settings.blocked-users.unblock') }}
             </base-button>
             <base-button v-if="user.isMuted" @click="unmuteUser(user)">
               {{ $t('settings.muted-users.unmute') }}
             </base-button>
             <hc-follow-button
-              v-if="!(user.hasBlocked || user.isMuted)"
+              v-if="!user.isMuted && !user.isBlocked"
               :follow-id="user.id"
               :is-followed="user.followedByCurrentUser"
               @optimistic="optimisticFollow"
