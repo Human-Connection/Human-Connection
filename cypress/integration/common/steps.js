@@ -545,6 +545,20 @@ When("I block the user {string}", name => {
     });
 });
 
+When("a user has blocked me", () => {
+  cy.neode()
+    .first("User", {
+      name: narratorParams.name
+    })
+    .then(blockedUser => {
+      cy.neode()
+        .first("User", {
+          name: 'Harassing User'
+        })
+        .relateTo(blockedUser, "blocked");
+    });
+});
+
 When("I log in with:", table => {
   const [firstRow] = table.hashes();
   const {
@@ -570,4 +584,25 @@ Then("they should not see the comment form", () => {
 
 Then("they should see a text explaining why commenting is not possible", () => {
   cy.get('.ds-placeholder').should('contain', "Commenting is not possible at this time on this post.")
+})
+
+Then("I should see no users in my blocked users list", () => {
+  cy.get('.ds-placeholder')
+    .should('contain', "So far, you have not blocked anybody.")
+})
+
+Then("I {string} see {string} from the content menu in the user info box", (condition, link) => {
+  cy.get(".user-content-menu .base-button").click()
+  cy.get(".popover .ds-menu-item-link")
+    .should(condition === 'should' ? 'contain' : 'not.contain', link)
+})
+
+Then('I should not see {string} button', button => {
+  cy.get('.ds-card-content .action-buttons')
+    .should('have.length', 1)
+})
+
+Then('I should see the {string} button', button => {
+  cy.get('.ds-card-content .action-buttons .base-button')
+    .should('contain', button)
 })
