@@ -44,7 +44,6 @@ Factory.define('userWithoutEmailAddress')
   .attrs({
     id: uuid,
     name: faker.name.findName,
-    email: faker.internet.email,
     password: '1234',
     role: 'user',
     avatar: faker.internet.avatar,
