@@ -50,9 +50,7 @@
                 }"
                 style="flex-basis: auto;"
               >
-                <client-only>
-                  <locale-switch class="topbar-locale-switch" placement="top" offset="8" />
-                </client-only>
+                <locale-switch class="topbar-locale-switch" placement="top" offset="8" />
                 <template v-if="isLoggedIn">
                   <client-only>
                     <notification-menu placement="top" />

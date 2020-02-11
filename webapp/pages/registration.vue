@@ -3,9 +3,7 @@
     <ds-card>
       <ds-flex gutter="small">
         <ds-flex-item :width="{ base: '100%', sm: '50%' }">
-          <client-only>
-            <locale-switch offset="5" />
-          </client-only>
+          <locale-switch offset="5" />
           <ds-space margin-top="small" margin-bottom="xxx-small">
             <img class="signup-image" alt="Human Connection" src="/img/sign-up/nicetomeetyou.svg" />
           </ds-space>
