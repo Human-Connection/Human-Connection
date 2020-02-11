@@ -7,6 +7,7 @@ import { getNeode, getDriver } from './db/neo4j'
 import decode from './jwt/decode'
 import schema from './schema'
 import webfinger from './activitypub/routes/webfinger'
+import bodyParser from 'body-parser'
 
 const driver = getDriver()
 const neode = getNeode()
@@ -45,6 +46,8 @@ const createServer = options => {
   app.use(helmet())
   app.use('/.well-known/', webfinger())
   app.use(express.static('public'))
+  app.use(bodyParser.json({ limit: '10mb' }))
+  app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }))
   server.applyMiddleware({ app, path: '/' })
 
   return { server, app }
