@@ -9,8 +9,8 @@
       :to="{ name: 'post-id-slug', params, ...hashParam }"
       @click.native="$emit('read')"
     >
-      <base-card class="--wide-content">
-        <h2 class="card-heading">{{ from.title || from.post.title }}</h2>
+      <base-card wideContent>
+        <h2 class="title">{{ from.title || from.post.title }}</h2>
         <p>
           <strong v-if="isComment" class="comment">{{ $t(`notifications.comment`) }}:</strong>
           {{ from.contentExcerpt | removeHtml }}

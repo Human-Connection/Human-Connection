@@ -91,7 +91,7 @@ export default {
       this.closeCropper()
     },
     setupPreview(url) {
-      const previewElement = document.querySelector('.preview-image')
+      const previewElement = document.querySelector('.image-uploader .preview-image')
       previewElement.src = url
       this.$nextTick((this.isLoadingImage = false))
     },
@@ -108,6 +108,14 @@ export default {
   min-height: 200px;
   cursor: pointer;
 
+  .image + & {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+
   &:only-child {
     background-color: $color-neutral-85;
   }
@@ -116,12 +124,14 @@ export default {
     pointer-events: none;
   }
 
-  .preview-image + & {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
+  &.--blur-image .preview-image {
+    filter: blur(22px);
+  }
+
+  .preview-image {
+    width: 100%;
+    max-height: 2000px;
+    object-fit: contain;
   }
 
   > .crop-overlay {

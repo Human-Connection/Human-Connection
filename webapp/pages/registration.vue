@@ -1,25 +1,24 @@
 <template>
   <ds-container width="medium">
-    <ds-card>
-      <ds-flex gutter="small">
-        <ds-flex-item :width="{ base: '100%', sm: '50%' }">
-          <locale-switch offset="5" />
-          <ds-space margin-top="small" margin-bottom="xxx-small">
-            <img class="signup-image" alt="Human Connection" src="/img/sign-up/nicetomeetyou.svg" />
-          </ds-space>
-        </ds-flex-item>
-        <ds-flex-item :width="{ base: '100%', sm: '50%' }" centered>
-          <nuxt-child />
-        </ds-flex-item>
-      </ds-flex>
-    </ds-card>
+    <card-with-columns>
+      <template v-slot:left>
+        <locale-switch offset="5" />
+        <img class="signup-image" alt="Human Connection" src="/img/sign-up/nicetomeetyou.svg" />
+      </template>
+      <template v-slot:right>
+        <nuxt-child />
+      </template>
+    </card-with-columns>
   </ds-container>
 </template>
 
 <script>
+import CardWithColumns from '~/components/_new/generic/CardWithColumns/CardWithColumns'
 import LocaleSwitch from '~/components/LocaleSwitch/LocaleSwitch'
+
 export default {
   components: {
+    CardWithColumns,
     LocaleSwitch,
   },
   layout: 'no-header',

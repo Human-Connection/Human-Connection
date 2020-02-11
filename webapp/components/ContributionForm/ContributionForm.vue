@@ -8,14 +8,19 @@
   >
     <template slot-scope="{ errors }">
       <base-card>
-        <section :class="['card-image', form.blurImage && '--blur-image']">
-          <img v-if="contribution" class="preview-image" :src="contribution.image | proxyApiUrl" />
+        <template v-slot:heroImage>
+          <img
+            v-if="contribution"
+            :src="contribution.image | proxyApiUrl"
+            :class="['image', form.blurImage && '--blur-image']"
+          />
           <teaser-image
             :contribution="contribution"
+            :class="[form.blurImage && '--blur-image']"
             @addTeaserImage="addTeaserImage"
             @addImageAspectRatio="addImageAspectRatio"
           />
-        </section>
+        </template>
         <div v-if="form.teaserImage || form.image" class="blur-toggle">
           <label for="blur-img">{{ $t('contribution.inappropriatePicture') }}</label>
           <input type="checkbox" id="blur-img" v-model="form.blurImage" />
@@ -259,45 +264,35 @@ export default {
 </script>
 
 <style lang="scss">
-.contribution-form {
-  > .base-card {
-    display: flex;
-    flex-direction: column;
+.contribution-form > .base-card {
+  display: flex;
+  flex-direction: column;
 
-    > .card-image {
-      position: relative;
-      overflow: hidden;
-      margin-bottom: $space-xx-small;
-
-      &.--blur-image img {
-        filter: blur(22px);
-      }
-    }
-
-    > .ds-form-item {
-      margin: 0;
-    }
-
-    > .ds-chip {
-      align-self: flex-end;
-      margin: $space-xx-small 0 $space-base;
-      cursor: default;
-    }
-
-    > .select-field {
-      align-self: flex-end;
-    }
-
-    > .buttons {
-      align-self: flex-end;
-      margin-top: $space-base;
-    }
+  > .hero-image {
+    position: relative;
   }
 
-  .preview-image {
-    width: 100%;
-    max-height: 2000px;
-    object-fit: contain;
+  .image.--blur-image {
+    filter: blur(22px);
+  }
+
+  > .ds-form-item {
+    margin: 0;
+  }
+
+  > .ds-chip {
+    align-self: flex-end;
+    margin: $space-xx-small 0 $space-base;
+    cursor: default;
+  }
+
+  > .select-field {
+    align-self: flex-end;
+  }
+
+  > .buttons {
+    align-self: flex-end;
+    margin-top: $space-base;
   }
 
   .blur-toggle {

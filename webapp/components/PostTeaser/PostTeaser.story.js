@@ -44,7 +44,7 @@ export const post = {
   __typename: 'Post',
 }
 
-storiesOf('Post Card', module)
+storiesOf('PostTeaser', module)
   .addDecorator(withA11y)
   .addDecorator(helpers.layout)
   .add('without image', () => ({
@@ -82,11 +82,7 @@ storiesOf('Post Card', module)
     data: () => ({
       post: {
         ...post,
-        pinnedBy: {
-          id: '4711',
-          name: 'Ad Min',
-          role: 'admin',
-        },
+        pinned: true,
       },
     }),
     template: `

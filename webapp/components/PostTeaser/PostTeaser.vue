@@ -7,17 +7,17 @@
       :lang="post.language"
       :class="{
         'disabled-content': post.disabled,
-        '--highlight': isPinned,
         '--blur-image': post.imageBlurred,
       }"
+      :highlight="isPinned"
     >
-      <div v-if="post.image" class="card-image">
+      <template v-if="post.image" v-slot:heroImage>
         <img :src="post.image | proxyApiUrl" class="image" />
-      </div>
+      </template>
       <client-only>
         <user-teaser :user="post.author" :date-time="post.createdAt" />
       </client-only>
-      <h2 class="card-heading hyphenate-text">{{ post.title }}</h2>
+      <h2 class="title hyphenate-text">{{ post.title }}</h2>
       <!-- TODO: replace editor content with tiptap render view -->
       <!-- eslint-disable vue/no-v-html -->
       <div class="content hyphenate-text" v-html="excerpt" />
@@ -87,7 +87,7 @@ export default {
   mounted() {
     const width = this.$el.offsetWidth
     const height = Math.min(width / this.post.imageAspectRatio, 2000)
-    const imageElement = this.$el.querySelector('.card-image > .image')
+    const imageElement = this.$el.querySelector('.hero-image')
     if (imageElement) {
       imageElement.style.height = `${height}px`
     }
@@ -157,22 +157,8 @@ export default {
   flex-direction: column;
   height: 100%;
 
-  &.--pinned {
-    border: 1px solid $color-warning;
-  }
-
-  &.--blur-image > .card-image > .image {
+  &.--blur-image > .hero-image > .image {
     filter: blur(22px);
-  }
-
-  > .card-image {
-    overflow: hidden;
-
-    > .image {
-      width: 100%;
-      max-height: 2000px;
-      object-fit: contain;
-    }
   }
 
   > .content {

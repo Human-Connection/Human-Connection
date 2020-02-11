@@ -1,6 +1,6 @@
 <template>
   <base-card class="delete-data">
-    <h2 class="card-heading">
+    <h2 class="title">
       <base-icon name="warning" />
       {{ $t('settings.deleteUserAccount.name') }}
     </h2>
@@ -103,7 +103,7 @@ export default {
   display: flex;
   flex-direction: column;
 
-  > .card-heading > .base-icon {
+  > .title > .base-icon {
     color: $color-danger;
   }
 
