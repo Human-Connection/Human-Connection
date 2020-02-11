@@ -129,5 +129,8 @@
     "prettier": "~1.19.1",
     "rosie": "^2.0.1",
     "supertest": "~4.0.2"
+  },
+  "resolutions": {
+    "fs-capacitor": "6.0.0"
   }
 }
