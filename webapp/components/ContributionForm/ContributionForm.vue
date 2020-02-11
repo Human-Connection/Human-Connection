@@ -10,7 +10,7 @@
       <base-card>
         <template v-slot:heroImage>
           <img
-            v-if="contribution"
+            v-if="showHeroImage"
             :src="contribution.image | proxyApiUrl"
             :class="['image', form.blurImage && '--blur-image']"
           />
@@ -171,6 +171,9 @@ export default {
     }),
     contentLength() {
       return this.$filters.removeHtml(this.form.content).length
+    },
+    showHeroImage() {
+      return this.contribution && this.contribution.image && !this.form.teaserImage
     },
   },
   methods: {

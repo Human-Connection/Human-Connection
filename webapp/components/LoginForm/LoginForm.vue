@@ -4,56 +4,52 @@
       <p>{{ $t('quotes.african.quote') }}</p>
       <b>- {{ $t('quotes.african.author') }}</b>
     </blockquote>
-    <card-with-columns>
-      <template v-slot:left>
-        <locale-switch offset="5" />
+    <base-card>
+      <template v-slot:imageColumn>
         <a :href="$t('login.moreInfoURL')" :title="$t('login.moreInfo')" target="_blank">
           <img class="image" alt="Human Connection" src="/img/sign-up/humanconnection.svg" />
         </a>
       </template>
-      <template v-slot:right>
-        <form :disabled="pending" @submit.prevent="onSubmit">
-          <h2 class="title">{{ $t('login.login') }}</h2>
-          <ds-input
-            v-model="form.email"
-            :disabled="pending"
-            :placeholder="$t('login.email')"
-            type="email"
-            name="email"
-            icon="envelope"
-          />
-          <ds-input
-            v-model="form.password"
-            :disabled="pending"
-            :placeholder="$t('login.password')"
-            icon="lock"
-            icon-right="question-circle"
-            name="password"
-            type="password"
-          />
-          <nuxt-link to="/password-reset/request" class="password-link">
-            {{ $t('login.forgotPassword') }}
-          </nuxt-link>
-          <base-button :loading="pending" filled name="submit" type="submit" icon="sign-in">
-            {{ $t('login.login') }}
-          </base-button>
-          <p class="signup-hint">
-            {{ $t('login.no-account') }}
-            <nuxt-link to="/registration/signup">{{ $t('login.register') }}</nuxt-link>
-          </p>
-        </form>
-      </template>
-    </card-with-columns>
+      <h2 class="title">{{ $t('login.login') }}</h2>
+      <form :disabled="pending" @submit.prevent="onSubmit">
+        <ds-input
+          v-model="form.email"
+          :disabled="pending"
+          :placeholder="$t('login.email')"
+          type="email"
+          name="email"
+          icon="envelope"
+        />
+        <ds-input
+          v-model="form.password"
+          :disabled="pending"
+          :placeholder="$t('login.password')"
+          icon="lock"
+          icon-right="question-circle"
+          name="password"
+          type="password"
+        />
+        <nuxt-link to="/password-reset/request">
+          {{ $t('login.forgotPassword') }}
+        </nuxt-link>
+        <base-button :loading="pending" filled name="submit" type="submit" icon="sign-in">
+          {{ $t('login.login') }}
+        </base-button>
+        <p>
+          {{ $t('login.no-account') }}
+          <nuxt-link to="/registration/signup">{{ $t('login.register') }}</nuxt-link>
+        </p>
+      </form>
+      <locale-switch offset="5" />
+    </base-card>
   </section>
 </template>
 
 <script>
-import CardWithColumns from '~/components/_new/generic/CardWithColumns/CardWithColumns'
 import LocaleSwitch from '~/components/LocaleSwitch/LocaleSwitch'
 
 export default {
   components: {
-    CardWithColumns,
     LocaleSwitch,
   },
   data() {
@@ -91,12 +87,8 @@ export default {
   margin: auto;
 }
 
-.login-form > .card-with-columns {
+.login-form > .base-card {
   position: relative;
-
-  > .column.--left {
-    justify-content: center;
-  }
 
   .v-popover {
     position: absolute;
@@ -104,25 +96,10 @@ export default {
     left: $space-small;
   }
 
-  .image {
-    display: block;
-    width: 90%;
-    max-width: 200px;
-    margin: auto;
-  }
-
-  .title {
-    margin-bottom: $space-small;
-  }
-
-  .password-link {
-    display: block;
-    margin-bottom: $space-large;
-  }
-
   .base-button {
     display: block;
     width: 100%;
+    margin-top: $space-large;
     margin-bottom: $space-small;
   }
 }

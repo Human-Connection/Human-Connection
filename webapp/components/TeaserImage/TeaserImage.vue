@@ -136,7 +136,8 @@ export default {
 
   > .crop-overlay {
     width: 100%;
-    height: 400px;
+    height: 100%;
+    min-height: 400px;
     font-size: $font-size-base;
 
     > .img {
