@@ -405,9 +405,10 @@ describe('given some notifications', () => {
 })
 
 describe('given some moderation decisions that disabled/enabled my posts and comments', () => {
+  let moderator
   beforeEach(async () => {
     author = await Factory.build('user', { id: 'author' })
-    const moderator = await Factory.build('user', { id: 'moderator', role: 'moderator' })
+    moderator = await Factory.build('user', { id: 'moderator', role: 'moderator' })
     const [enabledPost, disabledPost, disabledComment] = await Promise.all([
       Factory.build(
         'post',
@@ -531,6 +532,54 @@ describe('given some moderation decisions that disabled/enabled my posts and com
               },
             ],
           },
+        })
+      })
+
+      describe('given unrelated moderation decisions', () => {
+        beforeEach(async () => {
+          const somebodyElse = await Factory.build('user', { id: 'somebodyElse' })
+          const anotherDisabledPost = await Factory.build(
+            'post',
+            {
+              id: 'p77',
+              content: 'This post is disabled but not authored by the authenticated user',
+            },
+            {
+              author: somebodyElse,
+            },
+          )
+          await Factory.build(
+            'report',
+            {},
+            {
+              reportedResource: anotherDisabledPost,
+            },
+          )
+
+          const previousAuthenticatedUser = authenticatedUser
+          authenticatedUser = await moderator.toJson() // temporarily
+          await mutate({
+            query: Factory.mutations.review,
+            variables: {
+              resourceId: 'p77',
+              disable: true,
+              closed: true,
+            },
+          })
+          authenticatedUser = previousAuthenticatedUser
+        })
+
+        it('unrelated moderation decision will not show up in the notifications', async () => {
+          await expect(query({ query: notificationQuery, variables })).resolves.toMatchObject({
+            data: {
+              notifications: [
+                expect.any(Object),
+                expect.any(Object),
+                expect.any(Object),
+                // no additional notification
+              ],
+            },
+          })
         })
       })
     })
