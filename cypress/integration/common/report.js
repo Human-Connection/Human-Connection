@@ -12,7 +12,7 @@ let annoyingUserWhoMutedModeratorTitle = 'Fake news'
 const savePostTitle = $post => {
   return $post
     .first()
-    .find('.ds-heading')
+    .find('.title')
     .first()
     .invoke('text')
     .then(title => {
@@ -161,7 +161,7 @@ Then('each list item links to the post page', () => {
 Then('I can visit the post page', () => {
   cy.contains(annoyingUserWhoMutedModeratorTitle).click()
   cy.location('pathname').should('contain', '/post')
-    .get('h3').should('contain', annoyingUserWhoMutedModeratorTitle)
+    .get('title').should('contain', annoyingUserWhoMutedModeratorTitle)
 })
 
 When("they have a post someone has reported", () => {
