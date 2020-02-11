@@ -41,6 +41,22 @@ storiesOf('Generic/BaseCard', module)
     `,
   }))
 
+  .add('with slot: topMenu', () => ({
+    components: { BaseCard },
+    template: `
+      <base-card style="width: 600px;">
+        <template v-slot:imageColumn>
+          <img class="image" src="/img/sign-up/humanconnection.svg" />
+        </template>
+        <h2 class="title">I am a card heading</h2>
+        <p>And I am a paragraph.</p>
+        <template v-slot:topMenu>
+          <base-button size="small">Menu</base-button>
+        </template>
+      </base-card>
+    `,
+  }))
+
   .add('with highlight prop', () => ({
     components: { BaseCard },
     template: `

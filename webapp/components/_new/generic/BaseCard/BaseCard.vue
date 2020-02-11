@@ -17,6 +17,9 @@
     </template>
 
     <slot v-else />
+    <aside v-if="$slots.topMenu" class="top-menu">
+      <slot name="topMenu" />
+    </aside>
   </article>
 </template>
 
@@ -48,6 +51,7 @@ export default {
 
 <style lang="scss">
 .base-card {
+  position: relative;
   padding: $space-base;
   border-radius: $border-radius-x-large;
   overflow: hidden;
@@ -106,6 +110,12 @@ export default {
 
   > .content-column {
     flex-basis: 50%;
+  }
+
+  > .top-menu {
+    position: absolute;
+    top: $space-small;
+    left: $space-small;
   }
 }
 </style>

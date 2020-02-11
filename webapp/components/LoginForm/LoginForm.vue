@@ -40,7 +40,9 @@
           <nuxt-link to="/registration/signup">{{ $t('login.register') }}</nuxt-link>
         </p>
       </form>
-      <locale-switch offset="5" />
+      <template v-slot:topMenu>
+        <locale-switch offset="5" />
+      </template>
     </base-card>
   </section>
 </template>
@@ -85,16 +87,6 @@ export default {
   width: 80vw;
   max-width: 620px;
   margin: auto;
-}
-
-.login-form > .base-card {
-  position: relative;
-
-  .v-popover {
-    position: absolute;
-    top: $space-small;
-    left: $space-small;
-  }
 
   .base-button {
     display: block;

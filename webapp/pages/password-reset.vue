@@ -1,24 +1,22 @@
 <template>
   <ds-container width="small" class="password-reset">
-    <card-with-columns>
-      <template v-slot:left>
-        <locale-switch offset="5" />
+    <base-card>
+      <template v-slot:imageColumn>
         <img alt="Human Connection" src="/icon.png" class="image" />
       </template>
-      <template v-slot:right>
-        <nuxt-child />
+      <nuxt-child />
+      <template v-slot:topMenu>
+        <locale-switch offset="5" />
       </template>
-    </card-with-columns>
+    </base-card>
   </ds-container>
 </template>
 
 <script>
-import CardWithColumns from '~/components/_new/generic/CardWithColumns/CardWithColumns'
 import LocaleSwitch from '~/components/LocaleSwitch/LocaleSwitch'
 
 export default {
   components: {
-    CardWithColumns,
     LocaleSwitch,
   },
   layout: 'no-header',
@@ -29,17 +27,3 @@ export default {
   },
 }
 </script>
-<style lang="scss">
-.password-reset {
-  position: relative;
-
-  .v-popover {
-    position: absolute;
-  }
-
-  .image {
-    width: 70%;
-    margin: auto;
-  }
-}
-</style>
