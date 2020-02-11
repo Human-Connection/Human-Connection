@@ -1,68 +1,44 @@
 <template>
-  <ds-card
-    :lang="post.language"
-    :image="post.image | proxyApiUrl"
-    :class="{
-      'post-card': true,
-      'disabled-content': post.disabled,
-      '--pinned': isPinned,
-      '--blur-image': post.imageBlurred,
-    }"
+  <nuxt-link
+    class="post-teaser"
+    :to="{ name: 'post-id-slug', params: { id: post.id, slug: post.slug } }"
   >
-    <!-- Post Link Target -->
-    <nuxt-link
-      class="post-link"
-      :to="{ name: 'post-id-slug', params: { id: post.id, slug: post.slug } }"
+    <base-card
+      :lang="post.language"
+      :class="{
+        'post-card': true,
+        'disabled-content': post.disabled,
+        '--pinned': isPinned,
+        '--blur-image': post.imageBlurred,
+      }"
     >
-      {{ post.title }}
-    </nuxt-link>
-    <ds-space margin-bottom="small" />
-    <!-- Username, Image & Date of Post -->
-    <div class="user-wrapper">
+      <div class="card-image">
+        <img :src="post.image | proxyApiUrl" class="image" />
+      </div>
       <client-only>
         <user-teaser :user="post.author" :date-time="post.createdAt" />
       </client-only>
-      <hc-ribbon v-if="isPinned" class="ribbon--pinned" :text="$t('post.pinned')" />
-      <hc-ribbon v-else :text="$t('post.name')" />
-    </div>
-    <ds-space margin-bottom="small" />
-    <!-- Post Title -->
-    <ds-heading tag="h3" class="hyphenate-text post-title">{{ post.title }}</ds-heading>
-    <ds-space margin-bottom="small" />
-    <!-- Post Content Excerpt -->
-    <!-- eslint-disable vue/no-v-html -->
-    <!-- TODO: replace editor content with tiptap render view -->
-    <div class="hc-editor-content hyphenate-text" v-html="excerpt" />
-    <!-- eslint-enable vue/no-v-html -->
-    <!-- Footer o the Post -->
-    <template slot="footer">
-      <div style="display: inline-block; opacity: .5;">
-        <!-- Categories -->
-        <hc-category
-          v-for="category in post.categories"
-          :key="category.id"
-          v-tooltip="{
-            content: $t(`contribution.category.name.${category.slug}`),
-            placement: 'bottom-start',
-            delay: { show: 500 },
-          }"
-          :icon="category.icon"
-        />
-      </div>
-      <client-only>
-        <div style="display: inline-block; float: right">
-          <!-- Shouts Count -->
-          <span :style="{ opacity: post.shoutedCount ? 1 : 0.5 }">
-            <base-icon name="bullhorn" />
-            <small>{{ post.shoutedCount }}</small>
-          </span>
-          &nbsp;
-          <!-- Comments Count -->
-          <span :style="{ opacity: post.commentsCount ? 1 : 0.5 }">
-            <base-icon name="comments" />
-            <small>{{ post.commentsCount }}</small>
-          </span>
-          <!-- Menu -->
+      <h2 class="card-heading hyphentate-text">{{ post.title }}</h2>
+      <!-- TODO: replace editor content with tiptap render view -->
+      <!-- eslint-disable vue/no-v-html -->
+      <div class="content hyphenate-text" v-html="excerpt" />
+      <!-- eslint-enable vue/no-v-html -->
+      <footer class="footer">
+        <div class="categories">
+          <hc-category
+            v-for="category in post.categories"
+            :key="category.id"
+            v-tooltip="{
+              content: $t(`contribution.category.name.${category.slug}`),
+              placement: 'bottom-start',
+              delay: { show: 500 },
+            }"
+            :icon="category.icon"
+          />
+        </div>
+        <counter-icon icon="bullhorn" :count="post.shoutedCount" />
+        <counter-icon icon="comments" :count="post.commentsCount" />
+        <client-only>
           <content-menu
             resource-type="contribution"
             :resource="post"
@@ -71,10 +47,14 @@
             @pinPost="pinPost"
             @unpinPost="unpinPost"
           />
-        </div>
-      </client-only>
-    </template>
-  </ds-card>
+        </client-only>
+      </footer>
+    </base-card>
+    <hc-ribbon
+      :class="{ '--pinned': isPinned }"
+      :text="isPinned ? $t('post.pinned') : $t('post.name')"
+    />
+  </nuxt-link>
 </template>
 
 <script>
@@ -82,7 +62,7 @@ import UserTeaser from '~/components/UserTeaser/UserTeaser'
 import ContentMenu from '~/components/ContentMenu/ContentMenu'
 import HcCategory from '~/components/Category'
 import HcRibbon from '~/components/Ribbon'
-// import { randomBytes } from 'crypto'
+import CounterIcon from '~/components/_new/generic/CounterIcon/CounterIcon'
 import { mapGetters } from 'vuex'
 import { postMenuModalsData, deletePostMutation } from '~/components/utils/PostHelpers'
 
@@ -93,6 +73,7 @@ export default {
     HcCategory,
     HcRibbon,
     ContentMenu,
+    CounterIcon,
   },
   props: {
     post: {
@@ -157,63 +138,75 @@ export default {
 }
 </script>
 <style lang="scss">
-.post-card {
-  justify-content: space-between;
+.post-teaser,
+.post-teaser:hover,
+.post-teaser:active {
   position: relative;
-  z-index: 1;
-  cursor: pointer;
+  display: block;
+  height: 100%;
+  color: $text-color-base;
 
-  &.--pinned {
-    border: 1px solid $color-warning;
+  .user-teaser {
+    margin-bottom: $space-small;
   }
 
-  &.--blur-image > .ds-card-image img {
-    filter: blur(22px);
-  }
-
-  > .ds-card-image img {
-    width: 100%;
-    max-height: 2000px;
-    object-fit: contain;
-  }
-
-  > .ds-card-content {
-    flex-grow: 0;
-  }
-
-  /* workaround to avoid jumping layout when footer is rendered */
-  > .ds-card-footer {
-    height: 75px;
-  }
-
-  .post-title {
-    margin-top: $space-large;
-  }
-
-  /* workaround to avoid jumping layout when user-teaser is rendered */
-  .user-wrapper {
-    height: 36px;
-    position: relative;
-    z-index: $z-index-post-card-link;
-  }
-
-  .content-menu {
-    position: relative;
-    z-index: $z-index-post-card-link;
-    display: inline-block;
-    margin-left: $space-xx-small;
-    margin-right: -$space-x-small;
-  }
-
-  .post-link {
-    margin: 15px;
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
+  > .base-card {
+    display: flex;
+    flex-direction: column;
     height: 100%;
-    text-indent: -999999px;
+
+    &.--pinned {
+      border: 1px solid $color-warning;
+    }
+
+    &.--blur-image > .card-image > .image {
+      filter: blur(22px);
+    }
+
+    > .card-image {
+      overflow: hidden;
+
+      > .image {
+        width: 100%;
+        object-fit: contain;
+      }
+    }
+
+    > .content {
+      flex-grow: 1;
+      margin-bottom: $space-small;
+    }
+
+    > .footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      > .categories {
+        flex-grow: 1;
+      }
+
+      > .counter-icon {
+        display: block;
+        margin-right: $space-small;
+        opacity: 0.5;
+      }
+
+      > .content-menu {
+        position: relative;
+        z-index: $z-index-post-card-link;
+      }
+
+      .ds-tag {
+        margin: 0;
+      }
+    }
+  }
+
+  > .ribbon {
+    position: absolute;
+    top: 50%;
+    right: -7px;
   }
 }
 </style>

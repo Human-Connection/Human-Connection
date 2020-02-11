@@ -1,5 +1,5 @@
 <template>
-  <article :class="{ read: notification.read, notification: true }">
+  <article :class="{ '--read': notification.read, notification: true }">
     <client-only>
       <user-teaser :user="from.author" :date-time="from.createdAt" />
     </client-only>
@@ -61,6 +61,10 @@ export default {
 
   &:first-of-type {
     margin-top: $space-x-small;
+  }
+
+  &.--read {
+    opacity: 0.5;
   }
 
   .user-teaser {

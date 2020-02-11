@@ -8,7 +8,7 @@
           size="small"
           circle
           ghost
-          @click="toggleMenu"
+          @click.prevent="toggleMenu()"
         />
       </slot>
     </template>
