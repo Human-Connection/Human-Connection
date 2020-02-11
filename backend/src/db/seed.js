@@ -823,44 +823,57 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       louie.relateTo(p10, 'shouted'),
     ])
 
-    const reports = await Promise.all([
-      Factory.build('report'),
-      Factory.build('report'),
-      Factory.build('report'),
-      Factory.build('report'),
-    ])
-
+    // report resource first time
     const [
       reportAgainstDagobert,
       reportAgainstTrollingPost,
       reportAgainstTrollingComment,
-      reportAgainstDewey,
-    ] = reports
-
-    // report resource first time
-    await Promise.all([
-      reportAgainstDagobert.relateTo(jennyRostock, 'filed', {
-        reasonCategory: 'discrimination_etc',
-        reasonDescription: 'This user is harassing me with bigoted remarks!',
-      }),
-      reportAgainstDagobert.relateTo(dagobert, 'belongsTo'),
-
-      reportAgainstTrollingPost.relateTo(jennyRostock, 'filed', {
-        reasonCategory: 'doxing',
-        reasonDescription: "This shouldn't be shown to anybody else! It's my private thing!",
-      }),
-      reportAgainstTrollingPost.relateTo(p2, 'belongsTo'),
-
-      reportAgainstTrollingComment.relateTo(huey, 'filed', {
-        reasonCategory: 'other',
-        reasonDescription: 'This comment is bigoted',
-      }),
-      reportAgainstTrollingComment.relateTo(trollingComment, 'belongsTo'),
-      reportAgainstDewey.relateTo(dagobert, 'filed', {
-        reasonCategory: 'discrimination_etc',
-        reasonDescription: 'This user is harassing me!',
-      }),
-      reportAgainstDewey.relateTo(dewey, 'belongsTo'),
+      // reportAgainstDewey,
+    ] = await Promise.all([
+      Factory.build(
+        'report',
+        {
+          reasonCategory: 'discrimination_etc',
+          reasonDescription: 'This user is harassing me with bigoted remarks!',
+        },
+        {
+          filer: jennyRostock,
+          reportedResource: dagobert,
+        },
+      ),
+      Factory.build(
+        'report',
+        {
+          reasonCategory: 'doxing',
+          reasonDescription: "This shouldn't be shown to anybody else! It's my private thing!",
+        },
+        {
+          filer: jennyRostock,
+          reportedResource: p2,
+        },
+      ),
+      Factory.build(
+        'report',
+        {
+          reasonCategory: 'other',
+          reasonDescription: 'This comment is bigoted',
+        },
+        {
+          filer: dagobert,
+          reportedResource: trollingComment,
+        },
+      ),
+      Factory.build(
+        'report',
+        {
+          reasonCategory: 'discrimination_etc',
+          reasonDescription: 'This user is harassing me!',
+        },
+        {
+          filer: dagobert,
+          reportedResource: dewey,
+        },
+      ),
     ])
 
     // report resource a second time
@@ -935,7 +948,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         query: Factory.mutations.review,
         variables: {
           resourceId: 'c1',
-          disable: false,
+          disable: true,
           closed: true,
         },
       }),
@@ -943,7 +956,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
 
     await Promise.all([...Array(30).keys()].map(() => Factory.build('user')))
 
-    await Promise.all(
+    const jennysPosts = await Promise.all(
       [...Array(30).keys()].map(() =>
         Factory.build(
           'post',
@@ -957,6 +970,27 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         ),
       ),
     )
+
+    const { id: notOffendingPostId } = await jennysPosts[0].toJson()
+    await Factory.build(
+      'report',
+      {
+        reasonCategory: 'discrimination_etc',
+        reasonDescription: "This post is not really discriminating but I'll report anyways",
+      },
+      {
+        reportedResource: jennysPosts[0],
+      },
+    )
+    authenticatedUser = await peterLustig.toJson()
+    await mutate({
+      query: Factory.mutations.review,
+      variables: {
+        resourceId: notOffendingPostId,
+        disable: false,
+        closed: true,
+      },
+    })
 
     await Promise.all(
       [...Array(6).keys()].map(() =>
