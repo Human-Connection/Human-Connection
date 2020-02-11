@@ -35,8 +35,26 @@ const annoyingParams = {
 };
 
 Given("I am logged in", () => {
-  cy.login(loginCredentials);
+  cy.neode()
+    .first("User", {
+      name: narratorParams.name
+    })
+    .then(async user => {
+      const userJson = await user.toJson()
+      cy.login(userJson)
+    })
 });
+
+Given("I log in as {string}", name => {
+  cy.neode()
+    .first("User", {
+      name
+    })
+    .then(async user => {
+      const userJson = await user.toJson()
+      cy.login(userJson)
+    })
+})
 
 Given("the {string} user searches for {string}", (_, postTitle) => {
   cy.logout()
@@ -122,7 +140,7 @@ Given("I am on the {string} page", page => {
 });
 
 When("I fill in my email and password combination and click submit", () => {
-  cy.login(loginCredentials);
+  cy.manualLogin(loginCredentials);
 });
 
 When(/(?:when )?I refresh the page/, () => {
@@ -306,12 +324,21 @@ Then(
   }
 );
 
-Given("my user account has the following login credentials:", table => {
+Given("I am logged in with these credentials:", table => {
   loginCredentials = table.hashes()[0];
   cy.debug();
   cy.factory().build("user", {
     ...termsAndConditionsAgreedVersion,
+    name: loginCredentials.email,
   }, loginCredentials);
+  cy.neode()
+    .first("User", {
+      name: loginCredentials.email,
+    })
+    .then(async user => {
+      const userJson = await user.toJson()
+      cy.login(userJson)
+    })
 });
 
 When("I fill the password form with:", table => {
@@ -330,45 +357,16 @@ When("submit the form", () => {
 
 Then("I cannot login anymore with password {string}", password => {
   cy.reload();
-  const {
-    email
-  } = loginCredentials;
-  cy.visit(`/login`);
-  cy.get("input[name=email]")
-    .trigger("focus")
-    .type(email);
-  cy.get("input[name=password]")
-    .trigger("focus")
-    .type(password);
-  cy.get("button[name=submit]")
-    .as("submitButton")
-    .click();
-  cy.get(".iziToast-wrapper").should(
-    "contain",
-    "Incorrect email address or password."
-  );
+  const { email } = loginCredentials
+  cy.manualLogin({ email, password })
+    .get(".iziToast-wrapper").should("contain", "Incorrect email address or password.");
 });
 
 Then("I can login successfully with password {string}", password => {
   cy.reload();
-  cy.login({
-    ...loginCredentials,
-    ...{
-      password
-    }
-  });
-  cy.get(".iziToast-wrapper").should("contain", "You are logged in!");
-});
-
-When("I log in with the following credentials:", table => {
-  const {
-    email,
-    password
-  } = table.hashes()[0];
-  cy.login({
-    email,
-    password
-  });
+  const { email } = loginCredentials
+  cy.manualLogin({ email, password })
+    .get(".iziToast-wrapper").should("contain", "You are logged in!");
 });
 
 When("open the notification menu and click on the first item", () => {
@@ -557,18 +555,6 @@ When("a user has blocked me", () => {
         })
         .relateTo(blockedUser, "blocked");
     });
-});
-
-When("I log in with:", table => {
-  const [firstRow] = table.hashes();
-  const {
-    Email,
-    Password
-  } = firstRow;
-  cy.login({
-    email: Email,
-    password: Password
-  });
 });
 
 Then("I see only one post with the title {string}", title => {

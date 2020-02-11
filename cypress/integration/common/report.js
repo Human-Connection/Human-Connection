@@ -32,15 +32,20 @@ Given("I see David Irving's post on the post page", page => {
 Given('I am logged in with a {string} role', role => {
   cy.factory().build('user', {
     termsAndConditionsAgreedVersion: VERSION,
-    role
+    role,
+    name: `${role} is my name`
   }, {
     email: `${role}@example.org`,
     password: '1234',
   })
-  cy.login({
-    email: `${role}@example.org`,
-    password: '1234'
-  })
+  cy.neode()
+    .first("User", {
+      name: `${role} is my name`,
+    })
+    .then(async user => {
+      const userJson = await user.toJson()
+      cy.login(userJson)
+    })
 })
 
 When('I click on "Report Post" from the content menu of the post', () => {

@@ -52,5 +52,8 @@
   },
   "resolutions": {
     "set-value": "^2.0.1"
+  },
+  "dependencies": {
+    "jsonwebtoken": "^8.5.1"
   }
 }
