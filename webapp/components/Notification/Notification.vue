@@ -9,7 +9,7 @@
       :to="{ name: 'post-id-slug', params, ...hashParam }"
       @click.native="$emit('read')"
     >
-      <base-card>
+      <base-card class="--wide-content">
         <h2 class="card-heading">{{ from.title || from.post.title }}</h2>
         <p>
           <strong v-if="isComment" class="comment">{{ $t(`notifications.comment`) }}:</strong>
@@ -67,10 +67,6 @@ export default {
     opacity: 0.5;
   }
 
-  .user-teaser {
-    margin-bottom: $space-x-small;
-  }
-
   > .description {
     margin-bottom: $space-x-small;
   }
@@ -82,18 +78,14 @@ export default {
     &:hover {
       color: $color-primary;
     }
+  }
 
-    > .base-card {
-      padding: $space-x-small;
+  .user-teaser {
+    margin-bottom: $space-x-small;
+  }
 
-      > .card-heading {
-        font-size: $font-size-large;
-      }
-
-      .comment {
-        font-weight: $font-weight-bold;
-      }
-    }
+  .comment {
+    font-weight: $font-weight-bold;
   }
 }
 </style>

@@ -87,7 +87,7 @@ export default {
   mounted() {
     const width = this.$el.offsetWidth
     const height = Math.min(width / this.post.imageAspectRatio, 2000)
-    const imageElement = this.$el.querySelector('.ds-card-image')
+    const imageElement = this.$el.querySelector('.card-image > .image')
     if (imageElement) {
       imageElement.style.height = `${height}px`
     }
@@ -170,6 +170,7 @@ export default {
 
     > .image {
       width: 100%;
+      max-height: 2000px;
       object-fit: contain;
     }
   }

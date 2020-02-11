@@ -38,6 +38,7 @@ export default {}
   }
 
   > .card-heading {
+    font-size: $font-size-large;
     margin-bottom: $space-x-small;
   }
 }
