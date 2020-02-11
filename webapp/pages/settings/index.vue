@@ -31,11 +31,9 @@
           :label="$t('settings.data.labelBio')"
           :placeholder="$t('settings.data.labelBio')"
         />
-        <template slot="footer">
-          <base-button icon="check" :disabled="errors" type="submit" :loading="loadingData" filled>
-            {{ $t('actions.save') }}
-          </base-button>
-        </template>
+        <base-button icon="check" :disabled="errors" type="submit" :loading="loadingData" filled>
+          {{ $t('actions.save') }}
+        </base-button>
       </base-card>
     </template>
   </ds-form>

@@ -1,6 +1,6 @@
 import { When, Then } from "cypress-cucumber-preprocessor/steps";
 When("I search for {string}", value => {
-  cy.get(".searchable-input .ds-select-search")
+  cy.get(".searchable-input .ds-select input")
     .focus()
     .type(value);
 });
@@ -25,7 +25,7 @@ Then("the search should contain the annoying user", () => {
     expect($li).to.have.length(1);
   })
   cy.get(".ds-select-dropdown .user-teaser .slug").should("contain", '@spammy-spammer');
-  cy.get(".searchable-input .ds-select-search")
+  cy.get(".searchable-input .ds-select input")
     .focus()
     .type("{esc}");
 })
@@ -44,21 +44,21 @@ Then("I should see the following users in the select dropdown:", table => {
 });
 
 When("I type {string} and press Enter", value => {
-  cy.get(".searchable-input .ds-select-search")
+  cy.get(".searchable-input .ds-select input")
     .focus()
     .type(value)
     .type("{enter}", { force: true });
 });
 
 When("I type {string} and press escape", value => {
-  cy.get(".searchable-input .ds-select-search")
+  cy.get(".searchable-input .ds-select input")
     .focus()
     .type(value)
     .type("{esc}");
 });
 
 Then("the search field should clear", () => {
-  cy.get(".searchable-input .ds-select-search").should("have.text", "");
+  cy.get(".searchable-input .ds-select input").should("have.text", "");
 });
 
 When("I select a post entry", () => {

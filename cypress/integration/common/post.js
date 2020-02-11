@@ -27,7 +27,7 @@ Then("my comment should be successfully created", () => {
 });
 
 Then("I should see my comment", () => {
-  cy.get("div.comment p")
+  cy.get("article.comment-card p")
     .should("contain", "Human Connection rocks")
     .get(".user-avatar img")
     .should("have.attr", "src")
@@ -37,12 +37,12 @@ Then("I should see my comment", () => {
 });
 
 Then("I should see the entirety of my comment", () => {
-  cy.get("div.comment")
+  cy.get("article.comment-card")
   .should("not.contain", "show more")
 });
 
 Then("I should see an abreviated version of my comment", () => {
-  cy.get("div.comment")
+  cy.get("article.comment-card")
   .should("contain", "show more")
 });
 
@@ -57,7 +57,7 @@ Then("it should create a mention in the CommentForm", () => {
 })
 
 When("I open the content menu of post {string}", (title)=> {
-  cy.contains('.post-card', title)
+  cy.contains('.post-teaser', title)
   .find('.content-menu .base-button')
   .click()
 })
@@ -74,9 +74,10 @@ Then("there is no button to pin a post", () => {
 })
 
 And("the post with title {string} has a ribbon for pinned posts", (title) => {
-  cy.get("article.post-card").contains(title)
+  cy.get(".post-teaser").contains(title)
   .parent()
-  .find("div.ribbon.ribbon--pinned")
+  .parent()
+  .find(".ribbon.--pinned")
   .should("contain", "Announcement")
 })
 

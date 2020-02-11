@@ -80,7 +80,7 @@ Then('I should be on the {string} page', page => {
     .should(loc => {
       expect(loc.pathname).to.eq(page)
     })
-    .get('h3')
+    .get('h2')
     .should('contain', 'Social media')
 })
 
@@ -112,7 +112,7 @@ Given('I have added a social media link', () => {
 })
 
 Then('they should be able to see my social media links', () => {
-  cy.get('.ds-card-content')
+  cy.get('.base-card')
     .contains('Where else can I find Peter Pan?')
     .get('a[href="https://freeradical.zone/peter-pan"]')
     .should('have.length', 1)
