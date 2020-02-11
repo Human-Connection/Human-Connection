@@ -188,6 +188,7 @@ export default {
 
     .ds-tag {
       margin: 0;
+      margin-right: $space-xx-small;
     }
   }
 

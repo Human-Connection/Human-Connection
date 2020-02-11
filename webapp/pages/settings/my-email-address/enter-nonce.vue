@@ -16,12 +16,7 @@
           icon="question-circle"
           :label="$t('settings.email.labelNonce')"
         />
-        <base-button
-          icon="check"
-          :disabled="errors"
-          type="submit"
-          filled
-        >
+        <base-button icon="check" :disabled="errors" type="submit" filled>
           {{ $t('actions.save') }}
         </base-button>
       </base-card>

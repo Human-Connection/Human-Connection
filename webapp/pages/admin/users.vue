@@ -179,7 +179,7 @@ export default {
 </script>
 
 <style lang="scss">
-.admin-users >.base-card:first-child {
+.admin-users > .base-card:first-child {
   margin-bottom: $space-small;
 }
 </style>
