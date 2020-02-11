@@ -1,6 +1,6 @@
 <template>
-  <ds-card>
-    <h2 style="margin-bottom: .2em;">{{ $t('post.moreInfo.title') }}</h2>
+  <base-card>
+    <h2 class="title">{{ $t('post.moreInfo.title') }}</h2>
     <p>{{ $t('post.moreInfo.description') }}</p>
     <ds-space />
     <h3>{{ $t('post.moreInfo.titleOfCategoriesSection') }}</h3>
@@ -33,7 +33,7 @@
       </masonry-grid>
       <hc-empty v-else margin="large" icon="file" message="No related Posts" />
     </ds-section>
-  </ds-card>
+  </base-card>
 </template>
 
 <script>

@@ -1,5 +1,5 @@
 <template>
-  <ds-card>
+  <base-card>
     <transition name="ds-transition-fade">
       <client-only>
         <sweetalert-icon :icon="sweetAlertIcon" />
@@ -34,7 +34,7 @@
         </client-only>
       </ds-space>
     </template>
-  </ds-card>
+  </base-card>
 </template>
 
 <script>

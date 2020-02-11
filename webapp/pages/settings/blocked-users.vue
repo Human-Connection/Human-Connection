@@ -1,7 +1,8 @@
 <template>
   <div>
     <ds-space>
-      <ds-card :header="$t('settings.blocked-users.name')">
+      <base-card>
+        <h2 class="title">{{ $t('settings.blocked-users.name') }}</h2>
         <ds-text>
           {{ $t('settings.blocked-users.explanation.intro') }}
         </ds-text>
@@ -16,9 +17,9 @@
             {{ $t('settings.blocked-users.explanation.notifications') }}
           </ds-list-item>
         </ds-list>
-      </ds-card>
+      </base-card>
     </ds-space>
-    <ds-card v-if="blockedUsers && blockedUsers.length">
+    <base-card v-if="blockedUsers && blockedUsers.length">
       <ds-table :data="blockedUsers" :fields="fields" condensed>
         <template #avatar="scope">
           <nuxt-link
@@ -55,8 +56,8 @@
           <base-button circle size="small" @click="unblockUser(scope)" icon="user-plus" />
         </template>
       </ds-table>
-    </ds-card>
-    <ds-card v-else>
+    </base-card>
+    <base-card v-else>
       <ds-space>
         <ds-placeholder>
           {{ $t('settings.blocked-users.empty') }}
@@ -67,7 +68,7 @@
           {{ $t('settings.blocked-users.how-to') }}
         </ds-text>
       </ds-space>
-    </ds-card>
+    </base-card>
   </div>
 </template>
 
