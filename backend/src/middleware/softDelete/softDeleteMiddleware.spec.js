@@ -16,7 +16,7 @@ const action = () => {
 
 beforeAll(async () => {
   // For performance reasons we do this only once
-  const users = await Promise.all([
+  ;[user, moderator, troll] = await Promise.all([
     Factory.build('user', { id: 'u1', role: 'user' }),
     Factory.build(
       'user',
@@ -42,10 +42,6 @@ beforeAll(async () => {
       icon: 'university',
     }),
   ])
-
-  user = users[0]
-  moderator = users[1]
-  troll = users[2]
 
   await Promise.all([
     user.relateTo(troll, 'following'),
@@ -133,31 +129,28 @@ beforeAll(async () => {
   const trollingPost = resources[1]
   const trollingComment = resources[2]
 
-  const reports = await Promise.all([
-    Factory.build('report'),
-    Factory.build('report'),
-    Factory.build('report'),
-  ])
-  const reportAgainstTroll = reports[0]
-  const reportAgainstTrollingPost = reports[1]
-  const reportAgainstTrollingComment = reports[2]
-
   const reportVariables = {
-    resourceId: 'undefined-resource',
     reasonCategory: 'discrimination_etc',
     reasonDescription: 'I am what I am !!!',
   }
 
-  await Promise.all([
-    reportAgainstTroll.relateTo(user, 'filed', { ...reportVariables, resourceId: 'u2' }),
-    reportAgainstTroll.relateTo(troll, 'belongsTo'),
-    reportAgainstTrollingPost.relateTo(user, 'filed', { ...reportVariables, resourceId: 'p2' }),
-    reportAgainstTrollingPost.relateTo(trollingPost, 'belongsTo'),
-    reportAgainstTrollingComment.relateTo(moderator, 'filed', {
-      ...reportVariables,
-      resourceId: 'c1',
+  const [
+    reportAgainstTroll,
+    reportAgainstTrollingPost,
+    reportAgainstTrollingComment,
+  ] = await Promise.all([
+    Factory.build('report', reportVariables, {
+      filer: user,
+      reportedResource: troll,
     }),
-    reportAgainstTrollingComment.relateTo(trollingComment, 'belongsTo'),
+    Factory.build('report', reportVariables, {
+      filer: user,
+      reportedResource: trollingPost,
+    }),
+    Factory.build('report', reportVariables, {
+      filer: user,
+      reportedResource: trollingComment,
+    }),
   ])
 
   const disableVariables = {
