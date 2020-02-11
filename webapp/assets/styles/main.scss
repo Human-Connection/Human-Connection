@@ -141,10 +141,9 @@ hr {
   }
 }
 
-.ds-card .ds-section {
+.base-card > .ds-section {
   padding: 0;
-  margin-left: -$space-base;
-  margin-right: -$space-base;
+  margin: -$space-base;
 
   .ds-container {
     padding: $space-base;
