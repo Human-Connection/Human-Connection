@@ -35,6 +35,12 @@
         >
           <search-post :option="option" />
         </p>
+        <p
+          v-if="option.__typename === 'Tag'"
+          :class="{ 'option-with-heading': isFirstOfType(option) }"
+        >
+          <hc-hashtag :id="option.id" />
+        </p>
       </template>
     </ds-select>
     <base-button v-if="isActive" icon="close" circle ghost size="small" @click="clear" />
@@ -45,6 +51,7 @@
 import { isEmpty } from 'lodash'
 import SearchHeading from '~/components/generic/SearchHeading/SearchHeading.vue'
 import SearchPost from '~/components/generic/SearchPost/SearchPost.vue'
+import HcHashtag from '~/components/Hashtag/Hashtag.vue'
 import UserTeaser from '~/components/UserTeaser/UserTeaser.vue'
 
 export default {
@@ -52,6 +59,7 @@ export default {
   components: {
     SearchHeading,
     SearchPost,
+    HcHashtag,
     UserTeaser,
   },
   props: {
@@ -75,6 +83,16 @@ export default {
     },
     isActive() {
       return !isEmpty(this.previousSearchTerm)
+    },
+  },
+  watch: {
+    $route(to, from) {
+      console.log('to', to)
+      console.log('from', from)
+      // console.log(this.finalFilters)
+      if (to.query.hashtag) {
+        this.hashtag = to.query.hashtag
+      }
     },
   },
   methods: {
@@ -138,12 +156,20 @@ export default {
     isPost(item) {
       return item.__typename === 'Post'
     },
+    isTag(item) {
+      return item.__typename === 'Tag'
+    },
     goToResource(item) {
       this.$nextTick(() => {
-        this.$router.push({
-          name: this.isPost(item) ? 'post-id-slug' : 'profile-id-slug',
-          params: { id: item.id, slug: item.slug },
-        })
+        if (!this.isTag(item)) {
+          this.$router.push({
+            name: this.isPost(item) ? 'post-id-slug' : 'profile-id-slug',
+            params: { id: item.id, slug: item.slug },
+          })
+        } else {
+          console.log('HIT¡')
+          this.$router.push('?hashtag=' + item.id)
+        }
       })
     },
   },

@@ -1,5 +1,5 @@
 <template>
-  <ds-tag>
+  <ds-tag class="hc-hashtag">
     <nuxt-link :to="hashtagUrl">#{{ id }}</nuxt-link>
   </ds-tag>
 </template>

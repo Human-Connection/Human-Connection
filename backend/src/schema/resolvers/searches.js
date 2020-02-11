@@ -43,6 +43,16 @@ export default {
       `
       const myQuery = queryString(query)
 
+      const tagCypher = `
+      CALL db.index.fulltext.queryNodes('tag_fulltext_search', $query)
+      YIELD node as resource, score
+      MATCH (resource)
+      WHERE score >= 0.5
+      AND NOT (resource.deleted = true OR resource.disabled = true)
+      RETURN resource {.*, __typename: labels(resource)[0]}
+      LIMIT $limit
+      `
+
       const session = context.driver.session()
       const searchResultPromise = session.readTransaction(async transaction => {
         const postTransactionResponse = transaction.run(postCypher, {
@@ -55,14 +65,25 @@ export default {
           limit,
           thisUserId,
         })
-        return Promise.all([postTransactionResponse, userTransactionResponse])
+        const tagTransactionResponse = transaction.run(tagCypher, {
+          query: myQuery,
+          limit,
+        })
+        return Promise.all([
+          postTransactionResponse,
+          userTransactionResponse,
+          tagTransactionResponse,
+        ])
       })
 
       try {
-        const [postResults, userResults] = await searchResultPromise
+        const [postResults, userResults, tagResults] = await searchResultPromise
         log(postResults)
         log(userResults)
-        return [...postResults.records, ...userResults.records].map(r => r.get('resource'))
+        log(tagResults)
+        return [...postResults.records, ...userResults.records, ...tagResults.records].map(r =>
+          r.get('resource'),
+        )
       } finally {
         session.close()
       }

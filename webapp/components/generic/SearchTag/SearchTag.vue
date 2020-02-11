@@ -6,18 +6,18 @@
   </ds-flex>
 </template>
 <script>
- export default {
-     name: 'SearchTag',
-     props: {
-	 option: { type: Object, required: true },
-     },
- }
+export default {
+  name: 'SearchTag',
+  props: {
+    option: { type: Object, required: true },
+  },
+}
 </script>
 <style lang="scss">
- .search-tag {
-     width: 100%;
- }
- .search-tag-label {
-     color: $text-color-primary;
- }
+.search-tag {
+  width: 100%;
+}
+.search-tag-label {
+  color: $text-color-primary;
+}
 </style>

@@ -549,6 +549,16 @@
       "message": "Do you really want to release the user \"<b>{name}</b>\"?",
       "title": "Release User",
       "type": "User"
+    "empty": "Sorry, you don't have any notifications at the moment."
+  },
+  "search": {
+    "placeholder": "Search",
+    "hint": "What are you searching for?",
+    "failed": "Nothing found",
+    "heading": {
+      "Post": "Posts",
+      "User": "Users",
+      "Tag": "Hashtags"
     }
   },
   "report": {
