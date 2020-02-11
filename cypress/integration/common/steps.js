@@ -58,8 +58,15 @@ Given("I log in as {string}", name => {
 
 Given("the {string} user searches for {string}", (_, postTitle) => {
   cy.logout()
-    .login({ email: annoyingParams.email, password: '1234' })
-    .get(".searchable-input .ds-select-search")
+  cy.neode()
+    .first("User", {
+      id: "annoying-user"
+    })
+    .then(async user => {
+      const userJson = await user.toJson()
+      cy.login(userJson)
+    })
+  cy.get(".searchable-input .ds-select-search")
     .focus()
     .type(postTitle);
 });
@@ -131,8 +138,15 @@ When("I visit the {string} page", page => {
 
 When("a blocked user visits the post page of one of my authored posts", () => {
   cy.logout()
-    .login({ email: annoyingParams.email, password: annoyingParams.password })
-    .openPage('/post/previously-created-post')
+  cy.neode()
+    .first("User", {
+      name: 'Harassing User'
+    })
+    .then(async user => {
+      const userJson = await user.toJson()
+      cy.login(userJson)
+    })
+  cy.openPage('post/previously-created-post')
 })
 
 Given("I am on the {string} page", page => {
@@ -438,15 +452,15 @@ Given("there is an annoying user who has muted me", () => {
 });
 
 Given("I am on the profile page of the annoying user", name => {
-  cy.openPage("/profile/annoying-user/spammy-spammer");
+  cy.openPage("profile/annoying-user/spammy-spammer");
 });
 
 When("I visit the profile page of the annoying user", name => {
-  cy.openPage("/profile/annoying-user");
+  cy.openPage("profile/annoying-user");
 });
 
 When("I ", name => {
-  cy.openPage("/profile/annoying-user");
+  cy.openPage("profile/annoying-user");
 });
 
 When(
