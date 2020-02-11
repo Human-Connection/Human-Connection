@@ -4,52 +4,56 @@
       <p>{{ $t('quotes.african.quote') }}</p>
       <b>- {{ $t('quotes.african.author') }}</b>
     </blockquote>
-    <base-card>
-      <client-only>
-        <locale-switch class="locale-switch" />
-      </client-only>
-      <a :href="$t('login.moreInfoURL')" :title="$t('login.moreInfo')" target="_blank" class="link">
-        <img class="image" alt="Human Connection" src="/img/sign-up/humanconnection.svg" />
-      </a>
-      <form :disabled="pending" @submit.prevent="onSubmit" class="form">
-        <h2 class="title">{{ $t('login.login') }}</h2>
-        <ds-input
-          v-model="form.email"
-          :disabled="pending"
-          :placeholder="$t('login.email')"
-          type="email"
-          name="email"
-          icon="envelope"
-        />
-        <ds-input
-          v-model="form.password"
-          :disabled="pending"
-          :placeholder="$t('login.password')"
-          icon="lock"
-          icon-right="question-circle"
-          name="password"
-          type="password"
-        />
-        <nuxt-link to="/password-reset/request" class="password-link">
-          {{ $t('login.forgotPassword') }}
-        </nuxt-link>
-        <base-button :loading="pending" filled name="submit" type="submit" icon="sign-in">
-          {{ $t('login.login') }}
-        </base-button>
-        <p class="signup-hint">
-          {{ $t('login.no-account') }}
-          <nuxt-link to="/registration/signup">{{ $t('login.register') }}</nuxt-link>
-        </p>
-      </form>
-    </base-card>
+    <card-with-columns>
+      <template v-slot:left>
+        <locale-switch offset="5" />
+        <a :href="$t('login.moreInfoURL')" :title="$t('login.moreInfo')" target="_blank">
+          <img class="image" alt="Human Connection" src="/img/sign-up/humanconnection.svg" />
+        </a>
+      </template>
+      <template v-slot:right>
+        <form :disabled="pending" @submit.prevent="onSubmit">
+          <h2 class="title">{{ $t('login.login') }}</h2>
+          <ds-input
+            v-model="form.email"
+            :disabled="pending"
+            :placeholder="$t('login.email')"
+            type="email"
+            name="email"
+            icon="envelope"
+          />
+          <ds-input
+            v-model="form.password"
+            :disabled="pending"
+            :placeholder="$t('login.password')"
+            icon="lock"
+            icon-right="question-circle"
+            name="password"
+            type="password"
+          />
+          <nuxt-link to="/password-reset/request" class="password-link">
+            {{ $t('login.forgotPassword') }}
+          </nuxt-link>
+          <base-button :loading="pending" filled name="submit" type="submit" icon="sign-in">
+            {{ $t('login.login') }}
+          </base-button>
+          <p class="signup-hint">
+            {{ $t('login.no-account') }}
+            <nuxt-link to="/registration/signup">{{ $t('login.register') }}</nuxt-link>
+          </p>
+        </form>
+      </template>
+    </card-with-columns>
   </section>
 </template>
 
 <script>
-import LocaleSwitch from '~/components/LocaleSwitch/LocaleSwitch.vue'
+import CardWithColumns from '~/components/_new/generic/CardWithColumns/CardWithColumns'
+import LocaleSwitch from '~/components/LocaleSwitch/LocaleSwitch'
 
 export default {
   components: {
+    CardWithColumns,
     LocaleSwitch,
   },
   data() {
@@ -85,47 +89,41 @@ export default {
   width: 80vw;
   max-width: 620px;
   margin: auto;
+}
 
-  > .base-card {
-    position: relative;
-    display: flex;
+.login-form > .card-with-columns {
+  position: relative;
 
-    > .locale-switch {
-      position: absolute;
-      top: $space-small;
-      left: $space-small;
-    }
+  > .column.--left {
+    justify-content: center;
+  }
 
-    > .link {
-      flex-basis: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+  .v-popover {
+    position: absolute;
+    top: $space-small;
+    left: $space-small;
+  }
 
-      > .image {
-        width: 90%;
-        max-width: 200px;
-      }
-    }
+  .image {
+    display: block;
+    width: 90%;
+    max-width: 200px;
+    margin: auto;
+  }
 
-    > .form {
-      flex-basis: 50%;
+  .title {
+    margin-bottom: $space-small;
+  }
 
-      > .title {
-        margin-bottom: $space-small;
-      }
+  .password-link {
+    display: block;
+    margin-bottom: $space-large;
+  }
 
-      > .password-link {
-        display: block;
-        margin-bottom: $space-large;
-      }
-
-      > .base-button {
-        display: block;
-        width: 100%;
-        margin-bottom: $space-small;
-      }
-    }
+  .base-button {
+    display: block;
+    width: 100%;
+    margin-bottom: $space-small;
   }
 }
 </style>
