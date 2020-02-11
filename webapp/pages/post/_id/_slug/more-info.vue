@@ -24,7 +24,7 @@
           :key="relatedPost.id"
           :imageAspectRatio="relatedPost.imageAspectRatio"
         >
-          <hc-post-card
+          <post-teaser
             :post="relatedPost"
             :width="{ base: '100%', lg: 1 }"
             @removePostFromList="removePostFromList"
@@ -38,7 +38,7 @@
 
 <script>
 import HcEmpty from '~/components/Empty/Empty'
-import HcPostCard from '~/components/PostCard/PostCard.vue'
+import PostTeaser from '~/components/PostTeaser/PostTeaser.vue'
 import HcCategory from '~/components/Category'
 import HcHashtag from '~/components/Hashtag/Hashtag'
 import { relatedContributions } from '~/graphql/PostQuery'
@@ -51,7 +51,7 @@ export default {
     mode: 'out-in',
   },
   components: {
-    HcPostCard,
+    PostTeaser,
     HcCategory,
     HcHashtag,
     HcEmpty,

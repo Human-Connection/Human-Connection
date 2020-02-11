@@ -6,19 +6,18 @@
     <base-card
       :lang="post.language"
       :class="{
-        'post-card': true,
         'disabled-content': post.disabled,
-        '--pinned': isPinned,
+        '--highlight': isPinned,
         '--blur-image': post.imageBlurred,
       }"
     >
-      <div class="card-image">
+      <div v-if="post.image" class="card-image">
         <img :src="post.image | proxyApiUrl" class="image" />
       </div>
       <client-only>
         <user-teaser :user="post.author" :date-time="post.createdAt" />
       </client-only>
-      <h2 class="card-heading hyphentate-text">{{ post.title }}</h2>
+      <h2 class="card-heading hyphenate-text">{{ post.title }}</h2>
       <!-- TODO: replace editor content with tiptap render view -->
       <!-- eslint-disable vue/no-v-html -->
       <div class="content hyphenate-text" v-html="excerpt" />
@@ -67,7 +66,7 @@ import { mapGetters } from 'vuex'
 import { postMenuModalsData, deletePostMutation } from '~/components/utils/PostHelpers'
 
 export default {
-  name: 'HcPostCard',
+  name: 'PostTeaser',
   components: {
     UserTeaser,
     HcCategory,
@@ -146,67 +145,67 @@ export default {
   height: 100%;
   color: $text-color-base;
 
-  .user-teaser {
-    margin-bottom: $space-small;
-  }
-
-  > .base-card {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-
-    &.--pinned {
-      border: 1px solid $color-warning;
-    }
-
-    &.--blur-image > .card-image > .image {
-      filter: blur(22px);
-    }
-
-    > .card-image {
-      overflow: hidden;
-
-      > .image {
-        width: 100%;
-        object-fit: contain;
-      }
-    }
-
-    > .content {
-      flex-grow: 1;
-      margin-bottom: $space-small;
-    }
-
-    > .footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-
-      > .categories {
-        flex-grow: 1;
-      }
-
-      > .counter-icon {
-        display: block;
-        margin-right: $space-small;
-        opacity: 0.5;
-      }
-
-      > .content-menu {
-        position: relative;
-        z-index: $z-index-post-card-link;
-      }
-
-      .ds-tag {
-        margin: 0;
-      }
-    }
-  }
-
   > .ribbon {
     position: absolute;
     top: 50%;
     right: -7px;
+  }
+}
+
+.post-teaser > .base-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  &.--pinned {
+    border: 1px solid $color-warning;
+  }
+
+  &.--blur-image > .card-image > .image {
+    filter: blur(22px);
+  }
+
+  > .card-image {
+    overflow: hidden;
+
+    > .image {
+      width: 100%;
+      object-fit: contain;
+    }
+  }
+
+  > .content {
+    flex-grow: 1;
+    margin-bottom: $space-small;
+  }
+
+  > .footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    > .categories {
+      flex-grow: 1;
+    }
+
+    > .counter-icon {
+      display: block;
+      margin-right: $space-small;
+      opacity: 0.5;
+    }
+
+    > .content-menu {
+      position: relative;
+      z-index: $z-index-post-teaser-link;
+    }
+
+    .ds-tag {
+      margin: 0;
+    }
+  }
+
+  .user-teaser {
+    margin-bottom: $space-small;
   }
 }
 </style>

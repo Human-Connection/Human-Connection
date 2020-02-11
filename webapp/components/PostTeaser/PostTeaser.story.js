@@ -1,6 +1,6 @@
 import { storiesOf } from '@storybook/vue'
 import { withA11y } from '@storybook/addon-a11y'
-import HcPostCard from './PostCard.vue'
+import PostTeaser from './PostTeaser.vue'
 import helpers from '~/storybook/helpers'
 
 helpers.init()
@@ -48,20 +48,20 @@ storiesOf('Post Card', module)
   .addDecorator(withA11y)
   .addDecorator(helpers.layout)
   .add('without image', () => ({
-    components: { HcPostCard },
+    components: { PostTeaser },
     store: helpers.store,
     data: () => ({
       post,
     }),
     template: `
-      <hc-post-card
+      <post-teaser
         :post="post"
         :width="{ base: '100%', xs: '100%', md: '50%', xl: '33%' }"
       />
     `,
   }))
   .add('with image', () => ({
-    components: { HcPostCard },
+    components: { PostTeaser },
     store: helpers.store,
     data: () => ({
       post: {
@@ -70,14 +70,14 @@ storiesOf('Post Card', module)
       },
     }),
     template: `
-      <hc-post-card
+      <post-teaser
         :post="post"
         :width="{ base: '100%', xs: '100%', md: '50%', xl: '33%' }"
       />
     `,
   }))
   .add('pinned by admin', () => ({
-    components: { HcPostCard },
+    components: { PostTeaser },
     store: helpers.store,
     data: () => ({
       post: {
@@ -90,7 +90,7 @@ storiesOf('Post Card', module)
       },
     }),
     template: `
-      <hc-post-card
+      <post-teaser
         :post="post"
         :width="{ base: '100%', xs: '100%', md: '50%', xl: '33%' }"
       />

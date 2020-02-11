@@ -242,7 +242,7 @@
               :key="post.id"
               :imageAspectRatio="post.imageAspectRatio"
             >
-              <hc-post-card
+              <post-teaser
                 :post="post"
                 :width="{ base: '100%', md: '100%', xl: '50%' }"
                 @removePostFromList="removePostFromList"
@@ -275,7 +275,7 @@
 <script>
 import uniqBy from 'lodash/uniqBy'
 import UserTeaser from '~/components/UserTeaser/UserTeaser'
-import HcPostCard from '~/components/PostCard/PostCard.vue'
+import PostTeaser from '~/components/PostTeaser/PostTeaser.vue'
 import HcFollowButton from '~/components/FollowButton.vue'
 import HcCountTo from '~/components/CountTo.vue'
 import HcBadges from '~/components/Badges.vue'
@@ -303,7 +303,7 @@ const tabToFilterMapping = ({ tab, id }) => {
 export default {
   components: {
     UserTeaser,
-    HcPostCard,
+    PostTeaser,
     HcFollowButton,
     HcCountTo,
     HcBadges,

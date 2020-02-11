@@ -16,6 +16,20 @@ export default {}
   background-color: $color-neutral-100;
   box-shadow: $box-shadow-base;
 
+  &.--highlight {
+    border: $border-size-base solid $color-primary;
+  }
+
+  &.--wide-content {
+    padding: $space-small;
+
+    > .card-image {
+      width: calc(100% + (2 * #{$space-small}));
+      margin: -$space-small;
+      margin-bottom: $space-base;
+    }
+  }
+
   > .card-image {
     width: calc(100% + (2 * #{$space-base}));
     margin: -$space-base;
