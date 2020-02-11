@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  {{ .Release.Name }}-neo4j
+  labels:
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/name: human-connection
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: "100%"
+  selector:
+    matchLabels:
+      human-connection.org/selector: deployment-neo4j
+  template:
+    metadata:
+      name: neo4j
+      annotations:
+        backup.velero.io/backup-volumes: neo4j-data
+      labels:
+        human-connection.org/commit: {{ .Values.commit }}
+        human-connection.org/selector: deployment-neo4j
+    spec:
+      containers:
+      - name: neo4j
+        image: "{{ .Values.neo4jImage }}:{{ .Chart.AppVersion }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - containerPort: 7687
+        - containerPort: 7474
+        resources:
+          requests:
+            memory: {{ .Values.neo4jResourceRequestsMemory | default "1G" | quote }}
+          limits:
+            memory: {{ .Values.neo4jResourceLimitsMemory | default "1G" | quote }}
+        envFrom:
+        - configMapRef:
+            name: {{ .Release.Name }}-configmap
+        volumeMounts:
+          - mountPath: /data/
+            name: neo4j-data
+      volumes:
+      - name: neo4j-data
+        persistentVolumeClaim:
+          claimName: neo4j-data-claim
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30

@@ -1,0 +1,40 @@
+{{- if .Values.developmentMailserverDomain }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  {{ .Release.Name }}-mailserver
+  labels:
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/name: human-connection
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+spec:
+  replicas: 1
+  minReadySeconds: 15
+  progressDeadlineSeconds: 60
+  selector:
+    matchLabels:
+      human-connection.org/selector: deployment-mailserver
+  template:
+    metadata:
+      labels:
+        human-connection.org/selector: deployment-mailserver
+      name: mailserver
+    spec:
+      containers:
+      - name: mailserver
+        image: djfarrelly/maildev
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - containerPort: 80
+        - containerPort: 25
+        envFrom:
+        - configMapRef:
+            name: {{ .Release.Name }}-configmap
+        - secretRef:
+            name: {{ .Release.Name }}-secrets
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+status: {}
+{{- end}}
