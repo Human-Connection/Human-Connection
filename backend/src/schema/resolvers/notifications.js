@@ -42,13 +42,8 @@ export default {
         default:
           orderByClause = ''
       }
-      const offset = args.offset && typeof args.offset === 'number' ? `SKIP ${args.offset}` : ''
-      const limit = args.first && typeof args.first === 'number' ? `LIMIT ${args.first}` : ''
 
-      const readTxResultPromise = session.readTransaction(async transaction => {
-        const notificationsTransactionResponse = await transaction.run(
-          `
-          MATCH (resource {deleted: false, disabled: false})-[notification:NOTIFIED]->(user:User {id:$id})
+      const returnClause = `
           ${whereClause}
           WITH user, notification, resource,
           [(resource)<-[:WROTE]-(author:User) | author {.*}] as authors,
@@ -56,6 +51,19 @@ export default {
           WITH resource, user, notification, authors, posts,
           resource {.*, __typename: labels(resource)[0], author: authors[0], post: posts[0]} as finalResource
           RETURN notification {.*, from: finalResource, to: properties(user)}
+      `
+
+      const offset = args.offset && typeof args.offset === 'number' ? `SKIP ${args.offset}` : ''
+      const limit = args.first && typeof args.first === 'number' ? `LIMIT ${args.first}` : ''
+
+      const readTxResultPromise = session.readTransaction(async transaction => {
+        const notificationsTransactionResponse = await transaction.run(
+          `
+          MATCH (resource {deleted: false, disabled: false})-[notification:NOTIFIED]->(user:User {id:$id})
+          ${returnClause}
+          UNION
+          MATCH (user)-[:WROTE]->(resource)<-[:BELONGS_TO]-(report:Report)-[notification:NOTIFIED]->(user:User {id:$id})
+          ${returnClause}
           ${orderByClause}
           ${offset} ${limit}
           `,

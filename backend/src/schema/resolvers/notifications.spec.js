@@ -12,6 +12,26 @@ let variables
 let query
 let mutate
 
+const notificationQuery = gql`
+  query($read: Boolean, $orderBy: NotificationOrdering) {
+    notifications(read: $read, orderBy: $orderBy) {
+      from {
+        __typename
+        ... on Post {
+          id
+          content
+        }
+        ... on Comment {
+          id
+          content
+        }
+      }
+      read
+      createdAt
+    }
+  }
+`
+
 beforeAll(() => {
   const { server } = createServer({
     context: () => {
@@ -138,23 +158,6 @@ describe('given some notifications', () => {
   })
 
   describe('notifications', () => {
-    const notificationQuery = gql`
-      query($read: Boolean, $orderBy: NotificationOrdering) {
-        notifications(read: $read, orderBy: $orderBy) {
-          from {
-            __typename
-            ... on Post {
-              content
-            }
-            ... on Comment {
-              content
-            }
-          }
-          read
-          createdAt
-        }
-      }
-    `
     describe('unauthenticated', () => {
       it('throws authorization error', async () => {
         const { errors } = await query({ query: notificationQuery })
@@ -174,6 +177,7 @@ describe('given some notifications', () => {
               from: {
                 __typename: 'Comment',
                 content: 'You have seen this comment mentioning already',
+                id: 'c1',
               },
               read: true,
               createdAt: '2019-08-30T15:33:48.651Z',
@@ -182,6 +186,7 @@ describe('given some notifications', () => {
               from: {
                 __typename: 'Post',
                 content: 'Already seen post mention',
+                id: 'p2',
               },
               read: true,
               createdAt: '2019-08-30T17:33:48.651Z',
@@ -190,6 +195,7 @@ describe('given some notifications', () => {
               from: {
                 __typename: 'Comment',
                 content: 'You have been mentioned in a comment',
+                id: 'c2',
               },
               read: false,
               createdAt: '2019-08-30T19:33:48.651Z',
@@ -198,6 +204,7 @@ describe('given some notifications', () => {
               from: {
                 __typename: 'Post',
                 content: 'You have been mentioned in a post',
+                id: 'p3',
               },
               read: false,
               createdAt: '2019-08-31T17:33:48.651Z',
@@ -222,6 +229,7 @@ describe('given some notifications', () => {
                   from: {
                     __typename: 'Comment',
                     content: 'You have been mentioned in a comment',
+                    id: 'c2',
                   },
                   read: false,
                   createdAt: '2019-08-30T19:33:48.651Z',
@@ -230,6 +238,7 @@ describe('given some notifications', () => {
                   from: {
                     __typename: 'Post',
                     content: 'You have been mentioned in a post',
+                    id: 'p3',
                   },
                   read: false,
                   createdAt: '2019-08-31T17:33:48.651Z',
@@ -389,6 +398,139 @@ describe('given some notifications', () => {
               },
             })
           })
+        })
+      })
+    })
+  })
+})
+
+describe('given some moderation decisions that disabled/enabled my posts and comments', () => {
+  beforeEach(async () => {
+    author = await Factory.build('user', { id: 'author' })
+    const moderator = await Factory.build('user', { id: 'moderator', role: 'moderator' })
+    const [enabledPost, disabledPost, disabledComment] = await Promise.all([
+      Factory.build(
+        'post',
+        {
+          id: 'p1',
+          content: 'This post seems to be OK',
+        },
+        {
+          author,
+        },
+      ),
+      Factory.build(
+        'post',
+        {
+          id: 'p2',
+          content: 'This post violates our code of conduct',
+        },
+        {
+          author,
+        },
+      ),
+      Factory.build(
+        'comment',
+        {
+          id: 'c3',
+          content: 'This comment violates our code of conduct, too',
+        },
+        {
+          author,
+        },
+      ),
+    ])
+    await Promise.all([
+      Factory.build(
+        'report',
+        {},
+        {
+          reportedResource: enabledPost,
+        },
+      ),
+      Factory.build(
+        'report',
+        {},
+        {
+          reportedResource: disabledPost,
+        },
+      ),
+      Factory.build(
+        'report',
+        {},
+        {
+          reportedResource: disabledComment,
+        },
+      ),
+    ])
+
+    authenticatedUser = await moderator.toJson() // temporarily
+    await mutate({
+      query: Factory.mutations.review,
+      variables: {
+        resourceId: 'p1',
+        disable: false,
+        closed: true,
+      },
+    })
+    await mutate({
+      query: Factory.mutations.review,
+      variables: {
+        resourceId: 'p2',
+        disable: true,
+        closed: false,
+      },
+    })
+    await mutate({
+      query: Factory.mutations.review,
+      variables: {
+        resourceId: 'c3',
+        disable: true,
+        closed: true,
+      },
+    })
+    authenticatedUser = null
+  })
+
+  describe('notifications', () => {
+    describe('as author', () => {
+      beforeEach(async () => {
+        authenticatedUser = await author.toJson()
+      })
+
+      it('notifies author about moderation decisions', async () => {
+        await expect(query({ query: notificationQuery, variables })).resolves.toMatchObject({
+          data: {
+            notifications: [
+              {
+                createdAt: expect.any(String),
+                from: {
+                  __typename: 'Comment',
+                  id: 'c3',
+                  content: 'UNAVAILABLE',
+                },
+                read: false,
+              },
+              {
+                createdAt: expect.any(String),
+                from: {
+                  __typename: 'Post',
+                  id: 'p2',
+                  content: 'UNAVAILABLE',
+                },
+                read: false,
+              },
+              {
+                createdAt: expect.any(String),
+                from: {
+                  __typename: 'Post',
+                  id: 'p1',
+                  content: 'This post seems to be OK',
+                },
+                read: false,
+              },
+            ],
+          },
         })
       })
     })
