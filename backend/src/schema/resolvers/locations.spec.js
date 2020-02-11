@@ -53,8 +53,8 @@ describe('resolvers', () => {
           id: 'region.9397217726497330',
           name: 'Paris',
           type: 'region',
-          lat: 2.35183,
-          lng: 48.85658,
+          lng: 2.35183,
+          lat: 48.85658,
           nameEN: 'Paris',
         })
 
