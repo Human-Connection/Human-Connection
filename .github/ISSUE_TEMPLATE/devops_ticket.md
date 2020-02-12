@@ -1,8 +1,8 @@
 ---
-name: :boom: DevOps ticket
+name: 💥 DevOps ticket
 about: Help us manage our deployed App.
 labels: devops
-title: :boom: [DevOps]
+title: 💥 [DevOps]
 ---
 
 ## :fire: DevOps ticket
