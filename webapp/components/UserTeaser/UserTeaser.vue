@@ -3,18 +3,14 @@
     <user-avatar v-if="showAvatar" size="small" />
     <span class="info anonymous">{{ $t('profile.userAnonym') }}</span>
   </div>
-  <dropdown
-    v-else
-    :class="[{ 'disabled-content': user.disabled }]"
+  <div v-else
+      :class="[{ 'disabled-content': user.disabled }]"
     placement="top-start"
-    offset="0"
+
   >
-    <template #default="{ openMenu, closeMenu, isOpen }">
       <nuxt-link
         :to="userLink"
-        :class="['user-teaser', isOpen && 'active']"
-        @mouseover.native="showPopover ? openMenu(true) : () => {}"
-        @mouseleave.native="closeMenu(true)"
+        :class="['user-teaser']"
       >
         <user-avatar v-if="showAvatar" :user="user" size="small" />
         <div class="info">
@@ -30,61 +26,7 @@
           <span v-else class="text">{{ userName }}</span>
         </div>
       </nuxt-link>
-    </template>
-    <template #popover v-if="showPopover">
-      <div style="min-width: 250px">
-        <hc-badges v-if="user.badges && user.badges.length" :badges="user.badges" />
-        <ds-text
-          v-if="user.location"
-          align="center"
-          color="soft"
-          size="small"
-          style="margin-top: 5px"
-          bold
-        >
-          <base-icon name="map-marker" />
-          {{ user.location.name }}
-        </ds-text>
-        <ds-flex style="margin-top: -10px">
-          <ds-flex-item class="ds-tab-nav-item">
-            <ds-space margin="small">
-              <ds-number
-                :count="user.followedByCount"
-                :label="$t('profile.followers')"
-                size="x-large"
-              />
-            </ds-space>
-          </ds-flex-item>
-          <ds-flex-item class="ds-tab-nav-item ds-tab-nav-item-active">
-            <ds-space margin="small">
-              <ds-number
-                :count="user.contributionsCount"
-                :label="$t('common.post', null, user.contributionsCount)"
-              />
-            </ds-space>
-          </ds-flex-item>
-          <ds-flex-item class="ds-tab-nav-item">
-            <ds-space margin="small">
-              <ds-number
-                :count="user.commentedCount"
-                :label="$t('common.comment', null, user.commentedCount)"
-              />
-            </ds-space>
-          </ds-flex-item>
-        </ds-flex>
-        <ds-flex v-if="!itsMe" gutter="x-small" style="margin-bottom: 0;">
-          <ds-flex-item>
-            <hc-follow-button
-              :follow-id="user.id"
-              :is-followed="user.followedByCurrentUser"
-              @optimistic="optimisticFollow"
-              @update="updateFollow"
-            />
-          </ds-flex-item>
-        </ds-flex>
-      </div>
-    </template>
-  </dropdown>
+  </div>
 </template>
 
 <script>
