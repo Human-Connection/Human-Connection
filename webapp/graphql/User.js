@@ -71,6 +71,7 @@ export const notificationQuery = i18n => {
         read
         reason
         createdAt
+        updatedAt
         from {
           __typename
           ... on Post {
@@ -109,6 +110,7 @@ export const markAsReadMutation = i18n => {
         read
         reason
         createdAt
+        updatedAt
         from {
           __typename
           ... on Post {
@@ -132,6 +134,44 @@ export const markAsReadMutation = i18n => {
   `
 }
 
+export const notificationAdded = () => {
+  return gql`
+    ${userFragment}
+    ${commentFragment}
+    ${postFragment}
+
+    subscription notifications($userId: ID!) {
+      notificationAdded(userId: $userId) {
+        id
+        read
+        reason
+        createdAt
+        updatedAt
+        from {
+          __typename
+          ... on Post {
+            ...post
+            author {
+              ...user
+            }
+          }
+          ... on Comment {
+            ...comment
+            author {
+              ...user
+            }
+            post {
+              ...post
+              author {
+                ...user
+              }
+            }
+          }
+        }
+      }
+    }
+  `
+}
 export const followUserMutation = i18n => {
   return gql`
     ${userFragment}
