@@ -18,6 +18,7 @@
     "generate:maintenance": "nuxt generate -c nuxt.config.maintenance.js",
     "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue .",
+    "locales": "../scripts/sort-translations.sh",
     "precommit": "yarn lint",
     "test": "jest",
     "test:unit:debug": "node --inspect-brk ./node_modules/jest/bin/jest.js --no-cache --runInBand"
