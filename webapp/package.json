@@ -101,7 +101,7 @@
     "@babel/preset-env": "~7.8.4",
     "@storybook/addon-a11y": "^5.3.12",
     "@storybook/addon-actions": "^5.3.12",
-    "@storybook/addon-notes": "^5.3.12",
+    "@storybook/addon-notes": "^5.3.13",
     "@storybook/vue": "~5.3.13",
     "@vue/cli-shared-utils": "~4.2.2",
     "@vue/eslint-config-prettier": "~6.0.0",
