@@ -113,6 +113,9 @@ Factory.define('post')
   .attr('slug', ['slug', 'title'], (slug, title) => {
     return slug || slugify(title, { lower: true })
   })
+  .attr('language', ['language'], language => {
+    return language || 'en'
+  })
   .after(async (buildObject, options) => {
     const [post, author, categories, tags] = await Promise.all([
       neode.create('Post', buildObject),
