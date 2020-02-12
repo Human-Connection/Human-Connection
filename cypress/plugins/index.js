@@ -23,7 +23,7 @@ module.exports = (on, config) => {
   config.env.NEO4J_URI = parsed.NEO4J_URI
   config.env.NEO4J_USERNAME = parsed.NEO4J_USERNAME
   config.env.NEO4J_PASSWORD = parsed.NEO4J_PASSWORD
-
+  config.env.JWT_SECRET = parsed.JWT_SECRET
   on('file:preprocessor', cucumber())
   return config
 }

@@ -18,6 +18,7 @@ import helpers from "./helpers";
 import { GraphQLClient, request } from 'graphql-request'
 import { gql } from '../../backend/src/helpers/jest'
 import config from '../../backend/src/config'
+import encode from '../../backend/src/jwt/encode'
 
 const switchLang = name => {
   cy.get(".locale-menu").click();
@@ -47,7 +48,13 @@ Cypress.Commands.add("switchLanguage", (name, force) => {
   }
 });
 
-Cypress.Commands.add("login", ({ email, password }) => {
+Cypress.Commands.add("login", user => {
+  const token = encode(user)
+  cy.setCookie('human-connection-token', token)
+    .visit("/")
+});
+
+Cypress.Commands.add("manualLogin", ({ email, password }) => {
   cy.visit(`/login`);
   cy.get("input[name=email]")
     .trigger("focus")
@@ -58,11 +65,9 @@ Cypress.Commands.add("login", ({ email, password }) => {
   cy.get("button[name=submit]")
     .as("submitButton")
     .click();
-  cy.get(".iziToast-message").should("contain", "You are logged in!");
-  cy.location("pathname").should("eq", "/");
 });
 
-Cypress.Commands.add("logout", (email, password) => {
+Cypress.Commands.add("logout", () => {
   cy.visit(`/logout`);
   cy.location("pathname").should("contain", "/login"); // we're out
 });
