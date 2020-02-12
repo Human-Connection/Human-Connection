@@ -16,7 +16,7 @@ do
       : # all good
     else
       exit_code=$?
-      echo "$locale_file is not sorted by keys"
+      echo "$(basename -- $locale_file) is not sorted by keys"
     fi
   fi
 done
