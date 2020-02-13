@@ -175,6 +175,7 @@ export default {
     DeleteUser: async (object, params, context, resolveInfo) => {
       const { resource } = params
       const session = context.driver.session()
+      const { id: userId } = params
       try {
         if (resource && resource.length) {
           await session.writeTransaction(transaction => {
@@ -190,7 +191,7 @@ export default {
                     RETURN author
                   `,
                 {
-                  userId: context.user.id,
+                  userId,
                 },
               )
             })
@@ -212,7 +213,7 @@ export default {
               DETACH DELETE socialMedia
               RETURN user
             `,
-            { userId: context.user.id },
+            { userId },
           )
           log(deleteUserTransactionResponse)
           return deleteUserTransactionResponse.records.map(record => record.get('user').properties)
