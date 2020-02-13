@@ -534,6 +534,7 @@
       },
       "reportedOn": "Date",
       "moreDetails": "View Details",
+      "lessDetails": "Hide Details",
       "decideModal": {
         "submit": "Confirm decision",
         "cancel": "Cancel",
@@ -565,6 +566,19 @@
           "enable": {
             "title": "Finally Enable Comment",
             "message": "Do you really want to let the comment \"<b>{name}</b>\" stay <b>enabled</b>?"
+          }
+        },
+        "reason": {
+          "category": {
+            "label": "Select categories:"
+          },
+          "optionalDescription": {
+            "label": "Please explain to the affected user: Why you decide this way?",
+            "placeholder": "Optional explaining information …"
+          },
+          "internalDescription": {
+            "label": "Notice to moderators:",
+            "placeholder": "Additional internal information …"
           }
         }
       }

@@ -22,6 +22,14 @@
       :name="name"
       @close="close"
     />
+    <decide-modal
+      v-if="open === 'decide'"
+      :id="data.resource.id"
+      :type="data.type"
+      :name="name"
+      :modalData="data.modalData"
+      @close="close"
+    />
     <confirm-modal
       v-if="open === 'confirm'"
       :id="data.resource.id"
@@ -38,15 +46,17 @@ import ConfirmModal from '~/components/Modal/ConfirmModal'
 import DisableModal from '~/components/Modal/DisableModal'
 import ReleaseModal from '~/components/ReleaseModal/ReleaseModal.vue'
 import ReportModal from '~/components/Modal/ReportModal'
+import DecideModal from '~/components/Modal/DecideModal'
 import { mapGetters } from 'vuex'
 
 export default {
   name: 'Modal',
   components: {
+    ConfirmModal,
     DisableModal,
     ReleaseModal,
     ReportModal,
-    ConfirmModal,
+    DecideModal,
   },
   computed: {
     ...mapGetters({

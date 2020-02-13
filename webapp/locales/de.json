@@ -355,6 +355,7 @@
             },
             "reportedOn": "Datum",
             "moreDetails": "Details öffnen",
+            "lessDetails": "Details schließen",
             "decideModal": {
               "submit": "Bestätige Entscheidung",
               "cancel": "Abbruch",
@@ -387,7 +388,20 @@
                   "title": "Entsperre den Kommentar abschließend",
                   "message": "Möchtest du den Kommentar \"<b>{name}</b>\" wirklich <b>entsperrt</b> lassen?"
                 }
-              }
+              },
+              "reason": {
+                  "category": {
+                      "label": "Wähle Kategorien:"
+                  },
+                  "optionalDescription": {
+                      "label": "Bitte erkläre dem betroffenen Benutzer: Warum entscheidest du so?",
+                      "placeholder": "Optionale erklärende Informationen …"
+                  },
+                  "internalDescription": {
+                      "label": "Notizen für Moderatoren:",
+                      "placeholder": "Zusätzliche interne Informationen …"
+                  }
+                }
             }
         }
     },

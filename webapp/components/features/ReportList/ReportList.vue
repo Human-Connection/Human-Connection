@@ -60,7 +60,7 @@ export default {
           '.' +
           (report.resource.disabled ? 'disable' : 'enable')
         return {
-          name: 'confirm',
+          name: 'decide',
           data: {
             type: report.resource.__typename,
             resource: report.resource,
@@ -81,8 +81,8 @@ export default {
                   danger: true,
                   icon: report.resource.disabled ? 'eye-slash' : 'eye',
                   textIdent: 'moderation.reports.decideModal.submit',
-                  callback: () => {
-                    this.confirmCallback(report.resource)
+                  callback: decisionReasonData => {
+                    this.confirmCallback(report.resource, decisionReasonData)
                   },
                 },
                 cancel: {
@@ -115,8 +115,10 @@ export default {
       this.closed = null
       this.reviewed = option.value.reviewed
     },
-    async confirmCallback(resource) {
+    async confirmCallback(resource, decisionReasonData) {
+      console.log('decisionReasonData: ', decisionReasonData)
       const { disabled: disable, id: resourceId } = resource
+      // Wolle decisionReasonData properties into the mutation !!!
       this.$apollo
         .mutate({
           mutation: reviewMutation(),
