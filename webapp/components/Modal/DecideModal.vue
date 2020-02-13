@@ -8,19 +8,33 @@
 
     <!-- eslint-disable-next-line vue/no-v-html -->
     <p v-html="message" />
-    <ds-radio
+    <!-- Wolle <ds-radio
       v-model="form.reasonCategory"
       :schema="formSchema.reasonCategory"
       :label="$t('report.reason.category.label')"
       :options="form.reasonCategoryOptions"
       labelProp="label"
-    />
+    /> -->
+    <ds-text class="ds-text-soft">
+      {{ $t('moderation.reports.decideModal.reason.category.label') }}
+    </ds-text>
+    <ds-text v-for="(reasonCategory, index) in form.reasonCategoryOptions" :key="index">
+      <input
+        id="checkbox"
+        type="checkbox"
+        v-model="reasonCategory.checked"
+        :checked="reasonCategory.checked"
+      />
+      &nbsp;
+      <label for="checkbox" v-html="reasonCategory.label"></label>
+    </ds-text>
+    <!-- reasonDescription -->
     <ds-input
-      class="reason-description"
+      class="ds-input-description"
       v-model="form.reasonDescription"
       :schema="formSchema.reasonDescription"
-      :label="$t('report.reason.description.label')"
-      :placeholder="$t('report.reason.description.placeholder')"
+      :label="$t('moderation.reports.decideModal.reason.optionalDescription.label')"
+      :placeholder="$t('moderation.reports.decideModal.reason.optionalDescription.placeholder')"
       type="textarea"
       rows="5"
     />
@@ -28,21 +42,40 @@
       {{ form.reasonDescription.length }}/{{ formSchema.reasonDescription.max }}
     </small>
     <ds-space />
+    <!-- internalDescription -->
+    <ds-input
+      class="ds-input-description"
+      v-model="form.internalDescription"
+      :schema="formSchema.internalDescription"
+      :label="$t('moderation.reports.decideModal.reason.internalDescription.label')"
+      :placeholder="$t('moderation.reports.decideModal.reason.internalDescription.placeholder')"
+      type="textarea"
+      rows="5"
+    />
+    <small class="smallTag">
+      {{ form.internalDescription.length }}/{{ formSchema.internalDescription.max }}
+    </small>
+    <ds-space />
     <template #footer>
-      <base-button class="cancel" icon="close" @click="cancel">
-        {{ $t('report.cancel') }}
+      <base-button
+        class="cancel"
+        :danger="!modalData.buttons.confirm.danger"
+        :icon="modalData.buttons.cancel.icon"
+        @click="cancel"
+      >
+        {{ $t(modalData.buttons.cancel.textIdent) }}
       </base-button>
 
       <base-button
-        danger
+        :danger="modalData.buttons.confirm.danger"
         filled
         class="confirm"
-        icon="exclamation-circle"
-        :disabled="!form.reasonCategory"
+        :icon="modalData.buttons.confirm.icon"
+        :disabled="!isReasonCategoryChecked"
         :loading="loading"
         @click="confirm"
       >
-        {{ $t('report.submit') }}
+        {{ $t(modalData.buttons.confirm.textIdent) }}
       </base-button>
     </template>
   </ds-modal>
@@ -50,9 +83,9 @@
 
 <script>
 import { SweetalertIcon } from 'vue-sweetalert-icons'
-import { reportMutation } from '~/graphql/Moderation.js'
+// Wolle import { reportMutation } from '~/graphql/Moderation.js'
 import { valuesReasonCategoryOptions } from '~/constants/modals.js'
-import validReport from '~/components/utils/ReportModal'
+import validReport from '~/components/utils/DecideModal'
 
 export default {
   name: 'DecideModal',
@@ -62,6 +95,7 @@ export default {
   props: {
     name: { type: String, default: '' },
     type: { type: String, required: true },
+    modalData: { type: Object, required: true },
     id: { type: String, required: true },
   },
   data() {
@@ -70,9 +104,10 @@ export default {
       success: false,
       loading: false,
       form: {
-        reasonCategory: null,
+        // Wolle reasonCategory: null,
         reasonCategoryOptions: [],
         reasonDescription: '',
+        internalDescription: '',
       },
     }
   },
@@ -81,16 +116,23 @@ export default {
       return {
         label: this.$t('report.reason.category.options.' + reasonCategory),
         value: reasonCategory,
+        checked: false,
       }
     })
   },
   computed: {
+    // Wolle title() {
+    //   return this.$t(`report.${this.type}.title`)
+    // },
+    // message() {
+    //   const name = this.$filters.truncate(this.name, 30)
+    //   return this.$t(`report.${this.type}.message`, { name })
+    // },
     title() {
-      return this.$t(`report.${this.type}.title`)
+      return this.$t(this.modalData.titleIdent)
     },
     message() {
-      const name = this.$filters.truncate(this.name, 30)
-      return this.$t(`report.${this.type}.message`, { name })
+      return this.$t(this.modalData.messageIdent, this.modalData.messageParams)
     },
     formSchema() {
       const validReportSchema = validReport({ translate: this.$t })
@@ -98,61 +140,113 @@ export default {
         ...validReportSchema.formSchema,
       }
     },
+    isReasonCategoryChecked() {
+      return this.form.reasonCategoryOptions.find(el => el.checked)
+    },
   },
   methods: {
+    // Wolle async cancel() {
+    //   // TODO: Use the "modalData" structure introduced in "ConfirmModal" and refactor this here. Be aware that all the Jest tests have to be refactored as well !!!
+    //   // await this.modalData.buttons.cancel.callback()
+    //   this.isOpen = false
+    //   setTimeout(() => {
+    //     this.$emit('close')
+    //   }, 1000)
+    // },
     async cancel() {
-      // TODO: Use the "modalData" structure introduced in "ConfirmModal" and refactor this here. Be aware that all the Jest tests have to be refactored as well !!!
-      // await this.modalData.buttons.cancel.callback()
+      await this.modalData.buttons.cancel.callback()
       this.isOpen = false
       setTimeout(() => {
         this.$emit('close')
       }, 1000)
     },
+    // Wolle async confirm() {
+    //   const { reasonCategory, reasonDescription } = this.form
+    //   this.loading = true
+    //   // TODO: Use the "modalData" structure introduced in "ConfirmModal" and refactor this here. Be aware that all the Jest tests have to be refactored as well !!!
+    //   // await this.modalData.buttons.confirm.callback()
+    //   this.$apollo
+    //     .mutate({
+    //       mutation: reportMutation(),
+    //       variables: {
+    //         resourceId: this.id,
+    //         reasonCategory: reasonCategory.value,
+    //         reasonDescription,
+    //       },
+    //     })
+    //     .then(({ _data }) => {
+    //       this.success = true
+    //       this.$toast.success(this.$t('report.success'))
+    //       setTimeout(() => {
+    //         this.isOpen = false
+    //         setTimeout(() => {
+    //           this.success = false
+    //           this.$emit('close')
+    //         }, 500)
+    //       }, 1500)
+    //       this.loading = false
+    //     })
+    //     .catch(err => {
+    //       this.$emit('close')
+    //       this.success = false
+    //       switch (err.message) {
+    //         case 'GraphQL error: User':
+    //           this.$toast.error(this.$t('report.user.error'))
+    //           break
+    //         case 'GraphQL error: Post':
+    //           this.$toast.error(this.$t('report.contribution.error'))
+    //           break
+    //         case 'GraphQL error: Comment':
+    //           this.$toast.error(this.$t('report.comment.error'))
+    //           break
+    //         default:
+    //           this.$toast.error(err.message)
+    //       }
+    //       this.isOpen = false
+    //       this.loading = false
+    //     })
+    // },
     async confirm() {
-      const { reasonCategory, reasonDescription } = this.form
       this.loading = true
-      // TODO: Use the "modalData" structure introduced in "ConfirmModal" and refactor this here. Be aware that all the Jest tests have to be refactored as well !!!
-      // await this.modalData.buttons.confirm.callback()
-      this.$apollo
-        .mutate({
-          mutation: reportMutation(),
-          variables: {
-            resourceId: this.id,
-            reasonCategory: reasonCategory.value,
-            reasonDescription,
-          },
+      try {
+        await this.modalData.buttons.confirm.callback({
+          reasonCategoryAry: this.form.reasonCategoryOptions
+            .filter(el => el.checked)
+            .map(el => el.value),
+          reasonDescription: this.form.reasonDescription,
         })
-        .then(({ _data }) => {
-          this.success = true
-          this.$toast.success(this.$t('report.success'))
-          setTimeout(() => {
-            this.isOpen = false
-            setTimeout(() => {
-              this.success = false
-              this.$emit('close')
-            }, 500)
-          }, 1500)
-          this.loading = false
-        })
-        .catch(err => {
-          this.$emit('close')
-          this.success = false
-          switch (err.message) {
-            case 'GraphQL error: User':
-              this.$toast.error(this.$t('report.user.error'))
-              break
-            case 'GraphQL error: Post':
-              this.$toast.error(this.$t('report.contribution.error'))
-              break
-            case 'GraphQL error: Comment':
-              this.$toast.error(this.$t('report.comment.error'))
-              break
-            default:
-              this.$toast.error(err.message)
-          }
+        this.success = true
+        setTimeout(() => {
           this.isOpen = false
-          this.loading = false
-        })
+          setTimeout(() => {
+            this.success = false
+            this.$emit('close')
+          }, 500)
+        }, 1500)
+      } catch (err) {
+        this.success = false
+        this.$emit('close')
+        switch (err.message) {
+          // Wolle actualise
+          case 'GraphQL error: User':
+            this.$toast.error(this.$t('report.user.error'))
+            break
+          // Wolle actualise
+          case 'GraphQL error: Post':
+            this.$toast.error(this.$t('report.contribution.error'))
+            break
+          // Wolle actualise
+          case 'GraphQL error: Comment':
+            this.$toast.error(this.$t('report.comment.error'))
+            break
+          default:
+            this.$toast.error(err.message)
+        }
+        this.isOpen = false
+        this.loading = false
+      } finally {
+        this.loading = false
+      }
     },
   },
 }
@@ -160,7 +254,7 @@ export default {
 
 <style lang="scss">
 .ds-modal {
-  max-width: 600px !important;
+  max-width: 700px !important;
 }
 .ds-radio-option {
   width: 100% !important;
@@ -169,7 +263,10 @@ export default {
   margin: 5px 20px 5px 5px !important;
   width: 100% !important;
 }
-.reason-description {
+.ds-text-soft {
+  color: $text-color-soft;
+}
+.ds-input-description {
   margin-top: $space-x-small !important;
   margin-bottom: $space-xx-small !important;
 }

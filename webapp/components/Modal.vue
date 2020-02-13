@@ -27,6 +27,7 @@
       :id="data.resource.id"
       :type="data.type"
       :name="name"
+      :modalData="data.modalData"
       @close="close"
     />
     <confirm-modal
