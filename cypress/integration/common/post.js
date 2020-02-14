@@ -119,7 +119,7 @@ Then("I add all required fields", () => {
 })
 
 Then("the post was saved successfully with the {string} teaser image", condition => {
-  if (condition === 'change') 
+  if (condition === 'updated') 
     expectedValue = { title: 'to be updated', content: 'successfully updated', src: 'humanconnection' }
   cy.get(".ds-card-content > .ds-heading")
     .should("contain", expectedValue.title)
