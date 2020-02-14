@@ -571,6 +571,144 @@ describe('DeleteUser', () => {
 
 
 
+describe('DeleteUser as another user', () => {
+  const deleteUserMutation = gql`
+  mutation($id: ID!, $resource: [Deletable]) {
+    DeleteUser(id: $id, resource: $resource) {
+      id
+      name
+      about
+      deleted
+      contributions {
+        id
+        content
+        contentExcerpt
+        deleted
+        comments {
+          id
+          content
+          contentExcerpt
+          deleted
+        }
+      }
+      comments {
+        id
+        content
+        contentExcerpt
+        deleted
+      }
+    }
+  }
+`
+beforeEach(async () => {
+  variables = { id: ' u343', resource: [] }
+
+  user = await Factory.build('user', {
+    name: 'My name should be deleted',
+    about: 'along with my about',
+    id: 'u343',
+  })
+ 
+})
+
+  beforeEach(async () => {
+    
+
+    const anotherUser = await Factory.build(
+      'user',
+      {
+        role: 'user',
+      },
+      {
+        email: 'user@example.org',
+        password: '1234',
+      },
+    )
+   
+    authenticatedUser = await anotherUser.toJson()
+  })
+
+  it('a user has no authorization to delete another user accounts', async () => {
+    const { errors } = await mutate({ mutation: deleteUserMutation, variables })
+    expect(errors[0]).toHaveProperty('message', 'Not Authorised!')
+  })
+})
+
+
+
+
+describe('DeleteUser as moderator', () => {
+  const deleteUserMutation = gql`
+  mutation($id: ID!, $resource: [Deletable]) {
+    DeleteUser(id: $id, resource: $resource) {
+      id
+      name
+      about
+      deleted
+      contributions {
+        id
+        content
+        contentExcerpt
+        deleted
+        comments {
+          id
+          content
+          contentExcerpt
+          deleted
+        }
+      }
+      comments {
+        id
+        content
+        contentExcerpt
+        deleted
+      }
+    }
+  }
+`
+beforeEach(async () => {
+  variables = { id: ' u343', resource: [] }
+
+  user = await Factory.build('user', {
+    name: 'My name should be deleted',
+    about: 'along with my about',
+    id: 'u343',
+  })
+ 
+})
+
+beforeEach(async () => {
+      
+
+  const moderator = await Factory.build(
+    'user',
+    {
+      role: 'moderator',
+    },
+    {
+      email: 'moderator@example.org',
+      password: '1234',
+    },
+  )
+ 
+
+  authenticatedUser = await moderator.toJson()
+})
+
+it('moderator is not allowed to delete other user accounts', async () => {
+  const { errors } = await mutate({ mutation: deleteUserMutation, variables })
+  expect(errors[0]).toHaveProperty('message', 'Not Authorised!')
+})
+
+ 
+
+})
+
+
+
+
+
+
 describe('DeleteUser as Admin', () => {
   const deleteUserMutation = gql`
     mutation($id: ID!, $resource: [Deletable]) {
@@ -608,23 +746,11 @@ describe('DeleteUser as Admin', () => {
       about: 'along with my about',
       id: 'u343',
     })
-    await Factory.build(
-      'user',
-      {
-        id: 'not-my-account',
-      },
-      {
-        email: 'friends-account@example.org',
-      },
-    )
+   
   })
 
-  describe('unauthenticated', () => {
-    it('throws authorization error', async () => {
-      const { errors } = await mutate({ mutation: deleteUserMutation, variables })
-      expect(errors[0]).toHaveProperty('message', 'Not Authorised!')
-    })
-  })
+   
+  
 
   describe('authenticated as Admin', () => {
     beforeEach(async () => {
@@ -642,7 +768,7 @@ describe('DeleteUser as Admin', () => {
     })
  
 
-    describe('attempting to delete a foreign account by an Admin', () => {
+    describe('deleting a user account', () => {
       beforeEach(() => {
         variables = { ...variables, id: 'u343' }
       })
@@ -687,7 +813,7 @@ describe('DeleteUser as Admin', () => {
           )
         })
 
-        it("deletes my account, but doesn't delete posts or comments by default", async () => {
+        it("deletes account, but doesn't delete posts or comments by default", async () => {
           const expectedResponse = {
             data: {
               DeleteUser: {
@@ -874,9 +1000,9 @@ describe('DeleteUser as Admin', () => {
 
       describe('connected `EmailAddress` nodes', () => {
         it('will be removed completely', async () => {
-          await expect(neode.all('EmailAddress')).resolves.toHaveLength(3)
-          await mutate({ mutation: deleteUserMutation, variables })
           await expect(neode.all('EmailAddress')).resolves.toHaveLength(2)
+          await mutate({ mutation: deleteUserMutation, variables })
+          await expect(neode.all('EmailAddress')).resolves.toHaveLength(1)
         })
       })
 
