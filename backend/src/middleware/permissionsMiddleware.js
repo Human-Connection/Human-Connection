@@ -152,6 +152,15 @@ export default shield(
     User: {
       email: or(isMyOwn, isAdmin),
     },
+    Report: {
+      createdAt: or(isModerator),
+      updatedAt: or(isModerator),
+      rule: or(isModerator),
+      disable: or(isModerator),
+      closed: or(isModerator),
+      filed: or(isModerator),
+      reviewed: or(isModerator),
+    },
   },
   {
     debug,
