@@ -114,13 +114,13 @@ export default {
     },
     cropImage() {
       this.showCropper = false
-      if (this.file.type === 'image/png' || this.file.type === 'image/svg+xml') {
-        this.uploadSvgOrPng()
-      } else {
+      if (this.file.type === 'image/jpeg') {
         this.uploadJpeg()
+      } else {
+        this.uploadOtherImageType()
       }
     },
-    uploadSvgOrPng() {
+    uploadOtherImageType() {
       this.imageAspectRatio = this.file.width / this.file.height || 1.0
       this.image = new Image()
       this.image.src = this.file.dataURL
