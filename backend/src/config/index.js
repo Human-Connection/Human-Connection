@@ -23,6 +23,9 @@ const {
   NEO4J_PASSWORD = 'neo4j',
   CLIENT_URI = 'http://localhost:3000',
   GRAPHQL_URI = 'http://localhost:4000',
+  REDIS_DOMAIN,
+  REDIS_PORT,
+  REDIS_PASSWORD,
 } = env
 
 export const requiredConfigs = {
@@ -61,7 +64,7 @@ export const developmentConfigs = {
 }
 
 export const sentryConfigs = { SENTRY_DSN_BACKEND, COMMIT }
-
+export const redisConfiig = { REDIS_DOMAIN, REDIS_PORT, REDIS_PASSWORD }
 export default {
   ...requiredConfigs,
   ...smtpConfigs,
@@ -69,4 +72,5 @@ export default {
   ...serverConfigs,
   ...developmentConfigs,
   ...sentryConfigs,
+  ...redisConfiig,
 }
