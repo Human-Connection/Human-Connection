@@ -196,8 +196,8 @@ Given("we have the following comments in our database:", table => {
   })
 });
 
-Given("we have the following posts in our database:", table => {
-  cy.factory().build('category', {
+Given("we have the following posts in our database:", async table => {
+  await cy.factory().build('category', {
     id: `cat-456`,
     name: "Just For Fun",
     slug: `just-for-fun`,
