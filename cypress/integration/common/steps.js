@@ -229,24 +229,28 @@ Given("we have the following comments in our database:", table => {
   })
 });
 
-Given("we have the following posts in our database:", async table => {
-  await cy.factory().build('category', {
-    id: `cat-456`,
-    name: "Just For Fun",
-    slug: `just-for-fun`,
-    icon: "smile"
-  })
-
-  table.hashes().forEach((attributesOrOptions, i) => {
-    cy.factory().build("post", {
-      ...attributesOrOptions,
-      deleted: Boolean(attributesOrOptions.deleted),
-      disabled: Boolean(attributesOrOptions.disabled),
-      pinned: Boolean(attributesOrOptions.pinned),
-    }, {
-      ...attributesOrOptions,
-      categoryIds: ['cat-456']
-    });
+Given("we have the following posts in our database:", table => {
+  return new Cypress.Promise((resolve, reject) => {
+    cy.factory().build('category', {
+      id: `cat-456`,
+      name: "Just For Fun",
+      slug: `just-for-fun`,
+      icon: "smile"
+    }).then(categoryJson => {
+      categoryJson.toJson().then(category => resolve(category))
+    }).then(category => {
+      table.hashes().forEach((attributesOrOptions, i) => {
+        cy.factory().build("post", {
+          ...attributesOrOptions,
+          deleted: Boolean(attributesOrOptions.deleted),
+          disabled: Boolean(attributesOrOptions.disabled),
+          pinned: Boolean(attributesOrOptions.pinned),
+        }, {
+          ...attributesOrOptions,
+          categoryIds: category.id
+        });
+      })
+    })
   })
 });
 
