@@ -10,6 +10,11 @@ type Report {
   resource: ReportedResource
 }
 
+type FiledReport {
+  reportId: ID!
+  resource: ReportedResource
+}
+
 union ReportedResource = User | Post | Comment
 
 enum ReportRule {
@@ -17,7 +22,7 @@ enum ReportRule {
 }
 
 type Mutation {
-  fileReport(resourceId: ID!, reasonCategory: ReasonCategory!, reasonDescription: String!): Report
+  fileReport(resourceId: ID!, reasonCategory: ReasonCategory!, reasonDescription: String!): FiledReport
 }
 
 type Query {

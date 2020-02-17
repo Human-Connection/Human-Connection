@@ -9,14 +9,6 @@ const driver = getDriver()
 
 let query, authenticatedUser, owner, anotherRegularUser, administrator, variables, moderator
 
-const userQuery = gql`
-  query($name: String) {
-    User(name: $name) {
-      email
-    }
-  }
-`
-
 describe('authorization', () => {
   beforeAll(async () => {
     await cleanDatabase()
@@ -30,7 +22,11 @@ describe('authorization', () => {
     query = createTestClient(server).query
   })
 
-  describe('given two existing users', () => {
+  afterEach(async () => {
+    await cleanDatabase()
+  })
+
+  describe('given an owner, an other user, an admin, a moderator', () => {
     beforeEach(async () => {
       ;[owner, anotherRegularUser, administrator, moderator] = await Promise.all([
         Factory.build(
@@ -79,15 +75,20 @@ describe('authorization', () => {
       variables = {}
     })
 
-    afterEach(async () => {
-      await cleanDatabase()
-    })
-
     describe('access email address', () => {
+      const userQuery = gql`
+        query($name: String) {
+          User(name: $name) {
+            email
+          }
+        }
+      `
+
       describe('unauthenticated', () => {
         beforeEach(() => {
           authenticatedUser = null
         })
+
         it("throws an error and does not expose the owner's email address", async () => {
           await expect(
             query({ query: userQuery, variables: { name: 'Owner' } }),
@@ -143,7 +144,7 @@ describe('authorization', () => {
           })
         })
 
-        describe('administrator', () => {
+        describe('as an administrator', () => {
           beforeEach(async () => {
             authenticatedUser = await administrator.toJson()
           })
@@ -158,5 +159,97 @@ describe('authorization', () => {
         })
       })
     })
+
+    // Wolle describe('access reports protected propertied', () => {
+    //   const reportsQuery = gql `
+    //     query {
+    //       reports {
+    //         id
+    //         createdAt
+    //         updatedAt
+    //         rule
+    //         disable
+    //         closed
+    //         filed
+    //         reviewed
+    //         resource
+    //       }
+    //     }
+    //   `
+
+    //   describe('unauthenticated', () => {
+    //     beforeEach(() => {
+    //       authenticatedUser = null
+    //     })
+    //     it("throws an error and does not expose the owner's email address", async () => {
+    //       await expect(
+    //         query({ query: reportsQuery, variables: { name: 'Owner' } }),
+    //       ).resolves.toMatchObject({
+    //         errors: [{ message: 'Not Authorised!' }],
+    //         data: { User: [null] },
+    //       })
+    //     })
+    //   })
+
+    //   describe('authenticated', () => {
+    //     describe('as the owner', () => {
+    //       beforeEach(async () => {
+    //         authenticatedUser = await owner.toJson()
+    //       })
+
+    //       it("exposes the owner's email address", async () => {
+    //         variables = { name: 'Owner' }
+    //         await expect(query({ query: reportsQuery, variables })).resolves.toMatchObject({
+    //           data: { User: [{ email: 'owner@example.org' }] },
+    //           errors: undefined,
+    //         })
+    //       })
+    //     })
+
+    //     describe('as another regular user', () => {
+    //       beforeEach(async () => {
+    //         authenticatedUser = await anotherRegularUser.toJson()
+    //       })
+
+    //       it("throws an error and does not expose the owner's email address", async () => {
+    //         await expect(
+    //           query({ query: reportsQuery, variables: { name: 'Owner' } }),
+    //         ).resolves.toMatchObject({
+    //           errors: [{ message: 'Not Authorised!' }],
+    //           data: { User: [null] },
+    //         })
+    //       })
+    //     })
+
+    //     describe('as a moderator', () => {
+    //       beforeEach(async () => {
+    //         authenticatedUser = await moderator.toJson()
+    //       })
+
+    //       it("throws an error and does not expose the owner's email address", async () => {
+    //         await expect(
+    //           query({ query: reportsQuery, variables: { name: 'Owner' } }),
+    //         ).resolves.toMatchObject({
+    //           errors: [{ message: 'Not Authorised!' }],
+    //           data: { User: [null] },
+    //         })
+    //       })
+    //     })
+
+    //     describe('as an administrator', () => {
+    //       beforeEach(async () => {
+    //         authenticatedUser = await administrator.toJson()
+    //       })
+
+    //       it("exposes the owner's email address", async () => {
+    //         variables = { name: 'Owner' }
+    //         await expect(query({ query: reportsQuery, variables })).resolves.toMatchObject({
+    //           data: { User: [{ email: 'owner@example.org' }] },
+    //           errors: undefined,
+    //         })
+    //       })
+    //     })
+    //   })
+    // })
   })
 })

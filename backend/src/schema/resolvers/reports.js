@@ -1,14 +1,14 @@
 import log from './helpers/databaseLogger'
 
-const transformReturnType = record => {
-  return {
-    ...record.get('report').properties,
-    resource: {
-      __typename: record.get('type'),
-      ...record.get('resource').properties,
-    },
-  }
-}
+// Wolle const transformReturnType = record => {
+//   return {
+//     ...record.get('report').properties,
+//     resource: {
+//       __typename: record.get('type'),
+//       ...record.get('resource').properties,
+//     },
+//   }
+// }
 
 export default {
   Mutation: {
@@ -27,7 +27,8 @@ export default {
             WITH submitter, resource, report
             CREATE (report)<-[filed:FILED {createdAt: $createdAt, reasonCategory: $reasonCategory, reasonDescription: $reasonDescription}]-(submitter)
 
-            RETURN report, resource, labels(resource)[0] AS type
+            WITH report, resource {.*, __typename: labels(resource)[0]} AS finalResource
+            RETURN {reportId: report.id, resource: properties(finalResource)} AS filedReport
           `,
           {
             resourceId,
@@ -38,13 +39,18 @@ export default {
           },
         )
         log(reportTransactionResponse)
-        return reportTransactionResponse.records.map(transformReturnType)
+        // Wolle return reportTransactionResponse.records.map(transformReturnType)
+        return reportTransactionResponse.records.map(record =>
+          record.get('filedReport'),
+        )
       })
       try {
         const [createdRelationshipWithNestedAttributes] = await reportWriteTxResultPromise
+        console.log('createdRelationshipWithNestedAttributes: ', createdRelationshipWithNestedAttributes)
         if (!createdRelationshipWithNestedAttributes) return null
         return createdRelationshipWithNestedAttributes
       } finally {
+        console.log('session.close !!!')
         session.close()
       }
     },
