@@ -17,7 +17,7 @@ enum ReportRule {
 }
 
 type Mutation {
-  fileReport(resourceId: ID!, reasonCategory: ReasonCategory!, reasonDescription: String!): Report
+  fileReport(resourceId: ID!, reasonCategory: ReasonCategory!, reasonDescription: String!): ReportedResource
 }
 
 type Query {

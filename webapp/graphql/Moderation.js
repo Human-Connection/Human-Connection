@@ -1,4 +1,5 @@
 import gql from 'graphql-tag'
+import { userFragment, postFragment, commentFragment } from './Fragments'
 
 export const reportsListQuery = () => {
   // no limit for the moment like before: "reports(first: 20, orderBy: createdAt_desc)"
@@ -94,13 +95,25 @@ export const reportsListQuery = () => {
 
 export const reportMutation = () => {
   return gql`
+    ${userFragment}
+    ${postFragment}
+    ${commentFragment}
     mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
       fileReport(
         resourceId: $resourceId
         reasonCategory: $reasonCategory
         reasonDescription: $reasonDescription
       ) {
-        id
+        __typename
+        ... on User {
+          ...user
+        }
+        ... on Post {
+          ...post
+        }
+        ... on Comment {
+          ...comment
+        }
       }
     }
   `

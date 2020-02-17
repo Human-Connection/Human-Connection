@@ -1,15 +1,5 @@
 import log from './helpers/databaseLogger'
 
-const transformReturnType = record => {
-  return {
-    ...record.get('report').properties,
-    resource: {
-      __typename: record.get('type'),
-      ...record.get('resource').properties,
-    },
-  }
-}
-
 export default {
   Mutation: {
     fileReport: async (_parent, params, context, _resolveInfo) => {
@@ -26,8 +16,9 @@ export default {
             ON CREATE SET report.id = randomUUID(), report.createdAt = $createdAt, report.updatedAt = report.createdAt, report.rule = 'latestReviewUpdatedAtRules', report.disable = resource.disabled, report.closed = false
             WITH submitter, resource, report
             CREATE (report)<-[filed:FILED {createdAt: $createdAt, reasonCategory: $reasonCategory, reasonDescription: $reasonDescription}]-(submitter)
-
-            RETURN report, resource, labels(resource)[0] AS type
+            WITH resource,
+            resource {.*, __typename: labels(resource)[0] } as returnedResource
+            RETURN returnedResource
           `,
           {
             resourceId,
@@ -38,12 +29,12 @@ export default {
           },
         )
         log(reportTransactionResponse)
-        return reportTransactionResponse.records.map(transformReturnType)
+        return reportTransactionResponse.records.map(record => record.get('returnedResource'))
       })
       try {
-        const [createdRelationshipWithNestedAttributes] = await reportWriteTxResultPromise
-        if (!createdRelationshipWithNestedAttributes) return null
-        return createdRelationshipWithNestedAttributes
+        const [reportedResource] = await reportWriteTxResultPromise
+        if (!reportedResource) return null
+        return reportedResource
       } finally {
         session.close()
       }

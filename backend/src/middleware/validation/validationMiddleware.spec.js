@@ -58,7 +58,16 @@ const reportMutation = gql`
       reasonCategory: $reasonCategory
       reasonDescription: $reasonDescription
     ) {
-      id
+      __typename
+      ... on User {
+        name
+      }
+      ... on Post {
+        title
+      }
+      ... on Comment {
+        content
+      }
     }
   }
 `

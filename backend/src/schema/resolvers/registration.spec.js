@@ -49,7 +49,7 @@ describe('Signup', () => {
       authenticatedUser = null
     })
 
-    it('throws AuthorizationError', async () => {
+    it.only('throws AuthorizationError', async () => {
       await expect(mutate({ mutation, variables })).resolves.toMatchObject({
         errors: [{ message: 'Not Authorised!' }],
       })
