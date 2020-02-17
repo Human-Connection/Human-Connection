@@ -1,11 +1,11 @@
 <template>
   <ds-container width="small" class="password-reset">
     <base-card>
-      <template v-slot:imageColumn>
+      <template #imageColumn>
         <img alt="Human Connection" src="/icon.png" class="image" />
       </template>
       <nuxt-child />
-      <template v-slot:topMenu>
+      <template #topMenu>
         <locale-switch offset="5" />
       </template>
     </base-card>

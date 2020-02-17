@@ -105,7 +105,7 @@ export default {
 <style lang="scss">
 .image-uploader {
   position: relative;
-  min-height: 200px;
+  min-height: $size-image-uploader-min-height;
   cursor: pointer;
 
   .image + & {
@@ -125,20 +125,20 @@ export default {
   }
 
   &.--blur-image .preview-image {
-    filter: blur(22px);
+    filter: blur($blur-radius);
   }
 
   .preview-image {
     width: 100%;
-    max-height: 2000px;
+    max-height: $size-image-max-height;
     object-fit: contain;
   }
 
   > .crop-overlay {
     width: 100%;
     height: 100%;
-    min-height: 400px;
-    max-height: 600px;
+    min-height: $size-image-cropper-min-height;
+    max-height: $size-image-cropper-max-height;
     font-size: $font-size-base;
 
     > .img {
@@ -148,16 +148,16 @@ export default {
 
     > .crop-confirm {
       position: absolute;
-      left: 10px;
-      top: 10px;
-      z-index: 1;
+      left: $space-x-small;
+      top: $space-x-small;
+      z-index: $z-index-surface;
     }
 
     > .crop-cancel {
       position: absolute;
-      right: 10px;
-      top: 10px;
-      z-index: 1;
+      right: $space-x-small;
+      top: $space-x-small;
+      z-index: $z-index-surface;
     }
   }
 
@@ -168,11 +168,11 @@ export default {
     align-items: center;
     width: 100%;
     height: 100%;
-    z-index: 1;
+    z-index: $z-index-surface;
 
     &:hover {
       > .base-icon {
-        opacity: 1;
+        opacity: $opacity-base;
       }
     }
 
@@ -182,8 +182,8 @@ export default {
       border-radius: 100%;
       border: $border-size-base dashed $color-neutral-20;
       background-color: $color-neutral-95;
-      font-size: 60px;
-      opacity: 0.7;
+      font-size: $size-icon-large;
+      opacity: $opacity-soft;
     }
   }
 }

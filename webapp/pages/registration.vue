@@ -1,11 +1,11 @@
 <template>
   <ds-container width="medium">
     <base-card>
-      <template v-slot:imageColumn>
+      <template #imageColumn>
         <img alt="Human Connection" src="/img/sign-up/nicetomeetyou.svg" />
       </template>
       <nuxt-child />
-      <template v-slot:topMenu>
+      <template #topMenu>
         <locale-switch offset="5" />
       </template>
     </base-card>

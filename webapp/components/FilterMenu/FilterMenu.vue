@@ -2,7 +2,6 @@
   <base-card class="filter-menu">
     <h2>{{ $t('filter-menu.hashtag-search', { hashtag }) }}</h2>
     <base-button
-      name="clear-search-button"
       icon="close"
       circle
       :title="this.$t('filter-menu.clearSearch')"

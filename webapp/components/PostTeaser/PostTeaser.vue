@@ -11,7 +11,7 @@
       }"
       :highlight="isPinned"
     >
-      <template v-if="post.image" v-slot:heroImage>
+      <template v-if="post.image" #heroImage>
         <img :src="post.image | proxyApiUrl" class="image" />
       </template>
       <client-only>
@@ -158,7 +158,7 @@ export default {
   height: 100%;
 
   &.--blur-image > .hero-image > .image {
-    filter: blur(22px);
+    filter: blur($blur-radius);
   }
 
   > .content {
@@ -178,7 +178,7 @@ export default {
     > .counter-icon {
       display: block;
       margin-right: $space-small;
-      opacity: 0.5;
+      opacity: $opacity-disabled;
     }
 
     > .content-menu {

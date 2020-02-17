@@ -84,7 +84,7 @@ export default {
 
   > .hero-image {
     width: calc(100% + (2 * #{$space-base}));
-    max-height: 2000px;
+    max-height: $size-image-max-height;
     margin: -$space-base;
     margin-bottom: $space-base;
     overflow: hidden;

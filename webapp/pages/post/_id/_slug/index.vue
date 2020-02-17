@@ -9,7 +9,7 @@
         '--blur-image': blurred,
       }"
     >
-      <template v-slot:heroImage>
+      <template #heroImage>
         <img :src="post.image | proxyApiUrl" class="image" />
         <aside v-show="post.imageBlurred" class="blur-toggle">
           <img v-show="blurred" :src="post.image | proxyApiUrl" class="preview" />
@@ -23,7 +23,7 @@
       </template>
       <section class="menu">
         <user-teaser :user="post.author" :date-time="post.createdAt">
-          <template v-slot:dateTime>
+          <template #dateTime>
             <ds-text v-if="post.createdAt !== post.updatedAt">({{ $t('post.edited') }})</ds-text>
           </template>
         </user-teaser>
@@ -249,7 +249,7 @@ export default {
   }
 
   &.--blur-image > .hero-image > .image {
-    filter: blur(22px);
+    filter: blur($blur-radius);
   }
 
   .blur-toggle {

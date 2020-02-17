@@ -8,7 +8,7 @@
   <base-card v-else :class="commentClass" :id="anchor">
     <header class="header">
       <user-teaser :user="comment.author" :date-time="comment.createdAt">
-        <template v-if="wasEdited" v-slot:dateTime>
+        <template v-if="wasEdited" #dateTime>
           <span>({{ $t('comment.edited') }})</span>
         </template>
       </user-teaser>

@@ -5,7 +5,7 @@
       <b>- {{ $t('quotes.african.author') }}</b>
     </blockquote>
     <base-card>
-      <template v-slot:imageColumn>
+      <template #imageColumn>
         <a :href="$t('login.moreInfoURL')" :title="$t('login.moreInfo')" target="_blank">
           <img class="image" alt="Human Connection" src="/img/sign-up/humanconnection.svg" />
         </a>
@@ -40,7 +40,7 @@
           <nuxt-link to="/registration/signup">{{ $t('login.register') }}</nuxt-link>
         </p>
       </form>
-      <template v-slot:topMenu>
+      <template #topMenu>
         <locale-switch offset="5" />
       </template>
     </base-card>

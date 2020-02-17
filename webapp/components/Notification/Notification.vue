@@ -64,7 +64,7 @@ export default {
   }
 
   &.--read {
-    opacity: 0.5;
+    opacity: $opacity-disabled;
   }
 
   > .description {

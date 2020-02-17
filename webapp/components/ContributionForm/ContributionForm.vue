@@ -8,7 +8,7 @@
   >
     <template slot-scope="{ errors }">
       <base-card>
-        <template v-slot:heroImage>
+        <template #heroImage>
           <img
             v-if="showHeroImage"
             :src="contribution.image | proxyApiUrl"
@@ -276,7 +276,7 @@ export default {
   }
 
   .image.--blur-image {
-    filter: blur(22px);
+    filter: blur($blur-radius);
   }
 
   > .ds-form-item {
