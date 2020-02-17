@@ -253,8 +253,7 @@ Given("we have the following posts in our database:", table => {
         });
       })
     })
-  })
-});
+})
 
 Then("I see a success message:", message => {
   cy.contains(message);
