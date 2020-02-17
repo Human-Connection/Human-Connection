@@ -967,7 +967,6 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       [...Array(4).keys()].map(() =>
         Factory.build(
           'comment',
-          4,
           {},
           {
             author: jennyRostock,
