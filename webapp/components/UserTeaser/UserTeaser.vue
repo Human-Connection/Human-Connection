@@ -3,29 +3,22 @@
     <user-avatar v-if="showAvatar" size="small" />
     <span class="info anonymous">{{ $t('profile.userAnonym') }}</span>
   </div>
-  <div v-else
-      :class="[{ 'disabled-content': user.disabled }]"
-    placement="top-start"
-
-  >
-      <nuxt-link
-        :to="userLink"
-        :class="['user-teaser']"
-      >
-        <user-avatar v-if="showAvatar" :user="user" size="small" />
-        <div class="info">
-          <span class="text">
-            <span class="slug">{{ userSlug }}</span>
-            <span v-if="dateTime">{{ userName }}</span>
-          </span>
-          <span v-if="dateTime" class="text">
-            <base-icon name="clock" />
-            <hc-relative-date-time :date-time="dateTime" />
-            <slot name="dateTime"></slot>
-          </span>
-          <span v-else class="text">{{ userName }}</span>
-        </div>
-      </nuxt-link>
+  <div v-else :class="[{ 'disabled-content': user.disabled }]" placement="top-start">
+    <nuxt-link :to="userLink" :class="['user-teaser']">
+      <user-avatar v-if="showAvatar" :user="user" size="small" />
+      <div class="info">
+        <span class="text">
+          <span class="slug">{{ userSlug }}</span>
+          <span v-if="dateTime">{{ userName }}</span>
+        </span>
+        <span v-if="dateTime" class="text">
+          <base-icon name="clock" />
+          <hc-relative-date-time :date-time="dateTime" />
+          <slot name="dateTime"></slot>
+        </span>
+        <span v-else class="text">{{ userName }}</span>
+      </div>
+    </nuxt-link>
   </div>
 </template>
 
@@ -33,19 +26,13 @@
 import { mapGetters } from 'vuex'
 
 import HcRelativeDateTime from '~/components/RelativeDateTime'
-import HcFollowButton from '~/components/FollowButton'
-import HcBadges from '~/components/Badges'
 import UserAvatar from '~/components/_new/generic/UserAvatar/UserAvatar'
-import Dropdown from '~/components/Dropdown'
 
 export default {
   name: 'UserTeaser',
   components: {
     HcRelativeDateTime,
-    HcFollowButton,
     UserAvatar,
-    HcBadges,
-    Dropdown,
   },
   props: {
     user: { type: Object, default: null },
