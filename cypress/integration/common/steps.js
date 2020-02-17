@@ -46,6 +46,7 @@ Given("I am logged in", () => {
 });
 
 Given("I log in as {string}", name => {
+  cy.logout()
   cy.neode()
     .first("User", {
       name
