@@ -6,7 +6,7 @@ type Report {
   disable: Boolean!
   closed: Boolean!
   filed: [FILED]
-  reviewed: [REVIEWED]!
+  reviewed: [REVIEWED]
   resource: ReportedResource
 }
 

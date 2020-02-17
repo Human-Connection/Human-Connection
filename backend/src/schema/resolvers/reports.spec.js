@@ -18,22 +18,22 @@ describe('file a report on a resource', () => {
         reasonDescription: $reasonDescription
       ) {
         id
+      }
+    }
+  `
+  const reportMutationWithSensitiveData = gql`
+    mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
+      fileReport(
+        resourceId: $resourceId
+        reasonCategory: $reasonCategory
+        reasonDescription: $reasonDescription
+      ) {
+        id
         createdAt
         updatedAt
-        closed
         rule
-        resource {
-          __typename
-          ... on User {
-            name
-          }
-          ... on Post {
-            title
-          }
-          ... on Comment {
-            content
-          }
-        }
+        disable
+        closed
         filed {
           submitter {
             id
@@ -41,6 +41,11 @@ describe('file a report on a resource', () => {
           createdAt
           reasonCategory
           reasonDescription
+        }
+        reviewed {
+          moderator {
+            id
+          }
         }
       }
     }
@@ -125,6 +130,28 @@ describe('file a report on a resource', () => {
         authenticatedUser = await currentUser.toJson()
       })
 
+      describe('as role "user"', () => {
+        const errorsArray = [
+          { message: 'Not Authorised!', path: ['fileReport', 'filed'] },
+          { message: 'Not Authorised!', path: ['fileReport', 'reviewed'] },
+        ]
+        it('throws an authorization error if user requests sensitive data', async () => {
+          await expect(
+            mutate({
+              mutation: reportMutationWithSensitiveData,
+              variables: { ...variables, resourceId: 'abusive-user-id' },
+            }),
+          ).resolves.toMatchObject({
+            data: {
+              fileReport: {
+                id: expect.any(String),
+              },
+            },
+            errors: errorsArray,
+          })
+        })
+      })
+
       describe('invalid resource id', () => {
         it('returns null', async () => {
           await expect(mutate({ mutation: reportMutation, variables })).resolves.toMatchObject({
@@ -136,8 +163,7 @@ describe('file a report on a resource', () => {
 
       describe('valid resource', () => {
         describe('creates report', () => {
-          // has to be refactored in a not hotfix PR
-          it.skip('which belongs to resource', async () => {
+          it('which belongs to resource', async () => {
             await expect(
               mutate({
                 mutation: reportMutation,
@@ -166,335 +192,52 @@ describe('file a report on a resource', () => {
             expect(firstReport.data.fileReport.id).toEqual(secondReport.data.fileReport.id)
           })
 
-          // has to be refactored in a not hotfix PR
-          it.skip('returns the rule for how the report was decided', async () => {
-            await expect(
-              mutate({
-                mutation: reportMutation,
-                variables: { ...variables, resourceId: 'abusive-user-id' },
-              }),
-            ).resolves.toMatchObject({
-              data: {
-                fileReport: {
-                  rule: 'latestReviewUpdatedAtRules',
-                },
-              },
-              errors: undefined,
-            })
-          })
           it.todo('creates multiple filed reports')
         })
 
-        describe('reported resource is a user', () => {
-          // has to be refactored in a not hotfix PR
-          it.skip('returns __typename "User"', async () => {
-            await expect(
-              mutate({
-                mutation: reportMutation,
-                variables: { ...variables, resourceId: 'abusive-user-id' },
-              }),
-            ).resolves.toMatchObject({
-              data: {
-                fileReport: {
-                  resource: {
-                    __typename: 'User',
-                  },
-                },
+        it('gives an error if the reason category is not in enum "ReasonCategory"', async () => {
+          await expect(
+            mutate({
+              mutation: reportMutation,
+              variables: {
+                ...variables,
+                resourceId: 'abusive-user-id',
+                reasonCategory: 'category_missing_from_enum_reason_category',
               },
-              errors: undefined,
-            })
-          })
-
-          // has to be refactored in a not hotfix PR
-          it.skip('returns user attribute info', async () => {
-            await expect(
-              mutate({
-                mutation: reportMutation,
-                variables: { ...variables, resourceId: 'abusive-user-id' },
-              }),
-            ).resolves.toMatchObject({
-              data: {
-                fileReport: {
-                  resource: {
-                    __typename: 'User',
-                    name: 'abusive-user',
-                  },
-                },
+            }),
+          ).resolves.toMatchObject({
+            data: undefined,
+            errors: [
+              {
+                message:
+                  'Variable "$reasonCategory" got invalid value "category_missing_from_enum_reason_category"; Expected type ReasonCategory.',
               },
-              errors: undefined,
-            })
-          })
-
-          // has to be refactored in a not hotfix PR
-          it.skip('returns the submitter', async () => {
-            await expect(
-              mutate({
-                mutation: reportMutation,
-                variables: { ...variables, resourceId: 'abusive-user-id' },
-              }),
-            ).resolves.toMatchObject({
-              data: {
-                fileReport: {
-                  filed: [
-                    {
-                      submitter: {
-                        id: 'current-user-id',
-                      },
-                    },
-                  ],
-                },
-              },
-              errors: undefined,
-            })
-          })
-
-          // has to be refactored in a not hotfix PR
-          it.skip('returns a date', async () => {
-            await expect(
-              mutate({
-                mutation: reportMutation,
-                variables: { ...variables, resourceId: 'abusive-user-id' },
-              }),
-            ).resolves.toMatchObject({
-              data: {
-                fileReport: {
-                  createdAt: expect.any(String),
-                },
-              },
-              errors: undefined,
-            })
-          })
-
-          // has to be refactored in a not hotfix PR
-          it.skip('returns the reason category', async () => {
-            await expect(
-              mutate({
-                mutation: reportMutation,
-                variables: {
-                  ...variables,
-                  resourceId: 'abusive-user-id',
-                  reasonCategory: 'criminal_behavior_violation_german_law',
-                },
-              }),
-            ).resolves.toMatchObject({
-              data: {
-                fileReport: {
-                  filed: [
-                    {
-                      reasonCategory: 'criminal_behavior_violation_german_law',
-                    },
-                  ],
-                },
-              },
-              errors: undefined,
-            })
-          })
-
-          // has to be refactored in a not hotfix PR
-          it.skip('gives an error if the reason category is not in enum "ReasonCategory"', async () => {
-            await expect(
-              mutate({
-                mutation: reportMutation,
-                variables: {
-                  ...variables,
-                  resourceId: 'abusive-user-id',
-                  reasonCategory: 'category_missing_from_enum_reason_category',
-                },
-              }),
-            ).resolves.toMatchObject({
-              data: undefined,
-              errors: [
-                {
-                  message:
-                    'Variable "$reasonCategory" got invalid value "category_missing_from_enum_reason_category"; Expected type ReasonCategory.',
-                },
-              ],
-            })
-          })
-
-          // has to be refactored in a not hotfix PR
-          it.skip('returns the reason description', async () => {
-            await expect(
-              mutate({
-                mutation: reportMutation,
-                variables: {
-                  ...variables,
-                  resourceId: 'abusive-user-id',
-                  reasonDescription: 'My reason!',
-                },
-              }),
-            ).resolves.toMatchObject({
-              data: {
-                fileReport: {
-                  filed: [
-                    {
-                      reasonDescription: 'My reason!',
-                    },
-                  ],
-                },
-              },
-              errors: undefined,
-            })
-          })
-
-          // has to be refactored in a not hotfix PR
-          it.skip('sanitizes the reason description', async () => {
-            await expect(
-              mutate({
-                mutation: reportMutation,
-                variables: {
-                  ...variables,
-                  resourceId: 'abusive-user-id',
-                  reasonDescription: 'My reason <sanitize></sanitize>!',
-                },
-              }),
-            ).resolves.toMatchObject({
-              data: {
-                fileReport: {
-                  filed: [
-                    {
-                      reasonDescription: 'My reason !',
-                    },
-                  ],
-                },
-              },
-              errors: undefined,
-            })
+            ],
           })
         })
 
-        describe('reported resource is a post', () => {
-          beforeEach(async () => {
-            await Factory.build(
-              'post',
-              {
-                id: 'post-to-report-id',
-                title: 'This is a post that is going to be reported',
-              },
-              {
-                author: currentUser,
-                categoryIds,
-              },
-            )
+        it('sanitizes the reason description', async () => {
+          const {
+            data: {
+              fileReport: { id: reportId },
+            },
+          } = await mutate({
+            mutation: reportMutation,
+            variables: {
+              ...variables,
+              resourceId: 'abusive-user-id',
+              reasonDescription: 'My reason <sanitize></sanitize>!',
+            },
           })
-
-          // has to be refactored in a not hotfix PR
-          it.skip('returns type "Post"', async () => {
-            await expect(
-              mutate({
-                mutation: reportMutation,
-                variables: {
-                  ...variables,
-                  resourceId: 'post-to-report-id',
-                },
-              }),
-            ).resolves.toMatchObject({
-              data: {
-                fileReport: {
-                  resource: {
-                    __typename: 'Post',
-                  },
-                },
-              },
-              errors: undefined,
-            })
-          })
-
-          // has to be refactored in a not hotfix PR
-          it.skip('returns resource in post attribute', async () => {
-            await expect(
-              mutate({
-                mutation: reportMutation,
-                variables: {
-                  ...variables,
-                  resourceId: 'post-to-report-id',
-                },
-              }),
-            ).resolves.toMatchObject({
-              data: {
-                fileReport: {
-                  resource: {
-                    __typename: 'Post',
-                    title: 'This is a post that is going to be reported',
-                  },
-                },
-              },
-              errors: undefined,
-            })
-          })
-        })
-
-        describe('reported resource is a comment', () => {
-          beforeEach(async () => {
-            await Factory.build(
-              'post',
-              {
-                id: 'p1',
-                title: 'post to comment on',
-                content: 'please comment on me',
-              },
-              {
-                categoryIds,
-                author: currentUser,
-              },
-            )
-            await Factory.build(
-              'comment',
-              {
-                id: 'comment-to-report-id',
-                content: 'Post comment to be reported.',
-              },
-              {
-                author: currentUser,
-                postId: 'p1',
-              },
-            )
-          })
-
-          // has to be refactored in a not hotfix PR
-          it.skip('returns type "Comment"', async () => {
-            await expect(
-              mutate({
-                mutation: reportMutation,
-                variables: {
-                  ...variables,
-                  resourceId: 'comment-to-report-id',
-                },
-              }),
-            ).resolves.toMatchObject({
-              data: {
-                fileReport: {
-                  resource: {
-                    __typename: 'Comment',
-                  },
-                },
-              },
-              errors: undefined,
-            })
-          })
-
-          // has to be refactored in a not hotfix PR
-          it.skip('returns resource in comment attribute', async () => {
-            await expect(
-              mutate({
-                mutation: reportMutation,
-                variables: {
-                  ...variables,
-                  resourceId: 'comment-to-report-id',
-                },
-              }),
-            ).resolves.toMatchObject({
-              data: {
-                fileReport: {
-                  resource: {
-                    __typename: 'Comment',
-                    content: 'Post comment to be reported.',
-                  },
-                },
-              },
-              errors: undefined,
-            })
-          })
+          const reportsQuery = await instance.cypher(
+            'MATCH (:Report { id: $reportId })<-[filed:FILED]-() RETURN filed;',
+            { reportId },
+          )
+          expect(reportsQuery.records).toHaveLength(1)
+          const [reportProperties] = reportsQuery.records.map(
+            record => record.get('filed').properties,
+          )
+          expect(reportProperties).toMatchObject({ reasonDescription: 'My reason !' })
         })
 
         describe('reported resource is a tag', () => {
