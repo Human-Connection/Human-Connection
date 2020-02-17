@@ -118,4 +118,15 @@ export default {
     left: $space-small;
   }
 }
+
+@media (max-width: 565px) {
+  .base-card.--columns {
+    flex-direction: column;
+
+    > .image-column {
+      padding-right: 0;
+      margin-bottom: $space-base;
+    }
+  }
+}
 </style>
