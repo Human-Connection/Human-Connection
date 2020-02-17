@@ -230,15 +230,17 @@ Given("we have the following comments in our database:", table => {
 });
 
 Given("we have the following posts in our database:", table => {
-  return new Cypress.Promise((resolve, reject) => {
     cy.factory().build('category', {
       id: `cat-456`,
       name: "Just For Fun",
       slug: `just-for-fun`,
       icon: "smile"
     }).then(categoryJson => {
-      categoryJson.toJson().then(category => resolve(category))
-    }).then(category => {
+      return new Cypress.Promise((resolve, _reject) => {
+        return categoryJson.toJson().then(category => resolve(category))
+      })
+    })
+    .then(category => {
       table.hashes().forEach((attributesOrOptions, i) => {
         cy.factory().build("post", {
           ...attributesOrOptions,
