@@ -24,10 +24,11 @@
 <script>
 import { mapGetters } from 'vuex'
 import unionBy from 'lodash/unionBy'
-import { notificationQuery, markAsReadMutation, notificationAdded } from '~/graphql/User'
+import { notificationQuery, markAsReadMutation } from '~/graphql/User'
 import CounterIcon from '~/components/_new/generic/CounterIcon/CounterIcon'
 import Dropdown from '~/components/Dropdown'
 import NotificationList from '../NotificationList/NotificationList'
+import { NOTIFICATIONS_POLL_INTERVAL } from '~/constants/notifications'
 
 export default {
   name: 'NotificationMenu',
@@ -79,26 +80,33 @@ export default {
           orderBy: 'updatedAt_desc',
         }
       },
-      subscribeToMore: {
-        document: notificationAdded(),
-        variables() {
-          return {
-            userId: this.user.id,
-          }
-        },
-        updateQuery: (previousResult, { subscriptionData }) => {
-          const {
-            data: { notificationAdded: newNotification },
-          } = subscriptionData
-          return {
-            notifications: unionBy(
-              [newNotification],
-              previousResult.notifications,
-              notification => notification.id,
-            ).sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)),
-          }
-        },
+      pollInterval: NOTIFICATIONS_POLL_INTERVAL,
+      update({ notifications }) {
+        return unionBy(notifications, this.notifications, notification => notification.id).sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+        )
       },
+      // commented out to avoid error Resolve function for "Subscription.notificationAdded" returned undefined"
+      // subscribeToMore: {
+      //   document: notificationAdded(),
+      //   variables() {
+      //     return {
+      //       userId: this.user.id,
+      //     }
+      //   },
+      //   updateQuery: (previousResult, { subscriptionData }) => {
+      //     const {
+      //       data: { notificationAdded: newNotification },
+      //     } = subscriptionData
+      //     return {
+      //       notifications: unionBy(
+      //         [newNotification],
+      //         previousResult.notifications,
+      //         notification => notification.id,
+      //       ).sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)),
+      //     }
+      //   },
+      // },
       error(error) {
         this.$toast.error(error.message)
       },
