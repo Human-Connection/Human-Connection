@@ -6270,12 +6270,12 @@ metascraper-publisher@^5.10.7:
   dependencies:
     "@metascraper/helpers" "^5.10.7"
 
-metascraper-soundcloud@^5.10.7:
-  version "5.10.7"
-  resolved "https://registry.yarnpkg.com/metascraper-soundcloud/-/metascraper-soundcloud-5.10.7.tgz#64a5518324ea69576ab9c206f29a60160fb89e91"
-  integrity sha512-KPM/g+l1m0tp4YOu8qF1RUT7yondaY1S/0aieUUFck/iE3VA1i3MJTLLygIc+67fcbHqcz60qfPTOvYbl6sIPw==
+metascraper-soundcloud@^5.11.1:
+  version "5.11.1"
+  resolved "https://registry.yarnpkg.com/metascraper-soundcloud/-/metascraper-soundcloud-5.11.1.tgz#7bf8ed6d188e42d1f72076a8d05604c9192b08f7"
+  integrity sha512-vuvelqD9dOD3HbpmC4Nn364PFQfqT6xMO7AZKVzVRTZ0/kPlk2gXshMiU94/0oLBn7/fhSFJEZYN8Ei3rLiHNw==
   dependencies:
-    "@metascraper/helpers" "^5.10.7"
+    "@metascraper/helpers" "^5.11.1"
     tldts "~5.6.3"
 
 metascraper-title@^5.10.7:
