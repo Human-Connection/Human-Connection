@@ -27,7 +27,10 @@ export const cleanDatabase = async (options = {}) => {
 Factory.define('category')
   .attr('id', uuid)
   .attr('icon', 'globe')
-  .attr('name', 'global-peace-nonviolence')
+  .attr('name', 'Global Peace & Nonviolence')
+  .sequence('slug', i => {
+    return `global-peace-nonviolence-${i}`
+  })
   .after((buildObject, options) => {
     return neode.create('Category', buildObject)
   })

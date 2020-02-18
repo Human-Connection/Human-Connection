@@ -88,6 +88,7 @@ Then("I see a toaster with {string}", (title) => {
 })
 
 Then("I should be able to {string} a teaser image", condition => {
+  cy.reload()
   let teaserImageUpload = "onourjourney.png";
   if (condition === 'change') teaserImageUpload = "humanconnection.png";
   cy.fixture(teaserImageUpload).as('postTeaserImage').then(function() {
@@ -108,8 +109,8 @@ Then("I add all required fields", () => {
     .type('new post')
     .get(".editor .ProseMirror")
     .type('new post content')
-    .get(".base-button")
-    .contains("Global Peace & Nonviolence")
+    .get(".categories-select .base-button")
+    .first()
     .click()
     .get('.ds-flex-item > .ds-form-item .ds-select ')
     .click()

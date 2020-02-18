@@ -262,6 +262,7 @@ When(
   "I click on the big plus icon in the bottom right corner to create post",
   () => {
     cy.get(".post-add-button").click();
+    cy.location("pathname").should('eq', '/post/create')
   }
 );
 
