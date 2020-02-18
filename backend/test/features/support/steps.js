@@ -13,7 +13,7 @@ function createUser (slug) {
   return Factory.build('user', {
     name: slug,
   }, {
-    password: '1234'
+    password: '1234',
     email: 'example@test.org',
   })
   // await login({ email: 'example@test.org', password: '1234' })

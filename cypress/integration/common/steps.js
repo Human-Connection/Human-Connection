@@ -238,17 +238,6 @@ Given("we have the following comments in our database:", table => {
 });
 
 Given("we have the following posts in our database:", table => {
-    cy.factory().build('category', {
-      id: `cat-456`,
-      name: "Just For Fun",
-      slug: `just-for-fun`,
-      icon: "smile"
-    }).then(categoryJson => {
-      return new Cypress.Promise((resolve, _reject) => {
-        return categoryJson.toJson().then(category => resolve(category))
-      })
-    })
-    .then(category => {
       table.hashes().forEach((attributesOrOptions, i) => {
         cy.factory().build("post", {
           ...attributesOrOptions,
@@ -257,10 +246,8 @@ Given("we have the following posts in our database:", table => {
           pinned: Boolean(attributesOrOptions.pinned),
         }, {
           ...attributesOrOptions,
-          categoryIds: category.id
         });
       })
-    })
 })
 
 Then("I see a success message:", message => {

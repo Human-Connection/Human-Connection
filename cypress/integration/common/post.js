@@ -109,7 +109,7 @@ Then("I add all required fields", () => {
     .get(".editor .ProseMirror")
     .type('new post content')
     .get(".base-button")
-    .contains("Just for Fun")
+    .contains("Global Peace & Nonviolence")
     .click()
     .get('.ds-flex-item > .ds-form-item .ds-select ')
     .click()
