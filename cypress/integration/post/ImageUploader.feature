@@ -44,4 +44,4 @@ Feature: Upload Teaser Image
     And I add all required fields
     And I click on "Save"
     Then I get redirected to ".../new-post"
-    And the post was saved successfully without a teaser image
+    And the "new" post was saved successfully without a teaser image

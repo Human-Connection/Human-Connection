@@ -384,6 +384,15 @@ describe('ContributionForm.vue', () => {
           await wrapper.find('form').trigger('submit')
           expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
         })
+
+        it('supports deleting a teaser image', async () => {
+          expectedParams.variables.image = null
+          propsData.contribution.image = '/uploads/someimage.png'
+          wrapper = Wrapper()
+          wrapper.find('.contribution-form .delete-image').trigger('click')
+          await wrapper.find('form').trigger('submit')
+          expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
+        })
       })
     })
   })

@@ -5,7 +5,7 @@ import orderBy from 'lodash/orderBy'
 const languages = orderBy(locales, 'name')
 const narratorAvatar =
   "https://s3.amazonaws.com/uifaces/faces/twitter/nerrsoft/128.jpg";
-let expectedValue = { title: 'new post', content: 'new post content', src: 'onourjourney' }
+
 When("I type in a comment with {int} characters", size => {
   var c="";
   for (var i = 0; i < size; i++) {
@@ -89,8 +89,7 @@ Then("I see a toaster with {string}", (title) => {
 
 Then("I should be able to {string} a teaser image", condition => {
   cy.reload()
-  let teaserImageUpload = "onourjourney.png";
-  if (condition === 'change') teaserImageUpload = "humanconnection.png";
+  const teaserImageUpload = (condition === 'change') ? "humanconnection.png" : "onourjourney.png";
   cy.fixture(teaserImageUpload).as('postTeaserImage').then(function() {
     cy.get("#postdropzone").upload(
       { fileContent: this.postTeaserImage, fileName: teaserImageUpload, mimeType: "image/png" },
@@ -120,15 +119,13 @@ Then("I add all required fields", () => {
 })
 
 Then("the post was saved successfully with the {string} teaser image", condition => {
-  if (condition === 'updated') 
-    expectedValue = { title: 'to be updated', content: 'successfully updated', src: 'humanconnection' }
   cy.get(".ds-card-content > .ds-heading")
-    .should("contain", expectedValue.title)
+    .should("contain", condition === 'updated' ? 'to be updated' : 'new post')
     .get(".content")
-    .should("contain", expectedValue.content)
+    .should("contain", condition === 'updated' ? 'successfully updated' : 'new post content')
     .get('.post-page img')
     .should("have.attr", "src")
-    .and("contains", expectedValue.src)
+    .and("contains", condition === 'updated' ? 'humanconnection' : 'onourjourney')
 })
 
 Then("the first image should be removed from the preview", () => {
@@ -142,11 +139,11 @@ Then("the first image should be removed from the preview", () => {
   })
 })
 
-Then('the post was saved successfully without a teaser image', () => {
+Then('the {string} post was saved successfully without a teaser image', condition => {
   cy.get(".ds-card-content > .ds-heading")
-    .should("contain", 'new post')
+    .should("contain", condition === 'updated' ? 'to be updated' : 'new post')
     .get(".content")
-    .should("contain", 'new post content')
+    .should("contain", condition === 'updated' ? 'successfully updated' : 'new post content')
     .get('.post-page')
     .should('exist')
     .get('.post-page img.ds-card-image')
@@ -155,5 +152,16 @@ Then('the post was saved successfully without a teaser image', () => {
 
 Then('I should be able to remove it', () => {
   cy.get('.crop-cancel')
+    .click()
+})
+
+When('my post has a teaser image', () => {
+  cy.get('.contribution-image')
+    .should('exist')
+    .and('have.attr', 'src')
+})
+
+Then('I should be able to remove the image', () => {
+  cy.get('.delete-image')
     .click()
 })

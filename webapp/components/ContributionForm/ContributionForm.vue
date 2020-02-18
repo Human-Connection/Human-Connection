@@ -7,11 +7,22 @@
     @submit="submit"
   >
     <template slot-scope="{ errors }">
+      <base-button
+        v-if="showDeleteImageButton"
+        class="delete-image"
+        icon="close"
+        size="small"
+        circle
+        danger
+        filled
+        @click.prevent="deleteImage"
+      />
       <hc-teaser-image
         :contribution="contribution"
-        @addTeaserImage="addTeaserImage"
         :class="{ '--blur-image': form.blurImage }"
+        @addTeaserImage="addTeaserImage"
         @addImageAspectRatio="addImageAspectRatio"
+        @cropInProgress="cropInProgress"
       >
         <img
           v-if="contribution"
@@ -195,6 +206,7 @@ export default {
       contentMin: 3,
       hashtags: [],
       elem: null,
+      isCropInProgress: null,
     }
   },
   computed: {
@@ -204,6 +216,9 @@ export default {
     ...mapGetters({
       currentUser: 'auth/user',
     }),
+    showDeleteImageButton() {
+      return this.contribution && this.contribution.image && !this.isCropInProgress
+    },
   },
   methods: {
     submit() {
@@ -259,6 +274,14 @@ export default {
     },
     categoryIds(categories) {
       return categories.map(c => c.id)
+    },
+    deleteImage() {
+      this.contribution.image = null
+      this.form.image = null
+      this.form.teaserImage = null
+    },
+    cropInProgress(boolean) {
+      this.isCropInProgress = boolean
     },
   },
   apollo: {
@@ -325,5 +348,12 @@ export default {
       padding-right: 0;
     }
   }
+}
+.delete-image {
+  right: 10px;
+  position: relative;
+  z-index: 1;
+  float: right;
+  top: $space-large;
 }
 </style>

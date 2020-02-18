@@ -89,6 +89,7 @@ export default {
     },
     transformImage(file) {
       this.file = file
+      this.$emit('cropInProgress', true)
       this.showCropper = true
       this.initEditor()
       this.initCropper()
@@ -105,6 +106,9 @@ export default {
       const contributionImage = document.querySelectorAll('.contribution-image')[0]
       this.oldImage = contributionImage
       if (contributionImage) contributionImage.remove()
+    },
+    deleteImage() {
+      this.clearImages()
     },
     initCropper() {
       this.image = new Image()
@@ -145,10 +149,12 @@ export default {
     cancelCrop() {
       if (this.oldImage) this.thumbnailElement.appendChild(this.oldImage)
       this.showCropper = false
+      this.$emit('cropInProgress', false)
     },
     emitImageData(imageFile) {
       this.$emit('addTeaserImage', imageFile)
       this.$emit('addImageAspectRatio', this.imageAspectRatio)
+      this.$emit('cropInProgress', false)
     },
   },
 }
@@ -222,7 +228,7 @@ export default {
 }
 
 .hc-drag-marker-update-post {
-  opacity: 0;
+  opacity: 0.1;
 }
 
 .contribution-form-footer {
