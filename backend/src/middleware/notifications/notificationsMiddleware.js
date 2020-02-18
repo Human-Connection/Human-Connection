@@ -112,7 +112,7 @@ const notifyUsersOfMention = async (label, id, idsOfUsers, reason, context) => {
 }
 
 const notifyUsersOfComment = async (label, commentId, postAuthorId, reason, context) => {
-  if (!(context.user.id !== postAuthorId)) return []
+  if (context.user.id === postAuthorId) return []
   await validateNotifyUsers(label, reason)
   const session = context.driver.session()
   const writeTxResultPromise = await session.writeTransaction(async transaction => {

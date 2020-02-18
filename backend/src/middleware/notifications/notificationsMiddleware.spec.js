@@ -528,7 +528,7 @@ describe('notifications', () => {
           })
           it('sends only one notification with reason commented_on_post, no notification with reason mentioned_in_comment', async () => {
             await createCommentOnPostAction()
-            const expected = expect.objectContaining({
+            const expected = {
               data: {
                 notifications: [
                   {
@@ -543,7 +543,7 @@ describe('notifications', () => {
                   },
                 ],
               },
-            })
+            }
 
             await expect(
               query({
@@ -552,7 +552,7 @@ describe('notifications', () => {
                   read: false,
                 },
               }),
-            ).resolves.toEqual(expected)
+            ).resolves.toMatchObject(expected, { errors: undefined })
           })
         })
 
