@@ -25,14 +25,17 @@ const switchLang = name => {
   cy.contains(".locale-menu-popover a", name).click();
 };
 
-const authenticatedHeaders = async (variables) => {
+const authenticatedHeaders = (variables) => {
   const mutation = gql`
     mutation($email: String!, $password: String!) {
       login(email: $email, password: $password)
     }
   `
-  const response = await request(config.GRAPHQL_URI, mutation, variables)
-  return { authorization: `Bearer ${response.login}` }
+  return new Cypress.Promise((resolve, reject) => {
+    request(config.GRAPHQL_URI, mutation, variables).then((response) => {
+      resolve({ authorization: `Bearer ${response.login}` })
+    })
+  })
 }
 
 Cypress.Commands.add("switchLanguage", (name, force) => {
@@ -81,20 +84,22 @@ Cypress.Commands.add("openPage", page => {
 
 Cypress.Commands.add(
   'authenticateAs',
-  async ({email, password}) => {
-    const headers = await authenticatedHeaders({ email, password })
-    return new GraphQLClient(config.GRAPHQL_URI, { headers })
-  }
-)
+  ({email, password}) => {
+    return new Cypress.Promise((resolve, reject) => {
+      authenticatedHeaders({ email, password }).then((headers) => {
+        resolve(new GraphQLClient(config.GRAPHQL_URI, { headers }))
+      })
+    })
+  })
 
 Cypress.Commands.add(
   'mutate',
   { prevSubject: true },
-  async (graphQLClient, mutation, variables) => {
-    await graphQLClient.request(mutation, variables)
-    return graphQLClient
-  }
-)
+  (graphQLClient, mutation, variables) => {
+    return new Cypress.Promise((resolve, reject) => {
+      graphQLClient.request(mutation, variables).then(() => resolve(graphQLClient))
+    })
+  })
 
 //
 //

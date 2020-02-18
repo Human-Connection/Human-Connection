@@ -39,10 +39,12 @@ Given("I am logged in", () => {
     .first("User", {
       name: narratorParams.name
     })
-    .then(async user => {
-      const userJson = await user.toJson()
-      cy.login(userJson)
+    .then(user => {
+      return new Cypress.Promise((resolve, reject) => {
+        return user.toJson().then((user) => resolve(user))
+      })
     })
+    .then(user => cy.login(user))
 });
 
 Given("I log in as {string}", name => {
@@ -51,10 +53,12 @@ Given("I log in as {string}", name => {
     .first("User", {
       name
     })
-    .then(async user => {
-      const userJson = await user.toJson()
-      cy.login(userJson)
+    .then(user => {
+      return new Cypress.Promise((resolve, reject) => {
+        return user.toJson().then((user) => resolve(user))
+      })
     })
+    .then(user => cy.login(user))
 })
 
 Given("the {string} user searches for {string}", (_, postTitle) => {
@@ -63,10 +67,12 @@ Given("the {string} user searches for {string}", (_, postTitle) => {
     .first("User", {
       id: "annoying-user"
     })
-    .then(async user => {
-      const userJson = await user.toJson()
-      cy.login(userJson)
+    .then(user => {
+      return new Cypress.Promise((resolve, reject) => {
+        return user.toJson().then((user) => resolve(user))
+      })
     })
+    .then(user => cy.login(user))
   cy.get(".searchable-input .ds-select-search")
     .focus()
     .type(postTitle);
@@ -143,10 +149,12 @@ When("a blocked user visits the post page of one of my authored posts", () => {
     .first("User", {
       name: 'Harassing User'
     })
-    .then(async user => {
-      const userJson = await user.toJson()
-      cy.login(userJson)
+    .then(user => {
+      return new Cypress.Promise((resolve, reject) => {
+        return user.toJson().then((user) => resolve(user))
+      })
     })
+    .then(user => cy.login(user))
   cy.openPage('post/previously-created-post')
 })
 
@@ -355,10 +363,12 @@ Given("I am logged in with these credentials:", table => {
     .first("User", {
       name: loginCredentials.email,
     })
-    .then(async user => {
-      const userJson = await user.toJson()
-      cy.login(userJson)
+    .then(user => {
+      return new Cypress.Promise((resolve, reject) => {
+        return user.toJson().then((user) => resolve(user))
+      })
     })
+    .then(user => cy.login(user))
 });
 
 When("I fill the password form with:", table => {

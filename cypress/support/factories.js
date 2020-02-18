@@ -8,9 +8,7 @@ const neo4jConfigs = {
 }
 const neodeInstance = getNeode(neo4jConfigs)
 
-beforeEach(async () => {
-  await cleanDatabase()
-})
+beforeEach(() => cleanDatabase())
 
 Cypress.Commands.add('neode', () => {
   return neodeInstance
@@ -19,14 +17,14 @@ Cypress.Commands.add('neode', () => {
 Cypress.Commands.add(
   'first',
   { prevSubject: true },
-  async (neode, model, properties) => {
+  (neode, model, properties) => {
     return neode.first(model, properties)
   }
 )
 Cypress.Commands.add(
   'relateTo',
   { prevSubject: true },
-  async (node, otherNode, relationship) => {
+  (node, otherNode, relationship) => {
     return node.relateTo(otherNode, relationship)
   }
 )
@@ -36,9 +34,10 @@ Cypress.Commands.add('factory', () => Factory)
 Cypress.Commands.add(
   'build',
   { prevSubject: true },
-  async (factory, name, atrributes, options) => {
-    await factory.build(name, atrributes, options)
-    return factory
+  (factory, name, atrributes, options) => {
+    return new Cypress.Promise((resolve, reject) => {
+      return factory.build(name, atrributes, options).then(() => resolve(factory))
+    })
   }
 )
 
