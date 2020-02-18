@@ -34,8 +34,8 @@ const createLocation = async (session, mapboxData) => {
     namePL: mapboxData.text_pl,
     nameRU: mapboxData.text_ru,
     type: mapboxData.id.split('.')[0].toLowerCase(),
-    lat: mapboxData.center && mapboxData.center.length ? mapboxData.center[0] : null,
-    lng: mapboxData.center && mapboxData.center.length ? mapboxData.center[1] : null,
+    lng: mapboxData.center && mapboxData.center.length ? mapboxData.center[0] : null,
+    lat: mapboxData.center && mapboxData.center.length ? mapboxData.center[1] : null,
   }
 
   let mutation =
