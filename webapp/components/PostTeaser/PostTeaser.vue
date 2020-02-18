@@ -35,8 +35,16 @@
             :icon="category.icon"
           />
         </div>
-        <counter-icon icon="bullhorn" :count="post.shoutedCount" />
-        <counter-icon icon="comments" :count="post.commentsCount" />
+        <counter-icon
+          icon="bullhorn"
+          :count="post.shoutedCount"
+          :title="$t('contribution.amount-shouts', { amount: post.shoutedCount })"
+        />
+        <counter-icon
+          icon="comments"
+          :count="post.commentsCount"
+          :title="$t('contribution.amount-comments', { amount: post.commentsCount })"
+        />
         <client-only>
           <content-menu
             resource-type="contribution"

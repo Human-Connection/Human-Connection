@@ -686,6 +686,8 @@
     }
   },
   "contribution": {
+    "amount-comments": "{amount} comments",
+    "amount-shouts": "{amount} recommendations",
     "title": "Title",
     "newPost": "Create a new Post",
     "filterFollow": "Filter contributions from users I follow",
