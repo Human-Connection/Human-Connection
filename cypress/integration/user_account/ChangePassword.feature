@@ -9,10 +9,9 @@ Feature: Change password
   password or just out of an good habit, you want to change your password.
 
   Background:
-    Given my user account has the following login credentials:
+    Given I am logged in with these credentials:
       | email            | password |
       | user@example.org | exposed  |
-    And I am logged in
 
   Scenario: Change my password
     Given I am on the "settings" page

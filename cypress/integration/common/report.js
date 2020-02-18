@@ -30,16 +30,24 @@ Given("I see David Irving's post on the post page", page => {
 })
 
 Given('I am logged in with a {string} role', role => {
-  cy.factory().create('User', {
+  cy.factory().build('user', {
+    termsAndConditionsAgreedVersion: VERSION,
+    role,
+    name: `${role} is my name`
+  }, {
     email: `${role}@example.org`,
     password: '1234',
-    termsAndConditionsAgreedVersion: VERSION,
-    role
   })
-  cy.login({
-    email: `${role}@example.org`,
-    password: '1234'
-  })
+  cy.neode()
+    .first("User", {
+      name: `${role} is my name`,
+    })
+    .then(user => {
+      return new Cypress.Promise((resolve, reject) => {
+        return user.toJson().then((user) => resolve(user))
+      })
+    })
+    .then(user => cy.login(user))
 })
 
 When('I click on "Report Post" from the content menu of the post', () => {
@@ -127,7 +135,7 @@ Given('somebody reported the following posts:', table => {
       password: '1234'
     }
     cy.factory()
-      .create('User', submitter)
+      .build('user', {}, submitter)
       .authenticateAs(submitter)
       .mutate(gql`mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
         fileReport(resourceId: $resourceId, reasonCategory: $reasonCategory, reasonDescription: $reasonDescription) {
@@ -166,8 +174,9 @@ Then('I can visit the post page', () => {
 
 When("they have a post someone has reported", () => {
   cy.factory()
-    .create("Post", {
-      authorId: 'annnoying-user',
+    .build("post", {
       title,
+    }, {
+      authorId: 'annnoying-user',
     });
 })

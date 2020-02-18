@@ -239,12 +239,6 @@ describe('ContributionForm.vue', () => {
           expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
         })
 
-        it('deletes a teaser image', async () => {
-          expectedParams.variables.imageUpload = imageUpload
-          wrapper.find(TeaserImage).vm.$emit('addTeaserImage', imageUpload)
-          wrapper.find(TeaserImage).vm.$emit('deleteImage', null)
-        })
-
         it('content is valid with just a link', async () => {
           await wrapper.vm.updateEditorContent(
             '<a href="https://www.youtube.com/watch?v=smoEelV6FUk" target="_blank"></a>',
@@ -387,6 +381,15 @@ describe('ContributionForm.vue', () => {
             .find(CategoriesSelect)
             .find('[data-test="category-buttons-cat3"]')
           healthWellbeingButton.trigger('click')
+          await wrapper.find('form').trigger('submit')
+          expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
+        })
+
+        it('supports deleting a teaser image', async () => {
+          expectedParams.variables.image = null
+          propsData.contribution.image = '/uploads/someimage.png'
+          wrapper = Wrapper()
+          wrapper.find('.contribution-form .delete-image').trigger('click')
           await wrapper.find('form').trigger('submit')
           expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
         })

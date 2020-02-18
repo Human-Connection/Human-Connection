@@ -1,20 +1,19 @@
 import jwt from 'jsonwebtoken'
 import CONFIG from './../../config'
-import Factory from '../../factories'
+import Factory, { cleanDatabase } from '../../db/factories'
 import { gql } from '../../helpers/jest'
 import { createTestClient } from 'apollo-server-testing'
 import createServer, { context } from '../../server'
 import encode from '../../jwt/encode'
 import { getNeode } from '../../db/neo4j'
 
-const factory = Factory()
 const neode = getNeode()
 let query, mutate, variables, req, user
 
 const disable = async id => {
-  const moderator = await factory.create('User', { id: 'u2', role: 'moderator' })
+  const moderator = await Factory.build('user', { id: 'u2', role: 'moderator' })
   const user = await neode.find('User', id)
-  const reportAgainstUser = await factory.create('Report')
+  const reportAgainstUser = await Factory.build('report')
   await Promise.all([
     reportAgainstUser.relateTo(moderator, 'filed', {
       resourceId: id,
@@ -48,7 +47,7 @@ beforeAll(() => {
 })
 
 afterEach(async () => {
-  await factory.cleanDatabase()
+  await cleanDatabase()
 })
 
 describe('isLoggedIn', () => {
@@ -69,7 +68,7 @@ describe('isLoggedIn', () => {
 
   describe('authenticated', () => {
     beforeEach(async () => {
-      user = await factory.create('User', { id: 'u3' })
+      user = await Factory.build('user', { id: 'u3' })
       const userBearerToken = encode({ id: 'u3' })
       req = { headers: { authorization: `Bearer ${userBearerToken}` } }
     })
@@ -127,15 +126,20 @@ describe('currentUser', () => {
   describe('authenticated', () => {
     describe('and corresponding user in the database', () => {
       beforeEach(async () => {
-        await factory.create('User', {
-          id: 'u3',
-          // the `id` is the only thing that has to match the decoded JWT bearer token
-          avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/jimmuirhead/128.jpg',
-          email: 'test@example.org',
-          name: 'Matilde Hermiston',
-          slug: 'matilde-hermiston',
-          role: 'user',
-        })
+        await Factory.build(
+          'user',
+          {
+            id: 'u3',
+            // the `id` is the only thing that has to match the decoded JWT bearer token
+            avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/jimmuirhead/128.jpg',
+            name: 'Matilde Hermiston',
+            slug: 'matilde-hermiston',
+            role: 'user',
+          },
+          {
+            email: 'test@example.org',
+          },
+        )
         const userBearerToken = encode({ id: 'u3' })
         req = { headers: { authorization: `Bearer ${userBearerToken}` } }
       })
@@ -172,10 +176,13 @@ describe('login', () => {
 
   beforeEach(async () => {
     variables = { email: 'test@example.org', password: '1234' }
-    user = await factory.create('User', {
-      ...variables,
-      id: 'acb2d923-f3af-479e-9f00-61b12e864666',
-    })
+    user = await Factory.build(
+      'user',
+      {
+        id: 'acb2d923-f3af-479e-9f00-61b12e864666',
+      },
+      variables,
+    )
   })
 
   describe('ask for a `token`', () => {
@@ -185,7 +192,9 @@ describe('login', () => {
           data: { login: token },
         } = await mutate({ mutation: loginMutation, variables })
         jwt.verify(token, CONFIG.JWT_SECRET, (err, data) => {
-          expect(data.email).toEqual('test@example.org')
+          expect(data).toMatchObject({
+            id: 'acb2d923-f3af-479e-9f00-61b12e864666',
+          })
           expect(err).toBeNull()
           done()
         })
@@ -295,7 +304,7 @@ describe('change password', () => {
 
   describe('authenticated', () => {
     beforeEach(async () => {
-      await factory.create('User', { id: 'u3' })
+      await Factory.build('user', { id: 'u3' })
       const userBearerToken = encode({ id: 'u3' })
       req = { headers: { authorization: `Bearer ${userBearerToken}` } }
     })

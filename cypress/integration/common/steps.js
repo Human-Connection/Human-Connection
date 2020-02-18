@@ -25,7 +25,6 @@ const narratorParams = {
   name: "Peter Pan",
   slug: "peter-pan",
   avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/nerrsoft/128.jpg",
-  ...loginCredentials,
   ...termsAndConditionsAgreedVersion,
 };
 
@@ -33,65 +32,82 @@ const annoyingParams = {
   email: "spammy-spammer@example.org",
   slug: 'spammy-spammer',
   password: "1234",
-  ...termsAndConditionsAgreedVersion
 };
 
 Given("I am logged in", () => {
-  cy.login(loginCredentials);
+  cy.neode()
+    .first("User", {
+      name: narratorParams.name
+    })
+    .then(user => {
+      return new Cypress.Promise((resolve, reject) => {
+        return user.toJson().then((user) => resolve(user))
+      })
+    })
+    .then(user => cy.login(user))
 });
+
+Given("I log in as {string}", name => {
+  cy.logout()
+  cy.neode()
+    .first("User", {
+      name
+    })
+    .then(user => {
+      return new Cypress.Promise((resolve, reject) => {
+        return user.toJson().then((user) => resolve(user))
+      })
+    })
+    .then(user => cy.login(user))
+})
 
 Given("the {string} user searches for {string}", (_, postTitle) => {
   cy.logout()
-    .login({ email: annoyingParams.email, password: '1234' })
-    .get(".searchable-input .ds-select-search")
+  cy.neode()
+    .first("User", {
+      id: "annoying-user"
+    })
+    .then(user => {
+      return new Cypress.Promise((resolve, reject) => {
+        return user.toJson().then((user) => resolve(user))
+      })
+    })
+    .then(user => cy.login(user))
+  cy.get(".searchable-input .ds-select-search")
     .focus()
     .type(postTitle);
 });
 
 Given("we have a selection of categories", () => {
-  cy.createCategories("cat0", "just-for-fun");
+  cy.factory().build('category', { id: "cat0", slug: "just-for-fun" });
 });
 
 Given("we have a selection of tags and categories as well as posts", () => {
-  cy.createCategories("cat12")
-    .factory()
-    .create("Tag", {
-      id: "Ecology"
-    })
-    .create("Tag", {
-      id: "Nature"
-    })
-    .create("Tag", {
-      id: "Democracy"
-    });
-
   cy.factory()
-    .create("User", {
-      id: 'a1'
-    })
-    .create("Post", {
+    .build('category', { id: 'cat12', name: "Just For Fun", icon: "smile", })
+    .build('category', { id: 'cat121', name: "Happiness & Values", icon: "heart-o"})
+    .build('category', { id: 'cat122', name: "Health & Wellbeing", icon: "medkit"})
+    .build("tag", { id: "Ecology" })
+    .build("tag", { id: "Nature" })
+    .build("tag", { id: "Democracy" })
+    .build("user", { id: 'a1' })
+    .build("post", {}, {
       authorId: 'a1',
       tagIds: ["Ecology", "Nature", "Democracy"],
       categoryIds: ["cat12"]
     })
-    .create("Post", {
+    .build("post", {}, {
       authorId: 'a1',
       tagIds: ["Nature", "Democracy"],
       categoryIds: ["cat121"]
-    });
-
-  cy.factory()
-    .create("User", {
-      id: 'a2'
     })
-    .create("Post", {
+    .build("user", { id: 'a2' })
+    .build("post", {}, {
       authorId: 'a2',
       tagIds: ['Nature', 'Democracy'],
       categoryIds: ["cat12"]
-    });
-  cy.factory()
-    .create("Post", {
-      authorId: narratorParams.id,
+    })
+    .build("post", {}, {
       tagIds: ['Democracy'],
       categoryIds: ["cat122"]
     })
@@ -99,23 +115,22 @@ Given("we have a selection of tags and categories as well as posts", () => {
 
 Given("we have the following user accounts:", table => {
   table.hashes().forEach(params => {
-    cy.factory().create("User", {
+    cy.factory().build("user", {
       ...params,
       ...termsAndConditionsAgreedVersion
-    });
+    }, params);
   });
 });
 
 Given("I have a user account", () => {
-  cy.factory().create("User", narratorParams);
+  cy.factory().build("user", narratorParams, loginCredentials);
 });
 
 Given("my user account has the role {string}", role => {
-  cy.factory().create("User", {
+  cy.factory().build("user", {
     role,
-    ...loginCredentials,
     ...termsAndConditionsAgreedVersion,
-  });
+  }, loginCredentials);
 });
 
 When("I log out", cy.logout);
@@ -130,8 +145,17 @@ When("I visit the {string} page", page => {
 
 When("a blocked user visits the post page of one of my authored posts", () => {
   cy.logout()
-    .login({ email: annoyingParams.email, password: annoyingParams.password })
-    .openPage('/post/previously-created-post')
+  cy.neode()
+    .first("User", {
+      name: 'Harassing User'
+    })
+    .then(user => {
+      return new Cypress.Promise((resolve, reject) => {
+        return user.toJson().then((user) => resolve(user))
+      })
+    })
+    .then(user => cy.login(user))
+  cy.openPage('post/previously-created-post')
 })
 
 Given("I am on the {string} page", page => {
@@ -139,7 +163,7 @@ Given("I am on the {string} page", page => {
 });
 
 When("I fill in my email and password combination and click submit", () => {
-  cy.login(loginCredentials);
+  cy.manualLogin(loginCredentials);
 });
 
 When(/(?:when )?I refresh the page/, () => {
@@ -203,32 +227,28 @@ When("I press {string}", label => {
   cy.contains(label).click();
 });
 
-Given("we have this user in our database:", table => {
-  const [firstRow] = table.hashes()
-  cy.factory().create('User', firstRow)
-})
-
-Given("we have the following posts in our database:", table => {
-  cy.factory().create('Category', {
-    id: `cat-456`,
-    name: "Just For Fun",
-    slug: `just-for-fun`,
-    icon: "smile"
-  })
-
-  table.hashes().forEach(({
-    ...postAttributes
-  }, i) => {
-    postAttributes = {
-      ...postAttributes,
-      deleted: Boolean(postAttributes.deleted),
-      disabled: Boolean(postAttributes.disabled),
-      pinned: Boolean(postAttributes.pinned),
-      categoryIds: ['cat-456']
-    }
-    cy.factory().create("Post", postAttributes);
+Given("we have the following comments in our database:", table => {
+  table.hashes().forEach((attributesOrOptions, i) => {
+    cy.factory().build("comment", {
+      ...attributesOrOptions,
+    }, {
+      ...attributesOrOptions,
+    });
   })
 });
+
+Given("we have the following posts in our database:", table => {
+      table.hashes().forEach((attributesOrOptions, i) => {
+        cy.factory().build("post", {
+          ...attributesOrOptions,
+          deleted: Boolean(attributesOrOptions.deleted),
+          disabled: Boolean(attributesOrOptions.disabled),
+          pinned: Boolean(attributesOrOptions.pinned),
+        }, {
+          ...attributesOrOptions,
+        });
+      })
+})
 
 Then("I see a success message:", message => {
   cy.contains(message);
@@ -242,15 +262,20 @@ When(
   "I click on the big plus icon in the bottom right corner to create post",
   () => {
     cy.get(".post-add-button").click();
+    cy.location("pathname").should('eq', '/post/create')
   }
 );
 
 Given("I previously created a post", () => {
-  lastPost.authorId = narratorParams.id
-  lastPost.title = "previously created post";
-  lastPost.content = "with some content";
+  lastPost = {
+    lastPost,
+    title:  "previously created post",
+    content: "with some content",
+  };
   cy.factory()
-    .create("Post", lastPost);
+    .build("post", lastPost, {
+      authorId: narratorParams.id
+    });
 });
 
 When("I choose {string} as the title of the post", title => {
@@ -311,17 +336,27 @@ Then(
     cy.visit(route, {
       failOnStatusCode: false
     });
-    cy.get(".error").should("contain", message);
+    cy.get(".error-message").should("contain", message);
   }
 );
 
-Given("my user account has the following login credentials:", table => {
+Given("I am logged in with these credentials:", table => {
   loginCredentials = table.hashes()[0];
   cy.debug();
-  cy.factory().create("User", {
+  cy.factory().build("user", {
     ...termsAndConditionsAgreedVersion,
-    ...loginCredentials
-  });
+    name: loginCredentials.email,
+  }, loginCredentials);
+  cy.neode()
+    .first("User", {
+      name: loginCredentials.email,
+    })
+    .then(user => {
+      return new Cypress.Promise((resolve, reject) => {
+        return user.toJson().then((user) => resolve(user))
+      })
+    })
+    .then(user => cy.login(user))
 });
 
 When("I fill the password form with:", table => {
@@ -340,45 +375,16 @@ When("submit the form", () => {
 
 Then("I cannot login anymore with password {string}", password => {
   cy.reload();
-  const {
-    email
-  } = loginCredentials;
-  cy.visit(`/login`);
-  cy.get("input[name=email]")
-    .trigger("focus")
-    .type(email);
-  cy.get("input[name=password]")
-    .trigger("focus")
-    .type(password);
-  cy.get("button[name=submit]")
-    .as("submitButton")
-    .click();
-  cy.get(".iziToast-wrapper").should(
-    "contain",
-    "Incorrect email address or password."
-  );
+  const { email } = loginCredentials
+  cy.manualLogin({ email, password })
+    .get(".iziToast-wrapper").should("contain", "Incorrect email address or password.");
 });
 
 Then("I can login successfully with password {string}", password => {
   cy.reload();
-  cy.login({
-    ...loginCredentials,
-    ...{
-      password
-    }
-  });
-  cy.get(".iziToast-wrapper").should("contain", "You are logged in!");
-});
-
-When("I log in with the following credentials:", table => {
-  const {
-    email,
-    password
-  } = table.hashes()[0];
-  cy.login({
-    email,
-    password
-  });
+  const { email } = loginCredentials
+  cy.manualLogin({ email, password })
+    .get(".iziToast-wrapper").should("contain", "You are logged in!");
 });
 
 When("open the notification menu and click on the first item", () => {
@@ -428,12 +434,11 @@ Then("there are no notifications in the top menu", () => {
 });
 
 Given("there is an annoying user called {string}", name => {
-  cy.factory().create("User", {
-    ...annoyingParams,
+  cy.factory().build("user", {
     id: "annoying-user",
     name,
     ...termsAndConditionsAgreedVersion,
-  });
+  }, annoyingParams);
 });
 
 Given("there is an annoying user who has muted me", () => {
@@ -451,15 +456,15 @@ Given("there is an annoying user who has muted me", () => {
 });
 
 Given("I am on the profile page of the annoying user", name => {
-  cy.openPage("/profile/annoying-user/spammy-spammer");
+  cy.openPage("profile/annoying-user/spammy-spammer");
 });
 
 When("I visit the profile page of the annoying user", name => {
-  cy.openPage("/profile/annoying-user");
+  cy.openPage("profile/annoying-user");
 });
 
 When("I ", name => {
-  cy.openPage("/profile/annoying-user");
+  cy.openPage("profile/annoying-user");
 });
 
 When(
@@ -498,12 +503,11 @@ Given("I follow the user {string}", name => {
 });
 
 Given('{string} wrote a post {string}', (_, title) => {
-  cy.createCategories("cat21")
-    .factory()
-    .create("Post", {
-      authorId: 'annoying-user',
+  cy.factory()
+    .build("post", {
       title,
-      categoryIds: ["cat21"]
+    }, {
+      authorId: 'annoying-user',
     });
 });
 
@@ -521,12 +525,11 @@ Then("I get removed from his follower collection", () => {
 });
 
 Given("I wrote a post {string}", title => {
-  cy.createCategories(`cat213`, title)
-    .factory()
-    .create("Post", {
-      authorId: narratorParams.id,
+  cy.factory()
+    .build("post", {
       title,
-      categoryIds: ["cat213"]
+    }, {
+      authorId: narratorParams.id,
     });
 });
 
@@ -552,22 +555,24 @@ When("I block the user {string}", name => {
     .then(blockedUser => {
       cy.neode()
         .first("User", {
-          name: narratorParams.name
+          id: narratorParams.id
         })
         .relateTo(blockedUser, "blocked");
     });
 });
 
-When("I log in with:", table => {
-  const [firstRow] = table.hashes();
-  const {
-    Email,
-    Password
-  } = firstRow;
-  cy.login({
-    email: Email,
-    password: Password
-  });
+When("a user has blocked me", () => {
+  cy.neode()
+    .first("User", {
+      name: narratorParams.name
+    })
+    .then(blockedUser => {
+      cy.neode()
+        .first("User", {
+          name: 'Harassing User'
+        })
+        .relateTo(blockedUser, "blocked");
+    });
 });
 
 Then("I see only one post with the title {string}", title => {
@@ -577,10 +582,31 @@ Then("I see only one post with the title {string}", title => {
   cy.get(".main-container").contains(".post-link", title);
 });
 
-Then("they should not see the comment from", () => {
+Then("they should not see the comment form", () => {
   cy.get(".ds-card-footer").children().should('not.have.class', 'comment-form')
 })
 
-Then("they should see a text explaining commenting is not possible", () => {
+Then("they should see a text explaining why commenting is not possible", () => {
   cy.get('.ds-placeholder').should('contain', "Commenting is not possible at this time on this post.")
+})
+
+Then("I should see no users in my blocked users list", () => {
+  cy.get('.ds-placeholder')
+    .should('contain', "So far, you have not blocked anybody.")
+})
+
+Then("I {string} see {string} from the content menu in the user info box", (condition, link) => {
+  cy.get(".user-content-menu .base-button").click()
+  cy.get(".popover .ds-menu-item-link")
+    .should(condition === 'should' ? 'contain' : 'not.contain', link)
+})
+
+Then('I should not see {string} button', button => {
+  cy.get('.ds-card-content .action-buttons')
+    .should('have.length', 1)
+})
+
+Then('I should see the {string} button', button => {
+  cy.get('.ds-card-content .action-buttons .base-button')
+    .should('contain', button)
 })

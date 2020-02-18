@@ -7,7 +7,7 @@ Feature: Authentication
     Given I have a user account
 
   Scenario: Log in
-    When I visit the "/login" page
+    When I visit the "login" page
     And I fill in my email and password combination and click submit
     Then I can click on my profile picture in the top right corner
     And I can see my name "Peter Lustig" in the dropdown menu
