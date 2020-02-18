@@ -4,8 +4,8 @@
     "create": "Créer",
     "delete": "Supprimer",
     "edit": "Modifier",
-    "loadMore": "charger plus",
     "loading": "chargement",
+    "loadMore": "charger plus",
     "save": "Sauvegarder"
   },
   "admin": {
@@ -150,8 +150,8 @@
     "category": "Catégorie ::: Catégories",
     "comment": "Commentaire ::: Commentaires",
     "letsTalk": "Parlons-en",
-    "loadMore": "charger plus",
     "loading": "chargement",
+    "loadMore": "charger plus",
     "moreInfo": "Plus d'infos",
     "name": "Nom",
     "organization": "Organisation ::: Organisations",

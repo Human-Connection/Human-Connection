@@ -4,8 +4,8 @@
     "create": "Crear",
     "delete": "Borrar",
     "edit": "Edite",
-    "loadMore": "cargar más",
     "loading": "cargamento",
+    "loadMore": "cargar más",
     "save": "Guardar"
   },
   "admin": {
@@ -150,8 +150,8 @@
     "category": "Categoría ::: Categorías",
     "comment": "Comentario ::: Comentarios",
     "letsTalk": "Hablemos",
-    "loadMore": "cargar más",
     "loading": "cargando",
+    "loadMore": "cargar más",
     "moreInfo": "Más información",
     "name": "Nombre",
     "organization": "Organización ::: Organizaciones",
@@ -378,11 +378,12 @@
   "moderation": {
     "name": "Moderación",
     "reports": {
-      "DecisionSuccess": "Decidido con éxito!",
       "author": "Autor",
       "content": "Contenido",
       "decideButton": "Confirmar",
+      "decided": "Decidido",
       "decideModal": {
+        "cancel": "Cancelar",
         "Comment": {
           "disable": {
             "message": "¿Realmente quiere que el comentario \"<b>{nombre}</b>\" permanezca <b>desactivado</b>?",
@@ -403,6 +404,7 @@
             "title": "Finalmente Habilitar Contribución"
           }
         },
+        "submit": "Confirmar decisión",
         "User": {
           "disable": {
             "message": "¿Realmente quiere que el usuario \"<b>{nombre}</b>\" permanezca <b>desactivado</b>?",
@@ -412,12 +414,10 @@
             "message": "¿Realmente quiere que el usuario \"<b>{nombre}</b>\" permanezca <b>habilitado</b>?",
             "title": "Finalmente Habilitar Usuario"
           }
-        },
-        "cancel": "Cancelar",
-        "submit": "Confirmar decisión"
+        }
       },
-      "decided": "Decidido",
       "decision": "Decisión",
+      "DecisionSuccess": "Decidido con éxito!",
       "disabled": "Deshabilitado",
       "disabledAt": "Deshabilitado el",
       "disabledBy": "desactivado por",

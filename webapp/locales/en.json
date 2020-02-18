@@ -4,8 +4,8 @@
     "create": "Create",
     "delete": "Delete",
     "edit": "Edit",
-    "loadMore": "load more",
     "loading": "loading",
+    "loadMore": "load more",
     "save": "Save"
   },
   "admin": {
@@ -143,8 +143,8 @@
     "category": "Category ::: Categories",
     "comment": "Comment ::: Comments",
     "letsTalk": "Let`s Talk",
-    "loadMore": "load more",
     "loading": "loading",
+    "loadMore": "load more",
     "moreInfo": "More Info",
     "name": "Name",
     "organization": "Organization ::: Organizations",
@@ -371,11 +371,12 @@
   "moderation": {
     "name": "Moderation",
     "reports": {
-      "DecisionSuccess": "Decided successfully!",
       "author": "Author",
       "content": "Content",
       "decideButton": "Confirm",
+      "decided": "Decided",
       "decideModal": {
+        "cancel": "Cancel",
         "Comment": {
           "disable": {
             "message": "Do you really want to let the comment \"<b>{name}</b>\" stay <b>disabled</b>?",
@@ -396,6 +397,7 @@
             "title": "Finally Enable Post"
           }
         },
+        "submit": "Confirm decision",
         "User": {
           "disable": {
             "message": "Do you really want to let the user \"<b>{name}</b>\" stay <b>disabled</b>?",
@@ -405,12 +407,10 @@
             "message": "Do you really want to let the user \"<b>{name}</b>\" stay <b>enabled</b>?",
             "title": "Finally Enable User"
           }
-        },
-        "cancel": "Cancel",
-        "submit": "Confirm decision"
+        }
       },
-      "decided": "Decided",
       "decision": "Decision",
+      "DecisionSuccess": "Decided successfully!",
       "disabled": "Disabled",
       "disabledAt": "Disabled at",
       "disabledBy": "Disabled by",

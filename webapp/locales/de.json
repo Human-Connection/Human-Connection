@@ -4,8 +4,8 @@
     "create": "Erstellen",
     "delete": "Löschen",
     "edit": "Bearbeiten",
-    "loadMore": "mehr laden",
     "loading": "wird geladen",
+    "loadMore": "mehr laden",
     "save": "Speichern"
   },
   "admin": {
@@ -143,8 +143,8 @@
     "category": "Kategorie ::: Kategorien",
     "comment": "Kommentar ::: Kommentare",
     "letsTalk": "Miteinander reden",
-    "loadMore": "mehr laden",
     "loading": "wird geladen",
+    "loadMore": "mehr laden",
     "moreInfo": "Mehr Info",
     "name": "Name",
     "organization": "Organisation ::: Organisationen",
@@ -371,11 +371,12 @@
   "moderation": {
     "name": "Moderation",
     "reports": {
-      "DecisionSuccess": "Erfolgreich entschieden!",
       "author": "Autor",
       "content": "Inhalt",
       "decideButton": "Bestätige",
+      "decided": "Entschieden",
       "decideModal": {
+        "cancel": "Abbruch",
         "Comment": {
           "disable": {
             "message": "Möchtest du den Kommentar \"<b>{name}</b>\" wirklich <b>gesperrt</b> lassen?",
@@ -396,6 +397,7 @@
             "title": "Entsperre den Beitrag abschließend"
           }
         },
+        "submit": "Bestätige Entscheidung",
         "User": {
           "disable": {
             "message": "Möchtest du den Benutzer \"<b>{name}</b>\" wirklich <b>gesperrt</b> lassen?",
@@ -405,12 +407,10 @@
             "message": "Möchtest du den Benutzer \"<b>{name}</b>\" wirklich <b>entsperrt</b> lassen?",
             "title": "Entsperre den Benutzer abschließend"
           }
-        },
-        "cancel": "Abbruch",
-        "submit": "Bestätige Entscheidung"
+        }
       },
-      "decided": "Entschieden",
       "decision": "Entscheidung",
+      "DecisionSuccess": "Erfolgreich entschieden!",
       "disabled": "Gesperrt",
       "disabledAt": "Gesperrt am",
       "disabledBy": "Gesperrt von",

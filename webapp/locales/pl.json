@@ -4,8 +4,8 @@
     "create": "Tworzenie",
     "delete": "Usuń",
     "edit": "Edycja",
-    "loadMore": "Obciążenie więcej",
     "loading": "załadunek",
+    "loadMore": "Obciążenie więcej",
     "save": "Oszczędzaj"
   },
   "admin": {
@@ -65,8 +65,8 @@
     "category": "Kategoria ::: Kategorie",
     "comment": "Komentarz ::: Komentarze",
     "letsTalk": "Porozmawiajmy",
-    "loadMore": "Obciążenie więcej",
     "loading": "załadunek",
+    "loadMore": "Obciążenie więcej",
     "moreInfo": "Więcej informacji",
     "name": "Nazwa",
     "organization": "Organization ::: Organizations",

@@ -1,12 +1,12 @@
 #! /usr/bin/env bash
 
-ROOT_DIR=$(dirname "$0")/..
+ROOT_DIR=$(dirname "$0")/../..
 tmp=$(mktemp)
 exit_code=0
 
 for locale_file in $ROOT_DIR/webapp/locales/*.json
 do
-  jq --sort-keys . $locale_file > "$tmp"
+  jq -f $(dirname "$0")/sort_filter.jq $locale_file > "$tmp"
   if [ "$*" == "--fix" ]
   then
     mv "$tmp" $locale_file
