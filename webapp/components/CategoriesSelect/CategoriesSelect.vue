@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="categories-select">
     <ds-flex :gutter="{ base: 'xx-small', md: 'small', lg: 'xx-small' }">
       <div v-for="category in categories" :key="category.id">
         <ds-flex-item>

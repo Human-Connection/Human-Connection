@@ -27,7 +27,7 @@ export const cleanDatabase = async (options = {}) => {
 Factory.define('category')
   .attr('id', uuid)
   .attr('icon', 'globe')
-  .attr('name', 'global-peace-nonviolence')
+  .attr('name', 'Global Peace & Nonviolence')
   .after((buildObject, options) => {
     return neode.create('Category', buildObject)
   })
@@ -112,6 +112,9 @@ Factory.define('post')
   })
   .attr('slug', ['slug', 'title'], (slug, title) => {
     return slug || slugify(title, { lower: true })
+  })
+  .attr('language', ['language'], language => {
+    return language || 'en'
   })
   .after(async (buildObject, options) => {
     const [post, author, categories, tags] = await Promise.all([

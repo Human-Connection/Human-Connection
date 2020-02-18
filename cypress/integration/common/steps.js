@@ -48,6 +48,7 @@ Given("I am logged in", () => {
 });
 
 Given("I log in as {string}", name => {
+  cy.logout()
   cy.neode()
     .first("User", {
       name
@@ -237,25 +238,17 @@ Given("we have the following comments in our database:", table => {
 });
 
 Given("we have the following posts in our database:", table => {
-  cy.factory().build('category', {
-    id: `cat-456`,
-    name: "Just For Fun",
-    slug: `just-for-fun`,
-    icon: "smile"
-  })
-
-  table.hashes().forEach((attributesOrOptions, i) => {
-    cy.factory().build("post", {
-      ...attributesOrOptions,
-      deleted: Boolean(attributesOrOptions.deleted),
-      disabled: Boolean(attributesOrOptions.disabled),
-      pinned: Boolean(attributesOrOptions.pinned),
-    }, {
-      ...attributesOrOptions,
-      categoryIds: ['cat-456']
-    });
-  })
-});
+      table.hashes().forEach((attributesOrOptions, i) => {
+        cy.factory().build("post", {
+          ...attributesOrOptions,
+          deleted: Boolean(attributesOrOptions.deleted),
+          disabled: Boolean(attributesOrOptions.disabled),
+          pinned: Boolean(attributesOrOptions.pinned),
+        }, {
+          ...attributesOrOptions,
+        });
+      })
+})
 
 Then("I see a success message:", message => {
   cy.contains(message);
@@ -269,6 +262,7 @@ When(
   "I click on the big plus icon in the bottom right corner to create post",
   () => {
     cy.get(".post-add-button").click();
+    cy.location("pathname").should('eq', '/post/create')
   }
 );
 
