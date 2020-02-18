@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 
-ROOT_DIR=$(dirname "$0")/..
+ROOT_DIR=$(dirname "$0")/../..
 english="$ROOT_DIR/webapp/locales/en.json"
 german="$ROOT_DIR/webapp/locales/de.json"
 listPaths="jq -c 'path(..)|[.[]|tostring]|join(\".\")'"
