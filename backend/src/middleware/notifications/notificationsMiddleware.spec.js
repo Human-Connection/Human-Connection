@@ -2,9 +2,10 @@ import { gql } from '../../helpers/jest'
 import { cleanDatabase } from '../../db/factories'
 import { createTestClient } from 'apollo-server-testing'
 import { getNeode, getDriver } from '../../db/neo4j'
-import createServer from '../../server'
+import createServer, { pubsub } from '../../server'
 
 let server, query, mutate, notifiedUser, authenticatedUser
+let publishSpy
 const driver = getDriver()
 const neode = getNeode()
 const categoryIds = ['cat9']
@@ -36,6 +37,7 @@ const createCommentMutation = gql`
 
 beforeAll(async () => {
   await cleanDatabase()
+  publishSpy = jest.spyOn(pubsub, 'publish')
   const createServerResult = createServer({
     context: () => {
       return {
@@ -52,6 +54,7 @@ beforeAll(async () => {
 })
 
 beforeEach(async () => {
+  publishSpy.mockClear()
   notifiedUser = await neode.create(
     'User',
     {
@@ -259,7 +262,15 @@ describe('notifications', () => {
           await createPostAction()
           const expectedContent =
             'Hey <a class="mention" data-mention-id="you" href="/profile/you/al-capone" target="_blank">@al-capone</a> how do you do?'
-          const expected = expect.objectContaining({
+          await expect(
+            query({
+              query: notificationQuery,
+              variables: {
+                read: false,
+              },
+            }),
+          ).resolves.toMatchObject({
+            errors: undefined,
             data: {
               notifications: [
                 {
@@ -275,15 +286,22 @@ describe('notifications', () => {
               ],
             },
           })
+        })
 
-          await expect(
-            query({
-              query: notificationQuery,
-              variables: {
-                read: false,
-              },
+        it('publishes `NOTIFICATION_ADDED` to me', async () => {
+          await createPostAction()
+          expect(publishSpy).toHaveBeenCalledWith(
+            'NOTIFICATION_ADDED',
+            expect.objectContaining({
+              notificationAdded: expect.objectContaining({
+                reason: 'mentioned_in_post',
+                to: expect.objectContaining({
+                  id: 'you',
+                }),
+              }),
             }),
-          ).resolves.toEqual(expected)
+          )
+          expect(publishSpy).toHaveBeenCalledTimes(1)
         })
 
         describe('updates the post and mentions me again', () => {
@@ -429,6 +447,11 @@ describe('notifications', () => {
               }),
             ).resolves.toEqual(expected)
           })
+
+          it('does not publish `NOTIFICATION_ADDED`', async () => {
+            await createPostAction()
+            expect(publishSpy).not.toHaveBeenCalled()
+          })
         })
       })
 
@@ -554,10 +577,6 @@ describe('notifications', () => {
 
           it('sends no notification', async () => {
             await createCommentOnPostAction()
-            const expected = expect.objectContaining({
-              data: { notifications: [] },
-            })
-
             await expect(
               query({
                 query: notificationQuery,
@@ -565,7 +584,26 @@ describe('notifications', () => {
                   read: false,
                 },
               }),
-            ).resolves.toEqual(expected)
+            ).resolves.toMatchObject({
+              data: { notifications: [] },
+              errors: undefined,
+            })
+          })
+
+          it('does not publish `NOTIFICATION_ADDED` to authenticated user', async () => {
+            await createCommentOnPostAction()
+            expect(publishSpy).toHaveBeenCalledWith(
+              'NOTIFICATION_ADDED',
+              expect.objectContaining({
+                notificationAdded: expect.objectContaining({
+                  reason: 'commented_on_post',
+                  to: expect.objectContaining({
+                    id: 'postAuthor', // that's expected, it's not me but the post author
+                  }),
+                }),
+              }),
+            )
+            expect(publishSpy).toHaveBeenCalledTimes(1)
           })
         })
       })
