@@ -192,7 +192,9 @@ describe('login', () => {
           data: { login: token },
         } = await mutate({ mutation: loginMutation, variables })
         jwt.verify(token, CONFIG.JWT_SECRET, (err, data) => {
-          expect(data.email).toEqual('test@example.org')
+          expect(data).toMatchObject({
+            id: 'acb2d923-f3af-479e-9f00-61b12e864666',
+          })
           expect(err).toBeNull()
           done()
         })
