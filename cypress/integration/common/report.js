@@ -42,10 +42,12 @@ Given('I am logged in with a {string} role', role => {
     .first("User", {
       name: `${role} is my name`,
     })
-    .then(async user => {
-      const userJson = await user.toJson()
-      cy.login(userJson)
+    .then(user => {
+      return new Cypress.Promise((resolve, reject) => {
+        return user.toJson().then((user) => resolve(user))
+      })
     })
+    .then(user => cy.login(user))
 })
 
 When('I click on "Report Post" from the content menu of the post', () => {
