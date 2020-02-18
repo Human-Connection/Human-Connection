@@ -53,6 +53,7 @@ const postAuthorOfComment = async (commentId, { context }) => {
 }
 
 const notifyUsersOfMention = async (label, id, idsOfUsers, reason, context) => {
+  if (!(idsOfUsers && idsOfUsers.length)) return []
   await validateNotifyUsers(label, reason)
   let mentionedCypher
   switch (reason) {
