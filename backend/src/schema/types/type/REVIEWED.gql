@@ -4,7 +4,6 @@ type REVIEWED {
   disable: Boolean!
   closed: Boolean!
   report: Report
-    # @cypher(statement: "MATCH (report:Report)<-[this:REVIEWED]-(:User) RETURN report")
   moderator: User
   resource: ReviewedResource
 }

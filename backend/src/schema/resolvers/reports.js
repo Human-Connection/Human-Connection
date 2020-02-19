@@ -16,8 +16,8 @@ export default {
       const { resourceId, reasonCategory, reasonDescription } = params
       const { driver, user } = context
       const session = driver.session()
-      const reportWriteTxResultPromise = session.writeTransaction(async transaction => {
-        const reportTransactionResponse = await transaction.run(
+      const fileReportWriteTxResultPromise = session.writeTransaction(async transaction => {
+        const fileReportTransactionResponse = await transaction.run(
           `
             MATCH (submitter:User {id: $submitterId})
             MATCH (resource {id: $resourceId})
@@ -38,19 +38,19 @@ export default {
             reasonDescription,
           },
         )
-        log(reportTransactionResponse)
-        // Wolle return reportTransactionResponse.records.map(transformReturnType)
-        return reportTransactionResponse.records.map(record =>
+        log(fileReportTransactionResponse)
+        // Wolle return fileReportTransactionResponse.records.map(transformReturnType)
+        return fileReportTransactionResponse.records.map(record =>
           record.get('filedReport'),
         )
       })
       try {
-        const [createdRelationshipWithNestedAttributes] = await reportWriteTxResultPromise
-        console.log('createdRelationshipWithNestedAttributes: ', createdRelationshipWithNestedAttributes)
-        if (!createdRelationshipWithNestedAttributes) return null
-        return createdRelationshipWithNestedAttributes
+        const [filedReport] = await fileReportWriteTxResultPromise
+        console.log('filedReport: ', filedReport)
+        // Wolle if (!filedReport) return null
+        return filedReport || null
       } finally {
-        console.log('session.close !!!')
+        console.log('fileReport: session.close !!!')
         session.close()
       }
     },

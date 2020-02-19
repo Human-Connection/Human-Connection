@@ -75,18 +75,20 @@ describe('file a report on a resource', () => {
     reasonDescription: 'Violates code of conduct !!!',
   }
   const reportsQuery = gql`
-    query {
-      reports(orderBy: createdAt_desc) {
+    query($closed: Boolean) {
+      reports(orderBy: createdAt_desc, closed: $closed) {
         id
         createdAt
         updatedAt
+        rule
+        disable
         closed
         resource {
           __typename
           ... on User {
             id
-            # Wolle FOLLOWSfiledUnclosedReportByCurrentUser
-            followedByCurrentUser
+            # Wolle filedUnclosedReportByCurrentUser
+            # Wolle test followedByCurrentUser
           }
           ... on Post {
             id
@@ -102,6 +104,31 @@ describe('file a report on a resource', () => {
           createdAt
           reasonCategory
           reasonDescription
+        }
+      }
+    }
+  `
+  const reviewMutation = gql`
+    mutation($resourceId: ID!, $disable: Boolean, $closed: Boolean) {
+      review(resourceId: $resourceId, disable: $disable, closed: $closed) {
+        createdAt
+        resource {
+          __typename
+          ... on User {
+            id
+            disabled
+          }
+          ... on Post {
+            id
+            disabled
+          }
+          ... on Comment {
+            id
+            disabled
+          }
+        }
+        report {
+          disable
         }
       }
     }
@@ -150,6 +177,17 @@ describe('file a report on a resource', () => {
             password: '1234',
           },
         )
+        moderator = await Factory.build(
+          'user',
+          {
+            id: 'moderator-id',
+            role: 'moderator',
+          },
+          {
+            email: 'moderator@example.org',
+            password: '1234',
+          },
+        )
         otherReportingUser = await Factory.build(
           'user',
           {
@@ -192,7 +230,8 @@ describe('file a report on a resource', () => {
 
       describe('valid resource', () => {
         describe('creates report', () => {
-          it.only('which belongs to resource now reported by current user', async () => {
+          it('which belongs to resource', async () => {
+          // Wolle it('which belongs to resource now reported by current user', async () => {
             await expect(
               mutate({
                 mutation: fileReportMutation,
@@ -212,7 +251,7 @@ describe('file a report on a resource', () => {
             })
           })
 
-          it('creates only one report for multiple reports on the same resource', async () => {
+          it('only one report for multiple reports on the same resource', async () => {
             const firstReport = await mutate({
               mutation: fileReportMutation,
               variables: { ...variables, resourceId: 'abusive-user-id' },
@@ -222,24 +261,89 @@ describe('file a report on a resource', () => {
               mutation: fileReportMutation,
               variables: { ...variables, resourceId: 'abusive-user-id' },
             })
-            expect(firstReport.data.fileReport.id).toEqual(secondReport.data.fileReport.id)
+            expect(firstReport.data.fileReport.reportId).toEqual(secondReport.data.fileReport.reportId)
           })
 
-          it('returns the rule for how the report was decided', async () => {
+          it('with the rule for how the report will be decided', async () => {
+            await mutate({
+              mutation: fileReportMutation,
+              variables: { ...variables, resourceId: 'abusive-user-id' },
+            })
+            authenticatedUser = await moderator.toJson()
             await expect(
-              mutate({
-                mutation: fileReportMutation,
-                variables: { ...variables, resourceId: 'abusive-user-id' },
-              }),
+              query({
+                query: reportsQuery
+              })
             ).resolves.toMatchObject({
               data: {
-                fileReport: {
+                reports: [{
                   rule: 'latestReviewUpdatedAtRules',
-                },
+                }],
               },
               errors: undefined,
             })
           })
+
+          describe('with overtaken disabled from resource in disable property', () => {
+            it('disable is false', async () => {
+              await mutate({
+                mutation: fileReportMutation,
+                variables: { ...variables, resourceId: 'abusive-user-id' },
+              })
+              authenticatedUser = await moderator.toJson()
+              await expect(
+                query({
+                  query: reportsQuery
+                }),
+              ).resolves.toMatchObject({
+                data: {
+                  reports: [{
+                    disable: false,
+                  }],
+                },
+                errors: undefined,
+              })
+            })
+
+            it.only('disable is true', async () => {
+              // first time filling a report to enable a moderator the disable the resource
+              await mutate({
+                mutation: fileReportMutation,
+                variables: { ...variables, resourceId: 'abusive-user-id' },
+              })
+              authenticatedUser = await moderator.toJson()
+              const review = await mutate({
+                mutation: reviewMutation,
+                variables: {
+                  resourceId: 'abusive-user-id',
+                  disable: true,
+                  closed: true,
+                },
+              })
+              console.log('review: ', review)
+              authenticatedUser = await currentUser.toJson()
+              // second time filling a report to see if the "disabled is true" of the resource is overtaken 
+              await mutate({
+                mutation: fileReportMutation,
+                variables: { ...variables, resourceId: 'abusive-user-id' },
+              })
+              // authenticatedUser = await moderator.toJson()
+              // await expect(
+              //   query({
+              //     query: reportsQuery,
+              //     variables: { closed: false },
+              //   }),
+              // ).resolves.toMatchObject({
+              //   data: {
+              //     reports: [{
+              //       disable: true,
+              //     }],
+              //   },
+              //   errors: undefined,
+              // })
+            })
+          })
+          
           it.todo('creates multiple filed reports')
         })
 
@@ -707,7 +811,7 @@ describe('file a report on a resource', () => {
         })
       })
 
-      it.only('role "moderator" gets reports', async () => {
+      it('role "moderator" gets reports', async () => {
         const expected = {
           reports: expect.arrayContaining([
             expect.objectContaining({
@@ -719,7 +823,7 @@ describe('file a report on a resource', () => {
                 __typename: 'User',
                 id: 'abusive-user-1',
                 // Wolle filedUnclosedReportByCurrentUser: false,
-                followedByCurrentUser: false,
+                // Wolle test followedByCurrentUser: false,
               },
               filed: expect.arrayContaining([
                 expect.objectContaining({
