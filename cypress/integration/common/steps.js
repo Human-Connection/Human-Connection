@@ -342,7 +342,6 @@ Then(
 
 Given("I am logged in with these credentials:", table => {
   loginCredentials = table.hashes()[0];
-  cy.debug();
   cy.factory().build("user", {
     ...termsAndConditionsAgreedVersion,
     name: loginCredentials.email,
@@ -420,7 +419,6 @@ When("mention {string} in the text", mention => {
   cy.get(".suggestion-list__item")
     .contains(mention)
     .click();
-  cy.debug();
 });
 
 Then("the notification gets marked as read", () => {

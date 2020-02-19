@@ -33,7 +33,7 @@
             resource-type="contribution"
             :resource="post"
             :modalsData="menuModalsData"
-            :is-owner="isAuthor(post.author ? post.author.id : null)"
+            :is-owner="isAuthor"
             @pinPost="pinPost"
             @unpinPost="unpinPost"
           />
@@ -78,7 +78,7 @@
           >
             <hc-shout-button
               v-if="post.author"
-              :disabled="isAuthor(post.author.id)"
+              :disabled="isAuthor"
               :count="post.shoutedCount"
               :is-shouted="post.shoutedByCurrentUser"
               :post-id="post.id"
@@ -91,12 +91,12 @@
         <comment-list :post="post" @toggleNewCommentForm="toggleNewCommentForm" @reply="reply" />
         <ds-space margin-bottom="large" />
         <comment-form
-          v-if="showNewCommentForm && !post.author.blocked"
+          v-if="showNewCommentForm && !isBlocked"
           ref="commentForm"
           :post="post"
           @createComment="createComment"
         />
-        <ds-placeholder v-if="post.author.blocked">
+        <ds-placeholder v-if="isBlocked">
           {{ $t('settings.blocked-users.explanation.commenting-disabled') }}
           <br />
           {{ $t('settings.blocked-users.explanation.commenting-explanation') }}
@@ -169,13 +169,20 @@ export default {
         this.deletePostCallback,
       )
     },
+    isBlocked() {
+      const { author } = this.post
+      if (!author) return false
+      return author.blocked
+    },
+    isAuthor() {
+      const { author } = this.post
+      if (!author) return false
+      return this.$store.getters['auth/user'].id === author.id
+    },
   },
   methods: {
     reply(message) {
       this.$refs.commentForm && this.$refs.commentForm.reply(message)
-    },
-    isAuthor(id) {
-      return this.$store.getters['auth/user'].id === id
     },
     async deletePostCallback() {
       try {
