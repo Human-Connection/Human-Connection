@@ -6,17 +6,18 @@
       :options="dropzoneOptions"
       :use-custom-slot="true"
       @vdropzone-error="onDropzoneError"
-      @vdropzone-thumbnail="initCropper"
+      @vdropzone-file-added="initCropper"
     >
       <loading-spinner v-if="isLoadingImage" />
       <base-icon v-else name="image" />
       <base-button
-        class="delete-image"
-        icon="close"
-        size="small"
+        v-if="hasImage"
+        icon="trash"
         circle
         danger
         filled
+        data-test="delete-button"
+        :title="$t('actions.delete')"
         @click.stop="deleteImage"
       />
     </vue-dropzone>
@@ -50,14 +51,17 @@ export default {
     VueDropzone,
   },
   props: {
-    contribution: { type: Object, default: () => {} },
+    hasImage: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
       dropzoneOptions: {
         url: () => '',
         maxFilesize: 5.0,
-        previewTemplate: '<img class="preview-image" />',
+        previewTemplate: '<span class="no-preview" />',
       },
       cropper: null,
       file: null,
@@ -69,62 +73,44 @@ export default {
     onDropzoneError(file, message) {
       this.$toast.error(file.status, message)
     },
-    clearImages() {
-      const images = document.querySelectorAll('.preview-image')
-      images.forEach((image, index) => {
-        if (index === images.length - 1) image.src = ''
-        else image.remove()
-      })
-    },
     initCropper(file) {
       this.showCropper = true
       this.file = file
-      console.log(file)
-      this.clearImages()
 
       const imageElement = document.querySelector('#cropping-image')
       imageElement.src = URL.createObjectURL(file)
       this.cropper = new Cropper(imageElement, { zoomable: false, autoCropArea: 0.9 })
     },
-    deleteImage() {
-      this.clearImages()
-      this.$emit('addHeroImage', null) // maybe?
-    },
     cropImage() {
       this.isLoadingImage = true
+
+      const onCropComplete = (aspectRatio, imageFile) => {
+        this.$emit('addImageAspectRatio', aspectRatio)
+        this.$emit('addHeroImage', imageFile)
+        this.$nextTick((this.isLoadingImage = false))
+        this.closeCropper()
+      }
+
       if (this.file.type === 'image/jpeg') {
         const canvas = this.cropper.getCroppedCanvas()
         canvas.toBlob(blob => {
           const imageAspectRatio = canvas.width / canvas.height
           const croppedImageFile = new File([blob], this.file.name, { type: this.file.type })
-          this.$emit('addHeroImage', croppedImageFile)
-          this.$emit('addImageAspectRatio', imageAspectRatio)
-          this.$emit('cropInProgress', false)
-          this.setupPreview(canvas.toDataURL())
+          onCropComplete(imageAspectRatio, croppedImageFile)
         }, 'image/jpeg')
       } else {
+        // TODO: use cropped file instead of original file
         const imageAspectRatio = this.file.width / this.file.height || 1.0
-        const croppedImageFile = this.file
-        this.setupPreview(this.file.dataURL)
-        this.$emit('addHeroImage', croppedImageFile)
-        this.$emit('addImageAspectRatio', imageAspectRatio)
-        this.$emit('cropInProgress', false)
+        onCropComplete(imageAspectRatio, this.file)
       }
-      this.closeCropper()
-    },
-    setupPreview(url) {
-      const previewElement = document.querySelector('.image-uploader .preview-image')
-      previewElement.src = url
-      this.$nextTick((this.isLoadingImage = false))
     },
     closeCropper() {
       this.showCropper = false
       this.cropper.destroy()
     },
-    cancelCrop() {
-      if (this.oldImage) this.thumbnailElement.appendChild(this.oldImage)
-      this.showCropper = false
-      this.$emit('cropInProgress', false)
+    deleteImage() {
+      this.$emit('addHeroImage', null)
+      this.$emit('addImageAspectRatio', null)
     },
   },
 }
@@ -149,16 +135,6 @@ export default {
 
   &:disabled {
     pointer-events: none;
-  }
-
-  &.--blur-image .preview-image {
-    filter: blur($blur-radius);
-  }
-
-  .preview-image {
-    width: 100%;
-    max-height: $size-image-max-height;
-    object-fit: contain;
   }
 
   > .crop-overlay {
@@ -212,12 +188,13 @@ export default {
       font-size: $size-icon-large;
       opacity: $opacity-soft;
     }
+
+    > .base-button {
+      position: absolute;
+      top: $space-small;
+      right: $space-small;
+      z-index: $z-index-surface;
+    }
   }
-}
-.delete-image {
-  position: absolute;
-  top: $space-small;
-  right: $space-small;
-  z-index: $z-index-surface;
 }
 </style>

@@ -11,11 +11,11 @@
         <template #heroImage>
           <img
             v-if="formData.image"
-            :src="contribution.image | proxyApiUrl"
+            :src="formData.image | proxyApiUrl"
             :class="['image', formData.imageBlurred && '--blur-image']"
           />
           <image-uploader
-            :contribution="contribution"
+            :hasImage="!!formData.image"
             :class="[formData.imageBlurred && '--blur-image']"
             @addHeroImage="addHeroImage"
             @addImageAspectRatio="addImageAspectRatio"
@@ -150,6 +150,7 @@ export default {
       loading: false,
       users: [],
       hashtags: [],
+      imageUpload: null,
     }
   },
   computed: {
@@ -162,11 +163,6 @@ export default {
   },
   methods: {
     submit() {
-      const newImage =
-        !this.contribution || this.contribution.image !== this.formData.image
-          ? this.formData.image
-          : null
-
       this.loading = true
       this.$apollo
         .mutate({
@@ -175,8 +171,8 @@ export default {
             ...this.formData,
             id: this.contribution.id || null,
             language: this.formData.language.value,
-            image: newImage ? null : this.formData.image,
-            imageUpload: newImage,
+            image: this.imageUpload ? null : this.formData.image,
+            imageUpload: this.imageUpload,
           },
         })
         .then(({ data }) => {
@@ -198,7 +194,8 @@ export default {
       this.$refs.contributionForm.update('content', value)
     },
     addHeroImage(file) {
-      this.formData.image = file
+      this.imageUpload = file
+      this.formData.image = file ? URL.createObjectURL(file) : null
     },
     addImageAspectRatio(aspectRatio) {
       this.formData.imageAspectRatio = aspectRatio
@@ -245,6 +242,10 @@ export default {
 
   > .hero-image {
     position: relative;
+
+    > .image {
+      max-height: $size-image-max-height;
+    }
   }
 
   .image.--blur-image {
