@@ -112,7 +112,7 @@ Then("I add all required fields", () => {
     .get(".categories-select .base-button")
     .first()
     .click()
-    .get('.ds-flex-item > .ds-form-item .ds-select ')
+    .get('.base-card > .select-field input')
     .click()
     .get('.ds-select-option')
     .eq(languages.findIndex(l => l.code === 'en'))
@@ -120,7 +120,7 @@ Then("I add all required fields", () => {
 })
 
 Then("the post was saved successfully with the {string} teaser image", condition => {
-  cy.get(".ds-card-content > .ds-heading")
+  cy.get(".base-card > .title")
     .should("contain", condition === 'updated' ? 'to be updated' : 'new post')
     .get(".content")
     .should("contain", condition === 'updated' ? 'successfully updated' : 'new post content')
@@ -129,25 +129,22 @@ Then("the post was saved successfully with the {string} teaser image", condition
     .and("contains", condition === 'updated' ? 'humanconnection' : 'onourjourney')
 })
 
-Then("the first image should be removed from the preview", () => {
-  cy.fixture("humanconnection.png").as('postTeaserImage').then(function() {
-    cy.get("#postdropzone")
-      .children()
-      .get('img.thumbnail-preview')
-      .should('have.length', 1)
-      .and('have.attr', 'src')
-      .and('contain', this.postTeaserImage)
-  })
+Then("the first image should not be displayed anymore", () => {
+  cy.get(".hero-image")
+    .children()
+    .get('.hero-image > .image')
+    .should('have.length', 1)
+    .and('have.attr', 'src')
 })
 
 Then('the {string} post was saved successfully without a teaser image', condition => {
-  cy.get(".ds-card-content > .ds-heading")
+  cy.get(".base-card > .title")
     .should("contain", condition === 'updated' ? 'to be updated' : 'new post')
     .get(".content")
     .should("contain", condition === 'updated' ? 'successfully updated' : 'new post content')
     .get('.post-page')
     .should('exist')
-    .get('.post-page img.ds-card-image')
+    .get('.hero-image > .image')
     .should('not.exist')
 })
 
@@ -157,12 +154,12 @@ Then('I should be able to remove it', () => {
 })
 
 When('my post has a teaser image', () => {
-  cy.get('.contribution-image')
+  cy.get('.contribution-form .image')
     .should('exist')
     .and('have.attr', 'src')
 })
 
 Then('I should be able to remove the image', () => {
-  cy.get('.delete-image')
+  cy.get('.dz-message > .base-button')
     .click()
 })

@@ -295,7 +295,7 @@ Then("I select a category", () => {
 });
 
 When("I choose {string} as the language for the post", (languageCode) => {
-  cy.get('.contribution-form .ds-select ')
+  cy.get('.contribution-form .ds-select')
     .click().get('.ds-select-option')
     .eq(languages.findIndex(l => l.code === languageCode)).click()
 })
@@ -582,7 +582,7 @@ Then("I see only one post with the title {string}", title => {
   cy.get(".main-container").contains(".post-link", title);
 });
 
-Then("they should not see the comment from", () => {
+Then("they should not see the comment form", () => {
   cy.get(".base-card").children().should('not.have.class', 'comment-form')
 })
 
@@ -602,11 +602,11 @@ Then("I {string} see {string} from the content menu in the user info box", (cond
 })
 
 Then('I should not see {string} button', button => {
-  cy.get('.ds-card-content .action-buttons')
+  cy.get('.base-card .action-buttons')
     .should('have.length', 1)
 })
 
 Then('I should see the {string} button', button => {
-  cy.get('.ds-card-content .action-buttons .base-button')
+  cy.get('.base-card .action-buttons .base-button')
     .should('contain', button)
 })

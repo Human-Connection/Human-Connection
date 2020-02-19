@@ -9,7 +9,7 @@
         '--blur-image': blurred,
       }"
     >
-      <template #heroImage>
+      <template #heroImage v-if="post.image">
         <img :src="post.image | proxyApiUrl" class="image" />
         <aside v-show="post.imageBlurred" class="blur-toggle">
           <img v-show="blurred" :src="post.image | proxyApiUrl" class="preview" />
