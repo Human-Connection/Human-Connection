@@ -6,7 +6,7 @@ import Vuex from 'vuex'
 import PostMutations from '~/graphql/PostMutations.js'
 import CategoriesSelect from '~/components/CategoriesSelect/CategoriesSelect'
 
-import TeaserImage from '~/components/TeaserImage/TeaserImage'
+import ImageUploader from '~/components/ImageUploader/ImageUploader'
 import MutationObserver from 'mutation-observer'
 
 global.MutationObserver = MutationObserver
@@ -234,7 +234,7 @@ describe('ContributionForm.vue', () => {
 
         it('supports adding a teaser image', async () => {
           expectedParams.variables.imageUpload = imageUpload
-          wrapper.find(TeaserImage).vm.$emit('addTeaserImage', imageUpload)
+          wrapper.find(ImageUploader).vm.$emit('addHeroImage', imageUpload)
           await wrapper.find('form').trigger('submit')
           expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
         })

@@ -24,10 +24,10 @@
             :src="contribution.image | proxyApiUrl"
             :class="['image', form.blurImage && '--blur-image']"
           />
-          <teaser-image
+          <image-uploader
             :contribution="contribution"
             :class="[form.blurImage && '--blur-image']"
-            @addTeaserImage="addTeaserImage"
+            @addHeroImage="addHeroImage"
             @addImageAspectRatio="addImageAspectRatio"
           />
         </template>
@@ -101,13 +101,13 @@ import HcEditor from '~/components/Editor/Editor'
 import locales from '~/locales'
 import PostMutations from '~/graphql/PostMutations.js'
 import CategoriesSelect from '~/components/CategoriesSelect/CategoriesSelect'
-import TeaserImage from '~/components/TeaserImage/TeaserImage'
+import ImageUploader from '~/components/ImageUploader/ImageUploader'
 
 export default {
   components: {
     HcEditor,
     CategoriesSelect,
-    TeaserImage,
+    ImageUploader,
   },
   props: {
     contribution: { type: Object, default: () => {} },
@@ -236,7 +236,7 @@ export default {
     updateEditorContent(value) {
       this.$refs.contributionForm.update('content', value)
     },
-    addTeaserImage(file) {
+    addHeroImage(file) {
       this.form.teaserImage = file
     },
     addImageAspectRatio(aspectRatio) {

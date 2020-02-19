@@ -1,9 +1,9 @@
 import { mount } from '@vue/test-utils'
-import TeaserImage from './TeaserImage.vue'
+import ImageUploader from './ImageUploader.vue'
 
 const localVue = global.localVue
 
-describe('TeaserImage.vue', () => {
+describe('ImageUploader.vue', () => {
   let wrapper
   let mocks
 
@@ -17,7 +17,7 @@ describe('TeaserImage.vue', () => {
   })
   describe('mount', () => {
     const Wrapper = () => {
-      return mount(TeaserImage, { mocks, localVue })
+      return mount(ImageUploader, { mocks, localVue })
     }
     beforeEach(() => {
       wrapper = Wrapper()

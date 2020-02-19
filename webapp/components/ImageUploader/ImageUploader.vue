@@ -1,5 +1,4 @@
 <template>
-  <!-- TODO: rename to ImageUploader when delete-teaser-image PR is merged -->
   <div class="image-uploader">
     <vue-dropzone
       v-show="!showCropper"
@@ -87,7 +86,7 @@ export default {
         canvas.toBlob(blob => {
           const imageAspectRatio = canvas.width / canvas.height
           const croppedImageFile = new File([blob], this.file.name, { type: this.file.type })
-          this.$emit('addTeaserImage', croppedImageFile)
+          this.$emit('addHeroImage', croppedImageFile)
           this.$emit('addImageAspectRatio', imageAspectRatio)
           this.$emit('cropInProgress', false)
           this.setupPreview(canvas.toDataURL())
@@ -96,7 +95,7 @@ export default {
         const imageAspectRatio = this.file.width / this.file.height || 1.0
         const croppedImageFile = this.file
         this.setupPreview(this.file.dataURL)
-        this.$emit('addTeaserImage', croppedImageFile)
+        this.$emit('addHeroImage', croppedImageFile)
         this.$emit('addImageAspectRatio', imageAspectRatio)
         this.$emit('cropInProgress', false)
       }
