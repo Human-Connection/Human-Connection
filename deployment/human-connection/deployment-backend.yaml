@@ -38,7 +38,7 @@ spec:
             name: human-connection
         image: humanconnection/nitro-backend:latest
         imagePullPolicy: Always
-        name: nitro-backend
+        name: backend
         ports:
         - containerPort: 4000
           protocol: TCP

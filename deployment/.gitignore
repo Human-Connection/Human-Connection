@@ -2,3 +2,5 @@ secrets.yaml
 configmap.yaml
 **/secrets.yaml
 **/configmap.yaml
+**/staging-values.yaml
+**/production-values.yaml

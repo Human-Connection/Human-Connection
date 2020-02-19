@@ -9,6 +9,16 @@
     <template slot-scope="{ errors }">
       <base-card>
         <template #heroImage>
+          <base-button
+            v-if="showDeleteImageButton"
+            class="delete-image"
+            icon="close"
+            size="small"
+            circle
+            danger
+            filled
+            @click.prevent="deleteImage"
+          />
           <img
             v-if="showHeroImage"
             :src="contribution.image | proxyApiUrl"
@@ -163,6 +173,7 @@ export default {
       contentMin: 3,
       hashtags: [],
       elem: null,
+      isCropInProgress: null,
     }
   },
   computed: {
@@ -174,6 +185,9 @@ export default {
     },
     showHeroImage() {
       return this.contribution && this.contribution.image && !this.form.teaserImage
+    },
+    showDeleteImageButton() {
+      return this.contribution && this.contribution.image && !this.isCropInProgress
     },
   },
   methods: {
@@ -230,6 +244,14 @@ export default {
     },
     categoryIds(categories) {
       return categories.map(c => c.id)
+    },
+    deleteImage() {
+      this.contribution.image = null
+      this.form.image = null
+      this.form.teaserImage = null
+    },
+    cropInProgress(boolean) {
+      this.isCropInProgress = boolean
     },
   },
   apollo: {
@@ -306,5 +328,12 @@ export default {
       display: block;
     }
   }
+}
+.delete-image {
+  right: 10px;
+  position: relative;
+  z-index: 1;
+  float: right;
+  top: $space-large;
 }
 </style>

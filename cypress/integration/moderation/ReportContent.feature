@@ -62,9 +62,8 @@ Feature: Report and Moderate
     Given somebody reported the following posts:
       | submitterEmail           | resourceId | reasonCategory | reasonDescription |
       | p2.submitter@example.org | p2         | other          | Offensive content |
-    And my user account has the role "moderator"
+    And I am logged in with a "moderator" role
     And there is an annoying user who has muted me
-    And I am logged in
     When I click on the avatar menu in the top right corner
     And I click on "Moderation"
     Then I see all the reported posts including from the user who muted me

@@ -55,6 +55,7 @@ export default {
       file: null,
       showCropper: false,
       isLoadingImage: false,
+      imageAspectRatio: null,
     }
   },
   methods: {
@@ -86,6 +87,35 @@ export default {
         this.$emit('addTeaserImage', croppedImageFile)
         this.$emit('addImageAspectRatio', imageAspectRatio)
         this.setupPreview(canvas.toDataURL())
+      })
+    },
+    deleteImage() {
+      this.clearImages()
+    },
+    cropImage() {
+      this.showCropper = false
+      if (this.file.type === 'image/jpeg') {
+        this.uploadJpeg()
+      } else {
+        this.uploadOtherImageType()
+      }
+    },
+    uploadOtherImageType() {
+      this.imageAspectRatio = this.file.width / this.file.height || 1.0
+      this.image = new Image()
+      this.image.src = this.file.dataURL
+      this.setupPreview()
+      this.emitImageData(this.file)
+    },
+    uploadJpeg() {
+      const canvas = this.cropper.getCroppedCanvas()
+      canvas.toBlob(blob => {
+        this.imageAspectRatio = canvas.width / canvas.height
+        this.image = new Image()
+        this.image.src = canvas.toDataURL()
+        this.setupPreview()
+        const croppedImageFile = new File([blob], this.file.name, { type: this.file.type })
+        this.emitImageData(croppedImageFile)
       }, 'image/jpeg')
 
       this.closeCropper()
@@ -98,6 +128,20 @@ export default {
     closeCropper() {
       this.showCropper = false
       this.cropper.destroy()
+    },
+    setupPreview() {
+      this.image.classList.add('thumbnail-preview')
+      this.thumbnailElement.appendChild(this.image)
+    },
+    cancelCrop() {
+      if (this.oldImage) this.thumbnailElement.appendChild(this.oldImage)
+      this.showCropper = false
+      this.$emit('cropInProgress', false)
+    },
+    emitImageData(imageFile) {
+      this.$emit('addTeaserImage', imageFile)
+      this.$emit('addImageAspectRatio', this.imageAspectRatio)
+      this.$emit('cropInProgress', false)
     },
   },
 }

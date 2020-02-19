@@ -1,10 +1,9 @@
 import { createTestClient } from 'apollo-server-testing'
-import Factory from '../../factories'
+import Factory, { cleanDatabase } from '../../db/factories'
 import { gql } from '../../helpers/jest'
 import { getNeode, getDriver } from '../../db/neo4j'
 import createServer from '../../server'
 
-const factory = Factory()
 const driver = getDriver()
 const instance = getNeode()
 
@@ -31,23 +30,38 @@ describe('rewards', () => {
   })
 
   beforeEach(async () => {
-    regularUser = await factory.create('User', {
-      id: 'regular-user-id',
-      role: 'user',
-      email: 'user@example.org',
-      password: '1234',
-    })
-    moderator = await factory.create('User', {
-      id: 'moderator-id',
-      role: 'moderator',
-      email: 'moderator@example.org',
-    })
-    administrator = await factory.create('User', {
-      id: 'admin-id',
-      role: 'admin',
-      email: 'admin@example.org',
-    })
-    badge = await factory.create('Badge', {
+    regularUser = await Factory.build(
+      'user',
+      {
+        id: 'regular-user-id',
+        role: 'user',
+      },
+      {
+        email: 'user@example.org',
+        password: '1234',
+      },
+    )
+    moderator = await Factory.build(
+      'user',
+      {
+        id: 'moderator-id',
+        role: 'moderator',
+      },
+      {
+        email: 'moderator@example.org',
+      },
+    )
+    administrator = await Factory.build(
+      'user',
+      {
+        id: 'admin-id',
+        role: 'admin',
+      },
+      {
+        email: 'admin@example.org',
+      },
+    )
+    badge = await Factory.build('badge', {
       id: 'indiegogo_en_rhino',
       type: 'crowdfunding',
       status: 'permanent',
@@ -56,7 +70,7 @@ describe('rewards', () => {
   })
 
   afterEach(async () => {
-    await factory.cleanDatabase()
+    await cleanDatabase()
   })
 
   describe('reward', () => {
@@ -130,7 +144,7 @@ describe('rewards', () => {
       })
 
       it('rewards a second different badge to same user', async () => {
-        await factory.create('Badge', {
+        await Factory.build('badge', {
           id: 'indiegogo_en_racoon',
           icon: '/img/badges/indiegogo_en_racoon.svg',
         })
@@ -172,10 +186,15 @@ describe('rewards', () => {
           },
           errors: undefined,
         }
-        await factory.create('User', {
-          id: 'regular-user-2-id',
-          email: 'regular2@email.com',
-        })
+        await Factory.build(
+          'user',
+          {
+            id: 'regular-user-2-id',
+          },
+          {
+            email: 'regular2@email.com',
+          },
+        )
         await mutate({
           mutation: rewardMutation,
           variables,

@@ -1,0 +1,53 @@
+# domain is the user-facing domain.
+domain: develop.human-connection.org
+# commit is the latest github commit deployed.
+commit: 889a7cdd24dda04a139b2b77d626e984d6db6781
+# dbInitialization runs the database initializations in a post-install hook.
+dbInitializion: "yarn prod:migrate init"
+# dbMigrations runs the database migrations in a post-upgrade hook.
+dbMigrations: "yarn prod:migrate up"
+# bakendImage is the docker image for the backend deployment
+backendImage: humanconnection/nitro-backend
+# maintenanceImage is the docker image for the maintenance deployment
+maintenanceImage: humanconnection/maintenance
+# neo4jImage is the docker image for the neo4j deployment
+neo4jImage: humanconnection/neo4j
+# webappImage is the docker image for the webapp deployment
+webappImage: humanconnection/nitro-web
+# image configures pullPolicy related to the docker images
+image:
+  # pullPolicy indicates when, if ever, pods pull a new image from docker hub.
+  pullPolicy: IfNotPresent
+# letsencryptIssuer is used by cert-manager to set up certificates with the given provider.
+letsencryptIssuer: "letsencrypt-prod"
+# neo4jConfig changes any default neo4j config/adds it.
+neo4jConfig:
+  # acceptLicenseAgreement is used to agree to the license agreement for neo4j's enterprise edition.
+  acceptLicenseAgreement: \"yes\"
+  # apocImportFileEnabled enables the import of files to neo4j using the plugin apoc 
+  apocImportFileEnabled: \"true\"
+  # dbmsMemoryHeapInitialSize configures initial heap size. By default, it is calculated based on available system resources.(valid units are `k`, `K`, `m`, `M`, `g`, `G`)
+  dbmsMemoryHeapInitialSize: "500M"
+  # dbmsMemoryHeapMaxSize configures maximum heap size. By default it is calculated based on available system resources.(valid units are `k`, `K`, `m`, `M`, `g`, `G`)
+  dbmsMemoryHeapMaxSize: "500M"
+  # dbmsMemoryPagecacheSize configures the amount of memory to use for mapping the store files, in bytes (or 'k', 'm', and 'g')
+  dbmsMemoryPagecacheSize: "490M"
+# neo4jResourceLimitsMemory configures the memory limits available.
+neo4jResourceLimitsMemory: "2G"
+# neo4jResourceLimitsMemory configures the memory available for requests.
+neo4jResourceRequestsMemory: "1G"
+# supportEmail is used for letsencrypt certs.
+supportEmail: "devcom@human-connection.org"
+# smtpHost is the host for the mailserver.
+smtpHost: "mailserver.human-connection.org"
+# smtpPort is the port to be used for the mailserver.
+smtpPort: \"25\"
+# jwtSecret is used to encode/decode a user's JWT for authentication
+jwtSecret: "Yi8mJjdiNzhCRiZmdi9WZA=="
+# privateKeyPassphrase is used for activity pub
+privateKeyPassphrase: "YTdkc2Y3OHNhZGc4N2FkODdzZmFnc2FkZzc4"
+# mapboxToken is used for the Mapbox API, geolocalization.
+mapboxToken: "cGsuZXlKMUlqb2lhSFZ0WVc0dFkyOXVibVZqZEdsdmJpSXNJbUVpT2lKamFqbDBjbkJ1Ykdvd2VUVmxNM1Z3WjJsek5UTnVkM1p0SW4wLktaOEtLOWw3MG9talhiRWtrYkhHc1E="
+uploadsStorage: "25Gi"
+neo4jStorage: "5Gi"
+developmentMailserverDomain: nitro-mailserver.human-connection.org

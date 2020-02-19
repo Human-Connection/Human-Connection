@@ -1,5 +1,8 @@
 import { When, Then } from "cypress-cucumber-preprocessor/steps";
+import locales from '../../../webapp/locales'
+import orderBy from 'lodash/orderBy'
 
+const languages = orderBy(locales, 'name')
 const narratorAvatar =
   "https://s3.amazonaws.com/uifaces/faces/twitter/nerrsoft/128.jpg";
 
@@ -83,4 +86,83 @@ And("the post with title {string} has a ribbon for pinned posts", (title) => {
 
 Then("I see a toaster with {string}", (title) => {
   cy.get(".iziToast-message").should("contain", title);
+})
+
+Then("I should be able to {string} a teaser image", condition => {
+  cy.reload()
+  const teaserImageUpload = (condition === 'change') ? "humanconnection.png" : "onourjourney.png";
+  cy.fixture(teaserImageUpload).as('postTeaserImage').then(function() {
+    cy.get("#postdropzone").upload(
+      { fileContent: this.postTeaserImage, fileName: teaserImageUpload, mimeType: "image/png" },
+      { subjectType: "drag-n-drop", force: true }
+    );
+  })
+})
+
+Then('confirm crop', () => {
+  cy.get('.crop-confirm')
+    .click()
+})
+
+Then("I add all required fields", () => {
+  cy.get('input[name="title"]')
+    .type('new post')
+    .get(".editor .ProseMirror")
+    .type('new post content')
+    .get(".categories-select .base-button")
+    .first()
+    .click()
+    .get('.ds-flex-item > .ds-form-item .ds-select ')
+    .click()
+    .get('.ds-select-option')
+    .eq(languages.findIndex(l => l.code === 'en'))
+    .click()
+})
+
+Then("the post was saved successfully with the {string} teaser image", condition => {
+  cy.get(".ds-card-content > .ds-heading")
+    .should("contain", condition === 'updated' ? 'to be updated' : 'new post')
+    .get(".content")
+    .should("contain", condition === 'updated' ? 'successfully updated' : 'new post content')
+    .get('.post-page img')
+    .should("have.attr", "src")
+    .and("contains", condition === 'updated' ? 'humanconnection' : 'onourjourney')
+})
+
+Then("the first image should be removed from the preview", () => {
+  cy.fixture("humanconnection.png").as('postTeaserImage').then(function() {
+    cy.get("#postdropzone")
+      .children()
+      .get('img.thumbnail-preview')
+      .should('have.length', 1)
+      .and('have.attr', 'src')
+      .and('contain', this.postTeaserImage)
+  })
+})
+
+Then('the {string} post was saved successfully without a teaser image', condition => {
+  cy.get(".ds-card-content > .ds-heading")
+    .should("contain", condition === 'updated' ? 'to be updated' : 'new post')
+    .get(".content")
+    .should("contain", condition === 'updated' ? 'successfully updated' : 'new post content')
+    .get('.post-page')
+    .should('exist')
+    .get('.post-page img.ds-card-image')
+    .should('not.exist')
+})
+
+Then('I should be able to remove it', () => {
+  cy.get('.crop-cancel')
+    .click()
+})
+
+When('my post has a teaser image', () => {
+  cy.get('.contribution-image')
+    .should('exist')
+    .and('have.attr', 'src')
+})
+
+Then('I should be able to remove the image', () => {
+  cy.get('.delete-image')
+    .click()
 })

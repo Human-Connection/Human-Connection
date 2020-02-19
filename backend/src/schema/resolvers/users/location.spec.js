@@ -1,10 +1,9 @@
 import { gql } from '../../../helpers/jest'
-import Factory from '../../../factories'
+import Factory, { cleanDatabase } from '../../../db/factories'
 import { getNeode, getDriver } from '../../../db/neo4j'
 import { createTestClient } from 'apollo-server-testing'
 import createServer from '../../../server'
 
-const factory = Factory()
 const neode = getNeode()
 const driver = getDriver()
 let authenticatedUser, mutate, variables
@@ -42,7 +41,7 @@ const updateUserMutation = gql`
 let newlyCreatedNodesWithLocales = [
   {
     city: {
-      lng: 41.1534,
+      lat: 41.1534,
       nameES: 'Hamburg',
       nameFR: 'Hamburg',
       nameIT: 'Hamburg',
@@ -55,7 +54,7 @@ let newlyCreatedNodesWithLocales = [
       name: 'Hamburg',
       namePL: 'Hamburg',
       id: 'place.5977106083398860',
-      lat: -74.5763,
+      lng: -74.5763,
     },
     state: {
       namePT: 'Nova Jérsia',
@@ -107,7 +106,7 @@ beforeEach(() => {
 })
 
 afterEach(() => {
-  factory.cleanDatabase()
+  cleanDatabase()
 })
 
 describe('userMiddleware', () => {
@@ -146,12 +145,12 @@ describe('userMiddleware', () => {
   })
 
   describe('UpdateUser', () => {
-    let user, userParams
+    let user
     beforeEach(async () => {
       newlyCreatedNodesWithLocales = [
         {
           city: {
-            lng: 53.55,
+            lat: 53.55,
             nameES: 'Hamburgo',
             nameFR: 'Hambourg',
             nameIT: 'Amburgo',
@@ -164,7 +163,7 @@ describe('userMiddleware', () => {
             namePL: 'Hamburg',
             name: 'Hamburg',
             id: 'region.10793468240398860',
-            lat: 10,
+            lng: 10,
           },
           country: {
             namePT: 'Alemanha',
@@ -182,10 +181,9 @@ describe('userMiddleware', () => {
           },
         },
       ]
-      userParams = {
+      user = await Factory.build('user', {
         id: 'updating-user',
-      }
-      user = await factory.create('User', userParams)
+      })
       authenticatedUser = await user.toJson()
     })
 

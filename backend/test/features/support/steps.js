@@ -3,18 +3,18 @@ import { Given, When, Then, AfterAll } from 'cucumber'
 import { expect } from 'chai'
 // import { client } from '../../../src/activitypub/apollo-client'
 import { GraphQLClient } from 'graphql-request'
-import Factory from '../../../src/factories'
+import Factory from '../../../src/db/factories'
 const debug = require('debug')('ea:test:steps')
 
-const factory = Factory()
 const client = new GraphQLClient(host)
 
 function createUser (slug) {
   debug(`creating user ${slug}`)
-  return factory.create('User', {
+  return Factory.build('user', {
     name: slug,
+  }, {
+    password: '1234',
     email: 'example@test.org',
-    password: '1234'
   })
   // await login({ email: 'example@test.org', password: '1234' })
 }

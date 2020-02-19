@@ -5,10 +5,12 @@ const fragmentMatcher = new IntrospectionFragmentMatcher({
   introspectionQueryResultData,
 })
 
-export default ({ app }) => {
-  const backendUrl = process.env.GRAPHQL_URI || 'http://localhost:4000'
+export default ({ req, nuxtState }) => {
+  const { env } = req || nuxtState
+  const backendUrl = env.GRAPHQL_URI || 'http://localhost:4000'
 
   return {
+    wsEndpoint: env.WEBSOCKETS_URI || 'ws://localhost:4000/graphql',
     httpEndpoint: process.server ? backendUrl : '/api',
     httpLinkOptions: {
       credentials: 'same-origin',

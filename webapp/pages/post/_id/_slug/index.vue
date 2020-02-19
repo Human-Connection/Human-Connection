@@ -96,7 +96,7 @@
           :post="post"
           @createComment="createComment"
         />
-        <ds-placeholder v-else>
+        <ds-placeholder v-if="post.author.blocked">
           {{ $t('settings.blocked-users.explanation.commenting-disabled') }}
           <br />
           {{ $t('settings.blocked-users.explanation.commenting-explanation') }}

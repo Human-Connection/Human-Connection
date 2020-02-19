@@ -26,7 +26,7 @@ export default function(options = {}) {
       resource = response.data[Object.keys(response.data)[0]][0]
       if (resource) return redirect(`/${path}/${resource.id}/${resource.slug}`)
 
-      return error({ statusCode: 404, message })
+      return error({ statusCode: 404, key: message })
     },
   }
 }
