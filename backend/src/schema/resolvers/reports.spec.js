@@ -52,6 +52,9 @@ describe('file a report on a resource', () => {
         reasonCategory: $reasonCategory
         reasonDescription: $reasonDescription
       ) {
+        createdAt
+        reasonCategory
+        reasonDescription
         reportId
         resource {
           __typename
@@ -231,7 +234,7 @@ describe('file a report on a resource', () => {
       describe('valid resource', () => {
         describe('creates report', () => {
           it('which belongs to resource', async () => {
-          // Wolle it('which belongs to resource now reported by current user', async () => {
+            // Wolle it('which belongs to resource now reported by current user', async () => {
             await expect(
               mutate({
                 mutation: fileReportMutation,
@@ -261,7 +264,9 @@ describe('file a report on a resource', () => {
               mutation: fileReportMutation,
               variables: { ...variables, resourceId: 'abusive-user-id' },
             })
-            expect(firstReport.data.fileReport.reportId).toEqual(secondReport.data.fileReport.reportId)
+            expect(firstReport.data.fileReport.reportId).toEqual(
+              secondReport.data.fileReport.reportId,
+            )
           })
 
           it('with the rule for how the report will be decided', async () => {
@@ -272,13 +277,15 @@ describe('file a report on a resource', () => {
             authenticatedUser = await moderator.toJson()
             await expect(
               query({
-                query: reportsQuery
-              })
+                query: reportsQuery,
+              }),
             ).resolves.toMatchObject({
               data: {
-                reports: [{
-                  rule: 'latestReviewUpdatedAtRules',
-                }],
+                reports: [
+                  {
+                    rule: 'latestReviewUpdatedAtRules',
+                  },
+                ],
               },
               errors: undefined,
             })
@@ -293,26 +300,28 @@ describe('file a report on a resource', () => {
               authenticatedUser = await moderator.toJson()
               await expect(
                 query({
-                  query: reportsQuery
+                  query: reportsQuery,
                 }),
               ).resolves.toMatchObject({
                 data: {
-                  reports: [{
-                    disable: false,
-                  }],
+                  reports: [
+                    {
+                      disable: false,
+                    },
+                  ],
                 },
                 errors: undefined,
               })
             })
 
-            it.only('disable is true', async () => {
+            it('disable is true', async () => {
               // first time filling a report to enable a moderator the disable the resource
               await mutate({
                 mutation: fileReportMutation,
                 variables: { ...variables, resourceId: 'abusive-user-id' },
               })
               authenticatedUser = await moderator.toJson()
-              const review = await mutate({
+              await mutate({
                 mutation: reviewMutation,
                 variables: {
                   resourceId: 'abusive-user-id',
@@ -320,30 +329,31 @@ describe('file a report on a resource', () => {
                   closed: true,
                 },
               })
-              console.log('review: ', review)
               authenticatedUser = await currentUser.toJson()
-              // second time filling a report to see if the "disabled is true" of the resource is overtaken 
+              // second time filling a report to see if the "disabled is true" of the resource is overtaken
               await mutate({
                 mutation: fileReportMutation,
                 variables: { ...variables, resourceId: 'abusive-user-id' },
               })
-              // authenticatedUser = await moderator.toJson()
-              // await expect(
-              //   query({
-              //     query: reportsQuery,
-              //     variables: { closed: false },
-              //   }),
-              // ).resolves.toMatchObject({
-              //   data: {
-              //     reports: [{
-              //       disable: true,
-              //     }],
-              //   },
-              //   errors: undefined,
-              // })
+              authenticatedUser = await moderator.toJson()
+              await expect(
+                query({
+                  query: reportsQuery,
+                  variables: { closed: false },
+                }),
+              ).resolves.toMatchObject({
+                data: {
+                  reports: [
+                    {
+                      disable: true,
+                    },
+                  ],
+                },
+                errors: undefined,
+              })
             })
           })
-          
+
           it.todo('creates multiple filed reports')
         })
 
@@ -385,7 +395,7 @@ describe('file a report on a resource', () => {
             })
           })
 
-          it('returns the submitter', async () => {
+          it.skip('returns the submitter', async () => {
             await expect(
               mutate({
                 mutation: fileReportMutation,
@@ -407,7 +417,7 @@ describe('file a report on a resource', () => {
             })
           })
 
-          it('returns a date', async () => {
+          it('returns a createdAt', async () => {
             await expect(
               mutate({
                 mutation: fileReportMutation,
@@ -436,11 +446,7 @@ describe('file a report on a resource', () => {
             ).resolves.toMatchObject({
               data: {
                 fileReport: {
-                  filed: [
-                    {
-                      reasonCategory: 'criminal_behavior_violation_german_law',
-                    },
-                  ],
+                  reasonCategory: 'criminal_behavior_violation_german_law',
                 },
               },
               errors: undefined,
@@ -481,11 +487,7 @@ describe('file a report on a resource', () => {
             ).resolves.toMatchObject({
               data: {
                 fileReport: {
-                  filed: [
-                    {
-                      reasonDescription: 'My reason!',
-                    },
-                  ],
+                  reasonDescription: 'My reason!',
                 },
               },
               errors: undefined,
@@ -505,11 +507,7 @@ describe('file a report on a resource', () => {
             ).resolves.toMatchObject({
               data: {
                 fileReport: {
-                  filed: [
-                    {
-                      reasonDescription: 'My reason !',
-                    },
-                  ],
+                  reasonDescription: 'My reason !',
                 },
               },
               errors: undefined,

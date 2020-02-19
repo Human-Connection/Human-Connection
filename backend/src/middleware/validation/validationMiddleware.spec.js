@@ -58,7 +58,7 @@ const reportMutation = gql`
       reasonCategory: $reasonCategory
       reasonDescription: $reasonDescription
     ) {
-      id
+      reportId
     }
   }
 `

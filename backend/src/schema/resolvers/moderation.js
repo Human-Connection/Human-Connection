@@ -28,9 +28,7 @@ export default {
             dateTime: new Date().toISOString(),
           })
           log(reviewTransactionResponse)
-          return reviewTransactionResponse.records.map(record =>
-            record.get('review'),
-          )
+          return reviewTransactionResponse.records.map(record => record.get('review'))
         })
         const [reviewed] = await reviewWriteTxResultPromise
         // Wolle console.log('reviewed: ', reviewed)

@@ -1,15 +1,5 @@
 import log from './helpers/databaseLogger'
 
-// Wolle const transformReturnType = record => {
-//   return {
-//     ...record.get('report').properties,
-//     resource: {
-//       __typename: record.get('type'),
-//       ...record.get('resource').properties,
-//     },
-//   }
-// }
-
 export default {
   Mutation: {
     fileReport: async (_parent, params, context, _resolveInfo) => {
@@ -27,8 +17,8 @@ export default {
             WITH submitter, resource, report
             CREATE (report)<-[filed:FILED {createdAt: $createdAt, reasonCategory: $reasonCategory, reasonDescription: $reasonDescription}]-(submitter)
 
-            WITH report, resource {.*, __typename: labels(resource)[0]} AS finalResource
-            RETURN {reportId: report.id, resource: properties(finalResource)} AS filedReport
+            WITH filed, report, resource {.*, __typename: labels(resource)[0]} AS finalResource
+            RETURN filed {.*, reportId: report.id, resource: properties(finalResource)} AS filedReport
           `,
           {
             resourceId,
@@ -40,17 +30,13 @@ export default {
         )
         log(fileReportTransactionResponse)
         // Wolle return fileReportTransactionResponse.records.map(transformReturnType)
-        return fileReportTransactionResponse.records.map(record =>
-          record.get('filedReport'),
-        )
+        return fileReportTransactionResponse.records.map(record => record.get('filedReport'))
       })
       try {
         const [filedReport] = await fileReportWriteTxResultPromise
-        console.log('filedReport: ', filedReport)
-        // Wolle if (!filedReport) return null
+        // Wolle console.log('filedReport: ', filedReport)
         return filedReport || null
       } finally {
-        console.log('fileReport: session.close !!!')
         session.close()
       }
     },
@@ -71,6 +57,7 @@ export default {
           orderByClause = ''
       }
 
+      // Wolle This should be only for open reports or?
       switch (params.reviewed) {
         case true:
           filterClause = 'AND ((report)<-[:REVIEWED]-(:User))'
@@ -82,7 +69,18 @@ export default {
           filterClause = ''
       }
 
-      if (params.closed) filterClause = 'AND report.closed = true'
+      // Wolle console.log('params.closed: ', params.closed)
+      // Wolle if (params.closed) filterClause = 'AND report.closed = true'
+      switch (params.closed) {
+        case true:
+          filterClause = 'AND report.closed = true'
+          break
+        case false:
+          filterClause = 'AND report.closed = false'
+          break
+        default:
+          break
+      }
 
       const offset =
         params.offset && typeof params.offset === 'number' ? `SKIP ${params.offset}` : ''

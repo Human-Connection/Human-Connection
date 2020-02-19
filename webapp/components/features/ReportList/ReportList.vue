@@ -44,10 +44,11 @@ export default {
     filterOptions() {
       return [
         { label: this.$t('moderation.reports.filterLabel.all'), value: { reviewed: null } },
-        {
+        { // Wolle This should be only for open reports or?
           label: this.$t('moderation.reports.filterLabel.unreviewed'),
           value: { reviewed: false },
         },
+         // Wolle This should be only for open reports or?
         { label: this.$t('moderation.reports.filterLabel.reviewed'), value: { reviewed: true } },
         { label: this.$t('moderation.reports.filterLabel.closed'), value: { closed: true } },
       ]
