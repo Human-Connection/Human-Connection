@@ -1,10 +1,11 @@
 // features/support/steps.js
 import { Given, When, Then, After, AfterAll } from 'cucumber'
 import Factory, { cleanDatabase } from '../../backend/src/db/factories'
-import dotenv from 'dotenv'
+import { getNeode } from '../../backend/src/db/neo4j'
 import expect from 'expect'
 
 const debug = require('debug')('ea:test:steps')
+const neode = getNeode()
 
 After(async () => {
   await cleanDatabase()
@@ -22,6 +23,17 @@ Given('we have the following users in our database:', function (dataTable) {
     return Factory.build('user', {
       name,
       slug,
+    })
+  }))
+})
+
+Given('we have the following posts in our database:', dataTable => {
+  return Promise.all(dataTable.hashes().map(({ authorId, title, content }) => {
+    return Factory.build('user', {
+      title,
+      content,
+    }, {
+      authorId
     })
   }))
 })
@@ -44,3 +56,30 @@ Then('the Content-Type is {string}', function (contentType) {
   expect(this.lastContentType).toEqual(contentType)
 })
 
+When('I send a POST request with the following activity to {string}:', async function (inboxUrl, activity) {
+  debug(`inboxUrl = ${inboxUrl}`)
+  debug(`activity = ${activity}`)
+  const splitted = inboxUrl.split('/')
+  const slug = splitted[splitted.indexOf('users') + 1]
+  let result
+  do {
+    result = await neode.cypher('MATCH (user:User {slug: $slug}) RETURN user;', { slug })
+    result = result.records.map(record => record.get('user'))
+  } while (result.length === 0)
+  this.lastInboxUrl = inboxUrl
+  this.lastActivity = activity
+  const response = await this.post(inboxUrl, activity)
+  this.lastResponses.push(response.lastResponse)
+  this.lastResponse = response.lastResponse
+  this.statusCode = response.statusCode
+})
+
+Then('I expect the status code to be {int}', function (statusCode) {
+  expect(this.statusCode).toEqual(statusCode)
+})
+
+Then('the object is removed from the outbox collection of {string}', async function (name, object) {
+  const response = await this.get(`/activitypub/users/${name}/outbox?page=true`)
+  const parsedResponse = JSON.parse(response.lastResponse)
+  expect(parsedResponse.orderedItems).to.not.include(object)
+})

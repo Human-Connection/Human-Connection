@@ -1,28 +1,16 @@
-Feature: Delete an object
-  I want to delete objects
+Feature: Delete resource
+  As a user on a 3rd party server
+  I would like to delete a comment or post and this deletion should be propagated to all other servers
+  Because there should be a "right of forget"
 
   Background:
-    Given our own server runs at "http://localhost:4123"
+    Given our CLIENT_URI is "http://localhost:3000"
     And we have the following users in our database:
-      | Slug          |
-      | bernd-das-brot|
-    And I send a POST request with the following activity to "/activitypub/users/bernd-das-brot/inbox":
-    """
-    {
-      "@context": "https://www.w3.org/ns/activitystreams",
-      "id": "https://aronda.org/users/bernd-das-brot/status/lka7dfzkjn2398hsfd",
-      "type": "Create",
-      "actor": "https://aronda.org/users/bernd-das-brot",
-      "object": {
-          "id": "https://aronda.org/users/bernd-das-brot/status/kljsdfg9843jknsdf234",
-          "type": "Article",
-          "published": "2019-02-07T19:37:55.002Z",
-          "attributedTo": "https://aronda.org/users/bernd-das-brot",
-          "content": "Hi Max, how are you?",
-          "to": "https://www.w3.org/ns/activitystreams#Public"
-      }
-    }
-    """
+      | name           | slug           | id             |
+      | Bernd das Brot | bernd-das-brot | bernd-das-brot |
+    And we have the following posts in our database:
+      | authorId       | title              | content                               | 
+      | bernd-das-brot | post to be deleted | I will be deleted through activitypub |
 
   Scenario: Deleting a post (Article Object)
     When I send a POST request with the following activity to "/activitypub/users/bernd-das-brot/inbox":
