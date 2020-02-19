@@ -10,6 +10,15 @@
     >
       <loading-spinner v-if="isLoadingImage" />
       <base-icon v-else name="image" />
+      <base-button
+        class="delete-image"
+        icon="close"
+        size="small"
+        circle
+        danger
+        filled
+        @click.stop="deleteImage"
+      />
     </vue-dropzone>
     <div v-show="showCropper" class="crop-overlay">
       <img id="cropping-image" />
@@ -70,6 +79,7 @@ export default {
     initCropper(file) {
       this.showCropper = true
       this.file = file
+      console.log(file)
       this.clearImages()
 
       const imageElement = document.querySelector('#cropping-image')
@@ -78,6 +88,7 @@ export default {
     },
     deleteImage() {
       this.clearImages()
+      this.$emit('addHeroImage', null) // maybe?
     },
     cropImage() {
       this.isLoadingImage = true
@@ -202,5 +213,11 @@ export default {
       opacity: $opacity-soft;
     }
   }
+}
+.delete-image {
+  position: absolute;
+  top: $space-small;
+  right: $space-small;
+  z-index: $z-index-surface;
 }
 </style>

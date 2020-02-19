@@ -182,7 +182,7 @@ describe('ContributionForm.vue', () => {
         })
 
         it('has no more than three categories', async () => {
-          wrapper.vm.form.categoryIds = ['cat4', 'cat9', 'cat15', 'cat27']
+          wrapper.vm.formData.categoryIds = ['cat4', 'cat9', 'cat15', 'cat27']
           await Vue.nextTick()
           wrapper.find('form').trigger('submit')
           expect(mocks.$apollo.mutate).not.toHaveBeenCalled()
@@ -320,20 +320,12 @@ describe('ContributionForm.vue', () => {
         wrapper = Wrapper()
       })
 
-      it('sets id equal to contribution id', () => {
-        expect(wrapper.vm.id).toEqual(propsData.contribution.id)
-      })
-
-      it('sets slug equal to contribution slug', () => {
-        expect(wrapper.vm.slug).toEqual(propsData.contribution.slug)
-      })
-
       it('sets title equal to contribution title', () => {
-        expect(wrapper.vm.form.title).toEqual(propsData.contribution.title)
+        expect(wrapper.vm.formData.title).toEqual(propsData.contribution.title)
       })
 
       it('sets content equal to contribution content', () => {
-        expect(wrapper.vm.form.content).toEqual(propsData.contribution.content)
+        expect(wrapper.vm.formData.content).toEqual(propsData.contribution.content)
       })
 
       describe('valid update', () => {
@@ -362,6 +354,7 @@ describe('ContributionForm.vue', () => {
               image,
               imageUpload: null,
               imageAspectRatio: 1,
+              imageBlurred: false,
             },
           }
         })

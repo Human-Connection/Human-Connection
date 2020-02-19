@@ -2,38 +2,28 @@
   <ds-form
     class="contribution-form"
     ref="contributionForm"
-    v-model="form"
+    v-model="formData"
     :schema="formSchema"
     @submit="submit"
   >
     <template slot-scope="{ errors }">
       <base-card>
         <template #heroImage>
-          <base-button
-            v-if="showDeleteImageButton"
-            class="delete-image"
-            icon="close"
-            size="small"
-            circle
-            danger
-            filled
-            @click.prevent="deleteImage"
-          />
           <img
-            v-if="showHeroImage"
+            v-if="formData.image"
             :src="contribution.image | proxyApiUrl"
-            :class="['image', form.blurImage && '--blur-image']"
+            :class="['image', formData.imageBlurred && '--blur-image']"
           />
           <image-uploader
             :contribution="contribution"
-            :class="[form.blurImage && '--blur-image']"
+            :class="[formData.imageBlurred && '--blur-image']"
             @addHeroImage="addHeroImage"
             @addImageAspectRatio="addImageAspectRatio"
           />
         </template>
-        <div v-if="form.teaserImage || form.image" class="blur-toggle">
+        <div v-if="formData.image" class="blur-toggle">
           <label for="blur-img">{{ $t('contribution.inappropriatePicture') }}</label>
-          <input type="checkbox" id="blur-img" v-model="form.blurImage" />
+          <input type="checkbox" id="blur-img" v-model="formData.imageBlurred" />
           <a
             href="https://support.human-connection.org/kb/faq.php?id=113"
             target="_blank"
@@ -51,12 +41,12 @@
           size="large"
         />
         <ds-chip size="base" :color="errors && errors.title && 'danger'">
-          {{ form.title.length }}/{{ formSchema.title.max }}
+          {{ formData.title.length }}/{{ formSchema.title.max }}
           <base-icon v-if="errors && errors.title" name="warning" />
         </ds-chip>
         <hc-editor
           :users="users"
-          :value="form.content"
+          :value="formData.content"
           :hashtags="hashtags"
           @input="updateEditorContent"
         />
@@ -64,9 +54,9 @@
           {{ contentLength }}
           <base-icon v-if="errors && errors.content" name="warning" />
         </ds-chip>
-        <categories-select model="categoryIds" :existingCategoryIds="form.categoryIds" />
+        <categories-select model="categoryIds" :existingCategoryIds="formData.categoryIds" />
         <ds-chip size="base" :color="errors && errors.categoryIds && 'danger'">
-          {{ form.categoryIds.length }} / 3
+          {{ formData.categoryIds.length }} / 3
           <base-icon v-if="errors && errors.categoryIds" name="warning" />
         </ds-chip>
         <ds-select
@@ -110,70 +100,56 @@ export default {
     ImageUploader,
   },
   props: {
-    contribution: { type: Object, default: () => {} },
+    contribution: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   data() {
+    const {
+      title,
+      content,
+      image,
+      imageAspectRatio,
+      imageBlurred,
+      language,
+      categories,
+    } = this.contribution
+
     const languageOptions = orderBy(locales, 'name').map(locale => {
       return { label: locale.name, value: locale.code }
     })
 
-    const formDefaults = {
-      title: '',
-      content: '',
-      teaserImage: null,
-      imageAspectRatio: null,
-      image: null,
-      language: null,
-      categoryIds: [],
-      blurImage: false,
-    }
-
-    let id = null
-    let slug = null
-    const form = { ...formDefaults }
-    if (this.contribution && this.contribution.id) {
-      id = this.contribution.id
-      slug = this.contribution.slug
-      form.title = this.contribution.title
-      form.content = this.contribution.content
-      form.image = this.contribution.image
-      form.language =
-        this.contribution && this.contribution.language
-          ? languageOptions.find(o => this.contribution.language === o.value)
-          : null
-      form.categoryIds = this.categoryIds(this.contribution.categories)
-      form.imageAspectRatio = this.contribution.imageAspectRatio
-      form.blurImage = this.contribution.imageBlurred
-    }
-
     return {
-      form,
+      formData: {
+        title: title || '',
+        content: content || '',
+        image: image || null,
+        imageAspectRatio: imageAspectRatio || null,
+        imageBlurred: imageBlurred || false,
+        language: languageOptions.find(option => option.value === language) || null,
+        categoryIds: categories ? categories.map(category => category.id) : [],
+      },
       formSchema: {
         title: { required: true, min: 3, max: 100 },
         content: { required: true },
         categoryIds: {
           type: 'array',
           required: true,
-          validator: (rule, value) => {
-            const errors = []
-            if (!(value && value.length >= 1 && value.length <= 3)) {
-              errors.push(new Error(this.$t('common.validations.categories')))
+          validator: (_, value = []) => {
+            if (value.length === 0 || value.length > 3) {
+              return [new Error(this.$t('common.validations.categories'))]
             }
-            return errors
+            return []
           },
         },
         language: { required: true },
-        blurImage: { required: false },
+        imageBlurred: { required: false },
       },
       languageOptions,
-      id,
-      slug,
       loading: false,
       users: [],
-      contentMin: 3,
       hashtags: [],
-      elem: null,
-      isCropInProgress: null,
     }
   },
   computed: {
@@ -181,47 +157,32 @@ export default {
       currentUser: 'auth/user',
     }),
     contentLength() {
-      return this.$filters.removeHtml(this.form.content).length
-    },
-    showHeroImage() {
-      return this.contribution && this.contribution.image && !this.form.teaserImage
-    },
-    showDeleteImageButton() {
-      return this.contribution && this.contribution.image && !this.isCropInProgress
+      return this.$filters.removeHtml(this.formData.content).length
     },
   },
   methods: {
     submit() {
-      const {
-        language: { value: language },
-        title,
-        content,
-        image,
-        teaserImage,
-        imageAspectRatio,
-        categoryIds,
-        blurImage,
-      } = this.form
+      const newImage =
+        !this.contribution || this.contribution.image !== this.formData.image
+          ? this.formData.image
+          : null
+
       this.loading = true
       this.$apollo
         .mutate({
-          mutation: this.id ? PostMutations().UpdatePost : PostMutations().CreatePost,
+          mutation: this.contribution.id ? PostMutations().UpdatePost : PostMutations().CreatePost,
           variables: {
-            id: this.id,
-            title,
-            content,
-            categoryIds,
-            language,
-            image,
-            imageUpload: teaserImage,
-            imageBlurred: blurImage,
-            imageAspectRatio,
+            ...this.formData,
+            id: this.contribution.id || null,
+            language: this.formData.language.value,
+            image: newImage ? null : this.formData.image,
+            imageUpload: newImage,
           },
         })
         .then(({ data }) => {
           this.loading = false
           this.$toast.success(this.$t('contribution.success'))
-          const result = data[this.id ? 'UpdatePost' : 'CreatePost']
+          const result = data[this.contribution.id ? 'UpdatePost' : 'CreatePost']
 
           this.$router.push({
             name: 'post-id-slug',
@@ -237,21 +198,10 @@ export default {
       this.$refs.contributionForm.update('content', value)
     },
     addHeroImage(file) {
-      this.form.teaserImage = file
+      this.formData.image = file
     },
     addImageAspectRatio(aspectRatio) {
-      this.form.imageAspectRatio = aspectRatio
-    },
-    categoryIds(categories) {
-      return categories.map(c => c.id)
-    },
-    deleteImage() {
-      this.contribution.image = null
-      this.form.image = null
-      this.form.teaserImage = null
-    },
-    cropInProgress(boolean) {
-      this.isCropInProgress = boolean
+      this.formData.imageAspectRatio = aspectRatio
     },
   },
   apollo: {
@@ -328,12 +278,5 @@ export default {
       display: block;
     }
   }
-}
-.delete-image {
-  right: 10px;
-  position: relative;
-  z-index: 1;
-  float: right;
-  top: $space-large;
 }
 </style>
