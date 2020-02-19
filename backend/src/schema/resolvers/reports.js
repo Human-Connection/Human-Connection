@@ -33,8 +33,7 @@ export default {
       })
       try {
         const [reportedResource] = await reportWriteTxResultPromise
-        if (!reportedResource) return null
-        return reportedResource
+        return reportedResource || null
       } finally {
         session.close()
       }
