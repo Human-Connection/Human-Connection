@@ -153,7 +153,7 @@ describe('slugifyMiddleware', () => {
               \`\`\`
 
               Learn how to setup the database here:
-              https://docs.human-connection.org/human-connection/neo4j
+              https://docs.human-connection.org/human-connection/backend#database-indices-and-constraints
             `)
           }
         })
