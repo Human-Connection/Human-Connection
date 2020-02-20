@@ -6,7 +6,8 @@ addons:
       - libgconf-2-4
   snaps:
     - docker
-
+  firefox: "latest-esr"
+    
 install:
   - yarn global add wait-on
   # Install Codecov

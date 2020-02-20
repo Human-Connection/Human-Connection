@@ -169,7 +169,7 @@ Then('each list item links to the post page', () => {
 Then('I can visit the post page', () => {
   cy.contains(annoyingUserWhoMutedModeratorTitle).click()
   cy.location('pathname').should('contain', '/post')
-    .get('title').should('contain', annoyingUserWhoMutedModeratorTitle)
+    .get('.base-card .title').should('contain', annoyingUserWhoMutedModeratorTitle)
 })
 
 When("they have a post someone has reported", () => {
