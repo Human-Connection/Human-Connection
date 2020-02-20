@@ -57,7 +57,6 @@ export default {
           orderByClause = ''
       }
 
-      // Wolle This should be only for open reports or?
       switch (params.reviewed) {
         case true:
           filterClause = 'AND ((report)<-[:REVIEWED]-(:User))'
@@ -69,8 +68,6 @@ export default {
           filterClause = ''
       }
 
-      // Wolle console.log('params.closed: ', params.closed)
-      // Wolle if (params.closed) filterClause = 'AND report.closed = true'
       switch (params.closed) {
         case true:
           filterClause = 'AND report.closed = true'
@@ -86,8 +83,9 @@ export default {
         params.offset && typeof params.offset === 'number' ? `SKIP ${params.offset}` : ''
       const limit = params.first && typeof params.first === 'number' ? `LIMIT ${params.first}` : ''
 
-      const reportReadTxPromise = session.readTransaction(async transaction => {
-        const allReportsTransactionResponse = await transaction.run(
+      const reportsReadTxPromise = session.readTransaction(async transaction => {
+        const reportsTransactionResponse = await transaction.run(
+          // !!! this Cypher query returns multiple reports on the same resource! i will create an issue for refactoring (bug fixing)
           `
             MATCH (report:Report)-[:BELONGS_TO]->(resource)
             WHERE (resource:User OR resource:Post OR resource:Comment)
@@ -105,11 +103,11 @@ export default {
             ${offset} ${limit}
           `,
         )
-        log(allReportsTransactionResponse)
-        return allReportsTransactionResponse.records.map(record => record.get('report'))
+        log(reportsTransactionResponse)
+        return reportsTransactionResponse.records.map(record => record.get('report'))
       })
       try {
-        const reports = await reportReadTxPromise
+        const reports = await reportsReadTxPromise
         return reports
       } finally {
         session.close()

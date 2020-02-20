@@ -10,41 +10,6 @@ const driver = getDriver()
 describe('file a report on a resource', () => {
   let authenticatedUser, currentUser, mutate, query, moderator, abusiveUser, otherReportingUser
   const categoryIds = ['cat9']
-  // Wolle const reportMutation = gql`
-  //   mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
-  //     fileReport(
-  //       resourceId: $resourceId
-  //       reasonCategory: $reasonCategory
-  //       reasonDescription: $reasonDescription
-  //     ) {
-  //       id
-  //       createdAt
-  //       updatedAt
-  //       closed
-  //       rule
-  //       resource {
-  //         __typename
-  //         ... on User {
-  //           name
-  //         }
-  //         ... on Post {
-  //           title
-  //         }
-  //         ... on Comment {
-  //           content
-  //         }
-  //       }
-  //       filed {
-  //         submitter {
-  //           id
-  //         }
-  //         createdAt
-  //         reasonCategory
-  //         reasonDescription
-  //       }
-  //     }
-  //   }
-  // `
   const fileReportMutation = gql`
     mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
       fileReport(
@@ -61,6 +26,7 @@ describe('file a report on a resource', () => {
           ... on User {
             name
             # Wolle filedUnclosedReportByCurrentUser
+            # Wolle test followedByCurrentUser
           }
           ... on Post {
             title
@@ -90,8 +56,6 @@ describe('file a report on a resource', () => {
           __typename
           ... on User {
             id
-            # Wolle filedUnclosedReportByCurrentUser
-            # Wolle test followedByCurrentUser
           }
           ... on Post {
             id
@@ -264,92 +228,82 @@ describe('file a report on a resource', () => {
               mutation: fileReportMutation,
               variables: { ...variables, resourceId: 'abusive-user-id' },
             })
+
             expect(firstReport.data.fileReport.reportId).toEqual(
               secondReport.data.fileReport.reportId,
             )
           })
 
-          it('with the rule for how the report will be decided', async () => {
-            await mutate({
-              mutation: fileReportMutation,
-              variables: { ...variables, resourceId: 'abusive-user-id' },
-            })
-            authenticatedUser = await moderator.toJson()
-            await expect(
-              query({
-                query: reportsQuery,
-              }),
-            ).resolves.toMatchObject({
-              data: {
-                reports: [
-                  {
-                    rule: 'latestReviewUpdatedAtRules',
-                  },
-                ],
-              },
-              errors: undefined,
-            })
-          })
+          describe('report properties are set correctly', () => {
+            const reportsCypherQuery =
+              'MATCH (resource:User {id: $resourceId})<-[:BELONGS_TO]-(report:Report {closed: false})<-[filed:FILED]-(user:User {id: $currentUserId}) RETURN report'
 
-          describe('with overtaken disabled from resource in disable property', () => {
-            it('disable is false', async () => {
+            it('with the rule for how the report will be decided', async () => {
               await mutate({
                 mutation: fileReportMutation,
                 variables: { ...variables, resourceId: 'abusive-user-id' },
               })
-              authenticatedUser = await moderator.toJson()
-              await expect(
-                query({
-                  query: reportsQuery,
-                }),
-              ).resolves.toMatchObject({
-                data: {
-                  reports: [
-                    {
-                      disable: false,
-                    },
-                  ],
-                },
-                errors: undefined,
+
+              const reportsCypherQueryResponse = await instance.cypher(reportsCypherQuery, {
+                resourceId: 'abusive-user-id',
+                currentUserId: authenticatedUser.id,
               })
+              expect(reportsCypherQueryResponse.records).toHaveLength(1)
+              const [reportProperties] = reportsCypherQueryResponse.records.map(
+                record => record.get('report').properties,
+              )
+              expect(reportProperties).toMatchObject({ rule: 'latestReviewUpdatedAtRules' })
             })
 
-            it('disable is true', async () => {
-              // first time filling a report to enable a moderator the disable the resource
-              await mutate({
-                mutation: fileReportMutation,
-                variables: { ...variables, resourceId: 'abusive-user-id' },
-              })
-              authenticatedUser = await moderator.toJson()
-              await mutate({
-                mutation: reviewMutation,
-                variables: {
+            describe('with overtaken disabled from resource in disable property', () => {
+              it('disable is false', async () => {
+                await mutate({
+                  mutation: fileReportMutation,
+                  variables: { ...variables, resourceId: 'abusive-user-id' },
+                })
+
+                const reportsCypherQueryResponse = await instance.cypher(reportsCypherQuery, {
                   resourceId: 'abusive-user-id',
-                  disable: true,
-                  closed: true,
-                },
+                  currentUserId: authenticatedUser.id,
+                })
+                expect(reportsCypherQueryResponse.records).toHaveLength(1)
+                const [reportProperties] = reportsCypherQueryResponse.records.map(
+                  record => record.get('report').properties,
+                )
+                expect(reportProperties).toMatchObject({ disable: false })
               })
-              authenticatedUser = await currentUser.toJson()
-              // second time filling a report to see if the "disabled is true" of the resource is overtaken
-              await mutate({
-                mutation: fileReportMutation,
-                variables: { ...variables, resourceId: 'abusive-user-id' },
-              })
-              authenticatedUser = await moderator.toJson()
-              await expect(
-                query({
-                  query: reportsQuery,
-                  variables: { closed: false },
-                }),
-              ).resolves.toMatchObject({
-                data: {
-                  reports: [
-                    {
-                      disable: true,
-                    },
-                  ],
-                },
-                errors: undefined,
+
+              it('disable is true', async () => {
+                // first time filling a report to enable a moderator the disable the resource
+                await mutate({
+                  mutation: fileReportMutation,
+                  variables: { ...variables, resourceId: 'abusive-user-id' },
+                })
+                authenticatedUser = await moderator.toJson()
+                await mutate({
+                  mutation: reviewMutation,
+                  variables: {
+                    resourceId: 'abusive-user-id',
+                    disable: true,
+                    closed: true,
+                  },
+                })
+                authenticatedUser = await currentUser.toJson()
+                // second time filling a report to see if the "disable is true" of the resource is overtaken
+                await mutate({
+                  mutation: fileReportMutation,
+                  variables: { ...variables, resourceId: 'abusive-user-id' },
+                })
+
+                const reportsCypherQueryResponse = await instance.cypher(reportsCypherQuery, {
+                  resourceId: 'abusive-user-id',
+                  currentUserId: authenticatedUser.id,
+                })
+                expect(reportsCypherQueryResponse.records).toHaveLength(1)
+                const [reportProperties] = reportsCypherQueryResponse.records.map(
+                  record => record.get('report').properties,
+                )
+                expect(reportProperties).toMatchObject({ disable: true })
               })
             })
           })
@@ -389,28 +343,6 @@ describe('file a report on a resource', () => {
                     __typename: 'User',
                     name: 'abusive-user',
                   },
-                },
-              },
-              errors: undefined,
-            })
-          })
-
-          it.skip('returns the submitter', async () => {
-            await expect(
-              mutate({
-                mutation: fileReportMutation,
-                variables: { ...variables, resourceId: 'abusive-user-id' },
-              }),
-            ).resolves.toMatchObject({
-              data: {
-                fileReport: {
-                  filed: [
-                    {
-                      submitter: {
-                        id: 'current-user-id',
-                      },
-                    },
-                  ],
                 },
               },
               errors: undefined,
