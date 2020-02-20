@@ -233,10 +233,13 @@ describe('ContributionForm.vue', () => {
         })
 
         it('supports adding a teaser image', async () => {
+          const spy = jest.spyOn(FileReader.prototype, 'readAsDataURL').mockImplementation(() => {})
           expectedParams.variables.imageUpload = imageUpload
           wrapper.find(ImageUploader).vm.$emit('addHeroImage', imageUpload)
           await wrapper.find('form').trigger('submit')
           expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
+          expect(spy).toHaveBeenCalledWith(imageUpload)
+          spy.mockReset()
         })
 
         it('content is valid with just a link', async () => {

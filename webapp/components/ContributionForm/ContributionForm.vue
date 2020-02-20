@@ -194,8 +194,15 @@ export default {
       this.$refs.contributionForm.update('content', value)
     },
     addHeroImage(file) {
-      this.imageUpload = file
-      this.formData.image = file ? URL.createObjectURL(file) : null
+      this.formData.image = null
+      if (file) {
+        const reader = new FileReader()
+        reader.onload = ({ target }) => {
+          this.formData.image = target.result
+        }
+        this.imageUpload = file
+        reader.readAsDataURL(file)
+      }
     },
     addImageAspectRatio(aspectRatio) {
       this.formData.imageAspectRatio = aspectRatio
