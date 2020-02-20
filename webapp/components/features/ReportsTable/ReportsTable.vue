@@ -24,8 +24,9 @@
       </tr>
     </thead>
     <template v-for="report in reports">
+      <!-- should be ':key="report.resource.id"' for having one element for every resource, but this crashes at the moment, because the 'reports' query returns multiple reports on the same resource! I will create an issue -->
       <report-row
-        :key="report.resource.id"
+        :key="report.id"
         :report="report"
         @confirm-report="$emit('confirm', report)"
       />
