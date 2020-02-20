@@ -25,8 +25,6 @@ describe('file a report on a resource', () => {
           __typename
           ... on User {
             name
-            # Wolle filedUnclosedReportByCurrentUser
-            # Wolle test followedByCurrentUser
           }
           ... on Post {
             title
@@ -198,7 +196,6 @@ describe('file a report on a resource', () => {
       describe('valid resource', () => {
         describe('creates report', () => {
           it('which belongs to resource', async () => {
-            // Wolle it('which belongs to resource now reported by current user', async () => {
             await expect(
               mutate({
                 mutation: fileReportMutation,
@@ -210,7 +207,6 @@ describe('file a report on a resource', () => {
                   reportId: expect.any(String),
                   resource: {
                     name: 'abusive-user',
-                    // Wolle filedUnclosedReportByCurrentUser: true,
                   },
                 },
               },
@@ -752,8 +748,6 @@ describe('file a report on a resource', () => {
               resource: {
                 __typename: 'User',
                 id: 'abusive-user-1',
-                // Wolle filedUnclosedReportByCurrentUser: false,
-                // Wolle test followedByCurrentUser: false,
               },
               filed: expect.arrayContaining([
                 expect.objectContaining({

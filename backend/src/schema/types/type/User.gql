@@ -69,14 +69,6 @@ type User {
   """
   )
 
-  # Has the currently logged in user reported that user?
-  filedUnclosedReportByCurrentUser: Boolean! @cypher(
-  statement: """
-  MATCH (this)<-[:BELONGS_TO]-(:Report {closed: false})<-[:FILED]-(u:User { id: $cypherParams.currentUserId})
-  RETURN COUNT(u) >= 1
-  """
-  )
-  
   isBlocked: Boolean! @cypher(
   statement: """
   MATCH (this)<-[:BLOCKED]-(user:User {id: $cypherParams.currentUserId})

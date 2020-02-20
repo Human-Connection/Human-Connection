@@ -251,8 +251,6 @@ export default {
       boolean: {
         followedByCurrentUser:
           'MATCH (this)<-[:FOLLOWS]-(u:User {id: $cypherParams.currentUserId}) RETURN COUNT(u) >= 1',
-        filedUnclosedReportByCurrentUser:
-          'MATCH (this)<-[:BELONGS_TO]-(:Report {closed: false})<-[:FILED]-(u:User {id: $cypherParams.currentUserId}) RETURN COUNT(u) >= 1',
         isBlocked:
           'MATCH (this)<-[:BLOCKED]-(u:User {id: $cypherParams.currentUserId}) RETURN COUNT(u) >= 1',
         blocked:
