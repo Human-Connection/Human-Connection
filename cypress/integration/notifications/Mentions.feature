@@ -20,8 +20,7 @@ Feature: Notification for a mention
     And I select a category
     And I choose "en" as the language for the post
     And I click on "Save"
-    When I log out
-    And I log in as "Matt Rider"
+    When I log in as "Matt Rider"
     And see 1 unread notifications in the top menu
     And open the notification menu and click on the first item
     Then I get to the post page of ".../hey-matt"
