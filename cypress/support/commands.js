@@ -58,14 +58,14 @@ Cypress.Commands.add("login", user => {
 });
 
 Cypress.Commands.add("manualLogin", ({ email, password }) => {
-  cy.visit(`/login`);
-  cy.get("input[name=email]")
+  cy.visit(`/login`)
+    .get("input[name=email]")
     .trigger("focus")
-    .type(email);
-  cy.get("input[name=password]")
+    .type(email)
+    .get("input[name=password]")
     .trigger("focus")
-    .type(password);
-  cy.get("button[name=submit]")
+    .type(password)
+    .get("button[name=submit]")
     .as("submitButton")
     .click();
 });
