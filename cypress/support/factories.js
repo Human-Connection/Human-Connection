@@ -1,5 +1,6 @@
-import Factory, { cleanDatabase } from '../../backend/src/db/factories'
-import { getDriver, getNeode } from '../../backend/src/db/neo4j'
+import Factory from '../../backend/src/db/factories'
+import { getNeode } from '../../backend/src/db/neo4j'
+
 
 const neo4jConfigs = {
   uri: Cypress.env('NEO4J_URI'),
@@ -8,6 +9,12 @@ const neo4jConfigs = {
 }
 const neodeInstance = getNeode(neo4jConfigs)
 
+export const cleanDatabase = () => {
+  return new Cypress.Promise((resolve, _reject) => {
+    return neodeInstance.cypher(' MATCH (everything) DETACH DELETE everything;')
+    .then(() => resolve())
+  })
+}
 beforeEach(() => cleanDatabase())
 
 Cypress.Commands.add('neode', () => {
