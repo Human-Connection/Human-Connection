@@ -16,7 +16,7 @@
     },
     "dashboard": {
       "comments": "Comments",
-      "follows": "Follows",
+      "follows": "Subscribed",
       "invites": "Invites",
       "name": "Dashboard",
       "notifications": "Notifications",
@@ -248,7 +248,7 @@
       "surprised": "Surprised"
     },
     "filterALL": "View all contributions",
-    "filterFollow": "Filter contributions from users I follow",
+    "filterFollow": "Filter contributions from users I am subscribed to",
     "inappropriatePicture": "This image may be inappropriate for some people.",
     "inappropriatePictureText": "When should my picture be blurred",
     "languageSelectLabel": "Language of your contribution",
@@ -340,7 +340,7 @@
       "header": "Categories of Content"
     },
     "followers": {
-      "label": "Users I follow"
+      "label": "Users I am subscribed to"
     },
     "general": {
       "header": "Filter by …"
@@ -351,8 +351,8 @@
     }
   },
   "followButton": {
-    "follow": "Follow",
-    "following": "Following"
+    "follow": "Subscribe",
+    "following": "Subscribing"
   },
   "index": {
     "change-filter-settings": "Change your filter settings to get more results.",
@@ -498,9 +498,9 @@
   },
   "profile": {
     "commented": "Commented",
-    "follow": "Follow",
-    "followers": "Followers",
-    "following": "Following",
+    "follow": "Subscribe",
+    "followers": "Subscribers",
+    "following": "Subscribing",
     "invites": {
       "description": "Enter their e-mail address for invitation.",
       "emailPlaceholder": "E-mail to invite",
@@ -510,10 +510,10 @@
     "name": "My Profile",
     "network": {
       "andMore": "and {number} more …",
-      "followedBy": "is followed by:",
-      "followedByNobody": "is not followed by anyone.",
-      "following": "is following:",
-      "followingNobody": "follows nobody.",
+      "followedBy": "is subscribed by:",
+      "followedByNobody": "is not subscribed by anyone.",
+      "following": "is subscribing:",
+      "followingNobody": "subscribed to nobody.",
       "title": "Network"
     },
     "shouted": "Shouted",

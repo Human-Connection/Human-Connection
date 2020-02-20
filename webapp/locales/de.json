@@ -16,7 +16,7 @@
     },
     "dashboard": {
       "comments": "Kommentare",
-      "follows": "Folgen",
+      "follows": "Abonnieren",
       "invites": "Einladungen",
       "name": "Startzentrale",
       "notifications": "Benachrichtigungen",
@@ -351,8 +351,8 @@
     }
   },
   "followButton": {
-    "follow": "Folgen",
-    "following": "Folge Ich"
+    "follow": "Abonnieren",
+    "following": "Abonniere Mich"
   },
   "index": {
     "change-filter-settings": "Verändere die Filter-Einstellungen, um mehr Ergebnisse zu erhalten.",
@@ -498,9 +498,9 @@
   },
   "profile": {
     "commented": "Kommentiert",
-    "follow": "Folgen",
-    "followers": "Folgen",
-    "following": "Folge Ich",
+    "follow": "Abonnieren",
+    "followers": "Abonnieren",
+    "following": "Auf Abonniert",
     "invites": {
       "description": "Zur Einladung die E-Mail-Adresse hier eintragen.",
       "emailPlaceholder": "E-Mail-Adresse für die Einladung",
@@ -510,10 +510,10 @@
     "name": "Mein Profil",
     "network": {
       "andMore": "und {number} weitere …",
-      "followedBy": "wird gefolgt von:",
-      "followedByNobody": "wird von niemandem gefolgt.",
-      "following": "folgt:",
-      "followingNobody": "folgt niemandem.",
+      "followedBy": "wird abboniert von:",
+      "followedByNobody": "wird von niemandem abonniert.",
+      "following": "abonniert:",
+      "followingNobody": "abboniert auf niemandem.",
       "title": "Netzwerk"
     },
     "shouted": "Empfohlen",

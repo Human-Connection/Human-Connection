@@ -132,7 +132,7 @@
             <ds-space v-for="follow in uniq(user.followedBy)" :key="follow.id" margin="x-small">
               <!-- TODO: find better solution for rendering errors -->
               <client-only>
-                <user-teaser :user="follow" />
+                <user-teaser :user="subscribe" />
               </client-only>
             </ds-space>
             <ds-space v-if="user.followedByCount - user.followedBy.length" margin="small">
