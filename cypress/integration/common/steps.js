@@ -238,16 +238,16 @@ Given("we have the following comments in our database:", table => {
 });
 
 Given("we have the following posts in our database:", table => {
-      table.hashes().forEach((attributesOrOptions, i) => {
-        cy.factory().build("post", {
-          ...attributesOrOptions,
-          deleted: Boolean(attributesOrOptions.deleted),
-          disabled: Boolean(attributesOrOptions.disabled),
-          pinned: Boolean(attributesOrOptions.pinned),
-        }, {
-          ...attributesOrOptions,
-        });
-      })
+  table.hashes().forEach((attributesOrOptions, i) => {
+    cy.factory().build("post", {
+      ...attributesOrOptions,
+      deleted: Boolean(attributesOrOptions.deleted),
+      disabled: Boolean(attributesOrOptions.disabled),
+      pinned: Boolean(attributesOrOptions.pinned),
+    }, {
+      ...attributesOrOptions,
+    });
+  })
 })
 
 Then("I see a success message:", message => {

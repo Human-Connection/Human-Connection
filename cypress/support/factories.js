@@ -9,13 +9,7 @@ const neo4jConfigs = {
 }
 const neodeInstance = getNeode(neo4jConfigs)
 
-export const cleanDatabase = () => {
-  return new Cypress.Promise((resolve, _reject) => {
-    return neodeInstance.cypher(' MATCH (everything) DETACH DELETE everything;')
-    .then(() => resolve())
-  })
-}
-beforeEach(() => cleanDatabase())
+beforeEach(() => cy.exec('yarn run db:reset'))
 
 Cypress.Commands.add('neode', () => {
   return neodeInstance
