@@ -31,7 +31,6 @@ export default {
           return reviewTransactionResponse.records.map(record => record.get('review'))
         })
         const [reviewed] = await reviewWriteTxResultPromise
-        // Wolle console.log('reviewed: ', reviewed)
         return reviewed || null
       } finally {
         session.close()

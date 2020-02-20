@@ -29,12 +29,10 @@ export default {
           },
         )
         log(fileReportTransactionResponse)
-        // Wolle return fileReportTransactionResponse.records.map(transformReturnType)
         return fileReportTransactionResponse.records.map(record => record.get('filedReport'))
       })
       try {
         const [filedReport] = await fileReportWriteTxResultPromise
-        // Wolle console.log('filedReport: ', filedReport)
         return filedReport || null
       } finally {
         session.close()

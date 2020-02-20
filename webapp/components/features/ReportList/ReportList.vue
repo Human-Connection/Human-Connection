@@ -43,13 +43,22 @@ export default {
   computed: {
     filterOptions() {
       return [
-        { label: this.$t('moderation.reports.filterLabel.all'), value: { reviewed: null, closed: null } },
+        {
+          label: this.$t('moderation.reports.filterLabel.all'),
+          value: { reviewed: null, closed: null },
+        },
         {
           label: this.$t('moderation.reports.filterLabel.unreviewed'),
           value: { reviewed: false, closed: false },
         },
-        { label: this.$t('moderation.reports.filterLabel.reviewed'), value: { reviewed: true, closed: false } },
-        { label: this.$t('moderation.reports.filterLabel.closed'), value: { reviewed: null, closed: true } },
+        {
+          label: this.$t('moderation.reports.filterLabel.reviewed'),
+          value: { reviewed: true, closed: false },
+        },
+        {
+          label: this.$t('moderation.reports.filterLabel.closed'),
+          value: { reviewed: null, closed: true },
+        },
       ]
     },
     modalData() {
