@@ -22,11 +22,13 @@ describe('PostTeaser', () => {
     propsData = {
       post: {
         id: 'p23',
+        disabled: false,
+        shoutedCount: 0,
+        commentsCount: 0,
         name: 'It is a post',
         author: {
           id: 'u1',
         },
-        disabled: false,
       },
     }
     stubs = {
@@ -62,6 +64,13 @@ describe('PostTeaser', () => {
         localVue,
       })
     }
+
+    it('has no validation errors', () => {
+      const spy = jest.spyOn(global.console, 'error');
+      Wrapper()
+      expect(spy).not.toBeCalled()
+      spy.mockReset()
+    })
 
     beforeEach(jest.useFakeTimers)
 
@@ -111,6 +120,7 @@ describe('PostTeaser', () => {
     describe('given a post', () => {
       beforeEach(() => {
         propsData.post = {
+          ...propsData.post,
           title: "It's a title",
         }
       })
