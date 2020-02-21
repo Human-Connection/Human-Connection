@@ -10,18 +10,17 @@ const driver = getDriver()
 describe('file a report on a resource', () => {
   let authenticatedUser, currentUser, mutate, query, moderator, abusiveUser, otherReportingUser
   const categoryIds = ['cat9']
-  const reportMutation = gql`
+  const fileReportMutation = gql`
     mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
       fileReport(
         resourceId: $resourceId
         reasonCategory: $reasonCategory
         reasonDescription: $reasonDescription
       ) {
-        id
         createdAt
-        updatedAt
-        closed
-        rule
+        reasonCategory
+        reasonDescription
+        reportId
         resource {
           __typename
           ... on User {
@@ -32,6 +31,35 @@ describe('file a report on a resource', () => {
           }
           ... on Comment {
             content
+          }
+        }
+      }
+    }
+  `
+  const variables = {
+    resourceId: 'invalid',
+    reasonCategory: 'other',
+    reasonDescription: 'Violates code of conduct !!!',
+  }
+  const reportsQuery = gql`
+    query($closed: Boolean) {
+      reports(orderBy: createdAt_desc, closed: $closed) {
+        id
+        createdAt
+        updatedAt
+        rule
+        disable
+        closed
+        resource {
+          __typename
+          ... on User {
+            id
+          }
+          ... on Post {
+            id
+          }
+          ... on Comment {
+            id
           }
         }
         filed {
@@ -45,11 +73,31 @@ describe('file a report on a resource', () => {
       }
     }
   `
-  const variables = {
-    resourceId: 'whatever',
-    reasonCategory: 'other',
-    reasonDescription: 'Violates code of conduct !!!',
-  }
+  const reviewMutation = gql`
+    mutation($resourceId: ID!, $disable: Boolean, $closed: Boolean) {
+      review(resourceId: $resourceId, disable: $disable, closed: $closed) {
+        createdAt
+        resource {
+          __typename
+          ... on User {
+            id
+            disabled
+          }
+          ... on Post {
+            id
+            disabled
+          }
+          ... on Comment {
+            id
+            disabled
+          }
+        }
+        report {
+          disable
+        }
+      }
+    }
+  `
 
   beforeAll(async () => {
     await cleanDatabase()
@@ -74,7 +122,7 @@ describe('file a report on a resource', () => {
     describe('unauthenticated', () => {
       it('throws authorization error', async () => {
         authenticatedUser = null
-        await expect(mutate({ mutation: reportMutation, variables })).resolves.toMatchObject({
+        await expect(mutate({ mutation: fileReportMutation, variables })).resolves.toMatchObject({
           data: { fileReport: null },
           errors: [{ message: 'Not Authorised!' }],
         })
@@ -91,6 +139,17 @@ describe('file a report on a resource', () => {
           },
           {
             email: 'test@example.org',
+            password: '1234',
+          },
+        )
+        moderator = await Factory.build(
+          'user',
+          {
+            id: 'moderator-id',
+            role: 'moderator',
+          },
+          {
+            email: 'moderator@example.org',
             password: '1234',
           },
         )
@@ -127,7 +186,7 @@ describe('file a report on a resource', () => {
 
       describe('invalid resource id', () => {
         it('returns null', async () => {
-          await expect(mutate({ mutation: reportMutation, variables })).resolves.toMatchObject({
+          await expect(mutate({ mutation: fileReportMutation, variables })).resolves.toMatchObject({
             data: { fileReport: null },
             errors: undefined,
           })
@@ -139,47 +198,112 @@ describe('file a report on a resource', () => {
           it('which belongs to resource', async () => {
             await expect(
               mutate({
-                mutation: reportMutation,
+                mutation: fileReportMutation,
                 variables: { ...variables, resourceId: 'abusive-user-id' },
               }),
             ).resolves.toMatchObject({
               data: {
                 fileReport: {
-                  id: expect.any(String),
+                  reportId: expect.any(String),
+                  resource: {
+                    name: 'abusive-user',
+                  },
                 },
               },
               errors: undefined,
             })
           })
 
-          it('creates only one report for multiple reports on the same resource', async () => {
+          it('only one report for multiple reports on the same resource', async () => {
             const firstReport = await mutate({
-              mutation: reportMutation,
+              mutation: fileReportMutation,
               variables: { ...variables, resourceId: 'abusive-user-id' },
             })
             authenticatedUser = await otherReportingUser.toJson()
             const secondReport = await mutate({
-              mutation: reportMutation,
+              mutation: fileReportMutation,
               variables: { ...variables, resourceId: 'abusive-user-id' },
             })
-            expect(firstReport.data.fileReport.id).toEqual(secondReport.data.fileReport.id)
+
+            expect(firstReport.data.fileReport.reportId).toEqual(
+              secondReport.data.fileReport.reportId,
+            )
           })
 
-          it('returns the rule for how the report was decided', async () => {
-            await expect(
-              mutate({
-                mutation: reportMutation,
+          describe('report properties are set correctly', () => {
+            const reportsCypherQuery =
+              'MATCH (resource:User {id: $resourceId})<-[:BELONGS_TO]-(report:Report {closed: false})<-[filed:FILED]-(user:User {id: $currentUserId}) RETURN report'
+
+            it('with the rule for how the report will be decided', async () => {
+              await mutate({
+                mutation: fileReportMutation,
                 variables: { ...variables, resourceId: 'abusive-user-id' },
-              }),
-            ).resolves.toMatchObject({
-              data: {
-                fileReport: {
-                  rule: 'latestReviewUpdatedAtRules',
-                },
-              },
-              errors: undefined,
+              })
+
+              const reportsCypherQueryResponse = await instance.cypher(reportsCypherQuery, {
+                resourceId: 'abusive-user-id',
+                currentUserId: authenticatedUser.id,
+              })
+              expect(reportsCypherQueryResponse.records).toHaveLength(1)
+              const [reportProperties] = reportsCypherQueryResponse.records.map(
+                record => record.get('report').properties,
+              )
+              expect(reportProperties).toMatchObject({ rule: 'latestReviewUpdatedAtRules' })
+            })
+
+            describe('with overtaken disabled from resource in disable property', () => {
+              it('disable is false', async () => {
+                await mutate({
+                  mutation: fileReportMutation,
+                  variables: { ...variables, resourceId: 'abusive-user-id' },
+                })
+
+                const reportsCypherQueryResponse = await instance.cypher(reportsCypherQuery, {
+                  resourceId: 'abusive-user-id',
+                  currentUserId: authenticatedUser.id,
+                })
+                expect(reportsCypherQueryResponse.records).toHaveLength(1)
+                const [reportProperties] = reportsCypherQueryResponse.records.map(
+                  record => record.get('report').properties,
+                )
+                expect(reportProperties).toMatchObject({ disable: false })
+              })
+
+              it('disable is true', async () => {
+                // first time filling a report to enable a moderator the disable the resource
+                await mutate({
+                  mutation: fileReportMutation,
+                  variables: { ...variables, resourceId: 'abusive-user-id' },
+                })
+                authenticatedUser = await moderator.toJson()
+                await mutate({
+                  mutation: reviewMutation,
+                  variables: {
+                    resourceId: 'abusive-user-id',
+                    disable: true,
+                    closed: true,
+                  },
+                })
+                authenticatedUser = await currentUser.toJson()
+                // second time filling a report to see if the "disable is true" of the resource is overtaken
+                await mutate({
+                  mutation: fileReportMutation,
+                  variables: { ...variables, resourceId: 'abusive-user-id' },
+                })
+
+                const reportsCypherQueryResponse = await instance.cypher(reportsCypherQuery, {
+                  resourceId: 'abusive-user-id',
+                  currentUserId: authenticatedUser.id,
+                })
+                expect(reportsCypherQueryResponse.records).toHaveLength(1)
+                const [reportProperties] = reportsCypherQueryResponse.records.map(
+                  record => record.get('report').properties,
+                )
+                expect(reportProperties).toMatchObject({ disable: true })
+              })
             })
           })
+
           it.todo('creates multiple filed reports')
         })
 
@@ -187,7 +311,7 @@ describe('file a report on a resource', () => {
           it('returns __typename "User"', async () => {
             await expect(
               mutate({
-                mutation: reportMutation,
+                mutation: fileReportMutation,
                 variables: { ...variables, resourceId: 'abusive-user-id' },
               }),
             ).resolves.toMatchObject({
@@ -205,7 +329,7 @@ describe('file a report on a resource', () => {
           it('returns user attribute info', async () => {
             await expect(
               mutate({
-                mutation: reportMutation,
+                mutation: fileReportMutation,
                 variables: { ...variables, resourceId: 'abusive-user-id' },
               }),
             ).resolves.toMatchObject({
@@ -221,32 +345,10 @@ describe('file a report on a resource', () => {
             })
           })
 
-          it('returns the submitter', async () => {
+          it('returns a createdAt', async () => {
             await expect(
               mutate({
-                mutation: reportMutation,
-                variables: { ...variables, resourceId: 'abusive-user-id' },
-              }),
-            ).resolves.toMatchObject({
-              data: {
-                fileReport: {
-                  filed: [
-                    {
-                      submitter: {
-                        id: 'current-user-id',
-                      },
-                    },
-                  ],
-                },
-              },
-              errors: undefined,
-            })
-          })
-
-          it('returns a date', async () => {
-            await expect(
-              mutate({
-                mutation: reportMutation,
+                mutation: fileReportMutation,
                 variables: { ...variables, resourceId: 'abusive-user-id' },
               }),
             ).resolves.toMatchObject({
@@ -262,7 +364,7 @@ describe('file a report on a resource', () => {
           it('returns the reason category', async () => {
             await expect(
               mutate({
-                mutation: reportMutation,
+                mutation: fileReportMutation,
                 variables: {
                   ...variables,
                   resourceId: 'abusive-user-id',
@@ -272,11 +374,7 @@ describe('file a report on a resource', () => {
             ).resolves.toMatchObject({
               data: {
                 fileReport: {
-                  filed: [
-                    {
-                      reasonCategory: 'criminal_behavior_violation_german_law',
-                    },
-                  ],
+                  reasonCategory: 'criminal_behavior_violation_german_law',
                 },
               },
               errors: undefined,
@@ -286,7 +384,7 @@ describe('file a report on a resource', () => {
           it('gives an error if the reason category is not in enum "ReasonCategory"', async () => {
             await expect(
               mutate({
-                mutation: reportMutation,
+                mutation: fileReportMutation,
                 variables: {
                   ...variables,
                   resourceId: 'abusive-user-id',
@@ -307,7 +405,7 @@ describe('file a report on a resource', () => {
           it('returns the reason description', async () => {
             await expect(
               mutate({
-                mutation: reportMutation,
+                mutation: fileReportMutation,
                 variables: {
                   ...variables,
                   resourceId: 'abusive-user-id',
@@ -317,11 +415,7 @@ describe('file a report on a resource', () => {
             ).resolves.toMatchObject({
               data: {
                 fileReport: {
-                  filed: [
-                    {
-                      reasonDescription: 'My reason!',
-                    },
-                  ],
+                  reasonDescription: 'My reason!',
                 },
               },
               errors: undefined,
@@ -331,7 +425,7 @@ describe('file a report on a resource', () => {
           it('sanitizes the reason description', async () => {
             await expect(
               mutate({
-                mutation: reportMutation,
+                mutation: fileReportMutation,
                 variables: {
                   ...variables,
                   resourceId: 'abusive-user-id',
@@ -341,11 +435,7 @@ describe('file a report on a resource', () => {
             ).resolves.toMatchObject({
               data: {
                 fileReport: {
-                  filed: [
-                    {
-                      reasonDescription: 'My reason !',
-                    },
-                  ],
+                  reasonDescription: 'My reason !',
                 },
               },
               errors: undefined,
@@ -371,7 +461,7 @@ describe('file a report on a resource', () => {
           it('returns type "Post"', async () => {
             await expect(
               mutate({
-                mutation: reportMutation,
+                mutation: fileReportMutation,
                 variables: {
                   ...variables,
                   resourceId: 'post-to-report-id',
@@ -392,7 +482,7 @@ describe('file a report on a resource', () => {
           it('returns resource in post attribute', async () => {
             await expect(
               mutate({
-                mutation: reportMutation,
+                mutation: fileReportMutation,
                 variables: {
                   ...variables,
                   resourceId: 'post-to-report-id',
@@ -442,7 +532,7 @@ describe('file a report on a resource', () => {
           it('returns type "Comment"', async () => {
             await expect(
               mutate({
-                mutation: reportMutation,
+                mutation: fileReportMutation,
                 variables: {
                   ...variables,
                   resourceId: 'comment-to-report-id',
@@ -463,7 +553,7 @@ describe('file a report on a resource', () => {
           it('returns resource in comment attribute', async () => {
             await expect(
               mutate({
-                mutation: reportMutation,
+                mutation: fileReportMutation,
                 variables: {
                   ...variables,
                   resourceId: 'comment-to-report-id',
@@ -493,7 +583,7 @@ describe('file a report on a resource', () => {
           it('returns null', async () => {
             await expect(
               mutate({
-                mutation: reportMutation,
+                mutation: fileReportMutation,
                 variables: {
                   ...variables,
                   resourceId: 'tag-to-report-id',
@@ -510,37 +600,6 @@ describe('file a report on a resource', () => {
   })
 
   describe('query for reported resource', () => {
-    const reportsQuery = gql`
-      query {
-        reports(orderBy: createdAt_desc) {
-          id
-          createdAt
-          updatedAt
-          closed
-          resource {
-            __typename
-            ... on User {
-              id
-            }
-            ... on Post {
-              id
-            }
-            ... on Comment {
-              id
-            }
-          }
-          filed {
-            submitter {
-              id
-            }
-            createdAt
-            reasonCategory
-            reasonDescription
-          }
-        }
-      }
-    `
-
     beforeEach(async () => {
       authenticatedUser = null
       moderator = await Factory.build(
@@ -632,7 +691,7 @@ describe('file a report on a resource', () => {
       authenticatedUser = await currentUser.toJson()
       await Promise.all([
         mutate({
-          mutation: reportMutation,
+          mutation: fileReportMutation,
           variables: {
             resourceId: 'abusive-post-1',
             reasonCategory: 'other',
@@ -640,7 +699,7 @@ describe('file a report on a resource', () => {
           },
         }),
         mutate({
-          mutation: reportMutation,
+          mutation: fileReportMutation,
           variables: {
             resourceId: 'abusive-comment-1',
             reasonCategory: 'discrimination_etc',
@@ -648,7 +707,7 @@ describe('file a report on a resource', () => {
           },
         }),
         mutate({
-          mutation: reportMutation,
+          mutation: fileReportMutation,
           variables: {
             resourceId: 'abusive-user-1',
             reasonCategory: 'doxing',
