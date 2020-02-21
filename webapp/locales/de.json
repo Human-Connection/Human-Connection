@@ -352,7 +352,7 @@
   },
   "followButton": {
     "follow": "Abonnieren",
-    "following": "Auf Abonniert"
+    "following": "Abonniert"
   },
   "index": {
     "change-filter-settings": "Verändere die Filter-Einstellungen, um mehr Ergebnisse zu erhalten.",
@@ -499,8 +499,8 @@
   "profile": {
     "commented": "Kommentiert",
     "follow": "Abonnieren",
-    "followers": "Abonnieren",
-    "following": "Auf Abonniert",
+    "followers": "Wird Abonniert von",
+    "following": "Hat Abonniert",
     "invites": {
       "description": "Zur Einladung die E-Mail-Adresse hier eintragen.",
       "emailPlaceholder": "E-Mail-Adresse für die Einladung",
@@ -513,7 +513,7 @@
       "followedBy": "wird abboniert von:",
       "followedByNobody": "wird von niemandem abonniert.",
       "following": "abonniert:",
-      "followingNobody": "abboniert auf niemandem.",
+      "followingNobody": "abboniert niemandem.",
       "title": "Netzwerk"
     },
     "shouted": "Empfohlen",

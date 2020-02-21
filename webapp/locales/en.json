@@ -500,7 +500,7 @@
     "commented": "Commented",
     "follow": "Subscribe",
     "followers": "Subscribers",
-    "following": "Subscribing",
+    "following": "Subscribed",
     "invites": {
       "description": "Enter their e-mail address for invitation.",
       "emailPlaceholder": "E-mail to invite",
