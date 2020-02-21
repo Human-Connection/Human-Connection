@@ -167,7 +167,8 @@ When("I fill in my email and password combination and click submit", () => {
 });
 
 When(/(?:when )?I refresh the page/, () => {
-  cy.reload();
+  cy.visit('/')
+    .reload();
 });
 
 When("I log out through the menu in the top right corner", () => {
