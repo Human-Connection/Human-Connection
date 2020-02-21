@@ -1,20 +1,44 @@
-import { verifySignature } from '../security'
+import express from 'express'
+import cors from 'cors'
+import { verifySignature, createSignature, generateRsaKeyPair } from '../security'
+import { getNeode } from '../../db/neo4j'
+import { extractNameFromId } from '../utils'
+const neode = getNeode()
+
 const debug = require('debug')('ea:verify')
 
-export default async (req, res, next) => {
+export async function handler(req, res, next) {
   debug(`actorId = ${req.body.actor}`)
-  // TODO stop if signature validation fails
-  if (
-    await verifySignature(
-      `${req.protocol}://${req.hostname}:${req.app.get('port')}${req.originalUrl}`,
-      req.headers,
-    )
-  ) {
-    debug('verify = true')
-    next()
+  const { headers, body, protocol, hostname, app, originalUrl } = req
+  const slug = extractNameFromId(body.actor)
+  const user = await neode.cypher('MATCH (user:User {slug: $slug}) RETURN user {.*};', { slug })
+  if (user && user.records && user.records.length && headers.signature) {
+    try {
+      await verifySignature(`${protocol}://${hostname}:${app.get('port')}${originalUrl}`, headers)
+      debug('verify = true')
+      next()
+    } catch (error) {
+      debug('verify = false')
+      throw Error('Signature validation failed!', error)
+    }
   } else {
-    // throw Error('Signature validation failed!')
-    debug('verify = false')
-    next()
+    try {
+      const rsaKeyPair = await generateRsaKeyPair()
+      const signature = await createSignature({
+        privateKey: rsaKeyPair.privateKey,
+        keyId: `https://human-connection.social/activitypub/users/${slug}#main-key`,
+        url: body.object.attributedTo,
+        headers,
+      })
+      if (signature) res.sendStatus(200)
+    } catch (error) {
+      throw Error('Create signature failed!', error)
+    }
   }
+}
+
+export default function() {
+  const router = express.Router()
+  router.use('/', cors(), express.urlencoded({ extended: true }), handler)
+  return router
 }

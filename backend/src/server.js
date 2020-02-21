@@ -8,6 +8,7 @@ import { getNeode, getDriver } from './db/neo4j'
 import decode from './jwt/decode'
 import schema from './schema'
 import webfinger from './activitypub/routes/webfinger'
+import verify from './activitypub/routes/verify'
 import { RedisPubSub } from 'graphql-redis-subscriptions'
 import { PubSub } from 'graphql-subscriptions'
 import Redis from 'ioredis'
@@ -81,10 +82,12 @@ const createServer = options => {
 
   app.set('driver', driver)
   app.use(helmet())
+
   app.use('/.well-known/', webfinger())
   app.use(express.static('public'))
   app.use(bodyParser.json({ limit: '10mb' }))
   app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }))
+  app.post('/activitypub/users/:slug/inbox', verify())
   server.applyMiddleware({ app, path: '/' })
   const httpServer = http.createServer(app)
   server.installSubscriptionHandlers(httpServer)

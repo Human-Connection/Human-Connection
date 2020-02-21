@@ -1,14 +1,14 @@
 // import dotenv from 'dotenv'
 // import { resolve } from 'path'
 import crypto from 'crypto'
-import request from 'request'
+import axios from 'axios'
 import CONFIG from './../../config'
 const debug = require('debug')('ea:security')
 
 // TODO Does this reference a local config? Why?
 // dotenv.config({ path: resolve('src', 'activitypub', '.env') })
 
-export function generateRsaKeyPair(options = {}) {
+export const generateRsaKeyPair = async (options = {}) => {
   const { passphrase = CONFIG.PRIVATE_KEY_PASSPHRASE } = options
   return crypto.generateKeyPairSync('rsa', {
     modulusLength: 4096,
@@ -26,7 +26,7 @@ export function generateRsaKeyPair(options = {}) {
 }
 
 // signing
-export function createSignature(options) {
+export const createSignature = async options => {
   const {
     privateKey,
     keyId,
@@ -49,53 +49,50 @@ export function createSignature(options) {
 }
 
 // verifying
-export function verifySignature(url, headers) {
-  return new Promise((resolve, reject) => {
-    const signatureHeader = headers.signature ? headers.signature : headers.Signature
-    if (!signatureHeader) {
-      debug('No Signature header present!')
-      resolve(false)
-    }
-    debug(`Signature Header = ${signatureHeader}`)
-    const signature = extractKeyValueFromSignatureHeader(signatureHeader, 'signature')
-    const algorithm = extractKeyValueFromSignatureHeader(signatureHeader, 'algorithm')
-    const headersString = extractKeyValueFromSignatureHeader(signatureHeader, 'headers')
-    const keyId = extractKeyValueFromSignatureHeader(signatureHeader, 'keyId')
+export const verifySignature = async (url, headers) => {
+  const signatureHeader = headers.signature ? headers.signature : headers.Signature
+  if (!signatureHeader) {
+    debug('No Signature header present!')
+    throw Error('No Signature header present!')
+  }
+  debug(`Signature Header = ${signatureHeader}`)
+  const signature = extractKeyValueFromSignatureHeader(signatureHeader, 'signature')
+  const algorithm = extractKeyValueFromSignatureHeader(signatureHeader, 'algorithm')
+  const headersString = extractKeyValueFromSignatureHeader(signatureHeader, 'headers')
+  const keyId = extractKeyValueFromSignatureHeader(signatureHeader, 'keyId')
+  if (!SUPPORTED_HASH_ALGORITHMS.includes(algorithm)) {
+    debug('Unsupported hash algorithm specified!')
+    throw Error('Unsupported hash algorithm specified!')
+  }
 
-    if (!SUPPORTED_HASH_ALGORITHMS.includes(algorithm)) {
-      debug('Unsupported hash algorithm specified!')
-      resolve(false)
+  const usedHeaders = headersString.split(' ')
+  const verifyHeaders = {}
+  Object.keys(headers).forEach(key => {
+    if (usedHeaders.includes(key.toLowerCase())) {
+      verifyHeaders[key.toLowerCase()] = headers[key]
     }
-
-    const usedHeaders = headersString.split(' ')
-    const verifyHeaders = {}
-    Object.keys(headers).forEach(key => {
-      if (usedHeaders.includes(key.toLowerCase())) {
-        verifyHeaders[key.toLowerCase()] = headers[key]
-      }
-    })
-    const signingString = constructSigningString(url, verifyHeaders)
-    debug(`keyId= ${keyId}`)
-    request(
-      {
-        url: keyId,
-        headers: {
-          Accept: 'application/json',
-        },
-      },
-      (err, response, body) => {
-        if (err) reject(err)
-        debug(`body = ${body}`)
-        const actor = JSON.parse(body)
-        const publicKeyPem = actor.publicKey.publicKeyPem
-        resolve(httpVerify(publicKeyPem, signature, signingString, algorithm))
-      },
-    )
   })
+  const signingString = await constructSigningString(url, verifyHeaders)
+  debug(`keyId= ${keyId}`)
+  axios({
+    url: keyId,
+    headers: {
+      Accept: 'application/json',
+    },
+  })
+    .then((_response, body) => {
+      debug(`body = ${body}`)
+      const actor = JSON.parse(body)
+      const publicKeyPem = actor.publicKey.publicKeyPem
+      return httpVerify(publicKeyPem, signature, signingString, algorithm)
+    })
+    .catch(error => {
+      throw Error(error)
+    })
 }
 
 // private: signing
-function constructSigningString(url, headers) {
+const constructSigningString = (url, headers) => {
   const urlObj = new URL(url)
   const signingString = `(request-target): post ${urlObj.pathname}${
     urlObj.search !== '' ? urlObj.search : ''

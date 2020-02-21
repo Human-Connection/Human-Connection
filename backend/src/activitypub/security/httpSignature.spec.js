@@ -1,6 +1,7 @@
-import { generateRsaKeyPair, createSignature, verifySignature } from '.'
 import crypto from 'crypto'
 import request from 'request'
+import { verifySignature } from '.'
+import { pair, httpSignature } from '../../../constants/activitypub'
 jest.mock('request')
 
 let privateKey
@@ -10,7 +11,6 @@ const passphrase = 'a7dsf78sadg87ad87sfagsadg78'
 
 describe('activityPub/security', () => {
   beforeEach(() => {
-    const pair = generateRsaKeyPair({ passphrase })
     privateKey = pair.privateKey
     publicKey = pair.publicKey
     headers = {
@@ -23,21 +23,12 @@ describe('activityPub/security', () => {
   describe('createSignature', () => {
     describe('returned http signature', () => {
       let signatureB64
-      let httpSignature
-
       beforeEach(() => {
         const signer = crypto.createSign('rsa-sha256')
         signer.update(
           '(request-target): post /activitypub/users/max/inbox\ndate: 2019-03-08T14:35:45.759Z\nhost: democracy-app.de\ncontent-type: application/json',
         )
         signatureB64 = signer.sign({ key: privateKey, passphrase }, 'base64')
-        httpSignature = createSignature({
-          privateKey,
-          keyId: 'https://human-connection.org/activitypub/users/lea#main-key',
-          url: 'https://democracy-app.de/activitypub/users/max/inbox',
-          headers,
-          passphrase,
-        })
       })
 
       it('contains keyId', () => {
@@ -61,16 +52,7 @@ describe('activityPub/security', () => {
   })
 
   describe('verifySignature', () => {
-    let httpSignature
-
     beforeEach(() => {
-      httpSignature = createSignature({
-        privateKey,
-        keyId: 'http://localhost:4001/activitypub/users/test-user#main-key',
-        url: 'https://democracy-app.de/activitypub/users/max/inbox',
-        headers,
-        passphrase,
-      })
       const body = {
         publicKey: {
           id: 'https://localhost:4001/activitypub/users/test-user#main-key',
