@@ -1,6 +1,6 @@
 <template>
-  <ds-card>
-    <h2 style="margin-bottom: .2em;">{{ $t('post.moreInfo.title') }}</h2>
+  <base-card>
+    <h2 class="title">{{ $t('post.moreInfo.title') }}</h2>
     <p>{{ $t('post.moreInfo.description') }}</p>
     <ds-space />
     <h3>{{ $t('post.moreInfo.titleOfCategoriesSection') }}</h3>
@@ -24,7 +24,7 @@
           :key="relatedPost.id"
           :imageAspectRatio="relatedPost.imageAspectRatio"
         >
-          <hc-post-card
+          <post-teaser
             :post="relatedPost"
             :width="{ base: '100%', lg: 1 }"
             @removePostFromList="removePostFromList"
@@ -33,12 +33,12 @@
       </masonry-grid>
       <hc-empty v-else margin="large" icon="file" message="No related Posts" />
     </ds-section>
-  </ds-card>
+  </base-card>
 </template>
 
 <script>
 import HcEmpty from '~/components/Empty/Empty'
-import HcPostCard from '~/components/PostCard/PostCard.vue'
+import PostTeaser from '~/components/PostTeaser/PostTeaser.vue'
 import HcCategory from '~/components/Category'
 import HcHashtag from '~/components/Hashtag/Hashtag'
 import { relatedContributions } from '~/graphql/PostQuery'
@@ -51,7 +51,7 @@ export default {
     mode: 'out-in',
   },
   components: {
-    HcPostCard,
+    PostTeaser,
     HcCategory,
     HcHashtag,
     HcEmpty,

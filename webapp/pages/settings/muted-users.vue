@@ -1,7 +1,8 @@
 <template>
   <div>
     <ds-space>
-      <ds-card :header="$t('settings.muted-users.name')">
+      <base-card>
+        <h2 class="title">{{ $t('settings.muted-users.name') }}</h2>
         <ds-text>
           {{ $t('settings.muted-users.explanation.intro') }}
         </ds-text>
@@ -13,9 +14,9 @@
             {{ $t('settings.muted-users.explanation.search') }}
           </ds-list-item>
         </ds-list>
-      </ds-card>
+      </base-card>
     </ds-space>
-    <ds-card v-if="mutedUsers && mutedUsers.length">
+    <base-card v-if="mutedUsers && mutedUsers.length">
       <ds-table :data="mutedUsers" :fields="fields" condensed>
         <template #avatar="scope">
           <nuxt-link
@@ -52,8 +53,8 @@
           <base-button circle size="small" @click="unmuteUser(scope)" icon="user-plus" />
         </template>
       </ds-table>
-    </ds-card>
-    <ds-card v-else>
+    </base-card>
+    <base-card v-else>
       <ds-space>
         <ds-placeholder>
           {{ $t('settings.muted-users.empty') }}
@@ -64,7 +65,7 @@
           {{ $t('settings.muted-users.how-to') }}
         </ds-text>
       </ds-space>
-    </ds-card>
+    </base-card>
   </div>
 </template>
 

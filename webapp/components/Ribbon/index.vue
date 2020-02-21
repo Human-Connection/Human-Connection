@@ -45,13 +45,13 @@ export default {
     border-style: solid;
     border-color: $background-color-secondary transparent transparent $background-color-secondary;
   }
-}
 
-.ribbon--pinned {
-  background-color: $color-warning-active;
+  &.--pinned {
+    background-color: $color-warning;
 
-  &::before {
-    border-color: $color-warning transparent transparent $color-warning;
+    &::before {
+      border-color: $color-warning transparent transparent $color-warning;
+    }
   }
 }
 </style>

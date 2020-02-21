@@ -1,11 +1,12 @@
 <template>
-  <ds-card :header="$t('settings.privacy.name')">
+  <base-card>
+    <h2 class="title">{{ $t('settings.privacy.name') }}</h2>
     <ds-space margin-bottom="small">
       <input id="allow-shouts" type="checkbox" v-model="shoutsAllowed" />
       <label for="allow-shouts">{{ $t('settings.privacy.make-shouts-public') }}</label>
     </ds-space>
     <base-button filled @click="submit" :disabled="disabled">{{ $t('actions.save') }}</base-button>
-  </ds-card>
+  </base-card>
 </template>
 
 <script>

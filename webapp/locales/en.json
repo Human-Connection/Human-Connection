@@ -217,6 +217,8 @@
     }
   },
   "contribution": {
+    "amount-comments": "{amount} comments",
+    "amount-shouts": "{amount} recommendations",
     "categories": {
       "infoSelectedNoOfMaxCategories": "{chosen} of {max} categories selected"
     },
@@ -636,11 +638,11 @@
     },
     "deleteUserAccount": {
       "accountDescription": "Be aware that your Posts and Comments are important to our community. If you still choose to delete them, you have to mark them below.",
-      "accountWarning": "You <b>CAN'T MANAGE</b> and <b>CAN'T RECOVER</b> your Account, Posts, or Comments after deleting your account!",
+      "accountWarning": "You CAN'T MANAGE and CAN'T RECOVER your Account, Posts, or Comments after deleting your account!",
       "commentedCount": "Delete my {count} comments",
       "contributionsCount": "Delete my {count} posts",
       "name": "Delete user account",
-      "pleaseConfirm": "<b class='is-danger'>Destructive action!</b> Type <b>{confirm}</b> to confirm",
+      "pleaseConfirm": "Destructive action! Type “{confirm}” to confirm.",
       "success": "Account successfully deleted!"
     },
     "download": {

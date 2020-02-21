@@ -1,24 +1,23 @@
 <template>
-  <div>
-    <ds-space>
-      <ds-card :header="$t('admin.users.name')">
-        <ds-form v-model="form" @submit="submit">
-          <ds-flex gutter="small">
-            <ds-flex-item width="90%">
-              <ds-input
-                model="query"
-                :placeholder="$t('admin.users.form.placeholder')"
-                icon="search"
-              />
-            </ds-flex-item>
-            <ds-flex-item width="30px">
-              <base-button filled circle type="submit" icon="search" :loading="$apollo.loading" />
-            </ds-flex-item>
-          </ds-flex>
-        </ds-form>
-      </ds-card>
-    </ds-space>
-    <ds-card v-if="User && User.length">
+  <div class="admin-users">
+    <base-card>
+      <h2 class="title">{{ $t('admin.users.name') }}</h2>
+      <ds-form v-model="form" @submit="submit">
+        <ds-flex gutter="small">
+          <ds-flex-item width="90%">
+            <ds-input
+              model="query"
+              :placeholder="$t('admin.users.form.placeholder')"
+              icon="search"
+            />
+          </ds-flex-item>
+          <ds-flex-item width="30px">
+            <base-button filled circle type="submit" icon="search" :loading="$apollo.loading" />
+          </ds-flex-item>
+        </ds-flex>
+      </ds-form>
+    </base-card>
+    <base-card v-if="User && User.length">
       <ds-table :data="User" :fields="fields" condensed>
         <template slot="index" slot-scope="scope">{{ scope.row.index + 1 }}.</template>
         <template slot="name" slot-scope="scope">
@@ -51,10 +50,10 @@
         </template>
       </ds-table>
       <pagination-buttons :hasNext="hasNext" :hasPrevious="hasPrevious" @next="next" @back="back" />
-    </ds-card>
-    <ds-card v-else>
+    </base-card>
+    <base-card v-else>
       <ds-placeholder>{{ $t('admin.users.empty') }}</ds-placeholder>
-    </ds-card>
+    </base-card>
   </div>
 </template>
 
@@ -178,3 +177,9 @@ export default {
   },
 }
 </script>
+
+<style lang="scss">
+.admin-users > .base-card:first-child {
+  margin-bottom: $space-small;
+}
+</style>

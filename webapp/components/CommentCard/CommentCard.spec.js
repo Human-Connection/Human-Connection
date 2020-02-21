@@ -1,5 +1,5 @@
 import { config, mount } from '@vue/test-utils'
-import Comment from './Comment.vue'
+import CommentCard from './CommentCard.vue'
 import Vuex from 'vuex'
 
 const localVue = global.localVue
@@ -8,11 +8,17 @@ localVue.directive('scrollTo', jest.fn())
 config.stubs['client-only'] = '<span><slot /></span>'
 config.stubs['nuxt-link'] = '<span><slot /></span>'
 
-describe('Comment.vue', () => {
+describe('CommentCard.vue', () => {
   let propsData, mocks, stubs, getters, wrapper, Wrapper
 
   beforeEach(() => {
-    propsData = {}
+    propsData = {
+      comment: {
+        id: 'comment007',
+        author: { id: 'some-user' },
+      },
+      postId: 'post42',
+    }
     mocks = {
       $t: jest.fn(),
       $toast: {
@@ -26,6 +32,7 @@ describe('Comment.vue', () => {
         truncate: a => a,
         removeHtml: a => a,
       },
+      $route: { hash: '' },
       $scrollTo: jest.fn(),
       $apollo: {
         mutate: jest.fn().mockResolvedValue({
@@ -55,7 +62,7 @@ describe('Comment.vue', () => {
       const store = new Vuex.Store({
         getters,
       })
-      return mount(Comment, {
+      return mount(CommentCard, {
         store,
         propsData,
         mocks,

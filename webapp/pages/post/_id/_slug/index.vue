@@ -1,42 +1,46 @@
 <template>
   <transition name="fade" appear>
-    <ds-card
-      :lang="post.language"
+    <base-card
       v-if="post && ready"
-      :image="post.image | proxyApiUrl"
+      :lang="post.language"
       :class="{
         'post-page': true,
         'disabled-content': post.disabled,
         '--blur-image': blurred,
       }"
     >
-      <aside v-show="post.imageBlurred" class="blur-toggle">
-        <img v-show="blurred" :src="post.image | proxyApiUrl" class="preview" />
-        <base-button
-          :icon="blurred ? 'eye' : 'eye-slash'"
-          filled
-          circle
-          @click="blurred = !blurred"
-        />
-      </aside>
-      <user-teaser :user="post.author" :date-time="post.createdAt">
-        <template v-slot:dateTime>
-          <ds-text v-if="post.createdAt !== post.updatedAt">({{ $t('post.edited') }})</ds-text>
-        </template>
-      </user-teaser>
-      <client-only>
-        <content-menu
-          placement="bottom-end"
-          resource-type="contribution"
-          :resource="post"
-          :modalsData="menuModalsData"
-          :is-owner="isAuthor"
-          @pinPost="pinPost"
-          @unpinPost="unpinPost"
-        />
-      </client-only>
+      <template #heroImage v-if="post.image">
+        <img :src="post.image | proxyApiUrl" class="image" />
+        <aside v-show="post.imageBlurred" class="blur-toggle">
+          <img v-show="blurred" :src="post.image | proxyApiUrl" class="preview" />
+          <base-button
+            :icon="blurred ? 'eye' : 'eye-slash'"
+            filled
+            circle
+            @click="blurred = !blurred"
+          />
+        </aside>
+      </template>
+      <section class="menu">
+        <user-teaser :user="post.author" :date-time="post.createdAt">
+          <template #dateTime>
+            <ds-text v-if="post.createdAt !== post.updatedAt">({{ $t('post.edited') }})</ds-text>
+          </template>
+        </user-teaser>
+        <client-only>
+          <content-menu
+            placement="bottom-end"
+            resource-type="contribution"
+            :resource="post"
+            :modalsData="menuModalsData"
+            :is-owner="isAuthor"
+            @pinPost="pinPost"
+            @unpinPost="unpinPost"
+          />
+        </client-only>
+      </section>
       <ds-space margin-bottom="small" />
-      <ds-heading tag="h3" no-margin class="hyphenate-text">{{ post.title }}</ds-heading>
+      <h2 class="title hyphenate-text">{{ post.title }}</h2>
       <ds-space margin-bottom="small" />
       <content-viewer class="content hyphenate-text" :content="post.content" />
       <!-- eslint-enable vue/no-v-html -->
@@ -83,13 +87,8 @@
         </ds-flex>
       </ds-space>
       <!-- Comments -->
-      <ds-section slot="footer">
-        <comment-list
-          :post="post"
-          :routeHash="$route.hash"
-          @toggleNewCommentForm="toggleNewCommentForm"
-          @reply="reply"
-        />
+      <ds-section>
+        <comment-list :post="post" @toggleNewCommentForm="toggleNewCommentForm" @reply="reply" />
         <ds-space margin-bottom="large" />
         <comment-form
           v-if="showNewCommentForm && !isBlocked"
@@ -104,7 +103,7 @@
           <a href="https://support.human-connection.org/kb/" target="_blank">FAQ</a>
         </ds-placeholder>
       </ds-section>
-    </ds-card>
+    </base-card>
   </transition>
 </template>
 
@@ -246,18 +245,23 @@ export default {
 </script>
 <style lang="scss">
 .post-page {
-  &.--blur-image > .ds-card-image img {
-    filter: blur(22px);
+  > .hero-image {
+    position: relative;
   }
 
-  .ds-card-content {
-    position: relative;
-    padding-top: 24px;
+  > .menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &.--blur-image > .hero-image > .image {
+    filter: blur($blur-radius);
   }
 
   .blur-toggle {
     position: absolute;
-    top: -80px;
+    bottom: 0;
     right: 0;
 
     display: flex;
@@ -272,38 +276,11 @@ export default {
     }
   }
 
-  .content-menu {
-    float: right;
-    margin-right: -$space-x-small;
-    margin-top: -$space-large;
-  }
-
   .comments {
     margin-top: $space-small;
 
-    .comment {
-      margin-top: $space-small;
-      position: relative;
-    }
-
     .ProseMirror {
       min-height: 0px;
-    }
-  }
-
-  .ds-card-image {
-    img {
-      max-height: 2000px;
-      object-fit: contain;
-      object-position: center;
-    }
-  }
-
-  .ds-card-footer {
-    padding: 0;
-
-    .ds-section {
-      padding: $space-base;
     }
   }
 }

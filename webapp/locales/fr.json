@@ -159,7 +159,7 @@
     "project": "Projet ::: Projets",
     "reportContent": "Signaler",
     "shout": "Partage ::: Partages",
-    "tag": "Tag ::: Tags",
+    "tag": "Tag ::: Tags",
     "takeAction": "Passer à l'action",
     "user": "Utilisateur ::: Utilisateurs",
     "validations": {
@@ -551,11 +551,11 @@
     },
     "deleteUserAccount": {
       "accountDescription": "Sachez que vos postes et commentaires sont importants pour notre communauté. Si vous voulez quand même les supprimer, vous devez les marquer ci-dessous.",
-      "accountWarning": "Vous <b>NE POUVEZ PAS GÉRER</b> et <b>NE POUVEZ PAS RECOUVRIR</b> votre compte, vos messages ou vos commentaires après avoir supprimé votre compte !",
+      "accountWarning": "Vous NE POUVEZ PAS GÉRER et NE POUVEZ PAS RECOUVRIR votre compte, vos messages ou vos commentaires après avoir supprimé votre compte!",
       "commentedCount": "Supprimer mes {count} commentaires",
       "contributionsCount": "Supprimer mes {count} postes",
       "name": "Supprimer un compte utilisateur",
-      "pleaseConfirm": "<b class='is-danger'> Action destructive! </b> Saisissez <b> {confirm} </b> pour confirmer",
+      "pleaseConfirm": "Action destructive! Saisissez “{confirm}” pour confirmer.",
       "success": "Compte supprimer avec succès!"
     },
     "download": {

@@ -217,6 +217,8 @@
     }
   },
   "contribution": {
+    "amount-comments": "{amount} comments",
+    "amount-shouts": "{amount} recommendations",
     "categories": {
       "infoSelectedNoOfMaxCategories": "{chosen} von {max} Kategorien ausgewählt"
     },
@@ -635,12 +637,12 @@
       "success": "Deine Daten wurden erfolgreich aktualisiert!"
     },
     "deleteUserAccount": {
-      "accountDescription": "Sei Dir bewusst, dass Deine Beiträge und Kommentare für unsere Community wichtig sind. Wenn Du sie trotzdem löschen möchtest, musst Du sie unten markieren.",
-      "accountWarning": "Dein Konto, Deine Beiträge oder Kommentare kannst Du nach dem Löschen <b>WEDER VERWALTEN NOCH WIEDERHERSTELLEN!</b>",
+      "accountDescription": "Sei dir bewusst, dass deine Beiträge und Kommentare für unsere Community wichtig sind. Wenn du sie trotzdem löschen möchtest, musst du sie unten markieren.",
+      "accountWarning": "Dein Konto, deine Beiträge oder Kommentare kannst du nach dem Löschen WEDER VERWALTEN NOCH WIEDERHERSTELLEN!",
       "commentedCount": "Meine {count} Kommentare löschen",
       "contributionsCount": "Meine {count} Beiträge löschen",
       "name": "Benutzerkonto löschen",
-      "pleaseConfirm": "<b class='is-danger'>Zerstörerische Aktion!</b> Gib <b>{confirm}</b> ein, um zu bestätigen.",
+      "pleaseConfirm": "Zerstörerische Aktion! Gib „{confirm}“ ein, um zu bestätigen.",
       "success": "Konto erfolgreich gelöscht!"
     },
     "download": {

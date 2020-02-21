@@ -1,7 +1,8 @@
 <template>
-  <ds-card :header="$t('admin.settings.name')">
+  <base-card>
+    <h2 class="title">{{ $t('admin.settings.name') }}</h2>
     <hc-empty icon="tasks" message="Coming Soon…" />
-  </ds-card>
+  </base-card>
 </template>
 
 <script>

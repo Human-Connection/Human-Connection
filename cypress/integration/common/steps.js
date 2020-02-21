@@ -73,7 +73,7 @@ Given("the {string} user searches for {string}", (_, postTitle) => {
       })
     })
     .then(user => cy.login(user))
-  cy.get(".searchable-input .ds-select-search")
+  cy.get(".searchable-input .ds-select input")
     .focus()
     .type(postTitle);
 });
@@ -295,14 +295,14 @@ Then("I select a category", () => {
 });
 
 When("I choose {string} as the language for the post", (languageCode) => {
-  cy.get('.ds-flex-item > .ds-form-item .ds-select ')
+  cy.get('.contribution-form .ds-select')
     .click().get('.ds-select-option')
     .eq(languages.findIndex(l => l.code === languageCode)).click()
 })
 
 Then("the post shows up on the landing page at position {int}", index => {
   cy.openPage("landing");
-  const selector = `.post-card:nth-child(${index}) > .ds-card-content`;
+  const selector = `.post-teaser:nth-child(${index}) > .base-card`;
   cy.get(selector).should("contain", lastPost.title);
   cy.get(selector).should("contain", lastPost.content);
 });
@@ -312,16 +312,16 @@ Then("I get redirected to {string}", route => {
 });
 
 Then("the post was saved successfully", () => {
-  cy.get(".ds-card-content > .ds-heading").should("contain", lastPost.title);
+  cy.get(".base-card > .title").should("contain", lastPost.title);
   cy.get(".content").should("contain", lastPost.content);
 });
 
 Then(/^I should see only ([0-9]+) posts? on the landing page/, postCount => {
-  cy.get(".post-card").should("have.length", postCount);
+  cy.get(".post-teaser").should("have.length", postCount);
 });
 
 Then("the first post on the landing page has the title:", title => {
-  cy.get(".post-card:first").should("contain", title);
+  cy.get(".post-teaser:first").should("contain", title);
 });
 
 Then(
@@ -388,7 +388,7 @@ Then("I can login successfully with password {string}", password => {
 
 When("open the notification menu and click on the first item", () => {
   cy.get(".notifications-menu").invoke('show').click(); // "invoke('show')" because of the delay for show the menu
-  cy.get(".notification-mention-post")
+  cy.get(".notification .link")
     .first()
     .click({
       force: true
@@ -424,7 +424,7 @@ When("mention {string} in the text", mention => {
 Then("the notification gets marked as read", () => {
   cy.get(".notifications-menu-popover .notification")
     .first()
-    .should("have.class", "read");
+    .should("have.class", "--read");
 });
 
 Then("there are no notifications in the top menu", () => {
@@ -510,14 +510,14 @@ Given('{string} wrote a post {string}', (_, title) => {
 });
 
 Then("the list of posts of this user is empty", () => {
-  cy.get(".ds-card-content").not(".post-link");
+  cy.get(".base-card").not(".post-link");
   cy.get(".main-container").find(".ds-space.hc-empty");
 });
 
 Then("I get removed from his follower collection", () => {
-  cy.get(".ds-card-content").not(".post-link");
+  cy.get(".base-card").not(".post-link");
   cy.get(".main-container").contains(
-    ".ds-card-content",
+    ".base-card",
     "is not followed by anyone"
   );
 });
@@ -581,7 +581,7 @@ Then("I see only one post with the title {string}", title => {
 });
 
 Then("they should not see the comment form", () => {
-  cy.get(".ds-card-footer").children().should('not.have.class', 'comment-form')
+  cy.get(".base-card").children().should('not.have.class', 'comment-form')
 })
 
 Then("they should see a text explaining why commenting is not possible", () => {
@@ -600,11 +600,11 @@ Then("I {string} see {string} from the content menu in the user info box", (cond
 })
 
 Then('I should not see {string} button', button => {
-  cy.get('.ds-card-content .action-buttons')
+  cy.get('.base-card .action-buttons')
     .should('have.length', 1)
 })
 
 Then('I should see the {string} button', button => {
-  cy.get('.ds-card-content .action-buttons .base-button')
+  cy.get('.base-card .action-buttons .base-button')
     .should('contain', button)
 })

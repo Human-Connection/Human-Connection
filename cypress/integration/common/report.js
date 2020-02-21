@@ -12,7 +12,7 @@ let annoyingUserWhoMutedModeratorTitle = 'Fake news'
 const savePostTitle = $post => {
   return $post
     .first()
-    .find('.ds-heading')
+    .find('.title')
     .first()
     .invoke('text')
     .then(title => {
@@ -51,7 +51,7 @@ Given('I am logged in with a {string} role', role => {
 })
 
 When('I click on "Report Post" from the content menu of the post', () => {
-  cy.contains('.ds-card', davidIrvingPostTitle)
+  cy.contains('.base-card', davidIrvingPostTitle)
     .find('.content-menu .base-button')
     .click({force: true})
 
@@ -61,7 +61,7 @@ When('I click on "Report Post" from the content menu of the post', () => {
 })
 
 When('I click on "Report User" from the content menu in the user info box', () => {
-  cy.contains('.ds-card', davidIrvingPostTitle)
+  cy.contains('.base-card', davidIrvingPostTitle)
     .get('.user-content-menu .base-button')
     .click({ force: true })
 
@@ -78,7 +78,7 @@ When('I click on the author', () => {
 
 When('I report the author', () => {
   cy.get('.page-name-profile-id-slug').then(() => {
-    invokeReportOnElement('.ds-card').then(() => {
+    invokeReportOnElement('.base-card').then(() => {
       cy.get('button')
         .contains('Send')
         .click()
@@ -169,7 +169,7 @@ Then('each list item links to the post page', () => {
 Then('I can visit the post page', () => {
   cy.contains(annoyingUserWhoMutedModeratorTitle).click()
   cy.location('pathname').should('contain', '/post')
-    .get('h3').should('contain', annoyingUserWhoMutedModeratorTitle)
+    .get('title').should('contain', annoyingUserWhoMutedModeratorTitle)
 })
 
 When("they have a post someone has reported", () => {

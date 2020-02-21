@@ -6,7 +6,8 @@
     @input-valid="handleInputValid"
     @submit="handleSubmitSocialMedia"
   >
-    <ds-card :header="$t('settings.social-media.name')">
+    <base-card>
+      <h2 class="title">{{ $t('settings.social-media.name') }}</h2>
       <ds-space v-if="socialMediaLinks" margin-top="base" margin="x-small">
         <ds-list>
           <ds-list-item v-for="link in socialMediaLinks" :key="link.id" class="list-item--high">
@@ -62,7 +63,7 @@
           </base-button>
         </ds-space>
       </ds-space>
-    </ds-card>
+    </base-card>
   </ds-form>
 </template>
 

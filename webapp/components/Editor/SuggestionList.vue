@@ -89,7 +89,7 @@ export default {
   }
 
   &.hint {
-    opacity: 0.7;
+    opacity: $opacity-soft;
     pointer-events: none;
   }
 }

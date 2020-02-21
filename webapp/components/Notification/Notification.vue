@@ -1,37 +1,23 @@
 <template>
-  <ds-space :class="{ read: notification.read, notification: true }" margin-bottom="x-small">
+  <article :class="{ '--read': notification.read, notification: true }">
     <client-only>
-      <ds-space margin-bottom="x-small">
-        <user-teaser :user="from.author" :date-time="from.createdAt" />
-      </ds-space>
-      <ds-text class="reason-text-for-test" color="soft">
-        {{ $t(`notifications.reason.${notification.reason}`) }}
-      </ds-text>
+      <user-teaser :user="from.author" :date-time="from.createdAt" />
     </client-only>
-    <ds-space margin-bottom="x-small" />
+    <p class="description">{{ $t(`notifications.reason.${notification.reason}`) }}</p>
     <nuxt-link
-      class="notification-mention-post"
+      class="link"
       :to="{ name: 'post-id-slug', params, ...hashParam }"
       @click.native="$emit('read')"
     >
-      <ds-space margin-bottom="x-small">
-        <ds-card
-          :header="from.title || from.post.title"
-          hover
-          space="x-small"
-          class="notifications-card"
-        >
-          <ds-space margin-bottom="x-small" />
-          <div>
-            <span v-if="isComment" class="comment-notification-header">
-              {{ $t(`notifications.comment`) }}:
-            </span>
-            {{ from.contentExcerpt | removeHtml }}
-          </div>
-        </ds-card>
-      </ds-space>
+      <base-card wideContent>
+        <h2 class="title">{{ from.title || from.post.title }}</h2>
+        <p>
+          <strong v-if="isComment" class="comment">{{ $t(`notifications.comment`) }}:</strong>
+          {{ from.contentExcerpt | removeHtml }}
+        </p>
+      </base-card>
     </nuxt-link>
-  </ds-space>
+  </article>
 </template>
 
 <script>
@@ -70,14 +56,36 @@ export default {
 </script>
 
 <style lang="scss">
-.notification.read {
-  opacity: $opacity-soft;
-}
-.notifications-card {
-  min-width: 500px;
-}
-.comment-notification-header {
-  font-weight: 700;
-  margin-right: 0.1rem;
+.notification {
+  margin-bottom: $space-base;
+
+  &:first-of-type {
+    margin-top: $space-x-small;
+  }
+
+  &.--read {
+    opacity: $opacity-disabled;
+  }
+
+  > .description {
+    margin-bottom: $space-x-small;
+  }
+
+  > .link {
+    display: block;
+    color: $text-color-base;
+
+    &:hover {
+      color: $color-primary;
+    }
+  }
+
+  .user-teaser {
+    margin-bottom: $space-x-small;
+  }
+
+  .comment {
+    font-weight: $font-weight-bold;
+  }
 }
 </style>

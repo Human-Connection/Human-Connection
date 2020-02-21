@@ -153,10 +153,10 @@ describe('CommentForm.vue', () => {
           expect(closeMethodSpy).toHaveBeenCalledTimes(1)
         })
 
-        it('emits `showEditCommentMenu` event', async () => {
+        it('emits `finishEditing` event', async () => {
           wrapper.vm.updateEditorContent('ok')
           await wrapper.find('form').trigger('submit')
-          expect(wrapper.emitted('showEditCommentMenu')).toEqual([[false]])
+          expect(wrapper.emitted('finishEditing')).toBeTruthy()
         })
       })
 
@@ -167,10 +167,10 @@ describe('CommentForm.vue', () => {
           expect(closeMethodSpy).toHaveBeenCalledTimes(1)
         })
 
-        it('emits `showEditCommentMenu` event', async () => {
+        it('emits `finishEditing` event', async () => {
           wrapper.vm.updateEditorContent('ok')
           await wrapper.find('[data-test="cancel-button"]').trigger('submit')
-          expect(wrapper.emitted('showEditCommentMenu')).toEqual([[false]])
+          expect(wrapper.emitted('finishEditing')).toBeTruthy()
         })
       })
 

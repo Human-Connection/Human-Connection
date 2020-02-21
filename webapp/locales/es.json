@@ -609,11 +609,11 @@
     },
     "deleteUserAccount": {
       "accountDescription": "Tenga en cuenta que su contribución y sus comentarios son importantes para nuestra comunidad. Si aún decide borrarlos, debe marcarlos a continuación.",
-      "accountWarning": "¡<b> NO PUEDE GESTIONAR </b> y <b> NO PUEDE RECUPERAR </b> su cuenta, contribuciones o comentarios después de eliminar su cuenta!",
+      "accountWarning": "¡NO PUEDE GESTIONAR y NO PUEDE RECUPERAR su cuenta, contribuciones o comentarios después de eliminar su cuenta!",
       "commentedCount": "Eliminar mis {count} comentarios",
       "contributionsCount": "Eliminar mis {count} contribuciones",
       "name": "Eliminar cuenta de usuario",
-      "pleaseConfirm": "<b class='is-danger'> ¡Acción destructiva! </b> Escriba <b> {confirm} </b> para confirmar",
+      "pleaseConfirm": "¡Acción destructiva! Escriba “{confirm}” para confirmar.",
       "success": "¡Cuenta eliminada con éxito!"
     },
     "download": {

@@ -551,11 +551,11 @@
     },
     "deleteUserAccount": {
       "accountDescription": "Esteja ciente de que o suas Publicações e Comentários são importantes para a nossa comunidade. Se você ainda optar por excluí-los, você tem que marcá-los abaixo.",
-      "accountWarning": "Você <b>NÃO PODE GERENCIAR</b> e <b>NÃO PODE RECUPERAR</b> sua conta, Publicações, ou Comentários após excluir sua conta!",
+      "accountWarning": "Você NÃO PODE GERENCIAR e NÃO PODE RECUPERAR sua conta, Publicações, ou Comentários após excluir sua conta!",
       "commentedCount": "Deletar meus {count} comentários",
       "contributionsCount": "Deletar minhas {count} publicações",
       "name": "Deletar dados",
-      "pleaseConfirm": "<b class='is-danger'>Ação destrutiva!</b> Digitar <b>{confirm}</b> para confirmar",
+      "pleaseConfirm": "Ação destrutiva! Digitar “{confirm}” para confirmar.",
       "success": "Conta eliminada com sucesso!"
     },
     "download": {
