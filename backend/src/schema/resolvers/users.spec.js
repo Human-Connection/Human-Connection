@@ -672,7 +672,7 @@ describe('DeleteUser as Admin', () => {
   })
 })
 
-describe('DeleteUser I myself', () => {
+describe('User deletes his account himself', () => {
   const deleteUserMutation = gql`
     mutation($id: ID!, $resource: [Deletable]) {
       DeleteUser(id: $id, resource: $resource) {
@@ -701,8 +701,9 @@ describe('DeleteUser I myself', () => {
       }
     }
   `
+
   beforeEach(async () => {
-    variables = { id: ' u343', resource: [] }
+    variables = { id: 'u343', resource: [] }
 
     user = await Factory.build('user', {
       name: 'My name should be deleted',
@@ -720,8 +721,44 @@ describe('DeleteUser I myself', () => {
     )
   })
 
-  describe('unauthenticated', () => {
-    it('throws authorization error', async () => {
+  describe('unauthenticated anotherUser', () => {
+    beforeEach(async () => {
+      const anotherUser = await Factory.build(
+        'user',
+        {
+          role: 'user',
+        },
+        {
+          email: 'user@example.org',
+          password: '1234',
+        },
+      )
+
+      authenticatedUser = await anotherUser.toJson()
+    })
+
+    it('a  another User has no authorization to delete this user accounts', async () => {
+      const { errors } = await mutate({ mutation: deleteUserMutation, variables })
+      expect(errors[0]).toHaveProperty('message', 'Not Authorised!')
+    })
+  })
+  describe('unauthenticated anotherModerator', () => {
+    beforeEach(async () => {
+      const anotherModerator = await Factory.build(
+        'user',
+        {
+          role: 'moderator',
+        },
+        {
+          email: 'moderator@example.org',
+          password: '1234',
+        },
+      )
+
+      authenticatedUser = await anotherModerator.toJson()
+    })
+
+    it('a  Moderator has no authorization to delete this user accounts', async () => {
       const { errors } = await mutate({ mutation: deleteUserMutation, variables })
       expect(errors[0]).toHaveProperty('message', 'Not Authorised!')
     })
