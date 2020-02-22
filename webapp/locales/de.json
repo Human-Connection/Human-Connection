@@ -470,11 +470,11 @@
   },
   "post": {
     "comment": {
+      "addReply": "Ok. Der User wird in deinem Kommentar erwähnt werden.",
       "reply": "Antworten",
       "submit": "Kommentiere",
       "submitted": "Kommentar gesendet",
-      "updated": "Änderungen gespeichert",
-      "addReply": "Ok. Der User wird in deinem Kommentar erwähnt werden."
+      "updated": "Änderungen gespeichert"
     },
     "edited": "bearbeitet",
     "menu": {

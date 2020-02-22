@@ -470,11 +470,11 @@
   },
   "post": {
     "comment": {
+      "addReply": "Okay. The user will be mentioned in your comment.",
       "reply": "Reply",
       "submit": "Comment",
       "submitted": "Comment submitted!",
-      "updated": "Changes saved!",
-      "addReply": "Okay. The user will be mentioned in your comment."
+      "updated": "Changes saved!"
     },
     "edited": "edited",
     "menu": {
