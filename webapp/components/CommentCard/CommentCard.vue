@@ -45,7 +45,6 @@
       class="reply-button"
       circle
       size="small"
-      v-scroll-to="'.editor'"
       @click="reply"
     />
   </base-card>
@@ -149,8 +148,9 @@ export default {
       return `#${this.anchor}` === anchor
     },
     reply() {
-      const message = { slug: this.comment.author.slug, id: this.comment.author.id }
+      const message = { slug: this.comment.author.slug + ' ', id: this.comment.author.id }
       this.$emit('reply', message)
+      this.$toast.success(this.$t(`post.comment.addReply`))
     },
     editComment(editing) {
       this.editingComment = editing

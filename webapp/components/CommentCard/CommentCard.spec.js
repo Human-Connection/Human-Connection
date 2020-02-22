@@ -221,7 +221,7 @@ describe('CommentCard.vue', () => {
             [
               {
                 id: 'commentAuthorId',
-                slug: 'ogerly',
+                slug: 'ogerly ',
               },
             ],
           ])

@@ -473,7 +473,8 @@
       "reply": "Reply",
       "submit": "Comment",
       "submitted": "Comment submitted!",
-      "updated": "Changes saved!"
+      "updated": "Changes saved!",
+      "addReply": "Okay. The user will be mentioned in your comment."
     },
     "edited": "edited",
     "menu": {
