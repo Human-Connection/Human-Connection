@@ -785,6 +785,10 @@
       "description": "El uso de la red Human Connection no está permitido para fines comerciales. Esto incluye, pero no se limita a, publicitar productos con intención comercial, publicar enlaces de afiliados, solicitar donaciones directamente o brindar apoyo financiero para fines que no se reconocen como caritativos para fines fiscales.",
       "title": "Sin uso comercial"
     },
+    "no-parties": {
+      "description": "No se permiten las cuentas de usuario de los partidos políticos ni las cuentas de usuario oficiales de un representante político.",
+      "title": "No tiene uso político"
+    },
     "privacy-statement": {
       "description": "Nuestra red es una red de conocimiento y acción social. Por lo tanto, es especialmente importante para nosotros que el mayor número posible de contenidos sea accesible al público. En el curso del desarrollo de nuestra red habrá cada vez más la posibilidad de decidir sobre la visibilidad de los datos personales. Le informaremos sobre estas nuevas características. De lo contrario, siempre debe pensar en los datos personales que revela sobre usted (u otros). Esto se aplica en particular al contenido de los mensajes y comentarios, ya que éstos tienen un carácter ampliamente público. Más tarde habrá posibilidades de limitar la visibilidad de su perfil. Parte de los términos del servicio es nuestra declaración de privacidad, que le informa sobre las operaciones individuales de procesamiento de datos en nuestra red: <a href=\"https://human-connection.org/datenschutz/#netzwerk\" target=\"_blank\">https://human-connection.org/datenschutz/#netzwerk</a> o <a href=\"https://human-connection.org/datenschutz/\" target=\"_blank\">https://human-connection.org/datenschutz/</a> Nuestra declaración de privacidad está adaptada a la situación legal y a las características de nuestra red y es siempre válida en la versión más actualizada.",
       "title": "Protección de datos"

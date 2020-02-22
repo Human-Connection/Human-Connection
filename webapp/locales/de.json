@@ -814,6 +814,10 @@
       "description": "Die Nutzung des Human Connection Netzwerkes ist nicht gestattet für kommerzielle Nutzung. Darunter fällt unter anderem das Bewerben von Produkten mit kommerzieller Absicht, das Einstellen von Affiliate-Links (Geschäftspartner-Links), direkter Aufruf zu Spenden oder finanzieller Unterstützung für Zwecke, die steuerlich nicht als gemeinnützig anerkannt sind.",
       "title": "Keine kommerzielle Nutzung"
     },
+    "no-parties": {
+      "description": "Nutzerkonten von politischen Parteien oder offizielle Nutzerkonten eines politischen Vertreters sind unzulässig.",
+      "title": "Keine politische Nutzung"
+    },
     "privacy-statement": {
       "description": "Unser Netzwerk ist ein soziales Wissens- und Aktionsnetzwerk. Daher ist es uns besonders wichtig, dass möglichst viele Inhalte öffentlich zugänglich sind. Im Laufe der Entwicklung unseres Netzwerkes wird es mehr und mehr die Möglichkeit geben, über die Sichtbarkeit der selbst angegebenen bzw. persönlichen Daten zu entscheiden. Über diese neuen Funktionen werden wir Euch informieren. Ansonsten gilt, dass Du immer darüber nachdenken solltest, welche persönlichen Daten Du über Dich (oder andere) preisgibst. Dies gilt insbesondere für Inhalte von Beiträgen und Kommentaren, da diese einen weitgehend öffentlichen Charakter haben. Später wird es Möglichkeiten geben, die Sichtbarkeit Deines Profils einzuschränken. Teil der Nutzungsbedingungen ist unsere Datenschutzerklärung, die Dich über die einzelnen Datenverarbeitungen in unserem Netzwerk informiert: <a href=\"https://human-connection.org/datenschutz/#netzwerk\" target=\"_blank\">https://human-connection.org/datenschutz/#netzwerk</a> bzw. <a href=\"https://human-connection.org/datenschutz/\" target=\"_blank\">https://human-connection.org/datenschutz/</a>. Unsere Datenschutzerklärung ist an die Gesetzeslage und die Charakteristika unseres Netzwerks angepasst und gilt immer in der aktuellsten Version.",
       "title": "Datenschutz"
