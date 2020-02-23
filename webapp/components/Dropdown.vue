@@ -48,11 +48,16 @@ export default {
           if (isOpen) {
             this.$nextTick(() => {
               setTimeout(() => {
-                document.getElementsByTagName('body')[0].classList.add('dropdown-open')
+                const paddingRightStyle = `${window.innerWidth - document.documentElement.clientWidth}px`
+                document.body.style.paddingRight = paddingRightStyle
+                document.querySelector('.main-navigation').style.paddingRight = paddingRightStyle
+                document.body.classList.add('dropdown-open')
               }, 20)
             })
           } else {
-            document.getElementsByTagName('body')[0].classList.remove('dropdown-open')
+            document.body.style.paddingRight = null
+            document.querySelector('.main-navigation').style.paddingRight = null
+            document.body.classList.remove('dropdown-open')
           }
         } catch (err) {}
       },
