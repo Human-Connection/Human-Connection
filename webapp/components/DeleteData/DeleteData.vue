@@ -28,6 +28,7 @@
     <section v-if="deleteEnabled" class="warning">
       <p>{{ $t('settings.deleteUserAccount.accountWarning') }}</p>
     </section>
+    <ds-text v-show="isAdmin ||  currentUser.role === 'admin'" color="danger">ACHTUNG! Du Bist Admin!!</ds-text>
     <base-button
       icon="trash"
       danger
@@ -52,14 +53,26 @@ export default {
       deleteContributions: false,
       deleteComments: false,
       enableDeletionValue: null,
+      isAdmin: this.$store.getters['auth/isAdmin'],
     }
+  },
+  mounted() {
+    if (this.isAdmin === true) {
+      this.deleteContributions = true, 
+      this.deleteComments = true
+    }
+    // console.log('isAdmin', isAdmin)
+    // console.log('this.deleteContributions', this.deleteContributions)
+    // console.log(' this.deleteComments', this.deleteComments)
   },
   computed: {
     ...mapGetters({
       currentUser: 'auth/user',
     }),
     deleteEnabled() {
+      if (this.isAdmin === true) {
       return this.enableDeletionValue === this.currentUser.name
+    }
     },
   },
   methods: {

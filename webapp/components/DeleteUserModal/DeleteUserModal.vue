@@ -1,7 +1,7 @@
 <template>
   <ds-modal :title="title" :is-open="isOpen" @cancel="cancel">
     <!-- eslint-disable-next-line vue/no-v-html -->
-    <p v-html="message" />
+    <!-- <p v-html="message" /> -->
     <delete-data />
     <template slot="footer">
       <base-button class="cancel" @click="cancel">löschen abbrechen</base-button>
@@ -57,10 +57,39 @@ export default {
         // TODO: Use the "modalData" structure introduced in "ConfirmModal" and refactor this here. Be aware that all the Jest tests have to be refactored as well !!!
         // await this.modalData.buttons.confirm.callback()
         await this.$apollo.mutate({
-          mutation: gql`
+          /* mutation: gql`
             mutation($resourceId: ID!, $disable: Boolean, $closed: Boolean) {
               review(resourceId: $resourceId, disable: $disable, closed: $closed) {
                 disable
+              }
+            }
+          `, */
+          mutation: gql`
+            mutation {
+              DeleteUser(id: "u3", resource: [Post, Comment]) {
+                id
+                name
+                slug
+                about
+                deleted
+                contributions {
+                  id
+                  content
+                  contentExcerpt
+                  deleted
+                  comments {
+                    id
+                    content
+                    contentExcerpt
+                    deleted
+                  }
+                }
+                comments {
+                  id
+                  content
+                  contentExcerpt
+                  deleted
+                }
               }
             }
           `,

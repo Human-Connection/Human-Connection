@@ -49,7 +49,7 @@
           {{ scope.row.createdAt | dateTime }}
         </template>
         <template slot="delete" slot-scope="scope">
-          <div @click="deleteUser(scope.row.id)">
+          <div @click="deleteUser({ id: scope.row.id, slug: scope.row.slug })">
             <ds-icon name="trash"></ds-icon>
           </div>
         </template>
@@ -164,13 +164,14 @@ export default {
     },
   },
   methods: {
-    openModal() {
+    openModal(userdata) {
+      console.log("openModal", userdata)
       this.$store.commit('modal/SET_OPEN', {
         name: 'delete',
         data: {
-          type: 'sss',
-          resource: 'dfdd',
-          modalData: {},
+          id: 'sss',
+          type: 'dfdd',
+          name: {},
         },
       })
     },
@@ -193,8 +194,9 @@ export default {
         }
       }
     },
-    deleteUser(dd) {
-      this.openModal()
+    deleteUser(userdata) {
+      console.log("deleteUser", userdata)
+      this.openModal(userdata)
     },
   },
 }
