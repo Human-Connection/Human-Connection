@@ -48,6 +48,11 @@
         <template slot="createdAt" slot-scope="scope">
           {{ scope.row.createdAt | dateTime }}
         </template>
+        <template slot="delete" slot-scope="scope">
+          <div @click="deleteUser(scope.row.id)">
+            <ds-icon name="trash"></ds-icon>
+          </div>
+        </template>
       </ds-table>
       <pagination-buttons :hasNext="hasNext" :hasPrevious="hasPrevious" @next="next" @back="back" />
     </base-card>
@@ -111,6 +116,10 @@ export default {
           label: this.$t('admin.users.table.columns.role'),
           align: 'right',
         },
+        delete: {
+          label: '-',
+          align: 'right',
+        },
       }
     },
   },
@@ -155,6 +164,16 @@ export default {
     },
   },
   methods: {
+    openModal() {
+      this.$store.commit('modal/SET_OPEN', {
+        name: 'delete',
+        data: {
+          type: 'sss',
+          resource: 'dfdd',
+          modalData: {},
+        },
+      })
+    },
     back() {
       this.offset = Math.max(this.offset - this.pageSize, 0)
     },
@@ -173,6 +192,9 @@ export default {
           OR: [{ name_contains: query }, { slug_contains: query }, { about_contains: query }],
         }
       }
+    },
+    deleteUser(dd) {
+      this.openModal()
     },
   },
 }

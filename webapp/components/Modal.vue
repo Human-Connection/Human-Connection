@@ -30,6 +30,13 @@
       :modalData="data.modalData"
       @close="close"
     />
+    <delete-modal
+      v-if="open === 'delete'"
+      :id="data.resource.id"
+      :type="data.type"
+      :name="name"
+      @close="close"
+    />
   </div>
 </template>
 
@@ -38,6 +45,7 @@ import ConfirmModal from '~/components/Modal/ConfirmModal'
 import DisableModal from '~/components/Modal/DisableModal'
 import ReleaseModal from '~/components/ReleaseModal/ReleaseModal.vue'
 import ReportModal from '~/components/Modal/ReportModal'
+import DeleteModal from '~/components/DeleteUserModal/DeleteUserModal.vue'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -47,6 +55,7 @@ export default {
     ReleaseModal,
     ReportModal,
     ConfirmModal,
+    DeleteModal,
   },
   computed: {
     ...mapGetters({
