@@ -1,17 +1,17 @@
 <template>
   <client-only>
     <dropdown ref="menu" :placement="placement" :offset="offset">
-      <a
-        slot="default"
-        slot-scope="{ toggleMenu }"
-        class="locale-menu"
-        href="#"
-        @click.prevent="toggleMenu()"
-      >
-        <base-icon name="globe" />
-        <span class="label">{{ current.code.toUpperCase() }}</span>
-        <base-icon class="dropdown-arrow" name="angle-down" />
-      </a>
+      <template v-slot="{ toggleMenu }">
+        <a
+          class="locale-menu"
+          href="#"
+          @click.prevent="toggleMenu()"
+        >
+          <base-icon name="globe" />
+          <span class="label">{{ current.code.toUpperCase() }}</span>
+          <base-icon class="dropdown-arrow" name="angle-down" />
+        </a>
+      </template>
       <ds-menu
         #popover="{ toggleMenu }"
         class="locale-menu-popover"

@@ -6,7 +6,7 @@
     <ds-text v-html="submitMessage" />
   </base-card>
   <ds-form v-else v-model="form" :schema="formSchema" @submit="submit">
-    <template slot-scope="{ errors }">
+    <template v-slot="{ errors }">
       <base-card>
         <h2 class="title">{{ $t('settings.email.name') }}</h2>
         <ds-input
