@@ -13,15 +13,13 @@
         <base-icon class="dropdown-arrow" name="angle-down" />
       </a>
       <ds-menu
-        slot="popover"
-        slot-scope="{ toggleMenu }"
+        #popover="{ toggleMenu }"
         class="locale-menu-popover"
         :matcher="matcher"
         :routes="routes"
       >
         <ds-menu-item
-          slot="menuitem"
-          slot-scope="item"
+          #menuitem="item"
           class="locale-menu-item"
           :route="item.route"
           :parents="item.parents"

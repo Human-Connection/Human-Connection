@@ -12,20 +12,21 @@
         />
       </slot>
     </template>
-    <div slot="popover" slot-scope="{ toggleMenu }" class="content-menu-popover">
-      <ds-menu :routes="routes">
-        <ds-menu-item
-          slot="menuitem"
-          slot-scope="item"
-          :route="item.route"
-          :parents="item.parents"
-          @click.stop.prevent="openItem(item.route, toggleMenu)"
-        >
-          <base-icon :name="item.route.icon" />
-          {{ item.route.label }}
-        </ds-menu-item>
-      </ds-menu>
-    </div>
+    <template #popover="{ toggleMenu }">
+      <div class="content-menu-popover">
+        <ds-menu :routes="routes">
+          <ds-menu-item
+            #menuitem="item"
+            :route="item.route"
+            :parents="item.parents"
+            @click.stop.prevent="openItem(item.route, toggleMenu)"
+          >
+            <base-icon :name="item.route.icon" />
+            {{ item.route.label }}
+          </ds-menu-item>
+        </ds-menu>
+      </div>
+    </template>
   </dropdown>
 </template>
 
