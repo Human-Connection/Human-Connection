@@ -103,7 +103,7 @@
     "uuid": "~7.0.0",
     "validator": "^12.2.0",
     "wait-on": "~4.0.0",
-    "xregexp": "^4.2.4"
+    "xregexp": "^4.3.0"
   },
   "devDependencies": {
     "@babel/cli": "~7.8.4",
