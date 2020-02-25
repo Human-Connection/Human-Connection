@@ -4513,14 +4513,14 @@ graphql-redis-subscriptions@^2.1.2:
   optionalDependencies:
     ioredis "^4.6.3"
 
-graphql-shield@~7.0.13:
-  version "7.0.13"
-  resolved "https://registry.yarnpkg.com/graphql-shield/-/graphql-shield-7.0.13.tgz#ea7f797981504b203779f30d52c822c9c966c992"
-  integrity sha512-yNe40EPow9ic+mn2mgoOzA76QnXIyNd3zm9CeSJjd3pI9dwhkHlWWsMV8/WGVpcKswf/CBWZIG9qTNFocWkTDg==
+graphql-shield@~7.0.14:
+  version "7.0.14"
+  resolved "https://registry.yarnpkg.com/graphql-shield/-/graphql-shield-7.0.14.tgz#3cbbf2722f2e3393fed7f47d866a1324bc3ce76a"
+  integrity sha512-YVedaL+4pITisSGRqMVeGX8ydOLSTQlHQN6o0Jly7z2cSy1wOzGJIRpfofETJtGLhBnPHHy1otINzuAyjGJO/g==
   dependencies:
     "@types/yup" "0.26.32"
-    object-hash "^2.0.0"
-    yup "^0.28.0"
+    object-hash "^2.0.3"
+    yup "^0.28.1"
 
 graphql-subscriptions@^1.0.0:
   version "1.1.0"
@@ -6017,6 +6017,11 @@ locate-path@^5.0.0:
   dependencies:
     p-locate "^4.1.0"
 
+lodash-es@^4.17.11:
+  version "4.17.15"
+  resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.15.tgz#21bd96839354412f23d7a10340e5eac6ee455d78"
+  integrity sha512-rlrc3yU3+JNOpZ9zj5pQtxnx2THmvRykwL4Xlxoa8I9lHBlVbbyPhgyPMioxVZ4NqyxaVVtaJnzsyOidQIhyyQ==
+
 lodash.clonedeep@^4.5.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.clonedeep/-/lodash.clonedeep-4.5.0.tgz#e23f3f9c4f8fbdde872529c1071857a086e5ccef"
@@ -6860,10 +6865,10 @@ object-copy@^0.1.0:
     define-property "^0.2.5"
     kind-of "^3.0.3"
 
-object-hash@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/object-hash/-/object-hash-2.0.0.tgz#7c4cc341eb8b53367312a7c546142f00c9e0ea20"
-  integrity sha512-I7zGBH0rDKwVGeGZpZoFaDhIwvJa3l1CZE+8VchylXbInNiCj7sxxea9P5dTM4ftKR5//nrqxrdeGSTWL2VpBA==
+object-hash@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/object-hash/-/object-hash-2.0.3.tgz#d12db044e03cd2ca3d77c0570d87225b02e1e6ea"
+  integrity sha512-JPKn0GMu+Fa3zt3Bmr66JhokJU5BaNBIh4ZeTlaCBzrBsOeXzwcKKAK1tbLiPKgvwmPXsDvvLHoWh5Bm7ofIYg==
 
 object-inspect@^1.7.0:
   version "1.7.0"
@@ -9387,14 +9392,15 @@ yargs@^15.0.0:
     y18n "^4.0.0"
     yargs-parser "^16.1.0"
 
-yup@^0.28.0:
-  version "0.28.0"
-  resolved "https://registry.yarnpkg.com/yup/-/yup-0.28.0.tgz#fdc04d1a495465c83d3757a80c47616884baeddc"
-  integrity sha512-9ZmsB/PT6/m+oUKF8rT9lWhMMGfx5s/aNCCf8pMu/GEQA0Ro2tLOc+aX12GjfL67Vif5a3c7eZVuxGFqFScnJQ==
+yup@^0.28.1:
+  version "0.28.1"
+  resolved "https://registry.yarnpkg.com/yup/-/yup-0.28.1.tgz#60c0725be7057ed7a9ae61561333809332a63d47"
+  integrity sha512-xSHMZA7UyecSG/CCTDCtnYZMjBrYDR/C7hu0fMsZ6UcS/ngko4qCVFbw+CAmNtHlbItKkvQ3YXITODeTj/dUkw==
   dependencies:
     "@babel/runtime" "^7.0.0"
     fn-name "~2.0.1"
     lodash "^4.17.11"
+    lodash-es "^4.17.11"
     property-expr "^1.5.0"
     synchronous-promise "^2.0.6"
     toposort "^2.0.2"
