@@ -53,6 +53,7 @@ export const postFragment = gql`
     pinnedAt
     imageAspectRatio
     pinned
+    visibility
   }
 `
 

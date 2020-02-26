@@ -11,6 +11,7 @@ export default () => {
         $imageUpload: Upload
         $imageBlurred: Boolean
         $imageAspectRatio: Float
+        $visibility: Visibility
       ) {
         CreatePost(
           title: $title
@@ -20,6 +21,7 @@ export default () => {
           imageUpload: $imageUpload
           imageBlurred: $imageBlurred
           imageAspectRatio: $imageAspectRatio
+          visibility: $visibility
         ) {
           title
           slug
@@ -27,6 +29,7 @@ export default () => {
           contentExcerpt
           language
           imageBlurred
+          visibility
         }
       }
     `,
@@ -41,6 +44,7 @@ export default () => {
         $image: String
         $imageBlurred: Boolean
         $imageAspectRatio: Float
+        $visibility: Visibility
       ) {
         UpdatePost(
           id: $id
@@ -52,6 +56,7 @@ export default () => {
           image: $image
           imageBlurred: $imageBlurred
           imageAspectRatio: $imageAspectRatio
+          visibility: $visibility
         ) {
           id
           title
@@ -66,6 +71,7 @@ export default () => {
             role
           }
           imageAspectRatio
+          visibility
         }
       }
     `,

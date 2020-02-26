@@ -70,6 +70,17 @@
         <ds-chip v-if="errors && errors.language" size="base" color="danger">
           <base-icon name="warning" />
         </ds-chip>
+        <ds-select
+          model="visibility"
+          icon="eye"
+          class="select-field"
+          :options="visibilityOptions"
+          :placeholder="$t('contribution.visibilitySelectText')"
+          :label="$t('contribution.visibilitySelectLabel')"
+        />
+        <ds-chip v-if="errors && errors.visibility" size="base" color="danger">
+          <base-icon name="warning" />
+        </ds-chip>
         <div class="buttons">
           <base-button data-test="cancel-button" :disabled="loading" @click="$router.back()" danger>
             {{ $t('actions.cancel') }}
@@ -92,6 +103,7 @@ import locales from '~/locales'
 import PostMutations from '~/graphql/PostMutations.js'
 import CategoriesSelect from '~/components/CategoriesSelect/CategoriesSelect'
 import ImageUploader from '~/components/ImageUploader/ImageUploader'
+import { visibilityOptions as visibilityConstants } from '~/constants/visibility'
 
 export default {
   components: {
@@ -114,11 +126,17 @@ export default {
       imageBlurred,
       language,
       categories,
+      visibility,
     } = this.contribution
 
     const languageOptions = orderBy(locales, 'name').map(locale => {
       return { label: locale.name, value: locale.code }
     })
+
+    const visibilityOptions = visibilityConstants.map(option => ({
+      label: this.$t(`contribution.visibilityOptions.${option}`),
+      value: option,
+    }))
 
     return {
       formData: {
@@ -129,6 +147,9 @@ export default {
         imageBlurred: imageBlurred || false,
         language: languageOptions.find(option => option.value === language) || null,
         categoryIds: categories ? categories.map(category => category.id) : [],
+        visibility: visibility
+          ? visibilityOptions.find(option => option.value === visibility)
+          : visibilityOptions.find(option => option.value === 'registered'),
       },
       formSchema: {
         title: { required: true, min: 3, max: 100 },
@@ -145,12 +166,14 @@ export default {
         },
         language: { required: true },
         imageBlurred: { required: false },
+        visibility: { required: true },
       },
       languageOptions,
       loading: false,
       users: [],
       hashtags: [],
       imageUpload: null,
+      visibilityOptions,
     }
   },
   computed: {
@@ -173,6 +196,7 @@ export default {
             language: this.formData.language.value,
             image: this.imageUpload ? null : this.formData.image,
             imageUpload: this.imageUpload,
+            visibility: this.formData.visibility.value,
           },
         })
         .then(({ data }) => {
@@ -271,6 +295,11 @@ export default {
 
   > .select-field {
     align-self: flex-end;
+    margin: $space-x-small 0;
+
+    .ds-select-value {
+      white-space: nowrap;
+    }
   }
 
   > .buttons {

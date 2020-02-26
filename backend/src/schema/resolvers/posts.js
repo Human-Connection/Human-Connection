@@ -320,6 +320,7 @@ export default {
         'pinned',
         'imageBlurred',
         'imageAspectRatio',
+        'visibility',
       ],
       hasMany: {
         tags: '-[:TAGGED]->(related:Tag)',

@@ -260,7 +260,16 @@
     "teaserImage": {
       "cropperConfirm": "Bestätigen"
     },
-    "title": "Titel"
+    "title": "Titel",
+    "visibilityOptions": {
+      "public": "Alle",
+      "registered": "Registrierte Nutzer",
+      "friends": "Meine Freunde",
+      "not listed": "Nur über direkten Link",
+      "private": "Nur ich"
+    },
+    "visibilitySelectLabel": "Wer kann deinen Beitrag sehen",
+    "visibilitySelectText": "Sichtbarkeit wählen"
   },
   "delete": {
     "cancel": "Abbrechen",

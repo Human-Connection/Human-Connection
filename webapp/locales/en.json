@@ -260,7 +260,16 @@
     "teaserImage": {
       "cropperConfirm": "Confirm"
     },
-    "title": "Title"
+    "title": "Title",
+    "visibilityOptions": {
+      "public": "Everyone",
+      "registered": "Registered Users",
+      "friends": "My Friends",
+      "not listed": "People with the link",
+      "private": "Just me"
+    },
+    "visibilitySelectLabel": "Who can see your contribution",
+    "visibilitySelectText": "Select Visibility"
   },
   "delete": {
     "cancel": "Cancel",
