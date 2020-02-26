@@ -1,7 +1,9 @@
 <template>
-  <base-button v-if="!notifications.length" class="notifications-menu" disabled ghost circle>
-    <counter-icon icon="bell" :count="unreadNotificationsCount" danger />
-  </base-button>
+  <nuxt-link v-if="!unreadNotificationsCount" :to="{ name: 'notifications' }">
+    <base-button class="notifications-menu" ghost circle>
+      <counter-icon icon="bell" :count="unreadNotificationsCount" danger />
+    </base-button>
+  </nuxt-link>
   <dropdown v-else class="notifications-menu" offset="8" :placement="placement">
     <template slot="default" slot-scope="{ toggleMenu }">
       <base-button @click="toggleMenu" ghost circle>
