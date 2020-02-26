@@ -40,16 +40,9 @@ When('I send a POST request with the following activity to {string}:', async fun
   debug(`activity = ${activity}`)
   const splitted = inboxUrl.split('/')
   const slug = splitted[splitted.indexOf('users') + 1]
-  // let result
-  // do {
-  //   result = await neode.cypher('MATCH (user:User {slug: $slug}) RETURN user;', { slug })
-  //   result = result.records.map(record => record.get('user'))
-  //   console.log('result', result)
-  // } while (result.length === 0)
   this.lastInboxUrl = inboxUrl
   this.lastActivity = activity
   const response = await this.post(inboxUrl, activity)
-  console.log('response', response)
   this.lastResponses.push(response.lastResponse)
   this.lastResponse = response.lastResponse
   this.statusCode = response.statusCode
@@ -70,7 +63,7 @@ Then('I expect the status code to be {int}', function (statusCode) {
 })
 
 Then('the post with id {string} to be created', async function (id) {
-  let newlyCreatedPost = neode.cypher('MATCH (post:Post {id: $id) RETURN post {.*}', { id })
+  let newlyCreatedPost = neode.cypher('MATCH (post:Post {id: $id}) RETURN post {.*}', { id })
   newlyCreatedPost.records.map(record => record.get('post'))
   expect(newlyCreatedPost).toHaveLength(1) 
 })

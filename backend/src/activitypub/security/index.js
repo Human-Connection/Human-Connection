@@ -64,7 +64,7 @@ export const verifySignature = async (url, headers) => {
     debug('Unsupported hash algorithm specified!')
     throw Error('Unsupported hash algorithm specified!')
   }
-
+  console.log('keyId', keyId)
   const usedHeaders = headersString.split(' ')
   const verifyHeaders = {}
   Object.keys(headers).forEach(key => {
@@ -73,37 +73,44 @@ export const verifySignature = async (url, headers) => {
     }
   })
   const signingString = await constructSigningString(url, verifyHeaders)
+  console.log('verify', signingString)
   debug(`keyId= ${keyId}`)
-  axios({
+  await axios({
     url: keyId,
     headers: {
       Accept: 'application/json',
     },
   })
     .then((_response, body) => {
+      console.log('body', body)
       debug(`body = ${body}`)
       const actor = JSON.parse(body)
       const publicKeyPem = actor.publicKey.publicKeyPem
       return httpVerify(publicKeyPem, signature, signingString, algorithm)
     })
     .catch(error => {
+      console.log('error', error)
       throw Error(error)
     })
 }
 
 // private: signing
 const constructSigningString = (url, headers) => {
+  console.log('here in constructSigningString', url)
   const urlObj = new URL(url)
+  console.log('urlObj', urlObj.pathname)
   const signingString = `(request-target): post ${urlObj.pathname}${
     urlObj.search !== '' ? urlObj.search : ''
   }`
+  console.log('signingString', signingString)
   return Object.keys(headers).reduce((result, key) => {
     return result + `\n${key.toLowerCase()}: ${headers[key]}`
   }, signingString)
 }
 
 // private: verifying
-function httpVerify(pubKey, signature, signingString, algorithm) {
+const httpVerify = (pubKey, signature, signingString, algorithm) => {
+  console.log('im at httpverify')
   if (!SUPPORTED_HASH_ALGORITHMS.includes(algorithm)) {
     throw Error(`SIGNING: Unsupported hashing algorithm = ${algorithm}`)
   }
@@ -115,11 +122,11 @@ function httpVerify(pubKey, signature, signingString, algorithm) {
 // private: verifying
 // This function can be used to extract the signature,headers,algorithm etc. out of the Signature Header.
 // Just pass what you want as key
-function extractKeyValueFromSignatureHeader(signatureHeader, key) {
+const extractKeyValueFromSignatureHeader = (signatureHeader, key) => {
   const keyString = signatureHeader.split(',').filter(el => {
     return !!el.startsWith(key)
   })[0]
-
+  console.log('keyString', keyString)
   let firstEqualIndex = keyString.search('=')
   // When headers are requested add 17 to the index to remove "(request-target) " from the string
   if (key === 'headers') {

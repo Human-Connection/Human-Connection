@@ -43,11 +43,11 @@ class CustomWorld {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          signature: 'keyId="https://human-connection.org/activitypub/users/lea#main-key",algorithm="rsa-sha256",headers="(request-target) date host content-type",signature="UaGNLhfyCVewd35Wg8/hhpk1qtjiBAPhHo0o/xWNUVsv5XuCisT5fYEetHWGGCnYufUbtY5/4nFY1i+3cHiDMU0DuBTYtz4ByIKhXcoewXlZPrnEIUBZ2yOjml4efFDonPt3Nsjrjy19D6CspyiOJPcgh0BGSitRg3p2qVLAUHnit0Zy+IzJBpvTfzzMWXlM61cF7OZrSpsy58jHJN6Qy5zKLhyJKfAZttRYtsfTuB4v445lLAsfiq7N5bbigx9nNrmxME2yZ+2EHZ0fkAWkuEmTMxeqJEAQrHlW3bY9+T2/NCchTP/tzdgq4yEXyBs/UVHGz75DdOzk48vQRObikmMl3LAu1s/7TdUztm6oDYWrFXSmCqtYedZF2VhneYXy6gn5m+q16VZovXXIARWbGIVnvXii0GrCGhSNUbZ5Ah2E/Id5FeLxJ/LyBAs3emWe60ERF7d5bTRrPNaxsfmlrSXnT2o3J6Fr97EbeQ+R0JGYC//Q0sOoqtCIUg5lOaEFW3b91ynDdFETDafDPmTPnntSWcUIc/7Ju0DR8Pvb06v/rRkeehBS0/MNzHThrmAB5UiaG8gR/P2GtcRzOHvZ4dBTFX5LTNNkpIDRqYsXuJxN3/XK8yHIBtHMb232EECn14CHoDASKmPWv3pzdqDumrcFSVLKHAONCobwkJbmlEA="'
         },
         data: JSON.parse(activity),
       })
       .then(response => {
-        console.log('response', response)
         resolve({
           lastResponse: response.data,
           lastContentType: response.headers['content-type'],
