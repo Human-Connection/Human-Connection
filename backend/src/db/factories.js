@@ -98,7 +98,7 @@ Factory.define('post')
     title: faker.lorem.sentence,
     content: faker.lorem.paragraphs,
     image: faker.image.unsplash.imageUrl,
-    visibility: 'public',
+    visibility: 'registered',
     deleted: false,
     imageBlurred: false,
     imageAspectRatio: 1.333,

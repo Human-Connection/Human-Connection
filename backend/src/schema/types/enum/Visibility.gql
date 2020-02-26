@@ -1,5 +1,7 @@
 enum Visibility {
   public
-  friends
-  private
+  registered
+  # friends
+  # not listed
+  # private
 }

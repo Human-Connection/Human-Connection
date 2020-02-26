@@ -52,4 +52,5 @@ export default {
     },
   },
   pinned: { type: 'boolean', default: null, valid: [null, true] },
+  visibility: { type: 'string', valid: ['public', 'registered'], default: () => 'registered' },
 }
