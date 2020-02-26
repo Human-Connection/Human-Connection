@@ -1,4 +1,4 @@
-import { config, mount } from '@vue/test-utils'
+import { config, mount, RouterLinkStub } from '@vue/test-utils'
 import NotificationMenu from './NotificationMenu'
 
 const localVue = global.localVue
@@ -11,6 +11,7 @@ describe('NotificationMenu.vue', () => {
   let wrapper
   let mocks
   let data
+  let stubs
   beforeEach(() => {
     mocks = {
       $t: jest.fn(),
@@ -20,6 +21,9 @@ describe('NotificationMenu.vue', () => {
         notifications: [],
       }
     }
+    stubs = {
+      NuxtLink: RouterLinkStub
+    }
   })
 
   describe('mount', () => {
@@ -28,12 +32,14 @@ describe('NotificationMenu.vue', () => {
         data,
         mocks,
         localVue,
+        stubs
       })
     }
 
-    it('counter displays 0', () => {
+    it('renders as link without counter', () => {
       wrapper = Wrapper()
-      expect(wrapper.find('.count').text()).toEqual('0')
+      expect(wrapper.is('a.notifications-menu')).toBe(true)
+      expect(() => wrapper.get('.count')).toThrow()
     })
 
     it('no dropdown is rendered', () => {
@@ -41,7 +47,7 @@ describe('NotificationMenu.vue', () => {
       expect(wrapper.contains('.dropdown')).toBe(false)
     })
 
-    describe('given only unread notifications', () => {
+    describe('given only read notifications', () => {
       beforeEach(() => {
         data = () => {
           return {
@@ -65,14 +71,15 @@ describe('NotificationMenu.vue', () => {
         }
       })
 
-      it('counter displays 0', () => {
+      it('renders as link without counter', () => {
         wrapper = Wrapper()
-        expect(wrapper.find('.count').text()).toEqual('0')
+        expect(wrapper.is('a.notifications-menu')).toBe(true)
+        expect(() => wrapper.get('.count')).toThrow()
       })
 
-      it('counter is not colored', () => {
+      it('no dropdown is rendered', () => {
         wrapper = Wrapper()
-        expect(wrapper.find('.count').classes()).toContain('--inactive')
+        expect(wrapper.contains('.dropdown')).toBe(false)
       })
     })
 
