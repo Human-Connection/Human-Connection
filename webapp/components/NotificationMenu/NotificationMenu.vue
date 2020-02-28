@@ -1,5 +1,9 @@
 <template>
-  <nuxt-link v-if="!unreadNotificationsCount" class="notifications-menu" :to="{ name: 'notifications' }">
+  <nuxt-link
+    v-if="!unreadNotificationsCount"
+    class="notifications-menu"
+    :to="{ name: 'notifications' }"
+  >
     <base-button icon="bell" ghost circle />
   </nuxt-link>
   <dropdown v-else class="notifications-menu" offset="8" :placement="placement">
