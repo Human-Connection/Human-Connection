@@ -24,6 +24,6 @@ Feature: Notification for a mention
     And see 1 unread notifications in the top menu
     And open the notification menu and click on the first item
     Then I get to the post page of ".../hey-matt"
-    And the notification gets marked as read
-    But when I refresh the page
-    Then there are no notifications in the top menu
+    And the unread counter is removed
+    And the notification menu button links to the all notifications page    
+

@@ -22,7 +22,7 @@ describe('NotificationMenu.vue', () => {
       }
     }
     stubs = {
-      NuxtLink: RouterLinkStub
+      NuxtLink: RouterLinkStub,
     }
   })
 
@@ -32,7 +32,7 @@ describe('NotificationMenu.vue', () => {
         data,
         mocks,
         localVue,
-        stubs
+        stubs,
       })
     }
 
