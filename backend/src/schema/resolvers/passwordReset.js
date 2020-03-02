@@ -22,6 +22,7 @@ export default {
               WHERE duration.between(passwordReset.issuedAt, datetime()).days <= 0 AND passwordReset.usedAt IS NULL
               SET passwordReset.usedAt = datetime()
               SET user.encryptedPassword = $encryptedNewPassword
+              SET user.updatedAt = toString(datetime())
               RETURN passwordReset
             `,
             {
