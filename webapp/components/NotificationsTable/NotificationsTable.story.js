@@ -3,7 +3,7 @@ import { withA11y } from '@storybook/addon-a11y'
 import { action } from '@storybook/addon-actions'
 import NotificationsTable from '~/components/NotificationsTable/NotificationsTable'
 import helpers from '~/storybook/helpers'
-import { post } from '~/components/PostCard/PostCard.story.js'
+import { post } from '~/components/PostTeaser/PostTeaser.story.js'
 import { user } from '~/components/UserTeaser/UserTeaser.story.js'
 
 helpers.init()

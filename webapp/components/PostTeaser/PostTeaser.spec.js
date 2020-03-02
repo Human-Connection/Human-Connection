@@ -2,14 +2,14 @@ import { config, shallowMount, mount, RouterLinkStub } from '@vue/test-utils'
 
 import Vuex from 'vuex'
 
-import PostCard from './PostCard.vue'
+import PostTeaser from './PostTeaser.vue'
 
 const localVue = global.localVue
 
 config.stubs['client-only'] = '<span><slot /></span>'
 config.stubs['v-popover'] = '<span><slot /></span>'
 
-describe('PostCard', () => {
+describe('PostTeaser', () => {
   let store
   let stubs
   let mocks
@@ -22,11 +22,13 @@ describe('PostCard', () => {
     propsData = {
       post: {
         id: 'p23',
+        disabled: false,
+        shoutedCount: 0,
+        commentsCount: 0,
         name: 'It is a post',
         author: {
           id: 'u1',
         },
-        disabled: false,
       },
     }
     stubs = {
@@ -55,13 +57,20 @@ describe('PostCard', () => {
   describe('shallowMount', () => {
     Wrapper = () => {
       store = new Vuex.Store({ getters })
-      return shallowMount(PostCard, {
+      return shallowMount(PostTeaser, {
         store,
         propsData,
         mocks,
         localVue,
       })
     }
+
+    it('has no validation errors', () => {
+      const spy = jest.spyOn(global.console, 'error')
+      Wrapper()
+      expect(spy).not.toBeCalled()
+      spy.mockReset()
+    })
 
     beforeEach(jest.useFakeTimers)
 
@@ -99,7 +108,7 @@ describe('PostCard', () => {
       const store = new Vuex.Store({
         getters,
       })
-      return mount(PostCard, {
+      return mount(PostTeaser, {
         stubs,
         mocks,
         propsData,
@@ -111,6 +120,7 @@ describe('PostCard', () => {
     describe('given a post', () => {
       beforeEach(() => {
         propsData.post = {
+          ...propsData.post,
           title: "It's a title",
         }
       })

@@ -1,5 +1,6 @@
 <template>
-  <ds-card :header="$t('admin.hashtags.name')">
+  <base-card>
+    <h2 class="title">{{ $t('admin.hashtags.name') }}</h2>
     <ds-table :data="Tag" :fields="fields" condensed>
       <template slot="index" slot-scope="scope">{{ scope.index + 1 }}.</template>
       <template slot="id" slot-scope="scope">
@@ -8,7 +9,7 @@
         </nuxt-link>
       </template>
     </ds-table>
-  </ds-card>
+  </base-card>
 </template>
 
 <script>

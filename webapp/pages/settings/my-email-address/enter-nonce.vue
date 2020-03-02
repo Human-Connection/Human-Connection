@@ -1,7 +1,8 @@
 <template>
   <ds-form v-model="form" :schema="formSchema" @submit="submit">
     <template slot-scope="{ errors }">
-      <ds-card :header="$t('settings.email.name')">
+      <base-card>
+        <h2 class="title">{{ $t('settings.email.name') }}</h2>
         <ds-input
           id="email"
           model="email"
@@ -15,13 +16,10 @@
           icon="question-circle"
           :label="$t('settings.email.labelNonce')"
         />
-
-        <template slot="footer">
-          <base-button class="submit-button" icon="check" :disabled="errors" type="submit" filled>
-            {{ $t('actions.save') }}
-          </base-button>
-        </template>
-      </ds-card>
+        <base-button icon="check" :disabled="errors" type="submit" filled>
+          {{ $t('actions.save') }}
+        </base-button>
+      </base-card>
     </template>
   </ds-form>
 </template>

@@ -5,19 +5,15 @@ type Report {
   rule: ReportRule!
   disable: Boolean!
   closed: Boolean!
-  filed: [FILED]
+  filed: [FILED]!
   reviewed: [REVIEWED]!
-  resource: ReportedResource
+  resource: ReportedResource!
 }
 
 union ReportedResource = User | Post | Comment
 
 enum ReportRule {
   latestReviewUpdatedAtRules
-}
-
-type Mutation {
-  fileReport(resourceId: ID!, reasonCategory: ReasonCategory!, reasonDescription: String!): Report
 }
 
 type Query {

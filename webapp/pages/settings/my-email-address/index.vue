@@ -1,29 +1,27 @@
 <template>
-  <ds-card centered v-if="data">
+  <base-card v-if="data">
     <transition name="ds-transition-fade">
       <sweetalert-icon icon="info" />
     </transition>
     <ds-text v-html="submitMessage" />
-  </ds-card>
+  </base-card>
   <ds-form v-else v-model="form" :schema="formSchema" @submit="submit">
     <template slot-scope="{ errors }">
-      <ds-card :header="$t('settings.email.name')">
+      <base-card>
+        <h2 class="title">{{ $t('settings.email.name') }}</h2>
         <ds-input
           id="email"
           model="email"
           icon="envelope"
           :label="$t('settings.email.labelEmail')"
         />
-
-        <template slot="footer">
-          <ds-space class="backendErrors" v-if="backendErrors">
-            <ds-text align="center" bold color="danger">{{ backendErrors.message }}</ds-text>
-          </ds-space>
-          <base-button icon="check" :disabled="errors" type="submit" filled>
-            {{ $t('actions.save') }}
-          </base-button>
-        </template>
-      </ds-card>
+        <ds-space class="backendErrors" v-if="backendErrors">
+          <ds-text align="center" bold color="danger">{{ backendErrors.message }}</ds-text>
+        </ds-space>
+        <base-button icon="check" :disabled="errors" type="submit" filled>
+          {{ $t('actions.save') }}
+        </base-button>
+      </base-card>
     </template>
   </ds-form>
 </template>

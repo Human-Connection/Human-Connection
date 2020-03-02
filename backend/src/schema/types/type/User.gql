@@ -64,10 +64,11 @@ type User {
   # Is the currently logged in user following that user?
   followedByCurrentUser: Boolean! @cypher(
   statement: """
-  MATCH (this)<-[: FOLLOWS]-(u: User { id: $cypherParams.currentUserId})
+  MATCH (this)<-[:FOLLOWS]-(u:User { id: $cypherParams.currentUserId})
   RETURN COUNT(u) >= 1
   """
   )
+
   isBlocked: Boolean! @cypher(
   statement: """
   MATCH (this)<-[:BLOCKED]-(user:User {id: $cypherParams.currentUserId})

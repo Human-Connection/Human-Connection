@@ -55,6 +55,6 @@ Feature: Block a User
   Scenario: Blocked users should not see link or button to unblock, only blocking users
     Given a user has blocked me
     When I visit the profile page of the annoying user
-    And I "should not" see "Unblock user" from the content menu in the user info box
     And I should see the "Follow" button
     And I should not see "Unblock user" button
+    And I "should not" see "Unblock user" from the content menu in the user info box

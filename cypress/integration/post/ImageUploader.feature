@@ -35,7 +35,7 @@ Feature: Upload Teaser Image
     And confirm crop
     And I should be able to "change" a teaser image
     And confirm crop
-    And the first image should be removed from the preview
+    And the first image should not be displayed anymore
 
   Scenario: Add image, then delete it
     When I click on the big plus icon in the bottom right corner to create post

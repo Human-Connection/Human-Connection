@@ -217,6 +217,8 @@
     }
   },
   "contribution": {
+    "amount-comments": "{amount} comments",
+    "amount-shouts": "{amount} recommendations",
     "categories": {
       "infoSelectedNoOfMaxCategories": "{chosen} of {max} categories selected"
     },
@@ -636,11 +638,11 @@
     },
     "deleteUserAccount": {
       "accountDescription": "Be aware that your Posts and Comments are important to our community. If you still choose to delete them, you have to mark them below.",
-      "accountWarning": "You <b>CAN'T MANAGE</b> and <b>CAN'T RECOVER</b> your Account, Posts, or Comments after deleting your account!",
+      "accountWarning": "You CAN'T MANAGE and CAN'T RECOVER your Account, Posts, or Comments after deleting your account!",
       "commentedCount": "Delete my {count} comments",
       "contributionsCount": "Delete my {count} posts",
       "name": "Delete user account",
-      "pleaseConfirm": "<b class='is-danger'>Destructive action!</b> Type <b>{confirm}</b> to confirm",
+      "pleaseConfirm": "Destructive action! Type “{confirm}” to confirm.",
       "success": "Account successfully deleted!"
     },
     "download": {
@@ -811,6 +813,10 @@
     "no-commercial-use": {
       "description": "The use of the Human Connection Network is not permitted for commercial purposes. This includes, but is not limited to, advertising products with commercial intent, posting affiliate links, directly soliciting donations, or providing financial support for purposes that are not recognized as charitable for tax purposes.",
       "title": "No Commercial Use"
+    },
+    "no-parties": {
+      "description": "User accounts of political parties or official user accounts of a political representative are not permitted.",
+      "title": "No Political Use"
     },
     "privacy-statement": {
       "description": "Our network is a social knowledge and action network. It is therefore particularly important to us that as much content as possible is publicly accessible. In the course of the development of our network there will be more and more the possibility to decide about the visibility of the personal data. We will inform you about these new features. Otherwise, you should always think about which personal data you disclose about yourself (or others). This applies in particular to the content of posts and comments, as these have a largely public character. Later there will be possibilities to limit the visibility of your profile. Part of the terms of service is our privacy statement, which informs you about the individual data processing operations in our network: <a href=\"https://human-connection.org/datenschutz/#netzwerk\" target=\"_blank\"> https://human-connection.org/datenschutz/#netzwerk</a>  bzw. <a href=\"https://human-connection.org/datenschutz/\" target=\"_blank\">https://human-connection.org/datenschutz/</a> Our privacy statement is adapted to the legal situation and characteristics of our network and is always valid in the most current version.",

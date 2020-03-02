@@ -73,7 +73,7 @@ describe('NotificationList.vue', () => {
 
     describe('click on a notification', () => {
       beforeEach(() => {
-        wrapper.find('.notification-mention-post').trigger('click')
+        wrapper.find('.notification > .link').trigger('click')
       })
 
       it("emits 'markAsRead' with the id of the notification source", () => {

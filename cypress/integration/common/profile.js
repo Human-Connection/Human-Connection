@@ -29,7 +29,7 @@ When("I visit another user's profile page", () => {
 });
 
 Then("I cannot upload a picture", () => {
-  cy.get(".ds-card-content")
+  cy.get(".base-card")
     .children()
     .should("not.have.id", "customdropzone")
     .should("have.class", "user-avatar");

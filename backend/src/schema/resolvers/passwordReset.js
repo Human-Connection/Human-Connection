@@ -1,4 +1,4 @@
-import uuid from 'uuid/v4'
+import { v4 as uuid } from 'uuid'
 import bcrypt from 'bcryptjs'
 import createPasswordReset from './helpers/createPasswordReset'
 
@@ -22,6 +22,7 @@ export default {
               WHERE duration.between(passwordReset.issuedAt, datetime()).days <= 0 AND passwordReset.usedAt IS NULL
               SET passwordReset.usedAt = datetime()
               SET user.encryptedPassword = $encryptedNewPassword
+              SET user.updatedAt = toString(datetime())
               RETURN passwordReset
             `,
             {

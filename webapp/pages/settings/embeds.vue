@@ -1,5 +1,6 @@
 <template>
-  <ds-card :header="$t('settings.embeds.name')">
+  <base-card>
+    <h2 class="title">{{ $t('settings.embeds.name') }}</h2>
     <ds-section>
       <ds-text>
         {{ $t('settings.embeds.status.description') }}
@@ -31,7 +32,7 @@
         </li>
       </ul>
     </ds-section>
-  </ds-card>
+  </base-card>
 </template>
 
 <script>

@@ -1,7 +1,7 @@
 <template>
-  <div class="ribbon">
-    <small>{{ text }}</small>
-  </div>
+  <aside class="ribbon">
+    <p>{{ text }}</p>
+  </aside>
 </template>
 
 <script>
@@ -18,40 +18,29 @@ export default {
 
 <style scoped lang="scss">
 .ribbon {
-  $card-shadow: 0px 12px 26px -4px rgba(0, 0, 0, 0.1);
-  //position: absolute;
-  position: relative;
-  right: -31px;
-  top: -31px;
-
-  font-size: 0.9em;
-  font-weight: bold;
-  padding: 6px 6px;
-  color: #fff;
+  padding: $size-ribbon $size-ribbon;
+  border-radius: $border-radius-small 0 0 $border-radius-small;
+  color: $color-neutral-100;
   background-color: $background-color-secondary-active;
-  float: right;
-  border-radius: 2px 0 0 2px;
-  box-shadow: $card-shadow;
-  z-index: 11;
-  // border:           1px solid #ccc;
-  &:before {
+  font-size: $font-size-x-small;
+  font-weight: $font-weight-bold;
+
+  &::before {
     content: ' ';
     position: absolute;
-    width: 0;
-    height: 0;
     right: 0;
-    bottom: -6px;
-    border-width: 3px 4px 3px 3px;
+    bottom: -$size-ribbon;
+    border-width: $border-size-large 4px $border-size-large $border-size-large;
     border-style: solid;
     border-color: $background-color-secondary transparent transparent $background-color-secondary;
   }
-}
 
-.ribbon--pinned {
-  background-color: $color-warning-active;
+  &.--pinned {
+    background-color: $color-warning;
 
-  &::before {
-    border-color: $color-warning transparent transparent $color-warning;
+    &::before {
+      border-color: $color-warning transparent transparent $color-warning;
+    }
   }
 }
 </style>

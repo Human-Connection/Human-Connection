@@ -1,35 +1,37 @@
 <template>
-  <dropdown ref="menu" :placement="placement" :offset="offset">
-    <a
-      slot="default"
-      slot-scope="{ toggleMenu }"
-      class="locale-menu"
-      href="#"
-      @click.prevent="toggleMenu()"
-    >
-      <base-icon name="globe" />
-      <span class="label">{{ current.code.toUpperCase() }}</span>
-      <base-icon class="dropdown-arrow" name="angle-down" />
-    </a>
-    <ds-menu
-      slot="popover"
-      slot-scope="{ toggleMenu }"
-      class="locale-menu-popover"
-      :matcher="matcher"
-      :routes="routes"
-    >
-      <ds-menu-item
-        slot="menuitem"
-        slot-scope="item"
-        class="locale-menu-item"
-        :route="item.route"
-        :parents="item.parents"
-        @click.stop.prevent="changeLanguage(item.route.path, toggleMenu)"
+  <client-only>
+    <dropdown ref="menu" :placement="placement" :offset="offset">
+      <a
+        slot="default"
+        slot-scope="{ toggleMenu }"
+        class="locale-menu"
+        href="#"
+        @click.prevent="toggleMenu()"
       >
-        {{ item.route.name }}
-      </ds-menu-item>
-    </ds-menu>
-  </dropdown>
+        <base-icon name="globe" />
+        <span class="label">{{ current.code.toUpperCase() }}</span>
+        <base-icon class="dropdown-arrow" name="angle-down" />
+      </a>
+      <ds-menu
+        slot="popover"
+        slot-scope="{ toggleMenu }"
+        class="locale-menu-popover"
+        :matcher="matcher"
+        :routes="routes"
+      >
+        <ds-menu-item
+          slot="menuitem"
+          slot-scope="item"
+          class="locale-menu-item"
+          :route="item.route"
+          :parents="item.parents"
+          @click.stop.prevent="changeLanguage(item.route.path, toggleMenu)"
+        >
+          {{ item.route.name }}
+        </ds-menu-item>
+      </ds-menu>
+    </dropdown>
+  </client-only>
 </template>
 
 <script>

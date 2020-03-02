@@ -1,5 +1,5 @@
 <template>
-  <ds-card space="small">
+  <base-card>
     <ds-flex class="notifications-page-flex">
       <ds-flex-item :width="{ lg: '85%' }">
         <ds-heading tag="h3">{{ $t('notifications.title') }}</ds-heading>
@@ -16,7 +16,7 @@
       :notifications="notifications"
     />
     <pagination-buttons :hasNext="hasNext" :hasPrevious="hasPrevious" @back="back" @next="next" />
-  </ds-card>
+  </base-card>
 </template>
 
 <script>

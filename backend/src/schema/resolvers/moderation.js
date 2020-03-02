@@ -1,20 +1,10 @@
-const transformReturnType = record => {
-  return {
-    ...record.get('review').properties,
-    report: record.get('report').properties,
-    resource: {
-      __typename: record.get('type'),
-      ...record.get('resource').properties,
-    },
-  }
-}
+import log from './helpers/databaseLogger'
 
 export default {
   Mutation: {
     review: async (_object, params, context, _resolveInfo) => {
       const { user: moderator, driver } = context
 
-      let createdRelationshipWithNestedAttributes = null // return value
       const session = driver.session()
       try {
         const cypher = ` 
@@ -25,10 +15,11 @@ export default {
             ON CREATE SET review.createdAt = $dateTime, review.updatedAt = review.createdAt
             ON MATCH SET review.updatedAt = $dateTime
             SET review.disable = $params.disable
-            SET report.updatedAt = $dateTime, report.closed = $params.closed
-            SET resource.disabled = review.disable
+            SET report.updatedAt = $dateTime, report.disable = review.disable, report.closed = $params.closed
+            SET resource.disabled = report.disable
 
-            RETURN review, report, resource, labels(resource)[0] AS type
+            WITH review, report, resource {.*, __typename: labels(resource)[0]} AS finalResource
+            RETURN review {.*, report: properties(report), resource: properties(finalResource)}
           `
         const reviewWriteTxResultPromise = session.writeTransaction(async txc => {
           const reviewTransactionResponse = await txc.run(cypher, {
@@ -36,16 +27,14 @@ export default {
             moderatorId: moderator.id,
             dateTime: new Date().toISOString(),
           })
-          return reviewTransactionResponse.records.map(transformReturnType)
+          log(reviewTransactionResponse)
+          return reviewTransactionResponse.records.map(record => record.get('review'))
         })
-        const txResult = await reviewWriteTxResultPromise
-        if (!txResult[0]) return null
-        createdRelationshipWithNestedAttributes = txResult[0]
+        const [reviewed] = await reviewWriteTxResultPromise
+        return reviewed || null
       } finally {
         session.close()
       }
-
-      return createdRelationshipWithNestedAttributes
     },
   },
 }

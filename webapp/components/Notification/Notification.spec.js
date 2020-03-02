@@ -63,7 +63,7 @@ describe('Notification', () => {
 
     it('renders reason', () => {
       wrapper = Wrapper()
-      expect(wrapper.find('.reason-text-for-test').text()).toEqual(
+      expect(wrapper.find('.notification > .description').text()).toEqual(
         'notifications.reason.commented_on_post',
       )
     })
@@ -79,9 +79,9 @@ describe('Notification', () => {
       wrapper = Wrapper()
       expect(wrapper.text()).toContain('@dagobert-duck is the best on this comment.')
     })
-    it('has no class "read"', () => {
+    it('has no class "--read"', () => {
       wrapper = Wrapper()
-      expect(wrapper.classes()).not.toContain('read')
+      expect(wrapper.classes()).not.toContain('--read')
     })
 
     describe('that is read', () => {
@@ -90,8 +90,8 @@ describe('Notification', () => {
         wrapper = Wrapper()
       })
 
-      it('has class "read"', () => {
-        expect(wrapper.classes()).toContain('read')
+      it('has class "--read"', () => {
+        expect(wrapper.classes()).toContain('--read')
       })
     })
   })
@@ -113,7 +113,7 @@ describe('Notification', () => {
 
     it('renders reason', () => {
       wrapper = Wrapper()
-      expect(wrapper.find('.reason-text-for-test').text()).toEqual(
+      expect(wrapper.find('.notification > .description').text()).toEqual(
         'notifications.reason.mentioned_in_post',
       )
     })
@@ -125,9 +125,9 @@ describe('Notification', () => {
       wrapper = Wrapper()
       expect(wrapper.text()).toContain('@jenny-rostock is the best on this post.')
     })
-    it('has no class "read"', () => {
+    it('has no class "--read"', () => {
       wrapper = Wrapper()
-      expect(wrapper.classes()).not.toContain('read')
+      expect(wrapper.classes()).not.toContain('--read')
     })
 
     describe('that is read', () => {
@@ -136,8 +136,8 @@ describe('Notification', () => {
         wrapper = Wrapper()
       })
 
-      it('has class "read"', () => {
-        expect(wrapper.classes()).toContain('read')
+      it('has class "--read"', () => {
+        expect(wrapper.classes()).toContain('--read')
       })
     })
   })
@@ -163,7 +163,7 @@ describe('Notification', () => {
 
     it('renders reason', () => {
       wrapper = Wrapper()
-      expect(wrapper.find('.reason-text-for-test').text()).toEqual(
+      expect(wrapper.find('.notification > .description').text()).toEqual(
         'notifications.reason.mentioned_in_comment',
       )
     })
@@ -182,9 +182,9 @@ describe('Notification', () => {
       expect(wrapper.text()).toContain('@dagobert-duck is the best on this comment.')
     })
 
-    it('has no class "read"', () => {
+    it('has no class "--read"', () => {
       wrapper = Wrapper()
-      expect(wrapper.classes()).not.toContain('read')
+      expect(wrapper.classes()).not.toContain('--read')
     })
 
     describe('that is read', () => {
@@ -193,8 +193,8 @@ describe('Notification', () => {
         wrapper = Wrapper()
       })
 
-      it('has class "read"', () => {
-        expect(wrapper.classes()).toContain('read')
+      it('has class "--read"', () => {
+        expect(wrapper.classes()).toContain('--read')
       })
     })
   })

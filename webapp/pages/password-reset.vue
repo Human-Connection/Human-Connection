@@ -1,20 +1,14 @@
 <template>
-  <ds-container width="small">
-    <ds-card>
-      <ds-flex gutter="small">
-        <ds-flex-item :width="{ base: '100%', sm: '40%' }">
-          <client-only>
-            <locale-switch offset="5" />
-          </client-only>
-          <ds-space margin-top="small" margin-bottom="xxx-small" centered>
-            <img alt="Human Connection" src="/icon.png" />
-          </ds-space>
-        </ds-flex-item>
-        <ds-flex-item :width="{ base: '100%', sm: '60%' }" centered>
-          <nuxt-child />
-        </ds-flex-item>
-      </ds-flex>
-    </ds-card>
+  <ds-container width="small" class="password-reset">
+    <base-card>
+      <template #imageColumn>
+        <img alt="Human Connection" src="/icon.png" class="image" />
+      </template>
+      <nuxt-child />
+      <template #topMenu>
+        <locale-switch offset="5" />
+      </template>
+    </base-card>
   </ds-container>
 </template>
 
@@ -33,10 +27,3 @@ export default {
   },
 }
 </script>
-<style lang="scss" scoped>
-img {
-  padding-left: 50px;
-  padding-right: 50px;
-  max-width: 200px;
-}
-</style>

@@ -551,11 +551,11 @@
     },
     "deleteUserAccount": {
       "accountDescription": "Essere consapevoli che i tuoi post e commenti sono importanti per la nostra comunità. Se cancelli il tuo account utente, tutto scomparirà per sempre - e sarebbe un vero peccato!",
-      "accountWarning": "Attenzione!Tu <b>Non puoi gestire</b> e <b>Non puoi recuperare il tuo account, i tuoi messaggi o commenti dopo aver cancellato il tuo account!",
+      "accountWarning": "Attenzione! Tu NON PUOI GESTIRE e NON PUOI RECUPERARE il tuo account, i tuoi messaggi o commenti dopo aver cancellato il tuo account!",
       "commentedCount": "Cancella i miei {count} commenti",
       "contributionsCount": "Cancellare i miei {count} messaggi",
       "name": "Cancellare l'account utente",
-      "pleaseConfirm": "<b class='is-danger'>Azione distruttiva! </b> Digita <b>{conferma}</b> per confermare",
+      "pleaseConfirm": "Azione distruttiva! Digita “{confirm}” per confermare.",
       "success": "Account eliminato con successo!"
     },
     "download": {
