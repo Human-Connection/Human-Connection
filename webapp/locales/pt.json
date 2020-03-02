@@ -57,11 +57,6 @@
     "settings": {
       "name": "Configurações"
     },
-    "tags": {
-      "name": "Etiquetas",
-      "tagCount": "Postagens",
-      "tagCountUnique": "Usuários"
-    },
     "users": {
       "empty": "Nenhum usuário encontrado",
       "form": {
@@ -134,8 +129,6 @@
     "content": {
       "unavailable-placeholder": "…esse comentário não está mais disponível"
     },
-    "delete": "Apagar Comentário",
-    "edit": "Editar Comentário",
     "edited": "editado",
     "menu": {
       "delete": "Apagar Comentário",
@@ -245,8 +238,6 @@
         "just-for-fun": "Só por diversão"
       }
     },
-    "delete": "Apagar Contribuição",
-    "edit": "Editar Contribuição",
     "emotions-label": {
       "angry": "Irritado",
       "cry": "Chorando",
@@ -376,13 +367,11 @@
   "moderation": {
     "name": "Moderação",
     "reports": {
-      "createdAt": "Data",
       "disabledBy": "desativado por",
       "empty": "Parabéns, nada a moderar.",
       "name": "Denúncias",
       "reasonCategory": "Categoria",
       "reasonDescription": "Descrição",
-      "reporter": "Denunciado por",
       "submitter": "denunciado por"
     }
   },
@@ -537,6 +526,26 @@
     "placeholder": "Buscar"
   },
   "settings": {
+    "blocked-users": {
+      "block": "Bloquear usuário",
+      "columns": {
+        "name": "Nome",
+        "slug": "Slug",
+        "unblock": "Desbloquear"
+      },
+      "empty": "Até agora, você não bloqueou ninguém.",
+      "explanation": {
+        "closing": "Isso deve ser suficiente por enquanto para que os usuários bloqueados não possam mais incomodá-lo.",
+        "intro": "Se outro usuário foi bloqueado por você, isto é o que acontece:",
+        "notifications": "Usuários bloqueados não receberão mais notificações se forem mencionados em suas mensagens.",
+        "their-perspective": "Vice versa: A pessoa bloqueada também não verá mais suas mensagens em seu feed de notícias.",
+        "your-perspective": "As mensagens da pessoa bloqueada não aparecerão mais no seu feed de notícias."
+      },
+      "how-to": "Você pode bloquear outros usuários em suas páginas de perfil através do menu de conteúdo.",
+      "name": "Usuários bloqueados",
+      "unblock": "Desbloquear usuário",
+      "unblocked": "{name} está desbloqueado novamente"
+    },
     "data": {
       "labelBio": "Sobre você",
       "labelCity": "Sua cidade ou estado",
@@ -545,9 +554,6 @@
       "name": "Seus dados",
       "namePlaceholder": "Anonymous",
       "success": "Seus dados foram atualizados com sucesso!"
-    },
-    "delete": {
-      "name": "Apagar conta"
     },
     "deleteUserAccount": {
       "accountDescription": "Esteja ciente de que o suas Publicações e Comentários são importantes para a nossa comunidade. Se você ainda optar por excluí-los, você tem que marcá-los abaixo.",
@@ -603,24 +609,6 @@
     },
     "languages": {
       "name": "Idiomas"
-    },
-    "muted-users": {
-      "columns": {
-        "name": "Nome",
-        "slug": "Slug",
-        "unmute": "Desbloquear"
-      },
-      "empty": "Até agora, você não bloqueou ninguém.",
-      "explanation": {
-        "intro": "Se outro usuário foi bloqueado por você, isto é o que acontece:",
-        "search": "Publicações de pessoas bloqueadas desaparecem dos resultados da sua pesquisa.",
-        "your-perspective": "As mensagens da pessoa bloqueada não aparecerão mais no seu feed de notícias."
-      },
-      "how-to": "Você pode bloquear outros usuários em suas páginas de perfil através do menu de conteúdo.",
-      "mute": "Bloquear usuário",
-      "name": "Usuários bloqueados",
-      "unmute": "Desbloquear usuário",
-      "unmuted": "{name} está desbloqueado novamente"
     },
     "name": "Configurações",
     "organizations": {
