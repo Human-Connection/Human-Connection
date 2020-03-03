@@ -12,10 +12,28 @@ export default {
     isLoggedIn: (_, args, { driver, user }) => {
       return Boolean(user && user.id)
     },
-    currentUser: async (object, params, ctx, resolveInfo) => {
-      if (!ctx.user) return null
-      const user = await neode.find('User', ctx.user.id)
-      return user.toJson()
+    currentUser: async (object, params, context, resolveInfo) => {
+      const { user, driver } = context
+      if (!user) return null
+      const session = driver.session()
+      const currentUserTransactionPromise = session.readTransaction(async transaction => {
+        const result = await transaction.run(
+          `
+            MATCH (user:User {id: $id})
+            WITH user, [(user)<-[:OWNED_BY]-(medium:SocialMedia) | properties(medium) ] as media
+            RETURN user {.*, socialMedia: media } as user
+          `,
+          { id: user.id },
+        )
+        log(result)
+        return result.records.map(record => record.get('user'))
+      })
+      try {
+        const [currentUser] = await currentUserTransactionPromise
+        return currentUser
+      } finally {
+        session.close()
+      }
     },
   },
   Mutation: {
