@@ -48,7 +48,7 @@ export default {
       const session = context.driver.session()
       const searchResultPromise = session.readTransaction(async transaction => {
         const postTransactionResponse = transaction.run(postCypher, {
-          query: myQuery,
+          query: createPostQuery(query),
           limit,
           thisUserId,
         })
@@ -70,4 +70,18 @@ export default {
       }
     },
   },
+}
+
+function createPostQuery(str) {
+  // match the whole text
+  // console.log('"' + escapeSpecialCharacters(normalizeWhitespace(str)) + '"')
+  return '"' + escapeSpecialCharacters(normalizeWhitespace(str)) + '"'
+}
+
+function normalizeWhitespace(str) {
+  return str.replace(/\s+/g, ' ')
+}
+
+function escapeSpecialCharacters(str) {
+  return str.replace(/(["[\]&|\\{}+!()^~*?:/-])/g, '\\$1')
 }
