@@ -1,22 +1,18 @@
 import log from './helpers/databaseLogger'
 
+// see http://lucene.apache.org/core/8_3_1/queryparser/org/apache/lucene/queryparser/classic/package-summary.html#package.description
+
 export default {
   Query: {
     findResources: async (_parent, args, context, _resolveInfo) => {
       const { query, limit } = args
       const { id: thisUserId } = context.user
-      // see http://lucene.apache.org/core/8_3_1/queryparser/org/apache/lucene/queryparser/classic/package-summary.html#package.description
-      const myQuery = query
-        .replace(/\s+/g, ' ')
-        .replace(/[[@#:*~\\$|^\]?/"'(){}+?!,.-;]/g, '')
-        .split(' ')
-        .map(s => (s.toLowerCase().match(/^(not|and|or)$/) ? '"' + s + '"' : s + '*'))
-        .join(' ')
+
       const postCypher = `
       CALL db.index.fulltext.queryNodes('post_fulltext_search', $query)
       YIELD node as resource, score
       MATCH (resource)<-[:WROTE]-(author:User)
-      WHERE score >= 0.5
+      WHERE score >= 0.2
       AND NOT (
         author.deleted = true OR author.disabled = true
         OR resource.deleted = true OR resource.disabled = true
@@ -53,7 +49,7 @@ export default {
           thisUserId,
         })
         const userTransactionResponse = transaction.run(userCypher, {
-          query: myQuery,
+          query: createUserQuery(query),
           limit,
           thisUserId,
         })
@@ -64,6 +60,8 @@ export default {
         const [postResults, userResults] = await searchResultPromise
         log(postResults)
         log(userResults)
+        // console.log(postResults.summary.query.parameters)
+        // console.log(userResults)
         return [...postResults.records, ...userResults.records].map(r => r.get('resource'))
       } finally {
         session.close()
@@ -72,14 +70,30 @@ export default {
   },
 }
 
+function createUserQuery(str) {
+  // match the whole text
+  const normalizedString = normalizeWhitespace(str)
+  const escapedString = escapeSpecialCharacters(normalizedString)
+  const result = normalizedString.includes(' ') ? quoteString(escapedString) : escapedString
+  // console.log('"' +  + '"')
+  return result
+}
+
 function createPostQuery(str) {
   // match the whole text
-  // console.log('"' + escapeSpecialCharacters(normalizeWhitespace(str)) + '"')
-  return '"' + escapeSpecialCharacters(normalizeWhitespace(str)) + '"'
+  const normalizedString = normalizeWhitespace(str)
+  const escapedString = escapeSpecialCharacters(normalizedString)
+  const result = normalizedString.includes(' ') ? quoteString(escapedString) : escapedString
+  // console.log('"' +  + '"')
+  return result
 }
 
 function normalizeWhitespace(str) {
   return str.replace(/\s+/g, ' ')
+}
+
+function quoteString(str) {
+  return '"' + str + '"'
 }
 
 function escapeSpecialCharacters(str) {
