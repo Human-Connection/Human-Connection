@@ -68,7 +68,11 @@ const isAuthor = rule({
 const isDeletingOwnAccount = rule({
   cache: 'no_cache',
 })(async (parent, args, context, info) => {
-  return context.user.id === args.id
+  if (isAdmin === true) {
+    return true
+  } else {
+    return context.user.id === args.id
+  }
 })
 
 const noEmailFilter = rule({
@@ -133,7 +137,7 @@ export default shield(
       CreateComment: isAuthenticated,
       UpdateComment: isAuthor,
       DeleteComment: isAuthor,
-      DeleteUser: isDeletingOwnAccount,
+      DeleteUser: or(isDeletingOwnAccount, isAdmin),
       requestPasswordReset: allow,
       resetPassword: allow,
       AddPostEmotions: isAuthenticated,

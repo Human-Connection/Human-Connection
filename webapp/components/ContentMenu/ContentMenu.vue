@@ -154,6 +154,15 @@ export default {
             path: '/settings',
             icon: 'edit',
           })
+          if (this.isAdmin === true) {
+            routes.push({
+              label: this.$t(`settings.deleteUserAccount.name`),
+              callback: () => {
+                this.$emit('delete', this.resource)
+              },
+              icon: 'trash',
+            })
+          }
         } else {
           if (this.resource.isMuted) {
             routes.push({
@@ -187,6 +196,15 @@ export default {
                 this.$emit('block', this.resource)
               },
               icon: 'user-times',
+            })
+          }
+          if (this.isAdmin === true) {
+            routes.push({
+              label: this.$t(`settings.deleteUserAccount.name`),
+              callback: () => {
+                this.$emit('delete', this.resource)
+              },
+              icon: 'trash',
             })
           }
         }

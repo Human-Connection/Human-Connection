@@ -4,12 +4,14 @@
       <base-icon name="warning" />
       {{ $t('settings.deleteUserAccount.name') }}
     </h2>
-    <label>
+    <label v-show="!isAdmin">
       {{ $t('settings.deleteUserAccount.pleaseConfirm', { confirm: currentUser.name }) }}
     </label>
-    <ds-input v-model="enableDeletionValue" />
-    <p class="notice">{{ $t('settings.deleteUserAccount.accountDescription') }}</p>
-    <label v-if="currentUser.contributionsCount" class="checkbox">
+    <ds-input v-show="!isAdmin" v-model="enableDeletionValue" />
+    <p v-show="enableDeletionValue" class="notice">
+      {{ $t('settings.deleteUserAccount.accountDescription') }}
+    </p>
+    <label v-if="!isAdmin && currentUser.contributionsCount" class="checkbox">
       <input type="checkbox" v-model="deleteContributions" />
       {{
         $t('settings.deleteUserAccount.contributionsCount', {
@@ -17,7 +19,7 @@
         })
       }}
     </label>
-    <label v-if="currentUser.commentedCount" class="checkbox">
+    <label v-if="!isAdmin && currentUser.commentedCount" class="checkbox">
       <input type="checkbox" v-model="deleteComments" />
       {{
         $t('settings.deleteUserAccount.commentedCount', {
@@ -25,11 +27,18 @@
         })
       }}
     </label>
-    <section v-if="deleteEnabled" class="warning">
-      <p>{{ $t('settings.deleteUserAccount.accountWarning') }}</p>
+    <h2 v-else>
+      {{ $t('settings.deleteUserAccount.infoAdmin') }}
+    </h2>
+    <section class="warning">
+      <p v-if="!isAdmin">{{ $t('settings.deleteUserAccount.accountWarning') }}</p>
+      <p v-else>{{ $t('settings.deleteUserAccount.accountWarningAdmin') }}</p>
     </section>
-    <ds-text v-show="isAdmin ||  currentUser.role === 'admin'" color="danger">ACHTUNG! Du Bist Admin!!</ds-text>
+    <ds-text v-show="isAdmin || currentUser.role === 'admin'" color="danger">
+      {{ $t('settings.deleteUserAccount.accountWarningIsAdmin') }}
+    </ds-text>
     <base-button
+      v-show="!isAdmin"
       icon="trash"
       danger
       filled
@@ -56,23 +65,12 @@ export default {
       isAdmin: this.$store.getters['auth/isAdmin'],
     }
   },
-  mounted() {
-    if (this.isAdmin === true) {
-      this.deleteContributions = true, 
-      this.deleteComments = true
-    }
-    // console.log('isAdmin', isAdmin)
-    // console.log('this.deleteContributions', this.deleteContributions)
-    // console.log(' this.deleteComments', this.deleteComments)
-  },
   computed: {
     ...mapGetters({
       currentUser: 'auth/user',
     }),
     deleteEnabled() {
-      if (this.isAdmin === true) {
       return this.enableDeletionValue === this.currentUser.name
-    }
     },
   },
   methods: {
