@@ -6296,13 +6296,13 @@ metascraper-publisher@^5.11.1:
   dependencies:
     "@metascraper/helpers" "^5.11.1"
 
-metascraper-soundcloud@^5.11.4:
-  version "5.11.4"
-  resolved "https://registry.yarnpkg.com/metascraper-soundcloud/-/metascraper-soundcloud-5.11.4.tgz#aeb94ca0d2fe48f8e8baedb3c13024dfc363cfad"
-  integrity sha512-aQCriI0WXd2Ow+cwXc3DLXE5BljbjqqTrfrcZvA0k11LGRh3ChD4EI3JxGXBYGusW/fsC19ya+JJ9C54H6lKcA==
+metascraper-soundcloud@^5.11.5:
+  version "5.11.5"
+  resolved "https://registry.yarnpkg.com/metascraper-soundcloud/-/metascraper-soundcloud-5.11.5.tgz#989665c8d4177e0b687e12de3d951b79d69704bc"
+  integrity sha512-SbDtLkp/Uyg+gykNdmF+6Hy15TbNBnBWuVbRk99x+9XDoLbsK98kp1pJm0lU//RlRJAPfeWXPyMjhBMbDbeE/A==
   dependencies:
     "@metascraper/helpers" "^5.11.1"
-    tldts "~5.6.8"
+    tldts "~5.6.9"
 
 metascraper-title@^5.11.1:
   version "5.11.1"
@@ -8667,17 +8667,17 @@ tlds@^1.187.0, tlds@^1.203.0:
   resolved "https://registry.yarnpkg.com/tlds/-/tlds-1.203.1.tgz#4dc9b02f53de3315bc98b80665e13de3edfc1dfc"
   integrity sha512-7MUlYyGJ6rSitEZ3r1Q1QNV8uSIzapS8SmmhSusBuIc7uIxPPwsKllEP0GRp1NS6Ik6F+fRZvnjDWm3ecv2hDw==
 
-tldts-core@^5.6.8:
-  version "5.6.8"
-  resolved "https://registry.yarnpkg.com/tldts-core/-/tldts-core-5.6.8.tgz#0652cc445c835df6b3e22983884a984782a3ff94"
-  integrity sha512-fEAkTMPviMVie2+KIxIZ9A3WzraFC4z7E+jtMRwTmvAWJDcAH2pwPAp2ai4VvLJM3NuUcoPCJBQggvUbxxbBHw==
+tldts-core@^5.6.9:
+  version "5.6.9"
+  resolved "https://registry.yarnpkg.com/tldts-core/-/tldts-core-5.6.9.tgz#70e9b1d944b3b93008e0b31ffd8d1de6ce690bc9"
+  integrity sha512-MOvSUUxUyNmNK7R7cJKBvWys1rufuobWpPaVcGJd8EEsIyJzSVOlA5Y9l9V1Z0FdzlPMBAYPcpKuoQkvH7pfRg==
 
-tldts@~5.6.8:
-  version "5.6.8"
-  resolved "https://registry.yarnpkg.com/tldts/-/tldts-5.6.8.tgz#1a38eb36818b56e2448678eef74d3abe77be3486"
-  integrity sha512-b7dBujq9RqpwYe/sNDyPp51YCLpLjCY+cSYrke4uxlRhhTe1qpZdalx9BK7fPj0yKaW6NbweKJlVlBAyZ45g/A==
+tldts@~5.6.9:
+  version "5.6.9"
+  resolved "https://registry.yarnpkg.com/tldts/-/tldts-5.6.9.tgz#6fb3a10161aae568b1a862e4c96101a79adb557f"
+  integrity sha512-Dt5c+gD6tC3hvcUZEI/yMvru1gbnFzx95s7Di+GWZUrfEjI6vQg+vthje2Apduv9RHXXPEr5BLA51OsAwPvhWQ==
   dependencies:
-    tldts-core "^5.6.8"
+    tldts-core "^5.6.9"
 
 tmp@^0.0.33:
   version "0.0.33"
