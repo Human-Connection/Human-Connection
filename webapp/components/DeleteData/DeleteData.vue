@@ -4,14 +4,14 @@
       <base-icon name="warning" />
       {{ $t('settings.deleteUserAccount.name') }}
     </h2>
-    <label v-show="!isAdmin">
+    <label>
       {{ $t('settings.deleteUserAccount.pleaseConfirm', { confirm: currentUser.name }) }}
     </label>
-    <ds-input v-show="!isAdmin" v-model="enableDeletionValue" />
+    <ds-input v-model="enableDeletionValue" />
     <p v-show="enableDeletionValue" class="notice">
       {{ $t('settings.deleteUserAccount.accountDescription') }}
     </p>
-    <label v-if="!isAdmin && currentUser.contributionsCount" class="checkbox">
+    <label v-if="currentUser.contributionsCount" class="checkbox">
       <input type="checkbox" v-model="deleteContributions" />
       {{
         $t('settings.deleteUserAccount.contributionsCount', {
@@ -19,7 +19,7 @@
         })
       }}
     </label>
-    <label v-if="!isAdmin && currentUser.commentedCount" class="checkbox">
+    <label v-if="currentUser.commentedCount" class="checkbox">
       <input type="checkbox" v-model="deleteComments" />
       {{
         $t('settings.deleteUserAccount.commentedCount', {
@@ -27,18 +27,10 @@
         })
       }}
     </label>
-    <h2 v-else>
-      {{ $t('settings.deleteUserAccount.infoAdmin') }}
-    </h2>
     <section class="warning">
-      <p v-if="!isAdmin">{{ $t('settings.deleteUserAccount.accountWarning') }}</p>
-      <p v-else>{{ $t('settings.deleteUserAccount.accountWarningAdmin') }}</p>
+      <p>{{ $t('settings.deleteUserAccount.accountWarning') }}</p>
     </section>
-    <ds-text v-show="isAdmin || currentUser.role === 'admin'" color="danger">
-      {{ $t('settings.deleteUserAccount.accountWarningIsAdmin') }}
-    </ds-text>
     <base-button
-      v-show="!isAdmin"
       icon="trash"
       danger
       filled
@@ -62,7 +54,6 @@ export default {
       deleteContributions: false,
       deleteComments: false,
       enableDeletionValue: null,
-      isAdmin: this.$store.getters['auth/isAdmin'],
     }
   },
   computed: {

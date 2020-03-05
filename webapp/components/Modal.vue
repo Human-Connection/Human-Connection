@@ -33,8 +33,12 @@
     <delete-user-modal
       v-if="open === 'delete'"
       :id="data.id"
-      :slug="data.slug"
       :name="data.name"
+      :slug="data.slug"
+      :avatar="data.avatar"
+      :contributionsCount="data.contributionsCount"
+      :commentedCount="data.commentedCount"
+      :createdAt="data.createdAt"
       @close="close"
     />
   </div>

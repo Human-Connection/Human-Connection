@@ -442,8 +442,12 @@ export default {
         name: 'delete',
         data: {
           id: userdata.id,
-          slug: userdata.slug,
           name: userdata.name,
+          slug: userdata.slug,
+          avatar: userdata.avatar,
+          contributionsCount: userdata.contributionsCount,
+          commentedCount: userdata.commentedCount,
+          createdAt: userdata.createdAt,
         },
       })
     },

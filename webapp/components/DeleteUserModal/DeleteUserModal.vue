@@ -1,8 +1,35 @@
 <template>
   <ds-modal :title="title" :is-open="isOpen" @cancel="cancel">
     <!-- eslint-disable-next-line vue/no-v-html -->
-    <!-- <p v-html="message" /> -->
-    <delete-data />
+    <div>
+      <ds-flex>
+        <ds-flex-item :width="{ base: '60px', md: '200px' }">
+          <ds-placeholder>
+            <div>
+              <ds-avatar :name="name" :image="avatar" size="x-large" />
+            </div>
+          </ds-placeholder>
+        </ds-flex-item>
+        <ds-flex-item>
+          <ds-placeholder>
+            <div>
+              <ds-text>Name:</ds-text>
+              <ds-text size="x-large">{{ name }}</ds-text>
+              <ds-text>Slug:</ds-text>
+              <ds-text size="x-large">{{ slug }}</ds-text>
+              <ds-text>Id:</ds-text>
+              <ds-text size="x-large">{{ id }}</ds-text>
+              <ds-text>contributionsCount:</ds-text>
+              <ds-text size="x-large">{{ contributionsCount }}</ds-text>
+              <ds-text>commentedCount:</ds-text>
+              <ds-text size="x-large">{{ commentedCount }}</ds-text>
+              <ds-text>createdAt:</ds-text>
+              <ds-text size="x-large">{{ createdAt }}</ds-text>
+            </div>
+          </ds-placeholder>
+        </ds-flex-item>
+      </ds-flex>
+    </div>
     <template slot="footer">
       <base-button class="cancel" @click="cancel">{{ $t('actions.cancel') }}</base-button>
       <base-button danger filled class="confirm" icon="exclamation-circle" @click="confirm">
@@ -14,16 +41,16 @@
 
 <script>
 import gql from 'graphql-tag'
-import DeleteData from '~/components/DeleteData/DeleteData.vue'
 
 export default {
-  components: {
-    DeleteData,
-  },
   props: {
     slug: { type: String, required: true },
     id: { type: String, required: true },
     name: { type: String, required: true },
+    avatar: { type: String, required: true },
+    contributionsCount: { type: Number, required: true },
+    commentedCount: { type: Number, required: true },
+    createdAt: { type: String, required: true },
   },
   data() {
     return {
@@ -35,13 +62,11 @@ export default {
   },
   computed: {
     title() {
-      return this.$props.name + ' (' + this.$props.slug + ')'
+      return this.$t('settings.deleteUserAccount.name')
     },
   },
   methods: {
     cancel() {
-      // TODO: Use the "modalData" structure introduced in "ConfirmModal" and refactor this here. Be aware that all the Jest tests have to be refactored as well !!!
-      // await this.modalData.buttons.cancel.callback()
       this.isOpen = false
       setTimeout(() => {
         this.$emit('close')
@@ -49,8 +74,6 @@ export default {
     },
     async confirm() {
       try {
-        // TODO: Use the "modalData" structure introduced in "ConfirmModal" and refactor this here. Be aware that all the Jest tests have to be refactored as well !!!
-        // await this.modalData.buttons.confirm.callback()
         this.$apollo
           .mutate({
             mutation: gql`
