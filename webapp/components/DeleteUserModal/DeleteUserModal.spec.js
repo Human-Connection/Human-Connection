@@ -9,5 +9,21 @@ describe('DisableModal.vue', () => {
     let propsData
     let wrapper
 
-    
+    beforeEach(() => {
+        propsData = {
+            slug: "oger-ly",
+            id: "u1",
+            name: "Oger Ly",
+            avatar: "avatar-link",
+            contributionsCount: "42",
+            commentedCount: "24",
+            createdAt: "date-created-at",
+        }
+        mocks = {
+          $t: jest.fn(),
+          $filters: {
+            truncate: a => a,
+          },
+        }
+      })
 })
