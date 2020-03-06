@@ -5,32 +5,38 @@
         <sweetalert-icon icon="success" />
       </ds-flex>
     </transition>
-
     <div>
-      <ds-flex>
-        <ds-flex-item :width="{ base: '60px', md: '200px' }">
+      <ds-section>
+        <ds-heading>{{ userdata.name }}</ds-heading>
+        <ds-placeholder>
           <div>
             <ds-avatar :name="userdata.name" :image="userdata.avatar" size="x-large" />
           </div>
-        </ds-flex-item>
-        <ds-flex-item>
-          <div>
-            <ds-text>Name:</ds-text>
-            <ds-text size="x-large">{{ userdata.name }}</ds-text>
-            <ds-text>Slug:</ds-text>
+          <br />
+          <ds-text>
+            Slug:
             <ds-text size="x-large">{{ userdata.slug }}</ds-text>
-            <ds-text>Id:</ds-text>
+          </ds-text>
+          <ds-text>
+            Id:
             <ds-text size="x-large">{{ userdata.id }}</ds-text>
-            <ds-text>contributionsCount:</ds-text>
+          </ds-text>
+          <ds-text>
+            contributionsCount:
             <ds-text size="x-large">{{ userdata.contributionsCount }}</ds-text>
-            <ds-text>commentedCount:</ds-text>
+          </ds-text>
+          <ds-text>
+            commentedCount:
             <ds-text size="x-large">{{ userdata.commentedCount }}</ds-text>
-            <ds-text>createdAt:</ds-text>
+          </ds-text>
+          <ds-text>
+            createdAt:
             <ds-text size="x-large">{{ userdata.createdAt }}</ds-text>
-          </div>
-        </ds-flex-item>
-      </ds-flex>
+          </ds-text>
+        </ds-placeholder>
+      </ds-section>
     </div>
+
     <template slot="footer">
       <base-button class="cancel" @click="cancel">{{ $t('actions.cancel') }}</base-button>
       <base-button danger filled class="confirm" icon="exclamation-circle" @click="openModal">
