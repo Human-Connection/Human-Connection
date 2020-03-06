@@ -173,8 +173,7 @@ export default {
       }
     },
     DeleteUser: async (object, params, context, resolveInfo) => {
-      const { resource } = params
-      const { id } = params
+      const { resource, id } = params
       const session = context.driver.session()
       try {
         if (resource && resource.length) {
@@ -182,14 +181,14 @@ export default {
             resource.map(node => {
               return transaction.run(
                 `
-                    MATCH (resource:${node})<-[:WROTE]-(author:User {id: $userId})
-                    OPTIONAL MATCH (resource)<-[:COMMENTS]-(comment:Comment)
-                    SET resource.deleted = true
-                    SET resource.content = 'UNAVAILABLE'
-                    SET resource.contentExcerpt = 'UNAVAILABLE'
-                    SET comment.deleted = true
-                    RETURN author
-                  `,
+                  MATCH (resource:${node})<-[:WROTE]-(author:User {id: $userId})
+                  OPTIONAL MATCH (resource)<-[:COMMENTS]-(comment:Comment)
+                  SET resource.deleted = true
+                  SET resource.content = 'UNAVAILABLE'
+                  SET resource.contentExcerpt = 'UNAVAILABLE'
+                  SET comment.deleted = true
+                  RETURN author
+                `,
                 {
                   userId: id,
                 },

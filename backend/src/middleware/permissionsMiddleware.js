@@ -68,11 +68,7 @@ const isAuthor = rule({
 const isDeletingOwnAccount = rule({
   cache: 'no_cache',
 })(async (parent, args, context, info) => {
-  if (isAdmin === true) {
-    return true
-  } else {
-    return context.user.id === args.id
-  }
+  return context.user.id === args.id
 })
 
 const noEmailFilter = rule({

@@ -192,6 +192,11 @@ type Query {
     )
 }
 
+enum Deletable {
+  Post
+  Comment
+}
+
 type Mutation {
   UpdateUser (
   id: ID!

@@ -12,11 +12,6 @@ type Mutation {
   unfollowUser(id: ID!): User
 }
 
-enum Deletable {
-  Post
-  Comment
-}
-
 enum ShoutTypeEnum {
   Post
 }

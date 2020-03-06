@@ -441,13 +441,7 @@ export default {
       this.$store.commit('modal/SET_OPEN', {
         name: 'delete',
         data: {
-          id: userdata.id,
-          name: userdata.name,
-          slug: userdata.slug,
-          avatar: userdata.avatar,
-          contributionsCount: userdata.contributionsCount,
-          commentedCount: userdata.commentedCount,
-          createdAt: userdata.createdAt,
+          userdata: userdata,
         },
       })
     },
