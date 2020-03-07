@@ -6230,12 +6230,12 @@ metascraper-audio@^5.11.1:
   dependencies:
     "@metascraper/helpers" "^5.11.1"
 
-metascraper-author@^5.11.1:
-  version "5.11.1"
-  resolved "https://registry.yarnpkg.com/metascraper-author/-/metascraper-author-5.11.1.tgz#8abe6bcc21f5a72e481d6b4ff33b008ec740fdb0"
-  integrity sha512-VkduGrQd3baLoypCZV0zJwutdj7Dqpj3Oi8sdM6wSo0AJDiUD1oUbeQafJ6W616zqXFIeEANS35gARBFtHupog==
+metascraper-author@^5.11.6:
+  version "5.11.6"
+  resolved "https://registry.yarnpkg.com/metascraper-author/-/metascraper-author-5.11.6.tgz#45002b550f26fa229a9e7460989ff3efe114cf27"
+  integrity sha512-OtxpUJR8h0A0J2pUdZrreWtDATJkWZEGO7Ru6aNiMpU4Otk6H5v6wFHR4S41rHVbrfXZzj2hiQV2RcZOu+3JPg==
   dependencies:
-    "@metascraper/helpers" "^5.11.1"
+    "@metascraper/helpers" "^5.11.6"
     lodash "~4.17.15"
 
 metascraper-clearbit-logo@^5.3.0:
