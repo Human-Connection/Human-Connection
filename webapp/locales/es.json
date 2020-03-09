@@ -57,11 +57,6 @@
     "settings": {
       "name": "Configuración"
     },
-    "tags": {
-      "name": "Etiquetas",
-      "tagCount": "Contribuciones",
-      "tagCountUnique": "Usuarios"
-    },
     "users": {
       "empty": "No se han encontrado usuarios",
       "form": {
@@ -134,8 +129,6 @@
     "content": {
       "unavailable-placeholder": "... este comentario ya no está disponible"
     },
-    "delete": "Eliminar comentario",
-    "edit": "Editar comentario",
     "edited": "editado",
     "menu": {
       "delete": "Borrar comentario",
@@ -247,8 +240,6 @@
         "just-for-fun": "Sólo por diversión"
       }
     },
-    "delete": "Eliminar contribución",
-    "edit": "Editar contribución",
     "emotions-label": {
       "angry": "Enfadado",
       "cry": "Llorar",
@@ -258,6 +249,8 @@
     },
     "filterALL": "Ver todas las contribuciones",
     "filterFollow": "Filtrar las contribuciones de los usuarios que sigo",
+    "inappropriatePicture": "Esta imagen puede ser inapropiada para algunas personas.",
+    "inappropriatePictureText": "¿Cuándo debería estar borrosa mi foto?",
     "languageSelectLabel": "Idioma",
     "languageSelectText": "Seleccione el idioma",
     "newPost": "Crear una nueva contribución",
@@ -325,6 +318,17 @@
     },
     "placeholder": "Deje sus pensamientos inspiradores...."
   },
+  "error-pages": {
+    "403-default": "No autorizado a esta página",
+    "404-default": "Esta página no se pudo encontrar",
+    "500-default": "Error interno del servidor",
+    "503-default": "Servicio no disponible",
+    "back-to-index": "Volver a la página de índice",
+    "cannot-edit-post": "Esta contribución no se puede editar.",
+    "default": "Se produjo un error",
+    "post-not-found": "Esta contribución no se pudo encontrar",
+    "profile-not-found": "Este perfil no se pudo encontrar"
+  },
   "filter-menu": {
     "clearSearch": "Borrar búsqueda",
     "hashtag-search": "Buscando a #{hashtag}",
@@ -386,7 +390,7 @@
         "cancel": "Cancelar",
         "Comment": {
           "disable": {
-            "message": "¿Realmente quiere que el comentario \"<b>{nombre}</b>\" permanezca <b>desactivado</b>?",
+            "message": "¿Realmente quiere que el comentario \"<b>{name}</b>\" permanezca <b>desactivado</b>?",
             "title": "Desactivar finalmente Comentario"
           },
           "enable": {
@@ -396,22 +400,22 @@
         },
         "Post": {
           "disable": {
-            "message": "¿Realmente quiere que la entrada \"<b>{nombre}</b>\" permanezca <b>desactivada</b>?",
+            "message": "¿Realmente quiere que la entrada \"<b>{name}</b>\" permanezca <b>desactivada</b>?",
             "title": "Finalmente Desactivar Contribución"
           },
           "enable": {
-            "message": "¿Realmente quiere que la contribución \"<b>{nombre}</b>\" permanezca <b>activada</b>?",
+            "message": "¿Realmente quiere que la contribución \"<b>{name}</b>\" permanezca <b>activada</b>?",
             "title": "Finalmente Habilitar Contribución"
           }
         },
         "submit": "Confirmar decisión",
         "User": {
           "disable": {
-            "message": "¿Realmente quiere que el usuario \"<b>{nombre}</b>\" permanezca <b>desactivado</b>?",
+            "message": "¿Realmente quiere que el usuario \"<b>{name}</b>\" permanezca <b>desactivado</b>?",
             "title": "Finalmente Deshabilitar Usuario"
           },
           "enable": {
-            "message": "¿Realmente quiere que el usuario \"<b>{nombre}</b>\" permanezca <b>habilitado</b>?",
+            "message": "¿Realmente quiere que el usuario \"<b>{name}</b>\" permanezca <b>habilitado</b>?",
             "title": "Finalmente Habilitar Usuario"
           }
         }
@@ -439,7 +443,6 @@
       "reasonCategory": "Categoría",
       "reasonDescription": "Descripción",
       "reportedOn": "Fecha",
-      "reporter": "reportado por",
       "status": "Estado actual",
       "submitter": "comunicado por"
     }
@@ -465,6 +468,7 @@
   },
   "post": {
     "comment": {
+      "reply": "Contestar",
       "submit": "Comentario",
       "submitted": "Comentario enviado",
       "updated": "Cambios guardados"
@@ -591,10 +595,36 @@
   },
   "search": {
     "failed": "No se ha encontrado nada",
+    "heading": {
+      "Post": "Contribuciones",
+      "User": "Usuarios"
+    },
     "hint": "¿Qué estás buscando?",
     "placeholder": "Buscar"
   },
   "settings": {
+    "blocked-users": {
+      "block": "Bloquear usuario",
+      "columns": {
+        "name": "Nombre",
+        "slug": "Alias",
+        "unblock": "Desbloquear"
+      },
+      "empty": "Hasta ahora, no ha bloqueado a nadie.",
+      "explanation": {
+        "closing": "Esto debería ser suficiente por ahora para que los usuarios bloqueados no puedan molestarle más.",
+        "commenting-disabled": "No es posible hacer comentarios en este momento en esta contribución",
+        "commenting-explanation": "Esto puede suceder por varias razones, por favor vea nuestra ",
+        "intro": "Si otro usuario ha sido bloqueado por usted, esto es lo que sucede:",
+        "notifications": "Los usuarios bloqueados no recibirán más notificaciones si se mencionan en sus contribuciones.",
+        "their-perspective": "Viceversa: la persona bloqueada tampoco verá más sus contribuciones en sus noticias.",
+        "your-perspective": "Las contribuciones de la persona bloqueada no aparecerán más en su canal de noticias."
+      },
+      "how-to": "Puede bloquear a otros usuarios en la página de perfil de aquellos a través del menú de contenido.",
+      "name": "Usuarios bloqueados",
+      "unblock": "Desbloquear usuario",
+      "unblocked": "{name} está desbloqueado nuevamente"
+    },
     "data": {
       "labelBio": "Acerca de usted",
       "labelCity": "Su ciudad o región",
@@ -603,9 +633,6 @@
       "name": "Sus datos",
       "namePlaceholder": "Femanon Funny",
       "success": "¡Sus datos han sido actualizados con éxito!"
-    },
-    "delete": {
-      "name": "Borrar cuenta"
     },
     "deleteUserAccount": {
       "accountDescription": "Tenga en cuenta que su contribución y sus comentarios son importantes para nuestra comunidad. Si aún decide borrarlos, debe marcarlos a continuación.",
@@ -666,19 +693,19 @@
       "columns": {
         "name": "Nombre",
         "slug": "Alias",
-        "unmute": "Desbloquear"
+        "unmute": "Dejar de silenciar"
       },
-      "empty": "Hasta ahora, no ha bloqueado a nadie.",
+      "empty": "Hasta ahora, no ha silenciado a nadie.",
       "explanation": {
-        "intro": "Si otro usuario ha sido bloqueado por usted, esto es lo que sucede:",
-        "search": "Las contribuciones de personas bloqueadas desaparecen de los resultados de búsqueda.",
-        "your-perspective": "Las contribuciones de la persona bloqueada no aparecerán más en su canal de noticias."
+        "intro": "Si otro usuario ha sido silenciado por usted, esto es lo que sucede:",
+        "search": "Las contribuciones de personas silenciadas desaparecen de los resultados de búsqueda.",
+        "your-perspective": "Las contribuciones de la persona silenciada ya no aparecerán en tu canal de noticias."
       },
-      "how-to": "Puede bloquear a otros usuarios en la página de perfil de aquellos a través del menú de contenido.",
-      "mute": "Bloquear usuario",
-      "name": "Usuarios bloqueados",
-      "unmute": "Desbloquear usuario",
-      "unmuted": "{name} está desbloqueado nuevamente"
+      "how-to": "Puede silenciar a otros usuarios en su página de perfil a través del menú de contenido.",
+      "mute": "Silenciar usuario",
+      "name": "Usuarios silenciados",
+      "unmute": "Dejar de silenciar al usuario",
+      "unmuted": "{name} no está silenciado ahora"
     },
     "name": "Configuración",
     "organizations": {

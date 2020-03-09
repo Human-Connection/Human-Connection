@@ -1,7 +1,7 @@
 import { createWriteStream } from 'fs'
 import path from 'path'
 import slug from 'slug'
-import uuid from 'uuid/v4'
+import { v4 as uuid } from 'uuid'
 
 const localFileUpload = async ({ createReadStream, uniqueFilename }) => {
   await new Promise((resolve, reject) =>

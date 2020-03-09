@@ -1,5 +1,6 @@
 import gql from 'graphql-tag'
 import { VERSION } from '~/constants/terms-and-conditions-version.js'
+import { currentUserQuery } from '~/graphql/User'
 
 export const state = () => {
   return {
@@ -72,32 +73,7 @@ export const actions = {
     const client = this.app.apolloProvider.defaultClient
     const {
       data: { currentUser },
-    } = await client.query({
-      query: gql`
-        query {
-          currentUser {
-            id
-            name
-            slug
-            email
-            avatar
-            role
-            about
-            locationName
-            locale
-            contributionsCount
-            commentedCount
-            allowEmbedIframes
-            showShoutsPublicly
-            termsAndConditionsAgreedVersion
-            socialMedia {
-              id
-              url
-            }
-          }
-        }
-      `,
-    })
+    } = await client.query({ query: currentUserQuery })
     if (!currentUser) return dispatch('logout')
     commit('SET_USER', currentUser)
     return currentUser

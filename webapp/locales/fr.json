@@ -57,11 +57,6 @@
     "settings": {
       "name": "Paramètres"
     },
-    "tags": {
-      "name": "Étiquettes",
-      "tagCount": "Postes",
-      "tagCountUnique": "Utilisateurs"
-    },
     "users": {
       "empty": "Aucun utilisateur trouvé",
       "form": {
@@ -132,10 +127,8 @@
   },
   "comment": {
     "content": {
-      "unavailable-placeholder": "...ce commentaire n'est plus disponible"
+      "unavailable-placeholder": "… ce commentaire n'est plus disponible"
     },
-    "delete": "Supprimer le commentaire",
-    "edit": "Rédiger un commentaire",
     "edited": "édité",
     "menu": {
       "delete": "Supprimer le commentaire",
@@ -163,7 +156,7 @@
     "takeAction": "Passer à l'action",
     "user": "Utilisateur ::: Utilisateurs",
     "validations": {
-      "categories": "",
+      "categories": "au moins une et au maximum trois catégories doivent être sélectionnées",
       "email": "Doit être une adresse mail valide",
       "url": "doit être une URL valide"
     },
@@ -205,13 +198,15 @@
       "signup": {
         "form": {
           "data-privacy": "J'ai lu et compris la <a href=\"https://human-connection.org/datenschutz/\" target=\"_blank\"> <ds-text bold color=\"primary\" > Déclaration de confidentialité </ds-text> </a> ",
-          "description": "Pour commencer, entrez votre adresse mail:",
+          "description": "Pour commencer, entrez votre adresse mail :",
           "errors": {
             "email-exists": "Il existe déjà un compte utilisateur avec cette adresse mail!",
             "invalid-invitation-token": "On dirait que l'invitation a déjà été utilisée. Les liens d'invitation ne peuvent être utilisés qu'une seule fois."
           },
           "invitation-code": "Votre code d'invitation est: <b> {code} </b>",
           "minimum-age": "J'ai 18 ans ou plus.",
+          "no-commercial": "Je n'ai aucun intérêt commercial et je ne représente pas d'entreprise ou toute autre organisation commerciale sur le réseau.",
+          "no-political": "Je ne parle pas au nom d'un parti ou d'une organisation politique sur le réseau.",
           "submit": "Créer un compte",
           "success": "Un mail avec un lien pour compléter votre inscription a été envoyé à <b>{email}</b>",
           "terms-and-condition": "Je confirme les <a href=\"/terms-and-conditions\"> <ds-text bold color=\"primary\" > Conditions générales </ds-text> </a>."
@@ -245,8 +240,6 @@
         "just-for-fun": "Juste pour le Fun"
       }
     },
-    "delete": "Supprimer l'entrée",
-    "edit": "Rédiger l'apport",
     "emotions-label": {
       "angry": "En colère",
       "cry": "Pleurer",
@@ -256,8 +249,10 @@
     },
     "filterALL": "Voir toutes les contributions",
     "filterFollow": "Filtrer les contributions des utilisateurs que je suis",
+    "inappropriatePicture": "Cette image peut être inappropriée pour certaines personnes.",
+    "inappropriatePictureText": "Quand est ce que ma photo doit-elle être floue",
     "languageSelectLabel": "Langue",
-    "languageSelectText": "",
+    "languageSelectText": "Sélectionner une langue",
     "newPost": "Créer un nouveau Post",
     "success": "Enregistré!",
     "teaserImage": {
@@ -376,13 +371,68 @@
   "moderation": {
     "name": "Modération",
     "reports": {
-      "createdAt": "Date",
+      "author": "Auteur",
+      "content": "Contenu",
+      "decideButton": "Confirmer",
+      "decided": "Décidé",
+      "decideModal": {
+        "cancel": "Annuler",
+        "Comment": {
+          "disable": {
+            "message": "Voulez-vous vraiment que le commentaire \"<b>{name}</b>\" reste <b>désactivé</b> ?",
+            "title": "Finalement désactiver le commentaire"
+          },
+          "enable": {
+            "message": "Voulez-vous vraiment que le commentaire \"<b>{name}</b>\" reste <b>activé</b>?",
+            "title": "Finalement activer le commentaire"
+          }
+        },
+        "Post": {
+          "disable": {
+            "message": "Voulez-vous vraiment que la publication \"<b>{name}</b>\" reste <b>désactivé</b>?",
+            "title": "Finalement désactiver la publication"
+          },
+          "enable": {
+            "message": "Voulez-vous vraiment que la publication \"<b>{name}</b>\" reste <b>activé</b>?",
+            "title": "Finalement activer le post"
+          }
+        },
+        "submit": "Confirmer la décision",
+        "User": {
+          "disable": {
+            "message": "Voulez-vous vraiment laisser l'utilisateur \"<b>{name}</b>\" <b>désactivé</b>?",
+            "title": "Finalement désactiver l'utilisateur"
+          },
+          "enable": {
+            "message": "Voulez-vous réellement laisser l'utilisateur \"<b>{name}</b>\" <b>activé</b>?",
+            "title": "Finalement activer utilisateur"
+          }
+        }
+      },
+      "decision": "Décision",
+      "DecisionSuccess": "Décidé avec succès!",
+      "disabled": "Désactivé",
+      "disabledAt": "Désactivé le",
       "disabledBy": "désactivé par",
       "empty": "Félicitations, rien à modérer.",
+      "enabled": "Activé",
+      "enabledAt": "Activé le",
+      "enabledBy": "Activé par",
+      "filterLabel": {
+        "all": "Tous",
+        "closed": "Fermé",
+        "reviewed": "Revu",
+        "unreviewed": "Non révisé"
+      },
+      "moreDetails": "Voir les détails",
       "name": "Signalisations",
+      "noDecision": "Pas de décision!",
+      "numberOfUsers": "{count} utilisateurs",
+      "previousDecision": "Décision précédente:",
       "reasonCategory": "Catégorie",
       "reasonDescription": "Description",
-      "reporter": "signalé par",
+      "reportedOn": "Date",
+      "status": "Statut actuel",
       "submitter": "signalé par"
     }
   },
@@ -509,7 +559,7 @@
           "advert_products_services_commercial": "Publicité de produits et de services à des fins commerciaux.",
           "criminal_behavior_violation_german_law": "Comportement criminel ou violation du droit allemand.",
           "discrimination_etc": "Posts, commentaires, expressions ou insultes discriminatoires.",
-          "doxing": "La divulgation de renseignements personnels sans le consentement ou la menace d' (\"doxing\").",
+          "doxing": "La divulgation de renseignements personnels sans le consentement ou la menace de (\"doxing\").",
           "glorific_trivia_of_cruel_inhuman_acts": "Glorification ou banalisation d'actes de violence cruels ou inhumains.",
           "intentional_intimidation_stalking_persecution": "L'intimidation, le harcèlement ou la persécution intentionnelle.",
           "other": "Autres...",
@@ -533,10 +583,34 @@
   },
   "search": {
     "failed": "Rien trouvé",
+    "heading": {
+      "Post": "Posts",
+      "User": "Utilisateurs"
+    },
     "hint": "Qu'est-ce que vous cherchez ?",
     "placeholder": "Rechercher"
   },
   "settings": {
+    "blocked-users": {
+      "block": "Bloquer l'utilisateur",
+      "columns": {
+        "name": "Nom",
+        "slug": "Slug",
+        "unblock": "Débloquer"
+      },
+      "empty": "Jusqu'à présent, vous n'avez bloqué personne.",
+      "explanation": {
+        "closing": "Ceci devrait être suffisant pour le moment afin que les utilisateurs bloqués ne puissent plus vous déranger.",
+        "intro": "Si vous avez bloqué un autre utilisateur, voici ce qui se passe:",
+        "notifications": "Les utilisateurs bloqués ne recevront plus de notifications s'ils sont mentionnés dans vos postes.",
+        "their-perspective": "Vice versa: la personne bloquée ne verra plus non plus vos postes dans son fil d'actualités.",
+        "your-perspective": "Les postes de la personne bloquée n'apparaîtront dans votre fil d'actualités."
+      },
+      "how-to": "Vous pouvez bloquer d'autres utilisateurs sur leur page de profil via le menu de contenu.",
+      "name": "Utilisateurs bloqués",
+      "unblock": "Débloquer l'utilisateur",
+      "unblocked": "{name} est à nouveau débloqué"
+    },
     "data": {
       "labelBio": "À propos de vous",
       "labelCity": "Votre ville ou région",
@@ -545,9 +619,6 @@
       "name": "Vos données",
       "namePlaceholder": "Fémanon Funny",
       "success": "Vos données ont été mises à jour avec succès !"
-    },
-    "delete": {
-      "name": "Supprimer un compte"
     },
     "deleteUserAccount": {
       "accountDescription": "Sachez que vos postes et commentaires sont importants pour notre communauté. Si vous voulez quand même les supprimer, vous devez les marquer ci-dessous.",
@@ -604,32 +675,14 @@
     "languages": {
       "name": "Langues"
     },
-    "muted-users": {
-      "columns": {
-        "name": "Nom",
-        "slug": "Slug",
-        "unmute": ""
-      },
-      "empty": "Jusqu'à présent, vous n'avez bloqué personne.",
-      "explanation": {
-        "intro": "Si vous avez bloqué un autre utilisateur, voici ce qui se passe:",
-        "search": "Les postes des personnes bloquées disparaissent de vos résultats de recherche.",
-        "your-perspective": "Les postes de la personne bloquée n'apparaîtront dans votre fil d'actualités."
-      },
-      "how-to": "Vous pouvez bloquer d'autres utilisateurs sur leur page de profil via le menu de contenu.",
-      "mute": "Bloquer l'utilisateur",
-      "name": "Utilisateurs bloqués",
-      "unmute": "Débloquer l'utilisateur",
-      "unmuted": "{name} est à nouveau débloqué"
-    },
     "name": "Paramètres",
     "organizations": {
       "name": "Mes organisations"
     },
     "privacy": {
-      "make-shouts-public": "",
-      "name": "",
-      "success-update": ""
+      "make-shouts-public": "Partager les articles que j'ai recommandés sur mon profil",
+      "name": "Confidentialité",
+      "success-update": "Paramètres de confidentialité enregistrés"
     },
     "security": {
       "change-password": {
@@ -723,6 +776,10 @@
       "title": "Modération"
     },
     "newTermsAndConditions": "Nouvelles conditions générales",
+    "no-commercial-use": {
+      "description": "L'utilisation du réseau Human Connetion à fin commercial n'est pas autorisée. Cela comprend, sans s'y limiter, la publicité de produits à des fins commerciales, la publication de liens d'affiliation, la sollicitation directe de dons ou l'octroi d'un soutien financier à des fins qui ne sont pas reconnues comme organismes de bienfaisance aux fins de l'impôt.",
+      "title": "Pas d'utilisation commerciale"
+    },
     "privacy-statement": {
       "description": "Notre réseau est un réseau de connaissances et d'action sociale. Il est donc particulièrement important pour nous qu'autant de contenu que possible soit accessible au public. Au cours du développement de notre réseau, il y aura de plus en plus la possibilité de décider de la visibilité des données personnelles. Nous vous informerons de ces nouvelles fonctionnalités. Sinon, vous devriez toujours penser aux données personnelles que vous divulguez à votre sujet (ou à celui d'autres personnes). Cela vaut en particulier pour le contenu des messages et des commentaires, qui ont un caractère largement public. Plus tard, il y aura des possibilités de limiter la visibilité de votre profil. Une partie des conditions d'utilisation est notre déclaration de confidentialité, qui vous informe sur les différentes opérations de traitement des données dans notre réseau: <a href=\"https://human-connection.org/datenschutz/#netzwerk\" target=\"_blank\"> https://human-connection.org/datenschutz/#netzwerk</a> ex: <a href=\"https://human-connection.org/datenschutz/\" target=\"_blank\">https://human-connection.org/datenschutz/</a> Notre déclaration de confidentialité est adaptée à la situation juridique et aux caractéristiques de notre réseau et est toujours valable dans la version la plus récente.",
       "title": "Déclaration de confidentialité"
