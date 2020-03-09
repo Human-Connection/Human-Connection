@@ -154,7 +154,7 @@ describe('ContentMenu.vue', () => {
           .filter(item => item.text() === 'comment.menu.edit')
           .at(0)
           .trigger('click')
-        expect(wrapper.emitted('showEditCommentMenu')).toEqual([[true]])
+        expect(wrapper.emitted('editComment')).toBeTruthy()
       })
       it('delete the comment', () => {
         wrapper

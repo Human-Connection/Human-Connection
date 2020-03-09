@@ -12,7 +12,7 @@ let annoyingUserWhoMutedModeratorTitle = 'Fake news'
 const savePostTitle = $post => {
   return $post
     .first()
-    .find('.ds-heading')
+    .find('.title')
     .first()
     .invoke('text')
     .then(title => {
@@ -30,20 +30,28 @@ Given("I see David Irving's post on the post page", page => {
 })
 
 Given('I am logged in with a {string} role', role => {
-  cy.factory().create('User', {
+  cy.factory().build('user', {
+    termsAndConditionsAgreedVersion: VERSION,
+    role,
+    name: `${role} is my name`
+  }, {
     email: `${role}@example.org`,
     password: '1234',
-    termsAndConditionsAgreedVersion: VERSION,
-    role
   })
-  cy.login({
-    email: `${role}@example.org`,
-    password: '1234'
-  })
+  cy.neode()
+    .first("User", {
+      name: `${role} is my name`,
+    })
+    .then(user => {
+      return new Cypress.Promise((resolve, reject) => {
+        return user.toJson().then((user) => resolve(user))
+      })
+    })
+    .then(user => cy.login(user))
 })
 
 When('I click on "Report Post" from the content menu of the post', () => {
-  cy.contains('.ds-card', davidIrvingPostTitle)
+  cy.contains('.base-card', davidIrvingPostTitle)
     .find('.content-menu .base-button')
     .click({force: true})
 
@@ -53,7 +61,7 @@ When('I click on "Report Post" from the content menu of the post', () => {
 })
 
 When('I click on "Report User" from the content menu in the user info box', () => {
-  cy.contains('.ds-card', davidIrvingPostTitle)
+  cy.contains('.base-card', davidIrvingPostTitle)
     .get('.user-content-menu .base-button')
     .click({ force: true })
 
@@ -70,7 +78,7 @@ When('I click on the author', () => {
 
 When('I report the author', () => {
   cy.get('.page-name-profile-id-slug').then(() => {
-    invokeReportOnElement('.ds-card').then(() => {
+    invokeReportOnElement('.base-card').then(() => {
       cy.get('button')
         .contains('Send')
         .click()
@@ -127,11 +135,11 @@ Given('somebody reported the following posts:', table => {
       password: '1234'
     }
     cy.factory()
-      .create('User', submitter)
+      .build('user', {}, submitter)
       .authenticateAs(submitter)
       .mutate(gql`mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
         fileReport(resourceId: $resourceId, reasonCategory: $reasonCategory, reasonDescription: $reasonDescription) {
-          id
+          reportId
         }
       }`, {
         resourceId,
@@ -161,13 +169,14 @@ Then('each list item links to the post page', () => {
 Then('I can visit the post page', () => {
   cy.contains(annoyingUserWhoMutedModeratorTitle).click()
   cy.location('pathname').should('contain', '/post')
-    .get('h3').should('contain', annoyingUserWhoMutedModeratorTitle)
+    .get('.base-card .title').should('contain', annoyingUserWhoMutedModeratorTitle)
 })
 
 When("they have a post someone has reported", () => {
   cy.factory()
-    .create("Post", {
-      authorId: 'annnoying-user',
+    .build("post", {
       title,
+    }, {
+      authorId: 'annnoying-user',
     });
 })

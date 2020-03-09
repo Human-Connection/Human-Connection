@@ -1,10 +1,8 @@
-import Factory from '../../factories'
+import Factory, { cleanDatabase } from '../../db/factories'
 import { gql } from '../../helpers/jest'
 import { getNeode, getDriver } from '../../db/neo4j'
 import createServer from '../../server'
 import { createTestClient } from 'apollo-server-testing'
-
-const factory = Factory()
 
 let mutate, authenticatedUser
 
@@ -25,7 +23,7 @@ beforeAll(() => {
 })
 
 afterEach(async () => {
-  await factory.cleanDatabase()
+  await cleanDatabase()
 })
 
 describe('resolvers', () => {
@@ -49,16 +47,16 @@ describe('resolvers', () => {
           id: 'u47',
           name: 'John Doughnut',
         }
-        const Paris = await factory.create('Location', {
+        const Paris = await Factory.build('location', {
           id: 'region.9397217726497330',
           name: 'Paris',
           type: 'region',
-          lat: 2.35183,
-          lng: 48.85658,
+          lng: 2.35183,
+          lat: 48.85658,
           nameEN: 'Paris',
         })
 
-        const user = await factory.create('User', {
+        const user = await Factory.build('user', {
           id: 'u47',
           name: 'John Doe',
         })

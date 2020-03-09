@@ -1,10 +1,9 @@
 import { createTestClient } from 'apollo-server-testing'
-import Factory from '../../factories'
+import Factory, { cleanDatabase } from '../../db/factories'
 import { gql } from '../../helpers/jest'
 import { getNeode, getDriver } from '../../db/neo4j'
 import createServer from '../../server'
 
-const factory = Factory()
 const neode = getNeode()
 const driver = getDriver()
 
@@ -54,7 +53,7 @@ const reviewMutation = gql`
 
 describe('moderate resources', () => {
   beforeAll(async () => {
-    await factory.cleanDatabase()
+    await cleanDatabase()
     authenticatedUser = undefined
     const { server } = createServer({
       context: () => {
@@ -80,23 +79,33 @@ describe('moderate resources', () => {
       closed: false,
     }
     authenticatedUser = null
-    moderator = await factory.create('User', {
-      id: 'moderator-id',
-      name: 'Moderator',
-      email: 'moderator@example.org',
-      password: '1234',
-      role: 'moderator',
-    })
-    nonModerator = await factory.create('User', {
-      id: 'non-moderator',
-      name: 'Non Moderator',
-      email: 'non.moderator@example.org',
-      password: '1234',
-    })
+    moderator = await Factory.build(
+      'user',
+      {
+        id: 'moderator-id',
+        name: 'Moderator',
+        role: 'moderator',
+      },
+      {
+        email: 'moderator@example.org',
+        password: '1234',
+      },
+    )
+    nonModerator = await Factory.build(
+      'user',
+      {
+        id: 'non-moderator',
+        name: 'Non Moderator',
+      },
+      {
+        email: 'non.moderator@example.org',
+        password: '1234',
+      },
+    )
   })
 
   afterEach(async () => {
-    await factory.cleanDatabase()
+    await cleanDatabase()
   })
 
   describe('review to close report, leaving resource enabled', () => {
@@ -127,10 +136,10 @@ describe('moderate resources', () => {
     describe('moderator', () => {
       beforeEach(async () => {
         authenticatedUser = await moderator.toJson()
-        const questionablePost = await factory.create('Post', {
+        const questionablePost = await Factory.build('post', {
           id: 'should-i-be-disabled',
         })
-        const reportAgainstQuestionablePost = await factory.create('Report')
+        const reportAgainstQuestionablePost = await Factory.build('report')
         await Promise.all([
           reportAgainstQuestionablePost.relateTo(nonModerator, 'filed', {
             resourceId: 'should-i-be-disabled',
@@ -229,10 +238,10 @@ describe('moderate resources', () => {
 
       describe('moderate a comment', () => {
         beforeEach(async () => {
-          const trollingComment = await factory.create('Comment', {
+          const trollingComment = await Factory.build('comment', {
             id: 'comment-id',
           })
-          const reportAgainstTrollingComment = await factory.create('Report')
+          const reportAgainstTrollingComment = await Factory.build('report')
           await Promise.all([
             reportAgainstTrollingComment.relateTo(nonModerator, 'filed', {
               resourceId: 'comment-id',
@@ -307,10 +316,10 @@ describe('moderate resources', () => {
 
       describe('moderate a post', () => {
         beforeEach(async () => {
-          const trollingPost = await factory.create('Post', {
+          const trollingPost = await Factory.build('post', {
             id: 'post-id',
           })
-          const reportAgainstTrollingPost = await factory.create('Report')
+          const reportAgainstTrollingPost = await Factory.build('report')
           await Promise.all([
             reportAgainstTrollingPost.relateTo(nonModerator, 'filed', {
               resourceId: 'post-id',
@@ -387,10 +396,10 @@ describe('moderate resources', () => {
 
       describe('moderate a user', () => {
         beforeEach(async () => {
-          const troll = await factory.create('User', {
+          const troll = await Factory.build('user', {
             id: 'user-id',
           })
-          const reportAgainstTroll = await factory.create('Report')
+          const reportAgainstTroll = await Factory.build('report')
           await Promise.all([
             reportAgainstTroll.relateTo(nonModerator, 'filed', {
               resourceId: 'user-id',
@@ -504,10 +513,10 @@ describe('moderate resources', () => {
 
         describe('moderate a comment', () => {
           beforeEach(async () => {
-            const trollingComment = await factory.create('Comment', {
+            const trollingComment = await Factory.build('comment', {
               id: 'comment-id',
             })
-            const reportAgainstTrollingComment = await factory.create('Report')
+            const reportAgainstTrollingComment = await Factory.build('report')
             await Promise.all([
               reportAgainstTrollingComment.relateTo(nonModerator, 'filed', {
                 resourceId: 'comment-id',
@@ -568,10 +577,10 @@ describe('moderate resources', () => {
 
         describe('moderate a post', () => {
           beforeEach(async () => {
-            const trollingPost = await factory.create('Post', {
+            const trollingPost = await Factory.build('post', {
               id: 'post-id',
             })
-            const reportAgainstTrollingPost = await factory.create('Report')
+            const reportAgainstTrollingPost = await Factory.build('report')
             await Promise.all([
               reportAgainstTrollingPost.relateTo(nonModerator, 'filed', {
                 resourceId: 'post-id',
@@ -633,10 +642,10 @@ describe('moderate resources', () => {
 
         describe('moderate a user', () => {
           beforeEach(async () => {
-            const troll = await factory.create('User', {
+            const troll = await Factory.build('user', {
               id: 'user-id',
             })
-            const reportAgainstTroll = await factory.create('Report')
+            const reportAgainstTroll = await Factory.build('report')
             await Promise.all([
               reportAgainstTroll.relateTo(nonModerator, 'filed', {
                 resourceId: 'user-id',

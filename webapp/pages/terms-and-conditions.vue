@@ -35,6 +35,7 @@ export default {
         'moderation',
         'errors-and-feedback',
         'no-commercial-use',
+        'no-parties',
         'help-and-questions',
         'addition',
       ],

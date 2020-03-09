@@ -1,10 +1,9 @@
 import { createTestClient } from 'apollo-server-testing'
-import Factory from '../../factories'
+import Factory, { cleanDatabase } from '../../db/factories'
 import { getDriver, getNeode } from '../../db/neo4j'
 import createServer from '../../server'
 import { gql } from '../../helpers/jest'
 
-const factory = Factory()
 const driver = getDriver()
 const neode = getNeode()
 
@@ -54,7 +53,7 @@ const userQuery = gql`
 `
 
 beforeAll(async () => {
-  await factory.cleanDatabase()
+  await cleanDatabase()
   const { server } = createServer({
     context: () => ({
       driver,
@@ -72,29 +71,35 @@ beforeAll(async () => {
 })
 
 beforeEach(async () => {
-  user1 = await factory
-    .create('User', {
+  user1 = await Factory.build(
+    'user',
+    {
       id: 'u1',
       name: 'user1',
+    },
+    {
       email: 'test@example.org',
       password: '1234',
-    })
-    .then(user => user.toJson())
-  user2 = await factory
-    .create('User', {
+    },
+  ).then(user => user.toJson())
+  user2 = await Factory.build(
+    'user',
+    {
       id: 'u2',
       name: 'user2',
+    },
+    {
       email: 'test2@example.org',
       password: '1234',
-    })
-    .then(user => user.toJson())
+    },
+  ).then(user => user.toJson())
 
   authenticatedUser = user1
   variables = { id: user2.id }
 })
 
 afterEach(async () => {
-  await factory.cleanDatabase()
+  await cleanDatabase()
 })
 
 describe('follow', () => {

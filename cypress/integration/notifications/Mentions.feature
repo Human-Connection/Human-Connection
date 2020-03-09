@@ -11,9 +11,7 @@ Feature: Notification for a mention
       | Matt Rider        | matt-rider        | matt@example.org  | 4321     |
 
   Scenario: Mention another user, re-login as this user and see notifications
-    Given I log in with the following credentials:
-      | email             | password |
-      | wolle@example.org | 1234     |
+    Given I log in as "Wolle aus Hamburg"
     And I start to write a new post with the title "Hey Matt" beginning with:
       """
       Big shout to our fellow contributor
@@ -22,10 +20,7 @@ Feature: Notification for a mention
     And I select a category
     And I choose "en" as the language for the post
     And I click on "Save"
-    When I log out
-    And I log in with the following credentials:
-      | email            | password |
-      | matt@example.org | 4321     |
+    And I log in as "Matt Rider"
     And see 1 unread notifications in the top menu
     And open the notification menu and click on the first item
     Then I get to the post page of ".../hey-matt"

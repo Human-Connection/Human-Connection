@@ -1,5 +1,5 @@
 <template>
-  <ds-card>
+  <base-card>
     <ApolloQuery :query="Statistics">
       <template v-slot="{ result: { loading, error, data } }">
         <template v-if="loading">
@@ -123,7 +123,7 @@
         </template>
       </template>
     </ApolloQuery>
-  </ds-card>
+  </base-card>
 </template>
 
 <script>

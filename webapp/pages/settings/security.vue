@@ -1,7 +1,8 @@
 <template>
-  <ds-card :header="$t('settings.security.name')">
+  <base-card>
+    <h2 class="title">{{ $t('settings.security.name') }}</h2>
     <change-password />
-  </ds-card>
+  </base-card>
 </template>
 
 <script>

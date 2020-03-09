@@ -1,11 +1,11 @@
 import { gql } from '../../helpers/jest'
-import Factory from '../../factories'
+import Factory, { cleanDatabase } from '../../factories'
 import { createTestClient } from 'apollo-server-testing'
 import { getDriver } from '../../db/neo4j'
-import createServer from '../../server'
+import createServer, { pubsub } from '../../server'
 
 let server, query, mutate, notifiedUser, authenticatedUser
-const factory = Factory()
+let publishSpy
 const driver = getDriver()
 const categoryIds = ['cat9']
 const createPostMutation = gql`
@@ -46,7 +46,8 @@ const fileReportMutation = gql`
 `
 
 beforeAll(async () => {
-  await factory.cleanDatabase()
+  await cleanDatabase()
+  publishSpy = jest.spyOn(pubsub, 'publish')
   const createServerResult = createServer({
     context: () => {
       return {
@@ -62,22 +63,29 @@ beforeAll(async () => {
 })
 
 beforeEach(async () => {
-  notifiedUser = await factory.create('User', {
-    id: 'you',
-    name: 'Al Capone',
-    slug: 'al-capone',
-    email: 'test@example.org',
-    password: '1234',
-  })
-  await factory.create('Category', {
+  publishSpy.mockClear()
+  notifiedUser = await Factory.build(
+    'user',
+    {
+      id: 'you',
+      name: 'Al Capone',
+      slug: 'al-capone',
+    },
+    {
+      email: 'test@example.org',
+      password: '1234',
+    },
+  )
+  await Factory.build('category', {
     id: 'cat9',
     name: 'Democracy & Politics',
+    slug: 'democracy-politics',
     icon: 'university',
   })
 })
 
 afterEach(async () => {
-  await factory.cleanDatabase()
+  await cleanDatabase()
 })
 
 describe('notifications', () => {
@@ -173,13 +181,18 @@ describe('notifications', () => {
         describe('commenter is not me', () => {
           beforeEach(async () => {
             commentContent = 'Commenters comment.'
-            commentAuthor = await factory.create('User', {
-              id: 'commentAuthor',
-              name: 'Mrs Comment',
-              slug: 'mrs-comment',
-              email: 'commentauthor@example.org',
-              password: '1234',
-            })
+            commentAuthor = await Factory.build(
+              'user',
+              {
+                id: 'commentAuthor',
+                name: 'Mrs Comment',
+                slug: 'mrs-comment',
+              },
+              {
+                email: 'commentauthor@example.org',
+                password: '1234',
+              },
+            )
           })
 
           it('sends me a notification', async () => {
@@ -254,13 +267,18 @@ describe('notifications', () => {
       })
 
       beforeEach(async () => {
-        postAuthor = await factory.create('User', {
-          id: 'postAuthor',
-          name: 'Mrs Post',
-          slug: 'mrs-post',
-          email: 'post-author@example.org',
-          password: '1234',
-        })
+        postAuthor = await Factory.build(
+          'user',
+          {
+            id: 'postAuthor',
+            name: 'Mrs Post',
+            slug: 'mrs-post',
+          },
+          {
+            email: 'post-author@example.org',
+            password: '1234',
+          },
+        )
       })
 
       describe('mentions me in a post', () => {
@@ -275,7 +293,15 @@ describe('notifications', () => {
           await createPostAction()
           const expectedContent =
             'Hey <a class="mention" data-mention-id="you" href="/profile/you/al-capone" target="_blank">@al-capone</a> how do you do?'
-          const expected = expect.objectContaining({
+          await expect(
+            query({
+              query: notificationQuery,
+              variables: {
+                read: false,
+              },
+            }),
+          ).resolves.toMatchObject({
+            errors: undefined,
             data: {
               notifications: [
                 {
@@ -291,15 +317,22 @@ describe('notifications', () => {
               ],
             },
           })
+        })
 
-          await expect(
-            query({
-              query: notificationQuery,
-              variables: {
-                read: false,
-              },
+        it('publishes `NOTIFICATION_ADDED` to me', async () => {
+          await createPostAction()
+          expect(publishSpy).toHaveBeenCalledWith(
+            'NOTIFICATION_ADDED',
+            expect.objectContaining({
+              notificationAdded: expect.objectContaining({
+                reason: 'mentioned_in_post',
+                to: expect.objectContaining({
+                  id: 'you',
+                }),
+              }),
             }),
-          ).resolves.toEqual(expected)
+          )
+          expect(publishSpy).toHaveBeenCalledTimes(1)
         })
 
         describe('updates the post and mentions me again', () => {
@@ -445,6 +478,11 @@ describe('notifications', () => {
               }),
             ).resolves.toEqual(expected)
           })
+
+          it('does not publish `NOTIFICATION_ADDED`', async () => {
+            await createPostAction()
+            expect(publishSpy).not.toHaveBeenCalled()
+          })
         })
       })
 
@@ -458,23 +496,33 @@ describe('notifications', () => {
           beforeEach(async () => {
             commentContent =
               'One mention about me with <a data-mention-id="you" class="mention" href="/profile/you" target="_blank">@al-capone</a>.'
-            commentAuthor = await factory.create('User', {
-              id: 'commentAuthor',
-              name: 'Mrs Comment',
-              slug: 'mrs-comment',
-              email: 'comment-author@example.org',
-              password: '1234',
-            })
+            commentAuthor = await Factory.build(
+              'user',
+              {
+                id: 'commentAuthor',
+                name: 'Mrs Comment',
+                slug: 'mrs-comment',
+              },
+              {
+                email: 'comment-author@example.org',
+                password: '1234',
+              },
+            )
           })
 
           it('sends only one notification with reason mentioned_in_comment', async () => {
-            postAuthor = await factory.create('User', {
-              id: 'MrAuthor',
-              name: 'Mr Author',
-              slug: 'mr-author',
-              email: 'mr-author@example.org',
-              password: '1234',
-            })
+            postAuthor = await Factory.build(
+              'user',
+              {
+                id: 'MrPostAuthor',
+                name: 'Mr Author',
+                slug: 'mr-author',
+              },
+              {
+                email: 'post-author@example.org',
+                password: '1234',
+              },
+            )
 
             await createCommentOnPostAction()
             const expected = expect.objectContaining({
@@ -511,7 +559,7 @@ describe('notifications', () => {
           })
           it('sends only one notification with reason commented_on_post, no notification with reason mentioned_in_comment', async () => {
             await createCommentOnPostAction()
-            const expected = expect.objectContaining({
+            const expected = {
               data: {
                 notifications: [
                   {
@@ -526,7 +574,7 @@ describe('notifications', () => {
                   },
                 ],
               },
-            })
+            }
 
             await expect(
               query({
@@ -535,7 +583,7 @@ describe('notifications', () => {
                   read: false,
                 },
               }),
-            ).resolves.toEqual(expected)
+            ).resolves.toMatchObject(expected, { errors: undefined })
           })
         })
 
@@ -544,21 +592,22 @@ describe('notifications', () => {
             await postAuthor.relateTo(notifiedUser, 'blocked')
             commentContent =
               'One mention about me with <a data-mention-id="you" class="mention" href="/profile/you" target="_blank">@al-capone</a>.'
-            commentAuthor = await factory.create('User', {
-              id: 'commentAuthor',
-              name: 'Mrs Comment',
-              slug: 'mrs-comment',
-              email: 'comment-author@example.org',
-              password: '1234',
-            })
+            commentAuthor = await Factory.build(
+              'user',
+              {
+                id: 'commentAuthor',
+                name: 'Mrs Comment',
+                slug: 'mrs-comment',
+              },
+              {
+                email: 'comment-author@example.org',
+                password: '1234',
+              },
+            )
           })
 
           it('sends no notification', async () => {
             await createCommentOnPostAction()
-            const expected = expect.objectContaining({
-              data: { notifications: [] },
-            })
-
             await expect(
               query({
                 query: notificationQuery,
@@ -566,7 +615,26 @@ describe('notifications', () => {
                   read: false,
                 },
               }),
-            ).resolves.toEqual(expected)
+            ).resolves.toMatchObject({
+              data: { notifications: [] },
+              errors: undefined,
+            })
+          })
+
+          it('does not publish `NOTIFICATION_ADDED` to authenticated user', async () => {
+            await createCommentOnPostAction()
+            expect(publishSpy).toHaveBeenCalledWith(
+              'NOTIFICATION_ADDED',
+              expect.objectContaining({
+                notificationAdded: expect.objectContaining({
+                  reason: 'commented_on_post',
+                  to: expect.objectContaining({
+                    id: 'postAuthor', // that's expected, it's not me but the post author
+                  }),
+                }),
+              }),
+            )
+            expect(publishSpy).toHaveBeenCalledTimes(1)
           })
         })
       })
@@ -628,7 +696,7 @@ describe('notifications', () => {
 
       describe('user', () => {
         it('sends me a notification for filing a report on a user', async () => {
-          await factory.create('User', reportedUserOrAuthorData)
+          await Factory.create('User', reportedUserOrAuthorData)
           resourceId = 'reportedUser'
           await fileReportAction()
 
@@ -653,7 +721,7 @@ describe('notifications', () => {
         beforeEach(async () => {
           title = 'My post'
           postContent = 'My post content.'
-          postAuthor = await factory.create('User', reportedUserOrAuthorData)
+          postAuthor = await Factory.create('User', reportedUserOrAuthorData)
         })
 
         describe('post', () => {
@@ -682,7 +750,7 @@ describe('notifications', () => {
         describe('comment', () => {
           beforeEach(async () => {
             commentContent = "Commenter's comment."
-            commentAuthor = await factory.create('User', {
+            commentAuthor = await Factory.create('User', {
               id: 'commentAuthor',
               name: 'Mrs Comment',
               slug: 'mrs-comment',

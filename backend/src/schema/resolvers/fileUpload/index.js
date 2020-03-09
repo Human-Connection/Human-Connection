@@ -1,24 +1,27 @@
 import { createWriteStream } from 'fs'
 import path from 'path'
 import slug from 'slug'
+import { v4 as uuid } from 'uuid'
 
-const storeUpload = ({ createReadStream, fileLocation }) =>
-  new Promise((resolve, reject) =>
+const localFileUpload = async ({ createReadStream, uniqueFilename }) => {
+  await new Promise((resolve, reject) =>
     createReadStream()
-      .pipe(createWriteStream(`public${fileLocation}`))
+      .pipe(createWriteStream(`public${uniqueFilename}`))
       .on('finish', resolve)
       .on('error', reject),
   )
+  return uniqueFilename
+}
 
-export default async function fileUpload(params, { file, url }, uploadCallback = storeUpload) {
+export default async function fileUpload(params, { file, url }, uploadCallback = localFileUpload) {
   const upload = params[file]
   if (upload) {
     const { createReadStream, filename } = await upload
-    const { name } = path.parse(filename)
-    const fileLocation = `/uploads/${Date.now()}-${slug(name)}`
-    await uploadCallback({ createReadStream, fileLocation })
+    const { name, ext } = path.parse(filename)
+    const uniqueFilename = `/uploads/${uuid()}-${slug(name)}${ext}`
+    const location = await uploadCallback({ createReadStream, uniqueFilename })
     delete params[file]
-    params[url] = fileLocation
+    params[url] = location
   }
 
   return params

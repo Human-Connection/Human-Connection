@@ -1,4 +1,4 @@
-import uuid from 'uuid/v4'
+import { v4 as uuid } from 'uuid'
 import { neo4jgraphql } from 'neo4j-graphql-js'
 import { isEmpty } from 'lodash'
 import { UserInputError } from 'apollo-server'

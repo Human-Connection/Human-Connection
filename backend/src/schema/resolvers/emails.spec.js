@@ -1,10 +1,9 @@
-import Factory from '../../factories'
+import Factory, { cleanDatabase } from '../../db/factories'
 import { gql } from '../../helpers/jest'
 import { getDriver, getNeode } from '../../db/neo4j'
 import createServer from '../../server'
 import { createTestClient } from 'apollo-server-testing'
 
-const factory = Factory()
 const neode = getNeode()
 
 let mutate
@@ -31,7 +30,7 @@ beforeAll(() => {
 })
 
 afterEach(async () => {
-  await factory.cleanDatabase()
+  await cleanDatabase()
 })
 
 describe('AddEmailAddress', () => {
@@ -63,7 +62,7 @@ describe('AddEmailAddress', () => {
 
   describe('authenticated', () => {
     beforeEach(async () => {
-      user = await factory.create('User', { id: '567', email: 'user@example.org' })
+      user = await Factory.build('user', { id: '567' }, { email: 'user@example.org' })
       authenticatedUser = await user.toJson()
     })
 
@@ -110,7 +109,7 @@ describe('AddEmailAddress', () => {
 
       describe('if another `UnverifiedEmailAddress` node already exists with that email', () => {
         it('throws no unique constraint violation error', async () => {
-          await factory.create('UnverifiedEmailAddress', {
+          await Factory.build('unverifiedEmailAddress', {
             createdAt: '2019-09-24T14:00:01.565Z',
             email: 'new-email@example.org',
           })
@@ -128,7 +127,7 @@ describe('AddEmailAddress', () => {
 
       describe('but if another user owns an `EmailAddress` already with that email', () => {
         it('throws UserInputError because of unique constraints', async () => {
-          await factory.create('User', { email: 'new-email@example.org' })
+          await Factory.build('user', {}, { email: 'new-email@example.org' })
           await expect(mutate({ mutation, variables })).resolves.toMatchObject({
             data: { AddEmailAddress: null },
             errors: [{ message: 'A user account with this email already exists.' }],
@@ -169,7 +168,7 @@ describe('VerifyEmailAddress', () => {
 
   describe('authenticated', () => {
     beforeEach(async () => {
-      user = await factory.create('User', { id: '567', email: 'user@example.org' })
+      user = await Factory.build('user', { id: '567' }, { email: 'user@example.org' })
       authenticatedUser = await user.toJson()
     })
 
@@ -185,7 +184,7 @@ describe('VerifyEmailAddress', () => {
     describe('given a `UnverifiedEmailAddress`', () => {
       let emailAddress
       beforeEach(async () => {
-        emailAddress = await factory.create('UnverifiedEmailAddress', {
+        emailAddress = await Factory.build('unverifiedEmailAddress', {
           nonce: 'abcdef',
           verifiedAt: null,
           createdAt: new Date().toISOString(),
@@ -281,7 +280,7 @@ describe('VerifyEmailAddress', () => {
 
           describe('Edge case: In the meantime someone created an `EmailAddress` node with the given email', () => {
             beforeEach(async () => {
-              await factory.create('EmailAddress', { email: 'to-be-verified@example.org' })
+              await Factory.build('emailAddress', { email: 'to-be-verified@example.org' })
             })
 
             it('throws UserInputError because of unique constraints', async () => {

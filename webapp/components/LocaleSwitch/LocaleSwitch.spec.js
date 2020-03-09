@@ -1,9 +1,11 @@
-import { mount } from '@vue/test-utils'
+import { config, mount } from '@vue/test-utils'
 
 import LocaleSwitch from './LocaleSwitch.vue'
 import Vuex from 'vuex'
 
 const localVue = global.localVue
+
+config.stubs['client-only'] = '<span><slot /></span>'
 
 describe('LocaleSwitch.vue', () => {
   let wrapper, mocks, computed, deutschLanguageItem, getters

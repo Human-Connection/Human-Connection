@@ -1,5 +1,5 @@
 <template>
-  <ds-card>
+  <base-card>
     <div class="reports-header">
       <h3 class="title">{{ $t('moderation.reports.name') }}</h3>
       <client-only>
@@ -8,8 +8,9 @@
     </div>
     <reports-table :reports="reports" @confirm="openModal" />
     <pagination-buttons :hasNext="hasNext" :hasPrevious="hasPrevious" @back="back" @next="next" />
-  </ds-card>
+  </base-card>
 </template>
+
 <script>
 import { mapMutations } from 'vuex'
 import DropdownFilter from '~/components/DropdownFilter/DropdownFilter'
@@ -43,13 +44,22 @@ export default {
   computed: {
     filterOptions() {
       return [
-        { label: this.$t('moderation.reports.filterLabel.all'), value: { reviewed: null } },
+        {
+          label: this.$t('moderation.reports.filterLabel.all'),
+          value: { reviewed: null, closed: null },
+        },
         {
           label: this.$t('moderation.reports.filterLabel.unreviewed'),
-          value: { reviewed: false },
+          value: { reviewed: false, closed: false },
         },
-        { label: this.$t('moderation.reports.filterLabel.reviewed'), value: { reviewed: true } },
-        { label: this.$t('moderation.reports.filterLabel.closed'), value: { closed: true } },
+        {
+          label: this.$t('moderation.reports.filterLabel.reviewed'),
+          value: { reviewed: true, closed: false },
+        },
+        {
+          label: this.$t('moderation.reports.filterLabel.closed'),
+          value: { reviewed: null, closed: true },
+        },
       ]
     },
     modalData() {
@@ -107,13 +117,8 @@ export default {
     filter(option) {
       this.selected = option.label
       this.offset = 0
-      if (option.value.closed) {
-        this.closed = option.value.closed
-        this.reviewed = null
-        return
-      }
-      this.closed = null
       this.reviewed = option.value.reviewed
+      this.closed = option.value.closed
     },
     async confirmCallback(resource) {
       const { disabled: disable, id: resourceId } = resource
@@ -166,7 +171,7 @@ export default {
 .reports-header {
   display: flex;
   justify-content: space-between;
-  margin: $space-small 0;
+  margin-bottom: $space-small;
 
   > .title {
     margin: 0;

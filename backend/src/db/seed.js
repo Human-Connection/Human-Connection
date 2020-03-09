@@ -2,7 +2,7 @@ import faker from 'faker'
 import sample from 'lodash/sample'
 import { createTestClient } from 'apollo-server-testing'
 import createServer from '../server'
-import Factory from '../factories'
+import Factory from '../db/factories'
 import { getNeode, getDriver } from '../db/neo4j'
 import { gql } from '../helpers/jest'
 
@@ -12,7 +12,6 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
 ;(async function() {
   let authenticatedUser = null
   const driver = getDriver()
-  const factory = Factory()
   const neode = getNeode()
 
   try {
@@ -28,12 +27,12 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
     const { mutate } = createTestClient(server)
 
     const [Hamburg, Berlin, Germany, Paris, France] = await Promise.all([
-      factory.create('Location', {
+      Factory.build('location', {
         id: 'region.5127278006398860',
         name: 'Hamburg',
         type: 'region',
-        lat: 10.0,
-        lng: 53.55,
+        lng: 10.0,
+        lat: 53.55,
         nameES: 'Hamburgo',
         nameFR: 'Hambourg',
         nameIT: 'Amburgo',
@@ -44,12 +43,12 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         namePL: 'Hamburg',
         nameRU: 'Гамбург',
       }),
-      factory.create('Location', {
+      Factory.build('location', {
         id: 'region.14880313158564380',
         type: 'region',
         name: 'Berlin',
-        lat: 13.38333,
-        lng: 52.51667,
+        lng: 13.38333,
+        lat: 52.51667,
         nameES: 'Berlín',
         nameFR: 'Berlin',
         nameIT: 'Berlino',
@@ -60,7 +59,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         namePL: 'Berlin',
         nameRU: 'Берлин',
       }),
-      factory.create('Location', {
+      Factory.build('location', {
         id: 'country.10743216036480410',
         name: 'Germany',
         type: 'country',
@@ -74,12 +73,12 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         nameEN: 'Germany',
         nameRU: 'Германия',
       }),
-      factory.create('Location', {
+      Factory.build('location', {
         id: 'region.9397217726497330',
         name: 'Paris',
         type: 'region',
-        lat: 2.35183,
-        lng: 48.85658,
+        lng: 2.35183,
+        lat: 48.85658,
         nameES: 'París',
         nameFR: 'Paris',
         nameIT: 'Parigi',
@@ -90,7 +89,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         namePL: 'Paryż',
         nameRU: 'Париж',
       }),
-      factory.create('Location', {
+      Factory.build('location', {
         id: 'country.9759535382641660',
         name: 'France',
         type: 'country',
@@ -112,27 +111,27 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
     ])
 
     const [racoon, rabbit, wolf, bear, turtle, rhino] = await Promise.all([
-      factory.create('Badge', {
+      Factory.build('badge', {
         id: 'indiegogo_en_racoon',
         icon: '/img/badges/indiegogo_en_racoon.svg',
       }),
-      factory.create('Badge', {
+      Factory.build('badge', {
         id: 'indiegogo_en_rabbit',
         icon: '/img/badges/indiegogo_en_rabbit.svg',
       }),
-      factory.create('Badge', {
+      Factory.build('badge', {
         id: 'indiegogo_en_wolf',
         icon: '/img/badges/indiegogo_en_wolf.svg',
       }),
-      factory.create('Badge', {
+      Factory.build('badge', {
         id: 'indiegogo_en_bear',
         icon: '/img/badges/indiegogo_en_bear.svg',
       }),
-      factory.create('Badge', {
+      Factory.build('badge', {
         id: 'indiegogo_en_turtle',
         icon: '/img/badges/indiegogo_en_turtle.svg',
       }),
-      factory.create('Badge', {
+      Factory.build('badge', {
         id: 'indiegogo_en_rhino',
         icon: '/img/badges/indiegogo_en_rhino.svg',
       }),
@@ -147,55 +146,90 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       louie,
       dagobert,
     ] = await Promise.all([
-      factory.create('User', {
-        id: 'u1',
-        name: 'Peter Lustig',
-        slug: 'peter-lustig',
-        role: 'admin',
-        email: 'admin@example.org',
-      }),
-      factory.create('User', {
-        id: 'u2',
-        name: 'Bob der Baumeister',
-        slug: 'bob-der-baumeister',
-        role: 'moderator',
-        email: 'moderator@example.org',
-      }),
-      factory.create('User', {
-        id: 'u3',
-        name: 'Jenny Rostock',
-        slug: 'jenny-rostock',
-        role: 'user',
-        email: 'user@example.org',
-      }),
-      factory.create('User', {
-        id: 'u4',
-        name: 'Huey',
-        slug: 'huey',
-        role: 'user',
-        email: 'huey@example.org',
-      }),
-      factory.create('User', {
-        id: 'u5',
-        name: 'Dewey',
-        slug: 'dewey',
-        role: 'user',
-        email: 'dewey@example.org',
-      }),
-      factory.create('User', {
-        id: 'u6',
-        name: 'Louie',
-        slug: 'louie',
-        role: 'user',
-        email: 'louie@example.org',
-      }),
-      factory.create('User', {
-        id: 'u7',
-        name: 'Dagobert',
-        slug: 'dagobert',
-        role: 'user',
-        email: 'dagobert@example.org',
-      }),
+      Factory.build(
+        'user',
+        {
+          id: 'u1',
+          name: 'Peter Lustig',
+          slug: 'peter-lustig',
+          role: 'admin',
+        },
+        {
+          email: 'admin@example.org',
+        },
+      ),
+      Factory.build(
+        'user',
+        {
+          id: 'u2',
+          name: 'Bob der Baumeister',
+          slug: 'bob-der-baumeister',
+          role: 'moderator',
+        },
+        {
+          email: 'moderator@example.org',
+        },
+      ),
+      Factory.build(
+        'user',
+        {
+          id: 'u3',
+          name: 'Jenny Rostock',
+          slug: 'jenny-rostock',
+          role: 'user',
+        },
+        {
+          email: 'user@example.org',
+        },
+      ),
+      Factory.build(
+        'user',
+        {
+          id: 'u4',
+          name: 'Huey',
+          slug: 'huey',
+          role: 'user',
+        },
+        {
+          email: 'huey@example.org',
+        },
+      ),
+      Factory.build(
+        'user',
+        {
+          id: 'u5',
+          name: 'Dewey',
+          slug: 'dewey',
+          role: 'user',
+        },
+        {
+          email: 'dewey@example.org',
+        },
+      ),
+      Factory.build(
+        'user',
+        {
+          id: 'u6',
+          name: 'Louie',
+          slug: 'louie',
+          role: 'user',
+        },
+        {
+          email: 'louie@example.org',
+        },
+      ),
+      Factory.build(
+        'user',
+        {
+          id: 'u7',
+          name: 'Dagobert',
+          slug: 'dagobert',
+          role: 'user',
+        },
+        {
+          email: 'dagobert@example.org',
+        },
+      ),
     ])
 
     await Promise.all([
@@ -236,97 +270,97 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
     ])
 
     await Promise.all([
-      factory.create('Category', {
+      Factory.build('category', {
         id: 'cat1',
         name: 'Just For Fun',
         slug: 'just-for-fun',
         icon: 'smile',
       }),
-      factory.create('Category', {
+      Factory.build('category', {
         id: 'cat2',
         name: 'Happiness & Values',
         slug: 'happiness-values',
         icon: 'heart-o',
       }),
-      factory.create('Category', {
+      Factory.build('category', {
         id: 'cat3',
         name: 'Health & Wellbeing',
         slug: 'health-wellbeing',
         icon: 'medkit',
       }),
-      factory.create('Category', {
+      Factory.build('category', {
         id: 'cat4',
         name: 'Environment & Nature',
         slug: 'environment-nature',
         icon: 'tree',
       }),
-      factory.create('Category', {
+      Factory.build('category', {
         id: 'cat5',
         name: 'Animal Protection',
         slug: 'animal-protection',
         icon: 'paw',
       }),
-      factory.create('Category', {
+      Factory.build('category', {
         id: 'cat6',
         name: 'Human Rights & Justice',
         slug: 'human-rights-justice',
         icon: 'balance-scale',
       }),
-      factory.create('Category', {
+      Factory.build('category', {
         id: 'cat7',
         name: 'Education & Sciences',
         slug: 'education-sciences',
         icon: 'graduation-cap',
       }),
-      factory.create('Category', {
+      Factory.build('category', {
         id: 'cat8',
         name: 'Cooperation & Development',
         slug: 'cooperation-development',
         icon: 'users',
       }),
-      factory.create('Category', {
+      Factory.build('category', {
         id: 'cat9',
         name: 'Democracy & Politics',
         slug: 'democracy-politics',
         icon: 'university',
       }),
-      factory.create('Category', {
+      Factory.build('category', {
         id: 'cat10',
         name: 'Economy & Finances',
         slug: 'economy-finances',
         icon: 'money',
       }),
-      factory.create('Category', {
+      Factory.build('category', {
         id: 'cat11',
         name: 'Energy & Technology',
         slug: 'energy-technology',
         icon: 'flash',
       }),
-      factory.create('Category', {
+      Factory.build('category', {
         id: 'cat12',
         name: 'IT, Internet & Data Privacy',
         slug: 'it-internet-data-privacy',
         icon: 'mouse-pointer',
       }),
-      factory.create('Category', {
+      Factory.build('category', {
         id: 'cat13',
         name: 'Art, Culture & Sport',
         slug: 'art-culture-sport',
         icon: 'paint-brush',
       }),
-      factory.create('Category', {
+      Factory.build('category', {
         id: 'cat14',
         name: 'Freedom of Speech',
         slug: 'freedom-of-speech',
         icon: 'bullhorn',
       }),
-      factory.create('Category', {
+      Factory.build('category', {
         id: 'cat15',
         name: 'Consumption & Sustainability',
         slug: 'consumption-sustainability',
         icon: 'shopping-cart',
       }),
-      factory.create('Category', {
+      Factory.build('category', {
         id: 'cat16',
         name: 'Global Peace & Nonviolence',
         slug: 'global-peace-nonviolence',
@@ -335,104 +369,164 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
     ])
 
     const [environment, nature, democracy, freedom] = await Promise.all([
-      factory.create('Tag', {
+      Factory.build('tag', {
         id: 'Environment',
       }),
-      factory.create('Tag', {
+      Factory.build('tag', {
         id: 'Nature',
       }),
-      factory.create('Tag', {
+      Factory.build('tag', {
         id: 'Democracy',
       }),
-      factory.create('Tag', {
+      Factory.build('tag', {
         id: 'Freedom',
       }),
     ])
 
     const [p0, p1, p3, p4, p5, p6, p9, p10, p11, p13, p14, p15] = await Promise.all([
-      factory.create('Post', {
-        author: peterLustig,
-        id: 'p0',
-        language: sample(languages),
-        image: faker.image.unsplash.food(300, 169),
-        categoryIds: ['cat16'],
-        imageBlurred: true,
-        imageAspectRatio: 300 / 169,
-      }),
-      factory.create('Post', {
-        author: bobDerBaumeister,
-        id: 'p1',
-        language: sample(languages),
-        image: faker.image.unsplash.technology(300, 1500),
-        categoryIds: ['cat1'],
-        imageAspectRatio: 300 / 1500,
-      }),
-      factory.create('Post', {
-        author: huey,
-        id: 'p3',
-        language: sample(languages),
-        categoryIds: ['cat3'],
-      }),
-      factory.create('Post', {
-        author: dewey,
-        id: 'p4',
-        language: sample(languages),
-        categoryIds: ['cat4'],
-      }),
-      factory.create('Post', {
-        author: louie,
-        id: 'p5',
-        language: sample(languages),
-        categoryIds: ['cat5'],
-      }),
-      factory.create('Post', {
-        authorId: 'u1',
-        id: 'p6',
-        language: sample(languages),
-        image: faker.image.unsplash.buildings(300, 857),
-        categoryIds: ['cat6'],
-        imageAspectRatio: 300 / 857,
-      }),
-      factory.create('Post', {
-        author: huey,
-        id: 'p9',
-        language: sample(languages),
-        categoryIds: ['cat9'],
-      }),
-      factory.create('Post', {
-        author: dewey,
-        id: 'p10',
-        categoryIds: ['cat10'],
-        imageBlurred: true,
-      }),
-      factory.create('Post', {
-        author: louie,
-        id: 'p11',
-        language: sample(languages),
-        image: faker.image.unsplash.people(300, 901),
-        categoryIds: ['cat11'],
-        imageAspectRatio: 300 / 901,
-      }),
-      factory.create('Post', {
-        author: bobDerBaumeister,
-        id: 'p13',
-        language: sample(languages),
-        categoryIds: ['cat13'],
-      }),
-      factory.create('Post', {
-        author: jennyRostock,
-        id: 'p14',
-        language: sample(languages),
-        image: faker.image.unsplash.objects(300, 200),
-        categoryIds: ['cat14'],
-        imageAspectRatio: 300 / 450,
-      }),
-      factory.create('Post', {
-        author: huey,
-        id: 'p15',
-        language: sample(languages),
-        categoryIds: ['cat15'],
-      }),
+      Factory.build(
+        'post',
+        {
+          id: 'p0',
+          language: sample(languages),
+          image: faker.image.unsplash.food(300, 169),
+          imageBlurred: true,
+          imageAspectRatio: 300 / 169,
+        },
+        {
+          categoryIds: ['cat16'],
+          author: peterLustig,
+        },
+      ),
+      Factory.build(
+        'post',
+        {
+          id: 'p1',
+          language: sample(languages),
+          image: faker.image.unsplash.technology(300, 1500),
+          imageAspectRatio: 300 / 1500,
+        },
+        {
+          categoryIds: ['cat1'],
+          author: bobDerBaumeister,
+        },
+      ),
+      Factory.build(
+        'post',
+        {
+          id: 'p3',
+          language: sample(languages),
+        },
+        {
+          categoryIds: ['cat3'],
+          author: huey,
+        },
+      ),
+      Factory.build(
+        'post',
+        {
+          id: 'p4',
+          language: sample(languages),
+        },
+        {
+          categoryIds: ['cat4'],
+          author: dewey,
+        },
+      ),
+      Factory.build(
+        'post',
+        {
+          id: 'p5',
+          language: sample(languages),
+        },
+        {
+          categoryIds: ['cat5'],
+          author: louie,
+        },
+      ),
+      Factory.build(
+        'post',
+        {
+          id: 'p6',
+          language: sample(languages),
+          image: faker.image.unsplash.buildings(300, 857),
+          imageAspectRatio: 300 / 857,
+        },
+        {
+          categoryIds: ['cat6'],
+          author: peterLustig,
+        },
+      ),
+      Factory.build(
+        'post',
+        {
+          id: 'p9',
+          language: sample(languages),
+        },
+        {
+          categoryIds: ['cat9'],
+          author: huey,
+        },
+      ),
+      Factory.build(
+        'post',
+        {
+          id: 'p10',
+          imageBlurred: true,
+        },
+        {
+          categoryIds: ['cat10'],
+          author: dewey,
+        },
+      ),
+      Factory.build(
+        'post',
+        {
+          id: 'p11',
+          language: sample(languages),
+          image: faker.image.unsplash.people(300, 901),
+          imageAspectRatio: 300 / 901,
+        },
+        {
+          categoryIds: ['cat11'],
+          author: louie,
+        },
+      ),
+      Factory.build(
+        'post',
+        {
+          id: 'p13',
+          language: sample(languages),
+        },
+        {
+          categoryIds: ['cat13'],
+          author: bobDerBaumeister,
+        },
+      ),
+      Factory.build(
+        'post',
+        {
+          id: 'p14',
+          language: sample(languages),
+          image: faker.image.unsplash.objects(300, 200),
+          imageAspectRatio: 300 / 450,
+        },
+        {
+          categoryIds: ['cat14'],
+          author: jennyRostock,
+        },
+      ),
+      Factory.build(
+        'post',
+        {
+          id: 'p15',
+          language: sample(languages),
+        },
+        {
+          categoryIds: ['cat15'],
+          author: huey,
+        },
+      ),
     ])
 
     authenticatedUser = await louie.toJson()
@@ -554,61 +648,116 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
     authenticatedUser = null
 
     const [trollingCommentC1, trollingCommentC2] = await Promise.all([
-      factory.create('Comment', {
-        author: jennyRostock,
-        id: 'c1',
-        postId: 'p1',
-      }),
-      factory.create('Comment', {
-        author: huey,
-        id: 'c2',
-        postId: 'p1',
-      }),
-      factory.create('Comment', {
-        author: louie,
-        id: 'c3',
-        postId: 'p3',
-      }),
-      factory.create('Comment', {
-        author: jennyRostock,
-        id: 'c5',
-        postId: 'p3',
-      }),
-      factory.create('Comment', {
-        author: peterLustig,
-        id: 'c6',
-        postId: 'p4',
-      }),
-      factory.create('Comment', {
-        author: jennyRostock,
-        id: 'c7',
-        postId: 'p2',
-      }),
-      factory.create('Comment', {
-        author: huey,
-        id: 'c8',
-        postId: 'p15',
-      }),
-      factory.create('Comment', {
-        author: dewey,
-        id: 'c9',
-        postId: 'p15',
-      }),
-      factory.create('Comment', {
-        author: louie,
-        id: 'c10',
-        postId: 'p15',
-      }),
-      factory.create('Comment', {
-        author: jennyRostock,
-        id: 'c11',
-        postId: 'p15',
-      }),
-      factory.create('Comment', {
-        author: jennyRostock,
-        id: 'c12',
-        postId: 'p15',
-      }),
+      Factory.build(
+        'comment',
+        {
+          id: 'c1',
+        },
+        {
+          author: jennyRostock,
+          postId: 'p1',
+        },
+      ),
+      Factory.build(
+        'comment',
+        {
+          id: 'c2',
+        },
+        {
+          author: huey,
+          postId: 'p1',
+        },
+      ),
+      Factory.build(
+        'comment',
+        {
+          id: 'c3',
+        },
+        {
+          author: louie,
+          postId: 'p3',
+        },
+      ),
+      Factory.build(
+        'comment',
+        {
+          id: 'c5',
+        },
+        {
+          author: jennyRostock,
+          postId: 'p3',
+        },
+      ),
+      Factory.build(
+        'comment',
+        {
+          id: 'c6',
+        },
+        {
+          author: peterLustig,
+          postId: 'p4',
+        },
+      ),
+      Factory.build(
+        'comment',
+        {
+          id: 'c7',
+        },
+        {
+          author: jennyRostock,
+          postId: 'p2',
+        },
+      ),
+      Factory.build(
+        'comment',
+        {
+          id: 'c8',
+        },
+        {
+          author: huey,
+          postId: 'p15',
+        },
+      ),
+      Factory.build(
+        'comment',
+        {
+          id: 'c9',
+        },
+        {
+          author: dewey,
+          postId: 'p15',
+        },
+      ),
+      Factory.build(
+        'comment',
+        {
+          id: 'c10',
+        },
+        {
+          author: louie,
+          postId: 'p15',
+        },
+      ),
+      Factory.build(
+        'comment',
+        {
+          id: 'c11',
+        },
+        {
+          author: jennyRostock,
+          postId: 'p15',
+        },
+      ),
+      Factory.build(
+        'comment',
+        {
+          id: 'c12',
+        },
+        {
+          author: jennyRostock,
+          postId: 'p15',
+        },
+      ),
     ])
 
     await Promise.all([
@@ -682,13 +831,13 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       reportAgainstTrollingCommentC2,
       reportAgainstDewey,
     ] = await Promise.all([
-      factory.create('Report', { id: 'reportAgainstDagobert' }),
-      factory.create('Report', { id: 'reportAgainstHuey' }),
-      factory.create('Report', { id: 'reportAgainstTrollingPostP2' }),
-      factory.create('Report', { id: 'reportAgainstTrollingPostP9' }),
-      factory.create('Report', { id: 'reportAgainstTrollingCommentC1' }),
-      factory.create('Report', { id: 'reportAgainstTrollingCommentC2' }),
-      factory.create('Report', { id: 'reportAgainstDewey' }),
+      Factory.build('report', { id: 'reportAgainstDagobert' }),
+      Factory.build('report', { id: 'reportAgainstHuey' }),
+      Factory.build('report', { id: 'reportAgainstTrollingPostP2' }),
+      Factory.build('report', { id: 'reportAgainstTrollingPostP9' }),
+      Factory.build('report', { id: 'reportAgainstTrollingCommentC1' }),
+      Factory.build('report', { id: 'reportAgainstTrollingCommentC2' }),
+      Factory.build('report', { id: 'reportAgainstDewey' }),
     ])
 
     // report resource first time
@@ -865,231 +1014,337 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       }),
     ])
 
+    await Promise.all([...Array(30).keys()].map(() => Factory.build('user')))
+
     await Promise.all(
-      [...Array(30).keys()].map(i => {
-        return factory.create('User')
-      }),
+      [...Array(30).keys()].map(() =>
+        Factory.build(
+          'post',
+          {
+            image: faker.image.unsplash.objects(),
+          },
+          {
+            categoryIds: ['cat1'],
+            author: jennyRostock,
+          },
+        ),
+      ),
     )
 
     await Promise.all(
-      [...Array(30).keys()].map(() => {
-        return factory.create('Post', {
-          author: jennyRostock,
-          image: faker.image.unsplash.objects(),
-        })
-      }),
+      [...Array(6).keys()].map(() =>
+        Factory.build(
+          'comment',
+          {},
+          {
+            author: jennyRostock,
+            postId: 'p2',
+          },
+        ),
+      ),
     )
 
     await Promise.all(
-      [...Array(6).keys()].map(() => {
-        return factory.create('Comment', {
-          author: jennyRostock,
-          postId: 'p2',
-        })
-      }),
+      [...Array(4).keys()].map(() =>
+        Factory.build(
+          'comment',
+          {},
+          {
+            author: jennyRostock,
+            postId: 'p15',
+          },
+        ),
+      ),
     )
 
     await Promise.all(
-      [...Array(4).keys()].map(() => {
-        return factory.create('Comment', {
-          author: jennyRostock,
-          postId: 'p15',
-        })
-      }),
+      [...Array(2).keys()].map(() =>
+        Factory.build(
+          'comment',
+          {},
+          {
+            author: jennyRostock,
+            postId: 'p4',
+          },
+        ),
+      ),
     )
 
     await Promise.all(
-      [...Array(2).keys()].map(() => {
-        return factory.create('Comment', {
-          author: jennyRostock,
-          postId: 'p4',
-        })
-      }),
+      [...Array(21).keys()].map(() =>
+        Factory.build(
+          'post',
+          {
+            image: faker.image.unsplash.buildings(),
+          },
+          {
+            categoryIds: ['cat1'],
+            author: peterLustig,
+          },
+        ),
+      ),
     )
 
     await Promise.all(
-      [...Array(21).keys()].map(() => {
-        return factory.create('Post', {
-          author: peterLustig,
-          image: faker.image.unsplash.buildings(),
-        })
-      }),
+      [...Array(3).keys()].map(() =>
+        Factory.build(
+          'comment',
+          {},
+          {
+            author: peterLustig,
+            postId: 'p4',
+          },
+        ),
+      ),
     )
 
     await Promise.all(
-      [...Array(3).keys()].map(() => {
-        return factory.create('Comment', {
-          author: peterLustig,
-          postId: 'p4',
-        })
-      }),
+      [...Array(3).keys()].map(() =>
+        Factory.build(
+          'comment',
+          {},
+          {
+            author: peterLustig,
+            postId: 'p14',
+          },
+        ),
+      ),
     )
 
     await Promise.all(
-      [...Array(5).keys()].map(() => {
-        return factory.create('Comment', {
-          author: peterLustig,
-          postId: 'p14',
-        })
-      }),
+      [...Array(6).keys()].map(() =>
+        Factory.build(
+          'comment',
+          {},
+          {
+            author: peterLustig,
+            postId: 'p0',
+          },
+        ),
+      ),
     )
 
     await Promise.all(
-      [...Array(6).keys()].map(() => {
-        return factory.create('Comment', {
-          author: peterLustig,
-          postId: 'p0',
-        })
-      }),
+      [...Array(11).keys()].map(() =>
+        Factory.build(
+          'post',
+          {
+            image: faker.image.unsplash.food(),
+          },
+          {
+            categoryIds: ['cat1'],
+            author: dewey,
+          },
+        ),
+      ),
     )
 
     await Promise.all(
-      [...Array(11).keys()].map(() => {
-        return factory.create('Post', {
-          author: dewey,
-          image: faker.image.unsplash.food(),
-        })
-      }),
+      [...Array(7).keys()].map(() =>
+        Factory.build(
+          'comment',
+          {},
+          {
+            author: dewey,
+            postId: 'p2',
+          },
+        ),
+      ),
     )
 
     await Promise.all(
-      [...Array(7).keys()].map(() => {
-        return factory.create('Comment', {
-          author: dewey,
-          postId: 'p2',
-        })
-      }),
+      [...Array(5).keys()].map(() =>
+        Factory.build(
+          'comment',
+          {},
+          {
+            author: dewey,
+            postId: 'p6',
+          },
+        ),
+      ),
     )
 
     await Promise.all(
-      [...Array(5).keys()].map(() => {
-        return factory.create('Comment', {
-          author: dewey,
-          postId: 'p6',
-        })
-      }),
+      [...Array(2).keys()].map(() =>
+        Factory.build(
+          'comment',
+          {},
+          {
+            author: dewey,
+            postId: 'p9',
+          },
+        ),
+      ),
     )
 
     await Promise.all(
-      [...Array(2).keys()].map(() => {
-        return factory.create('Comment', {
-          author: dewey,
-          postId: 'p9',
-        })
-      }),
+      [...Array(16).keys()].map(() =>
+        Factory.build(
+          'post',
+          {
+            image: faker.image.unsplash.technology(),
+          },
+          {
+            categoryIds: ['cat1'],
+            author: louie,
+          },
+        ),
+      ),
     )
 
     await Promise.all(
-      [...Array(16).keys()].map(() => {
-        return factory.create('Post', {
-          author: louie,
-          image: faker.image.unsplash.technology(),
-        })
-      }),
+      [...Array(4).keys()].map(() =>
+        Factory.build(
+          'comment',
+          {},
+          {
+            postId: 'p1',
+            author: louie,
+          },
+        ),
+      ),
     )
 
     await Promise.all(
-      [...Array(4).keys()].map(() => {
-        return factory.create('Comment', {
-          author: louie,
-          postId: 'p1',
-        })
-      }),
+      [...Array(8).keys()].map(() =>
+        Factory.build(
+          'comment',
+          {},
+          {
+            author: louie,
+            postId: 'p10',
+          },
+        ),
+      ),
     )
 
     await Promise.all(
-      [...Array(8).keys()].map(() => {
-        return factory.create('Comment', {
-          author: louie,
-          postId: 'p10',
-        })
-      }),
+      [...Array(5).keys()].map(() =>
+        Factory.build(
+          'comment',
+          {},
+          {
+            author: louie,
+            postId: 'p13',
+          },
+        ),
+      ),
     )
 
     await Promise.all(
-      [...Array(5).keys()].map(() => {
-        return factory.create('Comment', {
-          author: louie,
-          postId: 'p13',
-        })
-      }),
+      [...Array(45).keys()].map(() =>
+        Factory.build(
+          'post',
+          {
+            image: faker.image.unsplash.people(),
+          },
+          {
+            categoryIds: ['cat1'],
+            author: bobDerBaumeister,
+          },
+        ),
+      ),
     )
 
     await Promise.all(
-      [...Array(45).keys()].map(() => {
-        return factory.create('Post', {
-          author: bobDerBaumeister,
-          image: faker.image.unsplash.people(),
-        })
-      }),
+      [...Array(2).keys()].map(() =>
+        Factory.build(
+          'comment',
+          {},
+          {
+            author: bobDerBaumeister,
+            postId: 'p2',
+          },
+        ),
+      ),
     )
 
     await Promise.all(
-      [...Array(2).keys()].map(() => {
-        return factory.create('Comment', {
-          author: bobDerBaumeister,
-          postId: 'p2',
-        })
-      }),
+      [...Array(3).keys()].map(() =>
+        Factory.build(
+          'comment',
+          {},
+          {
+            author: bobDerBaumeister,
+            postId: 'p12',
+          },
+        ),
+      ),
     )
 
     await Promise.all(
-      [...Array(3).keys()].map(() => {
-        return factory.create('Comment', {
-          author: bobDerBaumeister,
-          postId: 'p12',
-        })
-      }),
+      [...Array(7).keys()].map(() =>
+        Factory.build(
+          'comment',
+          {},
+          {
+            author: bobDerBaumeister,
+            postId: 'p13',
+          },
+        ),
+      ),
     )
 
     await Promise.all(
-      [...Array(7).keys()].map(() => {
-        return factory.create('Comment', {
-          author: bobDerBaumeister,
-          postId: 'p13',
-        })
-      }),
+      [...Array(8).keys()].map(() =>
+        Factory.build(
+          'post',
+          {
+            image: faker.image.unsplash.nature(),
+          },
+          {
+            categoryIds: ['cat1'],
+            author: huey,
+          },
+        ),
+      ),
     )
 
     await Promise.all(
-      [...Array(8).keys()].map(() => {
-        return factory.create('Post', {
-          author: huey,
-          image: faker.image.unsplash.nature(),
-        })
-      }),
+      [...Array(6).keys()].map(() =>
+        Factory.build(
+          'comment',
+          {},
+          {
+            author: huey,
+            postId: 'p0',
+          },
+        ),
+      ),
     )
 
     await Promise.all(
-      [...Array(6).keys()].map(() => {
-        return factory.create('Comment', {
-          author: huey,
-          postId: 'p0',
-        })
-      }),
+      [...Array(8).keys()].map(() =>
+        Factory.build(
+          'comment',
+          {},
+          {
+            author: huey,
+            postId: 'p13',
+          },
+        ),
+      ),
     )
 
     await Promise.all(
-      [...Array(8).keys()].map(() => {
-        return factory.create('Comment', {
-          author: huey,
-          postId: 'p13',
-        })
-      }),
+      [...Array(8).keys()].map(() =>
+        Factory.build(
+          'comment',
+          {},
+          {
+            author: huey,
+            postId: 'p15',
+          },
+        ),
+      ),
     )
 
-    await Promise.all(
-      [...Array(9).keys()].map(() => {
-        return factory.create('Comment', {
-          author: huey,
-          postId: 'p15',
-        })
-      }),
-    )
-
-    await factory.create('Donations')
+    await Factory.build('donations')
     /* eslint-disable-next-line no-console */
     console.log('Seeded Data...')
+    await driver.close()
+    await neode.close()
     process.exit(0)
   } catch (err) {
     /* eslint-disable-next-line no-console */

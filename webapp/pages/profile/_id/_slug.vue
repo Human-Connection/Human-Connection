@@ -1,14 +1,11 @@
 <template>
   <div>
-    <ds-card v-if="user && user.image">
-      <p>PROFILE IMAGE</p>
-    </ds-card>
     <ds-space />
     <ds-flex v-if="user" :width="{ base: '100%' }" gutter="base">
       <ds-flex-item :width="{ base: '100%', sm: 2, md: 2, lg: 1 }">
-        <ds-card
+        <base-card
           :class="{ 'disabled-content': user.disabled }"
-          style="position: relative; height: auto;"
+          style="position: relative; height: auto; overflow: visible;"
         >
           <hc-upload v-if="myProfile" :user="user">
             <user-avatar :user="user" class="profile-avatar" size="large"></user-avatar>
@@ -67,14 +64,14 @@
             </ds-flex-item>
           </ds-flex>
           <div v-if="!myProfile" class="action-buttons">
-            <base-button v-if="user.blocked" @click="unblockUser(user)">
+            <base-button v-if="user.isBlocked" @click="unblockUser(user)">
               {{ $t('settings.blocked-users.unblock') }}
             </base-button>
             <base-button v-if="user.isMuted" @click="unmuteUser(user)">
               {{ $t('settings.muted-users.unmute') }}
             </base-button>
             <hc-follow-button
-              v-if="!(user.blocked || user.isMuted)"
+              v-if="!user.isMuted && !user.isBlocked"
               :follow-id="user.id"
               :is-followed="user.followedByCurrentUser"
               @optimistic="optimisticFollow"
@@ -87,12 +84,12 @@
               <ds-text color="soft" size="small" class="hyphenate-text">{{ user.about }}</ds-text>
             </ds-space>
           </template>
-        </ds-card>
+        </base-card>
         <ds-space />
         <ds-heading tag="h3" soft style="text-align: center; margin-bottom: 10px;">
           {{ $t('profile.network.title') }}
         </ds-heading>
-        <ds-card style="position: relative; height: auto;">
+        <base-card style="position: relative; height: auto;">
           <ds-space v-if="user.following && user.following.length" margin="x-small">
             <ds-text tag="h5" color="soft">
               {{ userName | truncate(15) }} {{ $t('profile.network.following') }}
@@ -120,9 +117,9 @@
               {{ userName }} {{ $t('profile.network.followingNobody') }}
             </p>
           </template>
-        </ds-card>
+        </base-card>
         <ds-space />
-        <ds-card style="position: relative; height: auto;">
+        <base-card style="position: relative; height: auto;">
           <ds-space v-if="user.followedBy && user.followedBy.length" margin="x-small">
             <ds-text tag="h5" color="soft">
               {{ userName | truncate(15) }} {{ $t('profile.network.followedBy') }}
@@ -150,9 +147,9 @@
               {{ userName }} {{ $t('profile.network.followedByNobody') }}
             </p>
           </template>
-        </ds-card>
+        </base-card>
         <ds-space v-if="user.socialMedia && user.socialMedia.length" margin="large">
-          <ds-card style="position: relative; height: auto;">
+          <base-card style="position: relative; height: auto;">
             <ds-space margin="x-small">
               <ds-text tag="h5" color="soft">
                 {{ $t('profile.socialMedia') }} {{ userName | truncate(15) }}?
@@ -166,14 +163,14 @@
                 </ds-space>
               </template>
             </ds-space>
-          </ds-card>
+          </base-card>
         </ds-space>
       </ds-flex-item>
 
       <ds-flex-item :width="{ base: '100%', sm: 3, md: 5, lg: 3 }">
         <masonry-grid>
           <ds-grid-item class="profile-top-navigation" :row-span="3" column-span="fullWidth">
-            <ds-card class="ds-tab-nav">
+            <base-card class="ds-tab-nav">
               <ul class="Tabs">
                 <li class="Tabs__tab pointer" :class="{ active: tabActive === 'post' }">
                   <a @click="handleTab('post')">
@@ -213,7 +210,7 @@
                   </a>
                 </li>
               </ul>
-            </ds-card>
+            </base-card>
           </ds-grid-item>
 
           <ds-grid-item :row-span="2" column-span="fullWidth">
@@ -242,7 +239,7 @@
               :key="post.id"
               :imageAspectRatio="post.imageAspectRatio"
             >
-              <hc-post-card
+              <post-teaser
                 :post="post"
                 :width="{ base: '100%', md: '100%', xl: '50%' }"
                 @removePostFromList="removePostFromList"
@@ -275,7 +272,7 @@
 <script>
 import uniqBy from 'lodash/uniqBy'
 import UserTeaser from '~/components/UserTeaser/UserTeaser'
-import HcPostCard from '~/components/PostCard/PostCard.vue'
+import PostTeaser from '~/components/PostTeaser/PostTeaser.vue'
 import HcFollowButton from '~/components/FollowButton.vue'
 import HcCountTo from '~/components/CountTo.vue'
 import HcBadges from '~/components/Badges.vue'
@@ -303,7 +300,7 @@ const tabToFilterMapping = ({ tab, id }) => {
 export default {
   components: {
     UserTeaser,
-    HcPostCard,
+    PostTeaser,
     HcFollowButton,
     HcCountTo,
     HcBadges,
@@ -562,18 +559,17 @@ export default {
   top: 53px;
   z-index: 2;
 }
-.ds-tab-nav {
-  .ds-card-content {
-    padding: 0 !important;
-    .ds-tab-nav-item {
-      &.ds-tab-nav-item-active {
-        border-bottom: 3px solid #17b53f;
-        &:first-child {
-          border-bottom-left-radius: $border-radius-x-large;
-        }
-        &:last-child {
-          border-bottom-right-radius: $border-radius-x-large;
-        }
+.ds-tab-nav.base-card {
+  padding: 0;
+
+  .ds-tab-nav-item {
+    &.ds-tab-nav-item-active {
+      border-bottom: 3px solid #17b53f;
+      &:first-child {
+        border-bottom-left-radius: $border-radius-x-large;
+      }
+      &:last-child {
+        border-bottom-right-radius: $border-radius-x-large;
       }
     }
   }

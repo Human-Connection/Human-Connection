@@ -1,30 +1,18 @@
 <template>
-  <div>
-    <ds-flex :gutter="{ base: 'xx-small', md: 'small', lg: 'xx-small' }">
-      <div v-for="category in categories" :key="category.id">
-        <ds-flex-item>
-          <base-button
-            :data-test="categoryButtonsId(category.id)"
-            @click="toggleCategory(category.id)"
-            :filled="isActive(category.id)"
-            :disabled="isDisabled(category.id)"
-            :icon="category.icon"
-            size="small"
-          >
-            {{ $t(`contribution.category.name.${category.slug}`) }}
-          </base-button>
-        </ds-flex-item>
-      </div>
-    </ds-flex>
-    <p class="small-info">
-      {{
-        $t('contribution.categories.infoSelectedNoOfMaxCategories', {
-          chosen: selectedCount,
-          max: selectedMax,
-        })
-      }}
-    </p>
-  </div>
+  <section class="categories-select">
+    <base-button
+      v-for="category in categories"
+      :key="category.id"
+      :data-test="categoryButtonsId(category.id)"
+      @click="toggleCategory(category.id)"
+      :filled="isActive(category.id)"
+      :disabled="isDisabled(category.id)"
+      :icon="category.icon"
+      size="small"
+    >
+      {{ $t(`contribution.category.name.${category.slug}`) }}
+    </base-button>
+  </section>
 </template>
 
 <script>
@@ -85,3 +73,15 @@ export default {
   },
 }
 </script>
+
+<style lang="scss">
+.categories-select {
+  display: flex;
+  flex-wrap: wrap;
+
+  > .base-button {
+    margin-right: $space-xx-small;
+    margin-bottom: $space-xx-small;
+  }
+}
+</style>

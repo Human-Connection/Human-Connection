@@ -1,26 +1,17 @@
 import { createTestClient } from 'apollo-server-testing'
 import createServer from '../server'
-import Factory from '../factories'
+import Factory, { cleanDatabase } from '../db/factories'
 import { gql } from '../helpers/jest'
 import { getDriver, getNeode } from '../db/neo4j'
 
-const factory = Factory()
 const instance = getNeode()
 const driver = getDriver()
 
 let query, authenticatedUser, owner, anotherRegularUser, administrator, variables, moderator
 
-const userQuery = gql`
-  query($name: String) {
-    User(name: $name) {
-      email
-    }
-  }
-`
-
 describe('authorization', () => {
   beforeAll(async () => {
-    await factory.cleanDatabase()
+    await cleanDatabase()
     const { server } = createServer({
       context: () => ({
         driver,
@@ -31,44 +22,73 @@ describe('authorization', () => {
     query = createTestClient(server).query
   })
 
-  describe('given two existing users', () => {
+  afterEach(async () => {
+    await cleanDatabase()
+  })
+
+  describe('given an owner, an other user, an admin, a moderator', () => {
     beforeEach(async () => {
       ;[owner, anotherRegularUser, administrator, moderator] = await Promise.all([
-        factory.create('User', {
-          email: 'owner@example.org',
-          name: 'Owner',
-          password: 'iamtheowner',
-        }),
-        factory.create('User', {
-          email: 'another.regular.user@example.org',
-          name: 'Another Regular User',
-          password: 'else',
-        }),
-        factory.create('User', {
-          email: 'admin@example.org',
-          name: 'Admin',
-          password: 'admin',
-          role: 'admin',
-        }),
-        factory.create('User', {
-          email: 'moderator@example.org',
-          name: 'Moderator',
-          password: 'moderator',
-          role: 'moderator',
-        }),
+        Factory.build(
+          'user',
+          {
+            name: 'Owner',
+          },
+          {
+            email: 'owner@example.org',
+            password: 'iamtheowner',
+          },
+        ),
+        Factory.build(
+          'user',
+          {
+            name: 'Another Regular User',
+          },
+          {
+            email: 'another.regular.user@example.org',
+            password: 'else',
+          },
+        ),
+        Factory.build(
+          'user',
+          {
+            name: 'Admin',
+            role: 'admin',
+          },
+          {
+            email: 'admin@example.org',
+            password: 'admin',
+          },
+        ),
+        Factory.build(
+          'user',
+          {
+            name: 'Moderator',
+            role: 'moderator',
+          },
+          {
+            email: 'moderator@example.org',
+            password: 'moderator',
+          },
+        ),
       ])
       variables = {}
     })
 
-    afterEach(async () => {
-      await factory.cleanDatabase()
-    })
-
     describe('access email address', () => {
+      const userQuery = gql`
+        query($name: String) {
+          User(name: $name) {
+            email
+          }
+        }
+      `
+
       describe('unauthenticated', () => {
         beforeEach(() => {
           authenticatedUser = null
         })
+
         it("throws an error and does not expose the owner's email address", async () => {
           await expect(
             query({ query: userQuery, variables: { name: 'Owner' } }),
@@ -124,7 +144,7 @@ describe('authorization', () => {
           })
         })
 
-        describe('administrator', () => {
+        describe('as an administrator', () => {
           beforeEach(async () => {
             authenticatedUser = await administrator.toJson()
           })

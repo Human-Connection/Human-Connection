@@ -10,9 +10,7 @@
             </a>
           </ds-flex-item>
           <ds-flex-item width="20%" style="flex-grow:0;">
-            <client-only>
-              <locale-switch class="topbar-locale-switch" placement="top" offset="16" />
-            </client-only>
+            <locale-switch class="topbar-locale-switch" placement="top" offset="16" />
           </ds-flex-item>
         </ds-flex>
       </ds-container>

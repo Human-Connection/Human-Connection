@@ -80,7 +80,7 @@ storiesOf('UserTeaser', module)
     }),
     template: `
     <user-teaser :user="user" :date-time="new Date()">
-      <template v-slot:dateTime>
+      <template #dateTime>
         - HEY! I'm edited
       </template>
     </user>

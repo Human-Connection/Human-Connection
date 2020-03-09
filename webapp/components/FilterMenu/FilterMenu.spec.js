@@ -12,10 +12,10 @@ describe('FilterMenu.vue', () => {
     mocks = { $t: () => {} }
   })
 
-  describe('given a user', () => {
+  describe('given a hashtag', () => {
     beforeEach(() => {
       propsData = {
-        hashtag: null,
+        hashtag: 'Frieden',
       }
     })
 
@@ -27,19 +27,14 @@ describe('FilterMenu.vue', () => {
         wrapper = Wrapper()
       })
 
-      it('does not render a card if there are no hashtags', () => {
-        expect(wrapper.is('.ds-card')).toBe(true)
-      })
-
-      it('renders a card if there are hashtags', () => {
-        propsData.hashtag = 'Frieden'
+      it('renders a card', () => {
         wrapper = Wrapper()
-        expect(wrapper.is('.ds-card')).toBe(true)
+        expect(wrapper.is('.base-card')).toBe(true)
       })
 
-      describe('click "clear-search-button" button', () => {
+      describe('click clear search button', () => {
         it('emits clearSearch', () => {
-          wrapper.find('[name="clear-search-button"]').trigger('click')
+          wrapper.find('.base-button').trigger('click')
           expect(wrapper.emitted().clearSearch).toHaveLength(1)
         })
       })

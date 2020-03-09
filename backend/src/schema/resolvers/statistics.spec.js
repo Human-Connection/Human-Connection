@@ -1,11 +1,10 @@
 import { createTestClient } from 'apollo-server-testing'
-import Factory from '../../factories'
+import Factory, { cleanDatabase } from '../../db/factories'
 import { gql } from '../../helpers/jest'
 import { getNeode, getDriver } from '../../db/neo4j'
 import createServer from '../../server'
 
 let query, authenticatedUser
-const factory = Factory()
 const instance = getNeode()
 const driver = getDriver()
 
@@ -37,7 +36,7 @@ beforeAll(() => {
 })
 
 afterEach(async () => {
-  await factory.cleanDatabase()
+  await cleanDatabase()
 })
 
 describe('statistics', () => {
@@ -45,7 +44,7 @@ describe('statistics', () => {
     beforeEach(async () => {
       await Promise.all(
         [...Array(6).keys()].map(() => {
-          return factory.create('User')
+          return Factory.build('user')
         }),
       )
     })
@@ -62,7 +61,7 @@ describe('statistics', () => {
     beforeEach(async () => {
       await Promise.all(
         [...Array(3).keys()].map(() => {
-          return factory.create('Post')
+          return Factory.build('post')
         }),
       )
     })
@@ -79,7 +78,7 @@ describe('statistics', () => {
     beforeEach(async () => {
       await Promise.all(
         [...Array(2).keys()].map(() => {
-          return factory.create('Comment')
+          return Factory.build('comment')
         }),
       )
     })
@@ -97,7 +96,7 @@ describe('statistics', () => {
     beforeEach(async () => {
       users = await Promise.all(
         [...Array(2).keys()].map(() => {
-          return factory.create('User')
+          return Factory.build('user')
         }),
       )
       await users[0].relateTo(users[1], 'following')
@@ -116,12 +115,12 @@ describe('statistics', () => {
     beforeEach(async () => {
       users = await Promise.all(
         [...Array(2).keys()].map(() => {
-          return factory.create('User')
+          return Factory.build('user')
         }),
       )
       posts = await Promise.all(
         [...Array(3).keys()].map(() => {
-          return factory.create('Post')
+          return Factory.build('post')
         }),
       )
       await Promise.all([

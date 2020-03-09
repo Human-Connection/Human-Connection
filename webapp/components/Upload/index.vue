@@ -157,7 +157,6 @@ export default {
     border-radius: 100%;
     border: 1px dashed hsl(0, 0%, 25%);
   }
-
   .hc-attachments-upload-area:hover & {
     opacity: 1;
   }

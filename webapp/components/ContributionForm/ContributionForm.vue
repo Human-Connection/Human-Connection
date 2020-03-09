@@ -2,104 +2,75 @@
   <ds-form
     class="contribution-form"
     ref="contributionForm"
-    v-model="form"
+    v-model="formData"
     :schema="formSchema"
     @submit="submit"
   >
     <template slot-scope="{ errors }">
-      <hc-teaser-image
-        :contribution="contribution"
-        @addTeaserImage="addTeaserImage"
-        :class="{ '--blur-image': form.blurImage }"
-        @addImageAspectRatio="addImageAspectRatio"
-      >
-        <img
-          v-if="contribution"
-          class="contribution-image"
-          :src="contribution.image | proxyApiUrl"
-        />
-      </hc-teaser-image>
-
-      <ds-card>
-        <div class="blur-toggle">
+      <base-card>
+        <template #heroImage>
+          <img
+            v-if="formData.image"
+            :src="formData.image | proxyApiUrl"
+            :class="['image', formData.imageBlurred && '--blur-image']"
+          />
+          <image-uploader
+            :hasImage="!!formData.image"
+            :class="[formData.imageBlurred && '--blur-image']"
+            @addHeroImage="addHeroImage"
+            @addImageAspectRatio="addImageAspectRatio"
+          />
+        </template>
+        <div v-if="formData.image" class="blur-toggle">
           <label for="blur-img">{{ $t('contribution.inappropriatePicture') }}</label>
-          <input type="checkbox" id="blur-img" v-model="form.blurImage" />
-          <p>
-            <a
-              href="https://support.human-connection.org/kb/faq.php?id=113"
-              target="_blank"
-              class="link"
-            >
-              {{ $t('contribution.inappropriatePictureText') }}
-              <ds-icon name="question-circle" />
-            </a>
-          </p>
+          <input type="checkbox" id="blur-img" v-model="formData.imageBlurred" />
+          <a
+            href="https://support.human-connection.org/kb/faq.php?id=113"
+            target="_blank"
+            class="link"
+          >
+            {{ $t('contribution.inappropriatePictureText') }}
+            <base-icon name="question-circle" />
+          </a>
         </div>
-
-        <ds-space />
-        <client-only>
-          <user-teaser :user="currentUser" />
-        </client-only>
-        <ds-space />
         <ds-input
           model="title"
-          class="post-title"
           :placeholder="$t('contribution.title')"
           name="title"
           autofocus
+          size="large"
         />
-        <ds-text align="right">
-          <ds-chip v-if="errors && errors.title" color="danger" size="base">
-            {{ form.title.length }}/{{ formSchema.title.max }}
-            <ds-icon name="warning"></ds-icon>
-          </ds-chip>
-          <ds-chip v-else size="base">{{ form.title.length }}/{{ formSchema.title.max }}</ds-chip>
-        </ds-text>
+        <ds-chip size="base" :color="errors && errors.title && 'danger'">
+          {{ formData.title.length }}/{{ formSchema.title.max }}
+          <base-icon v-if="errors && errors.title" name="warning" />
+        </ds-chip>
         <hc-editor
           :users="users"
-          :value="form.content"
+          :value="formData.content"
           :hashtags="hashtags"
           @input="updateEditorContent"
         />
-        <ds-text align="right">
-          <ds-chip v-if="errors && errors.content" color="danger" size="base">
-            {{ contentLength }}
-            <ds-icon name="warning"></ds-icon>
-          </ds-chip>
-          <ds-chip v-else size="base">
-            {{ contentLength }}
-          </ds-chip>
-        </ds-text>
-        <ds-space margin-bottom="small" />
-        <hc-categories-select model="categoryIds" :existingCategoryIds="form.categoryIds" />
-        <ds-text align="right">
-          <ds-chip v-if="errors && errors.categoryIds" color="danger" size="base">
-            {{ form.categoryIds.length }} / 3
-            <ds-icon name="warning"></ds-icon>
-          </ds-chip>
-          <ds-chip v-else size="base">{{ form.categoryIds.length }} / 3</ds-chip>
-        </ds-text>
-        <ds-flex class="contribution-form-footer">
-          <ds-flex-item :width="{ lg: '50%', md: '50%', sm: '100%' }" />
-          <ds-flex-item>
-            <ds-space margin-bottom="small" />
-            <ds-select
-              model="language"
-              :options="languageOptions"
-              icon="globe"
-              :placeholder="$t('contribution.languageSelectText')"
-              :label="$t('contribution.languageSelectLabel')"
-            />
-          </ds-flex-item>
-        </ds-flex>
-        <ds-text align="right">
-          <ds-chip v-if="errors && errors.language" size="base" color="danger">
-            <ds-icon name="warning"></ds-icon>
-          </ds-chip>
-        </ds-text>
-
-        <ds-space />
-        <div slot="footer" style="text-align: right">
+        <ds-chip size="base" :color="errors && errors.content && 'danger'">
+          {{ contentLength }}
+          <base-icon v-if="errors && errors.content" name="warning" />
+        </ds-chip>
+        <categories-select model="categoryIds" :existingCategoryIds="formData.categoryIds" />
+        <ds-chip size="base" :color="errors && errors.categoryIds && 'danger'">
+          {{ formData.categoryIds.length }} / 3
+          <base-icon v-if="errors && errors.categoryIds" name="warning" />
+        </ds-chip>
+        <ds-select
+          model="language"
+          icon="globe"
+          class="select-field"
+          :options="languageOptions"
+          :placeholder="$t('contribution.languageSelectText')"
+          :label="$t('contribution.languageSelectLabel')"
+        />
+        <ds-chip v-if="errors && errors.language" size="base" color="danger">
+          <base-icon name="warning" />
+        </ds-chip>
+        <div class="buttons">
           <base-button data-test="cancel-button" :disabled="loading" @click="$router.back()" danger>
             {{ $t('actions.cancel') }}
           </base-button>
@@ -107,8 +78,7 @@
             {{ $t('actions.save') }}
           </base-button>
         </div>
-        <ds-space margin-bottom="large" />
-      </ds-card>
+      </base-card>
     </template>
   </ds-form>
 </template>
@@ -120,123 +90,95 @@ import { mapGetters } from 'vuex'
 import HcEditor from '~/components/Editor/Editor'
 import locales from '~/locales'
 import PostMutations from '~/graphql/PostMutations.js'
-import HcCategoriesSelect from '~/components/CategoriesSelect/CategoriesSelect'
-import HcTeaserImage from '~/components/TeaserImage/TeaserImage'
-import UserTeaser from '~/components/UserTeaser/UserTeaser'
+import CategoriesSelect from '~/components/CategoriesSelect/CategoriesSelect'
+import ImageUploader from '~/components/ImageUploader/ImageUploader'
 
 export default {
   components: {
     HcEditor,
-    HcCategoriesSelect,
-    HcTeaserImage,
-    UserTeaser,
+    CategoriesSelect,
+    ImageUploader,
   },
   props: {
-    contribution: { type: Object, default: () => {} },
+    contribution: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   data() {
+    const {
+      title,
+      content,
+      image,
+      imageAspectRatio,
+      imageBlurred,
+      language,
+      categories,
+    } = this.contribution
+
     const languageOptions = orderBy(locales, 'name').map(locale => {
       return { label: locale.name, value: locale.code }
     })
 
-    const formDefaults = {
-      title: '',
-      content: '',
-      teaserImage: null,
-      imageAspectRatio: null,
-      image: null,
-      language: null,
-      categoryIds: [],
-      blurImage: false,
-    }
-
-    let id = null
-    let slug = null
-    const form = { ...formDefaults }
-    if (this.contribution && this.contribution.id) {
-      id = this.contribution.id
-      slug = this.contribution.slug
-      form.title = this.contribution.title
-      form.content = this.contribution.content
-      form.image = this.contribution.image
-      form.language =
-        this.contribution && this.contribution.language
-          ? languageOptions.find(o => this.contribution.language === o.value)
-          : null
-      form.categoryIds = this.categoryIds(this.contribution.categories)
-      form.imageAspectRatio = this.contribution.imageAspectRatio
-      form.blurImage = this.contribution.imageBlurred
-    }
-
     return {
-      form,
+      formData: {
+        title: title || '',
+        content: content || '',
+        image: image || null,
+        imageAspectRatio: imageAspectRatio || null,
+        imageBlurred: imageBlurred || false,
+        language: languageOptions.find(option => option.value === language) || null,
+        categoryIds: categories ? categories.map(category => category.id) : [],
+      },
       formSchema: {
         title: { required: true, min: 3, max: 100 },
         content: { required: true },
         categoryIds: {
           type: 'array',
           required: true,
-          validator: (rule, value) => {
-            const errors = []
-            if (!(value && value.length >= 1 && value.length <= 3)) {
-              errors.push(new Error(this.$t('common.validations.categories')))
+          validator: (_, value = []) => {
+            if (value.length === 0 || value.length > 3) {
+              return [new Error(this.$t('common.validations.categories'))]
             }
-            return errors
+            return []
           },
         },
         language: { required: true },
-        blurImage: { required: false },
+        imageBlurred: { required: false },
       },
       languageOptions,
-      id,
-      slug,
       loading: false,
       users: [],
-      contentMin: 3,
       hashtags: [],
-      elem: null,
+      imageUpload: null,
     }
   },
   computed: {
-    contentLength() {
-      return this.$filters.removeHtml(this.form.content).length
-    },
     ...mapGetters({
       currentUser: 'auth/user',
     }),
+    contentLength() {
+      return this.$filters.removeHtml(this.formData.content).length
+    },
   },
   methods: {
     submit() {
-      const {
-        language: { value: language },
-        title,
-        content,
-        image,
-        teaserImage,
-        imageAspectRatio,
-        categoryIds,
-        blurImage,
-      } = this.form
       this.loading = true
       this.$apollo
         .mutate({
-          mutation: this.id ? PostMutations().UpdatePost : PostMutations().CreatePost,
+          mutation: this.contribution.id ? PostMutations().UpdatePost : PostMutations().CreatePost,
           variables: {
-            id: this.id,
-            title,
-            content,
-            categoryIds,
-            language,
-            image,
-            imageUpload: teaserImage,
-            imageBlurred: blurImage,
-            imageAspectRatio,
+            ...this.formData,
+            id: this.contribution.id || null,
+            language: this.formData.language.value,
+            image: this.imageUpload ? null : this.formData.image,
+            imageUpload: this.imageUpload,
           },
         })
         .then(({ data }) => {
           this.loading = false
           this.$toast.success(this.$t('contribution.success'))
-          const result = data[this.id ? 'UpdatePost' : 'CreatePost']
+          const result = data[this.contribution.id ? 'UpdatePost' : 'CreatePost']
 
           this.$router.push({
             name: 'post-id-slug',
@@ -251,14 +193,19 @@ export default {
     updateEditorContent(value) {
       this.$refs.contributionForm.update('content', value)
     },
-    addTeaserImage(file) {
-      this.form.teaserImage = file
+    addHeroImage(file) {
+      this.formData.image = null
+      if (file) {
+        const reader = new FileReader()
+        reader.onload = ({ target }) => {
+          this.formData.image = target.result
+        }
+        this.imageUpload = file
+        reader.readAsDataURL(file)
+      }
     },
     addImageAspectRatio(aspectRatio) {
-      this.form.imageAspectRatio = aspectRatio
-    },
-    categoryIds(categories) {
-      return categories.map(c => c.id)
+      this.formData.imageAspectRatio = aspectRatio
     },
   },
   apollo: {
@@ -296,33 +243,47 @@ export default {
 </script>
 
 <style lang="scss">
-.contribution-form {
-  .ds-card-image.--blur-image img {
-    filter: blur(32px);
+.contribution-form > .base-card {
+  display: flex;
+  flex-direction: column;
+
+  > .hero-image {
+    position: relative;
+
+    > .image {
+      max-height: $size-image-max-height;
+    }
+  }
+
+  .image.--blur-image {
+    filter: blur($blur-radius);
+  }
+
+  > .ds-form-item {
+    margin: 0;
+  }
+
+  > .ds-chip {
+    align-self: flex-end;
+    margin: $space-xx-small 0 $space-base;
+    cursor: default;
+  }
+
+  > .select-field {
+    align-self: flex-end;
+  }
+
+  > .buttons {
+    align-self: flex-end;
+    margin-top: $space-base;
   }
 
   .blur-toggle {
     text-align: right;
+    margin-bottom: $space-base;
 
     > .link {
       display: block;
-    }
-  }
-
-  .ds-chip {
-    cursor: default;
-  }
-
-  .post-title {
-    margin-top: $space-x-small;
-    margin-bottom: $space-xx-small;
-
-    input {
-      border: 0;
-      font-size: $font-size-x-large;
-      font-weight: bold;
-      padding-left: 0;
-      padding-right: 0;
     }
   }
 }

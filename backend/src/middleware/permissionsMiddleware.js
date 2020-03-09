@@ -152,6 +152,7 @@ export default shield(
     User: {
       email: or(isMyOwn, isAdmin),
     },
+    Report: isModerator,
   },
   {
     debug,

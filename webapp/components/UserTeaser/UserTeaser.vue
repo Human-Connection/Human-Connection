@@ -3,107 +3,36 @@
     <user-avatar v-if="showAvatar" size="small" />
     <span class="info anonymous">{{ $t('profile.userAnonym') }}</span>
   </div>
-  <dropdown
-    v-else
-    :class="[{ 'disabled-content': user.disabled }]"
-    placement="top-start"
-    offset="0"
-  >
-    <template #default="{ openMenu, closeMenu, isOpen }">
-      <nuxt-link
-        :to="userLink"
-        :class="['user-teaser', isOpen && 'active']"
-        @mouseover.native="showPopover ? openMenu(true) : () => {}"
-        @mouseleave.native="closeMenu(true)"
-      >
-        <user-avatar v-if="showAvatar" :user="user" size="small" />
-        <div class="info">
-          <span class="text">
-            <span class="slug">{{ userSlug }}</span>
-            <span data-test="userName" v-if="dateTime">{{ userName }}</span>
-          </span>
-          <span v-if="dateTime" class="text">
-            <base-icon name="clock" />
-            <hc-relative-date-time :date-time="dateTime" />
-            <slot name="dateTime"></slot>
-          </span>
-          <span v-else data-test="userName" class="text">{{ userName }}</span>
-        </div>
-      </nuxt-link>
-    </template>
-    <template #popover v-if="showPopover">
-      <div style="min-width: 250px">
-        <hc-badges v-if="user.badges && user.badges.length" :badges="user.badges" />
-        <ds-text
-          v-if="user.location"
-          align="center"
-          color="soft"
-          size="small"
-          style="margin-top: 5px"
-          bold
-        >
-          <base-icon name="map-marker" />
-          {{ user.location.name }}
-        </ds-text>
-        <ds-flex style="margin-top: -10px">
-          <ds-flex-item class="ds-tab-nav-item">
-            <ds-space margin="small">
-              <ds-number
-                :count="user.followedByCount"
-                :label="$t('profile.followers')"
-                size="x-large"
-              />
-            </ds-space>
-          </ds-flex-item>
-          <ds-flex-item class="ds-tab-nav-item ds-tab-nav-item-active">
-            <ds-space margin="small">
-              <ds-number
-                :count="user.contributionsCount"
-                :label="$t('common.post', null, user.contributionsCount)"
-              />
-            </ds-space>
-          </ds-flex-item>
-          <ds-flex-item class="ds-tab-nav-item">
-            <ds-space margin="small">
-              <ds-number
-                :count="user.commentedCount"
-                :label="$t('common.comment', null, user.commentedCount)"
-              />
-            </ds-space>
-          </ds-flex-item>
-        </ds-flex>
-        <ds-flex v-if="!itsMe" gutter="x-small" style="margin-bottom: 0;">
-          <ds-flex-item>
-            <hc-follow-button
-              :follow-id="user.id"
-              :is-followed="user.followedByCurrentUser"
-              @optimistic="optimisticFollow"
-              @update="updateFollow"
-            />
-          </ds-flex-item>
-        </ds-flex>
+  <div v-else :class="[{ 'disabled-content': user.disabled }]" placement="top-start">
+    <nuxt-link :to="userLink" :class="['user-teaser']">
+      <user-avatar v-if="showAvatar" :user="user" size="small" />
+      <div class="info">
+        <span class="text">
+          <span class="slug">{{ userSlug }}</span>
+          <span v-if="dateTime" data-test="userName">{{ userName }}</span>
+        </span>
+        <span v-if="dateTime" class="text">
+          <base-icon name="clock" />
+          <hc-relative-date-time :date-time="dateTime" />
+          <slot name="dateTime"></slot>
+        </span>
+        <span v-else class="text" data-test="userName">{{ userName }}</span>
       </div>
-    </template>
-  </dropdown>
+    </nuxt-link>
+  </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 
 import HcRelativeDateTime from '~/components/RelativeDateTime'
-import HcFollowButton from '~/components/FollowButton'
-import HcBadges from '~/components/Badges'
 import UserAvatar from '~/components/_new/generic/UserAvatar/UserAvatar'
-import Dropdown from '~/components/Dropdown'
 
 export default {
   name: 'UserTeaser',
   components: {
     HcRelativeDateTime,
-    HcFollowButton,
     UserAvatar,
-    HcBadges,
-    Dropdown,
   },
   props: {
     user: { type: Object, default: null },

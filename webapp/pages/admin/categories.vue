@@ -1,11 +1,12 @@
 <template>
-  <ds-card :header="$t('admin.categories.name')">
+  <base-card>
+    <h2 class="title">{{ $t('admin.categories.name') }}</h2>
     <ds-table :data="Category" :fields="fields" condensed>
       <template slot="icon" slot-scope="scope">
         <base-icon :name="scope.row.icon" />
       </template>
     </ds-table>
-  </ds-card>
+  </base-card>
 </template>
 
 <script>

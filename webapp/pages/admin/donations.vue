@@ -1,5 +1,6 @@
 <template>
-  <ds-card :header="$t('admin.donations.name')">
+  <base-card>
+    <h2 class="title">{{ $t('admin.donations.name') }}</h2>
     <ds-form v-model="formData" @submit="submit">
       <ds-input model="goal" :label="$t('admin.donations.goal')" placeholder="15000" icon="money" />
       <ds-input
@@ -12,7 +13,7 @@
         {{ $t('actions.save') }}
       </base-button>
     </ds-form>
-  </ds-card>
+  </base-card>
 </template>
 
 <script>

@@ -23,4 +23,11 @@ import 'cypress-plugin-retries'
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
-
+import { WebSocket } from 'mock-socket'
+before(() => {
+  cy.visit('/', {
+    onBeforeLoad(win) {
+      cy.stub(win, "WebSocket", url =>  new WebSocket(url))
+    }
+  })
+})

@@ -1,18 +1,15 @@
 <template>
   <div id="comments" class="comment-list">
     <h3 class="title">
-      <counter-icon icon="comments" :count="post.comments.length" />
+      <counter-icon icon="comments" :count="postComments.length" />
       {{ $t('common.comment', null, 0) }}
     </h3>
-    <ds-space margin-bottom="large" />
-    <div v-if="post.comments && post.comments.length" id="comments" class="comments">
-      <comment
-        v-for="comment in post.comments"
+    <div v-if="postComments" id="comments" class="comments">
+      <comment-card
+        v-for="comment in postComments"
         :key="comment.id"
         :comment="comment"
-        :post="post"
-        :routeHash="routeHash"
-        class="comment-tag"
+        :postId="post.id"
         @deleteComment="updateCommentList"
         @updateComment="updateCommentList"
         @toggleNewCommentForm="toggleNewCommentForm"
@@ -23,18 +20,25 @@
 </template>
 <script>
 import CounterIcon from '~/components/_new/generic/CounterIcon/CounterIcon'
-import Comment from '~/components/Comment/Comment'
+import CommentCard from '~/components/CommentCard/CommentCard'
 import scrollToAnchor from '~/mixins/scrollToAnchor'
 
 export default {
   mixins: [scrollToAnchor],
   components: {
     CounterIcon,
-    Comment,
+    CommentCard,
   },
   props: {
-    routeHash: { type: String, default: () => '' },
-    post: { type: Object, default: () => {} },
+    post: {
+      type: Object,
+      required: true,
+    },
+  },
+  computed: {
+    postComments() {
+      return (this.post && this.post.comments) || []
+    },
   },
   methods: {
     reply(message) {
@@ -44,7 +48,7 @@ export default {
       return anchor === '#comments'
     },
     updateCommentList(updatedComment) {
-      this.post.comments = this.post.comments.map(comment => {
+      this.postComments = this.postComments.map(comment => {
         return comment.id === updatedComment.id ? updatedComment : comment
       })
     },

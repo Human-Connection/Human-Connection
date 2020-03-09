@@ -100,7 +100,7 @@ export const reportMutation = () => {
         reasonCategory: $reasonCategory
         reasonDescription: $reasonDescription
       ) {
-        id
+        reportId
       }
     }
   `

@@ -132,6 +132,7 @@ $border-size-x-large: 6px;
 $border-radius-x-large: 5px;
 $border-radius-large: 4px;
 $border-radius-base: 4px;
+$border-radius-small: 2px;
 $border-radius-rounded: 2em;
 $border-radius-circle: 50%;
 
@@ -211,7 +212,8 @@ $letter-spacing-x-small: -0.015em;
  * @presenter Opacity
  */
 
-$opacity-soft: 0.65;
+$opacity-base: 1;
+$opacity-soft: 0.7;
 $opacity-disabled: 0.5;
 
 /**
@@ -239,6 +241,7 @@ $size-height-large: 50px;
 $size-height-xlarge: 60px;
 $size-height-footer: 64px;
 $size-tappable-square: 44px;
+$size-ribbon: 6px;
 
 /**
  * @tokens Size Width
@@ -265,11 +268,22 @@ $size-avatar-large: 114px;
  $size-button-small: 26px;
 
 /**
+ * @tokens Size Images
+ * @presenter Spacing
+ */
+
+$size-image-max-height: 2000px;
+$size-image-cropper-max-height: 600px;
+$size-image-cropper-min-height: 400px;
+$size-image-uploader-min-height: 200px;
+
+/**
  * @tokens Size Icons
  * @presenter Spacing
  */
 
  $size-icon-base: 16px;
+ $size-icon-large: 60px;
 
 /**
  * @tokens Shadow
@@ -284,6 +298,12 @@ $box-shadow-x-small: 0px 0px 3px 0px rgba(0, 0, 0, .1);
 $box-shadow-active: 0 0 6px 1px rgba(20, 100, 160, 0.5);
 $box-shadow-inset: inset 0 0 20px 1px rgba(0,0,0,.15);
 $box-shadow-small-inset: inset 0 0 0 1px rgba(0,0,0,.05);
+
+/**
+ * @tokens Effects
+ */
+
+$blur-radius: 22px;
 
 /**
  * @tokens Animation Duration
@@ -316,7 +336,8 @@ $z-index-page-submenu: 2500;
 $z-index-page-header: 2000;
 $z-index-page-sidebar: 1500;
 $z-index-sticky: 100;
-$z-index-post-card-link: 5;
+$z-index-post-teaser-link: 5;
+$z-index-surface: 1;
 
 /**
  * @tokens Media Query

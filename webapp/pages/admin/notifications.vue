@@ -1,7 +1,8 @@
 <template>
-  <ds-card :header="$t('admin.notifications.name')">
+  <base-card>
+    <h2 class="title">{{ $t('admin.notifications.name') }}</h2>
     <hc-empty icon="tasks" message="Coming Soon…" />
-  </ds-card>
+  </base-card>
 </template>
 
 <script>

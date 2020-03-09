@@ -35,7 +35,7 @@ const options = {
     }
   `,
   path: 'post',
-  message: 'This post could not be found',
+  message: 'error-pages.post-not-found',
 }
 const persistentLinks = PersistentLinks(options)
 
@@ -55,14 +55,14 @@ export default {
             },
             // TODO implement
             /* {
-              name: this.$t('common.letsTalk'),
-              path: `/post/${id}/${slug}#lets-talk`
-            }, */
+			    name: this.$t('common.letsTalk'),
+			    path: `/post/${id}/${slug}#lets-talk`
+			    }, */
             // TODO implement
             /* {
-              name: this.$t('common.versus'),
-              path: `/post/${id}/${slug}#versus`
-            } */
+			    name: this.$t('common.versus'),
+			    path: `/post/${id}/${slug}#versus`
+			    } */
           ],
         },
         {
@@ -71,9 +71,9 @@ export default {
         },
         // TODO implement
         /* {
-          name: this.$t('common.takeAction'),
-          path: `/post/${id}/${slug}/take-action`
-        } */
+		    name: this.$t('common.takeAction'),
+		    path: `/post/${id}/${slug}/take-action`
+		    } */
       ]
     },
   },

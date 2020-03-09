@@ -18,20 +18,24 @@ import helpers from "./helpers";
 import { GraphQLClient, request } from 'graphql-request'
 import { gql } from '../../backend/src/helpers/jest'
 import config from '../../backend/src/config'
+import encode from '../../backend/src/jwt/encode'
 
 const switchLang = name => {
   cy.get(".locale-menu").click();
   cy.contains(".locale-menu-popover a", name).click();
 };
 
-const authenticatedHeaders = async (variables) => {
+const authenticatedHeaders = (variables) => {
   const mutation = gql`
     mutation($email: String!, $password: String!) {
       login(email: $email, password: $password)
     }
   `
-  const response = await request(config.GRAPHQL_URI, mutation, variables)
-  return { authorization: `Bearer ${response.login}` }
+  return new Cypress.Promise((resolve, reject) => {
+    request(config.GRAPHQL_URI, mutation, variables).then((response) => {
+      resolve({ authorization: `Bearer ${response.login}` })
+    })
+  })
 }
 
 Cypress.Commands.add("switchLanguage", (name, force) => {
@@ -47,22 +51,26 @@ Cypress.Commands.add("switchLanguage", (name, force) => {
   }
 });
 
-Cypress.Commands.add("login", ({ email, password }) => {
-  cy.visit(`/login`);
-  cy.get("input[name=email]")
-    .trigger("focus")
-    .type(email);
-  cy.get("input[name=password]")
-    .trigger("focus")
-    .type(password);
-  cy.get("button[name=submit]")
-    .as("submitButton")
-    .click();
-  cy.get(".iziToast-message").should("contain", "You are logged in!");
-  cy.location("pathname").should("eq", "/");
+Cypress.Commands.add("login", user => {
+  const token = encode(user)
+  cy.setCookie('human-connection-token', token)
+    .visit("/")
 });
 
-Cypress.Commands.add("logout", (email, password) => {
+Cypress.Commands.add("manualLogin", ({ email, password }) => {
+  cy.visit(`/login`)
+    .get("input[name=email]")
+    .trigger("focus")
+    .type(email)
+    .get("input[name=password]")
+    .trigger("focus")
+    .type(password)
+    .get("button[name=submit]")
+    .as("submitButton")
+    .click();
+});
+
+Cypress.Commands.add("logout", () => {
   cy.visit(`/logout`);
   cy.location("pathname").should("contain", "/login"); // we're out
 });
@@ -74,43 +82,24 @@ Cypress.Commands.add("openPage", page => {
   cy.visit(`/${page}`);
 });
 
-Cypress.Commands.add("createCategories", (id, slug) => {
-  cy.neode()
-    .create("Category", {
-      id: `${id}`,
-      name: "Just For Fun",
-      slug: `${slug}`,
-      icon: "smile"
-    })
-    .create("Category", {
-      id: `${id}1`,
-      name: "Happiness & Values",
-      icon: "heart-o"
-    })
-    .create("Category", {
-      id: `${id}2`,
-      name: "Health & Wellbeing",
-      icon: "medkit"
-    });
-});
-
-
 Cypress.Commands.add(
   'authenticateAs',
-  async ({email, password}) => {
-    const headers = await authenticatedHeaders({ email, password })
-    return new GraphQLClient(config.GRAPHQL_URI, { headers })
-  }
-)
+  ({email, password}) => {
+    return new Cypress.Promise((resolve, reject) => {
+      authenticatedHeaders({ email, password }).then((headers) => {
+        resolve(new GraphQLClient(config.GRAPHQL_URI, { headers }))
+      })
+    })
+  })
 
 Cypress.Commands.add(
   'mutate',
   { prevSubject: true },
-  async (graphQLClient, mutation, variables) => {
-    await graphQLClient.request(mutation, variables)
-    return graphQLClient
-  }
-)
+  (graphQLClient, mutation, variables) => {
+    return new Cypress.Promise((resolve, reject) => {
+      graphQLClient.request(mutation, variables).then(() => resolve(graphQLClient))
+    })
+  })
 
 //
 //

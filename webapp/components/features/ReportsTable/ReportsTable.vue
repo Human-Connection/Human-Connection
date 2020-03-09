@@ -24,11 +24,8 @@
       </tr>
     </thead>
     <template v-for="report in reports">
-      <report-row
-        :key="report.resource.id"
-        :report="report"
-        @confirm-report="$emit('confirm', report)"
-      />
+      <!-- should be ':key="report.resource.id"' for having one element for every resource, but this crashes at the moment, because the 'reports' query returns multiple reports on the same resource! I will create an issue -->
+      <report-row :key="report.id" :report="report" @confirm-report="$emit('confirm', report)" />
     </template>
   </table>
   <hc-empty v-else icon="alert" :message="$t('moderation.reports.empty')" />

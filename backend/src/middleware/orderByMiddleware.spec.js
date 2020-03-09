@@ -1,10 +1,9 @@
 import { gql } from '../helpers/jest'
-import Factory from '../factories'
+import { cleanDatabase } from '../db/factories'
 import { getNeode, getDriver } from '../db/neo4j'
 import { createTestClient } from 'apollo-server-testing'
 import createServer from '../server'
 
-const factory = Factory()
 const neode = getNeode()
 const driver = getDriver()
 
@@ -27,7 +26,7 @@ beforeEach(async () => {
 })
 
 afterEach(async () => {
-  await factory.cleanDatabase()
+  await cleanDatabase()
 })
 
 describe('Query', () => {

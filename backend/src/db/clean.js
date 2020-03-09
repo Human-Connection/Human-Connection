@@ -1,4 +1,4 @@
-import { cleanDatabase } from '../factories'
+import { cleanDatabase } from '../db/factories'
 
 if (process.env.NODE_ENV === 'production') {
   throw new Error(`You cannot clean the database in production environment!`)

@@ -88,7 +88,7 @@ describe('DeleteData.vue', () => {
 
     describe('calls the delete user mutation', () => {
       beforeEach(() => {
-        enableDeletionInput = wrapper.find('.enable-deletion-input input')
+        enableDeletionInput = wrapper.find('.ds-input')
         enableDeletionInput.setValue(deleteAccountName)
         deleteAccountBtn = wrapper.find('[data-test="delete-button"]')
       })
@@ -107,7 +107,7 @@ describe('DeleteData.vue', () => {
 
       it("deletes a user's posts if requested", () => {
         mocks.$t.mockImplementation(() => deleteContributionsMessage)
-        enableContributionDeletionCheckbox = wrapper.findAll('.checkbox-container input').at(0)
+        enableContributionDeletionCheckbox = wrapper.findAll('input[type="checkbox"]').at(0)
         enableContributionDeletionCheckbox.trigger('click')
         deleteAccountBtn.trigger('click')
         expect(mocks.$apollo.mutate).toHaveBeenCalledWith(
@@ -122,7 +122,7 @@ describe('DeleteData.vue', () => {
 
       it("deletes a user's comments if requested", () => {
         mocks.$t.mockImplementation(() => deleteCommentsMessage)
-        enableCommentDeletionCheckbox = wrapper.findAll('.checkbox-container input').at(1)
+        enableCommentDeletionCheckbox = wrapper.findAll('input[type="checkbox"]').at(1)
         enableCommentDeletionCheckbox.trigger('click')
         deleteAccountBtn.trigger('click')
         expect(mocks.$apollo.mutate).toHaveBeenCalledWith(
@@ -137,10 +137,10 @@ describe('DeleteData.vue', () => {
 
       it("deletes a user's posts and comments if requested", () => {
         mocks.$t.mockImplementation(() => deleteContributionsMessage)
-        enableContributionDeletionCheckbox = wrapper.findAll('.checkbox-container input').at(0)
+        enableContributionDeletionCheckbox = wrapper.findAll('input[type="checkbox"]').at(0)
         enableContributionDeletionCheckbox.trigger('click')
         mocks.$t.mockImplementation(() => deleteCommentsMessage)
-        enableCommentDeletionCheckbox = wrapper.findAll('.checkbox-container input').at(1)
+        enableCommentDeletionCheckbox = wrapper.findAll('input[type="checkbox"]').at(1)
         enableCommentDeletionCheckbox.trigger('click')
         deleteAccountBtn.trigger('click')
         expect(mocks.$apollo.mutate).toHaveBeenCalledWith(
@@ -166,7 +166,7 @@ describe('DeleteData.vue', () => {
 
     describe('error handling', () => {
       it('shows an error toaster when the mutation rejects', async () => {
-        enableDeletionInput = wrapper.find('.enable-deletion-input input')
+        enableDeletionInput = wrapper.find('.ds-input')
         enableDeletionInput.setValue(deleteAccountName)
         await Vue.nextTick()
         deleteAccountBtn = wrapper.find('[data-test="delete-button"]')

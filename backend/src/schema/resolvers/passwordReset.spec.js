@@ -1,4 +1,4 @@
-import Factory from '../../factories'
+import Factory, { cleanDatabase } from '../../db/factories'
 import { gql } from '../../helpers/jest'
 import { getNeode, getDriver } from '../../db/neo4j'
 import createPasswordReset from './helpers/createPasswordReset'
@@ -7,7 +7,6 @@ import { createTestClient } from 'apollo-server-testing'
 
 const neode = getNeode()
 const driver = getDriver()
-const factory = Factory()
 
 let mutate
 let authenticatedUser
@@ -39,15 +38,19 @@ beforeAll(() => {
 })
 
 afterEach(async () => {
-  await factory.cleanDatabase()
+  await cleanDatabase()
 })
 
 describe('passwordReset', () => {
   describe('given a user', () => {
     beforeEach(async () => {
-      await factory.create('User', {
-        email: 'user@example.org',
-      })
+      await Factory.build(
+        'user',
+        {},
+        {
+          email: 'user@example.org',
+        },
+      )
     })
 
     describe('requestPasswordReset', () => {
@@ -123,11 +126,16 @@ describe('resetPassword', () => {
 
   describe('given a user', () => {
     beforeEach(async () => {
-      await factory.create('User', {
-        email: 'user@example.org',
-        role: 'user',
-        password: '1234',
-      })
+      await Factory.build(
+        'user',
+        {
+          role: 'user',
+        },
+        {
+          email: 'user@example.org',
+          password: '1234',
+        },
+      )
     })
 
     describe('invalid email', () => {

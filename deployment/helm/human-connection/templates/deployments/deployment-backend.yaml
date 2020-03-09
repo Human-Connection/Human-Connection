@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  {{ .Release.Name }}-backend
+  labels:
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/name: human-connection
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+spec:
+  replicas: 1
+  minReadySeconds: 15
+  progressDeadlineSeconds: 60
+  strategy:
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: "100%"
+  selector:
+    matchLabels:
+      human-connection.org/selector: deployment-backend
+  template:
+    metadata:
+      name: deployment-backend
+      annotations:
+        backup.velero.io/backup-volumes: uploads
+      labels:
+        human-connection.org/commit: {{ .Values.commit }}
+        human-connection.org/selector: deployment-backend
+    spec:
+      containers:
+      - name: backend
+        image: "{{ .Values.backendImage }}:{{ .Chart.AppVersion }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        envFrom:
+        - configMapRef:
+            name: {{ .Release.Name }}-configmap
+        - secretRef:
+            name: {{ .Release.Name }}-secrets
+        ports:
+        - containerPort: 4000
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+          - mountPath: /nitro-backend/public/uploads
+            name: uploads
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: uploads
+        persistentVolumeClaim:
+          claimName: uploads-claim
+status: {}

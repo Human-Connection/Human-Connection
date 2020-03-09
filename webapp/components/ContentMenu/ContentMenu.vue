@@ -8,7 +8,7 @@
           size="small"
           circle
           ghost
-          @click="toggleMenu"
+          @click.prevent="toggleMenu()"
         />
       </slot>
     </template>
@@ -104,7 +104,7 @@ export default {
         routes.push({
           label: this.$t(`comment.menu.edit`),
           callback: () => {
-            this.$emit('showEditCommentMenu', true)
+            this.$emit('editComment')
           },
           icon: 'edit',
         })
@@ -172,7 +172,7 @@ export default {
               icon: 'microphone-slash',
             })
           }
-          if (this.resource.blocked) {
+          if (this.resource.isBlocked) {
             routes.push({
               label: this.$t(`settings.blocked-users.unblock`),
               callback: () => {

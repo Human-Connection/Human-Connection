@@ -1,0 +1,36 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name:  {{ .Release.Name }}-ingress
+  labels:
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/name: human-connection
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: {{ .Values.letsencryptIssuer }}
+    nginx.ingress.kubernetes.io/proxy-body-size: 10m
+spec:
+  tls:
+    - hosts:
+      - {{ .Values.domain }}
+      secretName: tls
+  rules:
+    - host: {{ .Values.domain }}
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: {{ .Release.Name }}-webapp
+              servicePort: 3000
+{{- if .Values.developmentMailserverDomain }}
+    - host: {{ .Values.developmentMailserverDomain }}
+      http:
+        paths:
+        - path: /
+          backend:
+            serviceName: {{ .Release.Name }}-mailserver
+            servicePort: 80
+{{- end }}

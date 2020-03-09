@@ -1,176 +1,176 @@
 {
-  "site": {
-    "made": "Met &#10084; gemaakt",
-    "imprint": "Afdruk",
-    "termsAc": "Gebruiksvoorwaarden",
-    "data-privacy": "gegevensbescherming",
-    "contact": "contact",
-    "tribunal": "registerrechtbank",
-    "register": "inschrijfnummer",
-    "director": "Directeur",
-    "taxident": "Identificatienummer voor de belasting over de toegevoegde waarde overeenkomstig § 27 a Wet op de belasting over de toegevoegde waarde (Duitsland).",
-    "responsible": "Verantwoordelijk volgens § 55 Abs. 2 RStV (Duitsland).",
-    "bank": "bankrekening",
-    "germany": "Duitsland"
-  },
-  "login": {
-    "copy": "Als u al een mini-aansluiting account heeft, log dan hier in.",
-    "login": "Inloggen",
-    "logout": "Uitloggen",
-    "email": "Uw E-mail",
-    "password": "Uw Wachtwoord",
-    "moreInfo": "Wat is Human Connection?",
-    "hello": "Hallo"
-  },
-  "profile": {
-    "name": "Mijn profiel",
-    "memberSince": "Lid sinds",
-    "follow": "Volgen",
-    "followers": "Volgelingen",
-    "following": "Volgt"
-  },
-  "settings": {
-    "name": "Instellingen",
-    "data": {
-      "name": "Uw gegevens"
-    },
-    "security": {
-      "name": "Veiligheid"
-    },
-    "invites": {
-      "name": "Uitnodigingen"
-    },
-    "download": {
-      "name": "Gegevens downloaden"
-    },
-    "delete": {
-      "name": "Account verwijderen"
-    },
-    "organizations": {
-      "name": "Mijn Organisaties"
-    },
-    "languages": {
-      "name": "Talen"
-    }
+  "actions": {
+    "cancel": "Annuleren"
   },
   "admin": {
-    "name": "Admin",
+    "categories": {
+      "categoryName": "Naam",
+      "name": "Categorieën",
+      "postCount": "Berichten"
+    },
     "dashboard": {
-      "name": "Dashboard",
-      "users": "Gebruikers",
-      "posts": "Berichten",
       "comments": "Opmerkingen",
+      "follows": "Volgt",
+      "invites": "Uitnodigingen",
+      "name": "Dashboard",
       "notifications": "Meldingen",
       "organizations": "Organisaties",
+      "posts": "Berichten",
       "projects": "Projecten",
-      "invites": "Uitnodigingen",
-      "follows": "Volgt",
-      "shouts": "Shouts"
+      "shouts": "Shouts",
+      "users": "Gebruikers"
+    },
+    "name": "Admin",
+    "notifications": {
+      "name": "Meldingen"
     },
     "organizations": {
       "name": "Organisaties"
     },
-    "users": {
-      "name": "Gebruikers"
-    },
     "pages": {
       "name": "Pages"
     },
-    "notifications": {
-      "name": "Meldingen"
-    },
-    "categories": {
-      "name": "Categorieën",
-      "categoryName": "Naam",
-      "postCount": "Berichten"
+    "settings": {
+      "name": "Instellingen"
     },
     "tags": {
       "name": "Tags",
-      "tagCountUnique": "Gebruikers",
-      "tagCount": "Berichten"
+      "tagCount": "Berichten",
+      "tagCountUnique": "Gebruikers"
     },
-    "settings": {
-      "name": "Instellingen"
+    "users": {
+      "name": "Gebruikers"
     }
   },
-  "post": {
-    "name": "Post",
-    "moreInfo": {
-      "name": "Meer info"
-    },
-    "takeAction": {
-      "name": "Onderneem actie"
-    }
-  },
-  "quotes": {
-    "african": {
-      "quote": "Veel kleine mensen op veel kleine plaatsen doen veel kleine dingen, die het gezicht van de wereld kunnen veranderen.",
-      "author": "Afrikaans spreekwoord"
-    }
+  "comment": {
+    "delete": "Commentaar verwijderen",
+    "edit": "Commentaar bewerken"
   },
   "common": {
-    "post": "Bericht ::: Berichten",
+    "category": "Categorie ::: Categorieën",
     "comment": "Opmerking ::: Opmerkingen",
     "letsTalk": "Laten we praten",
-    "versus": "Versus",
-    "moreInfo": "Meer info",
-    "takeAction": "Onderneem actie",
-    "shout": "Shout ::: Shouts",
-    "user": "Gebruiker ::: Gebruikers",
-    "category": "Categorie ::: Categorieën",
-    "organization": "Organisatie ::: Organisaties",
-    "project": "Project ::: Projecten",
-    "tag": "Tag ::: Tags",
-    "name": "Naam",
-    "loadMore": "meer laden",
     "loading": "inlading",
-    "reportContent": "Melden"
-  },
-  "disable": {
-    "comment": {
-      "title": "Commentaar uitschakelen",
-      "type": "Melding",
-      "message": "Wilt u de reactie van \" <b> {name} </b> \" echt uitschakelen ?"
-    }
-  },
-  "report": {
-    "submit": "Verzenden",
-    "cancel": "Annuleren",
-    "user": {
-      "title": "Gebruiker melden",
-      "type": "Gebruiker",
-      "message": "Wilt u echt het commentaar van \"<b>{name}</b>\" melden?"
-    },
-    "contribution": {
-      "title": "Bijdrage melden",
-      "type": "Bijdrage",
-      "message": "Wilt u echt het commentaar van \"<b>{name}</b>\" melden?"
-    },
-    "comment": {
-      "title": "Reactie melden",
-      "type": "Melding",
-      "message": "Wilt u echt het commentaar van \"<b>{name}</b>\" melden?"
-    }
-  },
-  "actions": {
-    "cancel": "Annuleren"
+    "loadMore": "meer laden",
+    "moreInfo": "Meer info",
+    "name": "Naam",
+    "organization": "Organisatie ::: Organisaties",
+    "post": "Bericht ::: Berichten",
+    "project": "Project ::: Projecten",
+    "reportContent": "Melden",
+    "shout": "Shout ::: Shouts",
+    "tag": "Tag ::: Tags",
+    "takeAction": "Onderneem actie",
+    "user": "Gebruiker ::: Gebruikers",
+    "versus": "Versus"
   },
   "contribution": {
-    "edit": "Bijdrage bewerken",
     "delete": "Bijdrage verwijderen",
+    "edit": "Bijdrage bewerken",
     "teaserImage": {
       "cropperConfirm": "Bevestigen"
     }
   },
-  "comment": {
-    "edit": "Commentaar bewerken",
-    "delete": "Commentaar verwijderen"
+  "disable": {
+    "comment": {
+      "message": "Wilt u de reactie van \" <b> {name} </b> \" echt uitschakelen ?",
+      "title": "Commentaar uitschakelen",
+      "type": "Melding"
+    }
   },
   "followButton": {
     "follow": "Volgen",
     "following": "Volgt"
   },
+  "login": {
+    "copy": "Als u al een mini-aansluiting account heeft, log dan hier in.",
+    "email": "Uw E-mail",
+    "hello": "Hallo",
+    "login": "Inloggen",
+    "logout": "Uitloggen",
+    "moreInfo": "Wat is Human Connection?",
+    "password": "Uw Wachtwoord"
+  },
+  "post": {
+    "moreInfo": {
+      "name": "Meer info"
+    },
+    "name": "Post",
+    "takeAction": {
+      "name": "Onderneem actie"
+    }
+  },
+  "profile": {
+    "follow": "Volgen",
+    "followers": "Volgelingen",
+    "following": "Volgt",
+    "memberSince": "Lid sinds",
+    "name": "Mijn profiel"
+  },
+  "quotes": {
+    "african": {
+      "author": "Afrikaans spreekwoord",
+      "quote": "Veel kleine mensen op veel kleine plaatsen doen veel kleine dingen, die het gezicht van de wereld kunnen veranderen."
+    }
+  },
+  "report": {
+    "cancel": "Annuleren",
+    "comment": {
+      "message": "Wilt u echt het commentaar van \"<b>{name}</b>\" melden?",
+      "title": "Reactie melden",
+      "type": "Melding"
+    },
+    "contribution": {
+      "message": "Wilt u echt het commentaar van \"<b>{name}</b>\" melden?",
+      "title": "Bijdrage melden",
+      "type": "Bijdrage"
+    },
+    "submit": "Verzenden",
+    "user": {
+      "message": "Wilt u echt het commentaar van \"<b>{name}</b>\" melden?",
+      "title": "Gebruiker melden",
+      "type": "Gebruiker"
+    }
+  },
+  "settings": {
+    "data": {
+      "name": "Uw gegevens"
+    },
+    "delete": {
+      "name": "Account verwijderen"
+    },
+    "download": {
+      "name": "Gegevens downloaden"
+    },
+    "invites": {
+      "name": "Uitnodigingen"
+    },
+    "languages": {
+      "name": "Talen"
+    },
+    "name": "Instellingen",
+    "organizations": {
+      "name": "Mijn Organisaties"
+    },
+    "security": {
+      "name": "Veiligheid"
+    }
+  },
   "shoutButton": {
     "shouted": "uitgeroepen"
+  },
+  "site": {
+    "bank": "bankrekening",
+    "contact": "contact",
+    "data-privacy": "gegevensbescherming",
+    "director": "Directeur",
+    "germany": "Duitsland",
+    "imprint": "Afdruk",
+    "made": "Met &#10084; gemaakt",
+    "register": "inschrijfnummer",
+    "responsible": "Verantwoordelijk volgens § 55 Abs. 2 RStV (Duitsland).",
+    "taxident": "Identificatienummer voor de belasting over de toegevoegde waarde overeenkomstig § 27 a Wet op de belasting over de toegevoegde waarde (Duitsland).",
+    "termsAc": "Gebruiksvoorwaarden",
+    "tribunal": "registerrechtbank"
   }
 }

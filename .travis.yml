@@ -6,7 +6,8 @@ addons:
       - libgconf-2-4
   snaps:
     - docker
-
+  firefox: "latest-esr"
+    
 install:
   - yarn global add wait-on
   # Install Codecov
@@ -24,6 +25,9 @@ script:
   - export CYPRESS_RETRIES=1
   - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
   - echo "TRAVIS_BRANCH=$TRAVIS_BRANCH, PR=$PR, BRANCH=$BRANCH"
+  # Miscellaneous
+  - ./scripts/translations/sort.sh
+  - ./scripts/translations/missing-keys.sh
   # Backend
   - docker-compose exec backend yarn run lint
   - docker-compose exec backend yarn run test --ci --verbose=false --coverage

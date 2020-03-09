@@ -6,7 +6,7 @@ import Vuex from 'vuex'
 import PostMutations from '~/graphql/PostMutations.js'
 import CategoriesSelect from '~/components/CategoriesSelect/CategoriesSelect'
 
-import TeaserImage from '~/components/TeaserImage/TeaserImage'
+import ImageUploader from '~/components/ImageUploader/ImageUploader'
 import MutationObserver from 'mutation-observer'
 
 global.MutationObserver = MutationObserver
@@ -182,7 +182,7 @@ describe('ContributionForm.vue', () => {
         })
 
         it('has no more than three categories', async () => {
-          wrapper.vm.form.categoryIds = ['cat4', 'cat9', 'cat15', 'cat27']
+          wrapper.vm.formData.categoryIds = ['cat4', 'cat9', 'cat15', 'cat27']
           await Vue.nextTick()
           wrapper.find('form').trigger('submit')
           expect(mocks.$apollo.mutate).not.toHaveBeenCalled()
@@ -233,10 +233,13 @@ describe('ContributionForm.vue', () => {
         })
 
         it('supports adding a teaser image', async () => {
+          const spy = jest.spyOn(FileReader.prototype, 'readAsDataURL').mockImplementation(() => {})
           expectedParams.variables.imageUpload = imageUpload
-          wrapper.find(TeaserImage).vm.$emit('addTeaserImage', imageUpload)
+          wrapper.find(ImageUploader).vm.$emit('addHeroImage', imageUpload)
           await wrapper.find('form').trigger('submit')
           expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
+          expect(spy).toHaveBeenCalledWith(imageUpload)
+          spy.mockReset()
         })
 
         it('content is valid with just a link', async () => {
@@ -320,20 +323,12 @@ describe('ContributionForm.vue', () => {
         wrapper = Wrapper()
       })
 
-      it('sets id equal to contribution id', () => {
-        expect(wrapper.vm.id).toEqual(propsData.contribution.id)
-      })
-
-      it('sets slug equal to contribution slug', () => {
-        expect(wrapper.vm.slug).toEqual(propsData.contribution.slug)
-      })
-
       it('sets title equal to contribution title', () => {
-        expect(wrapper.vm.form.title).toEqual(propsData.contribution.title)
+        expect(wrapper.vm.formData.title).toEqual(propsData.contribution.title)
       })
 
       it('sets content equal to contribution content', () => {
-        expect(wrapper.vm.form.content).toEqual(propsData.contribution.content)
+        expect(wrapper.vm.formData.content).toEqual(propsData.contribution.content)
       })
 
       describe('valid update', () => {
@@ -362,6 +357,7 @@ describe('ContributionForm.vue', () => {
               image,
               imageUpload: null,
               imageAspectRatio: 1,
+              imageBlurred: false,
             },
           }
         })
@@ -381,6 +377,16 @@ describe('ContributionForm.vue', () => {
             .find(CategoriesSelect)
             .find('[data-test="category-buttons-cat3"]')
           healthWellbeingButton.trigger('click')
+          await wrapper.find('form').trigger('submit')
+          expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
+        })
+
+        it('supports deleting a teaser image', async () => {
+          expectedParams.variables.image = null
+          expectedParams.variables.imageAspectRatio = null
+          propsData.contribution.image = '/uploads/someimage.png'
+          wrapper = Wrapper()
+          wrapper.find('[data-test="delete-button"]').trigger('click')
           await wrapper.find('form').trigger('submit')
           expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
         })

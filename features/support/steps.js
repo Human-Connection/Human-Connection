@@ -1,15 +1,13 @@
 // features/support/steps.js
 import { Given, When, Then, After, AfterAll } from 'cucumber'
-import Factory from '../../backend/src/factories'
+import Factory, { cleanDatabase } from '../../backend/src/db/factories'
 import dotenv from 'dotenv'
 import expect from 'expect'
 
 const debug = require('debug')('ea:test:steps')
-const factory = Factory()
-
 
 After(async () => {
-  await factory.cleanDatabase()
+  await cleanDatabase()
 })
 
 Given('our CLIENT_URI is {string}', function (string) {
@@ -21,7 +19,7 @@ Given('our CLIENT_URI is {string}', function (string) {
 
 Given('we have the following users in our database:', function (dataTable) {
   return Promise.all(dataTable.hashes().map(({ slug, name }) => {
-    return factory.create('User', {
+    return Factory.build('user', {
       name,
       slug,
     })

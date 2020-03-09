@@ -38,7 +38,7 @@ export default {
       variables: { id },
     })
     if (contribution.author.id !== store.getters['auth/user'].id) {
-      error({ statusCode: 403, message: "You can't edit that!" })
+      error({ statusCode: 403, message: 'error-pages.cannot-edit-post' })
     }
     return { contribution }
   },

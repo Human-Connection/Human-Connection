@@ -1,81 +1,191 @@
 {
-  "components": {
-    "password-reset": {
-      "request": {
-        "title": "Zresetuj hasło",
-        "form": {
-          "description": "Na podany adres e-mail zostanie wysłany email z resetem hasła.",
-          "submit": "Poproś o wiadomość e-mail",
-          "submitted": "Na adres <b>{email}</b> została wysłana wiadomość z dalszymi instrukcjami."
-        }
-      },
-      "change-password": {
-        "success": "Zmiana hasła zakończyła się sukcesem!",
-        "error": "Zmiana hasła nie powiodła się. Może kod bezpieczeństwa nie był poprawny?",
-        "help": "W przypadku problemów, zachęcamy do zwrócenia się o pomoc, wysyłając do nas wiadomość e-mail:"
-      }
+  "actions": {
+    "cancel": "Odwołaj",
+    "create": "Tworzenie",
+    "delete": "Usuń",
+    "edit": "Edycja",
+    "loading": "załadunek",
+    "loadMore": "Obciążenie więcej",
+    "save": "Oszczędzaj"
+  },
+  "admin": {
+    "categories": {
+      "categoryName": "Nazwa",
+      "name": "Kategorie",
+      "postCount": "Stanowiska"
     },
+    "dashboard": {
+      "comments": "Komentarze",
+      "follows": "Podąża za",
+      "invites": "Zaprasza",
+      "name": "Tablica rozdzielcza",
+      "notifications": "Powiadomienia",
+      "organizations": "Organizacje",
+      "posts": "Stanowiska",
+      "projects": "Projekty",
+      "shouts": "Zalecane",
+      "users": "Użytkownicy"
+    },
+    "name": "Admin",
+    "notifications": {
+      "name": "Powiadomienia"
+    },
+    "organizations": {
+      "name": "Organizacje"
+    },
+    "pages": {
+      "name": "Strony"
+    },
+    "settings": {
+      "name": "Ustawienia"
+    },
+    "tags": {
+      "name": "Znaczniki",
+      "tagCount": "Stanowiska",
+      "tagCountUnique": "Użytkownicy"
+    },
+    "users": {
+      "name": "Użytkownicy"
+    }
+  },
+  "comment": {
+    "content": {
+      "unavailable-placeholder": " ...ten komentarz nie jest już dostępny."
+    },
+    "menu": {
+      "delete": "Usuń komentarz",
+      "edit": "Edytuj komentarz"
+    },
+    "show": {
+      "less": "Pokaż mniej",
+      "more": "Pokaż więcej"
+    }
+  },
+  "common": {
+    "category": "Kategoria ::: Kategorie",
+    "comment": "Komentarz ::: Komentarze",
+    "letsTalk": "Porozmawiajmy",
+    "loading": "załadunek",
+    "loadMore": "Obciążenie więcej",
+    "moreInfo": "Więcej informacji",
+    "name": "Nazwa",
+    "organization": "Organization ::: Organizations",
+    "post": "Poczta ::: Posty",
+    "project": "Projekt ::: Projekty",
+    "reportContent": "Sprawozdanie",
+    "shout": "przekazanie sprawy ::: Polecam tę stronę",
+    "tag": "Znacznik ::: Znaczniki",
+    "takeAction": "Podejmij działania",
+    "user": "Użytkownik ::: Użytkownicy",
+    "validations": {
+      "email": "musi być ważny adres e-mail."
+    },
+    "versus": "werset"
+  },
+  "components": {
     "enter-nonce": {
       "form": {
-        "nonce": "Wprowadź swój kod",
         "description": "Otwórz swoją skrzynkę odbiorczą i wpisz kod, który do Ciebie wysłaliśmy.",
         "next": "Kontynuuj",
+        "nonce": "Wprowadź swój kod",
         "validations": {
           "length": "musi mieć długość 6 znaków."
         }
       }
+    },
+    "password-reset": {
+      "change-password": {
+        "error": "Zmiana hasła nie powiodła się. Może kod bezpieczeństwa nie był poprawny?",
+        "help": "W przypadku problemów, zachęcamy do zwrócenia się o pomoc, wysyłając do nas wiadomość e-mail:",
+        "success": "Zmiana hasła zakończyła się sukcesem!"
+      },
+      "request": {
+        "form": {
+          "description": "Na podany adres e-mail zostanie wysłany email z resetem hasła.",
+          "submit": "Poproś o wiadomość e-mail",
+          "submitted": "Na adres <b>{email}</b> została wysłana wiadomość z dalszymi instrukcjami."
+        },
+        "title": "Zresetuj hasło"
+      }
     }
   },
-  "filter-menu": {
-    "title": "Twoja bańka filtrująca"
+  "contribution": {
+    "categories": {
+      "infoSelectedNoOfMaxCategories": "{chosen} z {max} wybrane kategorie"
+    },
+    "filterALL": "Pokaż wszystkie wpisy",
+    "filterFollow": "Pokaż wpisy użytkowników, których śledzę",
+    "languageSelectLabel": "Język",
+    "newPost": "Utwórz nowy wpis",
+    "success": "Zapisano!",
+    "teaserImage": {
+      "cropperConfirm": "Potwierdzać"
+    }
   },
-  "site": {
-    "made": "Z &#10084; zrobiony",
-    "imprint": "Nadruk",
-    "termsAc": "Warunki użytkowania",
-    "data-privacy": "ochrona danych",
-    "contact": "Kontakt",
-    "tribunal": "sąd rejestrowy",
-    "register": "numer rejestracyjny",
-    "director": "Dyrektor zarządzający",
-    "taxident": "Numer identyfikacyjny podatku od wartości dodanej zgodnie z § 27 a Ustawa o podatku od wartości dodanej (Niemcy)",
-    "responsible": "Odpowiedzialny zgodnie z § 55 Abs. 2 RStV (Niemcy)",
-    "bank": "rachunek bankowy",
-    "germany": "Niemcy"
+  "delete": {
+    "cancel": "Odwołaj",
+    "comment": {
+      "message": "Czy na pewno chcesz ukryć komentarz użytkownika \" <b> {name} </b> \"?",
+      "title": "Usuń komentarz",
+      "type": "Komentarz"
+    },
+    "contribution": {
+      "message": "Czy na pewno chcesz ukryć wpis \" <b> {name} </b> \"?",
+      "success": "Wyślij pomyślnie usunięty!",
+      "title": "Ukryj wpis",
+      "type": "Wpis / Post"
+    },
+    "submit": "Usuń"
   },
-  "login": {
-    "copy": "Jeśli masz już konto Human Connection, zaloguj się tutaj.",
-    "login": "Logowanie",
-    "logout": "Wyloguj się",
-    "email": "Twój adres e-mail",
-    "password": "Twoje hasło",
-    "forgotPassword": "Zapomniałeś hasła?",
-    "moreInfo": "Co to jest Human Connection?",
-    "moreInfoURL": "https://human-connection.org/en/",
-    "moreInfoHint": "idź po więcej szczegółów",
-    "hello": "Cześć"
+  "disable": {
+    "cancel": "Anuluj",
+    "comment": {
+      "message": "Naprawdę chcesz wyłączyć komentarz \"<b>{name}</b>\"?",
+      "title": "Wyłącz komentarz",
+      "type": "Komentarz"
+    },
+    "contribution": {
+      "message": "Naprawdę chcesz unieszkodliwić ten wkład \"<b>{name}</b>\"?",
+      "title": "Wyłącz Wkład",
+      "type": "Wkład"
+    },
+    "submit": "Deaktywuj",
+    "success": "Zdeaktywowano",
+    "user": {
+      "message": "Czy naprawdę chcesz wyłączyć użytkownika  \"<b>{name}</b>\"?",
+      "title": "Wyłączenie użytkownika",
+      "type": "Użytkownik"
+    }
   },
   "editor": {
     "placeholder": "Napisz coś inspirującego..."
   },
-  "profile": {
-    "name": "Mój profil",
-    "memberSince": "Członek od",
-    "follow": "Obserwuj",
-    "followers": "Obserwujący",
-    "following": "Obserwowani",
-    "shouted": "Krzyknij",
-    "commented": "Skomentuj",
-    "userAnonym": "Anonymous",
-    "socialMedia": "Gdzie jeszcze mogę znaleźć",
-    "network": {
-      "title": "Sieć",
-      "following": "obserwuje:",
-      "followingNobody": "nikogo nie obserwuje.",
-      "followedBy": "jest obserwowany:",
-      "followedByNobody": "nikt go nie obserwuje.",
-      "and": "i",
-      "more": "więcej"
+  "filter-menu": {
+    "title": "Twoja bańka filtrująca"
+  },
+  "followButton": {
+    "follow": "naśladować",
+    "following": "w skutek"
+  },
+  "login": {
+    "copy": "Jeśli masz już konto Human Connection, zaloguj się tutaj.",
+    "email": "Twój adres e-mail",
+    "forgotPassword": "Zapomniałeś hasła?",
+    "hello": "Cześć",
+    "login": "Logowanie",
+    "logout": "Wyloguj się",
+    "moreInfo": "Co to jest Human Connection?",
+    "moreInfoHint": "idź po więcej szczegółów",
+    "moreInfoURL": "https://human-connection.org/en/",
+    "password": "Twoje hasło"
+  },
+  "moderation": {
+    "name": "Umiarkowanie",
+    "reports": {
+      "disabledBy": "deaktywowane przez",
+      "empty": "Gratulacje, moderacja nie jest potrzebna",
+      "name": "Raporty",
+      "submitter": "zgłoszone przez"
     }
   },
   "notifications": {
@@ -83,61 +193,147 @@
       "mentioned": "wspomiał o Tobie we wpisie"
     }
   },
+  "post": {
+    "comment": {
+      "submit": "Komentarz",
+      "submitted": "Komentarz dodany"
+    },
+    "menu": {
+      "delete": "Usuń wpis",
+      "edit": "Edytuj wpis"
+    },
+    "moreInfo": {
+      "name": "Więcej informacji"
+    },
+    "name": "Poczta",
+    "takeAction": {
+      "name": "Podejmij działanie"
+    }
+  },
+  "profile": {
+    "commented": "Skomentuj",
+    "follow": "Obserwuj",
+    "followers": "Obserwujący",
+    "following": "Obserwowani",
+    "memberSince": "Członek od",
+    "name": "Mój profil",
+    "network": {
+      "and": "i",
+      "followedBy": "jest obserwowany:",
+      "followedByNobody": "nikt go nie obserwuje.",
+      "following": "obserwuje:",
+      "followingNobody": "nikogo nie obserwuje.",
+      "more": "więcej",
+      "title": "Sieć"
+    },
+    "shouted": "Krzyknij",
+    "socialMedia": "Gdzie jeszcze mogę znaleźć",
+    "userAnonym": "Anonymous"
+  },
+  "quotes": {
+    "african": {
+      "author": "Afrykańskie przysłowie",
+      "quote": "Wielu małych ludzi w wielu małych miejscowościach robi wiele małych rzeczy, które mogą zmienić oblicze świata."
+    }
+  },
+  "release": {
+    "cancel": "Anuluj",
+    "comment": {
+      "message": "Czy na pewno chcesz zgłosić komentarz użytkownika \"<b> {name} </b>\"?",
+      "title": "Zgłoś komentarz",
+      "type": "Komentarz"
+    },
+    "contribution": {
+      "message": "Czy na pewno chcesz zgłosić wpis użytkownika \"<b> {name} </b>\"?",
+      "title": "Zgłoś wpis",
+      "type": "Wpis"
+    },
+    "submit": "Zgłoś",
+    "success": "Zgłoszono pomyślnie!",
+    "user": {
+      "message": "Czy na pewno chcesz zgłosić użytkownika \"<b> {name} </b>\"?",
+      "title": "Zgłoś użytkownika",
+      "type": "Użytkownik"
+    }
+  },
+  "report": {
+    "cancel": "Anuluj",
+    "comment": {
+      "error": "Zgłosiłeś już komentarz!",
+      "message": "Czy na pewno chcesz zgłosić komentarz użytkownika\" <b> {name} </b> \"?",
+      "title": "Sprawozdanie Komentarz",
+      "type": "Komentarz"
+    },
+    "contribution": {
+      "error": "Zgłosiłeś już ten wkład!",
+      "message": "Czy na pewno chcesz zgłosić ten wpis użytkownika \" <b> {name} </b> \"?",
+      "title": "Zgłoś wpis",
+      "type": "Wpis / Post"
+    },
+    "submit": "Wyślij raport",
+    "success": "Dziękujemy za Twoje zgłoszenie!",
+    "user": {
+      "error": "Zgłosiłeś już użytkownika!",
+      "message": "Czy na pewno chcesz zgłosić użytkownika \" <b> {name} </b> \"?",
+      "title": "Raport Użytkownik",
+      "type": "Użytkownik"
+    }
+  },
   "search": {
-    "placeholder": "Szukaj",
+    "failed": "Niczego nie znaleziono",
     "hint": "Czego szukasz?",
-    "failed": "Niczego nie znaleziono"
+    "placeholder": "Szukaj"
   },
   "settings": {
-    "name": "Ustawienia",
     "data": {
-      "name": "Twoje dane",
-      "labelName": "Twoje dane",
-      "namePlaceholder": "Anonymous",
-      "labelCity": "Twoje miasto lub region",
       "labelBio": "O Tobie",
+      "labelCity": "Twoje miasto lub region",
+      "labelName": "Twoje dane",
+      "name": "Twoje dane",
+      "namePlaceholder": "Anonymous",
       "success": "Twoje dane zostały pomyślnie zaktualizowane!"
     },
+    "deleteUserAccount": {
+      "accountDescription": "Be aware that your Post and Comments are important to our community. If you still choose to delete them, you have to mark them below.",
+      "accountWarning": "Po usunięcie Twojego konta, nie możesz ZARZĄDZAĆ ani ODZYSKAĆ danych, wpisów oraz komentarzy!",
+      "commentedCount": "Usuń {count} moich komentarzy",
+      "contributionsCount": "Usuń {count} moich postów",
+      "name": "Usuń dane",
+      "pleaseConfirm": "Uwaga, niebezpieczeństwo! Wpisz „{confirm}”, aby potwierdzić.",
+      "success": "Konto zostało usunięte"
+    },
+    "download": {
+      "name": "Pobierz dane"
+    },
+    "invites": {
+      "name": "Zaproszenia"
+    },
+    "languages": {
+      "name": "Języki"
+    },
+    "name": "Ustawienia",
+    "organizations": {
+      "name": "My Organizations"
+    },
     "security": {
-      "name": "Bezpieczeństwo",
       "change-password": {
         "button": "Zmień hasło",
-        "success": "Hasło zostało zmienione!",
-        "label-old-password": "Stare hasło",
         "label-new-password": "Nowe hasło",
         "label-new-password-confirm": "Potwierdź nowe hasło",
-        "message-old-password-required": "Podaj stare hasło",
-        "message-new-password-required": "Wprowadź nowe hasło",
+        "label-old-password": "Stare hasło",
         "message-new-password-confirm-required": "Potwierdź nowe hasło",
         "message-new-password-missmatch": "Wpisz to samo hasło ponownie",
+        "message-new-password-required": "Wprowadź nowe hasło",
+        "message-old-password-required": "Podaj stare hasło",
         "passwordSecurity": "Siła hasła",
         "passwordStrength0": "Hasło bardzo słabe",
         "passwordStrength1": "Hasło słabe",
         "passwordStrength2": "Hasło średnie",
         "passwordStrength3": "Hasło silne",
-        "passwordStrength4": "Hasło bardzo silne"
-      }
-    },
-    "invites": {
-      "name": "Zaproszenia"
-    },
-    "download": {
-      "name": "Pobierz dane"
-    },
-    "deleteUserAccount": {
-      "name": "Usuń dane",
-      "contributionsCount": "Usuń {count} moich postów",
-      "commentedCount": "Usuń {count} moich komentarzy",
-      "accountDescription": "Be aware that your Post and Comments are important to our community. If you still choose to delete them, you have to mark them below.",
-      "accountWarning": "Po usunięcie Twojego konta, nie możesz <b>ZARZĄDZAĆ</b> ani <b>ODZYSKAĆ</b> danych, wpisów oraz komentarzy!",
-      "success": "Konto zostało usunięte",
-      "pleaseConfirm": "<b class='is-danger'>Uwaga, niebezpieczeństwo!</b> Wpisz <b>{confirm}</b>, aby potwierdzić"
-    },
-    "organizations": {
-      "name": "My Organizations"
-    },
-    "languages": {
-      "name": "Języki"
+        "passwordStrength4": "Hasło bardzo silne",
+        "success": "Hasło zostało zmienione!"
+      },
+      "name": "Bezpieczeństwo"
     },
     "social-media": {
       "name": "Media społecznościowe",
@@ -147,223 +343,26 @@
       "successDelete": "Usunięto społeczność. Profil zaktualizowany!"
     }
   },
-  "admin": {
-    "name": "Admin",
-    "dashboard": {
-      "name": "Tablica rozdzielcza",
-      "users": "Użytkownicy",
-      "posts": "Stanowiska",
-      "comments": "Komentarze",
-      "notifications": "Powiadomienia",
-      "organizations": "Organizacje",
-      "projects": "Projekty",
-      "invites": "Zaprasza",
-      "follows": "Podąża za",
-      "shouts": "Zalecane"
-    },
-    "organizations": {
-      "name": "Organizacje"
-    },
-    "users": {
-      "name": "Użytkownicy"
-    },
-    "pages": {
-      "name": "Strony"
-    },
-    "notifications": {
-      "name": "Powiadomienia"
-    },
-    "categories": {
-      "name": "Kategorie",
-      "categoryName": "Nazwa",
-      "postCount": "Stanowiska"
-    },
-    "tags": {
-      "name": "Znaczniki",
-      "tagCountUnique": "Użytkownicy",
-      "tagCount": "Stanowiska"
-    },
-    "settings": {
-      "name": "Ustawienia"
-    }
-  },
-  "post": {
-    "name": "Poczta",
-    "moreInfo": {
-      "name": "Więcej informacji"
-    },
-    "takeAction": {
-      "name": "Podejmij działanie"
-    },
-    "menu": {
-      "edit": "Edytuj wpis",
-      "delete": "Usuń wpis"
-    },
-    "comment": {
-      "submit": "Komentarz",
-      "submitted": "Komentarz dodany"
-    }
-  },
-  "comment": {
-    "content": {
-      "unavailable-placeholder": " ...ten komentarz nie jest już dostępny."
-    },
-    "menu": {
-      "edit": "Edytuj komentarz",
-      "delete": "Usuń komentarz"
-    },
-    "show": {
-      "more": "Pokaż więcej",
-      "less": "Pokaż mniej"
-    }
-
-  },
-  "quotes": {
-    "african": {
-      "quote": "Wielu małych ludzi w wielu małych miejscowościach robi wiele małych rzeczy, które mogą zmienić oblicze świata.",
-      "author": "Afrykańskie przysłowie"
-    }
-  },
-  "common": {
-    "post": "Poczta ::: Posty",
-    "comment": "Komentarz ::: Komentarze",
-    "letsTalk": "Porozmawiajmy",
-    "versus": "werset",
-    "moreInfo": "Więcej informacji",
-    "takeAction": "Podejmij działania",
-    "shout": "przekazanie sprawy ::: Polecam tę stronę",
-    "user": "Użytkownik ::: Użytkownicy",
-    "category": "Kategoria ::: Kategorie",
-    "organization": "Organization ::: Organizations",
-    "project": "Projekt ::: Projekty",
-    "tag": "Znacznik ::: Znaczniki",
-    "name": "Nazwa",
-    "loadMore": "Obciążenie więcej",
-    "loading": "załadunek",
-    "reportContent": "Sprawozdanie",
-    "validations": {
-      "email": "musi być ważny adres e-mail."
-    }
-  },
-  "actions": {
-    "loading": "załadunek",
-    "loadMore": "Obciążenie więcej",
-    "create": "Tworzenie",
-    "save": "Oszczędzaj",
-    "edit": "Edycja",
-    "delete": "Usuń",
-    "cancel": "Odwołaj"
-  },
-  "moderation": {
-    "name": "Umiarkowanie",
-    "reports": {
-      "empty": "Gratulacje, moderacja nie jest potrzebna",
-      "name": "Raporty",
-      "submitter": "zgłoszone przez",
-      "disabledBy": "deaktywowane przez"
-    }
-  },
-  "disable": {
-    "submit": "Deaktywuj",
-    "cancel": "Anuluj",
-    "success": "Zdeaktywowano",
-    "user": {
-      "title": "Wyłączenie użytkownika",
-      "type": "Użytkownik",
-      "message": "Czy naprawdę chcesz wyłączyć użytkownika  \"<b>{name}</b>\"?"
-    },
-    "contribution": {
-      "title": "Wyłącz Wkład",
-      "type": "Wkład",
-      "message": "Naprawdę chcesz unieszkodliwić ten wkład \"<b>{name}</b>\"?"
-    },
-    "comment": {
-      "title": "Wyłącz komentarz",
-      "type": "Komentarz",
-      "message": "Naprawdę chcesz wyłączyć komentarz \"<b>{name}</b>\"?"
-    }
-  },
-  "delete": {
-    "submit": "Usuń",
-    "cancel": "Odwołaj",
-    "contribution": {
-      "title": "Ukryj wpis",
-      "type": "Wpis / Post",
-      "message": "Czy na pewno chcesz ukryć wpis \" <b> {name} </b> \"?",
-      "success": "Wyślij pomyślnie usunięty!"
-    },
-    "comment": {
-      "title": "Usuń komentarz",
-      "type": "Komentarz",
-      "message": "Czy na pewno chcesz ukryć komentarz użytkownika \" <b> {name} </b> \"?"
-    }
-  },
-  "report": {
-    "submit": "Wyślij raport",
-    "cancel": "Anuluj",
-    "success": "Dziękujemy za Twoje zgłoszenie!",
-    "user": {
-      "title": "Raport Użytkownik",
-      "type": "Użytkownik",
-      "message": "Czy na pewno chcesz zgłosić użytkownika \" <b> {name} </b> \"?",
-      "error": "Zgłosiłeś już użytkownika!"
-    },
-    "contribution": {
-      "title": "Zgłoś wpis",
-      "type": "Wpis / Post",
-      "message": "Czy na pewno chcesz zgłosić ten wpis użytkownika \" <b> {name} </b> \"?",
-      "error": "Zgłosiłeś już ten wkład!"
-    },
-    "comment": {
-      "title": "Sprawozdanie Komentarz",
-      "type": "Komentarz",
-      "message": "Czy na pewno chcesz zgłosić komentarz użytkownika\" <b> {name} </b> \"?",
-      "error": "Zgłosiłeś już komentarz!"
-    }
-  },
-  "followButton": {
-    "follow": "naśladować",
-    "following": "w skutek"
-  },
   "shoutButton": {
     "shouted": "krzyczeć"
   },
-  "release": {
-    "submit": "Zgłoś",
-    "cancel": "Anuluj",
-    "success": "Zgłoszono pomyślnie!",
-    "user": {
-      "title": "Zgłoś użytkownika",
-      "type": "Użytkownik",
-      "message": "Czy na pewno chcesz zgłosić użytkownika \"<b> {name} </b>\"?"
-    },
-    "contribution": {
-      "title": "Zgłoś wpis",
-      "type": "Wpis",
-      "message": "Czy na pewno chcesz zgłosić wpis użytkownika \"<b> {name} </b>\"?"
-    },
-    "comment": {
-      "title": "Zgłoś komentarz",
-      "type": "Komentarz",
-      "message": "Czy na pewno chcesz zgłosić komentarz użytkownika \"<b> {name} </b>\"?"
-    }
+  "site": {
+    "bank": "rachunek bankowy",
+    "contact": "Kontakt",
+    "data-privacy": "ochrona danych",
+    "director": "Dyrektor zarządzający",
+    "germany": "Niemcy",
+    "imprint": "Nadruk",
+    "made": "Z &#10084; zrobiony",
+    "register": "numer rejestracyjny",
+    "responsible": "Odpowiedzialny zgodnie z § 55 Abs. 2 RStV (Niemcy)",
+    "taxident": "Numer identyfikacyjny podatku od wartości dodanej zgodnie z § 27 a Ustawa o podatku od wartości dodanej (Niemcy)",
+    "termsAc": "Warunki użytkowania",
+    "tribunal": "sąd rejestrowy"
   },
   "user": {
     "avatar": {
       "submitted": "Przesłano pomyślnie"
-    }
-  },
-  "contribution": {
-    "newPost": "Utwórz nowy wpis",
-    "filterFollow": "Pokaż wpisy użytkowników, których śledzę",
-    "filterALL": "Pokaż wszystkie wpisy",
-    "success": "Zapisano!",
-    "languageSelectLabel": "Język",
-    "categories": {
-      "infoSelectedNoOfMaxCategories": "{chosen} z {max} wybrane kategorie"
-    },
-    "teaserImage": {
-      "cropperConfirm": "Potwierdzać"
     }
   }
 }

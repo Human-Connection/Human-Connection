@@ -17,3 +17,15 @@ enum ReasonCategory {
   advert_products_services_commercial
   criminal_behavior_violation_german_law
 }
+
+type FiledReport {
+  createdAt: String!
+  reasonCategory: ReasonCategory!
+  reasonDescription: String!
+  reportId: ID!
+  resource: ReportedResource!
+}
+
+type Mutation {
+  fileReport(resourceId: ID!, reasonCategory: ReasonCategory!, reasonDescription: String!): FiledReport
+}

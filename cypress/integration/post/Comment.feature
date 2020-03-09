@@ -6,8 +6,11 @@ Feature: Post Comment
   Background:
     Given I have a user account
     And we have the following posts in our database:
-      | id         | title                                         | slug       | authorId        | commentContent         |
-      | bWBjpkTKZp | 101 Essays that will change the way you think | 101-essays | id-of-peter-pan | @peter-pan reply to me |
+      | id         | title                                         | slug       | authorId        |
+      | bWBjpkTKZp | 101 Essays that will change the way you think | 101-essays | id-of-peter-pan |
+    And we have the following comments in our database:
+      | postId     | content                | authorId        |
+      | bWBjpkTKZp | @peter-pan reply to me | id-of-peter-pan |
     And I am logged in
 
   Scenario: Comment creation

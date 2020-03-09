@@ -1,10 +1,9 @@
-import Factory from '../../factories'
+import Factory, { cleanDatabase } from '../../db/factories'
 import { gql } from '../../helpers/jest'
 import { getDriver } from '../../db/neo4j'
 import { createTestClient } from 'apollo-server-testing'
 import createServer from '../.././server'
 
-const factory = Factory()
 const driver = getDriver()
 let authenticatedUser
 let user
@@ -32,66 +31,155 @@ beforeEach(async () => {
 })
 
 afterEach(async () => {
-  await factory.cleanDatabase()
+  await cleanDatabase()
 })
 
 describe('given some notifications', () => {
   beforeEach(async () => {
     const categoryIds = ['cat1']
-    author = await factory.create('User', { id: 'author' })
-    user = await factory.create('User', { id: 'you' })
+    // author = await factory.create('User', { id: 'author' })
+    // user = await factory.create('User', { id: 'you' })
+    // const [neighbor, badWomen] = await Promise.all([
+    //   factory.create('User', { id: 'neighbor' }),
+    //   factory.create('User', { id: 'badWomen', name: 'Mrs. Badwomen' }),
+    //   factory.create('Category', { id: 'cat1' }),
+    // ])
+    // const [post1, post2, post3, post4] = await Promise.all([
+      // factory.create('Post', { author, id: 'p1', categoryIds, content: 'Not for you' }),
+      // factory.create('Post', {
+      //   author,
+      //   id: 'p2',
+      //   categoryIds,
+      //   content: 'Already seen post mention',
+      // }),
+      // factory.create('Post', {
+      //   author,
+      //   id: 'p3',
+      //   categoryIds,
+      //   content: 'You have been mentioned in a post',
+      // }),
+    //   factory.create('Post', {
+    //     author,
+    //     id: 'p4',
+    //     categoryIds,
+    //     title: 'Bad Post',
+    //     content: 'I am bad content !!!',
+    //   }),
+    // ])
+    // const [comment1, comment2, comment3, comment4] = await Promise.all([
+      // factory.create('Comment', {
+      //   author,
+      //   postId: 'p3',
+      //   id: 'c1',
+      //   content: 'You have seen this comment mentioning already',
+      // }),
+      // factory.create('Comment', {
+      //   author,
+      //   postId: 'p3',
+      //   id: 'c2',
+      //   content: 'You have been mentioned in a comment',
+      // }),
+      // factory.create('Comment', {
+      //   author,
+      //   postId: 'p3',
+      //   id: 'c3',
+      //   content: 'Somebody else was mentioned in a comment',
+      // }),
+      // factory.create('Comment', {
+      //   author,
+      //   postId: 'p4',
+      //   id: 'c4',
+      //   content: 'I am harassing content in a harassing comment to a bad post !!!',
+      // }),
+    author = await Factory.build('user', { id: 'author' })
+    user = await Factory.build('user', { id: 'you' })
     const [neighbor, badWomen] = await Promise.all([
-      factory.create('User', { id: 'neighbor' }),
-      factory.create('User', { id: 'badWomen', name: 'Mrs. Badwomen' }),
-      factory.create('Category', { id: 'cat1' }),
+      Factory.build('user', { id: 'neighbor' }),
+      Factory.build('user', { id: 'badWomen', name: 'Mrs. Badwomen' }),
+      Factory.build('category', { id: 'cat1' }),
     ])
     const [post1, post2, post3, post4] = await Promise.all([
-      factory.create('Post', { author, id: 'p1', categoryIds, content: 'Not for you' }),
-      factory.create('Post', {
-        author,
-        id: 'p2',
-        categoryIds,
-        content: 'Already seen post mention',
-      }),
-      factory.create('Post', {
-        author,
-        id: 'p3',
-        categoryIds,
-        content: 'You have been mentioned in a post',
-      }),
-      factory.create('Post', {
-        author,
-        id: 'p4',
-        categoryIds,
-        title: 'Bad Post',
-        content: 'I am bad content !!!',
-      }),
+      Factory.build('post', { id: 'p1', content: 'Not for you' }, { author, categoryIds }),
+      Factory.build(
+        'post',
+        {
+          id: 'p2',
+          content: 'Already seen post mention',
+        },
+        {
+          author,
+          categoryIds,
+        },
+      ),
+      Factory.build(
+        'post',
+        {
+          id: 'p3',
+          content: 'You have been mentioned in a post',
+        },
+        {
+          author,
+          categoryIds,
+        },
+      ),
+      Factory.build(
+        'post',
+        {
+          id: 'p4',
+          title: 'Bad Post',
+          content: 'I am bad content !!!',
+        },
+        {
+          author,
+          categoryIds,
+        },
+      ),
     ])
     const [comment1, comment2, comment3, comment4] = await Promise.all([
-      factory.create('Comment', {
-        author,
-        postId: 'p3',
-        id: 'c1',
-        content: 'You have seen this comment mentioning already',
-      }),
-      factory.create('Comment', {
-        author,
-        postId: 'p3',
-        id: 'c2',
-        content: 'You have been mentioned in a comment',
-      }),
-      factory.create('Comment', {
-        author,
-        postId: 'p3',
-        id: 'c3',
-        content: 'Somebody else was mentioned in a comment',
-      }),
-      factory.create('Comment', {
-        author,
-        postId: 'p4',
-        id: 'c4',
-        content: 'I am harassing content in a harassing comment to a bad post !!!',
-      }),
+      Factory.build(
+        'comment',
+        {
+          id: 'c1',
+          content: 'You have seen this comment mentioning already',
+        },
+        {
+          author,
+          postId: 'p3',
+        },
+      ),
+      Factory.build(
+        'comment',
+        {
+          id: 'c2',
+          content: 'You have been mentioned in a comment',
+        },
+        {
+          author,
+          postId: 'p3',
+        },
+      ),
+      Factory.build(
+        'comment',
+        {
+          id: 'c3',
+          content: 'Somebody else was mentioned in a comment',
+        },
+        {
+          author,
+          postId: 'p3',
+        },
+      ),
+      Factory.build(
+        'comment',
+        {
+          id: 'c4',
+          content: 'I am harassing content in a harassing comment to a bad post !!!',
+        },
+        {
+          author,
+          postId: 'p4',
+        },
+      ),
     ])
     await Promise.all([
       neighbor.relateTo(post1, 'notified', {

@@ -1,9 +1,11 @@
 import createServer from './server'
 import CONFIG from './config'
 
-const { app } = createServer()
+const { server, httpServer } = createServer()
 const url = new URL(CONFIG.GRAPHQL_URI)
-app.listen({ port: url.port }, () => {
+httpServer.listen({ port: url.port }, () => {
   /* eslint-disable-next-line no-console */
-  console.log(`GraphQLServer ready at ${CONFIG.GRAPHQL_URI} 🚀`)
+  console.log(`🚀 Server ready at http://localhost:${url.port}${server.graphqlPath}`)
+  /* eslint-disable-next-line no-console */
+  console.log(`🚀 Subscriptions ready at ws://localhost:${url.port}${server.subscriptionsPath}`)
 })

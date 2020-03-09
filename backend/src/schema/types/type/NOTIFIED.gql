@@ -31,3 +31,7 @@ type Query {
 type Mutation {
   markAsRead(id: ID!): NOTIFIED
 }
+
+type Subscription {
+  notificationAdded(userId: ID!): NOTIFIED
+}

@@ -1,11 +1,9 @@
 <template>
   <transition name="fade" appear>
     <ds-container width="medium">
-      <ds-card>
+      <base-card>
         <ds-space>
-          <client-only>
-            <locale-switch class="login-locale-switch" offset="5" />
-          </client-only>
+          <locale-switch class="login-locale-switch" offset="5" />
         </ds-space>
         <ds-flex>
           <ds-flex-item :width="{ base: '100%', sm: 1, md: 1 }">
@@ -31,7 +29,7 @@
             </ds-flex-item>
           </ds-flex-item>
         </ds-flex>
-      </ds-card>
+      </base-card>
     </ds-container>
   </transition>
 </template>

@@ -1,7 +1,8 @@
 <template>
   <ds-form v-model="form" :schema="formSchema" @submit="submit">
     <template slot-scope="{ errors }">
-      <ds-card :header="$t('settings.data.name')">
+      <base-card>
+        <h2 class="title">{{ $t('settings.data.name') }}</h2>
         <ds-input
           id="name"
           model="name"
@@ -30,12 +31,10 @@
           :label="$t('settings.data.labelBio')"
           :placeholder="$t('settings.data.labelBio')"
         />
-        <template slot="footer">
-          <base-button icon="check" :disabled="errors" type="submit" :loading="loadingData" filled>
-            {{ $t('actions.save') }}
-          </base-button>
-        </template>
-      </ds-card>
+        <base-button icon="check" :disabled="errors" type="submit" :loading="loadingData" filled>
+          {{ $t('actions.save') }}
+        </base-button>
+      </base-card>
     </template>
   </ds-form>
 </template>

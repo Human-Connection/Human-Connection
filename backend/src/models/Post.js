@@ -1,4 +1,4 @@
-import uuid from 'uuid/v4'
+import { v4 as uuid } from 'uuid'
 
 export default {
   id: { type: 'string', primary: true, default: uuid },
@@ -38,5 +38,4 @@ export default {
     },
   },
   pinned: { type: 'boolean', default: null, valid: [null, true] },
-  pinnedAt: { type: 'string', isoDate: true },
 }

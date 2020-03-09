@@ -1,0 +1,29 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Release.Name }}-db-migrations
+  labels:
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/name: human-connection
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+  annotations:
+    "helm.sh/hook": post-upgrade
+    "helm.sh/hook-weight": "5"
+    "helm.sh/hook-delete-policy": hook-succeeded, hook-failed
+spec:
+  template:
+    metadata:
+      name: {{ .Release.Name }}
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: db-migrations-job
+        image: "{{ .Values.backendImage }}:latest"
+        command: ["/bin/sh", "-c", "{{ .Values.dbMigrations }}"]
+        envFrom:
+          - configMapRef:
+              name: {{ .Release.Name }}-configmap
+          - secretRef:
+              name: {{ .Release.Name }}-secrets

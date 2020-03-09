@@ -1,80 +1,46 @@
 <template>
-  <div>
-    <ds-card hover>
-      <ds-space />
-      <ds-container>
-        <ds-flex>
-          <ds-flex-item :width="{ base: '22%', sm: '12%', md: '12%', lg: '8%' }">
-            <base-icon name="warning" class="delete-warning-icon" />
-          </ds-flex-item>
-          <ds-flex-item :width="{ base: '78%', sm: '88%', md: '88%', lg: '92%' }">
-            <ds-heading>{{ $t('settings.deleteUserAccount.name') }}</ds-heading>
-          </ds-flex-item>
-          <ds-space />
-          <ds-heading tag="h4">
-            {{ $t('settings.deleteUserAccount.accountDescription') }}
-          </ds-heading>
-        </ds-flex>
-      </ds-container>
-      <ds-space />
-      <ds-container>
-        <transition name="slide-up">
-          <div v-if="deleteEnabled">
-            <label v-if="currentUser.contributionsCount" class="checkbox-container">
-              <input type="checkbox" v-model="deleteContributions" />
-              <span class="checkmark"></span>
-              {{
-                $t('settings.deleteUserAccount.contributionsCount', {
-                  count: currentUser.contributionsCount,
-                })
-              }}
-            </label>
-            <ds-space margin-bottom="small" />
-            <label v-if="currentUser.commentedCount" class="checkbox-container">
-              <input type="checkbox" v-model="deleteComments" />
-              <span class="checkmark"></span>
-              {{
-                $t('settings.deleteUserAccount.commentedCount', {
-                  count: currentUser.commentedCount,
-                })
-              }}
-            </label>
-            <ds-space margin-bottom="small" />
-            <ds-section id="delete-user-account-warning">
-              <div v-html="$t('settings.deleteUserAccount.accountWarning')"></div>
-            </ds-section>
-          </div>
-        </transition>
-      </ds-container>
-      <template slot="footer" class="delete-data-footer">
-        <ds-container>
-          <div
-            class="delete-input-label"
-            v-html="$t('settings.deleteUserAccount.pleaseConfirm', { confirm: currentUser.name })"
-          ></div>
-          <ds-space margin-bottom="xx-small" />
-          <ds-flex :gutter="{ base: 'xx-small', md: 'small', lg: 'large' }">
-            <ds-flex-item :width="{ base: '100%', sm: '100%', md: '100%', lg: 1.75 }">
-              <ds-input v-model="enableDeletionValue" class="enable-deletion-input" />
-            </ds-flex-item>
-            <ds-flex-item :width="{ base: '100%', sm: '100%', md: '100%', lg: 1 }">
-              <base-button
-                icon="trash"
-                danger
-                filled
-                :disabled="!deleteEnabled"
-                data-test="delete-button"
-                @click="handleSubmit"
-              >
-                {{ $t('settings.deleteUserAccount.name') }}
-              </base-button>
-            </ds-flex-item>
-          </ds-flex>
-        </ds-container>
-      </template>
-    </ds-card>
-  </div>
+  <base-card class="delete-data">
+    <h2 class="title">
+      <base-icon name="warning" />
+      {{ $t('settings.deleteUserAccount.name') }}
+    </h2>
+    <label>
+      {{ $t('settings.deleteUserAccount.pleaseConfirm', { confirm: currentUser.name }) }}
+    </label>
+    <ds-input v-model="enableDeletionValue" />
+    <p class="notice">{{ $t('settings.deleteUserAccount.accountDescription') }}</p>
+    <label v-if="currentUser.contributionsCount" class="checkbox">
+      <input type="checkbox" v-model="deleteContributions" />
+      {{
+        $t('settings.deleteUserAccount.contributionsCount', {
+          count: currentUser.contributionsCount,
+        })
+      }}
+    </label>
+    <label v-if="currentUser.commentedCount" class="checkbox">
+      <input type="checkbox" v-model="deleteComments" />
+      {{
+        $t('settings.deleteUserAccount.commentedCount', {
+          count: currentUser.commentedCount,
+        })
+      }}
+    </label>
+    <section v-if="deleteEnabled" class="warning">
+      <p>{{ $t('settings.deleteUserAccount.accountWarning') }}</p>
+    </section>
+    <base-button
+      icon="trash"
+      danger
+      filled
+      :disabled="!deleteEnabled"
+      data-test="delete-button"
+      @click="handleSubmit"
+    >
+      {{ $t('settings.deleteUserAccount.name') }}
+    </base-button>
+  </base-card>
 </template>
+
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import gql from 'graphql-tag'
@@ -131,96 +97,47 @@ export default {
   },
 }
 </script>
+
 <style lang="scss">
-.delete-warning-icon {
-  color: $color-danger;
-  font-size: $font-size-xxx-large;
-}
+.delete-data {
+  display: flex;
+  flex-direction: column;
 
-.checkbox-container {
-  display: block;
-  position: relative;
-  padding-left: 35px;
-  cursor: pointer;
-  font-size: $font-size-large;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
+  > .title > .base-icon {
+    color: $color-danger;
+  }
 
-.checkbox-container input {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-  height: 0;
-  width: 0;
-}
+  > .ds-form-item {
+    align-self: flex-start;
+    margin-top: $space-xxx-small;
+  }
 
-.checkmark {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 20px;
-  width: 20px;
-  border: 2px solid $background-color-inverse-softer;
-  background-color: $background-color-base;
-  border-radius: $border-radius-x-large;
-}
+  > .notice {
+    font-weight: $font-weight-bold;
+    margin-bottom: $space-small;
+  }
 
-.checkbox-container:hover input ~ .checkmark {
-  background-color: $background-color-softest;
-}
+  > .checkbox {
+    margin-left: $space-base;
+    margin-bottom: $space-x-small;
 
-.checkbox-container input:checked ~ .checkmark {
-  background-color: $background-color-danger-active;
-}
+    &:last-of-type {
+      margin-bottom: $space-small;
+    }
+  }
 
-.checkmark:after {
-  content: '';
-  position: absolute;
-  display: none;
-}
+  > .warning {
+    padding: $space-large;
+    margin-bottom: $space-small;
+    border-radius: $border-radius-base;
 
-.checkbox-container input:checked ~ .checkmark:after {
-  display: block;
-}
+    color: $color-danger;
+    background-color: $color-danger-inverse;
+    border-left: 4px solid $color-danger;
+  }
 
-.checkbox-container .checkmark:after {
-  left: 6px;
-  top: 3px;
-  width: 5px;
-  height: 10px;
-  border: solid $background-color-base;
-  border-width: 0 $border-size-large $border-size-large 0;
-  -webkit-transform: rotate(45deg);
-  -ms-transform: rotate(45deg);
-  transform: rotate(45deg);
-}
-
-.enable-deletion-input input:focus {
-  border-color: $border-color-danger;
-}
-
-.delete-input-label {
-  font-size: $font-size-base;
-}
-
-b.is-danger {
-  color: $text-color-danger;
-}
-
-.delete-data-footer {
-  border-top: $border-size-base solid $border-color-softest;
-  background-color: $background-color-danger-inverse;
-}
-
-#delete-user-account-warning {
-  background-color: $background-color-danger-inverse;
-  border-left: $border-size-x-large solid $background-color-danger-active;
-  color: $text-color-danger;
-  margin-left: 0px;
-  margin-right: 0px;
-  border-radius: $border-radius-x-large;
+  > .base-button {
+    align-self: flex-start;
+  }
 }
 </style>

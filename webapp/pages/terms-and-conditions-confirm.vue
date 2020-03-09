@@ -1,27 +1,21 @@
 <template>
-  <ds-container width="medium">
-    <ds-card icon="balance-scale" :header="$t(`termsAndConditions.newTermsAndConditions`)" centered>
-      <p>
-        <nuxt-link :to="{ name: 'terms-and-conditions' }" target="_blank">
-          <base-button>
-            {{ $t(`termsAndConditions.termsAndConditionsNewConfirmText`) }}
-          </base-button>
-        </nuxt-link>
-      </p>
-      <ds-text>
-        <input id="checkbox" type="checkbox" v-model="checked" :checked="checked" />
-        <label
-          for="checkbox"
-          v-html="$t('termsAndConditions.termsAndConditionsNewConfirm')"
-        ></label>
-      </ds-text>
-
-      <template slot="footer">
-        <base-button filled @click="submit" :disabled="!checked">
-          {{ $t(`actions.save`) }}
+  <ds-container width="medium" class="terms-and-conditions-confirm">
+    <base-card>
+      <base-icon name="balance-scale" />
+      <h2 class="title">{{ $t(`termsAndConditions.newTermsAndConditions`) }}</h2>
+      <nuxt-link :to="{ name: 'terms-and-conditions' }" target="_blank">
+        <base-button>
+          {{ $t(`termsAndConditions.termsAndConditionsNewConfirmText`) }}
         </base-button>
-      </template>
-    </ds-card>
+      </nuxt-link>
+      <label for="checkbox">
+        <input id="checkbox" type="checkbox" v-model="checked" :checked="checked" />
+        {{ $t('termsAndConditions.termsAndConditionsNewConfirm') }}
+      </label>
+      <base-button filled @click="submit" :disabled="!checked">
+        {{ $t(`actions.save`) }}
+      </base-button>
+    </base-card>
   </ds-container>
 </template>
 
@@ -91,3 +85,17 @@ export default {
   },
 }
 </script>
+
+<style lang="scss">
+.terms-and-conditions-confirm > .base-card {
+  height: 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+
+  > .base-icon {
+    font-size: $font-size-xxx-large;
+  }
+}
+</style>

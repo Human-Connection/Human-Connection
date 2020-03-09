@@ -1,21 +1,18 @@
 import log from './helpers/databaseLogger'
-
-const resourceTypes = ['Post', 'Comment', 'Report']
-
-const transformReturnType = record => {
-  return {
-    ...record.get('notification').properties,
-    from: {
-      __typename: record.get('resource').labels.find(l => resourceTypes.includes(l)),
-      ...record.get('resource').properties,
-    },
-    to: {
-      ...record.get('user').properties,
-    },
-  }
-}
+import { withFilter } from 'graphql-subscriptions'
+import { pubsub, NOTIFICATION_ADDED } from '../../server'
 
 export default {
+  Subscription: {
+    notificationAdded: {
+      subscribe: withFilter(
+        () => pubsub.asyncIterator(NOTIFICATION_ADDED),
+        (payload, variables) => {
+          return payload.notificationAdded.to.id === variables.userId
+        },
+      ),
+    },
+  },
   Query: {
     notifications: async (_parent, args, context, _resolveInfo) => {
       const { user: currentUser } = context
@@ -85,7 +82,12 @@ export default {
           ` 
             MATCH (resource {id: $resourceId})-[notification:NOTIFIED {read: FALSE}]->(user:User {id: $id})
             SET notification.read = TRUE
-            RETURN resource, notification, user
+            WITH user, notification, resource,
+            [(resource)<-[:WROTE]-(author:User) | author {.*}] AS authors,
+            [(resource)-[:COMMENTS]->(post:Post)<-[:WROTE]-(author:User) | post{.*, author: properties(author)} ] AS posts
+            WITH resource, user, notification, authors, posts,
+            resource {.*, __typename: labels(resource)[0], author: authors[0], post: posts[0]} AS finalResource
+            RETURN notification {.*, from: finalResource, to: properties(user)}
           `,
           {
             resourceId: args.id,
@@ -93,7 +95,9 @@ export default {
           },
         )
         log(markNotificationAsReadTransactionResponse)
-        return markNotificationAsReadTransactionResponse.records.map(transformReturnType)
+        return markNotificationAsReadTransactionResponse.records.map(record =>
+          record.get('notification'),
+        )
       })
       try {
         const [notifications] = await writeTxResultPromise

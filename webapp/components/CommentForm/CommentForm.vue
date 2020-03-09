@@ -1,8 +1,7 @@
 <template>
   <ds-form v-model="form" @submit="handleSubmit" class="comment-form">
     <template slot-scope="{ errors }">
-      <ds-card>
-        <!-- with client-only the content is not shown -->
+      <base-card>
         <hc-editor ref="editor" :users="users" :value="form.content" @input="updateEditorContent" />
         <div class="buttons">
           <base-button
@@ -17,7 +16,7 @@
             {{ $t('post.comment.submit') }}
           </base-button>
         </div>
-      </ds-card>
+      </base-card>
     </template>
   </ds-form>
 </template>
@@ -72,7 +71,7 @@ export default {
       this.$refs.editor.clear()
     },
     closeEditWindow() {
-      this.$emit('showEditCommentMenu', false)
+      this.$emit('finishEditing')
     },
     handleCancel() {
       if (!this.update) {
@@ -146,10 +145,13 @@ export default {
 
 <style lang="scss">
 .comment-form {
+  .editor {
+    margin-bottom: $space-small;
+  }
+
   .buttons {
     display: flex;
     justify-content: flex-end;
-    margin: $space-small 0;
 
     > .base-button {
       margin-left: $space-x-small;
