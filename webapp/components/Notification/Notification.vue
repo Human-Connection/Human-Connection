@@ -19,7 +19,7 @@
     </client-only>
     <ds-space margin-bottom="x-small" />
     <nuxt-link :to="notificationData.linkTo" @click.native="$emit('read')"> -->
-      <!-- <ds-space margin-bottom="x-small">
+  <!-- <ds-space margin-bottom="x-small">
         <ds-card
           :header="
             (notificationData.isPost || notificationData.isComment) && notificationData.title
@@ -85,15 +85,15 @@
         )
       }}
     </p>
-    <nuxt-link
-      class="link"
-      :to="notificationData.linkTo"
-      @click.native="$emit('read')"
-    >
+    <nuxt-link class="link" :to="notificationData.linkTo" @click.native="$emit('read')">
       <base-card wideContent>
-        <h2 class="title">{{ (notificationData.isPost || notificationData.isComment) && notificationData.title }}</h2>
+        <h2 class="title">
+          {{ (notificationData.isPost || notificationData.isComment) && notificationData.title }}
+        </h2>
         <p>
-          <strong v-if="notificationData.isComment" class="comment">{{ $t(`notifications.comment`) }}:</strong>
+          <strong v-if="notificationData.isComment" class="comment">
+            {{ $t(`notifications.comment`) }}:
+          </strong>
           {{ notificationData.contentExcerpt | removeHtml }}
         </p>
         <!-- because of different margin above ds-card content without header property -->
@@ -103,19 +103,17 @@
           :user="notificationData.user"
         />
         <p v-else>
-          <strong v-if="notificationData.isComment" class="comment">{{ $t(`notifications.comment`) }}:</strong>
+          <strong v-if="notificationData.isComment" class="comment">
+            {{ $t(`notifications.comment`) }}:
+          </strong>
           {{ notificationData.contentExcerpt | removeHtml }}
         </p>
         <div v-if="notificationData.isReport">
           <ds-space margin-bottom="x-small" />
-          <strong>
-            {{ $t(`notifications.report.category`) }}:
-          </strong>
+          <strong>{{ $t(`notifications.report.category`) }}:</strong>
           {{ $t('report.reason.category.options.' + notificationData.report.reasonCategory) }}
           <br />
-          <strong>
-            {{ $t(`notifications.report.description`) }}:
-          </strong>
+          <strong>{{ $t(`notifications.report.description`) }}:</strong>
           <span
             v-if="
               notificationData.report.reasonDescription &&

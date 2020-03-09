@@ -37,60 +37,6 @@ afterEach(async () => {
 describe('given some notifications', () => {
   beforeEach(async () => {
     const categoryIds = ['cat1']
-    // Wolle author = await factory.create('User', { id: 'author' })
-    // user = await factory.create('User', { id: 'you' })
-    // const [neighbor, badWomen] = await Promise.all([
-    //   factory.create('User', { id: 'neighbor' }),
-    //   factory.create('User', { id: 'badWomen', name: 'Mrs. Badwomen' }),
-    //   factory.create('Category', { id: 'cat1' }),
-    // ])
-    // const [post1, post2, post3, post4] = await Promise.all([
-      // factory.create('Post', { author, id: 'p1', categoryIds, content: 'Not for you' }),
-      // factory.create('Post', {
-      //   author,
-      //   id: 'p2',
-      //   categoryIds,
-      //   content: 'Already seen post mention',
-      // }),
-      // factory.create('Post', {
-      //   author,
-      //   id: 'p3',
-      //   categoryIds,
-      //   content: 'You have been mentioned in a post',
-      // }),
-    //   factory.create('Post', {
-    //     author,
-    //     id: 'p4',
-    //     categoryIds,
-    //     title: 'Bad Post',
-    //     content: 'I am bad content !!!',
-    //   }),
-    // ])
-    // const [comment1, comment2, comment3, comment4] = await Promise.all([
-      // factory.create('Comment', {
-      //   author,
-      //   postId: 'p3',
-      //   id: 'c1',
-      //   content: 'You have seen this comment mentioning already',
-      // }),
-      // factory.create('Comment', {
-      //   author,
-      //   postId: 'p3',
-      //   id: 'c2',
-      //   content: 'You have been mentioned in a comment',
-      // }),
-      // factory.create('Comment', {
-      //   author,
-      //   postId: 'p3',
-      //   id: 'c3',
-      //   content: 'Somebody else was mentioned in a comment',
-      // }),
-      // factory.create('Comment', {
-      //   author,
-      //   postId: 'p4',
-      //   id: 'c4',
-      //   content: 'I am harassing content in a harassing comment to a bad post !!!',
-      // }),
     author = await Factory.build('user', { id: 'author' })
     user = await Factory.build('user', { id: 'you' })
     const [neighbor, badWomen] = await Promise.all([
@@ -222,15 +168,9 @@ describe('given some notifications', () => {
 
     // report notifications
     const [reportOnUser, reportOnPost, reportOnComment] = await Promise.all([
-      factory.create('Report', {
-        id: 'reportOnUser',
-      }),
-      factory.create('Report', {
-        id: 'reportOnPost',
-      }),
-      factory.create('Report', {
-        id: 'reportOnComment',
-      }),
+      Factory.build('report', { id: 'reportOnUser' }),
+      Factory.build('report', { id: 'reportOnPost' }),
+      Factory.build('report', { id: 'reportOnComment' }),
     ])
     await Promise.all([
       reportOnUser.relateTo(user, 'filed', {

@@ -73,7 +73,7 @@ export default {
       }
     },
   },
-  
+
   Mutation: {
     markAsRead: async (parent, args, context, resolveInfo) => {
       const { user: currentUser } = context

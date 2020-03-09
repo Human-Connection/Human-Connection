@@ -777,10 +777,7 @@ describe('notifications', () => {
                   read: false,
                 },
               }),
-            ).resolves.toMatchObject({
-              data: { notifications: [] },
-              errors: undefined,
-            })
+            ).resolves.toEqual(expected)
           })
 
           it('does not publish `NOTIFICATION_ADDED` to authenticated user', async () => {

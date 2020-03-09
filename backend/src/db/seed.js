@@ -822,7 +822,6 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       louie.relateTo(p10, 'shouted'),
     ])
 
-    
     const [
       reportAgainstDagobert,
       reportAgainstHuey,
