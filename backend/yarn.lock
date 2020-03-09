@@ -6252,12 +6252,12 @@ metascraper-date@^5.11.6:
   dependencies:
     "@metascraper/helpers" "^5.11.6"
 
-metascraper-description@^5.11.1:
-  version "5.11.1"
-  resolved "https://registry.yarnpkg.com/metascraper-description/-/metascraper-description-5.11.1.tgz#55a90f165e73dae9289fb922e5269f902cc57d6b"
-  integrity sha512-xClk2kxYYeAY5yHgrUXQXiSz8I6qa3JNPietWIk4dtUQ+DxHyUOBo6B6pQmlbfX/BjCLh35m0srAqzZ7+r1s2g==
+metascraper-description@^5.11.6:
+  version "5.11.6"
+  resolved "https://registry.yarnpkg.com/metascraper-description/-/metascraper-description-5.11.6.tgz#515368b5ca88cb5fa1fd92c0946458795b03960f"
+  integrity sha512-rGD6hEWLHPlZ/091htCoFAJGft2oRDAaAoDcnafMdTBcuukBIpZ3QNOR3rYpliWHbpS8cwiX2Q9IawyqB4iK0g==
   dependencies:
-    "@metascraper/helpers" "^5.11.1"
+    "@metascraper/helpers" "^5.11.6"
 
 metascraper-image@^5.11.6:
   version "5.11.6"
