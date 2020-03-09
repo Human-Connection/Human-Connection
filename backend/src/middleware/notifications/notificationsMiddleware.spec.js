@@ -777,7 +777,26 @@ describe('notifications', () => {
                   read: false,
                 },
               }),
-            ).resolves.toEqual(expected)
+            ).resolves.toMatchObject({
+              data: { notifications: [] },
+              errors: undefined,
+            })
+          })
+
+          it('does not publish `NOTIFICATION_ADDED` to authenticated user', async () => {
+            await createCommentOnPostAction()
+            expect(publishSpy).toHaveBeenCalledWith(
+              'NOTIFICATION_ADDED',
+              expect.objectContaining({
+                notificationAdded: expect.objectContaining({
+                  reason: 'commented_on_post',
+                  to: expect.objectContaining({
+                    id: 'postAuthor', // that's expected, it's not me but the post author
+                  }),
+                }),
+              }),
+            )
+            expect(publishSpy).toHaveBeenCalledTimes(1)
           })
         })
       })

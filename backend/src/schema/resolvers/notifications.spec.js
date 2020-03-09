@@ -37,7 +37,7 @@ afterEach(async () => {
 describe('given some notifications', () => {
   beforeEach(async () => {
     const categoryIds = ['cat1']
-    // author = await factory.create('User', { id: 'author' })
+    // Wolle author = await factory.create('User', { id: 'author' })
     // user = await factory.create('User', { id: 'you' })
     // const [neighbor, badWomen] = await Promise.all([
     //   factory.create('User', { id: 'neighbor' }),

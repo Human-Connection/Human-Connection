@@ -22,6 +22,7 @@ const handleContentDataOfPost = async (resolve, root, args, context, resolveInfo
   return post
 }
 
+
 const handleContentDataOfComment = async (resolve, root, args, context, resolveInfo) => {
   const { content } = args
   let idsOfUsers = extractMentionedUsers(content)

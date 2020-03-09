@@ -396,6 +396,7 @@ When("open the notification menu and click on the first item", () => {
     });
 });
 
+
 Then("see {int} unread notifications in the top menu", count => {
   cy.get(".notifications-menu").should("contain", count);
 });

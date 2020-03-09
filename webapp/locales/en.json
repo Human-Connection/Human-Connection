@@ -474,7 +474,8 @@
       "category": "Report category",
       "description": "Description",
       "name": "Report"
-     },
+    },
+    "title": "Notifications",
     "user": "User"
   },
   "post": {

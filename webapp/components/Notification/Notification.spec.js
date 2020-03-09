@@ -252,7 +252,7 @@ describe('Notification', () => {
 
     it('has no class "read"', () => {
       wrapper = Wrapper()
-      expect(wrapper.classes()).not.toContain('read')
+      expect(wrapper.classes()).not.toContain('--read')
     })
 
     describe('that is read', () => {
@@ -261,8 +261,8 @@ describe('Notification', () => {
         wrapper = Wrapper()
       })
 
-      it('has class "read"', () => {
-        expect(wrapper.classes()).toContain('read')
+      it('has class "--read"', () => {
+        expect(wrapper.classes()).toContain('--read')
       })
     })
   })

@@ -73,6 +73,7 @@ describe('NotificationList.vue', () => {
 
     describe('click on a notification', () => {
       beforeEach(() => {
+        
         wrapper.find('.notification .notifications-card').trigger('click')
       })
 

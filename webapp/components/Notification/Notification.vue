@@ -175,6 +175,7 @@ export default {
 // .notification-content-header-text {
 //   font-weight: 700;
 //   margin-right: 0.1rem;
+
 .notification {
   margin-bottom: $space-base;
 
