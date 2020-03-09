@@ -258,3 +258,24 @@ export const checkSlugAvailableQuery = gql`
     }
   }
 `
+
+export const currentUserQuery = gql`
+  ${userFragment}
+  query {
+    currentUser {
+      ...user
+      email
+      role
+      about
+      locationName
+      locale
+      allowEmbedIframes
+      showShoutsPublicly
+      termsAndConditionsAgreedVersion
+      socialMedia {
+        id
+        url
+      }
+    }
+  }
+`
