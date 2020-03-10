@@ -65,11 +65,17 @@ const createExpectedObject = array => {
 }
 
 const addPostToDB = post => {
-  return Factory.build('post', {
-    id: post.id,
-    title: post.title,
-    content: post.content,
-  })
+  return Factory.build(
+    'post',
+    {
+      id: post.id,
+      title: post.title,
+      content: post.content,
+    },
+    {
+      authorId: 'a-user',
+    },
+  )
 }
 
 const addUserToDB = user => {
