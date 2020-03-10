@@ -296,7 +296,7 @@ Then("I select a category", () => {
 });
 
 When("I choose {string} as the language for the post", (languageCode) => {
-  cy.get('.contribution-form .ds-select')
+  cy.get('.contribution-form .ds-select').first()
     .click().get('.ds-select-option')
     .eq(languages.findIndex(l => l.code === languageCode)).click()
 })

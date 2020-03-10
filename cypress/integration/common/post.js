@@ -112,7 +112,7 @@ Then("I add all required fields", () => {
     .get(".categories-select .base-button")
     .first()
     .click()
-    .get('.base-card > .select-field input')
+    .get('.base-card > .select-field input').first()
     .click()
     .get('.ds-select-option')
     .eq(languages.findIndex(l => l.code === 'en'))
