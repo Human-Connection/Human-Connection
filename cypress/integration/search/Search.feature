@@ -24,7 +24,7 @@ Feature: Search
       | 101 Essays that will change the way you think |
 
   Scenario: Press enter starts search
-    When I type "Es" and press Enter
+    When I type "PR" and press Enter
     Then I should have one item in the select dropdown
     Then I should see the following posts in the select dropdown:
       | title                                         |
