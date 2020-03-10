@@ -50,7 +50,7 @@ const searchQuery = gql`
 
 const nothingFound = { data: { findResources: [] } }
 
-const addBrAfterNewlinw = array => {
+const addBrAfterNewline = array => {
   return array.map(obj => {
     const tmp = cloneDeep(obj)
     if (tmp.__typename === 'Post') {
@@ -61,7 +61,7 @@ const addBrAfterNewlinw = array => {
 }
 
 const createExpectedObject = array => {
-  return { data: { findResources: addBrAfterNewlinw(array) } }
+  return { data: { findResources: addBrAfterNewline(array) } }
 }
 
 const addPostToDB = post => {
