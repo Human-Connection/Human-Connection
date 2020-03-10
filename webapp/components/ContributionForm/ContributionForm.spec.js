@@ -73,7 +73,7 @@ describe('ContributionForm.vue', () => {
   const image = '/uploads/1562010976466-avataaars'
   beforeEach(() => {
     mocks = {
-      $t: jest.fn(),
+      $t: jest.fn(input => input),
       $apollo: {
         mutate: jest.fn().mockResolvedValueOnce({
           data: {
@@ -203,6 +203,7 @@ describe('ContributionForm.vue', () => {
               imageAspectRatio: null,
               image: null,
               imageBlurred: false,
+              visibility: 'registered',
             },
           }
           postTitleInput = wrapper.find('.ds-input')
@@ -228,6 +229,16 @@ describe('ContributionForm.vue', () => {
           expectedParams.variables.language = 'de'
           deutschLanguage = wrapper.findAll('li').filter(language => language.text() === 'Deutsch')
           deutschLanguage.trigger('click')
+          wrapper.find('form').trigger('submit')
+          expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
+        })
+
+        it('supports changing the visibility', async () => {
+          expectedParams.variables.visibility = 'public'
+          const visibilityPublic = wrapper
+            .findAll('.ds-select-option')
+            .filter(option => option.text() === 'contribution.visibilityOptions.public')
+          visibilityPublic.trigger('click')
           wrapper.find('form').trigger('submit')
           expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
         })
@@ -358,6 +369,7 @@ describe('ContributionForm.vue', () => {
               imageUpload: null,
               imageAspectRatio: 1,
               imageBlurred: false,
+              visibility: 'registered',
             },
           }
         })
