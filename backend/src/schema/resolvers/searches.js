@@ -12,7 +12,7 @@ export default {
       CALL db.index.fulltext.queryNodes('post_fulltext_search', $query)
       YIELD node as resource, score
       MATCH (resource)<-[:WROTE]-(author:User)
-      WHERE score >= 0.2
+      WHERE score >= 0.0
       AND NOT (
         author.deleted = true OR author.disabled = true
         OR resource.deleted = true OR resource.disabled = true
@@ -35,7 +35,7 @@ export default {
       CALL db.index.fulltext.queryNodes('user_fulltext_search', $query)
       YIELD node as resource, score
       MATCH (resource)
-      WHERE score >= 0.5
+      WHERE score >= 0.0
       AND NOT (resource.deleted = true OR resource.disabled = true)
       RETURN resource {.*, __typename: labels(resource)[0]}
       LIMIT $limit
@@ -70,32 +70,47 @@ export default {
   },
 }
 
-function createUserQuery(str) {
-  // match the whole text
+const createUserQuery = str => {
+  return createPostQuery(str)
+}
+
+const createPostQuery = str => {
+  // match the whole text exactly
   const normalizedString = normalizeWhitespace(str)
   const escapedString = escapeSpecialCharacters(normalizedString)
-  const result = normalizedString.includes(' ') ? quoteString(escapedString) : escapedString
-  // console.log('"' +  + '"')
+  let result = quoteString(escapedString) + '^8'
+  // match each word exactly
+  if (escapedString.includes(' ')) {
+    result += ' OR ('
+    escapedString.split(' ').forEach((s, i) => {
+      result += i === 0 ? quoteString(s) : ' AND ' + quoteString(s)
+    })
+    result += ')^4'
+  }
+  // match at least one word exactly
+  if (escapedString.includes(' ')) {
+    escapedString.split(' ').forEach(s => {
+      result += ' OR ' + quoteString(s) + '^2'
+    })
+  }
+  // start globbing ...
+  escapedString.split(' ').forEach(s => {
+    if (s.length > 3)
+      // at least 4 letters. So AND, OR and NOT are never used unquoted
+      result += ' OR ' + s + '*'
+  })
+  // now we could become fuzzy using ~
   return result
 }
 
-function createPostQuery(str) {
-  // match the whole text
-  const normalizedString = normalizeWhitespace(str)
-  const escapedString = escapeSpecialCharacters(normalizedString)
-  const result = normalizedString.includes(' ') ? quoteString(escapedString) : escapedString
-  // console.log('"' +  + '"')
-  return result
-}
-
-function normalizeWhitespace(str) {
+const normalizeWhitespace = str => {
   return str.replace(/\s+/g, ' ')
 }
 
-function quoteString(str) {
+const quoteString = str => {
   return '"' + str + '"'
 }
 
-function escapeSpecialCharacters(str) {
+const escapeSpecialCharacters = str => {
   return str.replace(/(["[\]&|\\{}+!()^~*?:/-])/g, '\\$1')
 }
