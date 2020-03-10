@@ -6304,12 +6304,12 @@ metascraper-soundcloud@^5.11.5:
     "@metascraper/helpers" "^5.11.1"
     tldts "~5.6.9"
 
-metascraper-title@^5.11.1:
-  version "5.11.1"
-  resolved "https://registry.yarnpkg.com/metascraper-title/-/metascraper-title-5.11.1.tgz#fb32da17e71b2c64dc45d12c3602ca9330ab4bd5"
-  integrity sha512-fZ8qjf+d5ntwz/75X2r3BYD8X+tioZS1s+k9G3gfc+6ByJvrL9/ey6YzlDlU4zYqX73Vdx7+zUyy2ct0aJqWFA==
+metascraper-title@^5.11.6:
+  version "5.11.6"
+  resolved "https://registry.yarnpkg.com/metascraper-title/-/metascraper-title-5.11.6.tgz#286d6b0e4a9ee51c54524ea441be50629d4e91f3"
+  integrity sha512-oIVEo+erZZ1s/3E4VGh1Dk9AGeunHQaR0bslkBT3OuwO0hqf94n5pA0fMmbhmv/Pdon+ZTTL6JV+uEYQnV6EKw==
   dependencies:
-    "@metascraper/helpers" "^5.11.1"
+    "@metascraper/helpers" "^5.11.6"
     lodash "~4.17.15"
 
 metascraper-url@^5.11.6:
