@@ -27,7 +27,7 @@ beforeAll(async () => {
 })
 
 afterAll(async () => {
-  // await cleanDatabase()
+  await cleanDatabase()
 })
 
 const searchQuery = gql`
