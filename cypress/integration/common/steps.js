@@ -422,14 +422,13 @@ When("mention {string} in the text", mention => {
     .click();
 });
 
-Then("the notification gets marked as read", () => {
-  cy.get(".notifications-menu-popover .notification")
-    .first()
-    .should("have.class", "--read");
+Then("the unread counter is removed", () => {
+  cy.get('.notifications-menu .counter-icon').should('not.exist');
 });
 
-Then("there are no notifications in the top menu", () => {
-  cy.get(".notifications-menu").should("contain", "0");
+Then("the notification menu button links to the all notifications page", () => {
+  cy.get(".notifications-menu").click();
+  cy.location("pathname").should("contain", "/notifications");
 });
 
 Given("there is an annoying user called {string}", name => {
