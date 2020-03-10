@@ -7,7 +7,7 @@ Feature: Search
     Given I have a user account
     And we have the following posts in our database:
       | id | title                                         | content                                 |
-      | p1 | 101 Essays that will change the way you think | 101 Essays, of course!                  |
+      | p1 | 101 Essays that will change the way you think | 101 Essays, of course (PR)!             |
       | p2 | No searched for content                       | will be found in this post, I guarantee |
     And we have the following user accounts:
       | slug            | name            | id               |

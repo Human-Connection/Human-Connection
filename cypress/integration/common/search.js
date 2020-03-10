@@ -43,7 +43,7 @@ Then("I should see the following users in the select dropdown:", table => {
   });
 });
 
-When("I type {string} and press Enter", value => {
+When("I type {PR} and press Enter", value => {
   cy.get(".searchable-input .ds-select input")
     .focus()
     .type(value)

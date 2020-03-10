@@ -95,9 +95,8 @@ const createPostQuery = str => {
   }
   // start globbing ...
   escapedString.split(' ').forEach(s => {
-    if (!s.match(/^(AND|OR|NOT)$/i)) {
+    if (s.length > 3) {
       // at least 4 letters. So AND, OR and NOT are never used unquoted
-      // but the related cypress test expects a search for just two chars.
       result += ' OR ' + s + '*'
     }
   })
