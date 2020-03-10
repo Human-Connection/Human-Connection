@@ -262,11 +262,11 @@
     },
     "title": "Title",
     "visibilityOptions": {
-      "public": "Everyone",
-      "registered": "Registered Users",
       "friends": "My Friends",
       "not listed": "People with the link",
-      "private": "Just me"
+      "private": "Just me",
+      "public": "Everyone",
+      "registered": "Registered Users"
     },
     "visibilitySelectLabel": "Who can see your contribution",
     "visibilitySelectText": "Select Visibility"

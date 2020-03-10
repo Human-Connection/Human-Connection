@@ -262,11 +262,11 @@
     },
     "title": "Titel",
     "visibilityOptions": {
-      "public": "Alle",
-      "registered": "Registrierte Nutzer",
       "friends": "Meine Freunde",
       "not listed": "Nur über direkten Link",
-      "private": "Nur ich"
+      "private": "Nur ich",
+      "public": "Alle",
+      "registered": "Registrierte Nutzer"
     },
     "visibilitySelectLabel": "Wer kann deinen Beitrag sehen",
     "visibilitySelectText": "Sichtbarkeit wählen"
