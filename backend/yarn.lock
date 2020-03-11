@@ -1162,7 +1162,7 @@
     url-regex "~4.1.1"
     video-extensions "~1.1.0"
 
-"@metascraper/helpers@^5.11.1", "@metascraper/helpers@^5.11.6":
+"@metascraper/helpers@^5.11.6":
   version "5.11.6"
   resolved "https://registry.yarnpkg.com/@metascraper/helpers/-/helpers-5.11.6.tgz#2fef2f420f06f4f8903cc6f699ccb79195950a60"
   integrity sha512-DKCJMz5Q4wrBPZVfJdeNarmW2WHm3Y7D6M78KKA/D0mcXPikKLoiBxjyPtjc5tEE/5er+PYFijDBmyTT60M2bg==
@@ -3664,10 +3664,10 @@ eslint-plugin-import@~2.20.1:
     read-pkg-up "^2.0.0"
     resolve "^1.12.0"
 
-eslint-plugin-jest@~23.8.1:
-  version "23.8.1"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-23.8.1.tgz#247025e8a51b3a25a4cc41166369b0bfb4db83b7"
-  integrity sha512-OycLNqPo/2EfO6kTqnmsu1khz1gTIOxGl3ThIVwL5/oycDF4pm5uNDyvFelNLdpr4COUuM8PVi3963NEG1Efpw==
+eslint-plugin-jest@~23.8.2:
+  version "23.8.2"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-23.8.2.tgz#6f28b41c67ef635f803ebd9e168f6b73858eb8d4"
+  integrity sha512-xwbnvOsotSV27MtAe7s8uGWOori0nUsrXh2f1EnpmXua8sDfY6VZhHAhHg2sqK7HBNycRQExF074XSZ7DvfoFg==
   dependencies:
     "@typescript-eslint/experimental-utils" "^2.5.0"
 
