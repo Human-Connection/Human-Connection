@@ -19,10 +19,10 @@ enum ReasonCategory {
 }
 
 type FiledReport {
+  reportId: ID!
   createdAt: String!
   reasonCategory: ReasonCategory!
   reasonDescription: String!
-  reportId: ID!
   resource: ReportedResource!
 }
 

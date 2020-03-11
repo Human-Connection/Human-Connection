@@ -8,7 +8,8 @@ type NOTIFIED {
   to: User!
 }
 
-union NotificationSource = Post | Comment | Report
+# Wolle union NotificationSource = Post | Comment | Report
+union NotificationSource = Post | Comment | FiledReport
 
 enum NotificationOrdering {
   createdAt_asc

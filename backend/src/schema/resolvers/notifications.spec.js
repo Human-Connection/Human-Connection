@@ -230,26 +230,47 @@ describe('given some notifications', () => {
             ... on Comment {
               content
             }
-            ... on Report {
-              id
-              filed {
-                reasonCategory
-                reasonDescription
-                reportedResource {
-                  __typename
-                  ... on User {
-                    id
-                    name
-                  }
-                  ... on Post {
-                    id
-                    title
-                    content
-                  }
-                  ... on Comment {
-                    id
-                    content
-                  }
+            # Wolle ... on Report {
+            #   id
+            #   filed {
+            #     reasonCategory
+            #     reasonDescription
+            #     reportedResource {
+            #       __typename
+            #       ... on User {
+            #         id
+            #         name
+            #       }
+            #       ... on Post {
+            #         id
+            #         title
+            #         content
+            #       }
+            #       ... on Comment {
+            #         id
+            #         content
+            #       }
+            #     }
+            #   }
+            # }
+            ... on FiledReport {
+              reportId
+              reasonCategory
+              reasonDescription
+              resource {
+                __typename
+                ... on User {
+                  id
+                  name
+                }
+                ... on Post {
+                  id
+                  title
+                  content
+                }
+                ... on Comment {
+                  id
+                  content
                 }
               }
             }
@@ -280,21 +301,17 @@ describe('given some notifications', () => {
                   read: true,
                   reason: 'filed_report_on_resource',
                   from: {
-                    __typename: 'Report',
-                    id: 'reportOnPost',
-                    filed: [
-                      {
-                        reasonCategory: 'other',
-                        reasonDescription:
-                          "This shouldn't be shown to anybody else! It's my private thing!",
-                        reportedResource: {
-                          __typename: 'Post',
-                          id: 'p4',
-                          title: 'Bad Post',
-                          content: 'I am bad content !!!',
-                        },
-                      },
-                    ],
+                    __typename: 'FiledReport',
+                    reportId: 'reportOnPost',
+                    reasonCategory: 'other',
+                    reasonDescription:
+                      "This shouldn't be shown to anybody else! It's my private thing!",
+                    resource: {
+                      __typename: 'Post',
+                      id: 'p4',
+                      title: 'Bad Post',
+                      content: 'I am bad content !!!',
+                    },
                   },
                 },
                 {
@@ -303,19 +320,15 @@ describe('given some notifications', () => {
                   read: false,
                   reason: 'filed_report_on_resource',
                   from: {
-                    __typename: 'Report',
-                    id: 'reportOnUser',
-                    filed: [
-                      {
-                        reasonCategory: 'discrimination_etc',
-                        reasonDescription: 'This user is harassing me with bigoted remarks!',
-                        reportedResource: {
-                          __typename: 'User',
-                          id: 'badWomen',
-                          name: 'Mrs. Badwomen',
-                        },
-                      },
-                    ],
+                    __typename: 'FiledReport',
+                    reportId: 'reportOnUser',
+                    reasonCategory: 'discrimination_etc',
+                    reasonDescription: 'This user is harassing me with bigoted remarks!',
+                    resource: {
+                      __typename: 'User',
+                      id: 'badWomen',
+                      name: 'Mrs. Badwomen',
+                    },
                   },
                 },
                 {
@@ -324,20 +337,16 @@ describe('given some notifications', () => {
                   read: false,
                   reason: 'filed_report_on_resource',
                   from: {
-                    __typename: 'Report',
-                    id: 'reportOnComment',
-                    filed: [
-                      {
-                        reasonCategory: 'discrimination_etc',
-                        reasonDescription: 'This user is harassing me!',
-                        reportedResource: {
-                          __typename: 'Comment',
-                          id: 'c4',
-                          content:
-                            'I am harassing content in a harassing comment to a bad post !!!',
-                        },
-                      },
-                    ],
+                    __typename: 'FiledReport',
+                    reportId: 'reportOnComment',
+                    reasonCategory: 'discrimination_etc',
+                    reasonDescription: 'This user is harassing me!',
+                    resource: {
+                      __typename: 'Comment',
+                      id: 'c4',
+                      content:
+                        'I am harassing content in a harassing comment to a bad post !!!',
+                    },
                   },
                 },
                 expect.objectContaining({
@@ -398,19 +407,15 @@ describe('given some notifications', () => {
                   read: false,
                   reason: 'filed_report_on_resource',
                   from: {
-                    __typename: 'Report',
-                    id: 'reportOnUser',
-                    filed: [
-                      {
-                        reasonCategory: 'discrimination_etc',
-                        reasonDescription: 'This user is harassing me with bigoted remarks!',
-                        reportedResource: {
-                          __typename: 'User',
-                          id: 'badWomen',
-                          name: 'Mrs. Badwomen',
-                        },
-                      },
-                    ],
+                    __typename: 'FiledReport',
+                    reportId: 'reportOnUser',
+                    reasonCategory: 'discrimination_etc',
+                    reasonDescription: 'This user is harassing me with bigoted remarks!',
+                    resource: {
+                      __typename: 'User',
+                      id: 'badWomen',
+                      name: 'Mrs. Badwomen',
+                    },
                   },
                 },
                 {
@@ -419,20 +424,16 @@ describe('given some notifications', () => {
                   read: false,
                   reason: 'filed_report_on_resource',
                   from: {
-                    __typename: 'Report',
-                    id: 'reportOnComment',
-                    filed: [
-                      {
-                        reasonCategory: 'discrimination_etc',
-                        reasonDescription: 'This user is harassing me!',
-                        reportedResource: {
-                          __typename: 'Comment',
-                          id: 'c4',
-                          content:
-                            'I am harassing content in a harassing comment to a bad post !!!',
-                        },
-                      },
-                    ],
+                    __typename: 'FiledReport',
+                    reportId: 'reportOnComment',
+                    reasonCategory: 'discrimination_etc',
+                    reasonDescription: 'This user is harassing me!',
+                    resource: {
+                      __typename: 'Comment',
+                      id: 'c4',
+                      content:
+                        'I am harassing content in a harassing comment to a bad post !!!',
+                    },
                   },
                 },
                 {
@@ -648,8 +649,8 @@ describe('given some notifications', () => {
                   createdAt: '2020-01-14T12:33:48.651Z',
                   read: true,
                   from: {
-                    __typename: 'Report',
-                    id: 'reportOnComment',
+                    __typename: 'FiledReport',
+                    reportId: 'reportOnComment',
                   },
                 },
               },
