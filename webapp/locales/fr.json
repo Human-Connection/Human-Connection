@@ -318,12 +318,12 @@
     },
     "placeholder": "Écrivez quelque chose d'inspirant..."
   },
-  "filter-menu": {
+  "hashtags-filter": {
     "clearSearch": "Réinitialiser la recherche",
     "hashtag-search": "Recherche de #{hashtag}",
     "title": "Votre bulle de filtre"
   },
-  "filter-posts": {
+  "filter-menu": {
     "categories": {
       "all": "Toutes",
       "header": "Catégories de contenu"

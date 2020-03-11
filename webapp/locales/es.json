@@ -329,12 +329,12 @@
     "post-not-found": "Esta contribución no se pudo encontrar",
     "profile-not-found": "Este perfil no se pudo encontrar"
   },
-  "filter-menu": {
+  "hashtags-filter": {
     "clearSearch": "Borrar búsqueda",
     "hashtag-search": "Buscando a #{hashtag}",
     "title": "Su burbuja de filtro"
   },
-  "filter-posts": {
+  "filter-menu": {
     "categories": {
       "all": "Todas",
       "header": "Categorías de contenido"

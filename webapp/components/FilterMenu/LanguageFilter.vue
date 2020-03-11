@@ -1,7 +1,7 @@
 <template>
   <ds-space margin-top="large">
-    <ds-flex id="filter-posts-header">
-      <ds-heading tag="h4">{{ $t('filter-posts.language.header') }}</ds-heading>
+    <ds-flex id="filter-menu-header">
+      <ds-heading tag="h4">{{ $t('filter-menu.language.header') }}</ds-heading>
       <ds-space margin-bottom="large" />
     </ds-flex>
     <ds-flex :gutter="{ lg: 'small' }">
@@ -19,7 +19,7 @@
               @click="resetLanguages"
             />
             <ds-flex-item>
-              <label class="language-labels">{{ $t('filter-posts.language.all') }}</label>
+              <label class="language-labels">{{ $t('filter-menu.language.all') }}</label>
             </ds-flex-item>
             <ds-space />
           </ds-flex-item>
@@ -62,9 +62,6 @@ import orderBy from 'lodash/orderBy'
 import { mapGetters, mapMutations } from 'vuex'
 
 export default {
-  props: {
-    chunk: { type: Array, default: () => [] },
-  },
   computed: {
     ...mapGetters({
       filteredLanguageCodes: 'posts/filteredLanguageCodes',

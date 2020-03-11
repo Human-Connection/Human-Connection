@@ -2,7 +2,7 @@
   <div>
     <masonry-grid>
       <ds-grid-item v-if="hashtag" :row-span="2" column-span="fullWidth">
-        <filter-menu :hashtag="hashtag" @clearSearch="clearSearch" />
+        <hashtags-filter :hashtag="hashtag" @clearSearch="clearSearch" />
       </ds-grid-item>
       <ds-grid-item :row-span="2" column-span="fullWidth" class="top-info-bar">
         <!--<donation-info /> -->
@@ -65,7 +65,7 @@
 
 <script>
 // import DonationInfo from '~/components/DonationInfo/DonationInfo.vue'
-import FilterMenu from '~/components/FilterMenu/FilterMenu.vue'
+import HashtagsFilter from '~/components/HashtagsFilter/HashtagsFilter.vue'
 import HcEmpty from '~/components/Empty/Empty'
 import PostTeaser from '~/components/PostTeaser/PostTeaser.vue'
 import MasonryGrid from '~/components/MasonryGrid/MasonryGrid.vue'
@@ -78,7 +78,7 @@ import UpdateQuery from '~/components/utils/UpdateQuery'
 export default {
   components: {
     // DonationInfo,
-    FilterMenu,
+    HashtagsFilter,
     PostTeaser,
     HcEmpty,
     MasonryGrid,

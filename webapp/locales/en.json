@@ -331,12 +331,12 @@
     "post-not-found": "This post could not be found",
     "profile-not-found": "This profile could not be found"
   },
-  "filter-menu": {
+  "hashtags-filter": {
     "clearSearch": "Clear search",
     "hashtag-search": "Searching for #{hashtag}",
     "title": "Your filter bubble"
   },
-  "filter-posts": {
+  "filter-menu": {
     "categories": {
       "all": "All",
       "header": "Categories of Content"

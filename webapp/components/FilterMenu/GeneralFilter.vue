@@ -1,7 +1,7 @@
 <template>
   <ds-space>
-    <ds-flex id="filter-posts-by-followers-header">
-      <ds-heading tag="h4">{{ $t('filter-posts.general.header') }}</ds-heading>
+    <ds-flex id="filter-menu-by-followers-header">
+      <ds-heading tag="h4">{{ $t('filter-menu.general.header') }}</ds-heading>
       <ds-space margin-bottom="large" />
     </ds-flex>
     <ds-flex :gutter="{ lg: 'large' }">
@@ -14,14 +14,14 @@
           icon="user-plus"
           circle
           :filled="filteredByUsersFollowed"
-          @click="toggleFilteredByFollowed(user.id)"
+          @click="toggleFilteredByFollowed(currentUser.id)"
           v-tooltip="{
             content: this.$t('contribution.filterFollow'),
             placement: 'left',
             delay: { show: 500 },
           }"
         />
-        <label class="follow-label">{{ $t('filter-posts.followers.label') }}</label>
+        <label class="follow-label">{{ $t('filter-menu.followers.label') }}</label>
       </ds-flex-item>
       <emotion-button
         v-for="emotion in emotionsArray"
@@ -42,9 +42,6 @@ export default {
   components: {
     EmotionButton,
   },
-  props: {
-    user: { type: Object, required: true },
-  },
   data() {
     return {
       emotionsArray: ['funny', 'happy', 'surprised', 'cry', 'angry'],
@@ -54,6 +51,7 @@ export default {
     ...mapGetters({
       filteredByUsersFollowed: 'posts/filteredByUsersFollowed',
       filteredByEmotions: 'posts/filteredByEmotions',
+      currentUser: 'auth/user',
     }),
   },
   methods: {
@@ -71,11 +69,11 @@ export default {
 }
 </script>
 <style lang="scss">
-#filter-posts-header {
+#filter-menu-header {
   display: block;
 }
 
-#filter-posts-by-followers-header {
+#filter-menu-by-followers-header {
   display: block;
 }
 
@@ -92,7 +90,7 @@ export default {
 }
 
 @media only screen and (max-width: 960px) {
-  #filter-posts-header {
+  #filter-menu-header {
     text-align: center;
   }
 }

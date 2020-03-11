@@ -323,12 +323,12 @@
     },
     "placeholder": ""
   },
-  "filter-menu": {
+  "hashtags-filter": {
     "clearSearch": "",
     "hashtag-search": "",
     "title": ""
   },
-  "filter-posts": {
+  "filter-menu": {
     "categories": {
       "all": "",
       "header": ""

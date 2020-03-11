@@ -329,12 +329,12 @@
     "post-not-found": "Этот пост не удалось найти",
     "profile-not-found": "Этот профиль не удалось найти"
   },
-  "filter-menu": {
+  "hashtags-filter": {
     "clearSearch": "Очистить поиск",
     "hashtag-search": "Поиск по #{hashtag}",
     "title": "Ваш фильтр пузыря"
   },
-  "filter-posts": {
+  "filter-menu": {
     "categories": {
       "all": "Все",
       "header": "Категории"

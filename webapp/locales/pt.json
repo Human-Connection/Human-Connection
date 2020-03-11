@@ -314,12 +314,12 @@
     },
     "placeholder": " Escreva algo inspirador…"
   },
-  "filter-menu": {
+  "hashtags-filter": {
     "clearSearch": "Limpar pesquisa",
     "hashtag-search": "Procurando por #{hashtag}",
     "title": "Sua bolha de filtro"
   },
-  "filter-posts": {
+  "filter-menu": {
     "categories": {
       "all": "Todos",
       "header": "Categorias de Conteúdo"

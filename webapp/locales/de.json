@@ -331,12 +331,12 @@
     "post-not-found": "Dieser Beitrag konnte nicht gefunden werden",
     "profile-not-found": "Dieses Profil konnte nicht gefunden werden"
   },
-  "filter-menu": {
+  "hashtags-filter": {
     "clearSearch": "Suche löschen",
     "hashtag-search": "Suche nach #{hashtag}",
     "title": "Deine Filterblase"
   },
-  "filter-posts": {
+  "filter-menu": {
     "categories": {
       "all": "Alle",
       "header": "Themenkategorien"
