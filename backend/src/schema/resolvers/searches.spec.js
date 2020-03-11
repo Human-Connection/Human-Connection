@@ -48,8 +48,6 @@ const searchQuery = gql`
   }
 `
 
-const nothingFound = { data: { findResources: [] } }
-
 const addBrAfterNewline = array => {
   return array.map(obj => {
     const tmp = cloneDeep(obj)
@@ -112,116 +110,151 @@ let user
 
 describe('resolvers', () => {
   describe('searches', () => {
-    beforeAll(async () => {
-      user = await addUserToDB(aUser)
-      await addPostToDB(aPost)
-      authenticatedUser = await user.toJson()
-    })
-
     let variables
 
-    describe('basic searches', () => {
+    describe('given one post and one user', () => {
+      beforeAll(async () => {
+        user = await addUserToDB(aUser)
+        await addPostToDB(aPost)
+        authenticatedUser = await user.toJson()
+      })
+
       it('finds the post', async () => {
         variables = { query: 'beitrag' }
-        const expected = createExpectedObject([aPost])
-        await expect(query({ query: searchQuery, variables })).resolves.toMatchObject(expected)
-      })
-
-      it('finds the post searching only with capital letters', async () => {
-        variables = { query: 'BEITRAG' }
-        const expected = createExpectedObject([aPost])
-        await expect(query({ query: searchQuery, variables })).resolves.toMatchObject(expected)
-      })
-
-      it('does not find the post', async () => {
-        variables = { query: 'Unfug' }
-        await expect(query({ query: searchQuery, variables })).resolves.toMatchObject(nothingFound)
-      })
-
-      it('finds the user', async () => {
-        variables = { query: 'John' }
-        const expected = createExpectedObject([aUser])
-        await expect(query({ query: searchQuery, variables })).resolves.toMatchObject(expected)
-      })
-
-      it('does not find the user', async () => {
-        variables = { query: 'Unfug' }
-        await expect(query({ query: searchQuery, variables })).resolves.toMatchObject(nothingFound)
-      })
-    })
-
-    describe('more data added', () => {
-      beforeAll(async () => {
-        await Promise.all(
-          dumpToDB([
-            bPost,
-            cPost,
-            dPost,
-            ePost,
-            fPost,
-            gPost,
-            bUser,
-            cUser,
-            dUser,
-            eUser,
-            fUser,
-            gUser,
-          ]),
-        )
-      })
-
-      it('finds the AK-47', async () => {
-        variables = { query: 'AK-47' }
-        const expected = createExpectedObject([gPost])
-        await expect(query({ query: searchQuery, variables })).resolves.toMatchObject(expected)
-      })
-
-      it('finds more than one post', async () => {
-        variables = { query: 'Beitrag' }
-        const expected = createExpectedObject([aPost, bPost])
-        await expect(query({ query: searchQuery, variables })).resolves.toMatchObject(expected)
-      })
-
-      it('finds more than one user by slug', async () => {
-        variables = { query: '-maria-' }
-        const expected = [cUser, dUser]
         await expect(query({ query: searchQuery, variables })).resolves.toMatchObject({
           data: {
-            findResources: expect.arrayContaining(expected),
+            findResources: [
+              {
+                __typename: 'Post',
+                id: 'a-post',
+                title: 'Beitrag',
+                content: 'Ein erster Beitrag',
+              },
+            ],
           },
         })
       })
 
-      it('finds the binomial formula', async () => {
-        variables = { query: '(a - b)² = a² - 2ab + b²' }
-        const expected = createExpectedObject([cPost])
-        await expect(query({ query: searchQuery, variables })).resolves.toMatchObject(expected)
+      describe('casing', () => {
+        it('does not matter', async () => {
+          variables = { query: 'BEITRAG' }
+          await expect(query({ query: searchQuery, variables })).resolves.toMatchObject({
+            data: {
+              findResources: [
+                {
+                  __typename: 'Post',
+                  id: 'a-post',
+                  title: 'Beitrag',
+                  content: 'Ein erster Beitrag',
+                },
+              ],
+            },
+          })
+        })
       })
 
-      it('finds text over linebreak', async () => {
-        variables = { query: 'dreht, ist' }
-        const expected = createExpectedObject([dPost])
-        await expect(query({ query: searchQuery, variables })).resolves.toMatchObject(expected)
+      describe('query contains first name of user', () => {
+        it('finds the user', async () => {
+          variables = { query: 'John' }
+          const expected = createExpectedObject([aUser])
+          await expect(query({ query: searchQuery, variables })).resolves.toMatchObject(expected)
+        })
       })
 
-      it('finds single words with lower score', async () => {
-        variables = { query: 'der Panther' }
-        const expected = createExpectedObject([dPost, ePost, fPost, bUser])
-        await expect(query({ query: searchQuery, variables })).resolves.toMatchObject(expected)
+      describe('query consists of words not present in the corpus', () => {
+        it('returns empty search results', async () => {
+          await expect(
+            query({ query: searchQuery, variables: { query: 'Unfug' } }),
+          ).resolves.toMatchObject({ data: { findResources: [] } })
+        })
       })
 
-      it('finds something that starts with the given text', async () => {
-        variables = { query: 'john' }
-        const expected = createExpectedObject([aUser, bUser])
-        await expect(query({ query: searchQuery, variables })).resolves.toMatchObject(expected)
-      })
+      describe('given more posts and users', () => {
+        beforeAll(async () => {
+          const factoryOptions = {
+            authorId: 'a-user',
+          }
+          await Promise.all([
+            Factory.build(
+              'post',
+              {
+                id: 'b-post',
+                title: 'Aufruf',
+                content: 'Jeder sollte seinen Beitrag leisten.',
+              },
+              factoryOptions,
+            ),
+            ...dumpToDB([
+              cPost,
+              dPost,
+              ePost,
+              fPost,
+              gPost,
+              bUser,
+              cUser,
+              dUser,
+              eUser,
+              fUser,
+              gUser,
+            ]),
+          ])
+        })
 
-      /*
+        describe('hyphens in query', () => {
+          it('will be treated as ordinary characters', async () => {
+            variables = { query: 'AK-47' }
+            const expected = createExpectedObject([gPost])
+            await expect(query({ query: searchQuery, variables })).resolves.toMatchObject(expected)
+          })
+        })
+
+        it('finds more than one post', async () => {
+          variables = { query: 'Beitrag' }
+          const expected = createExpectedObject([aPost, bPost])
+          await expect(query({ query: searchQuery, variables })).resolves.toMatchObject(expected)
+        })
+
+        it('finds more than one user by slug', async () => {
+          variables = { query: '-maria-' }
+          const expected = [cUser, dUser]
+          await expect(query({ query: searchQuery, variables })).resolves.toMatchObject({
+            data: {
+              findResources: expect.arrayContaining(expected),
+            },
+          })
+        })
+
+        it('finds the binomial formula', async () => {
+          variables = { query: '(a - b)² = a² - 2ab + b²' }
+          const expected = createExpectedObject([cPost])
+          await expect(query({ query: searchQuery, variables })).resolves.toMatchObject(expected)
+        })
+
+        it('finds text over linebreak', async () => {
+          variables = { query: 'dreht, ist' }
+          const expected = createExpectedObject([dPost])
+          await expect(query({ query: searchQuery, variables })).resolves.toMatchObject(expected)
+        })
+
+        it('finds single words with lower score', async () => {
+          variables = { query: 'der Panther' }
+          const expected = createExpectedObject([dPost, ePost, fPost, bUser])
+          await expect(query({ query: searchQuery, variables })).resolves.toMatchObject(expected)
+        })
+
+        it('finds something that starts with the given text', async () => {
+          variables = { query: 'john' }
+          const expected = createExpectedObject([aUser, bUser])
+          await expect(query({ query: searchQuery, variables })).resolves.toMatchObject(expected)
+        })
+
+        /*
       it('finds Russian text', async () => {
         variables = { query: 'Калашникова' }
         const expected = createExpectedObject([gPost])
         await expect(query({ query: searchQuery, variables })).resolves.toMatchObject(expected)
       }) */
+      })
     })
   })
 })

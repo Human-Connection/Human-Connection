@@ -1,4 +1,5 @@
 import log from './helpers/databaseLogger'
+import queryString from './searches/queryString'
 
 // see http://lucene.apache.org/core/8_3_1/queryparser/org/apache/lucene/queryparser/classic/package-summary.html#package.description
 
@@ -44,12 +45,12 @@ export default {
       const session = context.driver.session()
       const searchResultPromise = session.readTransaction(async transaction => {
         const postTransactionResponse = transaction.run(postCypher, {
-          query: createPostQuery(query),
+          query: queryString(query),
           limit,
           thisUserId,
         })
         const userTransactionResponse = transaction.run(userCypher, {
-          query: createUserQuery(query),
+          query: queryString(query),
           limit,
           thisUserId,
         })
@@ -68,50 +69,4 @@ export default {
       }
     },
   },
-}
-
-const createUserQuery = str => {
-  return createPostQuery(str)
-}
-
-const createPostQuery = str => {
-  // match the whole text exactly
-  const normalizedString = normalizeWhitespace(str)
-  const escapedString = escapeSpecialCharacters(normalizedString)
-  let result = quoteString(escapedString) + '^8'
-  // match each word exactly
-  if (escapedString.includes(' ')) {
-    result += ' OR ('
-    escapedString.split(' ').forEach((s, i) => {
-      result += i === 0 ? quoteString(s) : ' AND ' + quoteString(s)
-    })
-    result += ')^4'
-  }
-  // match at least one word exactly
-  if (escapedString.includes(' ')) {
-    escapedString.split(' ').forEach(s => {
-      result += ' OR ' + quoteString(s) + '^2'
-    })
-  }
-  // start globbing ...
-  escapedString.split(' ').forEach(s => {
-    if (s.length > 3) {
-      // at least 4 letters. So AND, OR and NOT are never used unquoted
-      result += ' OR ' + s + '*'
-    }
-  })
-  // now we could become fuzzy using ~
-  return result
-}
-
-const normalizeWhitespace = str => {
-  return str.replace(/\s+/g, ' ')
-}
-
-const quoteString = str => {
-  return '"' + str + '"'
-}
-
-const escapeSpecialCharacters = str => {
-  return str.replace(/(["[\]&|\\{}+!()^~*?:/-])/g, '\\$1')
 }
