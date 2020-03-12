@@ -1,6 +1,6 @@
 <template>
   <ds-form v-model="form" :schema="formSchema" @submit="submit">
-    <template v-slot="{ errors }">
+    <template slot-scope="{ errors }">
       <base-card>
         <h2 class="title">{{ $t('settings.email.name') }}</h2>
         <ds-input

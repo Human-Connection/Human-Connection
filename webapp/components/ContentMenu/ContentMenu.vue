@@ -1,6 +1,6 @@
 <template>
   <dropdown class="content-menu" :placement="placement" offset="5">
-    <template v-slot="{ toggleMenu }">
+    <template slot="default" slot-scope="{ toggleMenu }">
       <slot name="button" :toggleMenu="toggleMenu">
         <base-button
           data-test="content-menu-button"

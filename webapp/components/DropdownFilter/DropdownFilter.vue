@@ -1,18 +1,18 @@
 <template>
   <dropdown offset="8">
-    <template v-slot="{ toggleMenu }">
-      <a
-        :v-model="selected"
-        name="dropdown"
-        class="dropdown-filter"
-        href="#"
-        @click.prevent="toggleMenu()"
-      >
-        <base-icon name="filter" />
-        <label class="label" for="dropdown">{{ selected }}</label>
-        <base-icon class="dropdown-arrow" name="angle-down" />
-      </a>
-    </template>
+    <a
+      :v-model="selected"
+      slot="default"
+      slot-scope="{ toggleMenu }"
+      name="dropdown"
+      class="dropdown-filter"
+      href="#"
+      @click.prevent="toggleMenu()"
+    >
+      <base-icon name="filter" />
+      <label class="label" for="dropdown">{{ selected }}</label>
+      <base-icon class="dropdown-arrow" name="angle-down" />
+    </a>
     <ds-menu
       #popover="{ toggleMenu }"
       class="dropdown-menu-popover"

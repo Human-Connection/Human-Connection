@@ -1,10 +1,11 @@
 <template>
   <dropdown ref="menu" :placement="placement" :offset="offset">
     <base-button
-      v-slot="{ toggleMenu }"
+      slot="default"
       icon="filter"
       :filled="filterActive"
       :ghost="!filterActive"
+      slot-scope="{ toggleMenu }"
       @click.prevent="toggleMenu()"
     >
       <base-icon class="dropdown-arrow" name="angle-down" />
