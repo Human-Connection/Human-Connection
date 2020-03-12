@@ -1,6 +1,6 @@
 <template>
   <ds-form v-model="form" @submit="handleSubmit" class="comment-form">
-    <template slot-scope="{ errors }">
+    <template #default="{ errors }">
       <base-card>
         <hc-editor ref="editor" :users="users" :value="form.content" @input="updateEditorContent" />
         <div class="buttons">
