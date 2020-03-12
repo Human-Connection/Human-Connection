@@ -13,21 +13,20 @@
         <base-icon class="dropdown-arrow" name="angle-down" />
       </a>
     </template>
-    <ds-menu
-      #popover="{ toggleMenu }"
-      class="dropdown-menu-popover"
-      :routes="filterOptions"
-    >
-      <ds-menu-item
-        #menuitem="item"
-        class="dropdown-menu-item"
-        :route="item.route"
-        :parents="item.parents"
-        @click.stop.prevent="filter(item.route, toggleMenu)"
-      >
-        {{ item.route.label }}
-      </ds-menu-item>
-    </ds-menu>
+    <template #popover="{ toggleMenu }">
+      <ds-menu class="dropdown-menu-popover" :routes="filterOptions">
+        <template #menuitem="item">
+          <ds-menu-item
+            class="dropdown-menu-item"
+            :route="item.route"
+            :parents="item.parents"
+            @click.stop.prevent="filter(item.route, toggleMenu)"
+          >
+            {{ item.route.label }}
+          </ds-menu-item>
+        </template>
+      </ds-menu>
+    </template>
   </dropdown>
 </template>
 <script>

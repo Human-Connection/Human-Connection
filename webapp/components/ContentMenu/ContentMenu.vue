@@ -15,15 +15,16 @@
     <template #popover="{ toggleMenu }">
       <div class="content-menu-popover">
         <ds-menu :routes="routes">
-          <ds-menu-item
-            #menuitem="item"
-            :route="item.route"
-            :parents="item.parents"
-            @click.stop.prevent="openItem(item.route, toggleMenu)"
-          >
-            <base-icon :name="item.route.icon" />
-            {{ item.route.label }}
-          </ds-menu-item>
+          <template #menuitem="item">
+            <ds-menu-item
+              :route="item.route"
+              :parents="item.parents"
+              @click.stop.prevent="openItem(item.route, toggleMenu)"
+            >
+              <base-icon :name="item.route.icon" />
+              {{ item.route.label }}
+            </ds-menu-item>
+          </template>
         </ds-menu>
       </div>
     </template>

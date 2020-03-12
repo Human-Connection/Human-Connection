@@ -8,22 +8,20 @@
           <base-icon class="dropdown-arrow" name="angle-down" />
         </a>
       </template>
-      <ds-menu
-        #popover="{ toggleMenu }"
-        class="locale-menu-popover"
-        :matcher="matcher"
-        :routes="routes"
-      >
-        <ds-menu-item
-          #menuitem="item"
-          class="locale-menu-item"
-          :route="item.route"
-          :parents="item.parents"
-          @click.stop.prevent="changeLanguage(item.route.path, toggleMenu)"
-        >
-          {{ item.route.name }}
-        </ds-menu-item>
-      </ds-menu>
+      <template #popover="{ toggleMenu }">
+        <ds-menu class="locale-menu-popover" :matcher="matcher" :routes="routes">
+          <template #menuitem="item">
+            <ds-menu-item
+              class="locale-menu-item"
+              :route="item.route"
+              :parents="item.parents"
+              @click.stop.prevent="changeLanguage(item.route.path, toggleMenu)"
+            >
+              {{ item.route.name }}
+            </ds-menu-item>
+          </template>
+        </ds-menu>
+      </template>
     </dropdown>
   </client-only>
 </template>
