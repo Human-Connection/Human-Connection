@@ -1,7 +1,5 @@
 dist: xenial
-language: node_js
-node_js:
-  - "11"
+language: generic
 addons:
   apt:
     packages:
@@ -9,7 +7,7 @@ addons:
   snaps:
     - docker
   firefox: "latest-esr"
-
+    
 install:
   - yarn global add wait-on
   # Install Codecov
