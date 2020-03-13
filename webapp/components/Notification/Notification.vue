@@ -73,7 +73,7 @@
     <client-only>
       <user-teaser :user="notificationData.triggerer" :date-time="notificationData.createdAt" />
     </client-only>
-    <p class="description">
+    <p class="description" data-test="reason-text">
       <base-icon
         :name="notificationData.iconName"
         v-tooltip="{ content: $t(notificationData.iconTooltip), placement: 'right' }"

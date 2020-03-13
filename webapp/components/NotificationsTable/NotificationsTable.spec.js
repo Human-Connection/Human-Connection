@@ -167,7 +167,7 @@ describe('NotificationsTable.vue', () => {
 
         it('renders a link to the user', () => {
           const userLink = thirdRowNotification.find('[data-test="notification-title-link"]')
-          expect(userLink.text()).toEqual(reportNotification.from.filed[0].reportedResource.name)
+          expect(userLink.text()).toEqual(reportNotification.from.resource.name)
         })
 
         it('renders the reported users slug', () => {
@@ -183,7 +183,7 @@ describe('NotificationsTable.vue', () => {
         it('renders the reported category', () => {
           wrapper = Wrapper()
           expect(wrapper.text()).toContain(
-            'report.reason.category.options.' + reportNotification.from.filed[0].reasonCategory,
+            'report.reason.category.options.' + reportNotification.from.reasonCategory,
           )
         })
 
@@ -194,7 +194,7 @@ describe('NotificationsTable.vue', () => {
 
         it('renders the reported description', () => {
           wrapper = Wrapper()
-          expect(wrapper.text()).toContain(reportNotification.from.filed[0].reasonDescription)
+          expect(wrapper.text()).toContain(reportNotification.from.reasonDescription)
         })
       })
 

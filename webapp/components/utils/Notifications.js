@@ -44,26 +44,23 @@ export const testNotifications = [
     read: false,
     reason: 'filed_report_on_resource',
     from: {
-      __typename: 'Report',
-      id: 'reportOnUser',
-      filed: [
-        {
-          reasonCategory: 'discrimination_etc',
-          reasonDescription: 'This user is harassing me with bigoted remarks!',
-          reportedResource: {
-            __typename: 'User',
-            id: 'badWomen',
-            slug: 'mrs.-badwomen',
-            name: 'Mrs. Badwomen',
-          },
-        },
-      ],
+      __typename: 'FiledReport',
+      reportId: 'reportOnUser',
+      reasonCategory: 'discrimination_etc',
+      reasonDescription: 'This user is harassing me with bigoted remarks!',
+      resource: {
+        __typename: 'User',
+        id: 'badWomen',
+        slug: 'mrs.-badwomen',
+        name: 'Mrs. Badwomen',
+      },
     },
   },
 ]
 
 export const extractNotificationDataOfCurrentUser = (notification, currentUser) => {
   const from = notification.from // for readability
+  // Wolle console.log('from: ', from)
   let user = null
   let post = null
   let comment = null
@@ -78,7 +75,7 @@ export const extractNotificationDataOfCurrentUser = (notification, currentUser) 
 
   // extract data out of the deep structure of db response
 
-  // leave undefined data as default, see above, so later by priority user, comment, post we get easely a clou what it is
+  // leave undefined data as default, see above. so later by priority user, comment, post we get easely a clou what it is
   switch (from.__typename) {
     case 'Comment':
       comment = from
@@ -95,35 +92,32 @@ export const extractNotificationDataOfCurrentUser = (notification, currentUser) 
       iconTooltip = 'notifications.post'
       triggerer = post.author
       break
-    case 'Report':
-      {
-        const filed = from.filed[0] // for readability
-        report = {
-          reasonCategory: filed.reasonCategory,
-          reasonDescription: filed.reasonDescription,
-        }
-        isReport = true
-        iconName = 'balance-scale'
-        iconTooltip = 'notifications.report.name'
-        triggerer = currentUser
-        switch (filed.reportedResource.__typename) {
-          case 'User':
-            user = filed.reportedResource
-            isUser = true
-            reasonTranslationExtention = '.user'
-            break
-          case 'Comment':
-            comment = filed.reportedResource
-            post = filed.reportedResource.post
-            isComment = true
-            reasonTranslationExtention = '.comment'
-            break
-          case 'Post':
-            post = filed.reportedResource
-            isPost = true
-            reasonTranslationExtention = '.post'
-            break
-        }
+    case 'FiledReport':
+      report = {
+        reasonCategory: from.reasonCategory,
+        reasonDescription: from.reasonDescription,
+      }
+      isReport = true
+      iconName = 'balance-scale'
+      iconTooltip = 'notifications.report.name'
+      triggerer = currentUser
+      switch (from.resource.__typename) {
+        case 'User':
+          user = from.resource
+          isUser = true
+          reasonTranslationExtention = '.user'
+          break
+        case 'Comment':
+          comment = from.resource
+          post = from.resource.post
+          isComment = true
+          reasonTranslationExtention = '.comment'
+          break
+        case 'Post':
+          post = from.resource
+          isPost = true
+          reasonTranslationExtention = '.post'
+          break
       }
       break
   }

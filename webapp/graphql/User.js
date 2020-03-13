@@ -93,33 +93,31 @@ export const notificationQuery = i18n => {
               }
             }
           }
-          ... on Report {
-            id
-            filed {
-              reasonCategory
-              reasonDescription
-              reportedResource {
-                __typename
-                ... on User {
+          ... on FiledReport {
+            reportId
+            reasonCategory
+            reasonDescription
+            resource {
+              __typename
+              ... on User {
+                ...user
+                ...userCounts
+              }
+              ... on Post {
+                ...post
+                author {
                   ...user
-                  ...userCounts
                 }
-                ... on Post {
+              }
+              ... on Comment {
+                ...comment
+                author {
+                  ...user
+                }
+                post {
                   ...post
                   author {
                     ...user
-                  }
-                }
-                ... on Comment {
-                  ...comment
-                  author {
-                    ...user
-                  }
-                  post {
-                    ...post
-                    author {
-                      ...user
-                    }
                   }
                 }
               }

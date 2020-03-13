@@ -71,12 +71,12 @@ describe('NotificationList.vue', () => {
       wrapper = Wrapper()
     })
 
-    describe('click on a notification', () => {
+    describe("emit 'read', like as clicked on a notification", () => {
       beforeEach(() => {
-        wrapper.find('.notification .notifications-card').trigger('click')
+        wrapper.find(Notification).vm.$emit('read')
       })
 
-      it("emits 'markAsRead' with the id of the notification source", () => {
+      it("emits 'markAsRead' with the id of the notification source, if 'read' was emited", () => {
         expect(wrapper.emitted('markAsRead')[0]).toEqual(['post-1'])
       })
     })

@@ -205,20 +205,16 @@ describe('Notification', () => {
       propsData.notification = {
         reason: 'filed_report_on_resource',
         from: {
-          __typename: 'Report',
-          id: 'reportOnUser',
-          filed: [
-            {
-              reasonCategory: 'discrimination_etc',
-              reasonDescription: 'This user is harassing me with bigoted remarks!',
-              reportedResource: {
-                __typename: 'User',
-                id: 'badWomen',
-                slug: 'mrs.-badwomen',
-                name: 'Mrs. Badwomen',
-              },
-            },
-          ],
+          __typename: 'FiledReport',
+          reportId: 'reportOnUser',
+          reasonCategory: 'discrimination_etc',
+          reasonDescription: 'This user is harassing me with bigoted remarks!',
+          resource: {
+            __typename: 'User',
+            id: 'badWomen',
+            slug: 'mrs.-badwomen',
+            name: 'Mrs. Badwomen',
+          },
         },
       }
     })
