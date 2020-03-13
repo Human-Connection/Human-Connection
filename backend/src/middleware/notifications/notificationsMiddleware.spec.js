@@ -1,5 +1,5 @@
 import { gql } from '../../helpers/jest'
-import Factory, { cleanDatabase } from '../../factories'
+import Factory, { cleanDatabase } from '../../db/factories'
 import { createTestClient } from 'apollo-server-testing'
 import { getDriver } from '../../db/neo4j'
 import createServer, { pubsub } from '../../server'
@@ -40,7 +40,7 @@ const fileReportMutation = gql`
       reasonCategory: $reasonCategory
       reasonDescription: $reasonDescription
     ) {
-      id
+      reportId
     }
   }
 `
@@ -64,6 +64,12 @@ beforeAll(async () => {
 
 beforeEach(async () => {
   publishSpy.mockClear()
+  await Factory.build('category', {
+    id: 'cat9',
+    name: 'Democracy & Politics',
+    slug: 'democracy-politics',
+    icon: 'university',
+  })
   notifiedUser = await Factory.build(
     'user',
     {
@@ -76,12 +82,7 @@ beforeEach(async () => {
       password: '1234',
     },
   )
-  await Factory.build('category', {
-    id: 'cat9',
-    name: 'Democracy & Politics',
-    slug: 'democracy-politics',
-    icon: 'university',
-  })
+  authenticatedUser = await notifiedUser.toJson()
 })
 
 afterEach(async () => {
@@ -89,7 +90,7 @@ afterEach(async () => {
 })
 
 describe('notifications', () => {
-  const notificationQuery = gql`
+  const notificationsQuery = gql`
     query($read: Boolean) {
       notifications(read: $read, orderBy: updatedAt_desc) {
         createdAt
@@ -105,25 +106,23 @@ describe('notifications', () => {
             id
             content
           }
-          ... on Report {
-            id
-            filed {
-              reasonCategory
-              reasonDescription
-              reportedResource {
-                __typename
-                ... on User {
-                  id
-                  name
-                }
-                ... on Post {
-                  id
-                  content
-                }
-                ... on Comment {
-                  id
-                  content
-                }
+          ... on FiledReport {
+            reportId
+            reasonCategory
+            reasonDescription
+            resource {
+              __typename
+              ... on User {
+                id
+                name
+              }
+              ... on Post {
+                id
+                content
+              }
+              ... on Comment {
+                id
+                content
               }
             }
           }
@@ -215,7 +214,7 @@ describe('notifications', () => {
             })
             await expect(
               query({
-                query: notificationQuery,
+                query: notificationsQuery,
                 variables: {
                   read: false,
                 },
@@ -232,7 +231,7 @@ describe('notifications', () => {
 
             await expect(
               query({
-                query: notificationQuery,
+                query: notificationsQuery,
                 variables: {
                   read: false,
                 },
@@ -256,7 +255,7 @@ describe('notifications', () => {
 
             await expect(
               query({
-                query: notificationQuery,
+                query: notificationsQuery,
                 variables: {
                   read: false,
                 },
@@ -275,7 +274,7 @@ describe('notifications', () => {
             slug: 'mrs-post',
           },
           {
-            email: 'post-author@example.org',
+            email: 'mrs-post-author@example.org',
             password: '1234',
           },
         )
@@ -295,7 +294,7 @@ describe('notifications', () => {
             'Hey <a class="mention" data-mention-id="you" href="/profile/you/al-capone" target="_blank">@al-capone</a> how do you do?'
           await expect(
             query({
-              query: notificationQuery,
+              query: notificationsQuery,
               variables: {
                 read: false,
               },
@@ -387,7 +386,7 @@ describe('notifications', () => {
             })
             await expect(
               query({
-                query: notificationQuery,
+                query: notificationsQuery,
                 variables: {
                   read: false,
                 },
@@ -416,7 +415,7 @@ describe('notifications', () => {
                     notifications: [{ read: readBefore }],
                   },
                 } = await query({
-                  query: notificationQuery,
+                  query: notificationsQuery,
                 })
                 await updatePostAction()
                 const {
@@ -424,7 +423,7 @@ describe('notifications', () => {
                     notifications: [{ read: readAfter }],
                   },
                 } = await query({
-                  query: notificationQuery,
+                  query: notificationsQuery,
                 })
                 expect(readBefore).toEqual(true)
                 expect(readAfter).toEqual(false)
@@ -438,7 +437,7 @@ describe('notifications', () => {
                     notifications: [{ createdAt: createdAtBefore }],
                   },
                 } = await query({
-                  query: notificationQuery,
+                  query: notificationsQuery,
                 })
                 await updatePostAction()
                 const {
@@ -446,7 +445,7 @@ describe('notifications', () => {
                     notifications: [{ createdAt: createdAtAfter }],
                   },
                 } = await query({
-                  query: notificationQuery,
+                  query: notificationsQuery,
                 })
                 expect(createdAtBefore).toBeTruthy()
                 expect(Date.parse(createdAtBefore)).toEqual(expect.any(Number))
@@ -471,7 +470,7 @@ describe('notifications', () => {
 
             await expect(
               query({
-                query: notificationQuery,
+                query: notificationsQuery,
                 variables: {
                   read: false,
                 },
@@ -519,7 +518,7 @@ describe('notifications', () => {
                 slug: 'mr-author',
               },
               {
-                email: 'post-author@example.org',
+                email: 'mr-post-author@example.org',
                 password: '1234',
               },
             )
@@ -544,7 +543,7 @@ describe('notifications', () => {
 
             await expect(
               query({
-                query: notificationQuery,
+                query: notificationsQuery,
                 variables: {
                   read: false,
                 },
@@ -557,6 +556,7 @@ describe('notifications', () => {
             postContent = 'Content of post where I get mentioned in a comment.'
             postAuthor = notifiedUser
           })
+
           it('sends only one notification with reason commented_on_post, no notification with reason mentioned_in_comment', async () => {
             await createCommentOnPostAction()
             const expected = {
@@ -578,7 +578,7 @@ describe('notifications', () => {
 
             await expect(
               query({
-                query: notificationQuery,
+                query: notificationsQuery,
                 variables: {
                   read: false,
                 },
@@ -610,7 +610,7 @@ describe('notifications', () => {
             await createCommentOnPostAction()
             await expect(
               query({
-                query: notificationQuery,
+                query: notificationsQuery,
                 variables: {
                   read: false,
                 },
@@ -641,11 +641,9 @@ describe('notifications', () => {
     })
 
     describe('given I file a report on a', () => {
-      let resourceId
+      let resourceId, reportFiler, reportedUserOrAuthorData, expectedMeAsNotifiedForFilingReport
       const reasonCategory = 'discrimination_etc'
       const reasonDescription = 'I am free to be gay !!!'
-      let reportFiler
-      let reportedUserOrAuthorData
       const fileReportAction = async () => {
         authenticatedUser = await reportFiler.toJson()
         await mutate({
@@ -658,7 +656,7 @@ describe('notifications', () => {
         })
         authenticatedUser = await notifiedUser.toJson()
       }
-      const setExpectedNotificationOfReportedResource = reportedResource => {
+      const setExpectedNotificationOfReportedResource = resource => {
         return expect.objectContaining({
           data: {
             notifications: [
@@ -667,15 +665,11 @@ describe('notifications', () => {
                 read: false,
                 reason: 'filed_report_on_resource',
                 from: {
-                  __typename: 'Report',
-                  id: expect.any(String),
-                  filed: [
-                    {
-                      reasonCategory: 'discrimination_etc',
-                      reasonDescription: 'I am free to be gay !!!',
-                      reportedResource,
-                    },
-                  ],
+                  __typename: 'FiledReport',
+                  reportId: expect.any(String),
+                  reasonCategory: 'discrimination_etc',
+                  reasonDescription: 'I am free to be gay !!!',
+                  resource,
                 },
               },
             ],
@@ -686,20 +680,38 @@ describe('notifications', () => {
       beforeEach(async () => {
         reportFiler = notifiedUser
         reportedUserOrAuthorData = {
-          id: 'reportedUser',
-          name: 'Mrs Badman',
-          slug: 'mrs-badman',
-          email: 'reported-user@example.org',
-          password: '1234',
+          userProperties: {
+            id: 'reportedUser',
+            name: 'Mrs Badman',
+            slug: 'mrs-badman',
+          },
+          emailProperties: {
+            email: 'reported-user@example.org',
+            password: '1234',
+          },
         }
+        expectedMeAsNotifiedForFilingReport = expect.objectContaining({
+          notificationAdded: expect.objectContaining({
+            reason: 'filed_report_on_resource',
+            to: expect.objectContaining({
+              id: 'you',
+            }),
+          }),
+        })
       })
 
       describe('user', () => {
-        it('sends me a notification for filing a report on a user', async () => {
-          await Factory.create('User', reportedUserOrAuthorData)
-          resourceId = 'reportedUser'
+        beforeEach(async () => {
+          await Factory.build(
+            'user',
+            reportedUserOrAuthorData.userProperties,
+            reportedUserOrAuthorData.emailProperties,
+          )
+          resourceId = reportedUserOrAuthorData.userProperties.id
           await fileReportAction()
+        })
 
+        it('sends me a notification for filing a report on a user', async () => {
           const expected = setExpectedNotificationOfReportedResource({
             __typename: 'User',
             id: 'reportedUser',
@@ -708,12 +720,19 @@ describe('notifications', () => {
           const { query } = createTestClient(server)
           await expect(
             query({
-              query: notificationQuery,
+              query: notificationsQuery,
               variables: {
                 read: false,
               },
             }),
           ).resolves.toEqual(expected)
+        })
+
+        it('does publish `NOTIFICATION_ADDED` to authenticated user', async () => {
+          expect(publishSpy).toHaveBeenCalledWith(
+            'NOTIFICATION_ADDED',
+            expectedMeAsNotifiedForFilingReport,
+          )
         })
       })
 
@@ -721,15 +740,21 @@ describe('notifications', () => {
         beforeEach(async () => {
           title = 'My post'
           postContent = 'My post content.'
-          postAuthor = await Factory.create('User', reportedUserOrAuthorData)
+          postAuthor = await Factory.build(
+            'user',
+            reportedUserOrAuthorData.userProperties,
+            reportedUserOrAuthorData.emailProperties,
+          )
         })
 
         describe('post', () => {
-          it('sends me a notification for filing a report on a post', async () => {
+          beforeEach(async () => {
             await createPostAction()
             resourceId = 'p47'
             await fileReportAction()
+          })
 
+          it('sends me a notification for filing a report on a post', async () => {
             const expected = setExpectedNotificationOfReportedResource({
               __typename: 'Post',
               id: 'p47',
@@ -738,32 +763,43 @@ describe('notifications', () => {
             const { query } = createTestClient(server)
             await expect(
               query({
-                query: notificationQuery,
+                query: notificationsQuery,
                 variables: {
                   read: false,
                 },
               }),
             ).resolves.toEqual(expected)
           })
+
+          it('does publish `NOTIFICATION_ADDED` to authenticated user', async () => {
+            expect(publishSpy).toHaveBeenCalledWith(
+              'NOTIFICATION_ADDED',
+              expectedMeAsNotifiedForFilingReport,
+            )
+          })
         })
 
         describe('comment', () => {
           beforeEach(async () => {
             commentContent = "Commenter's comment."
-            commentAuthor = await Factory.create('User', {
-              id: 'commentAuthor',
-              name: 'Mrs Comment',
-              slug: 'mrs-comment',
-              email: 'commentauthor@example.org',
-              password: '1234',
-            })
-          })
-
-          it('sends me a notification for filing a report on a comment', async () => {
+            commentAuthor = await Factory.build(
+              'user',
+              {
+                id: 'commentAuthor',
+                name: 'Mrs Comment',
+                slug: 'mrs-comment',
+              },
+              {
+                email: 'commentauthor@example.org',
+                password: '1234',
+              },
+            )
             await createCommentOnPostAction()
             resourceId = 'c47'
             await fileReportAction()
+          })
 
+          it('sends me a notification for filing a report on a comment', async () => {
             const expected = setExpectedNotificationOfReportedResource({
               __typename: 'Comment',
               id: 'c47',
@@ -772,7 +808,7 @@ describe('notifications', () => {
             const { query } = createTestClient(server)
             await expect(
               query({
-                query: notificationQuery,
+                query: notificationsQuery,
                 variables: {
                   read: false,
                 },
@@ -780,20 +816,11 @@ describe('notifications', () => {
             ).resolves.toEqual(expected)
           })
 
-          it('does not publish `NOTIFICATION_ADDED` to authenticated user', async () => {
-            await createCommentOnPostAction()
+          it('does publish `NOTIFICATION_ADDED` to authenticated user', async () => {
             expect(publishSpy).toHaveBeenCalledWith(
               'NOTIFICATION_ADDED',
-              expect.objectContaining({
-                notificationAdded: expect.objectContaining({
-                  reason: 'commented_on_post',
-                  to: expect.objectContaining({
-                    id: 'postAuthor', // that's expected, it's not me but the post author
-                  }),
-                }),
-              }),
+              expectedMeAsNotifiedForFilingReport,
             )
-            expect(publishSpy).toHaveBeenCalledTimes(1)
           })
         })
       })

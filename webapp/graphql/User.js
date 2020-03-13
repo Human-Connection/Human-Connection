@@ -161,7 +161,7 @@ export const markAsReadMutation = i18n => {
               }
             }
           }
-          ... on Report {
+          ... on FiledReport {
             id
           }
         }

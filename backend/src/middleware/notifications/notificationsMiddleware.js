@@ -1,3 +1,4 @@
+import log from '../../schema/resolvers/helpers/databaseLogger'
 import extractMentionedUsers from './mentions/extractMentionedUsers'
 import { validateNotifyUsers } from '../validation/validationMiddleware'
 import { pubsub, NOTIFICATION_ADDED } from '../../server'
@@ -80,6 +81,7 @@ const notifyUsersOfMention = async (label, id, idsOfUsers, reason, context) => {
         AND NOT (user)-[:BLOCKED]-(author)
         AND NOT (user)-[:BLOCKED]-(postAuthor)
         MERGE (comment)-[notification:NOTIFIED {reason: $reason}]->(user)
+        WITH comment AS resource, notification, user
       `
       break
     }
@@ -91,19 +93,19 @@ const notifyUsersOfMention = async (label, id, idsOfUsers, reason, context) => {
     WITH resource, user, notification, authors, posts,
     resource {.*, __typename: labels(resource)[0], author: authors[0], post: posts[0]} AS finalResource
     SET notification.read = FALSE
-    // Wolle SET ( CASE WHEN notification.createdAt IS NULL THEN notification END ).createdAt = toString(datetime())
     SET notification.createdAt = COALESCE(notification.createdAt, toString(datetime()))
     SET notification.updatedAt = toString(datetime())
     RETURN notification {.*, from: finalResource, to: properties(user)}
   `
   const session = context.driver.session()
   const writeTxResultPromise = session.writeTransaction(async transaction => {
-    const notificationTransactionResponse = await transaction.run(mentionedCypher, {
+    const notificationsTransactionResponse = await transaction.run(mentionedCypher, {
       id,
       idsOfUsers,
       reason,
     })
-    return notificationTransactionResponse.records.map(record => record.get('notification'))
+    log(notificationsTransactionResponse)
+    return notificationsTransactionResponse.records.map(record => record.get('notification'))
   })
   try {
     const notifications = await writeTxResultPromise
@@ -120,7 +122,7 @@ const notifyUsersOfComment = async (label, commentId, postAuthorId, reason, cont
   await validateNotifyUsers(label, reason)
   const session = context.driver.session()
   const writeTxResultPromise = await session.writeTransaction(async transaction => {
-    const notificationTransactionResponse = await transaction.run(
+    const notificationsTransactionResponse = await transaction.run(
       `
       MATCH (postAuthor:User {id: $postAuthorId})-[:WROTE]->(post:Post)<-[:COMMENTS]-(comment:Comment { id: $commentId })<-[:WROTE]-(commenter:User)
       WHERE NOT (postAuthor)-[:BLOCKED]-(commenter)
@@ -134,7 +136,8 @@ const notifyUsersOfComment = async (label, commentId, postAuthorId, reason, cont
     `,
       { commentId, postAuthorId, reason },
     )
-    return notificationTransactionResponse.records.map(record => record.get('notification'))
+    log(notificationsTransactionResponse)
+    return notificationsTransactionResponse.records.map(record => record.get('notification'))
   })
   try {
     const notifications = await writeTxResultPromise
@@ -146,41 +149,53 @@ const notifyUsersOfComment = async (label, commentId, postAuthorId, reason, cont
   }
 }
 
-const notifyReportFiler = async (resolve, root, args, context, resolveInfo) => {
-  const report = await resolve(root, args, context, resolveInfo)
+const handleFileReport = async (resolve, root, args, context, resolveInfo) => {
+  const filedReport = await resolve(root, args, context, resolveInfo)
 
-  if (report) {
+  if (filedReport) {
+    const { reportId } = filedReport
     const { resourceId } = args
-    const { driver, user } = context
-    const { id: reportId } = report
-    const session = driver.session()
-    try {
-      await session.writeTransaction(async transaction => {
-        await transaction.run(
-          `
-            MATCH (resource {id: $resourceId})<-[:BELONGS_TO]-(report:Report {id: $reportId})<-[:FILED]-(submitter:User {id: $submitterId})
-            WHERE resource: User OR resource: Post OR resource: Comment
-            MERGE (report)-[notification:NOTIFIED {reason: $reason}]->(submitter)
-            ON CREATE SET notification.createdAt = toString(datetime()), notification.updatedAt = notification.createdAt
-            ON MATCH SET notification.updatedAt = toString(datetime())
-            SET notification.read = FALSE
-          `,
-          {
-            reportId,
-            resourceId,
-            submitterId: user.id,
-            reason: 'filed_report_on_resource',
-          },
-        )
-      })
-    } catch (error) {
-      debug(error)
-    } finally {
-      session.close()
-    }
+    await publishNotifications(notifyReportFiler(reportId, resourceId, context))
   }
 
-  return report
+  return filedReport
+}
+
+const notifyReportFiler = async (reportId, resourceId, context) => {
+  const { driver, user } = context
+  const session = driver.session()
+  const writeTxResultPromise = await session.writeTransaction(async transaction => {
+    const notificationsTransactionResponse = await transaction.run(
+      `
+        MATCH (resource {id: $resourceId})<-[:BELONGS_TO]-(report:Report {id: $reportId})<-[filed:FILED]-(submitter:User {id: $submitterId})
+        WHERE resource: User OR resource: Post OR resource: Comment
+        MERGE (report)-[notification:NOTIFIED {reason: $reason}]->(submitter)
+        ON CREATE SET notification.createdAt = toString(datetime()), notification.updatedAt = notification.createdAt
+        ON MATCH SET notification.updatedAt = toString(datetime())
+        SET notification.read = FALSE
+        WITH notification, submitter,
+          {__typename: "FiledReport", reportId: report.id, createdAt: filed.createdAt, reasonCategory: filed.reasonCategory, reasonDescription: filed.reasonDescription, resource: apoc.map.merge(properties(resource), {__typename: labels(resource)[0]})} AS finalResource
+        RETURN notification {.*, from: finalResource, to: properties(submitter)} 
+      `,
+      {
+        reportId,
+        resourceId,
+        submitterId: user.id,
+        reason: 'filed_report_on_resource',
+      },
+    )
+    log(notificationsTransactionResponse)
+    return notificationsTransactionResponse.records.map(record => record.get('notification'))
+  })
+  try {
+    const [notification] = await writeTxResultPromise
+    if (notification) return [notification]
+    else throw new Error(`Notification for filing a report could not be send!`)
+  } catch (error) {
+    debug(error)
+  } finally {
+    session.close()
+  }
 }
 
 export default {
@@ -189,6 +204,6 @@ export default {
     UpdatePost: handleContentDataOfPost,
     CreateComment: handleContentDataOfComment,
     UpdateComment: handleContentDataOfComment,
-    fileReport: notifyReportFiler,
+    fileReport: handleFileReport,
   },
 }
