@@ -81,7 +81,8 @@ export default ({ app = {} }) => {
 
       return contentExcerpt
     },
-    proxyApiUrl: url => {
+    proxyApiUrl: input => {
+      const url = input && (input.url || input)
       if (!url) return url
       return url.startsWith('/') ? url.replace('/', '/api/') : url
     },

@@ -3,8 +3,6 @@ import locales from '../../../webapp/locales'
 import orderBy from 'lodash/orderBy'
 
 const languages = orderBy(locales, 'name')
-const narratorAvatar =
-  "https://s3.amazonaws.com/uifaces/faces/twitter/nerrsoft/128.jpg";
 
 When("I type in a comment with {int} characters", size => {
   var c="";
@@ -32,9 +30,11 @@ Then("my comment should be successfully created", () => {
 Then("I should see my comment", () => {
   cy.get("article.comment-card p")
     .should("contain", "Human Connection rocks")
+    .get(".user-teaser span.slug")
+    .should("contain", "@peter-pan") // specific enough
     .get(".user-avatar img")
     .should("have.attr", "src")
-    .and("contain", narratorAvatar)
+    .and("contain", 'https://') // some url
     .get(".user-teaser > .info > .text")
     .should("contain", "today at");
 });

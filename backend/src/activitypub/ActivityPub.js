@@ -7,7 +7,7 @@ import request from 'request'
 import NitroDataSource from './NitroDataSource'
 import router from './routes'
 import Collections from './Collections'
-import uuid from 'uuid/v4'
+import { v4 as uuid } from 'uuid'
 import CONFIG from '../config'
 const debug = require('debug')('ea')
 

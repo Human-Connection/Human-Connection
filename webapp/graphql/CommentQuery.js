@@ -12,7 +12,9 @@ export default app => {
           id
           slug
           name
-          avatar
+          avatar {
+            url
+          }
           disabled
           deleted
           shoutedCount

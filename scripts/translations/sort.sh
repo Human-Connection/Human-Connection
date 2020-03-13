@@ -3,12 +3,6 @@
 ROOT_DIR=$(dirname "$0")/../..
 tmp=$(mktemp)
 exit_code=0
-errors=0
-
-TEXT_RED="\e[31m"
-TEXT_BLUE="\e[34m"
-TEXT_RESET="\e[0m"
-TEXT_BOLD="\e[1m"
 
 for locale_file in $ROOT_DIR/webapp/locales/*.json
 do
@@ -22,13 +16,9 @@ do
       : # all good
     else
       exit_code=$?
-      echo -e "${TEXT_BOLD}${TEXT_RED}>>> $(basename -- $locale_file) is not sorted by keys <<<${TEXT_RESET}"
-      errors=1
+      echo "$(basename -- $locale_file) is not sorted by keys"
     fi
   fi
 done
-
-[ "$errors" = 1 ] && echo -e "${TEXT_BOLD}${TEXT_BLUE}Please run $0 --fix to sort your locale definitions!${TEXT_RESET}";
-
 
 exit $exit_code

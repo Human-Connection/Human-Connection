@@ -69,32 +69,40 @@ export const searchResults = [
   {
     id: 'u1',
     __typename: 'User',
-    avatar:
-      'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/db/dbc9e03ebcc384b920c31542af2d27dd8eea9dc2_full.jpg',
+    avatar: {
+      url:
+        'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/db/dbc9e03ebcc384b920c31542af2d27dd8eea9dc2_full.jpg',
+    },
     name: 'Peter Lustig',
     slug: 'peter-lustig',
   },
   {
     id: 'cdbca762-0632-4564-b646-415a0c42d8b8',
     __typename: 'User',
-    avatar:
-      'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/db/dbc9e03ebcc384b920c31542af2d27dd8eea9dc2_full.jpg',
+    avatar: {
+      url:
+        'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/db/dbc9e03ebcc384b920c31542af2d27dd8eea9dc2_full.jpg',
+    },
     name: 'Herbert Schultz',
     slug: 'herbert-schultz',
   },
   {
     id: 'u2',
     __typename: 'User',
-    avatar:
-      'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/db/dbc9e03ebcc384b920c31542af2d27dd8eea9dc2_full.jpg',
+    avatar: {
+      url:
+        'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/db/dbc9e03ebcc384b920c31542af2d27dd8eea9dc2_full.jpg',
+    },
     name: 'Bob der Baumeister',
     slug: 'bob-der-baumeister',
   },
   {
     id: '7b654f72-f4da-4315-8bed-39de0859754b',
     __typename: 'User',
-    avatar:
-      'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/db/dbc9e03ebcc384b920c31542af2d27dd8eea9dc2_full.jpg',
+    avatar: {
+      url:
+        'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/db/dbc9e03ebcc384b920c31542af2d27dd8eea9dc2_full.jpg',
+    },
     name: 'Tonya Mohr',
     slug: 'tonya-mohr',
   },

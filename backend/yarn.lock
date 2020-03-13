@@ -4505,14 +4505,14 @@ graphql-redis-subscriptions@^2.2.1:
   optionalDependencies:
     ioredis "^4.6.3"
 
-graphql-shield@~7.2.0:
-  version "7.2.0"
-  resolved "https://registry.yarnpkg.com/graphql-shield/-/graphql-shield-7.2.0.tgz#81b26794370608ad78dfe3833473789fb471fbd8"
-  integrity sha512-eLdD+gUIKYu77XRcuHs5ewZhiBuRFeWFGxPnJa+g9AkxB7Yi5RSEjEJEx0Drg9GuNvDYpHeW7nPff4v35AT2aQ==
+graphql-shield@~7.0.14:
+  version "7.0.14"
+  resolved "https://registry.yarnpkg.com/graphql-shield/-/graphql-shield-7.0.14.tgz#3cbbf2722f2e3393fed7f47d866a1324bc3ce76a"
+  integrity sha512-YVedaL+4pITisSGRqMVeGX8ydOLSTQlHQN6o0Jly7z2cSy1wOzGJIRpfofETJtGLhBnPHHy1otINzuAyjGJO/g==
   dependencies:
     "@types/yup" "0.26.32"
     object-hash "^2.0.3"
-    yup "^0.28.3"
+    yup "^0.28.1"
 
 graphql-subscriptions@^1.0.0:
   version "1.1.0"
@@ -6691,7 +6691,7 @@ nodemailer-html-to-text@^3.1.0:
   dependencies:
     html-to-text "^5.1.1"
 
-nodemailer@^6.4.5:
+nodemailer@^6.4.4:
   version "6.4.5"
   resolved "https://registry.yarnpkg.com/nodemailer/-/nodemailer-6.4.5.tgz#45614c6454d1a947242105eeddae03df87e29916"
   integrity sha512-NH7aNVQyZLAvGr2+EOto7znvz+qJ02Cb/xpou98ApUt5tEAUSVUxhvHvgV/8I5dhjKTYqUw0nasoKzLNBJKrDQ==
@@ -7895,7 +7895,7 @@ sane@^4.0.3:
     minimist "^1.1.1"
     walker "~1.0.5"
 
-sanitize-html@~1.22.1:
+sanitize-html@~1.22.0:
   version "1.22.1"
   resolved "https://registry.yarnpkg.com/sanitize-html/-/sanitize-html-1.22.1.tgz#5b36c92ab27917ddd2775396815c2bc1a6268310"
   integrity sha512-++IMC00KfMQc45UWZJlhWOlS9eMrME38sFG9GXfR+k6oBo9JXSYQgTOZCl9j3v/smFTRNT9XNwz5DseFdMY+2Q==
@@ -9385,7 +9385,7 @@ yargs@^15.0.0:
     y18n "^4.0.0"
     yargs-parser "^16.1.0"
 
-yup@^0.28.3:
+yup@^0.28.1:
   version "0.28.3"
   resolved "https://registry.yarnpkg.com/yup/-/yup-0.28.3.tgz#1ca607405a8adf24a5ac51f54bd09d527555f0ba"
   integrity sha512-amVkCgFWe5bGjrrUiODkbIzrSwtB8JpZrQYSrfj2YsbRdrV+tn9LquWdZDlfOx2HXyfEA8FGnlwidE/bFDxO7Q==

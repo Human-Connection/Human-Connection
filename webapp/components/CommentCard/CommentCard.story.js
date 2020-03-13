@@ -17,8 +17,10 @@ const comment = {
   disabled: false,
   author: {
     id: '1',
-    avatar:
-      'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/db/dbc9e03ebcc384b920c31542af2d27dd8eea9dc2_full.jpg',
+    avatar: {
+      url:
+        'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/db/dbc9e03ebcc384b920c31542af2d27dd8eea9dc2_full.jpg',
+    },
     slug: 'jenny-rostock',
     name: 'Rainer Unsinn',
     disabled: false,
