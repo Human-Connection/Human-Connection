@@ -4505,10 +4505,10 @@ graphql-redis-subscriptions@^2.2.1:
   optionalDependencies:
     ioredis "^4.6.3"
 
-graphql-shield@~7.1.0:
-  version "7.1.0"
-  resolved "https://registry.yarnpkg.com/graphql-shield/-/graphql-shield-7.1.0.tgz#7e96e0df87357dd97ec799f6f11cc5b80c0bedd0"
-  integrity sha512-XCYwieksKnxabjHnvK/zPxk6FE4coNp+FWJWrL/IVGlk/3I97ROWTobuUM/CXmpnrt+PYcTVn+0JeU38bN02Cw==
+graphql-shield@~7.2.0:
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/graphql-shield/-/graphql-shield-7.2.0.tgz#81b26794370608ad78dfe3833473789fb471fbd8"
+  integrity sha512-eLdD+gUIKYu77XRcuHs5ewZhiBuRFeWFGxPnJa+g9AkxB7Yi5RSEjEJEx0Drg9GuNvDYpHeW7nPff4v35AT2aQ==
   dependencies:
     "@types/yup" "0.26.32"
     object-hash "^2.0.3"
