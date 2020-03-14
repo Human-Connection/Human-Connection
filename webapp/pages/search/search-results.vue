@@ -1,22 +1,64 @@
 <template>
   <ds-container>
-    <ds-text align="right">
-      <ds-button size="x-large" icon="close" right>close</ds-button>
-    </ds-text>
-
-    <ds-text size="x-large">
-      <ds-space>
-        <ds-tag color="primary" size="x-large" round>{{ searchResults.length }}</ds-tag>
-        Results for:
-        <b>{{ value }}</b>
-      </ds-space>
-    </ds-text>
     <div>
-      <ds-button size="x-large" icon="pencil" align="right">Beiträge</ds-button>
-      <ds-button size="x-large" icon="user" align="right">User</ds-button>
+      <ds-flex>
+        <ds-flex-item>
+          <ds-placeholder>
+            <ds-button @click="closeSearch" size="x-large" icon="close" right>close</ds-button>
+          </ds-placeholder>
+        </ds-flex-item>
+        <ds-flex-item width="2">
+          <ds-placeholder>
+            <ds-tag color="primary" size="x-large" round>{{ searchResults.length }}</ds-tag>
+            Results for:
+            <b>{{ value }}</b>
+          </ds-placeholder>
+        </ds-flex-item>
+        <ds-flex-item width="3">
+          <ds-placeholder>
+            <ds-button
+              @click="postOnly = !postOnly"
+              :secondary="postOnly"
+              size="x-large"
+              icon="pencil"
+              align="right"
+            >
+              Beiträge
+            </ds-button>
+            <ds-button
+              @click="userOnly = !userOnly"
+              :secondary="userOnly"
+              size="x-large"
+              icon="user"
+              align="right"
+            >
+              User
+            </ds-button>
+          </ds-placeholder>
+        </ds-flex-item>
+      </ds-flex>
     </div>
-    <ds-space>
-      {{ searchResults }}
+    <ds-space />
+    <ds-space
+      v-for="(searchResults, index) in searchResults"
+      :key="searchResults.key"
+      v-bind:class="{
+        isUser: searchResults.__typename === 'User',
+        isPost: searchResults.__typename === 'Post',
+      }"
+    >
+      <div v-if="searchResults.__typename === 'User'" v-show="userOnly">
+        <b>{{ index + 1 }}</b>
+        -
+        <b>{{ searchResults.__typename }}</b>
+        - {{ searchResults }}
+      </div>
+      <div v-if="searchResults.__typename === 'Post'" v-show="postOnly">
+        <b>{{ index + 1 }}</b>
+        -
+        <b>{{ searchResults.__typename }}</b>
+        - {{ searchResults }}
+      </div>
     </ds-space>
   </ds-container>
 </template>
@@ -40,8 +82,11 @@ export default {
       selected: '',
       pending: false,
       searchResults: [],
+      userOnly: true,
+      postOnly: true,
     }
   },
+
   computed: {
     ...mapGetters({
       searchValue: 'search/searchValue',
@@ -81,6 +126,9 @@ export default {
       } finally {
         this.pending = false
       }
+    },
+    closeSearch() {
+      this.$router.replace('/')
     },
   },
 }
