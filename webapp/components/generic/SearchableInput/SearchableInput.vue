@@ -109,6 +109,7 @@ export default {
           path: '/search/search-results',
           query: { item: this.unprocessedSearchInput },
         })
+        this.clear()
       } else {
         this.$router.replace({
           path: '/search/search-results',
