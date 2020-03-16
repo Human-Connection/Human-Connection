@@ -3,8 +3,8 @@
     <h4 class="title">{{ $t('filter-menu.categories') }}</h4>
     <labeled-button
       :filled="!filteredCategoryIds.length"
-      icon="check"
       :label="$t('filter-menu.all')"
+      icon="check"
       @click="resetCategories"
     />
     <div class="divider" />
