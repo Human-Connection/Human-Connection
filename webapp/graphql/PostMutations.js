@@ -8,25 +8,23 @@ export default () => {
         $content: String!
         $language: String
         $categoryIds: [ID]
-        $imageUpload: Upload
-        $imageBlurred: Boolean
-        $imageAspectRatio: Float
+        $image: ImageInput
       ) {
         CreatePost(
           title: $title
           content: $content
           language: $language
           categoryIds: $categoryIds
-          imageUpload: $imageUpload
-          imageBlurred: $imageBlurred
-          imageAspectRatio: $imageAspectRatio
+          image: $image
         ) {
           title
           slug
           content
           contentExcerpt
           language
-          imageBlurred
+          image {
+            sensitive
+          }
         }
       }
     `,
@@ -36,22 +34,16 @@ export default () => {
         $title: String!
         $content: String!
         $language: String
-        $imageUpload: Upload
+        $image: ImageInput
         $categoryIds: [ID]
-        $image: String
-        $imageBlurred: Boolean
-        $imageAspectRatio: Float
       ) {
         UpdatePost(
           id: $id
           title: $title
           content: $content
           language: $language
-          imageUpload: $imageUpload
-          categoryIds: $categoryIds
           image: $image
-          imageBlurred: $imageBlurred
-          imageAspectRatio: $imageAspectRatio
+          categoryIds: $categoryIds
         ) {
           id
           title
@@ -59,13 +51,15 @@ export default () => {
           content
           contentExcerpt
           language
-          imageBlurred
+          image {
+            sensitive
+            aspectRatio
+          }
           pinnedBy {
             id
             name
             role
           }
-          imageAspectRatio
         }
       }
     `,

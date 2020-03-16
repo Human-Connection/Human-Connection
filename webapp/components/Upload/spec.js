@@ -12,7 +12,7 @@ describe('Upload', () => {
       mutate: jest
         .fn()
         .mockResolvedValueOnce({
-          data: { UpdateUser: { id: 'upload1', avatar: '/upload/avatar.jpg' } },
+          data: { UpdateUser: { id: 'upload1', avatar: { url: '/upload/avatar.jpg' } } },
         })
         .mockRejectedValue({
           message: 'File upload unsuccessful! Whatcha gonna do?',
@@ -27,7 +27,7 @@ describe('Upload', () => {
 
   const propsData = {
     user: {
-      avatar: '/api/generic.jpg',
+      avatar: { url: '/api/generic.jpg' },
     },
   }
 

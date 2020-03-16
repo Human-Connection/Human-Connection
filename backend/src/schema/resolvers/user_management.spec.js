@@ -106,7 +106,9 @@ describe('currentUser', () => {
         id
         slug
         name
-        avatar
+        avatar {
+          url
+        }
         email
         role
       }
@@ -131,13 +133,15 @@ describe('currentUser', () => {
           {
             id: 'u3',
             // the `id` is the only thing that has to match the decoded JWT bearer token
-            avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/jimmuirhead/128.jpg',
             name: 'Matilde Hermiston',
             slug: 'matilde-hermiston',
             role: 'user',
           },
           {
             email: 'test@example.org',
+            avatar: Factory.build('image', {
+              url: 'https://s3.amazonaws.com/uifaces/faces/twitter/jimmuirhead/128.jpg',
+            }),
           },
         )
         const userBearerToken = encode({ id: 'u3' })
@@ -149,7 +153,9 @@ describe('currentUser', () => {
           data: {
             currentUser: {
               id: 'u3',
-              avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/jimmuirhead/128.jpg',
+              avatar: Factory.build('image', {
+                url: 'https://s3.amazonaws.com/uifaces/faces/twitter/jimmuirhead/128.jpg',
+              }),
               email: 'test@example.org',
               name: 'Matilde Hermiston',
               slug: 'matilde-hermiston',

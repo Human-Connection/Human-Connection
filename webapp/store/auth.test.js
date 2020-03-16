@@ -11,7 +11,9 @@ const currentUser = {
   name: 'Jenny Rostock',
   slug: 'jenny-rostock',
   email: 'user@example.org',
-  avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/mutu_krish/128.jpg',
+  avatar: {
+    url: 'https://s3.amazonaws.com/uifaces/faces/twitter/mutu_krish/128.jpg',
+  },
   role: 'user',
   locale: 'de',
 }
@@ -125,7 +127,9 @@ describe('actions', () => {
                 name: 'Jenny Rostock',
                 slug: 'jenny-rostock',
                 email: 'user@example.org',
-                avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/mutu_krish/128.jpg',
+                avatar: {
+                  url: 'https://s3.amazonaws.com/uifaces/faces/twitter/mutu_krish/128.jpg',
+                },
                 role: 'user',
                 locale: 'de',
               },

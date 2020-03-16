@@ -5,7 +5,9 @@ export const userFragment = gql`
     id
     slug
     name
-    avatar
+    avatar {
+      url
+    }
     disabled
     deleted
   }
@@ -44,14 +46,16 @@ export const postFragment = gql`
     disabled
     deleted
     slug
-    image
     language
-    imageBlurred
+    image {
+      url
+      sensitive
+      aspectRatio
+    }
     author {
       ...user
     }
     pinnedAt
-    imageAspectRatio
     pinned
   }
 `

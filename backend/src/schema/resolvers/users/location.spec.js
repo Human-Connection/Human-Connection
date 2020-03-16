@@ -8,28 +8,6 @@ const neode = getNeode()
 const driver = getDriver()
 let authenticatedUser, mutate, variables
 
-const signupVerificationMutation = gql`
-  mutation(
-    $name: String!
-    $password: String!
-    $email: String!
-    $nonce: String!
-    $termsAndConditionsAgreedVersion: String!
-    $locationName: String
-  ) {
-    SignupVerification(
-      name: $name
-      password: $password
-      email: $email
-      nonce: $nonce
-      termsAndConditionsAgreedVersion: $termsAndConditionsAgreedVersion
-      locationName: $locationName
-    ) {
-      locationName
-    }
-  }
-`
-
 const updateUserMutation = gql`
   mutation($id: ID!, $name: String!, $locationName: String) {
     UpdateUser(id: $id, name: $name, locationName: $locationName) {
@@ -38,9 +16,10 @@ const updateUserMutation = gql`
   }
 `
 
-let newlyCreatedNodesWithLocales = [
+const newlyCreatedNodesWithLocales = [
   {
     city: {
+      lng: -74.5763,
       lat: 41.1534,
       nameES: 'Hamburg',
       nameFR: 'Hamburg',
@@ -54,7 +33,6 @@ let newlyCreatedNodesWithLocales = [
       name: 'Hamburg',
       namePL: 'Hamburg',
       id: 'place.5977106083398860',
-      lng: -74.5763,
     },
     state: {
       namePT: 'Nova Jérsia',
@@ -105,82 +83,12 @@ beforeEach(() => {
   authenticatedUser = null
 })
 
-afterEach(() => {
-  cleanDatabase()
-})
+afterEach(cleanDatabase)
 
 describe('userMiddleware', () => {
-  describe('SignupVerification', () => {
-    beforeEach(async () => {
-      variables = {
-        ...variables,
-        name: 'John Doe',
-        password: '123',
-        email: 'john@example.org',
-        nonce: '123456',
-        termsAndConditionsAgreedVersion: '0.1.0',
-        locationName: 'Hamburg, New Jersey, United States of America',
-      }
-      const args = {
-        email: 'john@example.org',
-        nonce: '123456',
-      }
-      await neode.model('EmailAddress').create(args)
-    })
-    it('creates a Location node with localised city/state/country names', async () => {
-      await mutate({ mutation: signupVerificationMutation, variables })
-      const locations = await neode.cypher(
-        `MATCH (city:Location)-[:IS_IN]->(state:Location)-[:IS_IN]->(country:Location) return city, state, country`,
-      )
-      expect(
-        locations.records.map(record => {
-          return {
-            city: record.get('city').properties,
-            state: record.get('state').properties,
-            country: record.get('country').properties,
-          }
-        }),
-      ).toEqual(newlyCreatedNodesWithLocales)
-    })
-  })
-
   describe('UpdateUser', () => {
     let user
     beforeEach(async () => {
-      newlyCreatedNodesWithLocales = [
-        {
-          city: {
-            lat: 53.55,
-            nameES: 'Hamburgo',
-            nameFR: 'Hambourg',
-            nameIT: 'Amburgo',
-            nameEN: 'Hamburg',
-            type: 'region',
-            namePT: 'Hamburgo',
-            nameRU: 'Гамбург',
-            nameDE: 'Hamburg',
-            nameNL: 'Hamburg',
-            namePL: 'Hamburg',
-            name: 'Hamburg',
-            id: 'region.10793468240398860',
-            lng: 10,
-          },
-          country: {
-            namePT: 'Alemanha',
-            nameRU: 'Германия',
-            nameDE: 'Deutschland',
-            nameNL: 'Duitsland',
-            nameES: 'Alemania',
-            name: 'Germany',
-            namePL: 'Niemcy',
-            nameFR: 'Allemagne',
-            nameIT: 'Germania',
-            id: 'country.10743216036480410',
-            nameEN: 'Germany',
-            type: 'country',
-          },
-        },
-      ]
       user = await Factory.build('user', {
         id: 'updating-user',
       })
@@ -192,17 +100,18 @@ describe('userMiddleware', () => {
         ...variables,
         id: 'updating-user',
         name: 'Updating user',
-        locationName: 'Hamburg, Germany',
+        locationName: 'Hamburg, New Jersey, United States of America',
       }
       await mutate({ mutation: updateUserMutation, variables })
       const locations = await neode.cypher(
-        `MATCH (city:Location)-[:IS_IN]->(country:Location) return city, country`,
+        `MATCH (city:Location)-[:IS_IN]->(state:Location)-[:IS_IN]->(country:Location) return city {.*}, state {.*}, country {.*}`,
       )
       expect(
         locations.records.map(record => {
           return {
-            city: record.get('city').properties,
-            country: record.get('country').properties,
+            city: record.get('city'),
+            state: record.get('state'),
+            country: record.get('country'),
           }
         }),
       ).toEqual(newlyCreatedNodesWithLocales)

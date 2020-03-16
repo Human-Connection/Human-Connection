@@ -1,11 +1,9 @@
 import { UserInputError } from 'apollo-server'
 import { getNeode } from '../../db/neo4j'
-import fileUpload from './fileUpload'
 import encryptPassword from '../../helpers/encryptPassword'
 import generateNonce from './helpers/generateNonce'
 import existingEmailAddress from './helpers/existingEmailAddress'
 import normalizeEmail from './helpers/normalizeEmail'
-import createOrUpdateLocations from './users/location'
 
 const neode = getNeode()
 
@@ -24,8 +22,6 @@ export default {
       }
     },
     SignupVerification: async (_parent, args, context) => {
-      const { driver } = context
-      const session = driver.session()
       const { termsAndConditionsAgreedVersion } = args
       const regEx = new RegExp(/^[0-9]+\.[0-9]+\.[0-9]+$/g)
       if (!regEx.test(termsAndConditionsAgreedVersion)) {
@@ -35,27 +31,39 @@ export default {
 
       let { nonce, email } = args
       email = normalizeEmail(email)
-      const result = await neode.cypher(
-        `
-      MATCH(email:EmailAddress {nonce: {nonce}, email: {email}})
-      WHERE NOT (email)-[:BELONGS_TO]->()
-      RETURN email
-      `,
-        { nonce, email },
-      )
-      const emailAddress = await neode.hydrateFirst(result, 'email', neode.model('EmailAddress'))
-      if (!emailAddress) throw new UserInputError('Invalid email or nonce')
-      args = await fileUpload(args, { file: 'avatarUpload', url: 'avatar' })
-      args = await encryptPassword(args)
+      delete args.nonce
+      delete args.email
+      args = encryptPassword(args)
+
+      const { driver } = context
+      const session = driver.session()
+      const writeTxResultPromise = session.writeTransaction(async transaction => {
+        const createUserTransactionResponse = await transaction.run(
+          `
+            MATCH(email:EmailAddress {nonce: $nonce, email: $email})
+            WHERE NOT (email)-[:BELONGS_TO]->()
+            CREATE (user:User)
+            MERGE(user)-[:PRIMARY_EMAIL]->(email)
+            MERGE(user)<-[:BELONGS_TO]-(email)
+            SET user += $args
+            SET user.id = randomUUID()
+            SET user.role = 'user'
+            SET user.createdAt = toString(datetime())
+            SET user.updatedAt = toString(datetime())
+            SET user.allowEmbedIframes = FALSE
+            SET user.showShoutsPublicly = FALSE
+            SET email.verifiedAt = toString(datetime())
+            RETURN user {.*}
+          `,
+          { args, nonce, email },
+        )
+        const [user] = createUserTransactionResponse.records.map(record => record.get('user'))
+        if (!user) throw new UserInputError('Invalid email or nonce')
+        return user
+      })
       try {
-        const user = await neode.create('User', args)
-        await Promise.all([
-          user.relateTo(emailAddress, 'primaryEmail'),
-          emailAddress.relateTo(user, 'belongsTo'),
-          emailAddress.update({ verifiedAt: new Date().toISOString() }),
-        ])
-        await createOrUpdateLocations(args.id, args.locationName, session)
-        return user.toJson()
+        const user = await writeTxResultPromise
+        return user
       } catch (e) {
         if (e.code === 'Neo.ClientError.Schema.ConstraintValidationFailed')
           throw new UserInputError('User with this slug already exists!')
