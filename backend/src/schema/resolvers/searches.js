@@ -1,5 +1,5 @@
 import log from './helpers/databaseLogger'
-import queryString from './searches/queryString'
+import { queryString } from './searches/queryString'
 
 // see http://lucene.apache.org/core/8_3_1/queryparser/org/apache/lucene/queryparser/classic/package-summary.html#package.description
 

@@ -1,41 +1,50 @@
-export default function queryString(str) {
-  // match the whole text exactly
+export function queryString(str) {
   const normalizedString = normalizeWhitespace(str)
-  const escapedString = escapeSpecialCharacters(normalizedString)
-  let result = quoteString(escapedString) + '^8'
-  // match each word exactly
-  if (escapedString.includes(' ')) {
-    result += ' OR ('
-    escapedString.split(' ').forEach((s, i) => {
-      result += i === 0 ? quoteString(s) : ' AND ' + quoteString(s)
-    })
-    result += ')^4'
-  }
-  // match at least one word exactly
-  if (escapedString.includes(' ')) {
-    escapedString.split(' ').forEach(s => {
-      result += ' OR ' + quoteString(s) + '^2'
-    })
-  }
-  // start globbing ...
-  escapedString.split(' ').forEach(s => {
-    if (s.length > 3) {
-      // at least 4 letters. So AND, OR and NOT are never used unquoted
-      result += ' OR ' + s + '*'
+    const escapedString = escapeSpecialCharacters(normalizedString)
+    return `
+${matchWholeText(escapedString)}
+${matchEachWordExactly(escapedString)}
+${matchSomeWordsExactly(escapedString)}
+${matchBeginningOfWords(escapedString)}
+`
+}
+
+const matchWholeText = (str, boost = 8) => {
+    return `"${str}"^${boost}`
+}
+
+const matchEachWordExactly = (str, boost = 4) => {
+    if (str.includes(' ')) {
+	let tmp = str.split(' ').map((s, i) => i === 0 ? `"${s}"` : `AND "${s}"`).join(' ')
+	return `(${tmp})^${boost}`
+    } else {
+	return ''
     }
-  })
-  // now we could become fuzzy using ~
-  return result
 }
 
-const normalizeWhitespace = str => {
-  return str.replace(/\s+/g, ' ')
+const matchSomeWordsExactly = (str, boost = 2) => {
+    if (str.includes(' ')) {
+	return str.split(' ').map(s => `"${s}"^${boost}`).join(' ')
+    } else {
+	return ''
+    }    
 }
 
-const escapeSpecialCharacters = str => {
+const matchBeginningOfWords = str => {
+    return normalizeWhitespace(str.split(' ').map(s => {
+	if (s.length > 3) {
+	    // at least 4 letters. So AND, OR and NOT are never used unquoted
+	    return s + '*'
+	} else {
+	    return ''
+	}
+    }).join(' '))
+}
+
+export function normalizeWhitespace(str) {
+    return str.replace(/\s+/g, ' ').trim()
+}
+
+export function escapeSpecialCharacters(str) {
   return str.replace(/(["[\]&|\\{}+!()^~*?:/-])/g, '\\$1')
-}
-
-const quoteString = str => {
-  return '"' + str + '"'
 }
