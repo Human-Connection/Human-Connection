@@ -44,6 +44,7 @@ const searchQuery = gql`
     }
   }
 `
+let user
 
 describe('resolvers', () => {
   describe('searches', () => {
@@ -51,7 +52,7 @@ describe('resolvers', () => {
 
     describe('given one user', () => {
       beforeAll(async () => {
-        const user = await Factory.build('user', {
+        user = await Factory.build('user', {
           id: 'a-user',
           name: 'John Doe',
           slug: 'john-doe',
@@ -400,6 +401,44 @@ und hinter tausend Stäben keine Welt.`,
                       id: 'd-user',
                       name: 'Erich Maria Remarque',
                       slug: 'erich-maria-remarque',
+                    },
+                  ]),
+                },
+              })
+            })
+          })
+        })
+
+        describe('adding a post, written by a user who is muted by the authenticated user', () => {
+          beforeAll(async () => {
+            const mutedUser = await Factory.build('user', {
+              id: 'muted-user',
+              name: 'Muted',
+              slug: 'muted',
+            })
+            await user.relateTo(mutedUser, 'muted')
+            await Factory.build(
+              'post',
+              {
+                id: 'muted-post',
+                title: 'Beleidigender Beitrag',
+                content: 'Dieser Beitrag stammt von einem bleidigendem Nutzer.',
+              },
+              { authorId: 'muted-user' },
+            )
+          })
+
+          describe('query for text in a post written by a muted user', () => {
+            it('does not include the post of the muted user in the results', async () => {
+              variables = { query: 'beitrag' }
+              await expect(query({ query: searchQuery, variables })).resolves.toMatchObject({
+                data: {
+                  findResources: expect.not.arrayContaining([
+                    {
+                      __typename: 'Post',
+                      id: 'muted-post',
+                      title: 'Beleidigender Beitrag',
+                      content: 'Dieser Beitrag stammt von einem bleidigendem Nutzer.',
                     },
                   ]),
                 },
