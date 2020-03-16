@@ -37,19 +37,11 @@ const matchSomeWordsExactly = (str, boost = 2) => {
 }
 
 const matchBeginningOfWords = str => {
-  return normalizeWhitespace(
-    str
-      .split(' ')
-      .map(s => {
-        if (s.length > 3) {
-          // at least 4 letters. So AND, OR and NOT are never used unquoted
-          return s + '*'
-        } else {
-          return ''
-        }
-      })
-      .join(' '),
-  )
+  return str
+    .split(' ')
+    .filter(s => s.length > 3)
+    .map(s => s + '*')
+    .join(' ')
 }
 
 export function normalizeWhitespace(str) {
