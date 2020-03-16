@@ -324,20 +324,12 @@
     "title": "Votre bulle de filtre"
   },
   "filter-menu": {
-    "categories": {
-      "all": "Toutes",
-      "header": "Catégories de contenu"
-    },
-    "followers": {
-      "label": "Utilisateurs que je suis"
-    },
-    "general": {
-      "header": "Filtrer par ...."
-    },
-    "language": {
-      "all": "Tous",
-      "header": "Langues"
-    }
+    "all": "Toutes",
+    "categories": "Catégories de contenu",
+    "emotions": "Émotions",
+    "filter-by": "Filtrer par...",
+    "following": "Utilisateurs que je suis",
+    "languages": "Langues"
   },
   "followButton": {
     "follow": "Suivre",

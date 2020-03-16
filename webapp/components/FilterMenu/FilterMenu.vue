@@ -12,6 +12,8 @@
     </base-button>
     <template slot="popover">
       <ds-container>
+        <h4 class="title">{{ $t('filter-menu.filter-by') }}</h4>
+        <following-filter />
         <categories-filter />
         <general-filter />
         <language-filter />
@@ -22,6 +24,7 @@
 <script>
 import Dropdown from '~/components/Dropdown'
 import { mapGetters } from 'vuex'
+import FollowingFilter from './FollowingFilter'
 import CategoriesFilter from './CategoriesFilter'
 import GeneralFilter from './GeneralFilter'
 import LanguageFilter from './LanguageFilter'
@@ -29,6 +32,7 @@ import LanguageFilter from './LanguageFilter'
 export default {
   components: {
     Dropdown,
+    FollowingFilter,
     CategoriesFilter,
     GeneralFilter,
     LanguageFilter,

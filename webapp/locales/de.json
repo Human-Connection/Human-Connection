@@ -337,20 +337,14 @@
     "title": "Deine Filterblase"
   },
   "filter-menu": {
-    "categories": {
-      "all": "Alle",
-      "header": "Themenkategorien"
-    },
-    "followers": {
+    "all": "Alle",
+    "categories": "Themenkategorien",
+    "following": {
+      "header": "Filtern nach...",
       "label": "Benutzern, denen ich folge"
     },
-    "general": {
-      "header": "Filtern nach …"
-    },
-    "language": {
-      "all": "Alle",
-      "header": "Sprachen"
-    }
+    "emotions": "Emotionen",
+    "languages": "Sprachen"
   },
   "followButton": {
     "follow": "Folgen",

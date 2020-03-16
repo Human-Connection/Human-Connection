@@ -329,20 +329,12 @@
     "title": ""
   },
   "filter-menu": {
-    "categories": {
-      "all": "",
-      "header": ""
-    },
-    "followers": {
-      "label": ""
-    },
-    "general": {
-      "header": ""
-    },
-    "language": {
-      "all": "",
-      "header": ""
-    }
+    "all": "",
+    "categories": "",
+    "emotions": "",
+    "filter-by": "",
+    "following": "",
+    "languages": ""
   },
   "followButton": {
     "follow": "",

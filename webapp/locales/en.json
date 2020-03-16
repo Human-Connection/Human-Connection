@@ -337,20 +337,12 @@
     "title": "Your filter bubble"
   },
   "filter-menu": {
-    "categories": {
-      "all": "All",
-      "header": "Categories of Content"
-    },
-    "followers": {
-      "label": "Users I follow"
-    },
-    "general": {
-      "header": "Filter by …"
-    },
-    "language": {
-      "all": "All",
-      "header": "Languages"
-    }
+    "all": "All",
+    "categories": "Categories of Content",
+    "emotions": "Emotions",
+    "filter-by": "Filter by...",
+    "following": "Users I follow",
+    "languages": "Languages"
   },
   "followButton": {
     "follow": "Follow",

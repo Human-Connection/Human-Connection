@@ -320,20 +320,12 @@
     "title": "Sua bolha de filtro"
   },
   "filter-menu": {
-    "categories": {
-      "all": "Todos",
-      "header": "Categorias de Conteúdo"
-    },
-    "followers": {
-      "label": "Usuários que eu sigo"
-    },
-    "general": {
-      "header": "Filtrar por …"
-    },
-    "language": {
-      "all": "Todos",
-      "header": "Idiomas"
-    }
+    "all": "Todos",
+    "categories": "Categorias de Conteúdo",
+    "emotions": "Emoções",
+    "filter-by": "Filtrar por...",
+    "following": "Usuários que eu sigo",
+    "languages": "Idiomas"
   },
   "followButton": {
     "follow": "Seguir",

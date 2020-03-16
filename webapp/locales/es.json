@@ -335,20 +335,12 @@
     "title": "Su burbuja de filtro"
   },
   "filter-menu": {
-    "categories": {
-      "all": "Todas",
-      "header": "Categorías de contenido"
-    },
-    "followers": {
-      "label": "Usuarios que sigo"
-    },
-    "general": {
-      "header": "Filtrar por...."
-    },
-    "language": {
-      "all": "Todos",
-      "header": "Idiomas"
-    }
+    "all": "Todas",
+    "categories": "Categorías de contenido",
+    "emotions": "Emociones",
+    "filter-by": "Filtrar por...",
+    "following": "Usuarios que sigo",
+    "languages": "Idiomas"
   },
   "followButton": {
     "follow": "Seguir",

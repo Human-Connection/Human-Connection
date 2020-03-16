@@ -1,7 +1,7 @@
 <template>
   <ds-space margin-top="large">
     <ds-flex id="filter-menu-header">
-      <ds-heading tag="h4">{{ $t('filter-menu.language.header') }}</ds-heading>
+      <ds-heading tag="h4">{{ $t('filter-menu.languages') }}</ds-heading>
       <ds-space margin-bottom="large" />
     </ds-flex>
     <ds-flex :gutter="{ lg: 'small' }">
@@ -19,7 +19,7 @@
               @click="resetLanguages"
             />
             <ds-flex-item>
-              <label class="language-labels">{{ $t('filter-menu.language.all') }}</label>
+              <label class="language-labels">{{ $t('filter-menu.all') }}</label>
             </ds-flex-item>
             <ds-space />
           </ds-flex-item>

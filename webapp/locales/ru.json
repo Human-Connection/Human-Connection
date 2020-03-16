@@ -335,20 +335,12 @@
     "title": "Ваш фильтр пузыря"
   },
   "filter-menu": {
-    "categories": {
-      "all": "Все",
-      "header": "Категории"
-    },
-    "followers": {
-      "label": "Мои подписки"
-    },
-    "general": {
-      "header": "Другие фильтры"
-    },
-    "language": {
-      "all": "Все",
-      "header": "Языки"
-    }
+    "all": "Все",
+    "categories": "Категории",
+    "emotions": "",
+    "filter-by": "Другие фильтры",
+    "following": "Мои подписки",
+    "languages": "Языки"
   },
   "followButton": {
     "follow": "Подписаться",

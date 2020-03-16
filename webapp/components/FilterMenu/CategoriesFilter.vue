@@ -1,10 +1,10 @@
 <template>
   <section class="categories-filter">
-    <h4 class="title">{{ $t('filter-menu.categories.header') }}</h4>
+    <h4 class="title">{{ $t('filter-menu.categories') }}</h4>
     <labeled-button
       :filled="!filteredCategoryIds.length"
       icon="check"
-      :label="$t('filter-menu.categories.all')"
+      :label="$t('filter-menu.all')"
       @click="resetCategories"
     />
     <div class="divider" />
