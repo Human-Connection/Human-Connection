@@ -6,7 +6,7 @@
     :schema="formSchema"
     @submit="submit"
   >
-    <template slot-scope="{ errors }">
+    <template #default="{ errors }">
       <base-card>
         <template #heroImage>
           <img

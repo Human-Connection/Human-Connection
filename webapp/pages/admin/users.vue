@@ -19,8 +19,8 @@
     </base-card>
     <base-card v-if="User && User.length">
       <ds-table :data="User" :fields="fields" condensed>
-        <template slot="index" slot-scope="scope">{{ scope.row.index + 1 }}.</template>
-        <template slot="name" slot-scope="scope">
+        <template #index="scope">{{ scope.row.index + 1 }}.</template>
+        <template #name="scope">
           <nuxt-link
             :to="{
               name: 'profile-id-slug',
@@ -30,12 +30,12 @@
             <b>{{ scope.row.name | truncate(20) }}</b>
           </nuxt-link>
         </template>
-        <template slot="email" slot-scope="scope">
+        <template #email="scope">
           <a :href="`mailto:${scope.row.email}`">
             <b>{{ scope.row.email }}</b>
           </a>
         </template>
-        <template slot="slug" slot-scope="scope">
+        <template #slug="scope">
           <nuxt-link
             :to="{
               name: 'profile-id-slug',
@@ -45,7 +45,7 @@
             <b>{{ scope.row.slug | truncate(20) }}</b>
           </nuxt-link>
         </template>
-        <template slot="createdAt" slot-scope="scope">
+        <template #createdAt="scope">
           {{ scope.row.createdAt | dateTime }}
         </template>
       </ds-table>

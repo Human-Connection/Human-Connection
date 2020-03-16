@@ -2,7 +2,7 @@
   <base-card>
     <h2 class="title">{{ $t('admin.categories.name') }}</h2>
     <ds-table :data="Category" :fields="fields" condensed>
-      <template slot="icon" slot-scope="scope">
+      <template #icon="scope">
         <base-icon :name="scope.row.icon" />
       </template>
     </ds-table>
