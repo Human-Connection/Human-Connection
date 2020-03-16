@@ -339,11 +339,9 @@
   "filter-menu": {
     "all": "Alle",
     "categories": "Themenkategorien",
-    "following": {
-      "header": "Filtern nach...",
-      "label": "Benutzern, denen ich folge"
-    },
     "emotions": "Emotionen",
+    "filter-by": "Filtern nach...",
+    "following": "Benutzern, denen ich folge",
     "languages": "Sprachen"
   },
   "followButton": {

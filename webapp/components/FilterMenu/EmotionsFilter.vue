@@ -1,6 +1,12 @@
 <template>
   <section class="emotion-filter">
     <h4 class="title">{{ $t('filter-menu.emotions') }}</h4>
+    <labeled-button
+      :filled="!filteredByEmotions.length"
+      icon="check"
+      :label="$t('filter-menu.all')"
+      @click="resetEmotions"
+    />
     <div class="divider" />
     <emotion-button
       v-for="emotion in emotionsArray"
@@ -13,10 +19,12 @@
 </template>
 <script>
 import { mapGetters, mapMutations } from 'vuex'
+import LabeledButton from '~/components/_new/generic/LabeledButton/LabeledButton'
 import EmotionButton from '~/components/EmotionButton/EmotionButton'
 
 export default {
   components: {
+    LabeledButton,
     EmotionButton,
   },
   data() {
@@ -32,6 +40,7 @@ export default {
   },
   methods: {
     ...mapMutations({
+      resetEmotions: 'posts/RESET_EMOTIONS',
       toogleFilteredByEmotions: 'posts/TOGGLE_EMOTION',
     }),
     iconPath(emotion) {
@@ -48,6 +57,7 @@ export default {
   display: flex;
   flex-wrap: wrap;
   margin-top: $space-base;
+  width: 66%;
 
   > .title {
     width: 100%;
@@ -56,18 +66,29 @@ export default {
 
   > .divider {
     border-left: $border-size-base solid $border-color-soft;
-    margin: 0px $space-base 0px 76px;
+    margin: 0px $space-base;
   }
-}
 
-@media only screen and (max-width: 630px) {
-  .emotion-filter {
+  @media only screen and (max-width: 630px) {
+    width: 100%;
+
     > .title {
       text-align: center;
     }
 
+    .labeled-button {
+      width: 100%;
+      margin: $space-x-small 0;
+    }
+
     > .divider {
+      width: 100%;
+      margin: $space-small;
       border-top: $border-size-base solid $border-color-soft;
+    }
+
+    > .emotion-button {
+      margin-top: $space-x-small;
     }
   }
 }

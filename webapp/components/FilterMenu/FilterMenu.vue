@@ -11,11 +11,11 @@
       <base-icon class="dropdown-arrow" name="angle-down" />
     </base-button>
     <template slot="popover">
-      <ds-container>
+      <ds-container class="filter-menu">
         <h4 class="title">{{ $t('filter-menu.filter-by') }}</h4>
         <following-filter />
         <categories-filter />
-        <general-filter />
+        <emotions-filter />
         <language-filter />
       </ds-container>
     </template>
@@ -26,7 +26,7 @@ import Dropdown from '~/components/Dropdown'
 import { mapGetters } from 'vuex'
 import FollowingFilter from './FollowingFilter'
 import CategoriesFilter from './CategoriesFilter'
-import GeneralFilter from './GeneralFilter'
+import EmotionsFilter from './EmotionsFilter'
 import LanguageFilter from './LanguageFilter'
 
 export default {
@@ -34,7 +34,7 @@ export default {
     Dropdown,
     FollowingFilter,
     CategoriesFilter,
-    GeneralFilter,
+    EmotionsFilter,
     LanguageFilter,
   },
   props: {
@@ -48,3 +48,12 @@ export default {
   },
 }
 </script>
+<style lang="scss">
+@media only screen and (max-width: 960px) {
+  .filter-menu {
+    > .title {
+      text-align: center;
+    }
+  }
+}
+</style>

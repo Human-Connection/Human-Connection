@@ -1,18 +1,18 @@
 <template>
-<section class="following-filter">
-  <labeled-button
-    data-test="filter-by-followed"
-    :filled="filteredByUsersFollowed"
-    icon="user-plus"
-    :label="$t('filter-menu.following')"
-    @click="toggleFilteredByFollowed(currentUser.id)"
-    v-tooltip="{
-      content: this.$t('contribution.filterFollow'),
-      placement: 'left',
-      delay: { show: 500 },
-    }"
-  />
-</section>
+  <section class="following-filter">
+    <labeled-button
+      data-test="filter-by-followed"
+      :filled="filteredByUsersFollowed"
+      icon="user-plus"
+      :label="$t('filter-menu.following')"
+      @click="toggleFilteredByFollowed(currentUser.id)"
+      v-tooltip="{
+        content: this.$t('contribution.filterFollow'),
+        placement: 'left',
+        delay: { show: 500 },
+      }"
+    />
+  </section>
 </template>
 
 <script>
@@ -45,6 +45,12 @@ export default {
   > .labeled-button {
     margin-top: $space-small;
     width: 5%;
+  }
+
+  @media only screen and (max-width: 960px) {
+    .labeled-button {
+      width: 100%;
+    }
   }
 }
 </style>
