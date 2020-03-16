@@ -2,6 +2,7 @@ import { getDriver } from '../../db/neo4j'
 import { createReadStream } from 'fs'
 import path from 'path'
 import { S3 } from 'aws-sdk'
+import mime from 'mime-types'
 import { s3Configs } from '../../config'
 
 export const description = `
@@ -29,7 +30,6 @@ export async function up(next) {
   }
 
   const s3 = new S3({ region, endpoint })
-
   try {
     // Implement your migration here.
     const { records } = await transaction.run('MATCH (image:Image) RETURN image.url as url')
@@ -41,26 +41,34 @@ export async function up(next) {
           return async () => {
             const { pathname } = new URL(url, 'http://example.org')
             const fileLocation = path.join(__dirname, `../../../public/${pathname}`)
-            const s3Location = `/original/${pathname}`
+            const s3Location = `original${pathname}`
+            const mimeType = mime.lookup(fileLocation)
 
             const params = {
               Bucket,
               Key: s3Location,
               ACL: 'public-read',
-              // TODO: check the actual mime type
-              ContentType: 'image/jpg',
+              ContentType: mimeType,
               Body: createReadStream(fileLocation),
             }
+
             const data = await s3.upload(params).promise()
-            const { Location } = data
-            return Location
+            const { Location: spacesUrl } = data
+
+            const updatedRecord = await transaction.run(
+              'MATCH (image:Image {url: $url}) SET image.url = $spacesUrl RETURN image.url as url',
+              { url, spacesUrl },
+            )
+            const [updatedUrl] = updatedRecord.records.map(record => record.get('url'))
+            // eslint-disable-next-line no-console
+            // https://image-upload.fra1.digitaloceanspaces.com/original/uploads/05b6cb85-deec-45f2-8e34-44111dceb743-avatar.png
+            return updatedUrl
           }
         })
         .map(p => p()),
     )
-    // TODO: update the urls in the database
     // eslint-disable-next-line no-console
-    console.log(locations)
+    console.log('this is locations', locations)
     await transaction.commit()
     next()
   } catch (error) {
