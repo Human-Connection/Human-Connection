@@ -138,27 +138,55 @@ describe('resolvers', () => {
         })
 
         describe('testing different post content', () => {
-          const addPost = post => {
-            return Factory.build(
-              'post',
-              {
-                id: post.id,
-                title: post.title,
-                content: post.content,
-              },
-              factoryOptions,
-            )
-          }
-
-          describe('adding a post which content contains the title of the first post', () => {
-            describe('query contains the title of the first post', () => {
-              it('finds both posts', async () => {
-                await addPost({
-                  __typename: 'Post',
+          beforeAll(async () => {
+            return Promise.all([
+              Factory.build(
+                'post',
+                {
                   id: 'b-post',
                   title: 'Aufruf',
                   content: 'Jeder sollte seinen Beitrag leisten.',
-                })
+                },
+                factoryOptions,
+              ),
+              Factory.build(
+                'post',
+                {
+                  id: 'g-post',
+                  title: 'Zusammengesetzte Wörter',
+                  content: `Ein Bindestrich kann zwischen zwei Substantiven auch dann gesetzt werden, wenn drei gleichlautende Buchstaben aufeinandertreffen. Das ist etwa bei einem „Teeei“ der Fall, das so korrekt geschrieben ist. Möglich ist hier auch die Schreibweise mit Bindestrich: Tee-Ei.`,
+                },
+                factoryOptions,
+              ),
+              Factory.build(
+                'post',
+                {
+                  id: 'c-post',
+                  title: 'Die binomischen Formeln',
+                  content: `1. binomische Formel: (a + b)² = a² + 2ab + b²
+2. binomische Formel: (a - b)² = a² - 2ab + b²
+3. binomische Formel: (a + b)(a - b) = a² - b²`,
+                },
+                factoryOptions,
+              ),
+              Factory.build(
+                'post',
+                {
+                  id: 'd-post',
+                  title: 'Der Panther',
+                  content: `Sein Blick ist vom Vorübergehn der Stäbe
+so müd geworden, daß er nichts mehr hält.
+Ihm ist, als ob es tausend Stäbe gäbe
+und hinter tausend Stäben keine Welt.`,
+                },
+                factoryOptions,
+              ),
+            ])
+          })
+
+          describe('a post which content contains the title of the first post', () => {
+            describe('query contains the title of the first post', () => {
+              it('finds both posts', async () => {
                 variables = { query: 'beitrag' }
                 await expect(query({ query: searchQuery, variables })).resolves.toMatchObject({
                   data: {
@@ -182,14 +210,9 @@ describe('resolvers', () => {
             })
           })
 
-          describe('adding a post that contains a hyphen between two words and German quotation marks', () => {
+          describe('a post that contains a hyphen between two words and German quotation marks', () => {
             describe('hyphens in query', () => {
               it('will be treated as ordinary characters', async () => {
-                await addPost({
-                  id: 'g-post',
-                  title: 'Zusammengesetzte Wörter',
-                  content: `Ein Bindestrich kann zwischen zwei Substantiven auch dann gesetzt werden, wenn drei gleichlautende Buchstaben aufeinandertreffen. Das ist etwa bei einem „Teeei“ der Fall, das so korrekt geschrieben ist. Möglich ist hier auch die Schreibweise mit Bindestrich: Tee-Ei.`,
-                })
                 variables = { query: 'tee-ei' }
                 await expect(query({ query: searchQuery, variables })).resolves.toMatchObject({
                   data: {
@@ -225,16 +248,9 @@ describe('resolvers', () => {
             })
           })
 
-          describe('adding a post that contains a simple mathematical exprssion and linebreaks', () => {
+          describe('a post that contains a simple mathematical exprssion and linebreaks', () => {
             describe('query a part of the mathematical expression', () => {
               it('finds that post', async () => {
-                await addPost({
-                  id: 'c-post',
-                  title: 'Die binomischen Formeln',
-                  content: `1. binomische Formel: (a + b)² = a² + 2ab + b²
-2. binomische Formel: (a - b)² = a² - 2ab + b²
-3. binomische Formel: (a + b)(a - b) = a² - b²`,
-                })
                 variables = { query: '(a - b)²' }
                 await expect(query({ query: searchQuery, variables })).resolves.toMatchObject({
                   data: {
@@ -294,17 +310,9 @@ describe('resolvers', () => {
             })
           })
 
-          describe('adding a post that contains a poem', () => {
+          describe('a post that contains a poem', () => {
             describe('query for more than one word, e.g. the title of the poem', () => {
               it('finds the poem and another post that contains only one word but with lower score', async () => {
-                await addPost({
-                  id: 'd-post',
-                  title: 'Der Panther',
-                  content: `Sein Blick ist vom Vorübergehn der Stäbe
-so müd geworden, daß er nichts mehr hält.
-Ihm ist, als ob es tausend Stäbe gäbe
-und hinter tausend Stäben keine Welt.`,
-                })
                 variables = { query: 'der panther' }
                 await expect(query({ query: searchQuery, variables })).resolves.toMatchObject({
                   data: {
@@ -400,13 +408,6 @@ und hinter tausend Stäben keine Welt.`,
           })
         })
       })
-
-      /*
-      it('finds Russian text', async () => {
-        variables = { query: 'Калашникова' }
-        const expected = createExpectedObject([gPost])
-        await expect(query({ query: searchQuery, variables })).resolves.toMatchObject(expected)
-	}) */
     })
   })
 })
