@@ -100,6 +100,7 @@ export default {
       }, this.delay)
     },
     onEnter(event) {
+
       if (this.$router.history.current.path === '/search/search-results') {
         this.$store.commit('search/SET_VALUE', {
           searchValue: this.unprocessedSearchInput,
@@ -111,10 +112,12 @@ export default {
         })
         this.clear()
       } else {
+        if (this.options.length === 0 ) return 
         this.$router.replace({
           path: '/search/search-results',
           query: { item: this.unprocessedSearchInput },
         })
+        this.clear()
       }
     },
     onDelete(event) {

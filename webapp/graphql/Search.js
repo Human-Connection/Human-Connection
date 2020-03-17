@@ -6,8 +6,8 @@ export const findResourcesQuery = gql`
   ${postFragment}
   ${tagsCategoriesAndPinnedFragment}
 
-  query($query: String!) {
-    findResources(query: $query, limit: 5) {
+  query($query: String!, $limit: Int = 5) {
+    findResources(query: $query, limit: $limit) {
       __typename
       ... on Post {
         ...post

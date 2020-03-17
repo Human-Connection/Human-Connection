@@ -1,14 +1,21 @@
 <template>
   <ds-container>
-    <div>
-      <ds-flex>
-        <ds-flex-item>
-          <ds-tag color="primary" size="x-large" round>{{ searchResults.length }}</ds-tag>
+       <base-button
+        class="crop-cancel"
+        icon="close"
+        size="small"
+        circle
+        danger
+        filled
+        rigth
+       @click="closeSearch"
+      />
+    <ds-section>
+     
+      <ds-heading>  <ds-tag color="primary" size="x-large" round>{{ searchResults.length }}</ds-tag>
           Results for:
-          <b>{{ value }}</b>
-        </ds-flex-item>
-        <ds-flex-item width="2">
-          <ds-button
+          <b>{{ value }}</b></ds-heading>
+      <ds-text>    <ds-button
             @click="postOnly = !postOnly"
             :secondary="postOnly"
             size="x-large"
@@ -25,31 +32,18 @@
           >
             <ds-tag color="primary" size="x-large" round>{{ users.length }}</ds-tag>
             User
-          </ds-button>
-          <ds-button @click="closeSearch" size="x-large" icon="close" right>close</ds-button>
-        </ds-flex-item>
-      </ds-flex>
-    </div>
+          </ds-button></ds-text>
+    </ds-section>
+  <ds-space />
     <ds-space />
-
-    <ds-space v-if="searchResults.length === 0">no Result</ds-space>
-
-    <!--
-    <ds-space v-for="(posts) in posts" :key="posts.key" class="Post searchresults">
-      <div v-show="postOnly">
-        
-          {{ posts }}
-      </div>
-    </ds-space>
--->
-    <div>
-      <ds-space />
-
-
+      <ds-section>
+   
+      
     <ds-text size="x-large" v-show="userOnly">Menschen</ds-text>
-    <ds-grid gap="x-small" v-show="userOnly">
+    <ds-space v-if="users.length === 0">no Result</ds-space>
+    <ds-grid v-else gap="x-small" v-show="userOnly">
       <ds-grid-item v-for="users in users" :key="users.key" class="User searchresults">
-        <div>
+       
           <ds-placeholder>
             <ds-avatar size="large" :title="users.name" :image="users.avatar" />
             {{ users.name }}
@@ -58,17 +52,22 @@
               <ds-chip>Kommentare</ds-chip>
             </div>
           </ds-placeholder>
-        </div>
+       
       </ds-grid-item>
     </ds-grid>
+      </ds-section>
+     
    <ds-space />
     <ds-space />
+
+      <ds-section>
+     
       <ds-text size="x-large" v-show="postOnly">Beiträge</ds-text>
-      <ds-list ordered v-show="postOnly">
+      <ds-space v-if="posts.length === 0">no Result</ds-space>
+      <ds-list v-else ordered v-show="postOnly">
         <ds-list-item v-for="posts in posts" :key="posts.key" class="Post searchresults">
           <div>
             <b>{{ posts.title }}</b>
-
             <div v-html="posts.content"></div>
             <div>
               <ds-text size="small">
@@ -87,7 +86,6 @@
                   :icon="category.icon"
                   :name="$t(`contribution.category.name.${category.slug}`)"
                 />
-                <!-- Post language -->
                 <ds-tag v-if="posts.language" class="category-tag language">
                   <base-icon name="globe" />
                   {{ posts.language.toUpperCase() }}
@@ -97,9 +95,9 @@
           </div>
         </ds-list-item>
       </ds-list>
-    </div>
- 
-
+     
+      </ds-section>
+     
   </ds-container>
 </template>
 
@@ -124,37 +122,36 @@ export default {
     return {
       loading: true,
       value: '',
-
       pending: false,
       searchResults: [],
-      users: [],
-      posts: [],
       userOnly: true,
       postOnly: true,
     }
   },
-
   computed: {
     ...mapGetters({
       searchValue: 'search/searchValue',
       orderOptions: 'posts/orderOptions',
       sortingIcon: 'posts/orderIcon',
     }),
-    sortingOptions() {
-      return this.orderOptions(this)
+    posts() {
+      return this.searchResults.filter(result => result.__typename === 'Post')
+    },
+    users() {
+      return this.searchResults.filter(result => result.__typename === 'User')
     },
   },
   mounted() {
+    if (this.$route.query.item){
     this.value = this.$route.query.item
     this.query(this.value)
+    } else {
+      this.$router.replace('/')
+    }
   },
-
   watch: {
-    searchValue: function(val) {
-      this.users = []
-      this.posts = []
-      this.value = val
-      this.query(this.value)
+    searchValue(value) {
+      this.query(value)
     },
   },
   methods: {
@@ -167,18 +164,12 @@ export default {
           query: findResourcesQuery,
           variables: {
             query: value,
+            limit: 37,
           },
         })
-        for (var i = 0; i < findResources.length; i++) {
-          if (findResources[i].__typename === 'User') {
-            this.users.push(findResources[i])
-          }
-          if (findResources[i].__typename === 'Post') {
-            this.posts.push(findResources[i])
-          }
-        }
         // console.log('users', this.users)
         // console.log('posts', this.posts)
+        console.log("findResources",findResources)
         this.searchResults = findResources
       } catch (error) {
         this.searchResults = []
@@ -192,5 +183,4 @@ export default {
   },
 }
 </script>
-
-<style lang="scss"></style>
+ 
