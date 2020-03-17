@@ -11,6 +11,7 @@
 <script>
 import { findResourcesQuery } from '~/graphql/Search.js'
 import SearchableInput from '~/components/generic/SearchableInput/SearchableInput.vue'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'SearchField',
@@ -23,6 +24,9 @@ export default {
       searchResults: [],
     }
   },
+  computed: {
+    ...mapGetters({ postsFilter: 'posts/filter' }),
+  },
   methods: {
     async query(value) {
       this.pending = true
@@ -33,6 +37,7 @@ export default {
           query: findResourcesQuery,
           variables: {
             query: value,
+            filter: this.postsFilter,
           },
         })
         this.searchResults = findResources

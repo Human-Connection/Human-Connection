@@ -1,5 +1,5 @@
 union SearchResult = Post | User
 
 type Query {
-  findResources(query: String!, limit: Int = 5): [SearchResult]!
+  findResources(query: String!, limit: Int = 5, filter: _PostFilter = {}): [SearchResult]!
 }

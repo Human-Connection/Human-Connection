@@ -5,8 +5,8 @@ export const findResourcesQuery = gql`
   ${userFragment}
   ${postFragment}
 
-  query($query: String!) {
-    findResources(query: $query, limit: 5) {
+  query($query: String!, $limit: Int = 5, $filter: _PostFilter = {}) {
+    findResources(query: $query, limit: $limit, filter: $filter) {
       __typename
       ... on Post {
         ...post
