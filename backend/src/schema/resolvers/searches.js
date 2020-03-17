@@ -42,7 +42,7 @@ export default {
       LIMIT $limit
       `
       const myQuery = queryString(query)
-	
+
       const session = context.driver.session()
       const searchResultPromise = session.readTransaction(async transaction => {
         const postTransactionResponse = transaction.run(postCypher, {
