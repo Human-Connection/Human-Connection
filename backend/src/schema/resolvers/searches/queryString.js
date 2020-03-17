@@ -14,26 +14,20 @@ const matchWholeText = (str, boost = 8) => {
 }
 
 const matchEachWordExactly = (str, boost = 4) => {
-  if (str.includes(' ')) {
-    const tmp = str
-      .split(' ')
-      .map((s, i) => (i === 0 ? `"${s}"` : `AND "${s}"`))
-      .join(' ')
-    return `(${tmp})^${boost}`
-  } else {
-    return ''
-  }
+  if (!str.includes(' ')) return ''
+  const tmp = str
+    .split(' ')
+    .map((s, i) => (i === 0 ? `"${s}"` : `AND "${s}"`))
+    .join(' ')
+  return `(${tmp})^${boost}`
 }
 
 const matchSomeWordsExactly = (str, boost = 2) => {
-  if (str.includes(' ')) {
-    return str
-      .split(' ')
-      .map(s => `"${s}"^${boost}`)
-      .join(' ')
-  } else {
-    return ''
-  }
+  if (!str.includes(' ')) return ''
+  return str
+    .split(' ')
+    .map(s => `"${s}"^${boost}`)
+    .join(' ')
 }
 
 const matchBeginningOfWords = str => {

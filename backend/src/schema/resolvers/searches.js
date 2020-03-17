@@ -41,16 +41,17 @@ export default {
       RETURN resource {.*, __typename: labels(resource)[0]}
       LIMIT $limit
       `
-
+      const myQuery = queryString(query)
+	
       const session = context.driver.session()
       const searchResultPromise = session.readTransaction(async transaction => {
         const postTransactionResponse = transaction.run(postCypher, {
-          query: queryString(query),
+          query: myQuery,
           limit,
           thisUserId,
         })
         const userTransactionResponse = transaction.run(userCypher, {
-          query: queryString(query),
+          query: myQuery,
           limit,
           thisUserId,
         })
@@ -61,8 +62,6 @@ export default {
         const [postResults, userResults] = await searchResultPromise
         log(postResults)
         log(userResults)
-        // console.log(postResults.summary.query.parameters)
-        // console.log(userResults)
         return [...postResults.records, ...userResults.records].map(r => r.get('resource'))
       } finally {
         session.close()

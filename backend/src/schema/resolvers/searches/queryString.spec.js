@@ -10,7 +10,7 @@ describe('queryString', () => {
   })
 
   describe('whitespace', () => {
-    it('is normalized correctly', () => {
+    it('normalizes correctly', () => {
       expect(normalizeWhitespace(' a \t \n b \n   ')).toEqual('a b')
     })
   })
