@@ -102,7 +102,7 @@ export default {
     onEnter(event) {
       this.$router.push({
         path: '/search/search-results',
-        query: { item: this.unprocessedSearchInput },
+        query: { search: this.unprocessedSearchInput },
       })
     },
     onDelete(event) {

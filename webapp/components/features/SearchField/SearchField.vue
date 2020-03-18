@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { findResourcesQuery } from '~/graphql/Search.js'
+import { searchQuery } from '~/graphql/Search.js'
 import SearchableInput from '~/components/generic/SearchableInput/SearchableInput.vue'
 
 export default {
@@ -28,14 +28,14 @@ export default {
       this.pending = true
       try {
         const {
-          data: { findResources },
+          data: { searchResults },
         } = await this.$apollo.query({
-          query: findResourcesQuery,
+          query: searchQuery,
           variables: {
             query: value,
           },
         })
-        this.searchResults = findResources
+        this.searchResults = searchResults
       } catch (error) {
         this.searchResults = []
       } finally {
