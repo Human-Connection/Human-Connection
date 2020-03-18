@@ -2,7 +2,7 @@ import log from './helpers/databaseLogger'
 
 export default {
   Query: {
-    findResources: async (_parent, args, context, _resolveInfo) => {
+    searchResults: async (_parent, args, context, _resolveInfo) => {
       const { query, limit } = args
       const { id: thisUserId } = context.user
       // see http://lucene.apache.org/core/8_3_1/queryparser/org/apache/lucene/queryparser/classic/package-summary.html#package.description
