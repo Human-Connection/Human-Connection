@@ -1,6 +1,6 @@
 <template>
   <div class="search-results">
-    <!-- <filter-menu :hashtag="value" @clearSearch="closeSearch" /> -->
+    <filter-menu :hashtag="value" @clearSearch="closeSearch" />
     <tab-navigation
       :tabs="tabOptions"
       @openTab="value => showActive = value"
@@ -51,8 +51,6 @@ export default {
   computed: {
     ...mapGetters({
       searchValue: 'search/searchValue',
-      orderOptions: 'posts/orderOptions',
-      sortingIcon: 'posts/orderIcon',
     }),
     posts() {
       return this.searchResults.filter(result => result.__typename === 'Post')
@@ -76,7 +74,7 @@ export default {
     this.value = this.$route.query.item
     this.query(this.value)
     } else {
-      this.$router.replace('/')
+      this.$router.push('/')
     }
   },
   watch: {
@@ -108,7 +106,7 @@ export default {
       }
     },
     closeSearch() {
-      this.$router.replace('/')
+      this.$router.push('/')
     },
   },
 }
