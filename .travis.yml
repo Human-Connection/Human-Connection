@@ -1,6 +1,10 @@
 dist: xenial
 language: node_js
 node_js: lts/*
+cache:
+  yarn: false
+  npm: false
+
 addons:
   apt:
     packages:
@@ -8,11 +12,11 @@ addons:
   snaps:
     - docker
   firefox: "latest-esr"
-    
+
 install:
   - yarn global add wait-on
   # Install Codecov
-  - yarn install
+  - yarn install --frozen-lockfile
   - cp backend/.env.template backend/.env
 
 before_script:
