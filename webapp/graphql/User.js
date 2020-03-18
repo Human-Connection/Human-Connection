@@ -283,3 +283,28 @@ export const currentUserQuery = gql`
     }
   }
 `
+
+export const followedByQuery = gql`
+  query($id: ID!) {
+    User(id: $id) {
+      followedBy(offset: 7) {
+        id
+        slug
+        name
+      }
+    }
+  }
+`
+
+export const followingQuery = gql`
+  query($id: ID!) {
+    User(id: $id) {
+      following(offset: 7) {
+        id
+        slug
+        name
+      }
+    }
+  }
+`
+

@@ -12,14 +12,14 @@
           <user-teaser :user="follow" />
         </client-only>
       </ds-space>
-      <ds-space v-if="this.user.followedByCount - this.connections.length" margin="small">
-        <ds-text size="small" color="soft">
-        {{
-          $t('profile.network.andMore', {
-            number: this.user.followedByCount - this.connections.length,
-          })
-        }}
-        </ds-text>
+      <ds-space v-if="this.counts[this.type] - this.connections.length" margin="small">
+        <base-button @click="fetchConnections" size="small" color="softer">
+          {{
+            $t('profile.network.andMore', {
+              number: this.counts[this.type] - this.connections.length,
+            })
+          }}
+        </base-button>
       </ds-space>
     </template>
     <template v-else>
@@ -34,8 +34,7 @@
 import uniqBy from 'lodash/uniqBy'
 import UserAvatar from '~/components/_new/generic/UserAvatar/UserAvatar'
 import UserTeaser from '~/components/UserTeaser/UserTeaser'
-
-let expanded = false
+import { followedByQuery, followingQuery } from '~/graphql/User'
 
 export default {
   name: 'FollowerList',
@@ -50,6 +49,14 @@ export default {
   data() {
     return {
       connections: this.user[this.type],
+      queries: {
+        followedBy: followedByQuery,
+        following: followingQuery,
+      },
+      counts: {
+        followedBy: this.user.followedByCount,
+        following: this.user.followingCount,
+      },
     }
   },
   computed: {
@@ -61,6 +68,16 @@ export default {
   methods: {
     uniq(items, field = 'id') {
       return uniqBy(items, field)
+    },
+    async fetchConnections() {
+      const query = this.queries[this.type]
+      const { data } = await this.$apollo.query({
+        query: this.queries[this.type],
+        variables: { id: this.user.id },
+        // neither result nor update are being called when defined here (?)
+      })
+      const connections = data.User[0][this.type]
+      this.connections = this.connections.concat(connections)
     },
   },
 }
