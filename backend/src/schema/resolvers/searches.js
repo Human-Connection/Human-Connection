@@ -1,22 +1,19 @@
 import log from './helpers/databaseLogger'
+import { queryString } from './searches/queryString'
+
+// see http://lucene.apache.org/core/8_3_1/queryparser/org/apache/lucene/queryparser/classic/package-summary.html#package.description
 
 export default {
   Query: {
     findResources: async (_parent, args, context, _resolveInfo) => {
       const { query, limit } = args
       const { id: thisUserId } = context.user
-      // see http://lucene.apache.org/core/8_3_1/queryparser/org/apache/lucene/queryparser/classic/package-summary.html#package.description
-      const myQuery = query
-        .replace(/\s+/g, ' ')
-        .replace(/[[@#:*~\\$|^\]?/"'(){}+?!,.-;]/g, '')
-        .split(' ')
-        .map(s => (s.toLowerCase().match(/^(not|and|or)$/) ? '"' + s + '"' : s + '*'))
-        .join(' ')
+
       const postCypher = `
       CALL db.index.fulltext.queryNodes('post_fulltext_search', $query)
       YIELD node as resource, score
       MATCH (resource)<-[:WROTE]-(author:User)
-      WHERE score >= 0.5
+      WHERE score >= 0.0
       AND NOT (
         author.deleted = true OR author.disabled = true
         OR resource.deleted = true OR resource.disabled = true
@@ -39,11 +36,12 @@ export default {
       CALL db.index.fulltext.queryNodes('user_fulltext_search', $query)
       YIELD node as resource, score
       MATCH (resource)
-      WHERE score >= 0.5
+      WHERE score >= 0.0
       AND NOT (resource.deleted = true OR resource.disabled = true)
       RETURN resource {.*, __typename: labels(resource)[0]}
       LIMIT $limit
       `
+      const myQuery = queryString(query)
 
       const session = context.driver.session()
       const searchResultPromise = session.readTransaction(async transaction => {
