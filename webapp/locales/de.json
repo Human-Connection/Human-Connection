@@ -558,35 +558,6 @@
       "message": "Bist Du sicher, dass Du den Kommentar von „<b>{name}</b>“ melden möchtest?",
       "title": "Kommentar melden",
       "type": "Kommentar"
-        "content": {
-            "unavailable-placeholder": "… dieser Kommentar ist nicht mehr verfügbar"
-        },
-        "menu": {
-            "edit": "Kommentar bearbeiten",
-            "delete": "Kommentar löschen"
-        },
-        "show": {
-            "more": "mehr anzeigen",
-            "less": "weniger anzeigen"
-        },
-        "edited": "bearbeitet"
-    },
-    "followButton": {
-        "follow": "Folgen",
-        "following": "Folge Ich"
-    },
-    "shoutButton": {
-        "shouted": "empfohlen"
-    },
-    "search": {
-        "placeholder": "Suchen",
-        "hint": "Wonach suchst Du?",
-        "failed": "Nichts gefunden",
-        "heading": {
-          "Post": "Beiträge",
-          "User": "Benutzer",
-          "Tag": "Hashtags"
-        }
     },
     "contribution": {
       "error": "Du hast den Beitrag bereits gemeldet!",
@@ -628,6 +599,7 @@
     "failed": "Nichts gefunden",
     "heading": {
       "Post": "Beiträge",
+      "Tag": "Hashtags",
       "User": "Benutzer"
     },
     "hint": "Wonach suchst Du?",
