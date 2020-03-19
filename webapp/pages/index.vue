@@ -130,11 +130,7 @@ export default {
       return this.$apollo.loading || (this.posts && this.posts.length > 0)
     },
   },
-  watch: {
-    '$route.query.hashtag'() {
-      this.hashtag = this.$route.query.hashtag ? this.$route.query.hashtag : null
-    },
-  },
+  watchQuery: ['hashtag'],
   methods: {
     ...mapMutations({
       selectOrder: 'posts/SELECT_ORDER',
