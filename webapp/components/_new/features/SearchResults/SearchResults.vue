@@ -1,11 +1,15 @@
 <template>
   <div class="search-results">
     <tab-navigation :tabs="tabOptions" :activeTab="activeTab" @switchTab="switchTab" />
-    <section>
-      <ul v-if="activeResources.length">
+    <section v-if="activeResources.length">
+      <masonry-grid v-if="activeTab === 'posts'">
+        <masonry-grid-item v-for="resource in activeResources" :key="resource.key">
+          <post-teaser :post="resource" />
+        </masonry-grid-item>
+      </masonry-grid>
+      <ul v-else-if="activeTab === 'users'">
         <li v-for="resource in activeResources" :key="resource.key" class="list">
-          <post-teaser v-if="activeTab === 'posts'" :post="resource" />
-          <base-card v-else-if="activeTab === 'users'" :wideContent="true">
+          <base-card :wideContent="true">
             <user-teaser :user="resource" />
           </base-card>
         </li>
@@ -15,12 +19,16 @@
 </template>
 <script>
 import { searchQuery } from '~/graphql/Search.js'
+import MasonryGrid from '~/components/MasonryGrid/MasonryGrid'
+import MasonryGridItem from '~/components/MasonryGrid/MasonryGridItem'
 import TabNavigation from '~/components/_new/generic/TabNavigation/TabNavigation'
 import PostTeaser from '~/components/PostTeaser/PostTeaser'
 import UserTeaser from '~/components/UserTeaser/UserTeaser'
 
 export default {
   components: {
+    MasonryGrid,
+    MasonryGridItem,
     TabNavigation,
     PostTeaser,
     UserTeaser,
@@ -46,6 +54,7 @@ export default {
     activeResources() {
       if (this.activeTab === 'posts') return this.posts
       else if (this.activeTab === 'users') return this.users
+      else return []
     },
     tabOptions() {
       return [
@@ -80,7 +89,13 @@ export default {
 </script>
 <style lang="scss">
 .search-results {
-  width: 40%;
+  // width: 40%;
+
+  > section {
+    padding: $space-small;
+    background-color: $color-neutral-80;
+    border-radius: 0 $border-radius-base $border-radius-base $border-radius-base;
+  }
 }
 .search-results .list {
   margin: $space-xxx-small 0 $space-small 0;

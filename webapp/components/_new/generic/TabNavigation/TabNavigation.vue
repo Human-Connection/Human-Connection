@@ -1,9 +1,13 @@
 <template>
   <ul class="tabs">
-    <li v-for="tab in tabs" :key="tab.type" class="tab">
-      <button :class="{ '--active': activeTab === tab.type }" @click="$emit('switchTab', tab.type)">
-        {{ tab.title }}
-      </button>
+    <li
+      v-for="tab in tabs"
+      :key="tab.type"
+      :class="[activeTab === tab.type && '--active', 'tab']"
+      role="button"
+      @click="$emit('switchTab', tab.type)"
+    >
+      {{ tab.title }}
     </li>
   </ul>
 </template>
@@ -23,24 +27,24 @@ export default {
 </script>
 <style lang="scss">
 .tabs {
-  overflow: hidden;
+  display: flex;
+  margin-top: $space-small;
 
   > .tab {
-    display: inline-block;
-    color: darkgrey;
-    margin: $space-small;
+    font-weight: $font-weight-bold;
+    padding: $space-x-small $space-small;
+    margin-right: $space-xx-small;
+    border-radius: $border-radius-base $border-radius-base 0 0;
+    background: $color-neutral-100;
+    cursor: pointer;
 
-    > button {
-      display: block;
-      font-weight: bold;
-      color: #555;
-      padding: 20px;
-      border-radius: 5px 5px 0 0;
-      border-right: 1px solid #ccc;
+    &.--active {
+      background: $color-neutral-80;
+      border: none;
     }
 
-    .--active {
-      background: $background-color-softer-active;
+    &:hover:not(.--active) {
+      background: $color-neutral-85;
     }
   }
 }
