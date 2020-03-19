@@ -41,17 +41,17 @@ export default {
       RETURN resource {.*, __typename: labels(resource)[0]}
       LIMIT $limit
       `
-      const myQuery = queryString(query)
-
       const tagCypher = `
       CALL db.index.fulltext.queryNodes('tag_fulltext_search', $query)
       YIELD node as resource, score
       MATCH (resource)
-      WHERE score >= 0.5
+      WHERE score >= 0.0
       AND NOT (resource.deleted = true OR resource.disabled = true)
       RETURN resource {.*, __typename: labels(resource)[0]}
       LIMIT $limit
       `
+
+      const myQuery = queryString(query)
 
       const session = context.driver.session()
       const searchResultPromise = session.readTransaction(async transaction => {

@@ -85,16 +85,6 @@ export default {
       return !isEmpty(this.previousSearchTerm)
     },
   },
-  watch: {
-    $route(to, from) {
-      console.log('to', to)
-      console.log('from', from)
-      // console.log(this.finalFilters)
-      if (to.query.hashtag) {
-        this.hashtag = to.query.hashtag
-      }
-    },
-  },
   methods: {
     isFirstOfType(option) {
       return (
@@ -167,7 +157,6 @@ export default {
             params: { id: item.id, slug: item.slug },
           })
         } else {
-          console.log('HIT¡')
           this.$router.push('?hashtag=' + item.id)
         }
       })

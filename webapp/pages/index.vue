@@ -64,158 +64,164 @@
 </template>
 
 <script>
-// import DonationInfo from '~/components/DonationInfo/DonationInfo.vue'
-import FilterMenu from '~/components/FilterMenu/FilterMenu.vue'
-import HcEmpty from '~/components/Empty/Empty'
-import PostTeaser from '~/components/PostTeaser/PostTeaser.vue'
-import MasonryGrid from '~/components/MasonryGrid/MasonryGrid.vue'
-import MasonryGridItem from '~/components/MasonryGrid/MasonryGridItem.vue'
-import { mapGetters, mapMutations } from 'vuex'
-import { filterPosts } from '~/graphql/PostQuery.js'
-import PostMutations from '~/graphql/PostMutations'
-import UpdateQuery from '~/components/utils/UpdateQuery'
+ // import DonationInfo from '~/components/DonationInfo/DonationInfo.vue'
+ import FilterMenu from '~/components/FilterMenu/FilterMenu.vue'
+ import HcEmpty from '~/components/Empty/Empty'
+ import PostTeaser from '~/components/PostTeaser/PostTeaser.vue'
+ import MasonryGrid from '~/components/MasonryGrid/MasonryGrid.vue'
+ import MasonryGridItem from '~/components/MasonryGrid/MasonryGridItem.vue'
+ import { mapGetters, mapMutations } from 'vuex'
+ import { filterPosts } from '~/graphql/PostQuery.js'
+ import PostMutations from '~/graphql/PostMutations'
+ import UpdateQuery from '~/components/utils/UpdateQuery'
 
-export default {
-  components: {
-    // DonationInfo,
-    FilterMenu,
-    PostTeaser,
-    HcEmpty,
-    MasonryGrid,
-    MasonryGridItem,
-  },
-  data() {
-    const { hashtag = null } = this.$route.query
-    return {
-      posts: [],
-      hasMore: true,
-      // Initialize your apollo data
-      offset: 0,
-      pageSize: 12,
-      hashtag,
-    }
-  },
-  computed: {
-    ...mapGetters({
-      postsFilter: 'posts/filter',
-      orderOptions: 'posts/orderOptions',
-      orderBy: 'posts/orderBy',
-      selectedOrder: 'posts/selectedOrder',
-      sortingIcon: 'posts/orderIcon',
-    }),
-    selected: {
-      get() {
-        return this.selectedOrder(this)
-      },
-      set({ value }) {
-        this.offset = 0
-        this.posts = []
-        this.selectOrder(value)
-      },
-    },
-    sortingOptions() {
-      return this.orderOptions(this)
-    },
-    finalFilters() {
-      let filter = this.postsFilter
-      if (this.hashtag) {
-        filter = {
-          ...filter,
-          tags_some: { id: this.hashtag },
-        }
-      }
-      return filter
-    },
-    hasResults() {
-      return this.$apollo.loading || (this.posts && this.posts.length > 0)
-    },
-  },
-  methods: {
-    ...mapMutations({
-      selectOrder: 'posts/SELECT_ORDER',
-    }),
-    clearSearch() {
-      this.$router.push({ path: '/' })
-      this.hashtag = null
-    },
-    href(post) {
-      return this.$router.resolve({
-        name: 'post-id-slug',
-        params: { id: post.id, slug: post.slug },
-      }).href
-    },
-    showMoreContributions($state) {
-      const { Post: PostQuery } = this.$apollo.queries
-      if (!PostQuery) return // seems this can be undefined on subpages
+ export default {
+     components: {
+	 // DonationInfo,
+	 FilterMenu,
+	 PostTeaser,
+	 HcEmpty,
+	 MasonryGrid,
+	 MasonryGridItem,
+     },
+     data() {
+	 const { hashtag = null } = this.$route.query
+	 console.log(this.$route.query)
+	 return {
+	     posts: [],
+	     hasMore: true,
+	     // Initialize your apollo data
+	     offset: 0,
+	     pageSize: 12,
+	     hashtag,
+	 }
+     },
+     computed: {
+	 ...mapGetters({
+	     postsFilter: 'posts/filter',
+	     orderOptions: 'posts/orderOptions',
+	     orderBy: 'posts/orderBy',
+	     selectedOrder: 'posts/selectedOrder',
+	     sortingIcon: 'posts/orderIcon',
+	 }),
+	 selected: {
+	     get() {
+		 return this.selectedOrder(this)
+	     },
+	     set({ value }) {
+		 this.offset = 0
+		 this.posts = []
+		 this.selectOrder(value)
+	     },
+	 },
+	 sortingOptions() {
+	     return this.orderOptions(this)
+	 },
+	 finalFilters() {
+	     let filter = this.postsFilter
+	     if (this.hashtag) {
+		 filter = {
+		     ...filter,
+		     tags_some: { id: this.hashtag },
+		 }
+	     }
+	     return filter
+	 },
+	 hasResults() {
+	     return this.$apollo.loading || (this.posts && this.posts.length > 0)
+	 },
+     },
+     watch: {
+	 '$route.query.hashtag'() {
+	     this.hashtag = this.$route.query.hashtag
+	 },
+     },
+     methods: {
+	 ...mapMutations({
+	     selectOrder: 'posts/SELECT_ORDER',
+	 }),
+	 clearSearch() {
+	     this.$router.push({ path: '/' })
+	     this.hashtag = null
+	 },
+	 href(post) {
+	     return this.$router.resolve({
+		 name: 'post-id-slug',
+		 params: { id: post.id, slug: post.slug },
+	     }).href
+	 },
+	 showMoreContributions($state) {
+	     const { Post: PostQuery } = this.$apollo.queries
+	     if (!PostQuery) return // seems this can be undefined on subpages
 
-      this.offset += this.pageSize
-      PostQuery.fetchMore({
-        variables: {
-          offset: this.offset,
-          filter: this.finalFilters,
-          first: this.pageSize,
-          orderBy: ['pinned_asc', this.orderBy],
-        },
-        updateQuery: UpdateQuery(this, { $state, pageKey: 'Post' }),
-      })
-    },
-    deletePost(deletedPost) {
-      this.posts = this.posts.filter(post => {
-        return post.id !== deletedPost.id
-      })
-    },
-    resetPostList() {
-      this.offset = 0
-      this.posts = []
-      this.hasMore = true
-    },
-    pinPost(post) {
-      this.$apollo
-        .mutate({
-          mutation: PostMutations().pinPost,
-          variables: { id: post.id },
-        })
-        .then(() => {
-          this.$toast.success(this.$t('post.menu.pinnedSuccessfully'))
-          this.resetPostList()
-          this.$apollo.queries.Post.refetch()
-        })
-        .catch(error => this.$toast.error(error.message))
-    },
-    unpinPost(post) {
-      this.$apollo
-        .mutate({
-          mutation: PostMutations().unpinPost,
-          variables: { id: post.id },
-        })
-        .then(() => {
-          this.$toast.success(this.$t('post.menu.unpinnedSuccessfully'))
-          this.resetPostList()
-          this.$apollo.queries.Post.refetch()
-        })
-        .catch(error => this.$toast.error(error.message))
-    },
-  },
-  apollo: {
-    Post: {
-      query() {
-        return filterPosts(this.$i18n)
-      },
-      variables() {
-        return {
-          filter: this.finalFilters,
-          first: this.pageSize,
-          orderBy: ['pinned_asc', this.orderBy],
-          offset: 0,
-        }
-      },
-      update({ Post }) {
-        this.posts = Post
-      },
-      fetchPolicy: 'cache-and-network',
-    },
-  },
-}
+	     this.offset += this.pageSize
+	     PostQuery.fetchMore({
+		 variables: {
+		     offset: this.offset,
+		     filter: this.finalFilters,
+		     first: this.pageSize,
+		     orderBy: ['pinned_asc', this.orderBy],
+		 },
+		 updateQuery: UpdateQuery(this, { $state, pageKey: 'Post' }),
+	     })
+	 },
+	 deletePost(deletedPost) {
+	     this.posts = this.posts.filter(post => {
+		 return post.id !== deletedPost.id
+	     })
+	 },
+	 resetPostList() {
+	     this.offset = 0
+	     this.posts = []
+	     this.hasMore = true
+	 },
+	 pinPost(post) {
+	     this.$apollo
+		 .mutate({
+		     mutation: PostMutations().pinPost,
+		     variables: { id: post.id },
+		 })
+		 .then(() => {
+		     this.$toast.success(this.$t('post.menu.pinnedSuccessfully'))
+		     this.resetPostList()
+		     this.$apollo.queries.Post.refetch()
+		 })
+		 .catch(error => this.$toast.error(error.message))
+	 },
+	 unpinPost(post) {
+	     this.$apollo
+		 .mutate({
+		     mutation: PostMutations().unpinPost,
+		     variables: { id: post.id },
+		 })
+		 .then(() => {
+		     this.$toast.success(this.$t('post.menu.unpinnedSuccessfully'))
+		     this.resetPostList()
+		     this.$apollo.queries.Post.refetch()
+		 })
+		 .catch(error => this.$toast.error(error.message))
+	 },
+     },
+     apollo: {
+	 Post: {
+	     query() {
+		 return filterPosts(this.$i18n)
+	     },
+	     variables() {
+		 return {
+		     filter: this.finalFilters,
+		     first: this.pageSize,
+		     orderBy: ['pinned_asc', this.orderBy],
+		     offset: 0,
+		 }
+	     },
+	     update({ Post }) {
+		 this.posts = Post
+	     },
+	     fetchPolicy: 'cache-and-network',
+	 },
+     },
+ }
 </script>
 
 <style lang="scss">

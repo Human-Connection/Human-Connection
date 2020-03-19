@@ -20,6 +20,7 @@ export async function up(next) {
     await transaction.rollback()
     // eslint-disable-next-line no-console
     console.log('rolled back')
+    throw new Error(error)
   } finally {
     session.close()
   }
@@ -43,6 +44,7 @@ export async function down(next) {
     await transaction.rollback()
     // eslint-disable-next-line no-console
     console.log('rolled back')
+    throw new Error(error)
   } finally {
     session.close()
   }
