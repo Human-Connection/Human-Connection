@@ -1,8 +1,9 @@
 <template>
   <div class="search-results">
     <tab-navigation :tabs="tabOptions" :activeTab="activeTab" @switchTab="switchTab" />
-    <section v-if="activeResources.length">
-      <masonry-grid v-if="activeTab === 'posts'">
+    <section>
+      <p v-if="!activeResources.length">No results found for "{{ search }}"</p>
+      <masonry-grid v-else-if="activeTab === 'posts'">
         <masonry-grid-item v-for="resource in activeResources" :key="resource.key">
           <post-teaser :post="resource" />
         </masonry-grid-item>
