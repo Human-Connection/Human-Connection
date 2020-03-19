@@ -2,7 +2,7 @@
   <base-card style="position: relative; height: auto;">
     <ds-space v-if="this.connections && this.connections.length" margin="x-small">
       <ds-text tag="h5" color="soft">
-        {{ userName | truncate(15) }} {{ $t('profile.network.following') }}
+        {{ userName | truncate(15) }} {{ $t(`profile.network.${type}`) }}
       </ds-text>
     </ds-space>
     <template v-if="this.connections && this.connections.length">
@@ -24,7 +24,7 @@
     </template>
     <template v-else>
       <p style="text-align: center; opacity: .5;">
-        {{ userName }} {{ $t('profile.network.followingNobody') }}
+        {{ userName }} {{ $t(`profile.network.${type}Nobody`) }}
       </p>
     </template>
   </base-card>
@@ -46,8 +46,7 @@ export default {
   },
   data() {
     return {
-      connections: this.user[this.type],
-      allConnectionsCount: this.user[`${this.type}Count`],
+      additionalConnections: [],
       queries: {
         followedBy: followedByQuery,
         following: followingQuery,
@@ -58,6 +57,12 @@ export default {
     userName() {
       const { name } = this.user || {}
       return name || this.$t('profile.userAnonym')
+    },
+    connections() {
+      return [...this.user[this.type], ...this.additionalConnections]
+    },
+    allConnectionsCount() {
+      return this.user[`${this.type}Count`]
     },
   },
   methods: {
@@ -70,8 +75,7 @@ export default {
         variables: { id: this.user.id },
         // neither result nor update are being called when defined here (?)
       })
-      const connections = data.User[0][this.type]
-      this.connections = this.connections.concat(connections)
+      this.additionalConnections = data.User[0][this.type]
     },
   },
 }
