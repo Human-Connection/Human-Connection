@@ -6,3 +6,4 @@ ENV BUILD_COMMIT=$BUILD_COMMIT
 
 RUN apt-get update && apt-get -y install wget htop
 RUN wget https://github.com/neo4j-contrib/neo4j-apoc-procedures/releases/download/4.0.0.4/apoc-4.0.0.4-all.jar -P plugins/
+RUN chown -R neo4j:neo4j plugins/
