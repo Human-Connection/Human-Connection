@@ -72,13 +72,18 @@ You can then visit the Storybook playground on `http://localhost:3002`
 After starting the application following the above guidelines, open new terminal windows and navigate to the `/webapp` directory for each of these commands:
 
 ```bash
-# run eslint in /webapp
+# run eslint in /webapp (use option --fix to normalize the files)
 $ yarn lint
 ```
 
 ```bash
 # run unit tests in /webapp
 $ yarn test
+```
+
+```bash
+# run locales in /webapp (use option --fix to sort the locales)
+$ yarn locales
 ```
 
 ```bash

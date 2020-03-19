@@ -9,7 +9,9 @@ export const user = {
   id: 'u6',
   slug: 'louie',
   name: 'Louie',
-  avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/designervzm/128.jpg',
+  avatar: {
+    url: 'https://s3.amazonaws.com/uifaces/faces/twitter/designervzm/128.jpg',
+  },
   about:
     'Illum in et velit soluta voluptatem architecto consequuntur enim placeat. Eum excepturi est ratione rerum in voluptatum corporis. Illum consequatur minus. Modi incidunt velit.',
   disabled: false,
@@ -28,7 +30,9 @@ export const user = {
       id: 'u3',
       slug: 'jenny-rostock',
       name: 'Jenny Rostock',
-      avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/bowbrick/128.jpg',
+      avatar: {
+        url: 'https://s3.amazonaws.com/uifaces/faces/twitter/bowbrick/128.jpg',
+      },
       disabled: false,
       deleted: false,
       followedByCount: 2,
@@ -83,7 +87,7 @@ storiesOf('UserTeaser', module)
       <template #dateTime>
         - HEY! I'm edited
       </template>
-    </user>
+    </user-teaser>
     `,
   }))
   .add('anonymous', () => ({

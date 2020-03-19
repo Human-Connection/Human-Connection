@@ -1,35 +1,32 @@
 <template>
   <dropdown offset="8">
-    <a
-      :v-model="selected"
-      slot="default"
-      slot-scope="{ toggleMenu }"
-      name="dropdown"
-      class="dropdown-filter"
-      href="#"
-      @click.prevent="toggleMenu()"
-    >
-      <base-icon name="filter" />
-      <label class="label" for="dropdown">{{ selected }}</label>
-      <base-icon class="dropdown-arrow" name="angle-down" />
-    </a>
-    <ds-menu
-      slot="popover"
-      slot-scope="{ toggleMenu }"
-      class="dropdown-menu-popover"
-      :routes="filterOptions"
-    >
-      <ds-menu-item
-        slot="menuitem"
-        slot-scope="item"
-        class="dropdown-menu-item"
-        :route="item.route"
-        :parents="item.parents"
-        @click.stop.prevent="filter(item.route, toggleMenu)"
+    <template #default="{ toggleMenu }">
+      <a
+        :v-model="selected"
+        name="dropdown"
+        class="dropdown-filter"
+        href="#"
+        @click.prevent="toggleMenu()"
       >
-        {{ item.route.label }}
-      </ds-menu-item>
-    </ds-menu>
+        <base-icon name="filter" />
+        <label class="label" for="dropdown">{{ selected }}</label>
+        <base-icon class="dropdown-arrow" name="angle-down" />
+      </a>
+    </template>
+    <template #popover="{ toggleMenu }">
+      <ds-menu class="dropdown-menu-popover" :routes="filterOptions">
+        <template #menuitem="item">
+          <ds-menu-item
+            class="dropdown-menu-item"
+            :route="item.route"
+            :parents="item.parents"
+            @click.stop.prevent="filter(item.route, toggleMenu)"
+          >
+            {{ item.route.label }}
+          </ds-menu-item>
+        </template>
+      </ds-menu>
+    </template>
   </dropdown>
 </template>
 <script>

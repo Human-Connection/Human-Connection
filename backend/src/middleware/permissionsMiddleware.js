@@ -133,7 +133,7 @@ export default shield(
       CreateComment: isAuthenticated,
       UpdateComment: isAuthor,
       DeleteComment: isAuthor,
-      DeleteUser: isDeletingOwnAccount,
+      DeleteUser: or(isDeletingOwnAccount, isAdmin),
       requestPasswordReset: allow,
       resetPassword: allow,
       AddPostEmotions: isAuthenticated,

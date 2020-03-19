@@ -7,7 +7,7 @@
       @submit="handleSubmitPassword"
       class="change-password"
     >
-      <template slot-scope="{ errors }">
+      <template #default="{ errors }">
         <ds-input
           id="password"
           model="password"

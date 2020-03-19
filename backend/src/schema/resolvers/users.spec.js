@@ -29,7 +29,7 @@ beforeAll(() => {
   mutate = createTestClient(server).mutate
 })
 
-afterEach(async () => {
+beforeEach(async () => {
   await cleanDatabase()
 })
 
@@ -273,189 +273,142 @@ describe('DeleteUser', () => {
       }
     }
   `
-  beforeEach(async () => {
-    variables = { id: ' u343', resource: [] }
+  describe('as another user', () => {
+    beforeEach(async () => {
+      variables = { id: ' u343', resource: [] }
 
-    user = await Factory.build('user', {
-      name: 'My name should be deleted',
-      about: 'along with my about',
-      id: 'u343',
+      user = await Factory.build('user', {
+        name: 'My name should be deleted',
+        about: 'along with my about',
+        id: 'u343',
+      })
     })
-    await Factory.build(
-      'user',
-      {
-        id: 'not-my-account',
-      },
-      {
-        email: 'friends-account@example.org',
-      },
-    )
-  })
 
-  describe('unauthenticated', () => {
-    it('throws authorization error', async () => {
+    beforeEach(async () => {
+      const anotherUser = await Factory.build(
+        'user',
+        {
+          role: 'user',
+        },
+        {
+          email: 'user@example.org',
+          password: '1234',
+        },
+      )
+
+      authenticatedUser = await anotherUser.toJson()
+    })
+
+    it("an ordinary user has no authorization to delete another user's account", async () => {
       const { errors } = await mutate({ mutation: deleteUserMutation, variables })
       expect(errors[0]).toHaveProperty('message', 'Not Authorised!')
     })
   })
 
-  describe('authenticated', () => {
+  describe('as moderator', () => {
     beforeEach(async () => {
-      authenticatedUser = await user.toJson()
-    })
+      variables = { id: ' u343', resource: [] }
 
-    describe("attempting to delete another user's account", () => {
-      beforeEach(() => {
-        variables = { ...variables, id: 'not-my-account' }
-      })
-
-      it('throws an authorization error', async () => {
-        const { errors } = await mutate({ mutation: deleteUserMutation, variables })
-        expect(errors[0]).toHaveProperty('message', 'Not Authorised!')
+      user = await Factory.build('user', {
+        name: 'My name should be deleted',
+        about: 'along with my about',
+        id: 'u343',
       })
     })
 
-    describe('attempting to delete my own account', () => {
-      beforeEach(() => {
-        variables = { ...variables, id: 'u343' }
+    beforeEach(async () => {
+      const moderator = await Factory.build(
+        'user',
+        {
+          role: 'moderator',
+        },
+        {
+          email: 'moderator@example.org',
+          password: '1234',
+        },
+      )
+
+      authenticatedUser = await moderator.toJson()
+    })
+
+    it('moderator is not allowed to delete other user accounts', async () => {
+      const { errors } = await mutate({ mutation: deleteUserMutation, variables })
+      expect(errors[0]).toHaveProperty('message', 'Not Authorised!')
+    })
+  })
+
+  describe('as admin', () => {
+    beforeEach(async () => {
+      variables = { id: ' u343', resource: [] }
+
+      user = await Factory.build('user', {
+        name: 'My name should be deleted',
+        about: 'along with my about',
+        id: 'u343',
+      })
+    })
+
+    describe('authenticated as Admin', () => {
+      beforeEach(async () => {
+        const admin = await Factory.build(
+          'user',
+          {
+            role: 'admin',
+          },
+          {
+            email: 'admin@example.org',
+            password: '1234',
+          },
+        )
+        authenticatedUser = await admin.toJson()
       })
 
-      describe('given posts and comments', () => {
-        beforeEach(async () => {
-          await Factory.build('category', {
-            id: 'cat9',
-            name: 'Democracy & Politics',
-            icon: 'university',
-          })
-          await Factory.build(
-            'post',
-            {
-              id: 'p139',
-              content: 'Post by user u343',
-            },
-            {
-              author: user,
-              categoryIds,
-            },
-          )
-          await Factory.build(
-            'comment',
-            {
-              id: 'c155',
-              content: 'Comment by user u343',
-            },
-            {
-              author: user,
-            },
-          )
-          await Factory.build(
-            'comment',
-            {
-              id: 'c156',
-              content: "A comment by someone else on user u343's post",
-            },
-            {
-              postId: 'p139',
-            },
-          )
+      describe('deleting a user account', () => {
+        beforeEach(() => {
+          variables = { ...variables, id: 'u343' }
         })
 
-        it("deletes my account, but doesn't delete posts or comments by default", async () => {
-          const expectedResponse = {
-            data: {
-              DeleteUser: {
-                id: 'u343',
-                name: 'UNAVAILABLE',
-                about: 'UNAVAILABLE',
-                deleted: true,
-                contributions: [
-                  {
-                    id: 'p139',
-                    content: 'Post by user u343',
-                    contentExcerpt: 'Post by user u343',
-                    deleted: false,
-                    comments: [
-                      {
-                        id: 'c156',
-                        content: "A comment by someone else on user u343's post",
-                        contentExcerpt: "A comment by someone else on user u343's post",
-                        deleted: false,
-                      },
-                    ],
-                  },
-                ],
-                comments: [
-                  {
-                    id: 'c155',
-                    content: 'Comment by user u343',
-                    contentExcerpt: 'Comment by user u343',
-                    deleted: false,
-                  },
-                ],
-              },
-            },
-            errors: undefined,
-          }
-          await expect(mutate({ mutation: deleteUserMutation, variables })).resolves.toMatchObject(
-            expectedResponse,
-          )
-        })
-
-        describe('deletion of all post requested', () => {
-          beforeEach(() => {
-            variables = { ...variables, resource: ['Post'] }
-          })
-
-          describe("marks user's posts as deleted", () => {
-            it('posts on request', async () => {
-              const expectedResponse = {
-                data: {
-                  DeleteUser: {
-                    id: 'u343',
-                    name: 'UNAVAILABLE',
-                    about: 'UNAVAILABLE',
-                    deleted: true,
-                    contributions: [
-                      {
-                        id: 'p139',
-                        content: 'UNAVAILABLE',
-                        contentExcerpt: 'UNAVAILABLE',
-                        deleted: true,
-                        comments: [
-                          {
-                            id: 'c156',
-                            content: 'UNAVAILABLE',
-                            contentExcerpt: 'UNAVAILABLE',
-                            deleted: true,
-                          },
-                        ],
-                      },
-                    ],
-                    comments: [
-                      {
-                        id: 'c155',
-                        content: 'Comment by user u343',
-                        contentExcerpt: 'Comment by user u343',
-                        deleted: false,
-                      },
-                    ],
-                  },
-                },
-                errors: undefined,
-              }
-              await expect(
-                mutate({ mutation: deleteUserMutation, variables }),
-              ).resolves.toMatchObject(expectedResponse)
+        describe('given posts and comments', () => {
+          beforeEach(async () => {
+            await Factory.build('category', {
+              id: 'cat9',
+              name: 'Democracy & Politics',
+              icon: 'university',
             })
+            await Factory.build(
+              'post',
+              {
+                id: 'p139',
+                content: 'Post by user u343',
+              },
+              {
+                author: user,
+                categoryIds,
+              },
+            )
+            await Factory.build(
+              'comment',
+              {
+                id: 'c155',
+                content: 'Comment by user u343',
+              },
+              {
+                author: user,
+              },
+            )
+            await Factory.build(
+              'comment',
+              {
+                id: 'c156',
+                content: "A comment by someone else on user u343's post",
+              },
+              {
+                postId: 'p139',
+              },
+            )
           })
-        })
 
-        describe('deletion of all comments requested', () => {
-          beforeEach(() => {
-            variables = { ...variables, resource: ['Comment'] }
-          })
-
-          it('marks comments as deleted', async () => {
+          it("deletes account, but doesn't delete posts or comments by default", async () => {
             const expectedResponse = {
               data: {
                 DeleteUser: {
@@ -482,9 +435,9 @@ describe('DeleteUser', () => {
                   comments: [
                     {
                       id: 'c155',
-                      content: 'UNAVAILABLE',
-                      contentExcerpt: 'UNAVAILABLE',
-                      deleted: true,
+                      content: 'Comment by user u343',
+                      contentExcerpt: 'Comment by user u343',
+                      deleted: false,
                     },
                   ],
                 },
@@ -495,14 +448,263 @@ describe('DeleteUser', () => {
               mutate({ mutation: deleteUserMutation, variables }),
             ).resolves.toMatchObject(expectedResponse)
           })
-        })
 
-        describe('deletion of all post and comments requested', () => {
-          beforeEach(() => {
-            variables = { ...variables, resource: ['Post', 'Comment'] }
+          describe('deletion of all post requested', () => {
+            beforeEach(() => {
+              variables = { ...variables, resource: ['Post'] }
+            })
+
+            describe("marks user's posts as deleted", () => {
+              it('on request', async () => {
+                const expectedResponse = {
+                  data: {
+                    DeleteUser: {
+                      id: 'u343',
+                      name: 'UNAVAILABLE',
+                      about: 'UNAVAILABLE',
+                      deleted: true,
+                      contributions: [
+                        {
+                          id: 'p139',
+                          content: 'UNAVAILABLE',
+                          contentExcerpt: 'UNAVAILABLE',
+                          deleted: true,
+                          comments: [
+                            {
+                              id: 'c156',
+                              content: 'UNAVAILABLE',
+                              contentExcerpt: 'UNAVAILABLE',
+                              deleted: true,
+                            },
+                          ],
+                        },
+                      ],
+                      comments: [
+                        {
+                          id: 'c155',
+                          content: 'Comment by user u343',
+                          contentExcerpt: 'Comment by user u343',
+                          deleted: false,
+                        },
+                      ],
+                    },
+                  },
+                  errors: undefined,
+                }
+                await expect(
+                  mutate({ mutation: deleteUserMutation, variables }),
+                ).resolves.toMatchObject(expectedResponse)
+              })
+
+              it('deletes user avatar and post hero images', async () => {
+                await expect(neode.all('Image')).resolves.toHaveLength(22)
+                await mutate({ mutation: deleteUserMutation, variables })
+                await expect(neode.all('Image')).resolves.toHaveLength(20)
+              })
+            })
           })
 
-          it('marks posts and comments as deleted', async () => {
+          describe('deletion of all comments requested', () => {
+            beforeEach(() => {
+              variables = { ...variables, resource: ['Comment'] }
+            })
+
+            it('marks comments as deleted', async () => {
+              const expectedResponse = {
+                data: {
+                  DeleteUser: {
+                    id: 'u343',
+                    name: 'UNAVAILABLE',
+                    about: 'UNAVAILABLE',
+                    deleted: true,
+                    contributions: [
+                      {
+                        id: 'p139',
+                        content: 'Post by user u343',
+                        contentExcerpt: 'Post by user u343',
+                        deleted: false,
+                        comments: [
+                          {
+                            id: 'c156',
+                            content: "A comment by someone else on user u343's post",
+                            contentExcerpt: "A comment by someone else on user u343's post",
+                            deleted: false,
+                          },
+                        ],
+                      },
+                    ],
+                    comments: [
+                      {
+                        id: 'c155',
+                        content: 'UNAVAILABLE',
+                        contentExcerpt: 'UNAVAILABLE',
+                        deleted: true,
+                      },
+                    ],
+                  },
+                },
+                errors: undefined,
+              }
+              await expect(
+                mutate({ mutation: deleteUserMutation, variables }),
+              ).resolves.toMatchObject(expectedResponse)
+            })
+          })
+
+          describe('deletion of all posts and comments requested', () => {
+            beforeEach(() => {
+              variables = { ...variables, resource: ['Post', 'Comment'] }
+            })
+
+            it('marks posts and comments as deleted', async () => {
+              const expectedResponse = {
+                data: {
+                  DeleteUser: {
+                    id: 'u343',
+                    name: 'UNAVAILABLE',
+                    about: 'UNAVAILABLE',
+                    deleted: true,
+                    contributions: [
+                      {
+                        id: 'p139',
+                        content: 'UNAVAILABLE',
+                        contentExcerpt: 'UNAVAILABLE',
+                        deleted: true,
+                        comments: [
+                          {
+                            id: 'c156',
+                            content: 'UNAVAILABLE',
+                            contentExcerpt: 'UNAVAILABLE',
+                            deleted: true,
+                          },
+                        ],
+                      },
+                    ],
+                    comments: [
+                      {
+                        id: 'c155',
+                        content: 'UNAVAILABLE',
+                        contentExcerpt: 'UNAVAILABLE',
+                        deleted: true,
+                      },
+                    ],
+                  },
+                },
+                errors: undefined,
+              }
+              await expect(
+                mutate({ mutation: deleteUserMutation, variables }),
+              ).resolves.toMatchObject(expectedResponse)
+            })
+          })
+        })
+
+        describe('connected `EmailAddress` nodes', () => {
+          it('will be removed completely', async () => {
+            await expect(neode.all('EmailAddress')).resolves.toHaveLength(2)
+            await mutate({ mutation: deleteUserMutation, variables })
+            await expect(neode.all('EmailAddress')).resolves.toHaveLength(1)
+          })
+        })
+
+        describe('connected `SocialMedia` nodes', () => {
+          beforeEach(async () => {
+            const socialMedia = await Factory.build('socialMedia')
+            await socialMedia.relateTo(user, 'ownedBy')
+          })
+
+          it('will be removed completely', async () => {
+            await expect(neode.all('SocialMedia')).resolves.toHaveLength(1)
+            await mutate({ mutation: deleteUserMutation, variables })
+            await expect(neode.all('SocialMedia')).resolves.toHaveLength(0)
+          })
+        })
+      })
+    })
+  })
+
+  describe('user deletes his own account', () => {
+    beforeEach(async () => {
+      variables = { id: 'u343', resource: [] }
+
+      user = await Factory.build('user', {
+        name: 'My name should be deleted',
+        about: 'along with my about',
+        id: 'u343',
+      })
+      await Factory.build(
+        'user',
+        {
+          id: 'not-my-account',
+        },
+        {
+          email: 'friends-account@example.org',
+        },
+      )
+    })
+
+    describe('authenticated', () => {
+      beforeEach(async () => {
+        authenticatedUser = await user.toJson()
+      })
+
+      describe("attempting to delete another user's account", () => {
+        beforeEach(() => {
+          variables = { ...variables, id: 'not-my-account' }
+        })
+
+        it('throws an authorization error', async () => {
+          const { errors } = await mutate({ mutation: deleteUserMutation, variables })
+          expect(errors[0]).toHaveProperty('message', 'Not Authorised!')
+        })
+      })
+
+      describe('attempting to delete my own account', () => {
+        beforeEach(() => {
+          variables = { ...variables, id: 'u343' }
+        })
+
+        describe('given posts and comments', () => {
+          beforeEach(async () => {
+            await Factory.build('category', {
+              id: 'cat9',
+              name: 'Democracy & Politics',
+              icon: 'university',
+            })
+            await Factory.build(
+              'post',
+              {
+                id: 'p139',
+                content: 'Post by user u343',
+              },
+              {
+                author: user,
+                categoryIds,
+              },
+            )
+            await Factory.build(
+              'comment',
+              {
+                id: 'c155',
+                content: 'Comment by user u343',
+              },
+              {
+                author: user,
+              },
+            )
+            await Factory.build(
+              'comment',
+              {
+                id: 'c156',
+                content: "A comment by someone else on user u343's post",
+              },
+              {
+                postId: 'p139',
+              },
+            )
+          })
+
+          it("deletes my account, but doesn't delete posts or comments by default", async () => {
             const expectedResponse = {
               data: {
                 DeleteUser: {
@@ -513,15 +715,15 @@ describe('DeleteUser', () => {
                   contributions: [
                     {
                       id: 'p139',
-                      content: 'UNAVAILABLE',
-                      contentExcerpt: 'UNAVAILABLE',
-                      deleted: true,
+                      content: 'Post by user u343',
+                      contentExcerpt: 'Post by user u343',
+                      deleted: false,
                       comments: [
                         {
                           id: 'c156',
-                          content: 'UNAVAILABLE',
-                          contentExcerpt: 'UNAVAILABLE',
-                          deleted: true,
+                          content: "A comment by someone else on user u343's post",
+                          contentExcerpt: "A comment by someone else on user u343's post",
+                          deleted: false,
                         },
                       ],
                     },
@@ -529,9 +731,9 @@ describe('DeleteUser', () => {
                   comments: [
                     {
                       id: 'c155',
-                      content: 'UNAVAILABLE',
-                      contentExcerpt: 'UNAVAILABLE',
-                      deleted: true,
+                      content: 'Comment by user u343',
+                      contentExcerpt: 'Comment by user u343',
+                      deleted: false,
                     },
                   ],
                 },
@@ -542,28 +744,176 @@ describe('DeleteUser', () => {
               mutate({ mutation: deleteUserMutation, variables }),
             ).resolves.toMatchObject(expectedResponse)
           })
+
+          describe('deletion of all post requested', () => {
+            beforeEach(() => {
+              variables = { ...variables, resource: ['Post'] }
+            })
+
+            describe("marks user's posts as deleted", () => {
+              it('posts on request', async () => {
+                const expectedResponse = {
+                  data: {
+                    DeleteUser: {
+                      id: 'u343',
+                      name: 'UNAVAILABLE',
+                      about: 'UNAVAILABLE',
+                      deleted: true,
+                      contributions: [
+                        {
+                          id: 'p139',
+                          content: 'UNAVAILABLE',
+                          contentExcerpt: 'UNAVAILABLE',
+                          deleted: true,
+                          comments: [
+                            {
+                              id: 'c156',
+                              content: 'UNAVAILABLE',
+                              contentExcerpt: 'UNAVAILABLE',
+                              deleted: true,
+                            },
+                          ],
+                        },
+                      ],
+                      comments: [
+                        {
+                          id: 'c155',
+                          content: 'Comment by user u343',
+                          contentExcerpt: 'Comment by user u343',
+                          deleted: false,
+                        },
+                      ],
+                    },
+                  },
+                  errors: undefined,
+                }
+                await expect(
+                  mutate({ mutation: deleteUserMutation, variables }),
+                ).resolves.toMatchObject(expectedResponse)
+              })
+
+              it('deletes user avatar and post hero images', async () => {
+                await expect(neode.all('Image')).resolves.toHaveLength(22)
+                await mutate({ mutation: deleteUserMutation, variables })
+                await expect(neode.all('Image')).resolves.toHaveLength(20)
+              })
+            })
+          })
+
+          describe('deletion of all comments requested', () => {
+            beforeEach(() => {
+              variables = { ...variables, resource: ['Comment'] }
+            })
+
+            it('marks comments as deleted', async () => {
+              const expectedResponse = {
+                data: {
+                  DeleteUser: {
+                    id: 'u343',
+                    name: 'UNAVAILABLE',
+                    about: 'UNAVAILABLE',
+                    deleted: true,
+                    contributions: [
+                      {
+                        id: 'p139',
+                        content: 'Post by user u343',
+                        contentExcerpt: 'Post by user u343',
+                        deleted: false,
+                        comments: [
+                          {
+                            id: 'c156',
+                            content: "A comment by someone else on user u343's post",
+                            contentExcerpt: "A comment by someone else on user u343's post",
+                            deleted: false,
+                          },
+                        ],
+                      },
+                    ],
+                    comments: [
+                      {
+                        id: 'c155',
+                        content: 'UNAVAILABLE',
+                        contentExcerpt: 'UNAVAILABLE',
+                        deleted: true,
+                      },
+                    ],
+                  },
+                },
+                errors: undefined,
+              }
+              await expect(
+                mutate({ mutation: deleteUserMutation, variables }),
+              ).resolves.toMatchObject(expectedResponse)
+            })
+          })
+          describe('deletion of all post and comments requested', () => {
+            beforeEach(() => {
+              variables = { ...variables, resource: ['Post', 'Comment'] }
+            })
+
+            it('marks posts and comments as deleted', async () => {
+              const expectedResponse = {
+                data: {
+                  DeleteUser: {
+                    id: 'u343',
+                    name: 'UNAVAILABLE',
+                    about: 'UNAVAILABLE',
+                    deleted: true,
+                    contributions: [
+                      {
+                        id: 'p139',
+                        content: 'UNAVAILABLE',
+                        contentExcerpt: 'UNAVAILABLE',
+                        deleted: true,
+                        comments: [
+                          {
+                            id: 'c156',
+                            content: 'UNAVAILABLE',
+                            contentExcerpt: 'UNAVAILABLE',
+                            deleted: true,
+                          },
+                        ],
+                      },
+                    ],
+                    comments: [
+                      {
+                        id: 'c155',
+                        content: 'UNAVAILABLE',
+                        contentExcerpt: 'UNAVAILABLE',
+                        deleted: true,
+                      },
+                    ],
+                  },
+                },
+                errors: undefined,
+              }
+              await expect(
+                mutate({ mutation: deleteUserMutation, variables }),
+              ).resolves.toMatchObject(expectedResponse)
+            })
+          })
         })
       })
+    })
 
-      describe('connected `EmailAddress` nodes', () => {
-        it('will be removed completely', async () => {
-          await expect(neode.all('EmailAddress')).resolves.toHaveLength(2)
-          await mutate({ mutation: deleteUserMutation, variables })
-          await expect(neode.all('EmailAddress')).resolves.toHaveLength(1)
-        })
+    describe('connected `EmailAddress` nodes', () => {
+      it('will be removed completely', async () => {
+        await expect(neode.all('EmailAddress')).resolves.toHaveLength(2)
+        await mutate({ mutation: deleteUserMutation, variables })
+        await expect(neode.all('EmailAddress')).resolves.toHaveLength(1)
+      })
+    })
+
+    describe('connected `SocialMedia` nodes', () => {
+      beforeEach(async () => {
+        const socialMedia = await Factory.build('socialMedia')
+        await socialMedia.relateTo(user, 'ownedBy')
       })
 
-      describe('connected `SocialMedia` nodes', () => {
-        beforeEach(async () => {
-          const socialMedia = await Factory.build('socialMedia')
-          await socialMedia.relateTo(user, 'ownedBy')
-        })
-
-        it('will be removed completely', async () => {
-          await expect(neode.all('SocialMedia')).resolves.toHaveLength(1)
-          await mutate({ mutation: deleteUserMutation, variables })
-          await expect(neode.all('SocialMedia')).resolves.toHaveLength(0)
-        })
+      it('will be removed completely', async () => {
+        await expect(neode.all('SocialMedia')).resolves.toHaveLength(1)
+        await mutate({ mutation: deleteUserMutation, variables })
+        await expect(neode.all('SocialMedia')).resolves.toHaveLength(0)
       })
     })
   })

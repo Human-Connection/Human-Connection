@@ -15,10 +15,10 @@ export default async (driver, authorizationHeader) => {
 
   const writeTxResultPromise = session.writeTransaction(async transaction => {
     const updateUserLastActiveTransactionResponse = await transaction.run(
-      ` 
+      `
         MATCH (user:User {id: $id, deleted: false, disabled: false })
         SET user.lastActiveAt = toString(datetime())
-        RETURN user {.id, .slug, .name, .avatar, .email, .role, .disabled, .actorId}
+        RETURN user {.id, .slug, .name, .role, .disabled, .actorId}
         LIMIT 1
       `,
       { id },

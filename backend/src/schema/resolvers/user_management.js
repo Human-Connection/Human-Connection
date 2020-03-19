@@ -48,7 +48,7 @@ export default {
           const loginTransactionResponse = await transaction.run(
             `
               MATCH (user:User {deleted: false})-[:PRIMARY_EMAIL]->(e:EmailAddress {email: $userEmail})
-              RETURN user {.id, .slug, .name, .avatar, .encryptedPassword, .role, .disabled, email:e.email} as user LIMIT 1
+              RETURN user {.id, .slug, .name, .encryptedPassword, .role, .disabled, email:e.email} as user LIMIT 1
             `,
             { userEmail: email },
           )

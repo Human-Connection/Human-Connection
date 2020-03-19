@@ -9,14 +9,10 @@ type Mutation {
   SignupByInvitation(email: String!, token: String!): EmailAddress
   SignupVerification(
     nonce: String!
-    name: String!
     email: String!
+    name: String!
     password: String!
     slug: String
-    avatar: String
-    coverImg: String
-    avatarUpload: Upload
-    locationName: String
     about: String
     termsAndConditionsAgreedVersion: String!
     locale: String

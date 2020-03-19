@@ -7,7 +7,7 @@ Feature: Search
     Given I have a user account
     And we have the following posts in our database:
       | id | title                                         | content                                 |
-      | p1 | 101 Essays that will change the way you think | 101 Essays, of course!                  |
+      | p1 | 101 Essays that will change the way you think | 101 Essays, of course (PR)!             |
       | p2 | No searched for content                       | will be found in this post, I guarantee |
     And we have the following user accounts:
       | slug            | name            | id               |
@@ -24,7 +24,7 @@ Feature: Search
       | 101 Essays that will change the way you think |
 
   Scenario: Press enter starts search
-    When I type "Es" and press Enter
+    When I type "PR" and press Enter
     Then I should have one item in the select dropdown
     Then I should see the following posts in the select dropdown:
       | title                                         |

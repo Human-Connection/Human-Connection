@@ -7,7 +7,9 @@ export const mutedUsers = () => {
         id
         name
         slug
-        avatar
+        avatar {
+          url
+        }
         about
         disabled
         deleted

@@ -7,7 +7,7 @@ Feature: Delete Teaser Image
     Given I have a user account
     Given I am logged in
     Given we have the following posts in our database:
-      | authorId         | id | title              | content              | 
+      | authorId         | id | title              | content              |
       | id-of-peter-pan  | p1 | Post to be updated | successfully updated |
 
   Scenario: Delete existing image

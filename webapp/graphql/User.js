@@ -53,7 +53,9 @@ export const minimisedUserQuery = () => {
         id
         slug
         name
-        avatar
+        avatar {
+          url
+        }
       }
     }
   `
@@ -223,7 +225,7 @@ export const updateUserMutation = () => {
       $allowEmbedIframes: Boolean
       $showShoutsPublicly: Boolean
       $termsAndConditionsAgreedVersion: String
-      $avatarUpload: Upload
+      $avatar: ImageInput
     ) {
       UpdateUser(
         id: $id
@@ -234,7 +236,7 @@ export const updateUserMutation = () => {
         allowEmbedIframes: $allowEmbedIframes
         showShoutsPublicly: $showShoutsPublicly
         termsAndConditionsAgreedVersion: $termsAndConditionsAgreedVersion
-        avatarUpload: $avatarUpload
+        avatar: $avatar
       ) {
         id
         slug
@@ -245,7 +247,9 @@ export const updateUserMutation = () => {
         showShoutsPublicly
         locale
         termsAndConditionsAgreedVersion
-        avatar
+        avatar {
+          url
+        }
       }
     }
   `

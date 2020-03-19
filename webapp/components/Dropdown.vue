@@ -48,11 +48,23 @@ export default {
           if (isOpen) {
             this.$nextTick(() => {
               setTimeout(() => {
-                document.getElementsByTagName('body')[0].classList.add('dropdown-open')
+                const paddingRightStyle = `${window.innerWidth -
+                  document.documentElement.clientWidth}px`
+                const navigationElement = document.querySelector('.main-navigation')
+                document.body.style.paddingRight = paddingRightStyle
+                document.body.classList.add('dropdown-open')
+                if (navigationElement) {
+                  navigationElement.style.paddingRight = paddingRightStyle
+                }
               }, 20)
             })
           } else {
-            document.getElementsByTagName('body')[0].classList.remove('dropdown-open')
+            const navigationElement = document.querySelector('.main-navigation')
+            document.body.style.paddingRight = null
+            document.body.classList.remove('dropdown-open')
+            if (navigationElement) {
+              navigationElement.style.paddingRight = null
+            }
           }
         } catch (err) {}
       },
