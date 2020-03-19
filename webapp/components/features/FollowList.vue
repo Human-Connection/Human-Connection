@@ -12,11 +12,11 @@
           <user-teaser :user="follow" />
         </client-only>
       </ds-space>
-      <ds-space v-if="this.counts[this.type] - this.connections.length" margin="small">
+      <ds-space v-if="this.allConnectionsCount - this.connections.length" margin="small">
         <base-button @click="fetchConnections" size="small" color="softer">
           {{
             $t('profile.network.andMore', {
-              number: this.counts[this.type] - this.connections.length,
+              number: this.allConnectionsCount - this.connections.length,
             })
           }}
         </base-button>
@@ -32,14 +32,12 @@
 
 <script>
 import uniqBy from 'lodash/uniqBy'
-import UserAvatar from '~/components/_new/generic/UserAvatar/UserAvatar'
 import UserTeaser from '~/components/UserTeaser/UserTeaser'
 import { followedByQuery, followingQuery } from '~/graphql/User'
 
 export default {
   name: 'FollowerList',
   components: {
-    UserAvatar,
     UserTeaser,
   },
   props: {
@@ -49,13 +47,10 @@ export default {
   data() {
     return {
       connections: this.user[this.type],
+      allConnectionsCount: this.user[`${this.type}Count`],
       queries: {
         followedBy: followedByQuery,
         following: followingQuery,
-      },
-      counts: {
-        followedBy: this.user.followedByCount,
-        following: this.user.followingCount,
       },
     }
   },
@@ -70,7 +65,6 @@ export default {
       return uniqBy(items, field)
     },
     async fetchConnections() {
-      const query = this.queries[this.type]
       const { data } = await this.$apollo.query({
         query: this.queries[this.type],
         variables: { id: this.user.id },

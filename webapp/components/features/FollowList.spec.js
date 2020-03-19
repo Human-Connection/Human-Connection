@@ -8,8 +8,6 @@ config.stubs['client-only'] = '<span><slot /></span>'
 config.stubs['ds-space'] = '<span><slot /></span>'
 config.stubs['nuxt-link'] = '<span><slot /></span>'
 
-let user, additionalConnections
-
 describe('FollowList.vue', () => {
   let store, mocks, getters, propsData
 
@@ -75,7 +73,7 @@ describe('FollowList.vue', () => {
   })
 })
 
-user = {
+const user = {
   name: 'Jenny Rostock',
   id: 'u3',
   followedByCount: 32,
@@ -156,7 +154,7 @@ user = {
   ],
 }
 
-additionalConnections = {
+const additionalConnections = {
   followedBy: [
     {
       id: '9f305e7a-ae5a-4e22-8269-8b6899af674f',

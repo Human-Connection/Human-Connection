@@ -215,7 +215,6 @@
 
 <script>
 import uniqBy from 'lodash/uniqBy'
-import UserTeaser from '~/components/UserTeaser/UserTeaser'
 import PostTeaser from '~/components/PostTeaser/PostTeaser.vue'
 import HcFollowButton from '~/components/FollowButton.vue'
 import HcCountTo from '~/components/CountTo.vue'
@@ -244,7 +243,6 @@ const tabToFilterMapping = ({ tab, id }) => {
 
 export default {
   components: {
-    UserTeaser,
     PostTeaser,
     HcFollowButton,
     HcCountTo,
