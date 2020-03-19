@@ -3,12 +3,12 @@
     <tab-navigation :tabs="tabOptions" :activeTab="activeTab" @switchTab="switchTab" />
     <section>
       <p v-if="!activeResources.length">No results found for "{{ search }}"</p>
-      <masonry-grid v-else-if="activeTab === 'posts'">
+      <masonry-grid v-else-if="activeTab === 'Post'">
         <masonry-grid-item v-for="resource in activeResources" :key="resource.key">
           <post-teaser :post="resource" />
         </masonry-grid-item>
       </masonry-grid>
-      <ul v-else-if="activeTab === 'users'">
+      <ul v-else-if="activeTab === 'User'">
         <li v-for="resource in activeResources" :key="resource.key" class="list">
           <base-card :wideContent="true">
             <user-teaser :user="resource" />
@@ -41,26 +41,21 @@ export default {
   },
   data() {
     return {
-      searchResults: [],
-      activeTab: 'posts',
+      posts: [],
+      users: [],
+      activeTab: 'Post',
     }
   },
   computed: {
-    posts() {
-      return this.searchResults.filter(result => result.__typename === 'Post')
-    },
-    users() {
-      return this.searchResults.filter(result => result.__typename === 'User')
-    },
     activeResources() {
-      if (this.activeTab === 'posts') return this.posts
-      else if (this.activeTab === 'users') return this.users
+      if (this.activeTab === 'Post') return this.posts
+      else if (this.activeTab === 'User') return this.users
       else return []
     },
     tabOptions() {
       return [
-        { type: 'posts', title: `${this.posts.length} Posts` },
-        { type: 'users', title: `${this.users.length} Users` },
+        { type: 'Post', title: `${this.posts.length} Posts` },
+        { type: 'User', title: `${this.users.length} Users` },
       ]
     },
   },
@@ -82,6 +77,11 @@ export default {
       },
       skip() {
         return !this.search
+      },
+      update({ searchResults }) {
+        this.posts = searchResults.filter(result => result.__typename === 'Post')
+        this.users = searchResults.filter(result => result.__typename === 'User')
+        if (searchResults.length) this.activeTab = searchResults[0].__typename
       },
       fetchPolicy: 'cache-and-network',
     },
