@@ -323,11 +323,6 @@
     },
     "placeholder": ""
   },
-  "hashtags-filter": {
-    "clearSearch": "",
-    "hashtag-search": "",
-    "title": ""
-  },
   "filter-menu": {
     "all": "",
     "categories": "",
@@ -339,6 +334,11 @@
   "followButton": {
     "follow": "",
     "following": ""
+  },
+  "hashtags-filter": {
+    "clearSearch": "",
+    "hashtag-search": "",
+    "title": ""
   },
   "index": {
     "change-filter-settings": "",

@@ -314,11 +314,6 @@
     },
     "placeholder": " Escreva algo inspirador…"
   },
-  "hashtags-filter": {
-    "clearSearch": "Limpar pesquisa",
-    "hashtag-search": "Procurando por #{hashtag}",
-    "title": "Sua bolha de filtro"
-  },
   "filter-menu": {
     "all": "Todos",
     "categories": "Categorias de Conteúdo",
@@ -330,6 +325,11 @@
   "followButton": {
     "follow": "Seguir",
     "following": "Seguindo"
+  },
+  "hashtags-filter": {
+    "clearSearch": "Limpar pesquisa",
+    "hashtag-search": "Procurando por #{hashtag}",
+    "title": "Sua bolha de filtro"
   },
   "index": {
     "change-filter-settings": "Altere suas configurações de filtro para obter mais resultados.",

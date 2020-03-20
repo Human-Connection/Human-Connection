@@ -318,11 +318,6 @@
     },
     "placeholder": "Écrivez quelque chose d'inspirant..."
   },
-  "hashtags-filter": {
-    "clearSearch": "Réinitialiser la recherche",
-    "hashtag-search": "Recherche de #{hashtag}",
-    "title": "Votre bulle de filtre"
-  },
   "filter-menu": {
     "all": "Toutes",
     "categories": "Catégories de contenu",
@@ -334,6 +329,11 @@
   "followButton": {
     "follow": "Suivre",
     "following": "Je suis les"
+  },
+  "hashtags-filter": {
+    "clearSearch": "Réinitialiser la recherche",
+    "hashtag-search": "Recherche de #{hashtag}",
+    "title": "Votre bulle de filtre"
   },
   "index": {
     "change-filter-settings": "Modifiez les paramètres de filtrage pour obtenir plus de résultats.",

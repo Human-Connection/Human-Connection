@@ -329,11 +329,6 @@
     "post-not-found": "Этот пост не удалось найти",
     "profile-not-found": "Этот профиль не удалось найти"
   },
-  "hashtags-filter": {
-    "clearSearch": "Очистить поиск",
-    "hashtag-search": "Поиск по #{hashtag}",
-    "title": "Ваш фильтр пузыря"
-  },
   "filter-menu": {
     "all": "Все",
     "categories": "Категории",
@@ -345,6 +340,11 @@
   "followButton": {
     "follow": "Подписаться",
     "following": "Вы подписаны"
+  },
+  "hashtags-filter": {
+    "clearSearch": "Очистить поиск",
+    "hashtag-search": "Поиск по #{hashtag}",
+    "title": "Ваш фильтр пузыря"
   },
   "index": {
     "change-filter-settings": "Измените настройки фильтра, чтобы получить больше результатов.",

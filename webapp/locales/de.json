@@ -331,11 +331,6 @@
     "post-not-found": "Dieser Beitrag konnte nicht gefunden werden",
     "profile-not-found": "Dieses Profil konnte nicht gefunden werden"
   },
-  "hashtags-filter": {
-    "clearSearch": "Suche löschen",
-    "hashtag-search": "Suche nach #{hashtag}",
-    "title": "Deine Filterblase"
-  },
   "filter-menu": {
     "all": "Alle",
     "categories": "Themenkategorien",
@@ -347,6 +342,11 @@
   "followButton": {
     "follow": "Folgen",
     "following": "Folge Ich"
+  },
+  "hashtags-filter": {
+    "clearSearch": "Suche löschen",
+    "hashtag-search": "Suche nach #{hashtag}",
+    "title": "Deine Filterblase"
   },
   "index": {
     "change-filter-settings": "Verändere die Filter-Einstellungen, um mehr Ergebnisse zu erhalten.",

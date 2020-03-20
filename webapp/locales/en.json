@@ -331,11 +331,6 @@
     "post-not-found": "This post could not be found",
     "profile-not-found": "This profile could not be found"
   },
-  "hashtags-filter": {
-    "clearSearch": "Clear search",
-    "hashtag-search": "Searching for #{hashtag}",
-    "title": "Your filter bubble"
-  },
   "filter-menu": {
     "all": "All",
     "categories": "Categories of Content",
@@ -347,6 +342,11 @@
   "followButton": {
     "follow": "Follow",
     "following": "Following"
+  },
+  "hashtags-filter": {
+    "clearSearch": "Clear search",
+    "hashtag-search": "Searching for #{hashtag}",
+    "title": "Your filter bubble"
   },
   "index": {
     "change-filter-settings": "Change your filter settings to get more results.",
