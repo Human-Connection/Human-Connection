@@ -1,5 +1,5 @@
 <template>
-  <section class="emotion-filter">
+  <section class="emotions-filter">
     <h4 class="title">{{ $t('filter-menu.emotions') }}</h4>
     <labeled-button
       :filled="!filteredByEmotions.length"
@@ -53,7 +53,7 @@ export default {
 }
 </script>
 <style lang="scss">
-.emotion-filter {
+.emotions-filter {
   display: flex;
   flex-wrap: wrap;
   margin-top: $space-base;
