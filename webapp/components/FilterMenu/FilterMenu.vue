@@ -1,5 +1,5 @@
 <template>
-  <dropdown ref="menu" :placement="placement" :offset="offset">
+  <dropdown ref="menu" :placement="placement" :offset="offset" class="filter-menu">
     <base-button
       slot="default"
       icon="filter"
@@ -11,12 +11,12 @@
       <base-icon class="dropdown-arrow" name="angle-down" />
     </base-button>
     <template slot="popover">
-      <ds-container class="filter-menu">
+      <ds-container class="filter-menu-options">
         <h4 class="title">{{ $t('filter-menu.filter-by') }}</h4>
         <following-filter />
         <categories-filter />
         <emotions-filter />
-        <language-filter />
+        <languages-filter />
       </ds-container>
     </template>
   </dropdown>
@@ -27,7 +27,7 @@ import { mapGetters } from 'vuex'
 import FollowingFilter from './FollowingFilter'
 import CategoriesFilter from './CategoriesFilter'
 import EmotionsFilter from './EmotionsFilter'
-import LanguageFilter from './LanguageFilter'
+import LanguagesFilter from './LanguagesFilter'
 
 export default {
   components: {
@@ -35,7 +35,7 @@ export default {
     FollowingFilter,
     CategoriesFilter,
     EmotionsFilter,
-    LanguageFilter,
+    LanguagesFilter,
   },
   props: {
     placement: { type: String },
@@ -50,7 +50,7 @@ export default {
 </script>
 <style lang="scss">
 @media only screen and (max-width: 960px) {
-  .filter-menu {
+  .filter-menu-options {
     > .title {
       text-align: center;
     }
