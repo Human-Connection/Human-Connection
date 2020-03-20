@@ -1,7 +1,7 @@
 import { config, shallowMount, mount } from '@vue/test-utils'
 import PostIndex from './index.vue'
 import Vuex from 'vuex'
-import FilterCard from '~/components/FilterCard/FilterCard'
+import HashtagsFilter from '~/components/HashtagsFilter/HashtagsFilter'
 
 const localVue = global.localVue
 
@@ -106,7 +106,7 @@ describe('PostIndex', () => {
     it('clears the search when the filter menu emits clearSearch', () => {
       mocks.$route.query.hashtag = '#samplehashtag'
       wrapper = Wrapper()
-      wrapper.find(FilterCard).vm.$emit('clearSearch')
+      wrapper.find(HashtagsFilter).vm.$emit('clearSearch')
       expect(wrapper.vm.hashtag).toBeNull()
     })
 

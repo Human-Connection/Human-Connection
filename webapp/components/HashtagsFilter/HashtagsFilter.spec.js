@@ -1,9 +1,9 @@
 import { mount } from '@vue/test-utils'
-import FilterCard from './FilterCard.vue'
+import HashtagsFilter from './HashtagsFilter.vue'
 
 const localVue = global.localVue
 
-describe('FilterCard.vue', () => {
+describe('HashtagsFilter.vue', () => {
   let wrapper
   let mocks
   let propsData
@@ -21,7 +21,7 @@ describe('FilterCard.vue', () => {
 
     describe('mount', () => {
       const Wrapper = () => {
-        return mount(FilterCard, { mocks, localVue, propsData })
+        return mount(HashtagsFilter, { mocks, localVue, propsData })
       }
       beforeEach(() => {
         wrapper = Wrapper()
