@@ -24,9 +24,9 @@ export async function up() {
         `
       MATCH (post:Post)
       WHERE post.image IS NOT NULL
-      CREATE (post)-[:HERO_IMAGE]->(image:Image)
+      MERGE(image:Image {url: post.image})
+      CREATE (post)-[:HERO_IMAGE]->(image)
       SET
-        image.url         = post.image,
         image.sensitive   = post.imageBlurred,
         image.aspectRatio = post.imageAspectRatio
       REMOVE
@@ -37,15 +37,15 @@ export async function up() {
         `
       MATCH (user:User)
       WHERE user.avatar IS NOT NULL
-      CREATE (user)-[:AVATAR_IMAGE]->(avatar:Image)
-      SET avatar.url = user.avatar
+      MERGE(avatar:Image {url: user.avatar})
+      CREATE (user)-[:AVATAR_IMAGE]->(avatar)
       REMOVE user.avatar
     `,
         `
       MATCH (user:User)
       WHERE user.coverImg IS NOT NULL
-      CREATE (user)-[:COVER_IMAGE]->(coverImage:Image)
-      SET coverImage.url = user.coverImg
+      MERGE(coverImage:Image {url: user.coverImg})
+      CREATE (user)-[:COVER_IMAGE]->(coverImage)
       REMOVE user.coverImg
     `,
       ].map(s => txc.run(s)),
