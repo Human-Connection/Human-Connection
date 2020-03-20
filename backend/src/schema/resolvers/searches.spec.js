@@ -41,6 +41,9 @@ const searchQuery = gql`
         slug
         name
       }
+      ... on Tag {
+        id
+      }
     }
   }
 `
@@ -434,6 +437,28 @@ und hinter tausend Stäben keine Welt.`,
                     content: 'Dieser Beitrag stammt von einem bleidigendem Nutzer.',
                   },
                 ]),
+              },
+            })
+          })
+        })
+      })
+
+      describe('adding a tag', () => {
+        beforeAll(async () => {
+          await Factory.build('tag', { id: 'myHashtag' })
+        })
+
+        describe('query the first four characters of the tag', () => {
+          it('finds the tag', async () => {
+            variables = { query: 'myha' }
+            await expect(query({ query: searchQuery, variables })).resolves.toMatchObject({
+              data: {
+                findResources: [
+                  {
+                    __typename: 'Tag',
+                    id: 'myHashtag',
+                  },
+                ],
               },
             })
           })

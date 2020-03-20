@@ -106,6 +106,16 @@ describe('SearchableInput.vue', () => {
           params: { id: 'u2', slug: 'bob-der-baumeister' },
         })
       })
+
+      it('pushes hashtag query params', async () => {
+        select.element.value = 'Hash'
+        select.trigger('input')
+        const tags = wrapper.findAll('.hc-hashtag')
+        const tag = tags.filter(item => item.text().match(/#Hashtag/))
+        tag.trigger('click')
+        await Vue.nextTick()
+        expect(mocks.$router.push).toHaveBeenCalledWith('?hashtag=Hashtag')
+      })
     })
   })
 })

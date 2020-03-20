@@ -106,6 +106,10 @@ export const searchResults = [
     name: 'Tonya Mohr',
     slug: 'tonya-mohr',
   },
+  {
+    id: 'Hashtag',
+    __typename: 'Tag',
+  },
 ]
 
 storiesOf('Search Field', module)

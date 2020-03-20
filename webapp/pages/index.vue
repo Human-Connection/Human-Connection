@@ -130,6 +130,7 @@ export default {
       return this.$apollo.loading || (this.posts && this.posts.length > 0)
     },
   },
+  watchQuery: ['hashtag'],
   methods: {
     ...mapMutations({
       selectOrder: 'posts/SELECT_ORDER',
