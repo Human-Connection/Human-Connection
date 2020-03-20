@@ -1,5 +1,5 @@
 <template>
-  <section class="language-filter">
+  <section class="languages-filter">
     <h4 class="title">{{ $t('filter-menu.languages') }}</h4>
     <labeled-button
       :filled="!filteredLanguageCodes.length"
@@ -50,7 +50,7 @@ export default {
 }
 </script>
 <style lang="scss">
-.language-filter {
+.languages-filter {
   display: flex;
   flex-wrap: wrap;
   margin-top: $space-small;
@@ -58,7 +58,6 @@ export default {
   > .title {
     width: 100%;
     margin: $space-small 0;
-
   }
 
   > .labeled-button {
@@ -84,10 +83,16 @@ export default {
     }
   }
   @media only screen and (max-width: 630px) {
-    width: 100%;
-
     > .title {
       text-align: center;
+    }
+
+    > .languages-list {
+      justify-content: center;
+
+      > .menu-item {
+        margin: $space-small 12px;
+      }
     }
 
     .labeled-button {
@@ -102,5 +107,4 @@ export default {
     }
   }
 }
-
 </style>
