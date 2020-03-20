@@ -1,11 +1,20 @@
 import path from 'path'
 import { v4 as uuid } from 'uuid'
+import { S3 } from 'aws-sdk'
 import slug from 'slug'
 import { existsSync, unlinkSync, createWriteStream } from 'fs'
-import { getDriver } from '../../../db/neo4j'
 import { UserInputError } from 'apollo-server'
+import { getDriver } from '../../../db/neo4j'
+import { s3Configs } from '../../../config'
 
 // const widths = [34, 160, 320, 640, 1024]
+const {
+  AWS_ACCESS_KEY_ID,
+  AWS_SECRET_ACCESS_KEY,
+  AWS_ENDPOINT: endpoint,
+  AWS_REGION: region,
+  AWS_BUCKET: Bucket,
+} = s3Configs
 
 export async function deleteImage(resource, relationshipType, opts = {}) {
   sanitizeRelationshipType(relationshipType)
@@ -85,17 +94,14 @@ const deleteImageFile = (image, deleteCallback = localFileDelete) => {
   return url
 }
 
-const uploadImageFile = async (upload, uploadCallback = localFileUpload) => {
-  if (!upload) return undefined
+const uploadImageFile = async (upload, uploadCallback) => {
+  if (!uploadCallback) {
+    uploadCallback = AWS_ACCESS_KEY_ID && AWS_SECRET_ACCESS_KEY ? s3Upload : localFileUpload
+  }
   const { createReadStream, filename, mimetype } = await upload
   const { name, ext } = path.parse(filename)
   const uniqueFilename = `${uuid()}-${slug(name)}${ext}`
-
-  return uploadCallback({
-    createReadStream,
-    destination: `/uploads/${uniqueFilename}`,
-    mimetype,
-  })
+  return uploadCallback({ createReadStream, uniqueFilename, mimetype })
 }
 
 const sanitizeRelationshipType = (relationshipType) => {
@@ -109,13 +115,29 @@ const sanitizeRelationshipType = (relationshipType) => {
 const localFileUpload = ({ createReadStream, destination }) => {
   return new Promise((resolve, reject) =>
     createReadStream()
-      .pipe(createWriteStream(`public${destination}`))
+      .pipe(createWriteStream(`public/uploads/${destination}`))
       .on('finish', () => resolve(destination))
       .on('error', reject),
   )
 }
 
-const localFileDelete = async (url) => {
+const s3Upload = async ({ createReadStream, uniqueFilename, mimetype }) => {
+  const s3 = new S3({ region, endpoint })
+  const s3Location = `original${uniqueFilename}`
+
+  const params = {
+    Bucket,
+    Key: s3Location,
+    ACL: 'public-read',
+    ContentType: mimetype,
+    Body: createReadStream(),
+  }
+  const data = await s3.upload(params).promise()
+  const { Location } = data
+  return Location
+}
+
+const localFileDelete = async url => {
   const location = `public${url}`
   if (existsSync(location)) unlinkSync(location)
 }
