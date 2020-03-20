@@ -1,7 +1,6 @@
 <template>
   <section class="following-filter">
     <labeled-button
-      data-test="filter-by-followed"
       :filled="filteredByUsersFollowed"
       icon="user-plus"
       :label="$t('filter-menu.following')"
