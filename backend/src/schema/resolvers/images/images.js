@@ -8,14 +8,7 @@ import { getDriver } from '../../../db/neo4j'
 import { s3Configs } from '../../../config'
 
 // const widths = [34, 160, 320, 640, 1024]
-const {
-  AWS_ACCESS_KEY_ID,
-  AWS_SECRET_ACCESS_KEY,
-  AWS_ENDPOINT: endpoint,
-  AWS_REGION: region,
-  AWS_BUCKET: Bucket,
-  S3_CONFIGURED,
-} = s3Configs
+const { AWS_ENDPOINT: endpoint, AWS_REGION: region, AWS_BUCKET: Bucket, S3_CONFIGURED } = s3Configs
 
 export async function deleteImage(resource, relationshipType, opts = {}) {
   sanitizeRelationshipType(relationshipType)

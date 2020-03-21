@@ -16,8 +16,6 @@ export async function up(next) {
   const transaction = session.beginTransaction()
 
   const {
-    AWS_ACCESS_KEY_ID: accessKeyId,
-    AWS_SECRET_ACCESS_KEY: secretAccessKey,
     AWS_ENDPOINT: endpoint,
     AWS_REGION: region,
     AWS_BUCKET: Bucket,
