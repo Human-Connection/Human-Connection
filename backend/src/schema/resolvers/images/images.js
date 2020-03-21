@@ -14,6 +14,7 @@ const {
   AWS_ENDPOINT: endpoint,
   AWS_REGION: region,
   AWS_BUCKET: Bucket,
+  S3_CONFIGURED,
 } = s3Configs
 
 export async function deleteImage(resource, relationshipType, opts = {}) {
@@ -88,7 +89,10 @@ const wrapTransaction = async (wrappedCallback, args, opts) => {
   }
 }
 
-const deleteImageFile = (image, deleteCallback = localFileDelete) => {
+const deleteImageFile = (image, deleteCallback) => {
+  if (!deleteCallback) {
+    deleteCallback = S3_CONFIGURED ? s3Delete : localFileDelete
+  }
   const { url } = image
   deleteCallback(url)
   return url
@@ -96,7 +100,7 @@ const deleteImageFile = (image, deleteCallback = localFileDelete) => {
 
 const uploadImageFile = async (upload, uploadCallback) => {
   if (!uploadCallback) {
-    uploadCallback = AWS_ACCESS_KEY_ID && AWS_SECRET_ACCESS_KEY ? s3Upload : localFileUpload
+    uploadCallback = S3_CONFIGURED ? s3Upload : localFileUpload
   }
   const { createReadStream, filename, mimetype } = await upload
   const { name, ext } = path.parse(filename)
@@ -123,7 +127,7 @@ const localFileUpload = ({ createReadStream, destination }) => {
 
 const s3Upload = async ({ createReadStream, uniqueFilename, mimetype }) => {
   const s3 = new S3({ region, endpoint })
-  const s3Location = `original${uniqueFilename}`
+  const s3Location = `original/${uniqueFilename}`
 
   const params = {
     Bucket,
@@ -140,4 +144,15 @@ const s3Upload = async ({ createReadStream, uniqueFilename, mimetype }) => {
 const localFileDelete = async url => {
   const location = `public${url}`
   if (existsSync(location)) unlinkSync(location)
+}
+
+const s3Delete = async url => {
+  const s3 = new S3({ region, endpoint })
+  let { pathname } = new URL(url)
+  pathname = pathname.substring(1) // remove first character '/'
+  const params = {
+    Bucket,
+    Key: pathname,
+  }
+  await s3.deleteObject(params).promise()
 }

@@ -21,9 +21,10 @@ export async function up(next) {
     AWS_ENDPOINT: endpoint,
     AWS_REGION: region,
     AWS_BUCKET: Bucket,
+    S3_CONFIGURED,
   } = s3Configs
 
-  if (!(accessKeyId || secretAccessKey)) {
+  if (!S3_CONFIGURED) {
     // eslint-disable-next-line no-console
     console.log('No S3 given, cannot upload image files')
     return

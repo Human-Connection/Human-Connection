@@ -22,7 +22,7 @@ const {
   AWS_SECRET_ACCESS_KEY,
   AWS_ENDPOINT,
   AWS_REGION,
-  AWS_BUCKET = 'image-upload',
+  AWS_BUCKET,
   NEO4J_URI = 'bolt://localhost:7687',
   NEO4J_USERNAME = 'neo4j',
   NEO4J_PASSWORD = 'neo4j',
@@ -71,12 +71,16 @@ export const developmentConfigs = {
 export const sentryConfigs = { SENTRY_DSN_BACKEND, COMMIT }
 export const redisConfigs = { REDIS_DOMAIN, REDIS_PORT, REDIS_PASSWORD }
 
+const S3_CONFIGURED =
+  AWS_ACCESS_KEY_ID && AWS_SECRET_ACCESS_KEY && AWS_ENDPOINT && AWS_REGION && AWS_BUCKET
+
 export const s3Configs = {
   AWS_ACCESS_KEY_ID,
   AWS_SECRET_ACCESS_KEY,
   AWS_ENDPOINT,
   AWS_REGION,
   AWS_BUCKET,
+  S3_CONFIGURED,
 }
 
 export default {
