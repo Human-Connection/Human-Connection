@@ -142,7 +142,7 @@ const localFileDelete = async url => {
 
 const s3Delete = async url => {
   const s3 = new S3({ region, endpoint })
-  let { pathname } = new URL(url)
+  let { pathname } = new URL(url, 'http://example.org') // dummy domain to avoid invalid URL error
   pathname = pathname.substring(1) // remove first character '/'
   const params = {
     Bucket,
