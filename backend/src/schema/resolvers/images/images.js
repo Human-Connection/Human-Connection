@@ -109,10 +109,11 @@ const sanitizeRelationshipType = (relationshipType) => {
   }
 }
 
-const localFileUpload = ({ createReadStream, destination }) => {
+const localFileUpload = ({ createReadStream, uniqueFilename }) => {
+  const destination = `/uploads/${uniqueFilename}`
   return new Promise((resolve, reject) =>
     createReadStream()
-      .pipe(createWriteStream(`public/uploads/${destination}`))
+      .pipe(createWriteStream(`public${destination}`))
       .on('finish', () => resolve(destination))
       .on('error', reject),
   )
