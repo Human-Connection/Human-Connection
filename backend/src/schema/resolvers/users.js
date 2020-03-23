@@ -192,6 +192,9 @@ export default {
                 SET resource.deleted = true
                 SET resource.content = 'UNAVAILABLE'
                 SET resource.contentExcerpt = 'UNAVAILABLE'
+                SET resource.language = 'UNAVAILABLE'
+                SET resource.createdAt = 'UNAVAILABLE'
+                SET resource.updatedAt = 'UNAVAILABLE'
                 SET comment.deleted = true
                 RETURN resource {.*}
               `,
@@ -214,6 +217,11 @@ export default {
               SET user.deleted = true
               SET user.name = 'UNAVAILABLE'
               SET user.about = 'UNAVAILABLE'
+              SET user.lastActiveAt = 'UNAVAILABLE'
+              SET user.createdAt = 'UNAVAILABLE'
+              SET user.updatedAt = 'UNAVAILABLE'
+              SET user.termsAndConditionsAgreedVersion = 'UNAVAILABLE'
+              SET user.encryptedPassword = null
               WITH user
               OPTIONAL MATCH (user)<-[:BELONGS_TO]-(email:EmailAddress)
               DETACH DELETE email

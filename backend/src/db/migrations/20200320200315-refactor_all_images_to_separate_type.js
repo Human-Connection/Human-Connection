@@ -23,7 +23,7 @@ export async function up() {
       [
         `
       MATCH (post:Post)
-      WHERE post.image IS NOT NULL
+      WHERE post.image IS NOT NULL AND post.deleted = FALSE
       MERGE(image:Image {url: post.image})
       CREATE (post)-[:HERO_IMAGE]->(image)
       SET
@@ -36,14 +36,14 @@ export async function up() {
     `,
         `
       MATCH (user:User)
-      WHERE user.avatar IS NOT NULL
+      WHERE user.avatar IS NOT NULL AND user.deleted = FALSE
       MERGE(avatar:Image {url: user.avatar})
       CREATE (user)-[:AVATAR_IMAGE]->(avatar)
       REMOVE user.avatar
     `,
         `
       MATCH (user:User)
-      WHERE user.coverImg IS NOT NULL
+      WHERE user.coverImg IS NOT NULL AND user.deleted = FALSE
       MERGE(coverImage:Image {url: user.coverImg})
       CREATE (user)-[:COVER_IMAGE]->(coverImage)
       REMOVE user.coverImg

@@ -1,5 +1,5 @@
 type Image {
-  url: ID!,
+  url: ID,
   # urlW34: String,
   # urlW160: String,
   # urlW320: String,
