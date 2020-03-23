@@ -602,6 +602,7 @@
       "User": "Benutzer"
     },
     "hint": "Wonach suchst Du?",
+    "no-results": "Keine Ergebnisse für \"{search}\" gefunden. Versuch' es mit einem anderen Begriff!",
     "placeholder": "Suchen"
   },
   "settings": {

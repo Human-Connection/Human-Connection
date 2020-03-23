@@ -4,7 +4,7 @@
     <section :class="['results', activeTab === 'User' && '--user', !activeResources.length && '--empty']">
       <hc-empty v-if="!activeResources.length"
         icon="tasks"
-        :message="`No results found for '${search}'. Try a different search term!`"
+        :message="$t('search.no-results', { search })"
       />
       <masonry-grid v-else-if="activeTab === 'Post'">
         <masonry-grid-item v-for="resource in activeResources" :key="resource.key">
@@ -62,12 +62,12 @@ export default {
       return [
         {
           type: 'Post',
-          title: `${this.posts.length} Posts`,
+          title: `${this.posts.length} ${this.$t('search.heading.Post')}`,
           disabled: !this.posts.length,
         },
         {
           type: 'User',
-          title: `${this.users.length} Users`,
+          title: `${this.users.length} ${this.$t('search.heading.User')}`,
           disabled: !this.users.length,
         },
       ]
@@ -120,7 +120,7 @@ export default {
       width: 100%;
       max-width: 600px;
       background-color: transparent;
-      border: 1px solid $color-neutral-80;
+      border: $border-size-base solid $color-neutral-80;
     }
   }
 
