@@ -8,8 +8,8 @@
           <post-teaser :post="resource" />
         </masonry-grid-item>
       </masonry-grid>
-      <ul v-else-if="activeTab === 'User'">
-        <li v-for="resource in activeResources" :key="resource.key" class="list">
+      <ul v-else-if="activeTab === 'User'" class="user-list">
+        <li v-for="resource in activeResources" :key="resource.key" class="item">
           <base-card :wideContent="true">
             <user-teaser :user="resource" />
           </base-card>
@@ -98,15 +98,25 @@ export default {
 </script>
 <style lang="scss">
 .search-results {
-  // width: 40%;
-
   > section {
+    display: inline-block;
+    width: 100%;
+    max-width: 600px;
     padding: $space-small;
     background-color: $color-neutral-80;
     border-radius: 0 $border-radius-base $border-radius-base $border-radius-base;
   }
-}
-.search-results .list {
-  margin: $space-xxx-small 0 $space-small 0;
+
+  .user-list > .item {
+    transition: opacity .1s;
+
+    &:not(:last-child) {
+      margin-bottom: $space-small;
+    }
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
 }
 </style>

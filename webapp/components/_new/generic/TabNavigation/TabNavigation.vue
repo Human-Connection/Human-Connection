@@ -46,7 +46,8 @@ export default {
 
     &.--disabled {
       background: $background-color-disabled;
-      border: 1px solid $color-neutral-80;
+      border: $border-size-base solid $color-neutral-80;
+      border-bottom: none;
       pointer-events: none;
       cursor: default;
     }
