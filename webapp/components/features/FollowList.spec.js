@@ -59,9 +59,14 @@ describe('FollowList.vue', () => {
             expect(wrapper.findAll('.user-teaser').length).toEqual(user[type].length)
           })
           it(`has a button to load all remaining users ${type}`, async () => {
+            jest.useFakeTimers()
+
             wrapper.find('button').trigger('click')
-            //await wrapper.vm.$nextTick()
-            //expect(wrapper.vm.connections.length).toBe(user[`${type}Count`])
+
+            await jest.runAllTicks()
+            await wrapper.vm.$nextTick()
+
+            expect(wrapper.vm.connections.length).toBe(user[`${type}Count`])
             expect(queryMock).toHaveBeenCalledWith({
               query: wrapper.vm.queries[type],
               variables: { id: user.id },
