@@ -3,7 +3,7 @@
     <li
       v-for="tab in tabs"
       :key="tab.type"
-      :class="[activeTab === tab.type && '--active', 'tab']"
+      :class="[activeTab === tab.type && '--active', tab.disabled && '--disabled', 'tab']"
       role="button"
       @click="$emit('switchTab', tab.type)"
     >
@@ -25,6 +25,7 @@ export default {
   },
 }
 </script>
+
 <style lang="scss">
 .tabs {
   display: flex;
@@ -41,6 +42,13 @@ export default {
     &.--active {
       background: $color-neutral-80;
       border: none;
+    }
+
+    &.--disabled {
+      background: $background-color-disabled;
+      border: 1px solid $color-neutral-80;
+      pointer-events: none;
+      cursor: default;
     }
 
     &:hover:not(.--active) {

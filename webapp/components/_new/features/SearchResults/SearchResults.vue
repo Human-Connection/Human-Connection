@@ -54,8 +54,16 @@ export default {
     },
     tabOptions() {
       return [
-        { type: 'Post', title: `${this.posts.length} Posts` },
-        { type: 'User', title: `${this.users.length} Users` },
+        {
+          type: 'Post',
+          title: `${this.posts.length} Posts`,
+          disabled: !this.posts.length,
+        },
+        {
+          type: 'User',
+          title: `${this.users.length} Users`,
+          disabled: !this.users.length,
+        },
       ]
     },
   },
