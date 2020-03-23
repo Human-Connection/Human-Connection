@@ -62,7 +62,6 @@ describe('FollowList.vue', () => {
             jest.useFakeTimers()
 
             wrapper.find('button').trigger('click')
-
             await jest.runAllTicks()
             await wrapper.vm.$nextTick()
 

@@ -11,7 +11,6 @@ config.stubs['nuxt-link'] = '<span><slot /></span>'
 config.stubs['infinite-loading'] = '<span><slot /></span>'
 config.stubs['follow-list'] = '<span><slot /></span>'
 
-
 describe('ProfileSlug', () => {
   let wrapper
   let Wrapper
