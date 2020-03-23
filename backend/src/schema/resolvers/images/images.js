@@ -92,6 +92,7 @@ const deleteImageFile = (image, deleteCallback) => {
 }
 
 const uploadImageFile = async (upload, uploadCallback) => {
+  if (!upload) return undefined
   if (!uploadCallback) {
     uploadCallback = S3_CONFIGURED ? s3Upload : localFileUpload
   }

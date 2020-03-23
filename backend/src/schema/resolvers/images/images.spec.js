@@ -11,7 +11,7 @@ let deleteCallback
 
 beforeEach(async () => {
   await cleanDatabase()
-  uploadCallback = jest.fn(({ destination }) => destination)
+  uploadCallback = jest.fn(({ uniqueFilename }) => `/uploads/${uniqueFilename}`)
   deleteCallback = jest.fn()
 })
 
@@ -99,34 +99,34 @@ describe('mergeImage', () => {
     }
   })
 
-  describe('on existing resource', () => {
-    beforeEach(async () => {
-      post = await Factory.build(
-        'post',
-        { id: 'p99' },
-        {
-          author: Factory.build('user', {}, { avatar: null }),
-          image: null,
+  describe('given image.upload', () => {
+    beforeEach(() => {
+      imageInput = {
+        ...imageInput,
+        upload: {
+          filename: 'image.jpg',
+          mimetype: 'image/jpeg',
+          encoding: '7bit',
+          createReadStream: () => ({
+            pipe: () => ({
+              on: (_, callback) => callback(),
+            }),
+          }),
         },
-      )
-      post = await post.toJson()
+      }
     })
 
-    describe('given image.upload', () => {
-      beforeEach(() => {
-        imageInput = {
-          ...imageInput,
-          upload: {
-            filename: 'image.jpg',
-            mimetype: 'image/jpeg',
-            encoding: '7bit',
-            createReadStream: () => ({
-              pipe: () => ({
-                on: (_, callback) => callback(),
-              }),
-            }),
+    describe('on existing resource', () => {
+      beforeEach(async () => {
+        post = await Factory.build(
+          'post',
+          { id: 'p99' },
+          {
+            author: Factory.build('user', {}, { avatar: null }),
+            image: null,
           },
-        }
+        )
+        post = await post.toJson()
       })
 
       it('returns new image', async () => {
@@ -330,7 +330,7 @@ describe('mergeImage', () => {
       })
 
       it('updates metadata', async () => {
-        await mergeImage(post, 'HERO_IMAGE', imageInput)
+        await mergeImage(post, 'HERO_IMAGE', imageInput, { uploadCallback, deleteCallback })
         const images = await neode.all('Image')
         expect(images).toHaveLength(1)
         await expect(images.first().toJson()).resolves.toMatchObject({
