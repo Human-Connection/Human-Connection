@@ -201,7 +201,6 @@ type Query {
     title: String
     slug: String
     content: String
-    image: String
     visibility: Visibility
     pinned: Boolean
     createdAt: String
