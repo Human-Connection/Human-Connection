@@ -1,7 +1,7 @@
 <template>
   <div class="search-results">
     <tab-navigation :tabs="tabOptions" :activeTab="activeTab" @switchTab="switchTab" />
-    <section>
+    <section :class="['results', activeTab === 'User' && '--user']">
       <p v-if="!activeResources.length">No results found for "{{ search }}"</p>
       <masonry-grid v-else-if="activeTab === 'Post'">
         <masonry-grid-item v-for="resource in activeResources" :key="resource.key">
@@ -98,13 +98,16 @@ export default {
 </script>
 <style lang="scss">
 .search-results {
-  > section {
+  > .results {
     display: inline-block;
-    width: 100%;
-    max-width: 600px;
     padding: $space-small;
     background-color: $color-neutral-80;
     border-radius: 0 $border-radius-base $border-radius-base $border-radius-base;
+
+    &.--user {
+      width: 100%;
+      max-width: 600px;
+    }
   }
 
   .user-list > .item {
