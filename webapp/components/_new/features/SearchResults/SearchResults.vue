@@ -1,8 +1,11 @@
 <template>
   <div class="search-results">
     <tab-navigation :tabs="tabOptions" :activeTab="activeTab" @switchTab="switchTab" />
-    <section :class="['results', activeTab === 'User' && '--user']">
-      <p v-if="!activeResources.length">No results found for "{{ search }}"</p>
+    <section :class="['results', activeTab === 'User' && '--user', !activeResources.length && '--empty']">
+      <hc-empty v-if="!activeResources.length"
+        icon="tasks"
+        :message="`No results found for '${search}'. Try a different search term!`"
+      />
       <masonry-grid v-else-if="activeTab === 'Post'">
         <masonry-grid-item v-for="resource in activeResources" :key="resource.key">
           <post-teaser :post="resource" />
@@ -18,20 +21,23 @@
     </section>
   </div>
 </template>
+
 <script>
 import { searchQuery } from '~/graphql/Search.js'
+import HcEmpty from '~/components/Empty/Empty'
 import MasonryGrid from '~/components/MasonryGrid/MasonryGrid'
 import MasonryGridItem from '~/components/MasonryGrid/MasonryGridItem'
-import TabNavigation from '~/components/_new/generic/TabNavigation/TabNavigation'
 import PostTeaser from '~/components/PostTeaser/PostTeaser'
+import TabNavigation from '~/components/_new/generic/TabNavigation/TabNavigation'
 import UserTeaser from '~/components/UserTeaser/UserTeaser'
 
 export default {
   components: {
+    HcEmpty,
     MasonryGrid,
     MasonryGridItem,
-    TabNavigation,
     PostTeaser,
+    TabNavigation,
     UserTeaser,
   },
   props: {
@@ -96,6 +102,7 @@ export default {
   },
 }
 </script>
+
 <style lang="scss">
 .search-results {
   > .results {
@@ -107,6 +114,13 @@ export default {
     &.--user {
       width: 100%;
       max-width: 600px;
+    }
+
+    &.--empty {
+      width: 100%;
+      max-width: 600px;
+      background-color: transparent;
+      border: 1px solid $color-neutral-80;
     }
   }
 
