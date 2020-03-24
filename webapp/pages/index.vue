@@ -24,7 +24,7 @@
         <masonry-grid-item
           v-for="post in posts"
           :key="post.id"
-          :imageAspectRatio="post.imageAspectRatio"
+          :imageAspectRatio="post.image && post.image.aspectRatio"
         >
           <post-teaser
             :post="post"
@@ -130,6 +130,7 @@ export default {
       return this.$apollo.loading || (this.posts && this.posts.length > 0)
     },
   },
+  watchQuery: ['hashtag'],
   methods: {
     ...mapMutations({
       selectOrder: 'posts/SELECT_ORDER',

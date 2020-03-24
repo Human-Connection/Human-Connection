@@ -40,7 +40,6 @@ input _PostFilter {
   content_not_starts_with: String
   content_ends_with: String
   content_not_ends_with: String
-  image: String
   visibility: Visibility
   visibility_not: Visibility
   visibility_in: [Visibility!]
@@ -82,7 +81,6 @@ input _PostFilter {
   emotions_none: _PostEMOTEDFilter
   emotions_single: _PostEMOTEDFilter
   emotions_every: _PostEMOTEDFilter
-  imageBlurred: Boolean
 }
 
 enum _PostOrdering {
@@ -94,8 +92,6 @@ enum _PostOrdering {
   slug_desc
   content_asc
   content_desc
-  image_asc
-  image_desc
   visibility_asc
   visibility_desc
   createdAt_asc
@@ -118,9 +114,7 @@ type Post {
   slug: String!
   content: String!
   contentExcerpt: String
-  image: String
-  imageUpload: Upload
-  imageAspectRatio: Float
+  image: Image @relation(name: "HERO_IMAGE", direction: "OUT")
   visibility: Visibility
   deleted: Boolean
   disabled: Boolean
@@ -128,7 +122,6 @@ type Post {
   createdAt: String
   updatedAt: String
   language: String
-  imageBlurred: Boolean
   pinnedAt: String @cypher(
       statement: "MATCH (this)<-[pinned:PINNED]-(:User) WHERE NOT this.deleted = true AND NOT this.disabled = true RETURN pinned.createdAt"
     )
@@ -178,14 +171,11 @@ type Mutation {
     title: String!
     slug: String
     content: String!
-    image: String
-    imageUpload: Upload
+    image: ImageInput,
     visibility: Visibility
     language: String
     categoryIds: [ID]
     contentExcerpt: String
-    imageBlurred: Boolean
-    imageAspectRatio: Float
   ): Post
   UpdatePost(
     id: ID!
@@ -193,13 +183,10 @@ type Mutation {
     slug: String
     content: String!
     contentExcerpt: String
-    image: String
-    imageUpload: Upload
+    image: ImageInput,
     visibility: Visibility
     language: String
     categoryIds: [ID]
-    imageBlurred: Boolean
-    imageAspectRatio: Float
   ): Post
   DeletePost(id: ID!): Post
   AddPostEmotions(to: _PostInput!, data: _EMOTEDInput!): EMOTED
@@ -214,7 +201,6 @@ type Query {
     title: String
     slug: String
     content: String
-    image: String
     visibility: Visibility
     pinned: Boolean
     createdAt: String

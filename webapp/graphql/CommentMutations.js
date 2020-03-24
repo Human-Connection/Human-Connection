@@ -17,7 +17,9 @@ export default i18n => {
             id
             slug
             name
-            avatar
+            avatar {
+              url
+            }
             disabled
             deleted
             shoutedCount
@@ -47,7 +49,9 @@ export default i18n => {
             id
             slug
             name
-            avatar
+            avatar {
+              url
+            }
             disabled
             deleted
           }
@@ -67,7 +71,9 @@ export default i18n => {
             id
             slug
             name
-            avatar
+            avatar {
+              url
+            }
             disabled
             deleted
             shoutedCount

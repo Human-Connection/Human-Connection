@@ -389,13 +389,15 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         {
           id: 'p0',
           language: sample(languages),
-          image: faker.image.unsplash.food(300, 169),
-          imageBlurred: true,
-          imageAspectRatio: 300 / 169,
         },
         {
           categoryIds: ['cat16'],
           author: peterLustig,
+          image: Factory.build('image', {
+            url: faker.image.unsplash.food(300, 169),
+            sensitive: true,
+            aspectRatio: 300 / 169,
+          }),
         },
       ),
       Factory.build(
@@ -403,12 +405,14 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         {
           id: 'p1',
           language: sample(languages),
-          image: faker.image.unsplash.technology(300, 1500),
-          imageAspectRatio: 300 / 1500,
         },
         {
           categoryIds: ['cat1'],
           author: bobDerBaumeister,
+          image: Factory.build('image', {
+            url: faker.image.unsplash.technology(300, 1500),
+            aspectRatio: 300 / 1500,
+          }),
         },
       ),
       Factory.build(
@@ -449,12 +453,14 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         {
           id: 'p6',
           language: sample(languages),
-          image: faker.image.unsplash.buildings(300, 857),
-          imageAspectRatio: 300 / 857,
         },
         {
           categoryIds: ['cat6'],
           author: peterLustig,
+          image: Factory.build('image', {
+            url: faker.image.unsplash.buildings(300, 857),
+            aspectRatio: 300 / 857,
+          }),
         },
       ),
       Factory.build(
@@ -472,11 +478,13 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         'post',
         {
           id: 'p10',
-          imageBlurred: true,
         },
         {
           categoryIds: ['cat10'],
           author: dewey,
+          image: Factory.build('image', {
+            sensitive: true,
+          }),
         },
       ),
       Factory.build(
@@ -484,12 +492,14 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         {
           id: 'p11',
           language: sample(languages),
-          image: faker.image.unsplash.people(300, 901),
-          imageAspectRatio: 300 / 901,
         },
         {
           categoryIds: ['cat11'],
           author: louie,
+          image: Factory.build('image', {
+            url: faker.image.unsplash.people(300, 901),
+            aspectRatio: 300 / 901,
+          }),
         },
       ),
       Factory.build(
@@ -508,12 +518,14 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         {
           id: 'p14',
           language: sample(languages),
-          image: faker.image.unsplash.objects(300, 200),
-          imageAspectRatio: 300 / 450,
         },
         {
           categoryIds: ['cat14'],
           author: jennyRostock,
+          image: Factory.build('image', {
+            url: faker.image.unsplash.objects(300, 200),
+            aspectRatio: 300 / 450,
+          }),
         },
       ),
       Factory.build(
@@ -539,22 +551,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
     const hashtagAndMention1 =
       'The new physics of <a class="hashtag" data-hashtag-id="QuantenFlussTheorie" href="/?hashtag=QuantenFlussTheorie">#QuantenFlussTheorie</a> can explain <a class="hashtag" data-hashtag-id="QuantumGravity" href="/?hashtag=QuantumGravity">#QuantumGravity</a>! <a class="mention" data-mention-id="u1" href="/profile/u1">@peter-lustig</a> got that already. ;-)'
     const createPostMutation = gql`
-      mutation(
-        $id: ID
-        $title: String!
-        $content: String!
-        $categoryIds: [ID]
-        $imageBlurred: Boolean
-        $imageAspectRatio: Float
-      ) {
-        CreatePost(
-          id: $id
-          title: $title
-          content: $content
-          categoryIds: $categoryIds
-          imageBlurred: $imageBlurred
-          imageAspectRatio: $imageAspectRatio
-        ) {
+      mutation($id: ID, $title: String!, $content: String!, $categoryIds: [ID]) {
+        CreatePost(id: $id, title: $title, content: $content, categoryIds: $categoryIds) {
           id
         }
       }
@@ -568,7 +566,6 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           title: `Nature Philosophy Yoga`,
           content: hashtag1,
           categoryIds: ['cat2'],
-          imageAspectRatio: 300 / 200,
         },
       }),
       mutate({
@@ -578,7 +575,6 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           title: 'This is post #7',
           content: `${mention1} ${faker.lorem.paragraph()}`,
           categoryIds: ['cat7'],
-          imageAspectRatio: 300 / 180,
         },
       }),
       mutate({
@@ -589,7 +585,6 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           title: `Quantum Flow Theory explains Quantum Gravity`,
           content: hashtagAndMention1,
           categoryIds: ['cat8'],
-          imageAspectRatio: 300 / 900,
         },
       }),
       mutate({
@@ -599,7 +594,6 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
           title: 'This is post #12',
           content: `${mention2} ${faker.lorem.paragraph()}`,
           categoryIds: ['cat12'],
-          imageAspectRatio: 300 / 200,
         },
       }),
     ])
@@ -759,6 +753,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         },
       ),
     ])
+
     const trollingComment = comments[0]
 
     await Promise.all([
@@ -939,12 +934,13 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       [...Array(30).keys()].map(() =>
         Factory.build(
           'post',
-          {
-            image: faker.image.unsplash.objects(),
-          },
+          {},
           {
             categoryIds: ['cat1'],
             author: jennyRostock,
+            image: Factory.build('image', {
+              url: faker.image.unsplash.objects(),
+            }),
           },
         ),
       ),
@@ -993,12 +989,13 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       [...Array(21).keys()].map(() =>
         Factory.build(
           'post',
-          {
-            image: faker.image.unsplash.buildings(),
-          },
+          {},
           {
             categoryIds: ['cat1'],
             author: peterLustig,
+            image: Factory.build('image', {
+              url: faker.image.unsplash.buildings(),
+            }),
           },
         ),
       ),
@@ -1047,12 +1044,13 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       [...Array(11).keys()].map(() =>
         Factory.build(
           'post',
-          {
-            image: faker.image.unsplash.food(),
-          },
+          {},
           {
             categoryIds: ['cat1'],
             author: dewey,
+            image: Factory.build('image', {
+              url: faker.image.unsplash.food(),
+            }),
           },
         ),
       ),
@@ -1101,12 +1099,13 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       [...Array(16).keys()].map(() =>
         Factory.build(
           'post',
-          {
-            image: faker.image.unsplash.technology(),
-          },
+          {},
           {
             categoryIds: ['cat1'],
             author: louie,
+            image: Factory.build('image', {
+              url: faker.image.unsplash.technology(),
+            }),
           },
         ),
       ),
@@ -1155,12 +1154,13 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       [...Array(45).keys()].map(() =>
         Factory.build(
           'post',
-          {
-            image: faker.image.unsplash.people(),
-          },
+          {},
           {
             categoryIds: ['cat1'],
             author: bobDerBaumeister,
+            image: Factory.build('image', {
+              url: faker.image.unsplash.people(),
+            }),
           },
         ),
       ),
@@ -1209,12 +1209,13 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       [...Array(8).keys()].map(() =>
         Factory.build(
           'post',
-          {
-            image: faker.image.unsplash.nature(),
-          },
+          {},
           {
             categoryIds: ['cat1'],
             author: huey,
+            image: Factory.build('image', {
+              url: faker.image.unsplash.nature(),
+            }),
           },
         ),
       ),

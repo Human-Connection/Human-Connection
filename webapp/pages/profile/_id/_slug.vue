@@ -238,7 +238,7 @@
             <masonry-grid-item
               v-for="post in posts"
               :key="post.id"
-              :imageAspectRatio="post.imageAspectRatio"
+              :imageAspectRatio="post.image && post.image.aspectRatio"
             >
               <post-teaser
                 :post="post"

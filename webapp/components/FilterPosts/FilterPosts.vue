@@ -1,15 +1,15 @@
 <template>
   <dropdown ref="menu" :placement="placement" :offset="offset">
-    <base-button
-      slot="default"
-      icon="filter"
-      :filled="filterActive"
-      :ghost="!filterActive"
-      slot-scope="{ toggleMenu }"
-      @click.prevent="toggleMenu()"
-    >
-      <base-icon class="dropdown-arrow" name="angle-down" />
-    </base-button>
+    <template #default="{ toggleMenu }">
+      <base-button
+        icon="filter"
+        :filled="filterActive"
+        :ghost="!filterActive"
+        @click.prevent="toggleMenu()"
+      >
+        <base-icon class="dropdown-arrow" name="angle-down" />
+      </base-button>
+    </template>
     <template slot="popover">
       <ds-container>
         <categories-filter-menu-items :chunk="chunk" />

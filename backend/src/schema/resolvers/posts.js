@@ -2,7 +2,7 @@ import { v4 as uuid } from 'uuid'
 import { neo4jgraphql } from 'neo4j-graphql-js'
 import { isEmpty } from 'lodash'
 import { UserInputError } from 'apollo-server'
-import fileUpload from './fileUpload'
+import { mergeImage, deleteImage } from './images/images'
 import Resolver from './helpers/Resolver'
 import { filterForMutedUsers } from './helpers/filterForMutedUsers'
 
@@ -77,14 +77,16 @@ export default {
   Mutation: {
     CreatePost: async (_parent, params, context, _resolveInfo) => {
       const { categoryIds } = params
+      const { image: imageInput } = params
       delete params.categoryIds
-      params = await fileUpload(params, { file: 'imageUpload', url: 'image' })
+      delete params.image
       params.id = params.id || uuid()
       const session = context.driver.session()
       const writeTxResultPromise = session.writeTransaction(async transaction => {
         const createPostTransactionResponse = await transaction.run(
           `
-            CREATE (post:Post {params})
+            CREATE (post:Post)
+            SET post += $params
             SET post.createdAt = toString(datetime())
             SET post.updatedAt = toString(datetime())
             WITH post
@@ -94,14 +96,18 @@ export default {
             UNWIND $categoryIds AS categoryId
             MATCH (category:Category {id: categoryId})
             MERGE (post)-[:CATEGORIZED]->(category)
-            RETURN post
+            RETURN post {.*}
           `,
           { userId: context.user.id, categoryIds, params },
         )
-        return createPostTransactionResponse.records.map(record => record.get('post').properties)
+        const [post] = createPostTransactionResponse.records.map(record => record.get('post'))
+        if (imageInput) {
+          await mergeImage(post, 'HERO_IMAGE', imageInput, { transaction })
+        }
+        return post
       })
       try {
-        const [post] = await writeTxResultPromise
+        const post = await writeTxResultPromise
         return post
       } catch (e) {
         if (e.code === 'Neo.ClientError.Schema.ConstraintValidationFailed')
@@ -113,8 +119,9 @@ export default {
     },
     UpdatePost: async (_parent, params, context, _resolveInfo) => {
       const { categoryIds } = params
+      const { image: imageInput } = params
       delete params.categoryIds
-      params = await fileUpload(params, { file: 'imageUpload', url: 'image' })
+      delete params.image
       const session = context.driver.session()
       let updatePostCypher = `
                                 MATCH (post:Post {id: $params.id})
@@ -142,7 +149,7 @@ export default {
         `
       }
 
-      updatePostCypher += `RETURN post`
+      updatePostCypher += `RETURN post {.*}`
       const updatePostVariables = { categoryIds, params }
       try {
         const writeTxResultPromise = session.writeTransaction(async transaction => {
@@ -150,9 +157,11 @@ export default {
             updatePostCypher,
             updatePostVariables,
           )
-          return updatePostTransactionResponse.records.map(record => record.get('post').properties)
+          const [post] = updatePostTransactionResponse.records.map(record => record.get('post'))
+          await mergeImage(post, 'HERO_IMAGE', imageInput, { transaction })
+          return post
         })
-        const [post] = await writeTxResultPromise
+        const post = await writeTxResultPromise
         return post
       } finally {
         session.close()
@@ -171,15 +180,16 @@ export default {
             SET post.contentExcerpt = 'UNAVAILABLE'
             SET post.title          = 'UNAVAILABLE'
             SET comment.deleted     = TRUE
-            REMOVE post.image
-            RETURN post
+            RETURN post {.*}
           `,
           { postId: args.id },
         )
-        return deletePostTransactionResponse.records.map(record => record.get('post').properties)
+        const [post] = deletePostTransactionResponse.records.map(record => record.get('post'))
+        await deleteImage(post, 'HERO_IMAGE', { transaction })
+        return post
       })
       try {
-        const [post] = await writeTxResultPromise
+        const post = await writeTxResultPromise
         return post
       } finally {
         session.close()
@@ -311,16 +321,7 @@ export default {
   },
   Post: {
     ...Resolver('Post', {
-      undefinedToNull: [
-        'activityId',
-        'objectId',
-        'image',
-        'language',
-        'pinnedAt',
-        'pinned',
-        'imageBlurred',
-        'imageAspectRatio',
-      ],
+      undefinedToNull: ['activityId', 'objectId', 'language', 'pinnedAt', 'pinned'],
       hasMany: {
         tags: '-[:TAGGED]->(related:Tag)',
         categories: '-[:CATEGORIZED]->(related:Category)',
@@ -331,6 +332,7 @@ export default {
       hasOne: {
         author: '<-[:WROTE]-(related:User)',
         pinnedBy: '<-[:PINNED]-(related:User)',
+        image: '-[:HERO_IMAGE]->(related:Image)',
       },
       count: {
         commentsCount:

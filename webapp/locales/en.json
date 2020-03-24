@@ -599,6 +599,7 @@
     "failed": "Nothing found",
     "heading": {
       "Post": "Posts",
+      "Tag": "Hashtags",
       "User": "Users"
     },
     "hint": "What are you searching for?",

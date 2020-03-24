@@ -69,23 +69,23 @@ describe('decode', () => {
           {
             role: 'user',
             name: 'Jenny Rostock',
-            avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/sasha_shestakov/128.jpg',
             id: 'u3',
             slug: 'jenny-rostock',
           },
           {
+            image: Factory.build('image', {
+              url: 'https://s3.amazonaws.com/uifaces/faces/twitter/sasha_shestakov/128.jpg',
+            }),
             email: 'user@example.org',
           },
         )
       })
 
-      it('returns user object except email', async () => {
+      it('returns user object without email', async () => {
         await expect(decode(driver, authorizationHeader)).resolves.toMatchObject({
           role: 'user',
           name: 'Jenny Rostock',
-          avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/sasha_shestakov/128.jpg',
           id: 'u3',
-          email: null,
           slug: 'jenny-rostock',
         })
       })
