@@ -21,7 +21,7 @@ export default {
             MATCH (post:Post {id: $postId})
             MATCH (author:User {id: $userId})
             WITH post, author
-            CREATE (comment:Comment {params})
+            CREATE (comment:Comment $params)
             SET comment.createdAt = toString(datetime())
             SET comment.updatedAt = toString(datetime())
             MERGE (post)<-[:COMMENTS]-(comment)<-[:WROTE]-(author)

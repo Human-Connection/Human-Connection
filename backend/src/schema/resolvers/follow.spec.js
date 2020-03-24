@@ -142,7 +142,7 @@ describe('follow', () => {
         variables,
       })
       const relation = await neode.cypher(
-        'MATCH (user:User {id: {id}})-[relationship:FOLLOWS]->(followed:User) WHERE relationship.createdAt IS NOT NULL RETURN relationship',
+        'MATCH (user:User {id: $id})-[relationship:FOLLOWS]->(followed:User) WHERE relationship.createdAt IS NOT NULL RETURN relationship',
         { id: 'u1' },
       )
       const relationshipProperties = relation.records.map(

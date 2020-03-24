@@ -240,7 +240,7 @@ describe('SignupVerification', () => {
 
           it('connects User with EmailAddress', async () => {
             const cypher = `
-                MATCH(email:EmailAddress)-[:BELONGS_TO]->(u:User {name: {name}})
+                MATCH(email:EmailAddress)-[:BELONGS_TO]->(u:User {name: $name})
                 RETURN email
               `
             await mutate({ mutation, variables })
@@ -270,7 +270,7 @@ describe('SignupVerification', () => {
 
           it('marks the EmailAddress as primary', async () => {
             const cypher = `
-                MATCH(email:EmailAddress)<-[:PRIMARY_EMAIL]-(u:User {name: {name}})
+                MATCH(email:EmailAddress)<-[:PRIMARY_EMAIL]-(u:User {name: $name})
                 RETURN email
               `
             await mutate({ mutation, variables })
