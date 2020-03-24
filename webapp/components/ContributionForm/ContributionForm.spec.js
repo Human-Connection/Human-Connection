@@ -140,7 +140,9 @@ describe('ContributionForm.vue', () => {
           postTitleInput = wrapper.find('.ds-input')
           postTitleInput.setValue(postTitle)
           await wrapper.vm.updateEditorContent(postContent)
-          englishLanguage = wrapper.findAll('li').filter(language => language.text() === 'English')
+          englishLanguage = wrapper
+            .findAll('li')
+            .filter((language) => language.text() === 'English')
           englishLanguage.trigger('click')
           dataPrivacyButton = await wrapper
             .find(CategoriesSelect)
@@ -206,7 +208,9 @@ describe('ContributionForm.vue', () => {
           postTitleInput.setValue(postTitle)
           await wrapper.vm.updateEditorContent(postContent)
           wrapper.find(CategoriesSelect).setData({ categories })
-          englishLanguage = wrapper.findAll('li').filter(language => language.text() === 'English')
+          englishLanguage = wrapper
+            .findAll('li')
+            .filter((language) => language.text() === 'English')
           englishLanguage.trigger('click')
           await Vue.nextTick()
           dataPrivacyButton = await wrapper
@@ -223,7 +227,9 @@ describe('ContributionForm.vue', () => {
 
         it('supports changing the language', async () => {
           expectedParams.variables.language = 'de'
-          deutschLanguage = wrapper.findAll('li').filter(language => language.text() === 'Deutsch')
+          deutschLanguage = wrapper
+            .findAll('li')
+            .filter((language) => language.text() === 'Deutsch')
           deutschLanguage.trigger('click')
           wrapper.find('form').trigger('submit')
           expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
@@ -237,7 +243,7 @@ describe('ContributionForm.vue', () => {
           }
           const spy = jest
             .spyOn(FileReader.prototype, 'readAsDataURL')
-            .mockImplementation(function() {
+            .mockImplementation(function () {
               this.onload({ target: { result: 'someUrlToImage' } })
             })
           wrapper.find(ImageUploader).vm.$emit('addHeroImage', imageUpload)
@@ -288,7 +294,9 @@ describe('ContributionForm.vue', () => {
           await wrapper.vm.updateEditorContent(postContent)
           categoryIds = ['cat12']
           wrapper.find(CategoriesSelect).setData({ categories })
-          englishLanguage = wrapper.findAll('li').filter(language => language.text() === 'English')
+          englishLanguage = wrapper
+            .findAll('li')
+            .filter((language) => language.text() === 'English')
           englishLanguage.trigger('click')
           await Vue.nextTick()
           dataPrivacyButton = await wrapper

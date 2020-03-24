@@ -25,7 +25,7 @@ describe('CommentForm.vue', () => {
         success: jest.fn(),
       },
       $filters: {
-        removeHtml: a => a,
+        removeHtml: (a) => a,
       },
     }
   })

@@ -21,14 +21,14 @@ export default {
             WITH review, report, resource {.*, __typename: labels(resource)[0]} AS finalResource
             RETURN review {.*, report: properties(report), resource: properties(finalResource)}
           `
-        const reviewWriteTxResultPromise = session.writeTransaction(async txc => {
+        const reviewWriteTxResultPromise = session.writeTransaction(async (txc) => {
           const reviewTransactionResponse = await txc.run(cypher, {
             params,
             moderatorId: moderator.id,
             dateTime: new Date().toISOString(),
           })
           log(reviewTransactionResponse)
-          return reviewTransactionResponse.records.map(record => record.get('review'))
+          return reviewTransactionResponse.records.map((record) => record.get('review'))
         })
         const [reviewed] = await reviewWriteTxResultPromise
         return reviewed || null

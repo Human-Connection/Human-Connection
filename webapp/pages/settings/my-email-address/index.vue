@@ -51,11 +51,11 @@ export default {
       currentUser: 'auth/user',
     }),
     form: {
-      get: function() {
+      get: function () {
         const { email } = this.currentUser
         return { email }
       },
-      set: function(formData) {
+      set: function (formData) {
         this.formData = formData
       },
     },

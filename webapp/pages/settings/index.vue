@@ -73,11 +73,11 @@ export default {
       }
     },
     form: {
-      get: function() {
+      get: function () {
         const { name, slug, locationName, about } = this.currentUser
         return { name, slug, locationName, about }
       },
-      set: function(formData) {
+      set: function (formData) {
         this.formData = formData
       },
     },
@@ -128,7 +128,7 @@ export default {
         return []
       }
       const output = []
-      res.data.features.forEach(item => {
+      res.data.features.forEach((item) => {
         output.push({
           label: item.place_name,
           value: item.place_name,
@@ -162,7 +162,7 @@ export default {
             cancelToken: this.axiosSource.token,
           },
         )
-        .then(res => {
+        .then((res) => {
           this.cities = this.processCityResults(res)
         })
         .finally(() => {

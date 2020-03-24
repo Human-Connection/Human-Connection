@@ -20,7 +20,7 @@ export async function deleteImage(resource, relationshipType, opts = {}) {
   `,
     { resource },
   )
-  const [image] = txResult.records.map(record => record.get('imageProps'))
+  const [image] = txResult.records.map((record) => record.get('imageProps'))
   // This behaviour differs from `mergeImage`. If you call `mergeImage`
   // with metadata for an image that does not exist, it's an indicator
   // of an error (so throw an error). If we bulk delete an image, it
@@ -45,7 +45,7 @@ export async function mergeImage(resource, relationshipType, imageInput, opts = 
     `,
     { resource },
   )
-  const [existingImage] = txResult.records.map(record => record.get('image'))
+  const [existingImage] = txResult.records.map((record) => record.get('image'))
   const { upload } = imageInput
   if (!(existingImage || upload)) throw new UserInputError('Cannot find image for given resource')
   if (existingImage && upload) deleteImageFile(existingImage, deleteCallback)
@@ -63,14 +63,14 @@ export async function mergeImage(resource, relationshipType, imageInput, opts = 
     `,
     { resource, image },
   )
-  const [mergedImage] = txResult.records.map(record => record.get('image'))
+  const [mergedImage] = txResult.records.map((record) => record.get('image'))
   return mergedImage
 }
 
 const wrapTransaction = async (wrappedCallback, args, opts) => {
   const session = getDriver().session()
   try {
-    const result = await session.writeTransaction(async transaction => {
+    const result = await session.writeTransaction(async (transaction) => {
       return wrappedCallback(...args, { ...opts, transaction })
     })
     return result
@@ -98,7 +98,7 @@ const uploadImageFile = async (upload, uploadCallback = localFileUpload) => {
   })
 }
 
-const sanitizeRelationshipType = relationshipType => {
+const sanitizeRelationshipType = (relationshipType) => {
   // Cypher query language does not allow to parameterize relationship types
   // See: https://github.com/neo4j/neo4j/issues/340
   if (!['HERO_IMAGE', 'AVATAR_IMAGE'].includes(relationshipType)) {
@@ -115,7 +115,7 @@ const localFileUpload = ({ createReadStream, destination }) => {
   )
 }
 
-const localFileDelete = async url => {
+const localFileDelete = async (url) => {
   const location = `public${url}`
   if (existsSync(location)) unlinkSync(location)
 }

@@ -20,7 +20,7 @@
         {{ $t('login.hello') }}
         <b>{{ userName }}</b>
         <template v-if="user.role !== 'user'">
-          <ds-text color="softer" size="small" style="margin-bottom: 0">
+          <ds-text color="softer" size="small" style="margin-bottom: 0;">
             {{ user.role | camelCase }}
           </ds-text>
         </template>

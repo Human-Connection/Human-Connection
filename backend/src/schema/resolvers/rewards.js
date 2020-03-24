@@ -24,7 +24,7 @@ export default {
       const { user } = await getUserAndBadge(params)
       const session = context.driver.session()
       try {
-        await session.writeTransaction(transaction => {
+        await session.writeTransaction((transaction) => {
           return transaction.run(
             `
               MATCH (badge:Badge {id: $badgeKey})-[reward:REWARDED]->(rewardedUser:User {id: $userId})

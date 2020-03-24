@@ -21,7 +21,7 @@ export async function serveUser(req, res, next) {
         }
     `,
     })
-    .catch(reason => {
+    .catch((reason) => {
       debug(`serveUser User fetch error: ${reason}`)
     })
 

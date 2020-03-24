@@ -6,7 +6,7 @@ const publishNotifications = async (...promises) => {
   const notifications = await Promise.all(promises)
   notifications
     .flat()
-    .forEach(notificationAdded => pubsub.publish(NOTIFICATION_ADDED, { notificationAdded }))
+    .forEach((notificationAdded) => pubsub.publish(NOTIFICATION_ADDED, { notificationAdded }))
 }
 
 const handleContentDataOfPost = async (resolve, root, args, context, resolveInfo) => {
@@ -25,7 +25,7 @@ const handleContentDataOfComment = async (resolve, root, args, context, resolveI
   let idsOfUsers = extractMentionedUsers(content)
   const comment = await resolve(root, args, context, resolveInfo)
   const [postAuthor] = await postAuthorOfComment(comment.id, { context })
-  idsOfUsers = idsOfUsers.filter(id => id !== postAuthor.id)
+  idsOfUsers = idsOfUsers.filter((id) => id !== postAuthor.id)
   await publishNotifications(
     notifyUsersOfMention('Comment', comment.id, idsOfUsers, 'mentioned_in_comment', context),
     notifyUsersOfComment('Comment', comment.id, postAuthor.id, 'commented_on_post', context),
@@ -37,7 +37,7 @@ const postAuthorOfComment = async (commentId, { context }) => {
   const session = context.driver.session()
   let postAuthorId
   try {
-    postAuthorId = await session.readTransaction(transaction => {
+    postAuthorId = await session.readTransaction((transaction) => {
       return transaction.run(
         `
           MATCH (author:User)-[:WROTE]->(:Post)<-[:COMMENTS]-(:Comment { id: $commentId })
@@ -46,7 +46,7 @@ const postAuthorOfComment = async (commentId, { context }) => {
         { commentId },
       )
     })
-    return postAuthorId.records.map(record => record.get('authorId'))
+    return postAuthorId.records.map((record) => record.get('authorId'))
   } finally {
     session.close()
   }
@@ -93,13 +93,13 @@ const notifyUsersOfMention = async (label, id, idsOfUsers, reason, context) => {
     RETURN notification {.*, from: finalResource, to: properties(user)}
   `
   const session = context.driver.session()
-  const writeTxResultPromise = session.writeTransaction(async transaction => {
+  const writeTxResultPromise = session.writeTransaction(async (transaction) => {
     const notificationTransactionResponse = await transaction.run(mentionedCypher, {
       id,
       idsOfUsers,
       reason,
     })
-    return notificationTransactionResponse.records.map(record => record.get('notification'))
+    return notificationTransactionResponse.records.map((record) => record.get('notification'))
   })
   try {
     const notifications = await writeTxResultPromise
@@ -115,7 +115,7 @@ const notifyUsersOfComment = async (label, commentId, postAuthorId, reason, cont
   if (context.user.id === postAuthorId) return []
   await validateNotifyUsers(label, reason)
   const session = context.driver.session()
-  const writeTxResultPromise = await session.writeTransaction(async transaction => {
+  const writeTxResultPromise = await session.writeTransaction(async (transaction) => {
     const notificationTransactionResponse = await transaction.run(
       `
       MATCH (postAuthor:User {id: $postAuthorId})-[:WROTE]->(post:Post)<-[:COMMENTS]-(comment:Comment { id: $commentId })<-[:WROTE]-(commenter:User)
@@ -130,7 +130,7 @@ const notifyUsersOfComment = async (label, commentId, postAuthorId, reason, cont
     `,
       { commentId, postAuthorId, reason },
     )
-    return notificationTransactionResponse.records.map(record => record.get('notification'))
+    return notificationTransactionResponse.records.map((record) => record.get('notification'))
   })
   try {
     const notifications = await writeTxResultPromise

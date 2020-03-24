@@ -14,7 +14,7 @@ describe('ReportsTable', () => {
   beforeEach(() => {
     propsData = {}
     mocks = {
-      $t: jest.fn(string => string),
+      $t: jest.fn((string) => string),
     }
     getters = {
       'auth/user': () => {

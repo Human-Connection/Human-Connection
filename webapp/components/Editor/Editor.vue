@@ -80,7 +80,7 @@ export default {
             items: () => {
               return this.users
             },
-            onEnter: props => this.openSuggestionList(props, MENTION),
+            onEnter: (props) => this.openSuggestionList(props, MENTION),
             onChange: this.updateSuggestionList,
             onExit: this.closeSuggestionList,
             onKeyDown: this.navigateSuggestionList,
@@ -95,7 +95,7 @@ export default {
             items: () => {
               return this.hashtags
             },
-            onEnter: props => this.openSuggestionList(props, HASHTAG),
+            onEnter: (props) => this.openSuggestionList(props, HASHTAG),
             onChange: this.updateSuggestionList,
             onExit: this.closeSuggestionList,
             onKeyDown: this.navigateSuggestionList,
@@ -109,7 +109,7 @@ export default {
   watch: {
     placeholder: {
       immediate: true,
-      handler: function(val) {
+      handler: function (val) {
         if (!val || !this.editor) {
           return
         }
@@ -129,7 +129,7 @@ export default {
         new EventHandler(),
         new History(),
       ],
-      onUpdate: e => {
+      onUpdate: (e) => {
         clearTimeout(throttleInputEvent)
         throttleInputEvent = setTimeout(() => this.onUpdate(e), 300)
       },
@@ -197,7 +197,7 @@ export default {
         return items.slice(0, 15)
       }
 
-      const filteredList = items.filter(item => {
+      const filteredList = items.filter((item) => {
         const itemString = item.slug || item.id
         return itemString.toLowerCase().includes(query.toLowerCase())
       })

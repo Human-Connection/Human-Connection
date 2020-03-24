@@ -13,7 +13,7 @@ export default async (driver, authorizationHeader) => {
   }
   const session = driver.session()
 
-  const writeTxResultPromise = session.writeTransaction(async transaction => {
+  const writeTxResultPromise = session.writeTransaction(async (transaction) => {
     const updateUserLastActiveTransactionResponse = await transaction.run(
       `
         MATCH (user:User {id: $id, deleted: false, disabled: false })
@@ -23,7 +23,7 @@ export default async (driver, authorizationHeader) => {
       `,
       { id },
     )
-    return updateUserLastActiveTransactionResponse.records.map(record => record.get('user'))
+    return updateUserLastActiveTransactionResponse.records.map((record) => record.get('user'))
   })
   try {
     const [currentUser] = await writeTxResultPromise

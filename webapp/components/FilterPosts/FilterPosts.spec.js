@@ -106,7 +106,7 @@ describe('FilterPosts.vue', () => {
       const wrapper = openFilterPosts()
       englishButton = wrapper
         .findAll('button.language-buttons')
-        .at(languages.findIndex(l => l.code === 'en'))
+        .at(languages.findIndex((l) => l.code === 'en'))
       englishButton.trigger('click')
       expect(mutations['posts/TOGGLE_LANGUAGE']).toHaveBeenCalledWith({}, 'en')
     })
@@ -123,7 +123,7 @@ describe('FilterPosts.vue', () => {
       const wrapper = openFilterPosts()
       spanishButton = wrapper
         .findAll('button.language-buttons')
-        .at(languages.findIndex(l => l.code === 'es'))
+        .at(languages.findIndex((l) => l.code === 'es'))
       expect(spanishButton.attributes().class).toContain('--filled')
     })
 

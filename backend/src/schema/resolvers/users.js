@@ -8,7 +8,7 @@ import createOrUpdateLocations from './users/location'
 
 const neode = getNeode()
 
-export const getMutedUsers = async context => {
+export const getMutedUsers = async (context) => {
   const { neode } = context
   const userModel = neode.model('User')
   let mutedUsers = neode
@@ -19,11 +19,11 @@ export const getMutedUsers = async context => {
     .to('muted', userModel)
     .return('muted')
   mutedUsers = await mutedUsers.execute()
-  mutedUsers = mutedUsers.records.map(r => r.get('muted').properties)
+  mutedUsers = mutedUsers.records.map((r) => r.get('muted').properties)
   return mutedUsers
 }
 
-export const getBlockedUsers = async context => {
+export const getBlockedUsers = async (context) => {
   const { neode } = context
   const userModel = neode.model('User')
   let blockedUsers = neode
@@ -34,7 +34,7 @@ export const getBlockedUsers = async context => {
     .to('blocked', userModel)
     .return('blocked')
   blockedUsers = await blockedUsers.execute()
-  blockedUsers = blockedUsers.records.map(r => r.get('blocked').properties)
+  blockedUsers = blockedUsers.records.map((r) => r.get('blocked').properties)
   return blockedUsers
 }
 
@@ -60,7 +60,7 @@ export default {
         let session
         try {
           session = context.driver.session()
-          const readTxResult = await session.readTransaction(txc => {
+          const readTxResult = await session.readTransaction((txc) => {
             const result = txc.run(
               `
             MATCH (user:User)-[:PRIMARY_EMAIL]->(e:EmailAddress {email: $args.email})
@@ -69,7 +69,7 @@ export default {
             )
             return result
           })
-          return readTxResult.records.map(r => r.get('user').properties)
+          return readTxResult.records.map((r) => r.get('user').properties)
         } finally {
           session.close()
         }
@@ -151,7 +151,7 @@ export default {
       }
       const session = context.driver.session()
 
-      const writeTxResultPromise = session.writeTransaction(async transaction => {
+      const writeTxResultPromise = session.writeTransaction(async (transaction) => {
         const updateUserTransactionResponse = await transaction.run(
           `
             MATCH (user:User {id: $params.id})
@@ -161,7 +161,7 @@ export default {
           `,
           { params },
         )
-        const [user] = updateUserTransactionResponse.records.map(record => record.get('user'))
+        const [user] = updateUserTransactionResponse.records.map((record) => record.get('user'))
         if (avatarInput) {
           await mergeImage(user, 'AVATAR_IMAGE', avatarInput, { transaction })
         }
@@ -181,10 +181,10 @@ export default {
       const { resource, id: userId } = params
       const session = context.driver.session()
 
-      const deleteUserTxResultPromise = session.writeTransaction(async transaction => {
+      const deleteUserTxResultPromise = session.writeTransaction(async (transaction) => {
         if (resource && resource.length) {
           await Promise.all(
-            resource.map(async node => {
+            resource.map(async (node) => {
               const txResult = await transaction.run(
                 `
                 MATCH (resource:${node})<-[:WROTE]-(author:User {id: $userId})
@@ -204,8 +204,8 @@ export default {
               )
               return Promise.all(
                 txResult.records
-                  .map(record => record.get('resource'))
-                  .map(resource => deleteImage(resource, 'HERO_IMAGE', { transaction })),
+                  .map((record) => record.get('resource'))
+                  .map((resource) => deleteImage(resource, 'HERO_IMAGE', { transaction })),
               )
             }),
           )
@@ -233,7 +233,7 @@ export default {
           { userId },
         )
         log(deleteUserTransactionResponse)
-        const [user] = deleteUserTransactionResponse.records.map(record => record.get('user'))
+        const [user] = deleteUserTransactionResponse.records.map((record) => record.get('user'))
         await deleteImage(user, 'AVATAR_IMAGE', { transaction })
         return user
       })
@@ -251,7 +251,7 @@ export default {
       const { id } = parent
       const statement = `MATCH(u:User {id: {id}})-[:PRIMARY_EMAIL]->(e:EmailAddress) RETURN e`
       const result = await neode.cypher(statement, { id })
-      const [{ email }] = result.records.map(r => r.get('e').properties)
+      const [{ email }] = result.records.map((r) => r.get('e').properties)
       return email
     },
     ...Resolver('User', {

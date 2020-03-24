@@ -246,7 +246,7 @@ describe('file a report on a resource', () => {
               })
               expect(reportsCypherQueryResponse.records).toHaveLength(1)
               const [reportProperties] = reportsCypherQueryResponse.records.map(
-                record => record.get('report').properties,
+                (record) => record.get('report').properties,
               )
               expect(reportProperties).toMatchObject({ rule: 'latestReviewUpdatedAtRules' })
             })
@@ -264,7 +264,7 @@ describe('file a report on a resource', () => {
                 })
                 expect(reportsCypherQueryResponse.records).toHaveLength(1)
                 const [reportProperties] = reportsCypherQueryResponse.records.map(
-                  record => record.get('report').properties,
+                  (record) => record.get('report').properties,
                 )
                 expect(reportProperties).toMatchObject({ disable: false })
               })
@@ -297,7 +297,7 @@ describe('file a report on a resource', () => {
                 })
                 expect(reportsCypherQueryResponse.records).toHaveLength(1)
                 const [reportProperties] = reportsCypherQueryResponse.records.map(
-                  record => record.get('report').properties,
+                  (record) => record.get('report').properties,
                 )
                 expect(reportProperties).toMatchObject({ disable: true })
               })

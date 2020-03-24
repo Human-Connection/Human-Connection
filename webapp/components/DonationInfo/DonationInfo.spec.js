@@ -12,7 +12,7 @@ describe('DonationInfo.vue', () => {
 
   beforeEach(() => {
     mocks = {
-      $t: jest.fn(string => string),
+      $t: jest.fn((string) => string),
       $i18n: {
         locale: () => 'de',
       },
@@ -22,19 +22,11 @@ describe('DonationInfo.vue', () => {
   const Wrapper = () => mount(DonationInfo, { mocks, localVue })
 
   it('includes a link to the Human Connection donations website', () => {
-    expect(
-      Wrapper()
-        .find('a')
-        .attributes('href'),
-    ).toBe('https://human-connection.org/spenden/')
+    expect(Wrapper().find('a').attributes('href')).toBe('https://human-connection.org/spenden/')
   })
 
   it('displays a call to action button', () => {
-    expect(
-      Wrapper()
-        .find('.base-button')
-        .text(),
-    ).toBe('donations.donate-now')
+    expect(Wrapper().find('.base-button').text()).toBe('donations.donate-now')
   })
 
   it.skip('creates a title from the current month and a translation string', () => {

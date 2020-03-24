@@ -6,7 +6,7 @@ import { mergeImage, deleteImage } from './images/images'
 import Resolver from './helpers/Resolver'
 import { filterForMutedUsers } from './helpers/filterForMutedUsers'
 
-const maintainPinnedPosts = params => {
+const maintainPinnedPosts = (params) => {
   const pinnedPostFilter = { pinned: true }
   if (isEmpty(params.filter)) {
     params.filter = { OR: [pinnedPostFilter, {}] }
@@ -34,7 +34,7 @@ export default {
     PostsEmotionsCountByEmotion: async (object, params, context, resolveInfo) => {
       const { postId, data } = params
       const session = context.driver.session()
-      const readTxResultPromise = session.readTransaction(async transaction => {
+      const readTxResultPromise = session.readTransaction(async (transaction) => {
         const emotionsCountTransactionResponse = await transaction.run(
           `
             MATCH (post:Post {id: $postId})<-[emoted:EMOTED {emotion: $data.emotion}]-()
@@ -43,7 +43,7 @@ export default {
           { postId, data },
         )
         return emotionsCountTransactionResponse.records.map(
-          record => record.get('emotionsCount').low,
+          (record) => record.get('emotionsCount').low,
         )
       })
       try {
@@ -56,7 +56,7 @@ export default {
     PostsEmotionsByCurrentUser: async (object, params, context, resolveInfo) => {
       const { postId } = params
       const session = context.driver.session()
-      const readTxResultPromise = session.readTransaction(async transaction => {
+      const readTxResultPromise = session.readTransaction(async (transaction) => {
         const emotionsTransactionResponse = await transaction.run(
           `
             MATCH (user:User {id: $userId})-[emoted:EMOTED]->(post:Post {id: $postId})
@@ -64,7 +64,7 @@ export default {
           `,
           { userId: context.user.id, postId },
         )
-        return emotionsTransactionResponse.records.map(record => record.get('emotion'))
+        return emotionsTransactionResponse.records.map((record) => record.get('emotion'))
       })
       try {
         const [emotions] = await readTxResultPromise
@@ -82,7 +82,7 @@ export default {
       delete params.image
       params.id = params.id || uuid()
       const session = context.driver.session()
-      const writeTxResultPromise = session.writeTransaction(async transaction => {
+      const writeTxResultPromise = session.writeTransaction(async (transaction) => {
         const createPostTransactionResponse = await transaction.run(
           `
             CREATE (post:Post)
@@ -100,7 +100,7 @@ export default {
           `,
           { userId: context.user.id, categoryIds, params },
         )
-        const [post] = createPostTransactionResponse.records.map(record => record.get('post'))
+        const [post] = createPostTransactionResponse.records.map((record) => record.get('post'))
         if (imageInput) {
           await mergeImage(post, 'HERO_IMAGE', imageInput, { transaction })
         }
@@ -137,7 +137,7 @@ export default {
           RETURN post, category
           `
 
-        await session.writeTransaction(transaction => {
+        await session.writeTransaction((transaction) => {
           return transaction.run(cypherDeletePreviousRelations, { params })
         })
 
@@ -152,12 +152,12 @@ export default {
       updatePostCypher += `RETURN post {.*}`
       const updatePostVariables = { categoryIds, params }
       try {
-        const writeTxResultPromise = session.writeTransaction(async transaction => {
+        const writeTxResultPromise = session.writeTransaction(async (transaction) => {
           const updatePostTransactionResponse = await transaction.run(
             updatePostCypher,
             updatePostVariables,
           )
-          const [post] = updatePostTransactionResponse.records.map(record => record.get('post'))
+          const [post] = updatePostTransactionResponse.records.map((record) => record.get('post'))
           await mergeImage(post, 'HERO_IMAGE', imageInput, { transaction })
           return post
         })
@@ -170,7 +170,7 @@ export default {
 
     DeletePost: async (object, args, context, resolveInfo) => {
       const session = context.driver.session()
-      const writeTxResultPromise = session.writeTransaction(async transaction => {
+      const writeTxResultPromise = session.writeTransaction(async (transaction) => {
         const deletePostTransactionResponse = await transaction.run(
           `
             MATCH (post:Post {id: $postId})
@@ -184,7 +184,7 @@ export default {
           `,
           { postId: args.id },
         )
-        const [post] = deletePostTransactionResponse.records.map(record => record.get('post'))
+        const [post] = deletePostTransactionResponse.records.map((record) => record.get('post'))
         await deleteImage(post, 'HERO_IMAGE', { transaction })
         return post
       })
@@ -199,7 +199,7 @@ export default {
       const { to, data } = params
       const { user } = context
       const session = context.driver.session()
-      const writeTxResultPromise = session.writeTransaction(async transaction => {
+      const writeTxResultPromise = session.writeTransaction(async (transaction) => {
         const addPostEmotionsTransactionResponse = await transaction.run(
           `
           MATCH (userFrom:User {id: $user.id}), (postTo:Post {id: $to.id})
@@ -207,7 +207,7 @@ export default {
           RETURN userFrom, postTo, emotedRelation`,
           { user, to, data },
         )
-        return addPostEmotionsTransactionResponse.records.map(record => {
+        return addPostEmotionsTransactionResponse.records.map((record) => {
           return {
             from: { ...record.get('userFrom').properties },
             to: { ...record.get('postTo').properties },
@@ -226,7 +226,7 @@ export default {
       const { to, data } = params
       const { id: from } = context.user
       const session = context.driver.session()
-      const writeTxResultPromise = session.writeTransaction(async transaction => {
+      const writeTxResultPromise = session.writeTransaction(async (transaction) => {
         const removePostEmotionsTransactionResponse = await transaction.run(
           `
             MATCH (userFrom:User {id: $from})-[emotedRelation:EMOTED {emotion: $data.emotion}]->(postTo:Post {id: $to.id})
@@ -235,7 +235,7 @@ export default {
           `,
           { from, to, data },
         )
-        return removePostEmotionsTransactionResponse.records.map(record => {
+        return removePostEmotionsTransactionResponse.records.map((record) => {
           return {
             from: { ...record.get('userFrom').properties },
             to: { ...record.get('postTo').properties },
@@ -255,7 +255,7 @@ export default {
       const { driver, user } = context
       const session = driver.session()
       const { id: userId } = user
-      let writeTxResultPromise = session.writeTransaction(async transaction => {
+      let writeTxResultPromise = session.writeTransaction(async (transaction) => {
         const deletePreviousRelationsResponse = await transaction.run(
           `
           MATCH (:User)-[previousRelations:PINNED]->(post:Post)
@@ -264,12 +264,14 @@ export default {
           RETURN post
         `,
         )
-        return deletePreviousRelationsResponse.records.map(record => record.get('post').properties)
+        return deletePreviousRelationsResponse.records.map(
+          (record) => record.get('post').properties,
+        )
       })
       try {
         await writeTxResultPromise
 
-        writeTxResultPromise = session.writeTransaction(async transaction => {
+        writeTxResultPromise = session.writeTransaction(async (transaction) => {
           const pinPostTransactionResponse = await transaction.run(
             `
             MATCH (user:User {id: $userId}) WHERE user.role = 'admin'
@@ -280,7 +282,7 @@ export default {
          `,
             { userId, params },
           )
-          return pinPostTransactionResponse.records.map(record => ({
+          return pinPostTransactionResponse.records.map((record) => ({
             pinnedPost: record.get('post').properties,
             pinnedAt: record.get('pinnedAt'),
           }))
@@ -299,7 +301,7 @@ export default {
     unpinPost: async (_parent, params, context, _resolveInfo) => {
       let unpinnedPost
       const session = context.driver.session()
-      const writeTxResultPromise = session.writeTransaction(async transaction => {
+      const writeTxResultPromise = session.writeTransaction(async (transaction) => {
         const unpinPostTransactionResponse = await transaction.run(
           `
           MATCH (:User)-[previousRelations:PINNED]->(post:Post {id: $params.id})
@@ -309,7 +311,7 @@ export default {
         `,
           { params },
         )
-        return unpinPostTransactionResponse.records.map(record => record.get('post').properties)
+        return unpinPostTransactionResponse.records.map((record) => record.get('post').properties)
       })
       try {
         ;[unpinnedPost] = await writeTxResultPromise
@@ -351,7 +353,7 @@ export default {
       const { id } = parent
       const session = context.driver.session()
 
-      const writeTxResultPromise = session.writeTransaction(async transaction => {
+      const writeTxResultPromise = session.writeTransaction(async (transaction) => {
         const relatedContributionsTransactionResponse = await transaction.run(
           `
             MATCH (p:Post {id: $id})-[:TAGGED|CATEGORIZED]->(categoryOrTag)<-[:TAGGED|CATEGORIZED]-(post:Post)
@@ -362,7 +364,7 @@ export default {
           { id },
         )
         return relatedContributionsTransactionResponse.records.map(
-          record => record.get('post').properties,
+          (record) => record.get('post').properties,
         )
       })
       try {

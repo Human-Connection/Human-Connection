@@ -5,7 +5,7 @@
         :src="iconPath"
         width="80"
         class="hc-empty-icon"
-        style="margin-bottom: 5px"
+        style="margin-bottom: 5px;"
         alt="Empty"
       />
       <br />
@@ -27,7 +27,7 @@ export default {
     icon: {
       type: String,
       default: 'alert',
-      validator: value => {
+      validator: (value) => {
         return value.match(/(messages|events|alert|tasks|docs|file)/)
       },
     },
