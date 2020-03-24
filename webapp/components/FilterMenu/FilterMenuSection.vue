@@ -39,7 +39,7 @@ export default {
 
   > .sidebar {
     flex-basis: 12%;
-    max-width: 85px;
+    max-width: $size-width-filter-sidebar;
   }
 
   > .divider {

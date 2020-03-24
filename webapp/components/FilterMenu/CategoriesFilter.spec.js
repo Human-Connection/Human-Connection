@@ -49,7 +49,7 @@ describe('CategoriesFilter.vue', () => {
   describe('mount', () => {
     it('starts with all categories button active', () => {
       const allCategoriesButton = wrapper.find(
-        '.categories-filter > .labeled-button > .base-button',
+        '.categories-filter .sidebar .base-button',
       )
       expect(allCategoriesButton.attributes().class).toContain('--filled')
     })
@@ -58,7 +58,7 @@ describe('CategoriesFilter.vue', () => {
       getters['posts/filteredCategoryIds'] = jest.fn(() => ['cat9'])
       wrapper = await Wrapper()
       democracyAndPoliticsButton = wrapper
-        .findAll('.menu-item > .labeled-button > .base-button')
+        .findAll('.categories-filter .item .base-button')
         .at(2)
       expect(democracyAndPoliticsButton.attributes().class).toContain('--filled')
     })
@@ -66,7 +66,7 @@ describe('CategoriesFilter.vue', () => {
     describe('click on an "catetories-buttons" button', () => {
       it('calls TOGGLE_CATEGORY when clicked', () => {
         environmentAndNatureButton = wrapper
-          .findAll('.menu-item > .labeled-button > .base-button')
+          .findAll('.categories-filter .item .base-button')
           .at(0)
         environmentAndNatureButton.trigger('click')
         expect(mutations['posts/TOGGLE_CATEGORY']).toHaveBeenCalledWith({}, 'cat4')
@@ -78,7 +78,7 @@ describe('CategoriesFilter.vue', () => {
         getters['posts/filteredCategoryIds'] = jest.fn(() => ['cat9'])
         wrapper = await Wrapper()
         const allCategoriesButton = wrapper.find(
-          '.categories-filter > .labeled-button > .base-button',
+          '.categories-filter .sidebar .base-button',
         )
         allCategoriesButton.trigger('click')
         expect(mutations['posts/RESET_CATEGORIES']).toHaveBeenCalledTimes(1)

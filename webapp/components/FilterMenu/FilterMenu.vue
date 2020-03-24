@@ -52,7 +52,7 @@ export default {
 
 <style lang="scss">
 .filter-menu-options {
-  max-width: 1026px;
+  max-width: $size-max-width-filter-menu;
   padding: $space-small $space-x-small;
 
   > .title {

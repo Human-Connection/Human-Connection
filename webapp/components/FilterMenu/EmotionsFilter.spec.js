@@ -30,7 +30,7 @@ describe('EmotionsFilter', () => {
 
   describe('mount', () => {
     it('starts with all emotions button active', () => {
-      const allEmotionsButton = wrapper.find('.emotions-filter > .labeled-button > .base-button')
+      const allEmotionsButton = wrapper.find('.emotions-filter .sidebar .base-button')
       expect(allEmotionsButton.attributes().class).toContain('--filled')
     })
 
@@ -55,7 +55,7 @@ describe('EmotionsFilter', () => {
       it('when all button is clicked', async () => {
         getters['posts/filteredByEmotions'] = jest.fn(() => ['happy'])
         wrapper = await Wrapper()
-        const allEmotionsButton = wrapper.find('.emotions-filter > .labeled-button > .base-button')
+        const allEmotionsButton = wrapper.find('.emotions-filter .sidebar .base-button')
         allEmotionsButton.trigger('click')
         expect(mutations['posts/RESET_EMOTIONS']).toHaveBeenCalledTimes(1)
       })

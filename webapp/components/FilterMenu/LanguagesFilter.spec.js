@@ -33,7 +33,7 @@ describe('LanguagesFilter.vue', () => {
 
   describe('mount', () => {
     it('starts with all categories button active', () => {
-      const allLanguagesButton = wrapper.find('.languages-filter > .labeled-button > .base-button')
+      const allLanguagesButton = wrapper.find('.languages-filter .sidebar .base-button')
       expect(allLanguagesButton.attributes().class).toContain('--filled')
     })
 
@@ -41,7 +41,7 @@ describe('LanguagesFilter.vue', () => {
       getters['posts/filteredLanguageCodes'] = jest.fn(() => ['es'])
       const wrapper = Wrapper()
       spanishButton = wrapper
-        .findAll('.languages-filter > .languages-list .base-button')
+        .findAll('.languages-filter .item .base-button')
         .at(languages.findIndex(l => l.code === 'es'))
       expect(spanishButton.attributes().class).toContain('--filled')
     })
@@ -50,7 +50,7 @@ describe('LanguagesFilter.vue', () => {
       it('calls TOGGLE_LANGUAGE when clicked', () => {
         const wrapper = Wrapper()
         englishButton = wrapper
-          .findAll('.languages-filter > .languages-list .base-button')
+          .findAll('.languages-filter .item .base-button')
           .at(languages.findIndex(l => l.code === 'en'))
         englishButton.trigger('click')
         expect(mutations['posts/TOGGLE_LANGUAGE']).toHaveBeenCalledWith({}, 'en')
@@ -62,7 +62,7 @@ describe('LanguagesFilter.vue', () => {
         getters['posts/filteredLanguageCodes'] = jest.fn(() => ['en'])
         wrapper = await Wrapper()
         const allLanguagesButton = wrapper.find(
-          '.languages-filter > .labeled-button > .base-button',
+          '.languages-filter .sidebar .base-button',
         )
         allLanguagesButton.trigger('click')
         expect(mutations['posts/RESET_LANGUAGES']).toHaveBeenCalledTimes(1)
