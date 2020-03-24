@@ -13,7 +13,7 @@ Feature: Send and receive Articles
     """
     {
       "@context": "https://www.w3.org/ns/activitystreams",
-      "id": "https://aronda.org/users/marvin/status/lka7dfzkjn2398hsfd",
+      "id": "https://aronda.org/users/marvin-the-martian/status/lka7dfzkjn2398hsfd",
       "type": "Create",
       "actor": "https://aronda.org/users/marvin-the-martian",
       "object": {

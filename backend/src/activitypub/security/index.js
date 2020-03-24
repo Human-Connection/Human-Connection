@@ -1,7 +1,7 @@
 // import dotenv from 'dotenv'
 // import { resolve } from 'path'
 import crypto from 'crypto'
-import axios from 'axios'
+import { getDriver } from '../../db/neo4j'
 import CONFIG from './../../config'
 const debug = require('debug')('ea:security')
 
@@ -64,7 +64,6 @@ export const verifySignature = async (url, headers) => {
     debug('Unsupported hash algorithm specified!')
     throw Error('Unsupported hash algorithm specified!')
   }
-  console.log('keyId', keyId)
   const usedHeaders = headersString.split(' ')
   const verifyHeaders = {}
   Object.keys(headers).forEach(key => {
@@ -73,7 +72,6 @@ export const verifySignature = async (url, headers) => {
     }
   })
   const signingString = await constructSigningString(url, verifyHeaders)
-  console.log('verify', signingString)
   debug(`keyId= ${keyId}`)
   await axios({
     url: keyId,
@@ -81,28 +79,53 @@ export const verifySignature = async (url, headers) => {
       Accept: 'application/json',
     },
   })
-    .then((_response, body) => {
-      console.log('body', body)
-      debug(`body = ${body}`)
-      const actor = JSON.parse(body)
-      const publicKeyPem = actor.publicKey.publicKeyPem
-      return httpVerify(publicKeyPem, signature, signingString, algorithm)
-    })
-    .catch(error => {
-      console.log('error', error)
-      throw Error(error)
-    })
+  .then((_response, body) => {
+    console.log('body', body)
+    debug(`body = ${body}`)
+    const actor = JSON.parse(body)
+    const publicKeyPem = actor.publicKey.publicKeyPem
+    return httpVerify(publicKeyPem, signature, signingString, algorithm)
+  })
+  .catch(error => {
+    console.log('error', error)
+    throw Error(error)
+  })
+  // const { pathname } = new URL(keyId)
+  // console.log('pathname', pathname)
+  // const name = pathname.split('/').pop()
+  // console.log('slug', name)
+  // const driver = getDriver()
+  // const session = driver.session()
+  // try {
+  //   const [user] = await session.readTransaction(async t => {
+  //     const result = await t.run('MATCH (user:User {slug: $slug}) RETURN user {.*}', {
+  //       slug: name,
+  //     })
+  //     return result.records.map(record => record.get('user'))
+  //   })
+  //   if (!user)
+  //     return res.status(404).json({
+  //       error: `No record found for "${name}".`,
+  //     })
+  //     debug(`user = ${user}`)
+  //     const publicKeyPem = user.publicKey.publicKeyPem
+  //     return httpVerify(publicKeyPem, signature, signingString, algorithm)
+  // } catch (error) {
+  //   debug(error)
+  //   return res.status(500).json({
+  //     error: 'Something went terribly wrong. Please contact support@human-connection.org',
+  //   })
+  // } finally {
+  //   session.close()
+  // }
 }
 
 // private: signing
 const constructSigningString = (url, headers) => {
-  console.log('here in constructSigningString', url)
   const urlObj = new URL(url)
-  console.log('urlObj', urlObj.pathname)
   const signingString = `(request-target): post ${urlObj.pathname}${
     urlObj.search !== '' ? urlObj.search : ''
   }`
-  console.log('signingString', signingString)
   return Object.keys(headers).reduce((result, key) => {
     return result + `\n${key.toLowerCase()}: ${headers[key]}`
   }, signingString)

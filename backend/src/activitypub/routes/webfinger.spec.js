@@ -31,7 +31,7 @@ afterEach(async () => {
 })
 
 describe('webfinger', () => {
-  describe('no ressource', () => {
+  describe('no resource', () => {
     beforeEach(() => {
       resource = undefined
     })

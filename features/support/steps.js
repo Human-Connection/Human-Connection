@@ -1,8 +1,9 @@
 // features/support/steps.js
-import { Given, When, Then, After, AfterAll } from 'cucumber'
+import { Given, When, Then, After, AfterAll, Before } from 'cucumber'
+import expect from 'expect'
 import Factory, { cleanDatabase } from '../../backend/src/db/factories'
 import { getNeode } from '../../backend/src/db/neo4j'
-import expect from 'expect'
+
 
 const debug = require('debug')('ea:test:steps')
 const neode = getNeode()
@@ -40,9 +41,9 @@ When('I send a POST request with the following activity to {string}:', async fun
   debug(`activity = ${activity}`)
   const splitted = inboxUrl.split('/')
   const slug = splitted[splitted.indexOf('users') + 1]
+  console.log('slug', slug)
   this.lastInboxUrl = inboxUrl
   this.lastActivity = activity
-  const response = await this.post(inboxUrl, activity)
   this.lastResponses.push(response.lastResponse)
   this.lastResponse = response.lastResponse
   this.statusCode = response.statusCode
