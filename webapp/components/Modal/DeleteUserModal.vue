@@ -7,33 +7,32 @@
     </transition>
     <div>
       <ds-section>
-        <ds-heading>{{ userdata.name }}</ds-heading>
-        <ds-placeholder>
-          <div>
-            <ds-avatar :name="userdata.name" :image="userdata.avatar" size="x-large" />
-          </div>
-          <br />
-          <ds-text>
-            Slug:
-            <ds-text size="x-large">{{ userdata.slug }}</ds-text>
-          </ds-text>
-          <ds-text>
-            Id:
-            <ds-text size="x-large">{{ userdata.id }}</ds-text>
-          </ds-text>
-          <ds-text>
-            contributionsCount:
-            <ds-text size="x-large">{{ userdata.contributionsCount }}</ds-text>
-          </ds-text>
-          <ds-text>
-            commentedCount:
-            <ds-text size="x-large">{{ userdata.commentedCount }}</ds-text>
-          </ds-text>
-          <ds-text>
-            createdAt:
-            <ds-text size="x-large">{{ userdata.createdAt }}</ds-text>
-          </ds-text>
-        </ds-placeholder>
+        <ds-flex>
+          <ds-flex-item>
+            <user-teaser :user="userdata" />
+          </ds-flex-item>
+          <ds-flex-item>
+            <ds-text size="small">
+              {{ $t('modals.deleteUser.created') }}:
+              <br />
+              <relative-date-time :date-time="userdata.createdAt" />
+            </ds-text>
+          </ds-flex-item>
+          <ds-flex-item>
+            <ds-number
+              size="small"
+              :count="userdata.contributionsCount"
+              :label="$t('common.post', null, userdata.contributionsCount)"
+            />
+          </ds-flex-item>
+          <ds-flex-item>
+            <ds-number
+              size="small"
+              :count="userdata.commentedCount"
+              :label="$t('common.comment', null, userdata.commentedCount)"
+            />
+          </ds-flex-item>
+        </ds-flex>
       </ds-section>
     </div>
 
@@ -50,11 +49,15 @@
 import gql from 'graphql-tag'
 import { mapMutations } from 'vuex'
 import { SweetalertIcon } from 'vue-sweetalert-icons'
+import RelativeDateTime from '~/components/RelativeDateTime'
+import UserTeaser from '~/components/UserTeaser/UserTeaser'
 
 export default {
   name: 'DeleteUserModal',
   components: {
+    UserTeaser,
     SweetalertIcon,
+    RelativeDateTime,
   },
   props: {
     userdata: { type: Object, required: true },

@@ -1,4 +1,9 @@
 {
+  "modals": {
+    "deleteUser": {
+      "created": "Created"
+    }
+  },
   "actions": {
     "cancel": "Cancel",
     "create": "Create",
