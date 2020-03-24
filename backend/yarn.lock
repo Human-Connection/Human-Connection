@@ -1587,10 +1587,10 @@
   dependencies:
     "@types/yargs-parser" "*"
 
-"@types/yup@0.26.32":
-  version "0.26.32"
-  resolved "https://registry.yarnpkg.com/@types/yup/-/yup-0.26.32.tgz#bd356fb405f3d641eff963854edf7ad854a8e829"
-  integrity sha512-55WFAq8lNYXdRzSP1cenMFFXtPRe7PWsqn5y9ibqKHOQZ/cSLErkcnB1LE89M7W2TSXVDFtx+T7eFePkGoB+xw==
+"@types/yup@0.26.33":
+  version "0.26.33"
+  resolved "https://registry.yarnpkg.com/@types/yup/-/yup-0.26.33.tgz#301faab47b952a4a5f9a06246942cc7cbd09cd95"
+  integrity sha512-QzgcNfDtRIph8CjfoWiu+MJiOUp25Yo7FthuOHLVbtCTyonjOo2YRsFzKo3csDWbTXlw5NedOFH0Nje7yipCrA==
 
 "@types/zen-observable@^0.8.0":
   version "0.8.0"
@@ -4498,12 +4498,12 @@ graphql-redis-subscriptions@^2.2.1:
   optionalDependencies:
     ioredis "^4.6.3"
 
-graphql-shield@~7.2.0:
-  version "7.2.0"
-  resolved "https://registry.yarnpkg.com/graphql-shield/-/graphql-shield-7.2.0.tgz#81b26794370608ad78dfe3833473789fb471fbd8"
-  integrity sha512-eLdD+gUIKYu77XRcuHs5ewZhiBuRFeWFGxPnJa+g9AkxB7Yi5RSEjEJEx0Drg9GuNvDYpHeW7nPff4v35AT2aQ==
+graphql-shield@~7.2.1:
+  version "7.2.1"
+  resolved "https://registry.yarnpkg.com/graphql-shield/-/graphql-shield-7.2.1.tgz#baca0c31a19593ede41a4bb4d476f9edd1d0eb78"
+  integrity sha512-EEoVYvXuqAGXGH1i9Aot4MJIUlRABVycwKRGaBreabys7yTd+0zGwudKB9yZiW3SEMIjHkz3a0r/ILhYzq0uiw==
   dependencies:
-    "@types/yup" "0.26.32"
+    "@types/yup" "0.26.33"
     object-hash "^2.0.3"
     yup "^0.28.3"
 
