@@ -142,7 +142,7 @@ export default {
             setTimeout(() => {
               this.success = false
               this.$emit('close')
-              this.$router.history.push('/')
+              this.$router.history.replace('/')
             }, 500)
           }, 1500)
           this.loading = false
