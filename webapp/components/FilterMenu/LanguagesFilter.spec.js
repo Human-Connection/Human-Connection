@@ -61,9 +61,7 @@ describe('LanguagesFilter.vue', () => {
       it('when all button is clicked', async () => {
         getters['posts/filteredLanguageCodes'] = jest.fn(() => ['en'])
         wrapper = await Wrapper()
-        const allLanguagesButton = wrapper.find(
-          '.languages-filter .sidebar .base-button',
-        )
+        const allLanguagesButton = wrapper.find('.languages-filter .sidebar .base-button')
         allLanguagesButton.trigger('click')
         expect(mutations['posts/RESET_LANGUAGES']).toHaveBeenCalledTimes(1)
       })

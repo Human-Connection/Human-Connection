@@ -35,9 +35,7 @@ describe('FollowingFilter', () => {
     it('sets "filter-by-followed" button attribute `filled`', () => {
       getters['posts/filteredByUsersFollowed'] = jest.fn(() => true)
       const wrapper = Wrapper()
-      expect(
-        wrapper.find('.following-filter .sidebar .base-button').classes('--filled'),
-      ).toBe(true)
+      expect(wrapper.find('.following-filter .sidebar .base-button').classes('--filled')).toBe(true)
     })
 
     describe('click "filter-by-followed" button', () => {

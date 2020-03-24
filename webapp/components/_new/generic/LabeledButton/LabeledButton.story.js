@@ -2,6 +2,8 @@ import { storiesOf } from '@storybook/vue'
 import helpers from '~/storybook/helpers'
 import LabeledButton from './LabeledButton.vue'
 
+helpers.init()
+
 storiesOf('Generic/LabeledButton', module)
   .addDecorator(helpers.layout)
   .add('default', () => ({
@@ -13,22 +15,7 @@ storiesOf('Generic/LabeledButton', module)
       <labeled-button
         icon="check"
         :filled="filled"
-        label="All"
-        @click="filled = !filled"
-      />
-    `,
-  }))
-
-  .add('filled', () => ({
-    components: { LabeledButton },
-    data: () => ({
-      filled: true,
-    }),
-    template: `
-      <labeled-button
-        icon="check"
-        :filled="filled"
-        label="All"
+        label="Toggle Me!!"
         @click="filled = !filled"
       />
     `,
