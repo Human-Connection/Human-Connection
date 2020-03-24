@@ -58,6 +58,7 @@ describe('FollowList.vue', () => {
           it(`shows the users ${type}`, () => {
             expect(wrapper.findAll('.user-teaser').length).toEqual(user[type].length)
           })
+
           it(`has a button to load all remaining users ${type}`, async () => {
             jest.useFakeTimers()
 
@@ -73,6 +74,12 @@ describe('FollowList.vue', () => {
           })
         }),
       )
+    })
+    
+    describe('given more than 7 connections', () => {
+      it('displays them in an overflow container', () => {
+        wrapper.find('')
+      })
     })
   })
 })

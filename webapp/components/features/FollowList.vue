@@ -5,7 +5,7 @@
         {{ userName | truncate(15) }} {{ $t(`profile.network.${type}`) }}
       </ds-text>
     </ds-space>
-    <template v-if="this.connections && this.connections.length">
+    <template v-if="this.connections && this.connections.length <= 7">
       <ds-space v-for="follow in uniq(this.connections)" :key="follow.id" margin="x-small">
         <!-- TODO: find better solution for rendering errors -->
         <client-only>
@@ -21,6 +21,15 @@
           }}
         </base-button>
       </ds-space>
+    </template>
+    <template v-else-if="this.connections.length > 7">
+      <div class="overflow-container">
+        <ds-space v-for="follow in uniq(this.connections)" :key="follow.id" margin="x-small">
+          <client-only>
+            <user-teaser :user="follow" />
+          </client-only>
+        </ds-space>
+      </div>
     </template>
     <template v-else>
       <p style="text-align: center; opacity: .5;">
@@ -80,3 +89,10 @@ export default {
   },
 }
 </script>
+
+<style lang="scss">
+.overflow-container {
+  max-height: 350px;
+  overflow-y: auto;
+}
+</style>
