@@ -1,25 +1,25 @@
 <template>
-  <section class="following-filter">
-    <labeled-button
-      :filled="filteredByUsersFollowed"
-      icon="user-plus"
-      :label="$t('filter-menu.following')"
-      @click="toggleFilteredByFollowed(currentUser.id)"
-      v-tooltip="{
-        content: this.$t('contribution.filterFollow'),
-        placement: 'left',
-        delay: { show: 500 },
-      }"
-    />
-  </section>
+  <filter-menu-section :divider="false" class="following-filter">
+    <template #sidebar>
+      <labeled-button
+        icon="user-plus"
+        :label="$t('filter-menu.following')"
+        :filled="filteredByUsersFollowed"
+        :title="$t('contribution.filterFollow')"
+        @click="toggleFilteredByFollowed(currentUser.id)"
+      />
+    </template>
+  </filter-menu-section>
 </template>
 
 <script>
 import { mapGetters, mapMutations } from 'vuex'
+import FilterMenuSection from '~/components/FilterMenu/FilterMenuSection'
 import LabeledButton from '~/components/_new/generic/LabeledButton/LabeledButton'
 
 export default {
   components: {
+    FilterMenuSection,
     LabeledButton,
   },
   computed: {
@@ -35,21 +35,3 @@ export default {
   },
 }
 </script>
-<style lang="scss">
-.following-filter {
-  display: flex;
-  flex-wrap: wrap;
-  margin-top: $space-small;
-
-  > .labeled-button {
-    margin-top: $space-small;
-    width: 5%;
-  }
-
-  @media only screen and (max-width: 960px) {
-    .labeled-button {
-      width: 100%;
-    }
-  }
-}
-</style>

@@ -29,7 +29,6 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0 $space-x-small;
 
   > .label {
     margin-top: $space-x-small;

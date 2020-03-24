@@ -30,7 +30,7 @@
               style="flex-grow: 0; flex-basis: auto;"
             >
               <client-only>
-                <filter-menu v-show="showFilterMenuDropdown" placement="top-start" offset="8" />
+                <filter-menu v-show="showFilterMenuDropdown" />
               </client-only>
             </ds-flex-item>
             <ds-flex-item

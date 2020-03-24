@@ -1,5 +1,5 @@
 <template>
-  <dropdown ref="menu" :placement="placement" :offset="offset" class="filter-menu">
+  <dropdown ref="menu" placement="top-start" :offset="8" class="filter-menu">
     <base-button
       slot="default"
       icon="filter"
@@ -11,16 +11,17 @@
       <base-icon class="dropdown-arrow" name="angle-down" />
     </base-button>
     <template slot="popover">
-      <ds-container class="filter-menu-options">
-        <h4 class="title">{{ $t('filter-menu.filter-by') }}</h4>
+      <div class="filter-menu-options">
+        <h2 class="title">{{ $t('filter-menu.filter-by') }}</h2>
         <following-filter />
         <categories-filter />
         <emotions-filter />
         <languages-filter />
-      </ds-container>
+      </div>
     </template>
   </dropdown>
 </template>
+
 <script>
 import Dropdown from '~/components/Dropdown'
 import { mapGetters } from 'vuex'
@@ -48,12 +49,14 @@ export default {
   },
 }
 </script>
+
 <style lang="scss">
-@media only screen and (max-width: 960px) {
-  .filter-menu-options {
-    > .title {
-      text-align: center;
-    }
+.filter-menu-options {
+  max-width: 1026px;
+  padding: $space-small $space-x-small;
+
+  > .title {
+    font-size: $font-size-large;
   }
 }
 </style>

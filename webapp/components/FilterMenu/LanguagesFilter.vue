@@ -1,15 +1,15 @@
 <template>
-  <section class="languages-filter">
-    <h4 class="title">{{ $t('filter-menu.languages') }}</h4>
-    <labeled-button
-      :filled="!filteredLanguageCodes.length"
-      :label="$t('filter-menu.all')"
-      icon="check"
-      @click="resetLanguages"
-    />
-    <div class="divider" />
-    <ul class="languages-list">
-      <li v-for="language in locales" :key="language.code" class="menu-item">
+  <filter-menu-section :title="$t('filter-menu.languages')" class="languages-filter">
+    <template #sidebar>
+      <labeled-button
+        :filled="!filteredLanguageCodes.length"
+        :label="$t('filter-menu.all')"
+        icon="check"
+        @click="resetLanguages"
+      />
+    </template>
+    <template #filter-list>
+      <li v-for="language in locales" :key="language.code" class="item">
         <base-button
           :filled="filteredLanguageCodes.includes(language.code)"
           circle
@@ -18,17 +18,20 @@
           {{ language.code.toUpperCase() }}
         </base-button>
       </li>
-    </ul>
-  </section>
+    </template>
+  </filter-menu-section>
 </template>
+
 <script>
-import locales from '~/locales'
-import orderBy from 'lodash/orderBy'
 import { mapGetters, mapMutations } from 'vuex'
+import orderBy from 'lodash/orderBy'
+import locales from '~/locales'
+import FilterMenuSection from '~/components/FilterMenu/FilterMenuSection'
 import LabeledButton from '~/components/_new/generic/LabeledButton/LabeledButton'
 
 export default {
   components: {
+    FilterMenuSection,
     LabeledButton,
   },
   computed: {
@@ -49,62 +52,3 @@ export default {
   },
 }
 </script>
-<style lang="scss">
-.languages-filter {
-  display: flex;
-  flex-wrap: wrap;
-  margin-top: $space-small;
-
-  > .title {
-    width: 100%;
-    margin: $space-small 0;
-  }
-
-  > .labeled-button {
-    margin-top: $space-small;
-  }
-
-  > .divider {
-    border-left: $border-size-base solid $border-color-soft;
-    margin: $space-x-small $space-base;
-  }
-
-  > .languages-list {
-    display: flex;
-    flex-wrap: wrap;
-    flex-basis: 80%;
-    flex-grow: 1;
-
-    > .menu-item {
-      width: 11%;
-      display: flex;
-      justify-content: center;
-      margin: $space-small 0;
-    }
-  }
-  @media only screen and (max-width: 630px) {
-    > .title {
-      text-align: center;
-    }
-
-    > .languages-list {
-      justify-content: center;
-
-      > .menu-item {
-        margin: $space-small 12px;
-      }
-    }
-
-    .labeled-button {
-      width: 100%;
-      margin: $space-x-small 0;
-    }
-
-    > .divider {
-      width: 100%;
-      margin: $space-small;
-      border-top: $border-size-base solid $border-color-soft;
-    }
-  }
-}
-</style>
