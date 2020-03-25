@@ -3,7 +3,7 @@ import { UserInputError } from 'apollo-server'
 export default async function alreadyExistingMail({ args, context }) {
   const session = context.driver.session()
   try {
-    const existingEmailAddressTxPromise = session.writeTransaction(async transaction => {
+    const existingEmailAddressTxPromise = session.writeTransaction(async (transaction) => {
       const existingEmailAddressTransactionResponse = await transaction.run(
         `
           MATCH (email:EmailAddress {email: $email})
@@ -12,7 +12,7 @@ export default async function alreadyExistingMail({ args, context }) {
         `,
         { email: args.email },
       )
-      return existingEmailAddressTransactionResponse.records.map(record => {
+      return existingEmailAddressTransactionResponse.records.map((record) => {
         return {
           alreadyExistingEmail: record.get('email').properties,
           user: record.get('user') && record.get('user').properties,

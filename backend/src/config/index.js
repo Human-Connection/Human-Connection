@@ -36,7 +36,7 @@ export const requiredConfigs = {
 
 if (require.resolve) {
   // are we in a nodejs environment?
-  Object.entries(requiredConfigs).map(entry => {
+  Object.entries(requiredConfigs).map((entry) => {
     if (!entry[1]) {
       throw new Error(`ERROR: "${entry[0]}" env variable is missing.`)
     }

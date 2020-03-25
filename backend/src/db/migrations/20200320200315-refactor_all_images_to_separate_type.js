@@ -6,9 +6,9 @@ export const description = `
   "Image" which contains metadata and image file urls.
 `
 
-const printSummaries = summaries => {
+const printSummaries = (summaries) => {
   console.log('=========================================')
-  summaries.forEach(stat => {
+  summaries.forEach((stat) => {
     console.log(stat.query.text)
     console.log(JSON.stringify(stat.counters, null, 2))
   })
@@ -18,7 +18,7 @@ const printSummaries = summaries => {
 export async function up() {
   const driver = getDriver()
   const session = driver.session()
-  const writeTxResultPromise = session.writeTransaction(async txc => {
+  const writeTxResultPromise = session.writeTransaction(async (txc) => {
     const runs = await Promise.all(
       [
         `
@@ -48,7 +48,7 @@ export async function up() {
       CREATE (user)-[:COVER_IMAGE]->(coverImage)
       REMOVE user.coverImg
     `,
-      ].map(s => txc.run(s)),
+      ].map((s) => txc.run(s)),
     )
     return runs.map(({ summary }) => summary)
   })
@@ -65,7 +65,7 @@ export async function up() {
 export async function down() {
   const driver = getDriver()
   const session = driver.session()
-  const writeTxResultPromise = session.writeTransaction(async txc => {
+  const writeTxResultPromise = session.writeTransaction(async (txc) => {
     const runs = await Promise.all(
       [
         `
@@ -86,7 +86,7 @@ export async function down() {
       SET user.coverImg = coverImage.url
       DETACH DELETE coverImage
     `,
-      ].map(s => txc.run(s)),
+      ].map((s) => txc.run(s)),
     )
     return runs.map(({ summary }) => summary)
   })

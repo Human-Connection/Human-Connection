@@ -4,7 +4,7 @@ import express from 'express'
 import cors from 'cors'
 import verify from './verify'
 
-export default function() {
+export default function () {
   const router = express.Router()
   router.use(
     '/activitypub/users',

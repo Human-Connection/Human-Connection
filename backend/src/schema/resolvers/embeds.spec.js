@@ -48,7 +48,7 @@ describe('Query', () => {
     let embedAction
 
     beforeEach(() => {
-      embedAction = async variables => {
+      embedAction = async (variables) => {
         const { server } = createServer({
           context: () => {},
         })

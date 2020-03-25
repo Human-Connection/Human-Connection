@@ -20,7 +20,7 @@ export async function up(next) {
   `)
   try {
     // Implement your migration here.
-    const users = await updateDeletedUserAttributes.records.map(record => record.get('user'))
+    const users = await updateDeletedUserAttributes.records.map((record) => record.get('user'))
     // eslint-disable-next-line no-console
     console.log(users)
     await transaction.commit()

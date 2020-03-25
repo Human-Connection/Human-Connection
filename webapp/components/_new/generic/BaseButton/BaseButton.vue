@@ -3,7 +3,7 @@
     :class="buttonClass"
     :disabled="loading"
     :type="type"
-    @click.capture="event => $emit('click', event)"
+    @click.capture="(event) => $emit('click', event)"
   >
     <base-icon v-if="icon" :name="icon" />
     <loading-spinner v-if="loading" />

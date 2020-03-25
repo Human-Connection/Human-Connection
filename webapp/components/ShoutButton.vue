@@ -10,7 +10,7 @@
     />
     <ds-space margin-bottom="xx-small" />
     <ds-text color="soft" class="shout-button-text">
-      <ds-heading style="display: inline" tag="h3">{{ shoutedCount }}x</ds-heading>
+      <ds-heading style="display: inline;" tag="h3">{{ shoutedCount }}x</ds-heading>
       {{ $t('shoutButton.shouted') }}
     </ds-text>
   </ds-space>
@@ -36,7 +36,7 @@ export default {
   watch: {
     isShouted: {
       immediate: true,
-      handler: function(shouted) {
+      handler: function (shouted) {
         this.shouted = shouted
       },
     },
@@ -66,7 +66,7 @@ export default {
             id: this.postId,
           },
         })
-        .then(res => {
+        .then((res) => {
           if (res && res.data) {
             this.$emit('update', shout)
           }

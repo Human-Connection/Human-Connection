@@ -42,7 +42,7 @@ export default {
       const offset = args.offset && typeof args.offset === 'number' ? `SKIP ${args.offset}` : ''
       const limit = args.first && typeof args.first === 'number' ? `LIMIT ${args.first}` : ''
 
-      const readTxResultPromise = session.readTransaction(async transaction => {
+      const readTxResultPromise = session.readTransaction(async (transaction) => {
         const notificationsTransactionResponse = await transaction.run(
           ` 
           MATCH (resource {deleted: false, disabled: false})-[notification:NOTIFIED]->(user:User {id:$id})
@@ -59,7 +59,7 @@ export default {
           { id: currentUser.id },
         )
         log(notificationsTransactionResponse)
-        return notificationsTransactionResponse.records.map(record => record.get('notification'))
+        return notificationsTransactionResponse.records.map((record) => record.get('notification'))
       })
       try {
         const notifications = await readTxResultPromise
@@ -73,7 +73,7 @@ export default {
     markAsRead: async (parent, args, context, resolveInfo) => {
       const { user: currentUser } = context
       const session = context.driver.session()
-      const writeTxResultPromise = session.writeTransaction(async transaction => {
+      const writeTxResultPromise = session.writeTransaction(async (transaction) => {
         const markNotificationAsReadTransactionResponse = await transaction.run(
           ` 
             MATCH (resource {id: $resourceId})-[notification:NOTIFIED {read: FALSE}]->(user:User {id:$id})
@@ -88,7 +88,7 @@ export default {
           { resourceId: args.id, id: currentUser.id },
         )
         log(markNotificationAsReadTransactionResponse)
-        return markNotificationAsReadTransactionResponse.records.map(record =>
+        return markNotificationAsReadTransactionResponse.records.map((record) =>
           record.get('notification'),
         )
       })
@@ -101,7 +101,7 @@ export default {
     },
   },
   NOTIFIED: {
-    id: async parent => {
+    id: async (parent) => {
       // serialize an ID to help the client update the cache
       return `${parent.reason}/${parent.from.id}/${parent.to.id}`
     },

@@ -161,7 +161,7 @@ export default {
       })
     },
     deletePost(deletedPost) {
-      this.posts = this.posts.filter(post => {
+      this.posts = this.posts.filter((post) => {
         return post.id !== deletedPost.id
       })
     },
@@ -181,7 +181,7 @@ export default {
           this.resetPostList()
           this.$apollo.queries.Post.refetch()
         })
-        .catch(error => this.$toast.error(error.message))
+        .catch((error) => this.$toast.error(error.message))
     },
     unpinPost(post) {
       this.$apollo
@@ -194,7 +194,7 @@ export default {
           this.resetPostList()
           this.$apollo.queries.Post.refetch()
         })
-        .catch(error => this.$toast.error(error.message))
+        .catch((error) => this.$toast.error(error.message))
     },
   },
   apollo: {

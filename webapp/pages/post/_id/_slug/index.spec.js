@@ -48,8 +48,8 @@ describe('PostSlug', () => {
       mocks = {
         $t: jest.fn(),
         $filters: {
-          truncate: a => a,
-          removeHtml: a => a,
+          truncate: (a) => a,
+          removeHtml: (a) => a,
         },
         $route: {
           hash: '',

@@ -8,7 +8,7 @@ values lat=10.0 and lng=53.55, which is close to the horn of Africa,
 but it is lat=53.55 and lng=10.0
 `
 
-const swap = async function(next) {
+const swap = async function (next) {
   const driver = getDriver()
   const session = driver.session()
   const transaction = session.beginTransaction()

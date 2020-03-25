@@ -4,7 +4,7 @@ import { mergeWith, isArray } from 'lodash'
 export const filterForMutedUsers = async (params, context) => {
   if (!context.user) return params
   const [mutedUsers] = await Promise.all([getMutedUsers(context)])
-  const mutedUsersIds = [...mutedUsers.map(user => user.id)]
+  const mutedUsersIds = [...mutedUsers.map((user) => user.id)]
   if (!mutedUsersIds.length) return params
 
   params.filter = mergeWith(

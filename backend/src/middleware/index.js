@@ -15,7 +15,7 @@ import hashtags from './hashtags/hashtagsMiddleware'
 import email from './email/emailMiddleware'
 import sentry from './sentryMiddleware'
 
-export default schema => {
+export default (schema) => {
   const middlewares = {
     sentry,
     permissions,
@@ -51,7 +51,7 @@ export default schema => {
   // add permisions middleware at the first position (unless we're seeding)
   if (CONFIG.DISABLED_MIDDLEWARES) {
     const disabledMiddlewares = CONFIG.DISABLED_MIDDLEWARES.split(',')
-    order = order.filter(key => {
+    order = order.filter((key) => {
       if (disabledMiddlewares.includes(key)) {
         /* eslint-disable-next-line no-console */
         console.log(`Warning: Disabled "${disabledMiddlewares}" middleware.`)
@@ -60,6 +60,6 @@ export default schema => {
     })
   }
 
-  const appliedMiddlewares = order.map(key => middlewares[key])
+  const appliedMiddlewares = order.map((key) => middlewares[key])
   return applyMiddleware(schema, ...appliedMiddlewares)
 }

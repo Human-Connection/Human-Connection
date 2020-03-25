@@ -27,7 +27,7 @@ export default {
       } = context
 
       const session = context.driver.session()
-      const writeTxResultPromise = session.writeTransaction(async txc => {
+      const writeTxResultPromise = session.writeTransaction(async (txc) => {
         const result = await txc.run(
           `
             MATCH (user:User {id: $userId})
@@ -37,7 +37,7 @@ export default {
           `,
           { userId, email: args.email, nonce },
         )
-        return result.records.map(record => ({
+        return result.records.map((record) => ({
           name: record.get('user').properties.name,
           ...record.get('email').properties,
         }))
@@ -57,7 +57,7 @@ export default {
       } = context
       const { nonce, email } = args
       const session = context.driver.session()
-      const writeTxResultPromise = session.writeTransaction(async txc => {
+      const writeTxResultPromise = session.writeTransaction(async (txc) => {
         const result = await txc.run(
           `
             MATCH (user:User {id: $userId})-[:PRIMARY_EMAIL]->(previous:EmailAddress)
@@ -71,7 +71,7 @@ export default {
           `,
           { userId, email, nonce },
         )
-        return result.records.map(record => record.get('email').properties)
+        return result.records.map((record) => record.get('email').properties)
       })
       try {
         const txResult = await writeTxResultPromise

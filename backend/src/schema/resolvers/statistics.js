@@ -15,7 +15,7 @@ export default {
           countFollows: 'FOLLOWS',
           countShouts: 'SHOUTED',
         }
-        const statisticsReadTxResultPromise = session.readTransaction(async transaction => {
+        const statisticsReadTxResultPromise = session.readTransaction(async (transaction) => {
           const statisticsTransactionResponse = await transaction.run(
             `
               CALL apoc.meta.stats() YIELD labels, relTypesCount
@@ -23,7 +23,7 @@ export default {
             `,
           )
           log(statisticsTransactionResponse)
-          return statisticsTransactionResponse.records.map(record => {
+          return statisticsTransactionResponse.records.map((record) => {
             return {
               ...record.get('labels'),
               ...record.get('relTypesCount'),
@@ -31,7 +31,7 @@ export default {
           })
         })
         const [statistics] = await statisticsReadTxResultPromise
-        Object.keys(mapping).forEach(key => {
+        Object.keys(mapping).forEach((key) => {
           const stat = statistics[mapping[key]]
           counts[key] = stat ? stat.toNumber() : 0
         })

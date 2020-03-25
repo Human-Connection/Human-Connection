@@ -13,7 +13,7 @@ const request = () => {
   res = { status, contentType }
   const req = {
     app: {
-      get: key => {
+      get: (key) => {
         return {
           driver,
         }[key]

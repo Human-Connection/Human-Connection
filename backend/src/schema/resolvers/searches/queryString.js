@@ -26,15 +26,15 @@ const matchSomeWordsExactly = (str, boost = 2) => {
   if (!str.includes(' ')) return ''
   return str
     .split(' ')
-    .map(s => `"${s}"^${boost}`)
+    .map((s) => `"${s}"^${boost}`)
     .join(' ')
 }
 
-const matchBeginningOfWords = str => {
+const matchBeginningOfWords = (str) => {
   return str
     .split(' ')
-    .filter(s => s.length > 3)
-    .map(s => s + '*')
+    .filter((s) => s.length > 3)
+    .map((s) => s + '*')
     .join(' ')
 }
 

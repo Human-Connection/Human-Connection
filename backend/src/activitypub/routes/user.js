@@ -7,7 +7,7 @@ import verify from './verify'
 const router = express.Router()
 const debug = require('debug')('ea:user')
 
-router.get('/:name', async function(req, res, next) {
+router.get('/:name', async function (req, res, next) {
   debug('inside user.js -> serveUser')
   await serveUser(req, res, next)
 })
@@ -45,7 +45,7 @@ router.get('/:name/outbox', (req, res) => {
   }
 })
 
-router.post('/:name/inbox', verify, async function(req, res, next) {
+router.post('/:name/inbox', verify, async function (req, res, next) {
   debug(`body = ${JSON.stringify(req.body, null, 2)}`)
   debug(`actorId = ${req.body.actor}`)
   // const result = await saveActorId(req.body.actor)

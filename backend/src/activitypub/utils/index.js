@@ -53,7 +53,7 @@ export function signAndSend(activity, fromName, targetDomain, url) {
           }
       `,
       })
-      .then(result => {
+      .then((result) => {
         if (result.error) {
           reject(result.error)
         } else {

@@ -20,7 +20,7 @@ export default class Hashtag extends TipTapMention {
   get schema() {
     return {
       ...super.schema,
-      toDOM: node => {
+      toDOM: (node) => {
         // use a dummy domain because URL cannot handle relative urls
         const url = new URL('/', 'https://human-connection.org')
         url.searchParams.append('hashtag', node.attrs.id)
@@ -39,7 +39,7 @@ export default class Hashtag extends TipTapMention {
       parseDOM: [
         {
           tag: 'a[data-hashtag-id]',
-          getAttrs: dom => {
+          getAttrs: (dom) => {
             const id = dom.getAttribute('data-hashtag-id')
             const label = dom.innerText.split(this.options.matcher.char).join('')
             return { id, label }

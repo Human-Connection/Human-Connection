@@ -10,7 +10,7 @@ export default function UpdateQuery(component, { $state, pageKey }) {
       $state.complete()
     }
     const result = {}
-    result[pageKey] = unionBy(oldData, newData, item => item.id)
+    result[pageKey] = unionBy(oldData, newData, (item) => item.id)
     $state.loaded()
     return result
   }

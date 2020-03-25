@@ -8,7 +8,7 @@ import { exec, build } from 'xregexp/xregexp-all.js'
 //    2. If it starts with a digit '0-9' than a unicode letter has to follow.
 const regX = build('^((\\pL+[\\pL0-9]*)|([0-9]+\\pL+[\\pL0-9]*))$')
 
-export default function(content) {
+export default function (content) {
   if (!content) return []
   const $ = cheerio.load(content)
   // We can not search for class '.hashtag', because the classes are removed at the 'xss' middleware.
@@ -19,7 +19,7 @@ export default function(content) {
     })
     .get()
   const hashtags = []
-  ids.forEach(id => {
+  ids.forEach((id) => {
     const match = exec(id, regX)
     if (match != null) {
       hashtags.push(match[1])

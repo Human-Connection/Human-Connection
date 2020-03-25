@@ -5,7 +5,7 @@ export default async function createPasswordReset(options) {
   const normalizedEmail = normalizeEmail(email)
   const session = driver.session()
   try {
-    const createPasswordResetTxPromise = session.writeTransaction(async transaction => {
+    const createPasswordResetTxPromise = session.writeTransaction(async (transaction) => {
       const createPasswordResetTransactionResponse = await transaction.run(
         `
           MATCH (user:User)-[:PRIMARY_EMAIL]->(email:EmailAddress {email:$email})
@@ -19,7 +19,7 @@ export default async function createPasswordReset(options) {
           email: normalizedEmail,
         },
       )
-      return createPasswordResetTransactionResponse.records.map(record => {
+      return createPasswordResetTransactionResponse.records.map((record) => {
         const { email } = record.get('email').properties
         const { nonce } = record.get('passwordReset').properties
         const { name } = record.get('user').properties

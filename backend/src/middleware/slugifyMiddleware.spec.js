@@ -121,7 +121,7 @@ describe('slugifyMiddleware', () => {
       })
 
       describe('but if the client specifies a slug', () => {
-        it('rejects CreatePost', async done => {
+        it('rejects CreatePost', async (done) => {
           variables = {
             ...variables,
             title: 'Pre-existing post',
