@@ -32,7 +32,7 @@ describe('FollowList.vue', () => {
     })
 
     describe('given a user with connections', () => {
-      ;['following', 'followedBy'].forEach(type =>
+      ;['following', 'followedBy'].forEach((type) =>
         describe(`and type=${type}`, () => {
           let wrapper
           let queryMock
@@ -74,12 +74,6 @@ describe('FollowList.vue', () => {
           })
         }),
       )
-    })
-    
-    describe('given more than 7 connections', () => {
-      it('displays them in an overflow container', () => {
-        wrapper.find('')
-      })
     })
   })
 })

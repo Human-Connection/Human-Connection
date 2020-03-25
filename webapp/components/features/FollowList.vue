@@ -1,9 +1,19 @@
 <template>
-  <base-card style="position: relative; height: auto;">
+  <base-card style="position: relative; height: 424px;">
     <ds-space v-if="this.connections && this.connections.length" margin="x-small">
       <ds-text tag="h5" color="soft">
         {{ userName | truncate(15) }} {{ $t(`profile.network.${type}`) }}
       </ds-text>
+    </ds-space>
+    <ds-space v-if="this.connections && this.connections.length > 7" margin="x-small">
+      <ds-input
+        ref="filter"
+        @input.native="setFilter"
+        placeholder="filter"
+        v-focus="true"
+        size="small"
+        icon="filter"
+      />
     </ds-space>
     <template v-if="this.connections && this.connections.length <= 7">
       <ds-space v-for="follow in uniq(this.connections)" :key="follow.id" margin="x-small">
@@ -24,7 +34,11 @@
     </template>
     <template v-else-if="this.connections.length > 7">
       <div class="overflow-container">
-        <ds-space v-for="follow in uniq(this.connections)" :key="follow.id" margin="x-small">
+        <ds-space
+          v-for="follow in uniq(this.filteredConnections)"
+          :key="follow.id"
+          margin="x-small"
+        >
           <client-only>
             <user-teaser :user="follow" />
           </client-only>
@@ -32,7 +46,7 @@
       </div>
     </template>
     <template v-else>
-      <p style="text-align: center; opacity: .5;">
+      <p style="text-align: center; opacity: 0.5;">
         {{ userName }} {{ $t(`profile.network.${type}Nobody`) }}
       </p>
     </template>
@@ -56,6 +70,7 @@ export default {
   data() {
     return {
       additionalConnections: [],
+      filter: null,
       queries: {
         followedBy: followedByQuery,
         following: followingQuery,
@@ -69,6 +84,30 @@ export default {
     },
     connections() {
       return [...this.user[this.type], ...this.additionalConnections]
+    },
+    filteredConnections() {
+      if (!this.filter) {
+        return this.connections
+      }
+
+      const fuzzyExpression = new RegExp(
+        `${this.filter.split('').reduce((part, c) => `${part}[^${c}]*${c}`)}`,
+        'i',
+      )
+
+      const fuzzyScores = this.connections
+        .map((user) => {
+          const match = user.name.match(fuzzyExpression)
+
+          return {
+            user,
+            score: match ? match[0].length * (match.index + 1) : -1,
+          }
+        })
+        .filter((score) => score.score !== -1)
+        .sort((a, b) => a.score - b.score)
+
+      return fuzzyScores.map((score) => score.user)
     },
     allConnectionsCount() {
       return this.user[`${this.type}Count`]
@@ -86,13 +125,16 @@ export default {
       })
       this.additionalConnections = data.User[0][this.type]
     },
+    setFilter(evt) {
+      this.$set(this, 'filter', evt.target.value)
+    },
   },
 }
 </script>
 
 <style lang="scss">
 .overflow-container {
-  max-height: 350px;
+  max-height: 300px;
   overflow-y: auto;
 }
 </style>
