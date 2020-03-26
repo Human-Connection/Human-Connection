@@ -16,7 +16,12 @@
         </client-only>
       </ds-space>
       <ds-space v-if="this.allConnectionsCount - this.connections.length" margin="small">
-        <base-button @click="fetchConnections" size="small" color="softer">
+        <base-button
+          @click="fetchConnections"
+          :loading="this.isLoading"
+          size="small"
+          color="softer"
+        >
           {{
             $t('profile.network.andMore', {
               number: this.allConnectionsCount - this.connections.length,
@@ -69,6 +74,7 @@ export default {
     return {
       additionalConnections: [],
       filter: null,
+      isLoading: false,
       queries: {
         followedBy: followedByQuery,
         following: followingQuery,
@@ -116,12 +122,14 @@ export default {
       return uniqBy(items, field)
     },
     async fetchConnections() {
+      this.$set(this, 'isLoading', true)
       const { data } = await this.$apollo.query({
         query: this.queries[this.type],
         variables: { id: this.user.id },
         // neither result nor update are being called when defined here (?)
       })
       this.additionalConnections = data.User[0][this.type]
+      this.$set(this, 'isLoading', false)
     },
     setFilter(evt) {
       this.$set(this, 'filter', evt.target.value)
