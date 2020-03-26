@@ -15,7 +15,7 @@ describe('Modal.vue', () => {
   let state
   let mocks
 
-  const createWrapper = mountMethod => {
+  const createWrapper = (mountMethod) => {
     return () => {
       store = new Vuex.Store({
         state,
@@ -38,7 +38,7 @@ describe('Modal.vue', () => {
   beforeEach(() => {
     mocks = {
       $filters: {
-        truncate: a => a,
+        truncate: (a) => a,
       },
       $toast: {
         success: () => {},

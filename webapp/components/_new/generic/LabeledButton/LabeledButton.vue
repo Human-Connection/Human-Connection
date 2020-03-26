@@ -1,6 +1,6 @@
 <template>
   <div class="labeled-button">
-    <base-button circle :icon="icon" :filled="filled" @click="event => $emit('click', event)" />
+    <base-button circle :icon="icon" :filled="filled" @click="(event) => $emit('click', event)" />
     <label class="label">{{ label }}</label>
   </div>
 </template>

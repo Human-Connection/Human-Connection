@@ -18,7 +18,7 @@ describe('FollowingFilter', () => {
   }
 
   const mocks = {
-    $t: jest.fn(string => string),
+    $t: jest.fn((string) => string),
   }
 
   const Wrapper = () => {

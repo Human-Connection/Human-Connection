@@ -16,7 +16,7 @@ describe('CategoriesFilter.vue', () => {
   }
 
   const mocks = {
-    $t: jest.fn(string => string),
+    $t: jest.fn((string) => string),
   }
 
   const Wrapper = () => {

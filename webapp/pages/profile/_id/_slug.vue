@@ -337,7 +337,7 @@ export default {
     },
     socialMediaLinks() {
       const { socialMedia = [] } = this.user
-      return socialMedia.map(socialMedia => {
+      return socialMedia.map((socialMedia) => {
         const { url } = socialMedia
         const matches = url.match(/^(?:https?:\/\/)?(?:[^@\n])?(?:www\.)?([^:/\n?]+)/g)
         const [domain] = matches || []
@@ -364,7 +364,7 @@ export default {
   },
   methods: {
     removePostFromList(deletedPost) {
-      this.posts = this.posts.filter(post => {
+      this.posts = this.posts.filter((post) => {
         return post.id !== deletedPost.id
       })
     },
@@ -447,7 +447,7 @@ export default {
           this.resetPostList()
           this.$apollo.queries.profilePagePosts.refetch()
         })
-        .catch(error => this.$toast.error(error.message))
+        .catch((error) => this.$toast.error(error.message))
     },
     unpinPost(post) {
       this.$apollo
@@ -460,7 +460,7 @@ export default {
           this.resetPostList()
           this.$apollo.queries.profilePagePosts.refetch()
         })
-        .catch(error => this.$toast.error(error.message))
+        .catch((error) => this.$toast.error(error.message))
     },
     optimisticFollow({ followedByCurrentUser }) {
       /*
@@ -473,7 +473,7 @@ export default {
         this.user.followedBy = [currentUser, ...this.user.followedBy]
       } else {
         this.user.followedByCount--
-        this.user.followedBy = this.user.followedBy.filter(user => user.id !== currentUser.id)
+        this.user.followedBy = this.user.followedBy.filter((user) => user.id !== currentUser.id)
       }
       this.user.followedByCurrentUser = followedByCurrentUser
     },

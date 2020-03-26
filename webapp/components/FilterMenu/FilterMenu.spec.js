@@ -7,7 +7,7 @@ let wrapper
 
 describe('FilterMenu.vue', () => {
   const mocks = {
-    $t: jest.fn(string => string),
+    $t: jest.fn((string) => string),
   }
 
   const getters = {

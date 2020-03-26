@@ -60,19 +60,19 @@ export const mutations = {
   },
   TOGGLE_CATEGORY(state, categoryId) {
     const filter = clone(state.filter)
-    update(filter, 'categories_some.id_in', categoryIds => xor(categoryIds, [categoryId]))
+    update(filter, 'categories_some.id_in', (categoryIds) => xor(categoryIds, [categoryId]))
     if (isEmpty(get(filter, 'categories_some.id_in'))) delete filter.categories_some
     state.filter = filter
   },
   TOGGLE_LANGUAGE(state, languageCode) {
     const filter = clone(state.filter)
-    update(filter, 'language_in', languageCodes => xor(languageCodes, [languageCode]))
+    update(filter, 'language_in', (languageCodes) => xor(languageCodes, [languageCode]))
     if (isEmpty(get(filter, 'language_in'))) delete filter.language_in
     state.filter = filter
   },
   TOGGLE_EMOTION(state, emotion) {
     const filter = clone(state.filter)
-    update(filter, 'emotions_some.emotion_in', emotions => xor(emotions, [emotion]))
+    update(filter, 'emotions_some.emotion_in', (emotions) => xor(emotions, [emotion]))
     if (isEmpty(get(filter, 'emotions_some.emotion_in'))) delete filter.emotions_some
     state.filter = filter
   },
@@ -100,14 +100,14 @@ export const getters = {
   filteredByEmotions(state) {
     return get(state.filter, 'emotions_some.emotion_in') || []
   },
-  orderOptions: state => ({ $t }) =>
-    Object.values(orderOptions).map(option => {
+  orderOptions: (state) => ({ $t }) =>
+    Object.values(orderOptions).map((option) => {
       return {
         ...option,
         label: $t(option.key),
       }
     }),
-  selectedOrder: state => ({ $t }) => {
+  selectedOrder: (state) => ({ $t }) => {
     return {
       ...state.order,
       label: $t(state.order.key),

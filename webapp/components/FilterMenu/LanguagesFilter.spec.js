@@ -19,7 +19,7 @@ describe('LanguagesFilter.vue', () => {
   }
 
   const mocks = {
-    $t: jest.fn(string => string),
+    $t: jest.fn((string) => string),
   }
 
   const Wrapper = () => {
@@ -42,7 +42,7 @@ describe('LanguagesFilter.vue', () => {
       const wrapper = Wrapper()
       spanishButton = wrapper
         .findAll('.languages-filter .item .base-button')
-        .at(languages.findIndex(l => l.code === 'es'))
+        .at(languages.findIndex((l) => l.code === 'es'))
       expect(spanishButton.attributes().class).toContain('--filled')
     })
 
@@ -51,7 +51,7 @@ describe('LanguagesFilter.vue', () => {
         const wrapper = Wrapper()
         englishButton = wrapper
           .findAll('.languages-filter .item .base-button')
-          .at(languages.findIndex(l => l.code === 'en'))
+          .at(languages.findIndex((l) => l.code === 'en'))
         englishButton.trigger('click')
         expect(mutations['posts/TOGGLE_LANGUAGE']).toHaveBeenCalledWith({}, 'en')
       })

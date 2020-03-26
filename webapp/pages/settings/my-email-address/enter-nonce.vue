@@ -35,11 +35,11 @@ export default {
   },
   computed: {
     form: {
-      get: function() {
+      get: function () {
         const { email = '', nonce = '' } = this.$route.query
         return { email, nonce }
       },
-      set: function(formData) {
+      set: function (formData) {
         this.formData = formData
       },
     },

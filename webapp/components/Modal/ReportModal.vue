@@ -77,7 +77,7 @@ export default {
     }
   },
   created() {
-    this.form.reasonCategoryOptions = valuesReasonCategoryOptions.map(reasonCategory => {
+    this.form.reasonCategoryOptions = valuesReasonCategoryOptions.map((reasonCategory) => {
       return {
         label: this.$t('report.reason.category.options.' + reasonCategory),
         value: reasonCategory,
@@ -134,7 +134,7 @@ export default {
           }, 1500)
           this.loading = false
         })
-        .catch(err => {
+        .catch((err) => {
           this.$emit('close')
           this.success = false
           switch (err.message) {
