@@ -9,7 +9,7 @@
       :icon-right="null"
       :options="options"
       :loading="loading"
-      :filter="(item) => item"
+      :filter="item => item"
       :no-options-available="emptyText"
       :auto-reset-search="!searchValue"
       :placeholder="$t('search.placeholder')"
@@ -88,8 +88,8 @@ export default {
   methods: {
     isFirstOfType(option) {
       return (
-        this.options.findIndex((o) => o === option) ===
-        this.options.findIndex((o) => o.__typename === option.__typename)
+        this.options.findIndex(o => o === option) ===
+        this.options.findIndex(o => o.__typename === option.__typename)
       )
     },
     onFocus(event) {

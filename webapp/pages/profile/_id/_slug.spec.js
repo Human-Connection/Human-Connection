@@ -3,7 +3,7 @@ import ProfileSlug from './_slug.vue'
 
 const localVue = global.localVue
 
-localVue.filter('date', (d) => d)
+localVue.filter('date', d => d)
 
 config.stubs['client-only'] = '<span><slot /></span>'
 config.stubs['v-popover'] = '<span><slot /></span>'
@@ -56,8 +56,8 @@ describe('ProfileSlug', () => {
     describe('given an authenticated user', () => {
       beforeEach(() => {
         mocks.$filters = {
-          removeLinks: (c) => c,
-          truncate: (a) => a,
+          removeLinks: c => c,
+          truncate: a => a,
         }
         mocks.$store = {
           getters: {

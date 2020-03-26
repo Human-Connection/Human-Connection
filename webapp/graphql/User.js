@@ -7,7 +7,7 @@ import {
   commentFragment,
 } from './Fragments'
 
-export default (i18n) => {
+export default i18n => {
   const lang = i18n.locale().toUpperCase()
   return gql`
     ${userFragment}
@@ -61,7 +61,7 @@ export const minimisedUserQuery = () => {
   `
 }
 
-export const notificationQuery = (i18n) => {
+export const notificationQuery = i18n => {
   return gql`
     ${userFragment}
     ${commentFragment}
@@ -100,7 +100,7 @@ export const notificationQuery = (i18n) => {
   `
 }
 
-export const markAsReadMutation = (i18n) => {
+export const markAsReadMutation = i18n => {
   return gql`
     ${userFragment}
     ${commentFragment}
@@ -174,7 +174,7 @@ export const notificationAdded = () => {
     }
   `
 }
-export const followUserMutation = (i18n) => {
+export const followUserMutation = i18n => {
   return gql`
     ${userFragment}
     ${userCountsFragment}
@@ -194,7 +194,7 @@ export const followUserMutation = (i18n) => {
   `
 }
 
-export const unfollowUserMutation = (i18n) => {
+export const unfollowUserMutation = i18n => {
   return gql`
     ${userFragment}
     ${userCountsFragment}

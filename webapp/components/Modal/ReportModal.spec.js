@@ -17,9 +17,9 @@ describe('ReportModal.vue', () => {
       id: 'c43',
     }
     mocks = {
-      $t: jest.fn((a) => a),
+      $t: jest.fn(a => a),
       $filters: {
-        truncate: (a) => a,
+        truncate: a => a,
       },
       $toast: {
         success: () => {},

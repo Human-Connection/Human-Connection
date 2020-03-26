@@ -93,7 +93,7 @@ export default {
 
       if (this.file.type === 'image/jpeg') {
         const canvas = this.cropper.getCroppedCanvas()
-        canvas.toBlob((blob) => {
+        canvas.toBlob(blob => {
           const imageAspectRatio = canvas.width / canvas.height
           const croppedImageFile = new File([blob], this.file.name, { type: this.file.type })
           onCropComplete(imageAspectRatio, croppedImageFile)

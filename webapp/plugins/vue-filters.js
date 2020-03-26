@@ -38,7 +38,7 @@ export default ({ app = {} }) => {
         return ''
       }
       if (truncate > 0) {
-        value = value.map((item) => {
+        value = value.map(item => {
           return app.$filters.truncate(item, truncate)
         })
       }
@@ -46,7 +46,7 @@ export default ({ app = {} }) => {
     },
     listByKey: (values, key, glue, truncate) => {
       return app.$filters.list(
-        values.map((item) => item[key]),
+        values.map(item => item[key]),
         glue,
         truncate,
       )
@@ -58,7 +58,7 @@ export default ({ app = {} }) => {
         })
         .replace(/\s+/g, '')
     },
-    removeLinks: (content) => {
+    removeLinks: content => {
       if (!content) return ''
       // remove all links from excerpt to prevent issues with the surrounding link
       let excerpt = content.replace(/<a.*>(.+)<\/a>/gim, '$1')
@@ -81,7 +81,7 @@ export default ({ app = {} }) => {
 
       return contentExcerpt
     },
-    proxyApiUrl: (input) => {
+    proxyApiUrl: input => {
       const url = input && (input.url || input)
       if (!url) return url
       return url.startsWith('/') ? url.replace('/', '/api/') : url
@@ -89,7 +89,7 @@ export default ({ app = {} }) => {
   })
 
   // add all methods as filters on each vue component
-  Object.keys(app.$filters).forEach((key) => {
+  Object.keys(app.$filters).forEach(key => {
     Vue.filter(key, app.$filters[key])
   })
 

@@ -14,12 +14,12 @@ describe('LocaleSwitch.vue', () => {
     mocks = {
       $i18n: {
         locale: () => 'en',
-        set: jest.fn((locale) => locale),
+        set: jest.fn(locale => locale),
       },
       $t: jest.fn(),
       $toast: {
-        success: jest.fn((a) => a),
-        error: jest.fn((a) => a),
+        success: jest.fn(a => a),
+        error: jest.fn(a => a),
       },
       setPlaceholderText: jest.fn(),
       $apollo: {

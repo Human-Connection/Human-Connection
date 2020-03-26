@@ -46,7 +46,7 @@ export default {
     resourceType: {
       type: String,
       required: true,
-      validator: (value) => {
+      validator: value => {
         return value.match(/(contribution|comment|organization|user)/)
       },
     },

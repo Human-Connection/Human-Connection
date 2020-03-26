@@ -3,7 +3,7 @@ import NotificationMenu from './NotificationMenu'
 
 const localVue = global.localVue
 
-localVue.filter('truncate', (string) => string)
+localVue.filter('truncate', string => string)
 
 config.stubs.dropdown = '<span class="dropdown"><slot :toggleMenu="() => null" /></span>'
 

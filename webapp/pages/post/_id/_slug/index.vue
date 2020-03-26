@@ -205,7 +205,7 @@ export default {
         .then(() => {
           this.$toast.success(this.$t('post.menu.pinnedSuccessfully'))
         })
-        .catch((error) => this.$toast.error(error.message))
+        .catch(error => this.$toast.error(error.message))
     },
     unpinPost(post) {
       this.$apollo
@@ -216,7 +216,7 @@ export default {
         .then(() => {
           this.$toast.success(this.$t('post.menu.unpinnedSuccessfully'))
         })
-        .catch((error) => this.$toast.error(error.message))
+        .catch(error => this.$toast.error(error.message))
     },
     toggleNewCommentForm(showNewCommentForm) {
       this.showNewCommentForm = showNewCommentForm

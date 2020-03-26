@@ -8,7 +8,7 @@ export default class Mention extends TipTapMention {
   get schema() {
     return {
       ...super.schema,
-      toDOM: (node) => {
+      toDOM: node => {
         return [
           'a',
           {

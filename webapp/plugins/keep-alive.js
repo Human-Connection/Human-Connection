@@ -4,7 +4,7 @@ let lastRoute
 const keepAliveHook = {}
 
 if (!process.server) {
-  keepAliveHook.install = (Vue) => {
+  keepAliveHook.install = Vue => {
     const keepAlivePages = process.env.keepAlivePages || []
 
     Vue.mixin({

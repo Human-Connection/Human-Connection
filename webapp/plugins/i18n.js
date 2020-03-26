@@ -11,7 +11,7 @@ export default ({ app, req, cookie, store }) => {
   const debug = app.$env && app.$env.NODE_ENV !== 'production'
   const key = 'locale'
 
-  const changeHandler = async (mutation) => {
+  const changeHandler = async mutation => {
     if (process.server) return
 
     const newLocale = mutation.payload.locale
@@ -24,7 +24,7 @@ export default ({ app, req, cookie, store }) => {
 
     app.$cookies.set(key, newLocale)
     if (!app.$i18n.localeExists(newLocale)) {
-      import(`~/locales/${newLocale}.json`).then((res) => {
+      import(`~/locales/${newLocale}.json`).then(res => {
         app.$i18n.add(newLocale, res.default)
       })
     }
@@ -45,7 +45,7 @@ export default ({ app, req, cookie, store }) => {
   // })
 
   Vue.use(vuexI18n.plugin, store, {
-    onTranslationNotFound: function (locale, key) {
+    onTranslationNotFound: function(locale, key) {
       if (debug) {
         /* eslint-disable-next-line no-console */
         console.warn(`vuex-i18n :: Key '${key}' not found for locale '${locale}'`)
@@ -77,7 +77,7 @@ export default ({ app, req, cookie, store }) => {
     }
   }
 
-  const availableLocales = locales.filter((lang) => !!lang.enabled)
+  const availableLocales = locales.filter(lang => !!lang.enabled)
   const locale = find(availableLocales, ['code', userLocale]) ? userLocale : 'en'
 
   if (locale !== 'en') {
@@ -89,7 +89,7 @@ export default ({ app, req, cookie, store }) => {
   Vue.i18n.fallback('en')
 
   if (process.browser) {
-    store.subscribe((mutation) => {
+    store.subscribe(mutation => {
       if (mutation.type === 'i18n/SET_LOCALE') {
         changeHandler(mutation)
       }

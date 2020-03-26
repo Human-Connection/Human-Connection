@@ -63,7 +63,7 @@ export default {
       ]
     },
     modalData() {
-      return function (report) {
+      return function(report) {
         const identStart =
           'moderation.reports.decideModal.' +
           report.resource.__typename +
@@ -131,7 +131,7 @@ export default {
           this.$toast.success(this.$t('moderation.reports.DecisionSuccess'))
           this.$apollo.queries.reportsList.refetch()
         })
-        .catch((error) => this.$toast.error(error.message))
+        .catch(error => this.$toast.error(error.message))
     },
     openModal(report) {
       this.commitModalData(this.modalData(report))

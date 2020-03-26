@@ -141,7 +141,7 @@ export default {
           },
           update: (store, { data }) => {
             const socialMedia = this.currentUser.socialMedia.filter(
-              (element) => element.id !== link.id,
+              element => element.id !== link.id,
             )
             this.setCurrentUser({
               ...this.currentUser,
@@ -159,7 +159,7 @@ export default {
       const isEditing = !!this.editingLink.id
       const url = this.formData.socialMediaUrl
 
-      const duplicateUrl = this.socialMediaLinks.find((link) => link.url === url)
+      const duplicateUrl = this.socialMediaLinks.find(link => link.url === url)
       if (duplicateUrl && duplicateUrl.id !== this.editingLink.id) {
         return this.$toast.error(this.$t('settings.social-media.requireUnique'))
       }

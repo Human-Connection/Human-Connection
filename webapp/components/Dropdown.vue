@@ -48,9 +48,8 @@ export default {
           if (isOpen) {
             this.$nextTick(() => {
               setTimeout(() => {
-                const paddingRightStyle = `${
-                  window.innerWidth - document.documentElement.clientWidth
-                }px`
+                const paddingRightStyle = `${window.innerWidth -
+                  document.documentElement.clientWidth}px`
                 const navigationElement = document.querySelector('.main-navigation')
                 document.body.style.paddingRight = paddingRightStyle
                 document.body.classList.add('dropdown-open')

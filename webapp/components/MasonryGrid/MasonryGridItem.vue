@@ -8,7 +8,7 @@
 const landscapeRatio = 1.3
 const squareRatio = 1
 const portraitRatio = 0.7
-const getRowSpan = (aspectRatio) => {
+const getRowSpan = aspectRatio => {
   if (aspectRatio >= landscapeRatio) return 13
   else if (aspectRatio >= squareRatio) return 15
   else if (aspectRatio >= portraitRatio) return 18

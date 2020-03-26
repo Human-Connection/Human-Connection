@@ -14,7 +14,7 @@
       <menu-bar-button
         ref="linkButton"
         :isActive="isActive.link()"
-        :onClick="(event) => toggleLinkInput(getMarkAttrs('link'), event.currentTarget)"
+        :onClick="event => toggleLinkInput(getMarkAttrs('link'), event.currentTarget)"
         icon="link"
       />
 

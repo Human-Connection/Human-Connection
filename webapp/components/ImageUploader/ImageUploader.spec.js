@@ -12,7 +12,7 @@ describe('ImageUploader.vue', () => {
       $toast: {
         error: jest.fn(),
       },
-      $t: jest.fn((string) => string),
+      $t: jest.fn(string => string),
     }
   })
   describe('mount', () => {

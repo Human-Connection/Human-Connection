@@ -15,9 +15,9 @@ describe('PostIndex', () => {
   beforeEach(() => {
     propsData = {}
     mocks = {
-      $t: (string) => string,
+      $t: string => string,
       $toast: {
-        error: jest.fn((string) => string),
+        error: jest.fn(string => string),
       },
       $i18n: {
         locale: () => 'en',

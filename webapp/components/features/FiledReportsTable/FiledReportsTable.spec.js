@@ -5,7 +5,7 @@ import { reports } from '~/components/features/ReportList/ReportList.story.js'
 
 const localVue = global.localVue
 
-localVue.filter('truncate', (string) => string)
+localVue.filter('truncate', string => string)
 
 config.stubs['client-only'] = '<span><slot /></span>'
 
@@ -14,7 +14,7 @@ describe('FiledReportsTable.vue', () => {
 
   beforeEach(() => {
     mocks = {
-      $t: jest.fn((string) => string),
+      $t: jest.fn(string => string),
     }
     stubs = {
       NuxtLink: RouterLinkStub,
@@ -47,7 +47,7 @@ describe('FiledReportsTable.vue', () => {
 
     describe('given reports', () => {
       beforeEach(() => {
-        filed = reports.map((report) => report.filed)
+        filed = reports.map(report => report.filed)
         propsData.filed = filed[0]
         wrapper = Wrapper()
       })
@@ -74,7 +74,7 @@ describe('FiledReportsTable.vue', () => {
         it('renders the category text', () => {
           const columns = wrapper.findAll('.ds-table-col')
           const reasonCategory = columns.filter(
-            (category) =>
+            category =>
               category.text() === 'report.reason.category.options.pornographic_content_links',
           )
           expect(reasonCategory.exists()).toBe(true)
@@ -83,7 +83,7 @@ describe('FiledReportsTable.vue', () => {
         it("renders the Post's content", () => {
           const columns = wrapper.findAll('.ds-table-col')
           const reasonDescription = columns.filter(
-            (column) => column.text() === 'This comment is porno!!!',
+            column => column.text() === 'This comment is porno!!!',
           )
           expect(reasonDescription.exists()).toBe(true)
         })

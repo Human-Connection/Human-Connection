@@ -9,7 +9,7 @@ import {
   tagsCategoriesAndPinnedFragment,
 } from './Fragments'
 
-export default (i18n) => {
+export default i18n => {
   const lang = i18n.locale().toUpperCase()
   return gql`
     ${userFragment}
@@ -44,7 +44,7 @@ export default (i18n) => {
   `
 }
 
-export const filterPosts = (i18n) => {
+export const filterPosts = i18n => {
   const lang = i18n.locale().toUpperCase()
   return gql`
     ${userFragment}
@@ -69,7 +69,7 @@ export const filterPosts = (i18n) => {
   `
 }
 
-export const profilePagePosts = (i18n) => {
+export const profilePagePosts = i18n => {
   const lang = i18n.locale().toUpperCase()
   return gql`
     ${userFragment}
@@ -107,7 +107,7 @@ export const PostsEmotionsByCurrentUser = () => {
   `
 }
 
-export const relatedContributions = (i18n) => {
+export const relatedContributions = i18n => {
   const lang = i18n.locale().toUpperCase()
   return gql`
     ${userFragment}

@@ -17,7 +17,7 @@ let getters, mutations, mocks, menuToggle, openModalSpy
 describe('ContentMenu.vue', () => {
   beforeEach(() => {
     mocks = {
-      $t: jest.fn((str) => str),
+      $t: jest.fn(str => str),
       $i18n: {
         locale: () => 'en',
       },
@@ -68,7 +68,7 @@ describe('ContentMenu.vue', () => {
         expect(
           wrapper
             .findAll('.ds-menu-item')
-            .filter((item) => item.text() === 'post.menu.edit')
+            .filter(item => item.text() === 'post.menu.edit')
             .at(0)
             .find('span.ds-menu-item-link')
             .attributes('to'),
@@ -78,7 +78,7 @@ describe('ContentMenu.vue', () => {
       it('can delete the contribution', () => {
         wrapper
           .findAll('.ds-menu-item')
-          .filter((item) => item.text() === 'post.menu.delete')
+          .filter(item => item.text() === 'post.menu.delete')
           .at(0)
           .trigger('click')
         expect(openModalSpy).toHaveBeenCalledWith('confirm', 'delete')
@@ -98,7 +98,7 @@ describe('ContentMenu.vue', () => {
         })
         wrapper
           .findAll('.ds-menu-item')
-          .filter((item) => item.text() === 'post.menu.pin')
+          .filter(item => item.text() === 'post.menu.pin')
           .at(0)
           .trigger('click')
         expect(wrapper.emitted('pinPost')).toEqual([
@@ -122,7 +122,7 @@ describe('ContentMenu.vue', () => {
         })
         wrapper
           .findAll('.ds-menu-item')
-          .filter((item) => item.text() === 'post.menu.unpin')
+          .filter(item => item.text() === 'post.menu.unpin')
           .at(0)
           .trigger('click')
         expect(wrapper.emitted('unpinPost')).toEqual([
@@ -151,7 +151,7 @@ describe('ContentMenu.vue', () => {
       it('edit the comment', () => {
         wrapper
           .findAll('.ds-menu-item')
-          .filter((item) => item.text() === 'comment.menu.edit')
+          .filter(item => item.text() === 'comment.menu.edit')
           .at(0)
           .trigger('click')
         expect(wrapper.emitted('editComment')).toBeTruthy()
@@ -159,7 +159,7 @@ describe('ContentMenu.vue', () => {
       it('delete the comment', () => {
         wrapper
           .findAll('.ds-menu-item')
-          .filter((item) => item.text() === 'comment.menu.delete')
+          .filter(item => item.text() === 'comment.menu.delete')
           .at(0)
           .trigger('click')
         expect(openModalSpy).toHaveBeenCalledWith('confirm', 'delete')
@@ -180,7 +180,7 @@ describe('ContentMenu.vue', () => {
         openModalSpy = jest.spyOn(wrapper.vm, 'openModal')
         wrapper
           .findAll('.ds-menu-item')
-          .filter((item) => item.text() === 'report.contribution.title')
+          .filter(item => item.text() === 'report.contribution.title')
           .at(0)
           .trigger('click')
         expect(openModalSpy).toHaveBeenCalledWith('report')
@@ -197,7 +197,7 @@ describe('ContentMenu.vue', () => {
         openModalSpy = jest.spyOn(wrapper.vm, 'openModal')
         wrapper
           .findAll('.ds-menu-item')
-          .filter((item) => item.text() === 'report.comment.title')
+          .filter(item => item.text() === 'report.comment.title')
           .at(0)
           .trigger('click')
         expect(openModalSpy).toHaveBeenCalledWith('report')
@@ -214,7 +214,7 @@ describe('ContentMenu.vue', () => {
         openModalSpy = jest.spyOn(wrapper.vm, 'openModal')
         wrapper
           .findAll('.ds-menu-item')
-          .filter((item) => item.text() === 'report.user.title')
+          .filter(item => item.text() === 'report.user.title')
           .at(0)
           .trigger('click')
         expect(openModalSpy).toHaveBeenCalledWith('report')
@@ -231,7 +231,7 @@ describe('ContentMenu.vue', () => {
         openModalSpy = jest.spyOn(wrapper.vm, 'openModal')
         wrapper
           .findAll('.ds-menu-item')
-          .filter((item) => item.text() === 'report.organization.title')
+          .filter(item => item.text() === 'report.organization.title')
           .at(0)
           .trigger('click')
         expect(openModalSpy).toHaveBeenCalledWith('report')
@@ -253,7 +253,7 @@ describe('ContentMenu.vue', () => {
         openModalSpy = jest.spyOn(wrapper.vm, 'openModal')
         wrapper
           .findAll('.ds-menu-item')
-          .filter((item) => item.text() === 'disable.contribution.title')
+          .filter(item => item.text() === 'disable.contribution.title')
           .at(0)
           .trigger('click')
         expect(openModalSpy).toHaveBeenCalledWith('disable')
@@ -271,7 +271,7 @@ describe('ContentMenu.vue', () => {
         openModalSpy = jest.spyOn(wrapper.vm, 'openModal')
         wrapper
           .findAll('.ds-menu-item')
-          .filter((item) => item.text() === 'disable.comment.title')
+          .filter(item => item.text() === 'disable.comment.title')
           .at(0)
           .trigger('click')
         expect(openModalSpy).toHaveBeenCalledWith('disable')
@@ -289,7 +289,7 @@ describe('ContentMenu.vue', () => {
         openModalSpy = jest.spyOn(wrapper.vm, 'openModal')
         wrapper
           .findAll('.ds-menu-item')
-          .filter((item) => item.text() === 'disable.user.title')
+          .filter(item => item.text() === 'disable.user.title')
           .at(0)
           .trigger('click')
         expect(openModalSpy).toHaveBeenCalledWith('disable')
@@ -307,7 +307,7 @@ describe('ContentMenu.vue', () => {
         openModalSpy = jest.spyOn(wrapper.vm, 'openModal')
         wrapper
           .findAll('.ds-menu-item')
-          .filter((item) => item.text() === 'disable.organization.title')
+          .filter(item => item.text() === 'disable.organization.title')
           .at(0)
           .trigger('click')
         expect(openModalSpy).toHaveBeenCalledWith('disable')
@@ -325,7 +325,7 @@ describe('ContentMenu.vue', () => {
         openModalSpy = jest.spyOn(wrapper.vm, 'openModal')
         wrapper
           .findAll('.ds-menu-item')
-          .filter((item) => item.text() === 'release.contribution.title')
+          .filter(item => item.text() === 'release.contribution.title')
           .at(0)
           .trigger('click')
         expect(openModalSpy).toHaveBeenCalledWith('release')
@@ -343,7 +343,7 @@ describe('ContentMenu.vue', () => {
         openModalSpy = jest.spyOn(wrapper.vm, 'openModal')
         wrapper
           .findAll('.ds-menu-item')
-          .filter((item) => item.text() === 'release.comment.title')
+          .filter(item => item.text() === 'release.comment.title')
           .at(0)
           .trigger('click')
         expect(openModalSpy).toHaveBeenCalledWith('release')
@@ -361,7 +361,7 @@ describe('ContentMenu.vue', () => {
         openModalSpy = jest.spyOn(wrapper.vm, 'openModal')
         wrapper
           .findAll('.ds-menu-item')
-          .filter((item) => item.text() === 'release.user.title')
+          .filter(item => item.text() === 'release.user.title')
           .at(0)
           .trigger('click')
         expect(openModalSpy).toHaveBeenCalledWith('release')
@@ -379,7 +379,7 @@ describe('ContentMenu.vue', () => {
         openModalSpy = jest.spyOn(wrapper.vm, 'openModal')
         wrapper
           .findAll('.ds-menu-item')
-          .filter((item) => item.text() === 'release.organization.title')
+          .filter(item => item.text() === 'release.organization.title')
           .at(0)
           .trigger('click')
         expect(openModalSpy).toHaveBeenCalledWith('release')
@@ -400,7 +400,7 @@ describe('ContentMenu.vue', () => {
         expect(
           wrapper
             .findAll('.ds-menu-item')
-            .filter((item) => item.text() === 'settings.name')
+            .filter(item => item.text() === 'settings.name')
             .at(0)
             .find('span.ds-menu-item-link')
             .attributes('to'),
@@ -418,7 +418,7 @@ describe('ContentMenu.vue', () => {
         })
         wrapper
           .findAll('.ds-menu-item')
-          .filter((item) => item.text() === 'settings.muted-users.mute')
+          .filter(item => item.text() === 'settings.muted-users.mute')
           .at(0)
           .trigger('click')
         expect(wrapper.emitted('mute')).toEqual([
@@ -442,7 +442,7 @@ describe('ContentMenu.vue', () => {
         })
         wrapper
           .findAll('.ds-menu-item')
-          .filter((item) => item.text() === 'settings.muted-users.unmute')
+          .filter(item => item.text() === 'settings.muted-users.unmute')
           .at(0)
           .trigger('click')
         expect(wrapper.emitted('unmute')).toEqual([

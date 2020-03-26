@@ -2,13 +2,13 @@ import { shallowMount } from '@vue/test-utils'
 import SearchPost from './SearchPost.vue'
 
 const localVue = global.localVue
-localVue.filter('dateTime', (d) => d)
+localVue.filter('dateTime', d => d)
 
 describe('SearchPost.vue', () => {
   let mocks, wrapper, propsData
   beforeEach(() => {
     mocks = {
-      $t: jest.fn((string) => string),
+      $t: jest.fn(string => string),
     }
     propsData = {
       option: {
@@ -38,7 +38,7 @@ describe('SearchPost.vue', () => {
         wrapper
           .find('.search-post-meta')
           .findAll('span')
-          .filter((item) => item.text() === '3')
+          .filter(item => item.text() === '3')
           .exists(),
       ).toBe(true)
     })
@@ -48,7 +48,7 @@ describe('SearchPost.vue', () => {
         wrapper
           .find('.search-post-meta')
           .findAll('span')
-          .filter((item) => item.text() === '6')
+          .filter(item => item.text() === '6')
           .exists(),
       ).toBe(true)
     })

@@ -15,11 +15,19 @@ describe('ProgessBar.vue', () => {
 
   describe('given only goal and progress', () => {
     it('renders no title', () => {
-      expect(Wrapper().find('.progress-bar__title').exists()).toBe(false)
+      expect(
+        Wrapper()
+          .find('.progress-bar__title')
+          .exists(),
+      ).toBe(false)
     })
 
     it('renders no label', () => {
-      expect(Wrapper().find('.progress-bar__label').exists()).toBe(false)
+      expect(
+        Wrapper()
+          .find('.progress-bar__label')
+          .exists(),
+      ).toBe(false)
     })
 
     it('calculates the progress bar width as a percentage of the goal', () => {
@@ -33,7 +41,11 @@ describe('ProgessBar.vue', () => {
     })
 
     it('renders the title', () => {
-      expect(Wrapper().find('.progress-bar__title').text()).toBe('This is progress')
+      expect(
+        Wrapper()
+          .find('.progress-bar__title')
+          .text(),
+      ).toBe('This is progress')
     })
   })
 
@@ -43,7 +55,11 @@ describe('ProgessBar.vue', () => {
     })
 
     it('renders the label', () => {
-      expect(Wrapper().find('.progress-bar__label').text()).toBe('Going well')
+      expect(
+        Wrapper()
+          .find('.progress-bar__label')
+          .text(),
+      ).toBe('Going well')
     })
   })
 })

@@ -6,7 +6,7 @@ import faker from 'faker'
 
 helpers.init()
 
-const commentMock = (fields) => {
+const commentMock = fields => {
   return {
     id: faker.random.uuid(),
     title: faker.lorem.sentence(),

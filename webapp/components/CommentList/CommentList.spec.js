@@ -6,7 +6,7 @@ import Vue from 'vue'
 
 const localVue = global.localVue
 
-localVue.filter('truncate', (string) => string)
+localVue.filter('truncate', string => string)
 localVue.directive('scrollTo', jest.fn())
 
 config.stubs['v-popover'] = '<span><slot /></span>'
@@ -42,8 +42,8 @@ describe('CommentList.vue', () => {
       mocks = {
         $t: jest.fn(),
         $filters: {
-          truncate: (a) => a,
-          removeHtml: (a) => a,
+          truncate: a => a,
+          removeHtml: a => a,
         },
         $scrollTo: jest.fn(),
         $route: { hash: '' },

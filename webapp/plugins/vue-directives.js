@@ -15,7 +15,7 @@ export default ({ app }) => {
 
   Vue.directive('router-link', {
     bind: (el, binding) => {
-      binding.clickEventListener = (e) => {
+      binding.clickEventListener = e => {
         if (!e.metaKey && !e.ctrlKey) {
           e.preventDefault()
           app.router.push(el.getAttribute('href'))

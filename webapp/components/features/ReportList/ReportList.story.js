@@ -158,9 +158,9 @@ export const reports = [
     ],
   },
 ]
-const unreviewedReports = reports.filter((report) => !report.reviewed)
-const reviewedReports = reports.filter((report) => report.reviewed)
-const closedReports = reports.filter((report) => report.closed)
+const unreviewedReports = reports.filter(report => !report.reviewed)
+const reviewedReports = reports.filter(report => report.reviewed)
+const closedReports = reports.filter(report => report.closed)
 const filterOptions = [
   { label: 'All', value: reports },
   { label: 'Unreviewed', value: unreviewedReports },

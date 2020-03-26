@@ -1,4 +1,4 @@
-export default function (to, from, savedPosition) {
+export default function(to, from, savedPosition) {
   if (savedPosition) return savedPosition
 
   // Edge case: If you click on a notification from a comment and then on the

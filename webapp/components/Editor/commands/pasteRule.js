@@ -1,11 +1,11 @@
 import { Plugin } from 'prosemirror-state'
 import { Slice, Fragment } from 'prosemirror-model'
 
-export default function (regexp, type, getAttrs) {
-  const handler = (fragment) => {
+export default function(regexp, type, getAttrs) {
+  const handler = fragment => {
     const nodes = []
 
-    fragment.forEach((child) => {
+    fragment.forEach(child => {
       if (child.isText) {
         const { text } = child
         let pos = 0
@@ -43,7 +43,7 @@ export default function (regexp, type, getAttrs) {
 
   return new Plugin({
     props: {
-      transformPasted: (slice) => new Slice(handler(slice.content), slice.openStart, slice.openEnd),
+      transformPasted: slice => new Slice(handler(slice.content), slice.openStart, slice.openEnd),
     },
   })
 }

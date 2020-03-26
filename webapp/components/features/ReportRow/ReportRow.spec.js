@@ -14,7 +14,7 @@ describe('ReportRow', () => {
   beforeEach(() => {
     propsData = {}
     mocks = {
-      $t: jest.fn((string) => string),
+      $t: jest.fn(string => string),
     }
     stubs = {
       NuxtLink: RouterLinkStub,
@@ -62,7 +62,7 @@ describe('ReportRow', () => {
       it('renders a decided text', () => {
         const decidedTitle = wrapper
           .findAll('.title')
-          .filter((title) => title.text() === 'moderation.reports.decided')
+          .filter(title => title.text() === 'moderation.reports.decided')
         expect(decidedTitle.exists()).toBe(true)
       })
     })
@@ -85,7 +85,12 @@ describe('ReportRow', () => {
           wrapper = Wrapper()
         })
         it('renders the disabled icon', () => {
-          expect(wrapper.find('.status-line').find(BaseIcon).props().name).toEqual('eye-slash')
+          expect(
+            wrapper
+              .find('.status-line')
+              .find(BaseIcon)
+              .props().name,
+          ).toEqual('eye-slash')
         })
 
         it('renders its current status', () => {
@@ -99,7 +104,12 @@ describe('ReportRow', () => {
           wrapper = Wrapper()
         })
         it('renders the enabled icon', () => {
-          expect(wrapper.find('.status-line').find(BaseIcon).props().name).toEqual('eye')
+          expect(
+            wrapper
+              .find('.status-line')
+              .find(BaseIcon)
+              .props().name,
+          ).toEqual('eye')
         })
 
         it('renders its current status', () => {

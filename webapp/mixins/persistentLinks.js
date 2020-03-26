@@ -1,7 +1,7 @@
-export default function (options = {}) {
+export default function(options = {}) {
   const { queryId, querySlug, path, message = 'Page not found.' } = options
   return {
-    asyncData: async (context) => {
+    asyncData: async context => {
       const {
         params: { id, slug },
         redirect,

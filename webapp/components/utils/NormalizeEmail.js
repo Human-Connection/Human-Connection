@@ -1,6 +1,6 @@
 import { normalizeEmail } from 'validator'
 
-export default (email) =>
+export default email =>
   normalizeEmail(email, {
     // gmail_remove_dots: false, default
     gmail_remove_subaddress: false,

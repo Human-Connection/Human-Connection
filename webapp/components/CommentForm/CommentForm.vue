@@ -104,7 +104,7 @@ export default {
       this.disabled = true
       this.$apollo
         .mutate(mutateParams)
-        .then((res) => {
+        .then(res => {
           this.loading = false
           if (!this.update) {
             const {
@@ -125,7 +125,7 @@ export default {
             this.closeEditWindow()
           }
         })
-        .catch((err) => {
+        .catch(err => {
           this.$toast.error(err.message)
         })
     },

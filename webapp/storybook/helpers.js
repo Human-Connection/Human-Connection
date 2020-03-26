@@ -25,7 +25,7 @@ const helpers = {
     Vue.i18n.fallback('en')
 
     const { plugins = [] } = options
-    plugins.forEach((plugin) => Vue.use(plugin))
+    plugins.forEach(plugin => Vue.use(plugin))
   },
   store: new Vuex.Store({
     modules: {

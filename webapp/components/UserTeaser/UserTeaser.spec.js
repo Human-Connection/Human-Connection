@@ -3,7 +3,7 @@ import UserTeaser from './UserTeaser.vue'
 import Vuex from 'vuex'
 
 const localVue = global.localVue
-const filter = jest.fn((str) => str)
+const filter = jest.fn(str => str)
 
 localVue.filter('truncate', filter)
 

@@ -34,7 +34,7 @@ module.exports = async ({ config, mode }) => {
 
   // load svgs with vue-svg-loader instead of file-loader
   const rule = config.module.rules.find(
-    (r) =>
+    r =>
       r.test && r.test.toString().includes('svg') && r.loader && r.loader.includes('file-loader'),
   )
   rule.test = /\.(ico|jpg|jpeg|png|gif|eot|otf|webp|ttf|woff|woff2|cur|ani)(\?.*)?$/

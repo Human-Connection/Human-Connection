@@ -48,9 +48,9 @@ describe('PostIndex', () => {
       mutations,
     })
     mocks = {
-      $t: (key) => key,
+      $t: key => key,
       $filters: {
-        truncate: (a) => a,
+        truncate: a => a,
         removeLinks: jest.fn(),
       },
       $i18n: {
@@ -120,7 +120,10 @@ describe('PostIndex', () => {
       })
 
       it('calls store when using order by menu', () => {
-        wrapper.findAll('li').at(0).trigger('click')
+        wrapper
+          .findAll('li')
+          .at(0)
+          .trigger('click')
         expect(mutations['posts/SELECT_ORDER']).toHaveBeenCalledWith({}, 'createdAt_asc')
       })
     })

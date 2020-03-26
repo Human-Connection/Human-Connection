@@ -98,7 +98,7 @@ export default {
             notifications: unionBy(
               [newNotification],
               previousResult.notifications,
-              (notification) => notification.id,
+              notification => notification.id,
             ).sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)),
           }
         },

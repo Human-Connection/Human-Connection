@@ -110,11 +110,11 @@
           :loading="$apollo.loading"
           :disabled="
             errors ||
-            !termsAndConditionsConfirmed ||
-            !dataPrivacy ||
-            !minimumAge ||
-            !noCommercial ||
-            !noPolitical
+              !termsAndConditionsConfirmed ||
+              !dataPrivacy ||
+              !minimumAge ||
+              !noCommercial ||
+              !noPolitical
           "
         >
           {{ $t('actions.save') }}

@@ -10,7 +10,7 @@ describe('DropdownFilter.vue', () => {
   beforeEach(() => {
     propsData = {}
     mocks = {
-      $t: jest.fn((a) => a),
+      $t: jest.fn(a => a),
     }
   })
 
@@ -43,7 +43,7 @@ describe('DropdownFilter.vue', () => {
         wrapper.find('.dropdown-filter').trigger('click')
         allLink = wrapper
           .findAll('.dropdown-menu-item')
-          .at(propsData.filterOptions.findIndex((option) => option.label === 'All'))
+          .at(propsData.filterOptions.findIndex(option => option.label === 'All'))
       })
 
       it('displays a link for All', () => {
@@ -53,21 +53,21 @@ describe('DropdownFilter.vue', () => {
       it('displays a link for Read', () => {
         const readLink = wrapper
           .findAll('.dropdown-menu-item')
-          .at(propsData.filterOptions.findIndex((option) => option.label === 'Read'))
+          .at(propsData.filterOptions.findIndex(option => option.label === 'Read'))
         expect(readLink.text()).toEqual('Read')
       })
 
       it('displays a link for Unread', () => {
         const unreadLink = wrapper
           .findAll('.dropdown-menu-item')
-          .at(propsData.filterOptions.findIndex((option) => option.label === 'Unread'))
+          .at(propsData.filterOptions.findIndex(option => option.label === 'Unread'))
         expect(unreadLink.text()).toEqual('Unread')
       })
 
       it('clicking on menu item emits filter', () => {
         allLink.trigger('click')
         expect(wrapper.emitted().filter[0]).toEqual(
-          propsData.filterOptions.filter((option) => option.label === 'All'),
+          propsData.filterOptions.filter(option => option.label === 'All'),
         )
       })
     })

@@ -1,5 +1,5 @@
 export default ({ $axios, app }) => {
-  $axios.onRequest((config) => {
+  $axios.onRequest(config => {
     /* eslint-disable-next-line no-console */
     console.log(Object.keys(app))
     // add current ui language

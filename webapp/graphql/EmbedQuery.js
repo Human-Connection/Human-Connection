@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 
-export default function () {
+export default function() {
   return gql`
     query($url: String!) {
       embed(url: $url) {

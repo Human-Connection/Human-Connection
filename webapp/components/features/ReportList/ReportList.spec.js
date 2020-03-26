@@ -25,7 +25,7 @@ describe('ReportList', () => {
       },
       $t: jest.fn(),
       $toast: {
-        error: jest.fn((message) => message),
+        error: jest.fn(message => message),
       },
     }
     mutations = {

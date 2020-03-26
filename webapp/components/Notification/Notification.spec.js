@@ -16,7 +16,7 @@ describe('Notification', () => {
   beforeEach(() => {
     propsData = {}
     mocks = {
-      $t: (key) => key,
+      $t: key => key,
     }
     stubs = {
       NuxtLink: RouterLinkStub,

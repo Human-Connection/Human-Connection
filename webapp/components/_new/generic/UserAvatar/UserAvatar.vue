@@ -18,7 +18,7 @@ export default {
     size: {
       type: String,
       required: false,
-      validator: (value) => {
+      validator: value => {
         return value.match(/(small|large)/)
       },
     },
@@ -34,7 +34,11 @@ export default {
     userInitials() {
       if (this.isAnonymous) return ''
 
-      return this.user.name.match(/\b\w/g).join('').substring(0, 3).toUpperCase()
+      return this.user.name
+        .match(/\b\w/g)
+        .join('')
+        .substring(0, 3)
+        .toUpperCase()
     },
   },
 }

@@ -17,7 +17,7 @@ describe('ReleaseModal.vue', () => {
     }
     mocks = {
       $filters: {
-        truncate: (a) => a,
+        truncate: a => a,
       },
       $toast: {
         success: jest.fn(),
@@ -25,7 +25,10 @@ describe('ReleaseModal.vue', () => {
       },
       $t: jest.fn(),
       $apollo: {
-        mutate: jest.fn().mockResolvedValueOnce().mockRejectedValue({ message: 'Not Authorised!' }),
+        mutate: jest
+          .fn()
+          .mockResolvedValueOnce()
+          .mockRejectedValue({ message: 'Not Authorised!' }),
       },
       location: {
         reload: jest.fn(),

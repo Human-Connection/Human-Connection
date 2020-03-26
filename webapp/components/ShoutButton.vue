@@ -36,7 +36,7 @@ export default {
   watch: {
     isShouted: {
       immediate: true,
-      handler: function (shouted) {
+      handler: function(shouted) {
         this.shouted = shouted
       },
     },
@@ -66,7 +66,7 @@ export default {
             id: this.postId,
           },
         })
-        .then((res) => {
+        .then(res => {
           if (res && res.data) {
             this.$emit('update', shout)
           }

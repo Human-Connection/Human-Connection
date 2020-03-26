@@ -26,7 +26,7 @@ export default class Embed extends Node {
         // source: https://stackoverflow.com/a/3809435
         /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/g,
         type,
-        (url) => ({ dataEmbedUrl: url }),
+        url => ({ dataEmbedUrl: url }),
       ),
     ]
   }
@@ -43,12 +43,12 @@ export default class Embed extends Node {
       parseDOM: [
         {
           tag: 'a[href].embed',
-          getAttrs: (dom) => ({
+          getAttrs: dom => ({
             dataEmbedUrl: dom.getAttribute('href'),
           }),
         },
       ],
-      toDOM: (node) => [
+      toDOM: node => [
         'a',
         {
           href: node.attrs.dataEmbedUrl,

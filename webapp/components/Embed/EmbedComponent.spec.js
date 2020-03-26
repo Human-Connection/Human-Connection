@@ -17,7 +17,7 @@ describe('EmbedComponent.vue', () => {
 
   beforeEach(() => {
     mocks = {
-      $t: (a) => a,
+      $t: a => a,
       $apollo: {
         mutate: jest
           .fn()

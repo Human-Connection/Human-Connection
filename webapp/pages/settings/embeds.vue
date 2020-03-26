@@ -58,7 +58,7 @@ export default {
     }
   },
   mounted() {
-    axios.get('/api/providers.json').then((response) => {
+    axios.get('/api/providers.json').then(response => {
       this.providers = response.data
     })
     if (this.currentUser.allowEmbedIframes) this.disabled = this.currentUser.allowEmbedIframes

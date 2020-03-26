@@ -16,7 +16,7 @@ describe('SearchField.vue', () => {
       $apollo: {
         query: jest.fn(),
       },
-      $t: jest.fn((string) => string),
+      $t: jest.fn(string => string),
     }
     getters = { 'auth/isModerator': () => false }
     wrapper = Wrapper()
