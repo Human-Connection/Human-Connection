@@ -6,7 +6,7 @@
       </ds-text>
     </ds-space>
     <template v-else>
-      <p class="no-connections-message">{{ userName }} {{ $t(`profile.network.${type}Nobody`) }}</p>
+      <p class="no-connections">{{ userName }} {{ $t(`profile.network.${type}Nobody`) }}</p>
     </template>
     <template v-if="this.connections && this.connections.length <= 7">
       <ds-space v-for="follow in uniq(this.connections)" :key="follow.id" margin="x-small">
@@ -143,7 +143,7 @@ export default {
   max-height: 424px;
   width: auto;
 
-  > .no-connections-message {
+  > .no-connections {
     text-align: center;
     color: $text-color-soft;
   }
