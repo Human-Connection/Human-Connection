@@ -44,7 +44,6 @@
       </div>
       <ds-space margin="x-small">
         <ds-input
-          ref="filter"
           @input.native="setFilter"
           :placeholder="filter"
           v-focus="true"
@@ -142,7 +141,7 @@ export default {
 .hc-connections {
   position: relative;
   max-height: 424px;
-  width: 240px;
+  width: auto;
 
   > .no-connections-message {
     text-align: center;
