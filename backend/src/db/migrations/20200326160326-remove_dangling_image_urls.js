@@ -30,7 +30,7 @@ export async function up(next) {
       `
       MATCH(image:Image)
       WHERE image.url IN $danglingUrls
-      REMOVE image.url
+      DETACH DELETE image
     `,
       { danglingUrls },
     )
