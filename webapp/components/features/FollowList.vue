@@ -1,5 +1,5 @@
 <template>
-  <base-card style="position: relative; max-height: 424px;">
+  <base-card class="hc-connections">
     <ds-space v-if="this.connections && this.connections.length" margin="x-small">
       <ds-text tag="h5" color="soft">
         {{ userName | truncate(15) }} {{ $t(`profile.network.${type}`) }}
@@ -8,16 +8,6 @@
     <template v-else>
       <p class="no-connections-message">{{ userName }} {{ $t(`profile.network.${type}Nobody`) }}</p>
     </template>
-    <ds-space v-if="this.connections && this.connections.length > 7" margin="x-small">
-      <ds-input
-        ref="filter"
-        @input.native="setFilter"
-        placeholder="filter"
-        v-focus="true"
-        size="small"
-        icon="filter"
-      />
-    </ds-space>
     <template v-if="this.connections && this.connections.length <= 7">
       <ds-space v-for="follow in uniq(this.connections)" :key="follow.id" margin="x-small">
         <!-- TODO: find better solution for rendering errors -->
@@ -47,6 +37,16 @@
           </client-only>
         </ds-space>
       </div>
+      <ds-space margin="x-small">
+        <ds-input
+          ref="filter"
+          @input.native="setFilter"
+          :placeholder="filter"
+          v-focus="true"
+          size="small"
+          icon="filter"
+        />
+      </ds-space>
     </template>
   </base-card>
 </template>
@@ -131,12 +131,20 @@ export default {
 </script>
 
 <style lang="scss">
-.no-connections-message {
-  text-align: center;
-  opacity: 0.5;
-}
-.overflow-container {
-  max-height: 300px;
-  overflow-y: auto;
+.hc-connections {
+  position: relative;
+  max-height: 424px;
+  width: 240px;
+
+  > .no-connections-message {
+    text-align: center;
+    color: $text-color-soft;
+  }
+
+  > .overflow-container {
+    height: $size-avatar-base * 7;
+    margin-top: -8px;
+    overflow-y: auto;
+  }
 }
 </style>
