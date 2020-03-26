@@ -932,7 +932,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       [...Array(30).keys()].map(() => Factory.build('user')),
     )
     await Promise.all(
-      additionalUsers.map(async user => {
+      additionalUsers.map(async (user) => {
         await jennyRostock.relateTo(user, 'following')
         await user.relateTo(jennyRostock, 'following')
       }),
