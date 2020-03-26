@@ -194,6 +194,13 @@ export default {
         'X-API-TOKEN': process.env.BACKEND_TOKEN || 'NULL',
       },
     },
+    '/imgproxy': {
+      // make this configurable (nuxt-dotenv)
+      target: process.env.IMGPROXY_URI || 'http://localhost:8080',
+      pathRewrite: {
+        '^/imgproxy': '',
+      },
+    },
     '/api': {
       // make this configurable (nuxt-dotenv)
       target: process.env.GRAPHQL_URI || 'http://localhost:4000',
