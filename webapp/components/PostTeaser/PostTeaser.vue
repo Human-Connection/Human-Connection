@@ -12,7 +12,7 @@
       :highlight="isPinned"
     >
       <template v-if="post.image" #heroImage>
-        <img :src="post.image | proxyApiUrl" class="image" />
+        <img :src="post.image | proxyApiUrl" :srcSet="post.image | srcSet" class="image" />
       </template>
       <client-only>
         <user-teaser :user="post.author" :date-time="post.createdAt" />

@@ -5,6 +5,7 @@
     <img
       v-else
       :src="user.avatar | proxyApiUrl"
+      :srcSet="user.avatar | srcSet"
       class="image"
       @error="$event.target.style.display = 'none'"
     />

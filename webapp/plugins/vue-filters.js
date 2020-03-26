@@ -4,6 +4,22 @@ import accounting from 'accounting'
 import trunc from 'trunc-html'
 import { getDateFnsLocale } from '~/locales'
 
+export const proxyApiUrl = (input) => {
+  const url = input && (input.url || input)
+  if (!url) return url
+  return url.startsWith('/') ? url.replace('/', '/api/') : url
+}
+const IMGPROXY_URI = 'http://localhost:8080'
+const GRAPHQL_URI = 'http://backend:4000'
+const widths = [32,64,480,800]
+
+export const srcSet = ({url}) => {
+  return widths.map(width => {
+    const absoluteUrl = new URL(url, GRAPHQL_URI)
+    return `${IMGPROXY_URI}/insecure/fill/${width}/0/sm/0/plain/${absoluteUrl} ${width}w`
+  }).join(', ')
+}
+
 export default ({ app = {} }) => {
   app.$filters = Object.assign(app.$filters || {}, {
     date: (value, fmt = 'dd. MMM yyyy') => {
@@ -81,11 +97,8 @@ export default ({ app = {} }) => {
 
       return contentExcerpt
     },
-    proxyApiUrl: (input) => {
-      const url = input && (input.url || input)
-      if (!url) return url
-      return url.startsWith('/') ? url.replace('/', '/api/') : url
-    },
+    proxyApiUrl: proxyApiUrl,
+    srcSet: srcSet,
   })
 
   // add all methods as filters on each vue component

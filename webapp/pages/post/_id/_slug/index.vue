@@ -10,9 +10,9 @@
       }"
     >
       <template #heroImage v-if="post.image">
-        <img :src="post.image | proxyApiUrl" class="image" />
+        <img :src="post.image | proxyApiUrl" :srcSet="post.image | srcSet" class="image" />
         <aside v-show="post.image && post.image.sensitive" class="blur-toggle">
-          <img v-show="blurred" :src="post.image | proxyApiUrl" class="preview" />
+          <img v-show="blurred" :src="post.image | proxyApiUrl" :srcSet="post.image | srcSet" class="preview" />
           <base-button
             :icon="blurred ? 'eye' : 'eye-slash'"
             filled

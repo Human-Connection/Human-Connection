@@ -12,6 +12,7 @@
           <img
             v-if="formData.image"
             :src="formData.image | proxyApiUrl"
+            :srcSet="formData.image | srcSet"
             :class="['image', formData.imageBlurred && '--blur-image']"
           />
           <image-uploader
