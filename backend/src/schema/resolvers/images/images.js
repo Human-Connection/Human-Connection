@@ -136,12 +136,12 @@ const s3Upload = async ({ createReadStream, uniqueFilename, mimetype }) => {
   return Location
 }
 
-const localFileDelete = async url => {
+const localFileDelete = async (url) => {
   const location = `public${url}`
   if (existsSync(location)) unlinkSync(location)
 }
 
-const s3Delete = async url => {
+const s3Delete = async (url) => {
   const s3 = new S3({ region, endpoint })
   let { pathname } = new URL(url, 'http://example.org') // dummy domain to avoid invalid URL error
   pathname = pathname.substring(1) // remove first character '/'
