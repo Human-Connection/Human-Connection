@@ -75,6 +75,40 @@ describe('FollowList.vue', () => {
         }),
       )
     })
+
+    describe('given a user without connections', () => {
+      ;['following', 'followedBy'].forEach((type) =>
+        describe(`and type=${type}`, () => {
+          let wrapper
+
+          beforeAll(() => {
+            wrapper = mount(FollowList, {
+              store,
+              mocks: {
+                $t: jest.fn().mockReturnValue('has no connections'),
+              },
+              localVue,
+              propsData: {
+                user: {
+                  ...propsData.user,
+                  followedByCount: 0,
+                  followingCount: 0,
+                  followedBy: [],
+                  following: [],
+                },
+                type,
+              },
+            })
+          })
+
+          it('displays ne no-follower message', () => {
+            expect(wrapper.find('.no-connections-message').text()).toBe(
+              `${user.name} ${wrapper.vm.$t(`profile.network.${type}Nobody`)}`,
+            )
+          })
+        }),
+      )
+    })
   })
 })
 

@@ -1,10 +1,13 @@
 <template>
-  <base-card style="position: relative; height: 424px;">
+  <base-card style="position: relative; max-height: 424px;">
     <ds-space v-if="this.connections && this.connections.length" margin="x-small">
       <ds-text tag="h5" color="soft">
         {{ userName | truncate(15) }} {{ $t(`profile.network.${type}`) }}
       </ds-text>
     </ds-space>
+    <template v-else>
+      <p class="no-connections-message">{{ userName }} {{ $t(`profile.network.${type}Nobody`) }}</p>
+    </template>
     <ds-space v-if="this.connections && this.connections.length > 7" margin="x-small">
       <ds-input
         ref="filter"
@@ -44,11 +47,6 @@
           </client-only>
         </ds-space>
       </div>
-    </template>
-    <template v-else>
-      <p style="text-align: center; opacity: 0.5;">
-        {{ userName }} {{ $t(`profile.network.${type}Nobody`) }}
-      </p>
     </template>
   </base-card>
 </template>
@@ -133,6 +131,10 @@ export default {
 </script>
 
 <style lang="scss">
+.no-connections-message {
+  text-align: center;
+  opacity: 0.5;
+}
 .overflow-container {
   max-height: 300px;
   overflow-y: auto;

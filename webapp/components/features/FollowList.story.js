@@ -84,6 +84,21 @@ const allConnectionsUser = {
 storiesOf('FollowList', module)
   .addDecorator(withA11y)
   .addDecorator(helpers.layout)
+  .add('without connections', () => {
+    const user = {
+      ...sevenConnectionsUser,
+      followedBy: [],
+      followedByCount: 0,
+    }
+    return {
+      components: { FollowList },
+      store: helpers.store,
+      data() {
+        return { user }
+      },
+      template: `<follow-list :user="user" type="followedBy" />`,
+    }
+  })
   .add('with up to 7 connections', () => {
     const user = sevenConnectionsUser
     return {
@@ -94,7 +109,6 @@ storiesOf('FollowList', module)
           user,
         }
       },
-
       template: `<follow-list :user="user" type="followedBy" />`,
     }
   })
@@ -109,7 +123,6 @@ storiesOf('FollowList', module)
           user,
         }
       },
-
       template: `<follow-list :user="user" type="followedBy" />`,
     }
   })
