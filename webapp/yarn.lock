@@ -3962,6 +3962,18 @@ apollo-server-types@^0.2.5:
     apollo-server-caching "^0.5.0"
     apollo-server-env "^2.4.3"
 
+apollo-storybook-core@^0.5.4:
+  version "0.5.4"
+  resolved "https://registry.yarnpkg.com/apollo-storybook-core/-/apollo-storybook-core-0.5.4.tgz#8357861cfb127ac9a9d0afc4d87fdf5ff97f39b2"
+  integrity sha512-5h+Yr4Pt2foGJi078gmjlQZ4mj8NBNravjjyhFOrfXTDQd2ODgWn2cwoSGJcpp+iZdkGwwlFkZbyJ1nBTsxukg==
+
+apollo-storybook-vue@^0.0.6:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/apollo-storybook-vue/-/apollo-storybook-vue-0.0.6.tgz#b8db863a18d483ad501065dad62cebda50c581ca"
+  integrity sha512-EUQDyE1uFAOuJRs0aSmyWivd8FsIocu7YshufiFsYgI87vzU3sJ8YZu++k8Y89O7GkVJME0gnOW/tMxXZgKjJA==
+  dependencies:
+    apollo-storybook-core "^0.5.4"
+
 apollo-tracing@^0.8.5:
   version "0.8.5"
   resolved "https://registry.yarnpkg.com/apollo-tracing/-/apollo-tracing-0.8.5.tgz#f07c4584d95bcf750e44bfe9845e073b03774941"

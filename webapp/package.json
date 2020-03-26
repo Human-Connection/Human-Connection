@@ -108,6 +108,7 @@
     "@vue/eslint-config-prettier": "~6.0.0",
     "@vue/server-test-utils": "~1.0.0-beta.31",
     "@vue/test-utils": "~1.0.0-beta.31",
+    "apollo-storybook-vue": "^0.0.6",
     "async-validator": "^3.2.4",
     "babel-core": "~7.0.0-bridge.0",
     "babel-eslint": "~10.1.0",
