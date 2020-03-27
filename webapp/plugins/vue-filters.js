@@ -3,21 +3,25 @@ import format from 'date-fns/format'
 import accounting from 'accounting'
 import trunc from 'trunc-html'
 import { getDateFnsLocale } from '~/locales'
+import { widths } from '~/constants/images'
 
 export const proxyApiUrl = (input) => {
   const url = input && (input.url || input)
   if (!url) return url
   return url.startsWith('/') ? url.replace('/', '/api/') : url
 }
-const IMGPROXY_URI = 'http://localhost:8080'
-const GRAPHQL_URI = 'http://backend:4000'
-const widths = [32,64,480,800]
-
-export const srcSet = ({url}) => {
-  return widths.map(width => {
-    const absoluteUrl = new URL(url, GRAPHQL_URI)
-    return `${IMGPROXY_URI}/insecure/fill/${width}/0/sm/0/plain/${absoluteUrl} ${width}w`
-  }).join(', ')
+export const srcSet = (app) => {
+  const { $env } = app
+  const {
+    IMGPROXY_URI = 'http://localhost:8080',
+    GRAPHQL_URI = 'http://backend:4000',
+  } = $env
+  return ({url}) => {
+    return widths.map(width => {
+      const absoluteUrl = new URL(url, GRAPHQL_URI)
+      return `${IMGPROXY_URI}/insecure/fill/${width}/0/sm/0/plain/${absoluteUrl} ${width}w`
+    }).join(', ')
+  }
 }
 
 export default ({ app = {} }) => {
@@ -98,7 +102,7 @@ export default ({ app = {} }) => {
       return contentExcerpt
     },
     proxyApiUrl: proxyApiUrl,
-    srcSet: srcSet,
+    srcSet: srcSet(app),
   })
 
   // add all methods as filters on each vue component
