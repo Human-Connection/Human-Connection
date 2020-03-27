@@ -8,32 +8,27 @@
     <template v-else>
       <p class="no-connections">{{ userName }} {{ $t(`profile.network.${type}Nobody`) }}</p>
     </template>
-    <template v-if="this.connections && this.connections.length <= 7">
-      <ds-space v-for="follow in uniq(this.connections)" :key="follow.id" margin="x-small">
+    <template v-if="connections && connections.length <= 7">
+      <ds-space v-for="follow in uniq(connections)" :key="follow.id" margin="x-small">
         <!-- TODO: find better solution for rendering errors -->
         <client-only>
           <user-teaser :user="follow" />
         </client-only>
       </ds-space>
-      <ds-space v-if="this.allConnectionsCount - this.connections.length" margin="small">
-        <base-button
-          @click="fetchConnections"
-          :loading="this.isLoading"
-          size="small"
-          color="softer"
-        >
+      <ds-space v-if="allConnectionsCount - connections.length" margin="small">
+        <base-button @click="fetchConnections" :loading="isLoading" size="small" color="softer">
           {{
             $t('profile.network.andMore', {
-              number: this.allConnectionsCount - this.connections.length,
+              number: allConnectionsCount - connections.length,
             })
           }}
         </base-button>
       </ds-space>
     </template>
-    <template v-else-if="this.connections.length > 7">
+    <template v-else-if="connections.length > 7">
       <div class="overflow-container">
         <ds-space
-          v-for="follow in uniq(this.filteredConnections)"
+          v-for="follow in uniq(filteredConnections)"
           :key="follow.id"
           margin="x-small"
         >
@@ -138,7 +133,7 @@ export default {
 </script>
 
 <style lang="scss">
-.hc-connections {
+.follow-list {
   position: relative;
   max-height: 424px;
   width: auto;
