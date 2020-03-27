@@ -48,6 +48,11 @@ export const mutations = {
     delete filter.categories_some
     state.filter = filter
   },
+  RESET_EMOTIONS(state) {
+    const filter = clone(state.filter)
+    delete filter.emotions_some
+    state.filter = filter
+  },
   RESET_LANGUAGES(state) {
     const filter = clone(state.filter)
     delete filter.language_in

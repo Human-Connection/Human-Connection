@@ -160,12 +160,12 @@
   "editor": {
     "placeholder": "Napisz coś inspirującego..."
   },
-  "filter-menu": {
-    "title": "Twoja bańka filtrująca"
-  },
   "followButton": {
     "follow": "naśladować",
     "following": "w skutek"
+  },
+  "hashtags-filter": {
+    "title": "Twoja bańka filtrująca"
   },
   "login": {
     "copy": "Jeśli masz już konto Human Connection, zaloguj się tutaj.",

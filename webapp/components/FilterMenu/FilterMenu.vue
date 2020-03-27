@@ -1,36 +1,62 @@
 <template>
-  <base-card class="filter-menu">
-    <h2>{{ $t('filter-menu.hashtag-search', { hashtag }) }}</h2>
+  <dropdown ref="menu" placement="top-start" :offset="8" class="filter-menu">
     <base-button
-      icon="close"
-      circle
-      :title="this.$t('filter-menu.clearSearch')"
-      @click="clearSearch"
-    />
-  </base-card>
+      slot="default"
+      icon="filter"
+      :filled="filterActive"
+      :ghost="!filterActive"
+      slot-scope="{ toggleMenu }"
+      @click.prevent="toggleMenu()"
+    >
+      <base-icon class="dropdown-arrow" name="angle-down" />
+    </base-button>
+    <template slot="popover">
+      <div class="filter-menu-options">
+        <h2 class="title">{{ $t('filter-menu.filter-by') }}</h2>
+        <following-filter />
+        <categories-filter />
+        <emotions-filter />
+        <languages-filter />
+      </div>
+    </template>
+  </dropdown>
 </template>
 
 <script>
+import Dropdown from '~/components/Dropdown'
+import { mapGetters } from 'vuex'
+import FollowingFilter from './FollowingFilter'
+import CategoriesFilter from './CategoriesFilter'
+import EmotionsFilter from './EmotionsFilter'
+import LanguagesFilter from './LanguagesFilter'
+
 export default {
-  props: {
-    hashtag: {
-      type: String,
-      required: true,
-    },
+  components: {
+    Dropdown,
+    FollowingFilter,
+    CategoriesFilter,
+    EmotionsFilter,
+    LanguagesFilter,
   },
-  methods: {
-    clearSearch() {
-      this.$emit('clearSearch')
-    },
+  props: {
+    placement: { type: String },
+    offset: { type: [String, Number] },
+  },
+  computed: {
+    ...mapGetters({
+      filterActive: 'posts/isActive',
+    }),
   },
 }
 </script>
 
 <style lang="scss">
-.filter-menu.base-card {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: $space-x-small $space-base;
+.filter-menu-options {
+  max-width: $size-max-width-filter-menu;
+  padding: $space-small $space-x-small;
+
+  > .title {
+    font-size: $font-size-large;
+  }
 }
 </style>
