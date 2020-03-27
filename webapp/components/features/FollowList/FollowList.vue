@@ -1,6 +1,6 @@
 <template>
-  <base-card class="hc-connections">
-    <ds-space v-if="this.connections && this.connections.length" margin="x-small">
+  <base-card class="follow-list">
+    <ds-space v-if="connections && connections.length" margin="x-small">
       <ds-text tag="h5" color="soft">
         {{ userName | truncate(15) }} {{ $t(`profile.network.${type}`) }}
       </ds-text>

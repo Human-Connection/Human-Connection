@@ -73,7 +73,7 @@ describe('FollowList.vue', () => {
           it(`has a button to load all remaining users ${type}`, async () => {
             jest.useFakeTimers()
 
-            wrapper.find('button').trigger('click')
+            wrapper.find('.base-button').trigger('click')
             await jest.runAllTicks()
             await wrapper.vm.$nextTick()
 
@@ -112,7 +112,7 @@ describe('FollowList.vue', () => {
             })
           })
 
-          it('displays ne no-follower message', () => {
+          it('displays the no-follower message', () => {
             expect(wrapper.find('.no-connections').text()).toBe(
               `${propsData.user.name} ${wrapper.vm.$t()}`,
             )
