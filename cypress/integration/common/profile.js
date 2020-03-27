@@ -10,7 +10,7 @@ Then("I should be able to change my profile picture", () => {
   const avatarUpload = "onourjourney.png";
 
   cy.fixture(avatarUpload, "base64").then(fileContent => {
-    cy.get("#customdropzone").upload(
+    cy.get("#customdropzone").attachFile(
       { fileContent, fileName: avatarUpload, mimeType: "image/png" },
       { subjectType: "drag-n-drop", force: true }
     );
