@@ -89,9 +89,19 @@
         <ds-heading tag="h3" soft style="text-align: center; margin-bottom: 10px;">
           {{ $t('profile.network.title') }}
         </ds-heading>
-        <follow-list :user="user" type="followedBy" />
+        <follow-list
+          :user="user"
+          type="followedBy"
+          @fetchAllConnections="fetchAllConnections"
+          :loading="$apollo.loading"
+        />
         <ds-space />
-        <follow-list :user="user" type="following" />
+        <follow-list
+          :user="user"
+          type="following"
+          @fetchAllConnections="fetchAllConnections"
+          :loading="$apollo.loading"
+        />
         <ds-space v-if="user.socialMedia && user.socialMedia.length" margin="large">
           <base-card style="position: relative; height: auto;">
             <ds-space margin="x-small">
@@ -270,6 +280,8 @@ export default {
       tabActive: 'post',
       filter,
       followedByCountStartValue: 0,
+      followedByCount: 7,
+      followingCount: 7,
     }
   },
   computed: {
@@ -297,13 +309,6 @@ export default {
     userSlug() {
       const { slug } = this.user || {}
       return slug && `@${slug}`
-    },
-  },
-  watch: {
-    User(val) {
-      if (!val || !val.length) {
-        throw new Error('User not found!')
-      }
     },
   },
   methods: {
@@ -427,6 +432,9 @@ export default {
       this.user.followedByCurrentUser = followedByCurrentUser
       this.user.followedBy = followedBy
     },
+    fetchAllConnections(type) {
+      this[`${type}Count`] = Infinity
+    },
   },
   apollo: {
     profilePagePosts: {
@@ -451,7 +459,11 @@ export default {
         return UserQuery(this.$i18n)
       },
       variables() {
-        return { id: this.$route.params.id }
+        return {
+          id: this.$route.params.id,
+          followedByCount: this.followedByCount || 7,
+          followingCount: this.followingCount || 7,
+        }
       },
       fetchPolicy: 'cache-and-network',
     },

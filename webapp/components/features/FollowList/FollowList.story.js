@@ -1,7 +1,6 @@
-import Vue from 'vue'
 import { storiesOf } from '@storybook/vue'
 import { withA11y } from '@storybook/addon-a11y'
-import apolloStorybookDecorator from 'apollo-storybook-vue'
+import { action } from '@storybook/addon-actions'
 
 import helpers from '~/storybook/helpers'
 import FollowList from './FollowList.vue'
@@ -20,38 +19,9 @@ const allConnectionsUser = {
   followedBy: [...sevenConnectionsUser.followedBy, ...helpers.fakeUser(5)],
 }
 
-const mocks = {
-  Query: () => ({
-    User: () => [allConnectionsUser],
-  }),
-}
-const typeDefs = `
-  type User {
-    followedByCount: Int
-    followedBy(offset: Int): [User] 
-    name: String
-    slug: String
-    id: String
-  }
-  
-  type Query {
-    User(id: ID!): [User]
-  }
-  schema {
-    query: Query
-  }
-`
-
 storiesOf('FollowList', module)
   .addDecorator(withA11y)
   .addDecorator(helpers.layout)
-  .addDecorator(
-    apolloStorybookDecorator({
-      mocks,
-      typeDefs,
-      Vue,
-    }),
-  )
   .add('without connections', () => {
     const user = {
       ...sevenConnectionsUser,
@@ -77,7 +47,13 @@ storiesOf('FollowList', module)
           user,
         }
       },
-      template: `<follow-list :user="user" type="followedBy" />`,
+      methods: {
+        fetchAllConnections(type) {
+          this.user = allConnectionsUser
+          action('fetchAllConnections')(type, this.user)
+        },
+      },
+      template: `<follow-list :user="user" type="followedBy" @fetchAllConnections="fetchAllConnections"/>`,
     }
   })
 

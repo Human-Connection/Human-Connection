@@ -10,28 +10,49 @@ config.stubs['client-only'] = '<span><slot /></span>'
 config.stubs['ds-space'] = '<span><slot /></span>'
 config.stubs['nuxt-link'] = '<span><slot /></span>'
 
+const user = {
+  ...helpers.fakeUser()[0],
+  followedByCount: 12,
+  followingCount: 15,
+  followedBy: helpers.fakeUser(7),
+  following: helpers.fakeUser(7),
+}
+
+const allConnectionsUser = {
+  ...user,
+  followedBy: [
+    ...user.followedBy,
+    ...helpers.fakeUser(user.followedByCount - user.followedBy.length),
+  ],
+  following: [...user.following, ...helpers.fakeUser(user.followingCount - user.following.length)],
+}
+
+const noConnectionsUser = {
+  ...user,
+  followedByCount: 0,
+  followingCount: 0,
+  followedBy: [],
+  following: [],
+}
+
 describe('FollowList.vue', () => {
-  let store, mocks, getters, propsData
+  let store, getters
+  const Wrapper = (customProps) =>
+    mount(FollowList, {
+      store,
+      propsData: { user, ...customProps },
+      mocks: {
+        $t: jest.fn((str) => str),
+      },
+      localVue,
+    })
 
   beforeAll(() => {
-    mocks = {
-      $t: jest.fn(),
-    }
     getters = {
       'auth/user': () => {
         return {}
       },
       'auth/isModerator': () => false,
-    }
-    const [_user] = helpers.fakeUser()
-    propsData = {
-      user: {
-        ..._user,
-        followedByCount: 12,
-        followingCount: 15,
-        followedBy: helpers.fakeUser(7),
-        following: helpers.fakeUser(7),
-      },
     }
   })
 
@@ -42,88 +63,71 @@ describe('FollowList.vue', () => {
       })
     })
 
-    describe('given a user with connections', () => {
-      ;['following', 'followedBy'].forEach((type) =>
-        describe(`and type=${type}`, () => {
-          let wrapper
-          let queryMock
+    describe('given a user', () => {
+      describe('without connections', () => {
+        it('displays the followingNobody message', () => {
+          const wrapper = Wrapper({ user: noConnectionsUser })
+          expect(wrapper.find('.no-connections').text()).toBe(
+            `${noConnectionsUser.name} ${wrapper.vm.$t(`profile.network.followingNobody`)}`,
+          )
+        })
 
-          beforeAll(() => {
-            queryMock = jest.fn().mockResolvedValue({
-              data: { User: [{ [type]: additionalConnections[type] }] },
-            })
+        it('displays the followedByNobody message', () => {
+          const wrapper = Wrapper({ user: noConnectionsUser, type: 'followedBy' })
+          expect(wrapper.find('.no-connections').text()).toBe(
+            `${noConnectionsUser.name} ${wrapper.vm.$t(`profile.network.followedByNobody`)}`,
+          )
+        })
+      })
 
-            wrapper = mount(FollowList, {
-              store,
-              propsData: { ...propsData, type: type },
-              mocks: {
-                ...mocks,
-                $apollo: {
-                  query: queryMock,
-                },
-              },
-              localVue,
-            })
-          })
+      describe('with up to 7 loaded connections', () => {
+        let followingWrapper
+        let followedByWrapper
+        beforeAll(() => {
+          followingWrapper = Wrapper()
+          followedByWrapper = Wrapper({ type: 'followedBy' })
+        })
 
-          it(`shows the users ${type}`, () => {
-            expect(wrapper.findAll('.user-teaser').length).toEqual(propsData.user[type].length)
-          })
+        it(`renders the connections`, () => {
+          expect(followedByWrapper.findAll('.user-teaser').length).toEqual(user.followedBy.length)
+          expect(followingWrapper.findAll('.user-teaser').length).toEqual(user.following.length)
+        })
 
-          it(`has a button to load all remaining users ${type}`, async () => {
-            jest.useFakeTimers()
+        it(`has a button to load all remaining connections`, async () => {
+          followingWrapper.find('.base-button').trigger('click')
+          followedByWrapper.find('.base-button').trigger('click')
+          expect(followingWrapper.emitted('fetchAllConnections')).toBeTruthy()
+          expect(followedByWrapper.emitted('fetchAllConnections')).toBeTruthy()
+        })
+      })
 
-            wrapper.find('.base-button').trigger('click')
-            await jest.runAllTicks()
-            await wrapper.vm.$nextTick()
+      describe('with more than 7 loaded connections', () => {
+        let followingWrapper
+        let followedByWrapper
+        beforeAll(() => {
+          followingWrapper = Wrapper({ user: allConnectionsUser })
+          followedByWrapper = Wrapper({ user: allConnectionsUser, type: 'followedBy' })
+        })
 
-            expect(wrapper.vm.connections.length).toBe(propsData.user[`${type}Count`])
-            expect(queryMock).toHaveBeenCalledWith({
-              query: wrapper.vm.queries[type],
-              variables: { id: propsData.user.id },
-            })
-          })
-        }),
-      )
-    })
+        it('renders the connections', () => {
+          expect(followedByWrapper.findAll('.user-teaser')).toHaveLength(
+            allConnectionsUser.followedByCount,
+          )
+          expect(followingWrapper.findAll('.user-teaser')).toHaveLength(
+            allConnectionsUser.followingCount,
+          )
+        })
 
-    describe('given a user without connections', () => {
-      ;['following', 'followedBy'].forEach((type) =>
-        describe(`and type=${type}`, () => {
-          let wrapper
+        it('renders the user-teaser in an overflow-container', () => {
+          expect(followingWrapper.find('.overflow-container').is('div')).toBe(true)
+          expect(followedByWrapper.find('.overflow-container').is('div')).toBe(true)
+        })
 
-          beforeAll(() => {
-            wrapper = mount(FollowList, {
-              store,
-              mocks: {
-                $t: jest.fn().mockReturnValue('has no connections'),
-              },
-              localVue,
-              propsData: {
-                user: {
-                  ...propsData.user,
-                  followedByCount: 0,
-                  followingCount: 0,
-                  followedBy: [],
-                  following: [],
-                },
-                type,
-              },
-            })
-          })
-
-          it('displays the no-follower message', () => {
-            expect(wrapper.find('.no-connections').text()).toBe(
-              `${propsData.user.name} ${wrapper.vm.$t()}`,
-            )
-          })
-        }),
-      )
+        it('renders a filter text input', () => {
+          expect(followingWrapper.find('[name="followingFilter"]').is('input')).toBe(true)
+          expect(followedByWrapper.find('[name="followedByFilter"]').is('input')).toBe(true)
+        })
+      })
     })
   })
 })
-
-const additionalConnections = {
-  followedBy: helpers.fakeUser(5),
-  following: helpers.fakeUser(8),
-}

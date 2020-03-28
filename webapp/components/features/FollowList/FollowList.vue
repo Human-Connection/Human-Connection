@@ -9,14 +9,19 @@
       <p class="no-connections">{{ userName }} {{ $t(`profile.network.${type}Nobody`) }}</p>
     </template>
     <template v-if="connections && connections.length <= 7">
-      <ds-space v-for="follow in uniq(connections)" :key="follow.id" margin="x-small">
+      <ds-space v-for="connection in connections" :key="connection.id" margin="x-small">
         <!-- TODO: find better solution for rendering errors -->
         <client-only>
-          <user-teaser :user="follow" />
+          <user-teaser :user="connection" />
         </client-only>
       </ds-space>
       <ds-space v-if="allConnectionsCount - connections.length" margin="small">
-        <base-button @click="fetchConnections" :loading="isLoading" size="small" color="softer">
+        <base-button
+          @click="$emit('fetchAllConnections', type)"
+          :loading="loading"
+          size="small"
+          color="softer"
+        >
           {{
             $t('profile.network.andMore', {
               number: allConnectionsCount - connections.length,
@@ -27,13 +32,9 @@
     </template>
     <template v-else-if="connections.length > 7">
       <div class="overflow-container">
-        <ds-space
-          v-for="follow in uniq(filteredConnections)"
-          :key="follow.id"
-          margin="x-small"
-        >
+        <ds-space v-for="connection in filteredConnections" :key="connection.id" margin="x-small">
           <client-only>
-            <user-teaser :user="follow" />
+            <user-teaser :user="connection" />
           </client-only>
         </ds-space>
       </div>
@@ -44,6 +45,7 @@
           v-focus="true"
           size="small"
           icon="filter"
+          :name="`${type}Filter`"
         />
       </ds-space>
     </template>
@@ -51,9 +53,7 @@
 </template>
 
 <script>
-import uniqBy from 'lodash/uniqBy'
 import UserTeaser from '~/components/UserTeaser/UserTeaser'
-import { followedByQuery, followingQuery } from '~/graphql/User'
 
 export default {
   name: 'FollowerList',
@@ -63,16 +63,11 @@ export default {
   props: {
     user: { type: Object, default: null },
     type: { type: String, default: 'following' },
+    loading: { type: Boolean, default: false },
   },
   data() {
     return {
-      additionalConnections: [],
       filter: null,
-      isLoading: false,
-      queries: {
-        followedBy: followedByQuery,
-        following: followingQuery,
-      },
     }
   },
   computed: {
@@ -80,8 +75,11 @@ export default {
       const { name } = this.user || {}
       return name || this.$t('profile.userAnonym')
     },
+    allConnectionsCount() {
+      return this.user[`${this.type}Count`]
+    },
     connections() {
-      return [...this.user[this.type], ...this.additionalConnections]
+      return this.user[this.type]
     },
     filteredConnections() {
       if (!this.filter) {
@@ -107,26 +105,10 @@ export default {
 
       return fuzzyScores.map((score) => score.user)
     },
-    allConnectionsCount() {
-      return this.user[`${this.type}Count`]
-    },
   },
   methods: {
-    uniq(items, field = 'id') {
-      return uniqBy(items, field)
-    },
-    async fetchConnections() {
-      this.$set(this, 'isLoading', true)
-      const { data } = await this.$apollo.query({
-        query: this.queries[this.type],
-        variables: { id: this.user.id },
-        // neither result nor update are being called when defined here (?)
-      })
-      this.additionalConnections = data.User[0][this.type]
-      this.$set(this, 'isLoading', false)
-    },
     setFilter(evt) {
-      this.$set(this, 'filter', evt.target.value)
+      this.filter = evt.target.value
     },
   },
 }

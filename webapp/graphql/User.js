@@ -14,7 +14,7 @@ export default (i18n) => {
     ${userCountsFragment}
     ${locationAndBadgesFragment(lang)}
 
-    query User($id: ID!) {
+    query User($id: ID!, $followedByCount: Int, $followingCount: Int) {
       User(id: $id) {
         ...user
         ...userCounts
@@ -26,12 +26,12 @@ export default (i18n) => {
         isMuted
         isBlocked
         blocked
-        following(first: 7) {
+        following(first: $followingCount) {
           ...user
           ...userCounts
           ...locationAndBadges
         }
-        followedBy(first: 7) {
+        followedBy(first: $followedByCount) {
           ...user
           ...userCounts
           ...locationAndBadges
@@ -279,30 +279,6 @@ export const currentUserQuery = gql`
       socialMedia {
         id
         url
-      }
-    }
-  }
-`
-
-export const followedByQuery = gql`
-  query($id: ID!) {
-    User(id: $id) {
-      followedBy(offset: 7) {
-        id
-        slug
-        name
-      }
-    }
-  }
-`
-
-export const followingQuery = gql`
-  query($id: ID!) {
-    User(id: $id) {
-      following(offset: 7) {
-        id
-        slug
-        name
       }
     }
   }
