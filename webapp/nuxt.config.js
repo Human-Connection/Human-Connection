@@ -10,7 +10,6 @@ export const envWhitelist = [
   'PUBLIC_REGISTRATION',
   'WEBSOCKETS_URI',
   'GRAPHQL_URI',
-  'IMGPROXY_URI',
 ]
 const dev = process.env.NODE_ENV !== 'production'
 

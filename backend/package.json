@@ -66,6 +66,7 @@
     "graphql-tag": "~2.10.3",
     "helmet": "~3.22.0",
     "ioredis": "^4.16.1",
+    "imgproxy": "^0.1.2",
     "jsonwebtoken": "~8.5.1",
     "linkifyjs": "~2.1.8",
     "lodash": "~4.17.14",

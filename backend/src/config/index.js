@@ -31,6 +31,9 @@ const {
   REDIS_DOMAIN,
   REDIS_PORT,
   REDIS_PASSWORD,
+  IMGPROXY_URI = 'http://localhost:8080',
+  IMGPROXY_KEY,
+  IMGPROXY_SALT,
 } = env
 
 export const requiredConfigs = {
@@ -46,6 +49,12 @@ if (require.resolve) {
       throw new Error(`ERROR: "${entry[0]}" env variable is missing.`)
     }
   })
+}
+
+export const imgproxyConfigs = {
+  IMGPROXY_URI,
+  IMGPROXY_KEY,
+  IMGPROXY_SALT,
 }
 
 export const smtpConfigs = {
@@ -92,4 +101,5 @@ export default {
   ...sentryConfigs,
   ...redisConfigs,
   ...s3Configs,
+  ...imgproxyConfigs,
 }

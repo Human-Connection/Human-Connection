@@ -7,6 +7,7 @@ export const userFragment = gql`
     name
     avatar {
       url
+      w120: url(width: 120)
     }
     disabled
     deleted
@@ -49,6 +50,9 @@ export const postFragment = gql`
     language
     image {
       url
+      w320: url(width: 320)
+      w640: url(width: 640)
+      w1024: url(width: 1024)
       sensitive
       aspectRatio
     }

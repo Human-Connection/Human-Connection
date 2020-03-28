@@ -1,7 +1,7 @@
 <template>
   <div :class="[badges.length === 2 && 'hc-badges-dual']" class="hc-badges">
     <div v-for="badge in badges" :key="badge.id" class="hc-badge-container">
-      <img :title="badge.key" :src="badge.icon | proxyApiUrl" class="hc-badge" />
+      <img :title="badge.key" :src="`/img/badges/${badge.id}.svg`" class="hc-badge" />
     </div>
   </div>
 </template>

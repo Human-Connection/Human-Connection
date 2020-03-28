@@ -2,19 +2,18 @@
   <div :class="['user-avatar', size && `--${this.size}`]">
     <span class="initials">{{ userInitials }}</span>
     <base-icon v-if="isAnonymous" name="eye-slash" />
-    <img
-      v-else
-      :src="user.avatar | proxyApiUrl"
-      :srcSet="user.avatar | srcSet"
-      class="image"
-      @error="$event.target.style.display = 'none'"
-    />
+    <responsive-image v-else :image="user.avatar" class="image" sizes="120px" />
   </div>
 </template>
 
 <script>
+import ResponsiveImage from '~/components/_new/generic/ResponsiveImage/ResponsiveImage'
+
 export default {
   name: 'UserAvatar',
+  components: {
+    ResponsiveImage,
+  },
   props: {
     size: {
       type: String,

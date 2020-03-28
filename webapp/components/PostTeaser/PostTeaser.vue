@@ -12,7 +12,7 @@
       :highlight="isPinned"
     >
       <template v-if="post.image" #heroImage>
-        <img :src="post.image | proxyApiUrl" :srcSet="post.image | srcSet" class="image" />
+        <responsive-image :image="post.image" class="image" />
       </template>
       <client-only>
         <user-teaser :user="post.author" :date-time="post.createdAt" />
@@ -69,6 +69,7 @@ import UserTeaser from '~/components/UserTeaser/UserTeaser'
 import ContentMenu from '~/components/ContentMenu/ContentMenu'
 import HcCategory from '~/components/Category'
 import HcRibbon from '~/components/Ribbon'
+import ResponsiveImage from '~/components/_new/generic/ResponsiveImage/ResponsiveImage'
 import CounterIcon from '~/components/_new/generic/CounterIcon/CounterIcon'
 import { mapGetters } from 'vuex'
 import { postMenuModalsData, deletePostMutation } from '~/components/utils/PostHelpers'
@@ -81,6 +82,7 @@ export default {
     HcRibbon,
     ContentMenu,
     CounterIcon,
+    ResponsiveImage,
   },
   props: {
     post: {

@@ -10,9 +10,9 @@
       }"
     >
       <template #heroImage v-if="post.image">
-        <img :src="post.image | proxyApiUrl" :srcSet="post.image | srcSet" class="image" />
+        <responsive-image :image="post.image" class="image" />
         <aside v-show="post.image && post.image.sensitive" class="blur-toggle">
-          <img v-show="blurred" :src="post.image | proxyApiUrl" :srcSet="post.image | srcSet" class="preview" />
+          <responsive-image v-show="blurred" :image="post.image" class="preview" />
           <base-button
             :icon="blurred ? 'eye' : 'eye-slash'"
             filled
@@ -116,6 +116,7 @@ import UserTeaser from '~/components/UserTeaser/UserTeaser'
 import HcShoutButton from '~/components/ShoutButton.vue'
 import CommentForm from '~/components/CommentForm/CommentForm'
 import CommentList from '~/components/CommentList/CommentList'
+import ResponsiveImage from '~/components/_new/generic/ResponsiveImage/ResponsiveImage'
 import { postMenuModalsData, deletePostMutation } from '~/components/utils/PostHelpers'
 import PostQuery from '~/graphql/PostQuery'
 import HcEmotions from '~/components/Emotions/Emotions'
@@ -128,6 +129,7 @@ export default {
     mode: 'out-in',
   },
   components: {
+    ResponsiveImage,
     HcCategory,
     HcHashtag,
     UserTeaser,
