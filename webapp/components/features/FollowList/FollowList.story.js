@@ -7,66 +7,66 @@ import FollowList from './FollowList.vue'
 
 helpers.init()
 
-const sevenConnectionsUser = {
+const user = {
   name: 'Jenny Rostock',
   id: 'u3',
   followedByCount: 12,
   followedBy: helpers.fakeUser(7),
+  followingCount: 28,
+  following: helpers.fakeUser(7),
 }
 
 const allConnectionsUser = {
-  ...sevenConnectionsUser,
-  followedBy: [...sevenConnectionsUser.followedBy, ...helpers.fakeUser(5)],
+  ...user,
+  followedBy: [...user.followedBy, ...helpers.fakeUser(5)],
+  following: [...user.following, ...helpers.fakeUser(21)],
+}
+
+const noConnectionsUser = {
+  ...user,
+  followedBy: [],
+  followedByCount: 0,
+  following: [],
+  followingCount: 0,
 }
 
 storiesOf('FollowList', module)
   .addDecorator(withA11y)
   .addDecorator(helpers.layout)
   .add('without connections', () => {
-    const user = {
-      ...sevenConnectionsUser,
-      followedBy: [],
-      followedByCount: 0,
-    }
     return {
       components: { FollowList },
       store: helpers.store,
       data() {
-        return { user }
+        return { user: noConnectionsUser }
       },
-      template: `<follow-list :user="user" type="followedBy" />`,
+      template: `<div><follow-list :user="user" /><div style="margin: 1rem"></div><follow-list :user="user" type="followedBy" /></div>`,
     }
   })
   .add('with up to 7 connections', () => {
-    const user = sevenConnectionsUser
     return {
       components: { FollowList },
       store: helpers.store,
       data() {
-        return {
-          user,
-        }
+        return { user: { ...user } }
       },
       methods: {
         fetchAllConnections(type) {
-          this.user = allConnectionsUser
+          this.user[type] = allConnectionsUser[type]
           action('fetchAllConnections')(type, this.user)
         },
       },
-      template: `<follow-list :user="user" type="followedBy" @fetchAllConnections="fetchAllConnections"/>`,
+      template: `<div style="display: flex; flex-wrap: wrap;"><div style="margin: 8px;"><follow-list :user="user" @fetchAllConnections="fetchAllConnections"/></div><div style="margin: 8px;"><follow-list :user="user" type="followedBy" @fetchAllConnections="fetchAllConnections"/></div></div>`,
     }
   })
 
-  .add('with more than 7 connections', () => {
-    const user = allConnectionsUser
+  .add('with all connections', () => {
     return {
       components: { FollowList },
       store: helpers.store,
       data() {
-        return {
-          user,
-        }
+        return { user: allConnectionsUser }
       },
-      template: `<follow-list :user="user" type="followedBy" />`,
+      template: `<div style="display: flex; flex-wrap: wrap;"><div style="margin: 8px;"><follow-list :user="user" /></div><div style="margin: 8px;"><follow-list :user="user" type="followedBy"/></div></div>`,
     }
   })

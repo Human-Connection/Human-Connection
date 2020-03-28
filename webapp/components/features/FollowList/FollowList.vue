@@ -117,7 +117,7 @@ export default {
 <style lang="scss">
 .follow-list {
   position: relative;
-  max-height: 424px;
+  max-height: ($size-avatar-small + $space-x-small * 2) * 8;
   width: auto;
 
   > .no-connections {
@@ -126,8 +126,8 @@ export default {
   }
 
   > .overflow-container {
-    height: $size-avatar-base * 7;
-    margin-top: -8px;
+    height: ($size-avatar-base + $space-x-small * 2) * 5;
+    margin-top: -$space-x-small;
     overflow-y: auto;
   }
 }
