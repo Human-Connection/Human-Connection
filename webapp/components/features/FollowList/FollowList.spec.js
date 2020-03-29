@@ -67,14 +67,14 @@ describe('FollowList.vue', () => {
       describe('without connections', () => {
         it('displays the followingNobody message', () => {
           const wrapper = Wrapper({ user: noConnectionsUser })
-          expect(wrapper.find('.no-connections').text()).toBe(
+          expect(wrapper.find('.nobody-message').text()).toBe(
             `${noConnectionsUser.name} ${wrapper.vm.$t(`profile.network.followingNobody`)}`,
           )
         })
 
         it('displays the followedByNobody message', () => {
           const wrapper = Wrapper({ user: noConnectionsUser, type: 'followedBy' })
-          expect(wrapper.find('.no-connections').text()).toBe(
+          expect(wrapper.find('.nobody-message').text()).toBe(
             `${noConnectionsUser.name} ${wrapper.vm.$t(`profile.network.followedByNobody`)}`,
           )
         })
@@ -118,9 +118,9 @@ describe('FollowList.vue', () => {
           )
         })
 
-        it('renders the user-teaser in an overflow-container', () => {
-          expect(followingWrapper.find('.overflow-container').is('div')).toBe(true)
-          expect(followedByWrapper.find('.overflow-container').is('div')).toBe(true)
+        it('renders the user-teasers in an overflow-container', () => {
+          expect(followingWrapper.find('.--overflow').is('div')).toBe(true)
+          expect(followedByWrapper.find('.--overflow').is('div')).toBe(true)
         })
 
         it('renders a filter text input', () => {

@@ -1,49 +1,43 @@
 <template>
   <base-card class="follow-list">
-    <ds-space v-if="connections && connections.length" margin="x-small">
-      <ds-text tag="h5" color="soft">
+    <template v-if="connections && connections.length">
+      <ds-text tag="h5" color="soft" class="spacer-x-small">
         {{ userName | truncate(15) }} {{ $t(`profile.network.${type}`) }}
       </ds-text>
-    </ds-space>
-    <template v-else>
-      <p class="no-connections">{{ userName }} {{ $t(`profile.network.${type}Nobody`) }}</p>
-    </template>
-    <template v-if="connections && connections.length <= 7">
-      <ds-space v-for="connection in connections" :key="connection.id" margin="x-small">
-        <user-teaser :user="connection" />
-      </ds-space>
-      <ds-space v-if="allConnectionsCount - connections.length" margin="small">
-        <base-button
-          @click="$emit('fetchAllConnections', type)"
-          :loading="loading"
-          size="small"
-          color="softer"
-        >
-          {{
-            $t('profile.network.andMore', {
-              number: allConnectionsCount - connections.length,
-            })
-          }}
-        </base-button>
-      </ds-space>
-    </template>
-    <template v-else-if="connections.length > 7">
-      <div class="overflow-container">
-        <ds-space v-for="connection in filteredConnections" :key="connection.id" margin="x-small">
-          <user-teaser :user="connection" />
-        </ds-space>
-      </div>
-      <ds-space margin="x-small">
-        <ds-input
-          @input.native="setFilter"
-          :placeholder="filter"
-          v-focus="true"
-          size="small"
-          icon="filter"
-          :name="`${type}Filter`"
+      <div :class="connectionsClass">
+        <user-teaser
+          v-for="connection in filteredConnections"
+          class="spacer-x-small"
+          :user="connection"
+          :key="connection.id"
         />
-      </ds-space>
+      </div>
+      <base-button
+        v-if="allConnectionsCount - connections.length"
+        @click="$emit('fetchAllConnections', type)"
+        :loading="loading"
+        size="small"
+        color="softer"
+        class="spacer-x-small"
+      >
+        {{
+          $t('profile.network.andMore', {
+            number: allConnectionsCount - connections.length,
+          })
+        }}
+      </base-button>
+      <ds-input
+        v-if="connections.length > 7"
+        @input.native="setFilter"
+        :placeholder="filter"
+        v-focus="true"
+        size="small"
+        icon="filter"
+        :name="`${type}Filter`"
+        class="spacer-x-small"
+      />
     </template>
+    <p v-else class="nobody-message">{{ userName }} {{ $t(`profile.network.${type}Nobody`) }}</p>
   </base-card>
 </template>
 
@@ -75,6 +69,10 @@ export default {
     },
     connections() {
       return this.user[this.type]
+    },
+    connectionsClass() {
+      const overflow = this.connections.length > 7 ? ' --overflow' : ''
+      return `connections${overflow}`
     },
     filteredConnections() {
       if (!this.filter) {
@@ -111,19 +109,25 @@ export default {
 
 <style lang="scss">
 .follow-list {
+  display: flex;
+  flex-direction: column;
   position: relative;
-  max-height: ($size-avatar-small + $space-x-small * 2) * 8;
+  //max-height: ($size-avatar-small + $space-x-small * 2) * 8;
   width: auto;
 
-  > .no-connections {
+  .connections.--overflow {
+    height: ($size-avatar-base + $space-x-small * 2) * 5;
+    margin-top: -$space-x-small;
+    overflow-y: auto;
+  }
+
+  .nobody-message {
     text-align: center;
     color: $text-color-soft;
   }
 
-  > .overflow-container {
-    height: ($size-avatar-base + $space-x-small * 2) * 5;
-    margin-top: -$space-x-small;
-    overflow-y: auto;
+  .spacer-x-small {
+    margin: $space-x-small 0;
   }
 }
 </style>
