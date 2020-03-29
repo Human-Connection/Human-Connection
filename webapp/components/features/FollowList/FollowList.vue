@@ -10,10 +10,7 @@
     </template>
     <template v-if="connections && connections.length <= 7">
       <ds-space v-for="connection in connections" :key="connection.id" margin="x-small">
-        <!-- TODO: find better solution for rendering errors -->
-        <client-only>
-          <user-teaser :user="connection" />
-        </client-only>
+        <user-teaser :user="connection" />
       </ds-space>
       <ds-space v-if="allConnectionsCount - connections.length" margin="small">
         <base-button
@@ -33,9 +30,7 @@
     <template v-else-if="connections.length > 7">
       <div class="overflow-container">
         <ds-space v-for="connection in filteredConnections" :key="connection.id" margin="x-small">
-          <client-only>
-            <user-teaser :user="connection" />
-          </client-only>
+          <user-teaser :user="connection" />
         </ds-space>
       </div>
       <ds-space margin="x-small">
