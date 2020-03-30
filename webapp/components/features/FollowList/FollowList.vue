@@ -42,6 +42,7 @@
 </template>
 
 <script>
+import { escape } from 'xregexp/xregexp-all.js'
 import UserTeaser from '~/components/UserTeaser/UserTeaser'
 
 export default {
@@ -79,8 +80,11 @@ export default {
         return this.connections
       }
 
+      // @example
+      //  this.filter = 'foo';
+      //  fuzzyExpression = /([^f]*f)([^o]*o)([^o]*o)/i
       const fuzzyExpression = new RegExp(
-        `${this.filter.split('').reduce((part, c) => `${part}[^${c}]*${c}`)}`,
+        `${this.filter.split('').reduce((expr, c) => `${expr}([^${escape(c)}]*${escape(c)})`, '')}`,
         'i',
       )
 
@@ -88,12 +92,21 @@ export default {
         .map((user) => {
           const match = user.name.match(fuzzyExpression)
 
+          if (!match) {
+            return false
+          }
+
+          let score = 1
+          for (let i = 1; i <= this.filter.length; i++) {
+            score *= match[i].length
+          }
+
           return {
             user,
-            score: match ? match[0].length * (match.index + 1) : -1,
+            score,
           }
         })
-        .filter((score) => score.score !== -1)
+        .filter(Boolean)
         .sort((a, b) => a.score - b.score)
 
       return fuzzyScores.map((score) => score.user)

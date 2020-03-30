@@ -5,6 +5,8 @@ import { action } from '@storybook/addon-actions'
 import helpers from '~/storybook/helpers'
 import FollowList from './FollowList.vue'
 
+import fuzzyFilterUser from './FollowList.story.json'
+
 helpers.init()
 
 const user = {
@@ -30,6 +32,12 @@ const noConnectionsUser = {
   followingCount: 0,
 }
 
+const wrapTemplates = (templates) => `
+<div style="display: flex; flex-wrap: wrap;">
+${templates.map((template) => `<div style="margin: 8px;">${template}</div>`).join('')}
+</div>
+`
+
 storiesOf('FollowList', module)
   .addDecorator(withA11y)
   .addDecorator(helpers.layout)
@@ -40,7 +48,10 @@ storiesOf('FollowList', module)
       data() {
         return { user: noConnectionsUser }
       },
-      template: `<div><follow-list :user="user" /><div style="margin: 1rem"></div><follow-list :user="user" type="followedBy" /></div>`,
+      template: wrapTemplates([
+        '<follow-list :user="user" />',
+        '<follow-list :user="user" type="followedBy" />',
+      ]),
     }
   })
   .add('with up to 7 connections', () => {
@@ -56,7 +67,10 @@ storiesOf('FollowList', module)
           action('fetchAllConnections')(type, this.user)
         },
       },
-      template: `<div style="display: flex; flex-wrap: wrap;"><div style="margin: 8px;"><follow-list :user="user" @fetchAllConnections="fetchAllConnections"/></div><div style="margin: 8px;"><follow-list :user="user" type="followedBy" @fetchAllConnections="fetchAllConnections"/></div></div>`,
+      template: wrapTemplates([
+        '<follow-list :user="user" @fetchAllConnections="fetchAllConnections"/>',
+        '<follow-list :user="user" type="followedBy" @fetchAllConnections="fetchAllConnections"/>',
+      ]),
     }
   })
 
@@ -67,6 +81,43 @@ storiesOf('FollowList', module)
       data() {
         return { user: allConnectionsUser }
       },
-      template: `<div style="display: flex; flex-wrap: wrap;"><div style="margin: 8px;"><follow-list :user="user" /></div><div style="margin: 8px;"><follow-list :user="user" type="followedBy"/></div></div>`,
+      template: wrapTemplates([
+        '<follow-list :user="user" />',
+        '<follow-list :user="user" type="followedBy"/>',
+      ]),
+    }
+  })
+  .add('with a lot of connections', () => {
+    return {
+      components: { FollowList },
+      store: helpers.store,
+      data() {
+        return {
+          user: {
+            ...user,
+            followedByCount: 1000,
+            followingCount: 1000,
+            followedBy: helpers.fakeUser(1000),
+            following: helpers.fakeUser(1000),
+          },
+        }
+      },
+      template: wrapTemplates([
+        '<follow-list :user="user" />',
+        '<follow-list :user="user" type="followedBy"/>',
+      ]),
+    }
+  })
+  .add('Fuzzy Filter', () => {
+    return {
+      components: { FollowList },
+      store: helpers.store,
+      data() {
+        return { user: fuzzyFilterUser }
+      },
+      template: wrapTemplates([
+        '<follow-list :user="user" />',
+        '<follow-list :user="user" type="followedBy">',
+      ]),
     }
   })
