@@ -60,7 +60,7 @@
   "dependencies": {
     "@human-connection/styleguide": "0.5.22",
     "@nuxtjs/apollo": "^4.0.0-rc19",
-    "@nuxtjs/axios": "~5.9.5",
+    "@nuxtjs/axios": "~5.9.6",
     "@nuxtjs/dotenv": "~1.4.1",
     "@nuxtjs/pwa": "^3.0.0-beta.20",
     "@nuxtjs/sentry": "^4.0.0",
