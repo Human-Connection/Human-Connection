@@ -42,7 +42,6 @@ services:
       - ./backend:/nitro-backend
     command: yarn run dev
     environment:
-      - IMGPROXY_URI=http://localhost:3000/imgproxy # client point of view
       - IMGPROXY_KEY=21b2b7b270d5fd48f02491e520fc89b8f31bab66ef2a00b3f254ce3f02c6fae6407345f3b394580ffa751973f624ce0740566ff39960f75da6ec9f45dfc7b9c2
       - IMGPROXY_SALT=8144a980d252b21aa5ea8c82379f3b7948dfb6373f60a2f633de40d64be8a326de46490aef2f4c2ed4278b76cf1309fd004338026a7737c8ca805415c38605a4
       - "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}"
