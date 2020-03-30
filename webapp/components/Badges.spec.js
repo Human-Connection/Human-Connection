@@ -19,11 +19,11 @@ describe('Badges.vue', () => {
 
     describe('given a badge', () => {
       beforeEach(() => {
-        propsData.badges = [{ id: '1', icon: '/path/to/some/icon' }]
+        propsData.badges = [{ id: 'some-icon' }]
       })
 
-      it('proxies badge icon, which is just a URL without metadata', () => {
-        expect(Wrapper().contains('img[src="/api/path/to/some/icon"]')).toBe(true)
+      it('generates badge icon url', () => {
+        expect(Wrapper().contains('img[src="/img/badges/some-icon.svg"]')).toBe(true)
       })
     })
   })

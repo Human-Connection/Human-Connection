@@ -1,5 +1,6 @@
 <template>
   <img
+    v-if="image && image.url"
     :srcset="srcSet"
     :sizes="sizes"
     :src="proxyApiUrl(image.url)"
@@ -10,12 +11,13 @@
 <script>
 export default {
   props: {
-    image: { type: Object, required: true },
+    image: { type: Object, default: () => ({}) },
     sizes: { type: String, default: () => null },
   },
   computed: {
     srcSet() {
       const widths = Object.keys(this.image).filter((key) => key.startsWith('w'))
+      if (!widths.length) return null
       return widths
         .map((width) => `${this.proxyApiUrl(this.image[width])} ${width.substring(1)}w`)
         .join(', ')
