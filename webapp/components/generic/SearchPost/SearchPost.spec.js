@@ -5,7 +5,7 @@ const localVue = global.localVue
 localVue.filter('dateTime', (d) => d)
 
 describe('SearchPost.vue', () => {
-  let mocks, wrapper, propsData
+  let mocks, wrapper, propsData, counts
   beforeEach(() => {
     mocks = {
       $t: jest.fn((string) => string),
@@ -22,6 +22,7 @@ describe('SearchPost.vue', () => {
       },
     }
     wrapper = Wrapper()
+    counts = wrapper.find('.search-post > .metadata > .counts')
   })
 
   const Wrapper = () => {
@@ -30,35 +31,23 @@ describe('SearchPost.vue', () => {
 
   describe('shallowMount', () => {
     it('renders post title', () => {
-      expect(wrapper.find('.search-option-label').text()).toMatch('Post Title')
+      expect(wrapper.find('.search-post > .label').text()).toMatch('Post Title')
     })
 
     it('renders post commentsCount', () => {
-      expect(
-        wrapper
-          .find('.search-post-meta')
-          .findAll('span')
-          .filter((item) => item.text() === '3')
-          .exists(),
-      ).toBe(true)
+      expect(counts.text()).toContain(propsData.option.commentsCount)
     })
 
     it('renders post shoutedCount', () => {
-      expect(
-        wrapper
-          .find('.search-post-meta')
-          .findAll('span')
-          .filter((item) => item.text() === '6')
-          .exists(),
-      ).toBe(true)
+      expect(counts.text()).toContain(propsData.option.shoutedCount)
     })
 
     it('renders post author', () => {
-      expect(wrapper.find('.search-post-author').text()).toContain('Post Author')
+      expect(wrapper.find('.search-post > .metadata').text()).toContain('Post Author')
     })
 
     it('renders post createdAt', () => {
-      expect(wrapper.find('.search-post-author').text()).toContain('23.08.2019')
+      expect(wrapper.find('.search-post > .metadata').text()).toContain('23.08.2019')
     })
   })
 })
