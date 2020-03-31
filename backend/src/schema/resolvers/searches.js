@@ -29,7 +29,7 @@ export default {
         commentsCount: toString(size(comments)),
         shoutedCount: toString(size(shouter))
       }
-      LIMIT $limit
+      LIMIT toInteger($limit)
       `
 
       const userCypher = `
@@ -39,7 +39,7 @@ export default {
       WHERE score >= 0.0
       AND NOT (resource.deleted = true OR resource.disabled = true)
       RETURN resource {.*, __typename: labels(resource)[0]}
-      LIMIT $limit
+      LIMIT toInteger($limit)
       `
       const tagCypher = `
       CALL db.index.fulltext.queryNodes('tag_fulltext_search', $query)
@@ -48,7 +48,7 @@ export default {
       WHERE score >= 0.0
       AND NOT (resource.deleted = true OR resource.disabled = true)
       RETURN resource {.*, __typename: labels(resource)[0]}
-      LIMIT $limit
+      LIMIT toInteger($limit)
       `
 
       const myQuery = queryString(query)
