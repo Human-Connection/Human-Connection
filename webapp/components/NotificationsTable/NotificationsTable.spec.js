@@ -6,7 +6,7 @@ import NotificationsTable from './NotificationsTable'
 import { testNotifications } from '~/components/utils/Notifications'
 const localVue = global.localVue
 
-localVue.filter('truncate', string => string)
+localVue.filter('truncate', (string) => string)
 
 config.stubs['client-only'] = '<span><slot /></span>'
 
@@ -19,7 +19,7 @@ describe('NotificationsTable.vue', () => {
 
   beforeEach(() => {
     mocks = {
-      $t: jest.fn(string => string),
+      $t: jest.fn((string) => string),
     }
     stubs = {
       NuxtLink: RouterLinkStub,
@@ -100,7 +100,7 @@ describe('NotificationsTable.vue', () => {
         it('renders the reason for the notification', () => {
           const dsTexts = firstRowNotification.findAll('.ds-text')
           const reason = dsTexts.filter(
-            element => element.text() === 'notifications.reason.mentioned_in_post',
+            (element) => element.text() === 'notifications.reason.mentioned_in_post',
           )
           expect(reason.exists()).toBe(true)
         })
@@ -130,7 +130,7 @@ describe('NotificationsTable.vue', () => {
         it('renders the reason for the notification', () => {
           const dsTexts = secondRowNotification.findAll('.ds-text')
           const reason = dsTexts.filter(
-            element => element.text() === 'notifications.reason.mentioned_in_comment',
+            (element) => element.text() === 'notifications.reason.mentioned_in_comment',
           )
           expect(reason.exists()).toBe(true)
         })

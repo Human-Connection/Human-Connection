@@ -16,7 +16,7 @@ describe('Request', () => {
         success: jest.fn(),
         error: jest.fn(),
       },
-      $t: jest.fn(t => t),
+      $t: jest.fn((t) => t),
       $apollo: {
         loading: false,
         mutate: jest.fn().mockResolvedValue({ data: { reqestPasswordReset: true } }),

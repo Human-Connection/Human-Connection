@@ -11,7 +11,7 @@
     >
       <template #heroImage v-if="post.image">
         <img :src="post.image | proxyApiUrl" class="image" />
-        <aside v-show="post.imageBlurred" class="blur-toggle">
+        <aside v-show="post.image && post.image.sensitive" class="blur-toggle">
           <img v-show="blurred" :src="post.image | proxyApiUrl" class="preview" />
           <base-button
             :icon="blurred ? 'eye' : 'eye-slash'"
@@ -205,7 +205,7 @@ export default {
         .then(() => {
           this.$toast.success(this.$t('post.menu.pinnedSuccessfully'))
         })
-        .catch(error => this.$toast.error(error.message))
+        .catch((error) => this.$toast.error(error.message))
     },
     unpinPost(post) {
       this.$apollo
@@ -216,7 +216,7 @@ export default {
         .then(() => {
           this.$toast.success(this.$t('post.menu.unpinnedSuccessfully'))
         })
-        .catch(error => this.$toast.error(error.message))
+        .catch((error) => this.$toast.error(error.message))
     },
     toggleNewCommentForm(showNewCommentForm) {
       this.showNewCommentForm = showNewCommentForm
@@ -235,8 +235,9 @@ export default {
       update({ Post }) {
         this.post = Post[0] || {}
         this.title = this.post.title
-        this.blurred = this.post.imageBlurred
+        const { image } = this.post
         this.postAuthor = this.post.author
+        this.blurred = image && image.sensitive
       },
       fetchPolicy: 'cache-and-network',
     },

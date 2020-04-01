@@ -21,7 +21,7 @@ describe('EmailSettingsIndexPage', () => {
       },
     })
     mocks = {
-      $t: jest.fn(t => t),
+      $t: jest.fn((t) => t),
       $toast: {
         success: jest.fn(),
         error: jest.fn(),

@@ -48,7 +48,7 @@ describe('muted-users.vue', () => {
 
     describe('given a list of muted users', () => {
       beforeEach(() => {
-        const mutedUsers = [{ id: 'u1', name: 'John Doe', slug: 'john-doe', avatar: '' }]
+        const mutedUsers = [{ id: 'u1', name: 'John Doe', slug: 'john-doe' }]
         wrapper.setData({ mutedUsers })
       })
 

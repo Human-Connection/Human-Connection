@@ -6,13 +6,14 @@ class Store {
     const { driver } = neode
     const session = driver.session()
     // eslint-disable-next-line no-console
-    const writeTxResultPromise = session.writeTransaction(async txc => {
+    const writeTxResultPromise = session.writeTransaction(async (txc) => {
       await txc.run('CALL apoc.schema.assert({},{},true)') // drop all indices
       return Promise.all(
         [
           'CALL db.index.fulltext.createNodeIndex("post_fulltext_search",["Post"],["title", "content"])',
           'CALL db.index.fulltext.createNodeIndex("user_fulltext_search",["User"],["name", "slug"])',
-        ].map(statement => txc.run(statement)),
+          'CALL db.index.fulltext.createNodeIndex("tag_fulltext_search",["Tag"],["id"])',
+        ].map((statement) => txc.run(statement)),
       )
     })
     try {
@@ -33,11 +34,11 @@ class Store {
   async load(next) {
     const driver = getDriver()
     const session = driver.session()
-    const readTxResultPromise = session.readTransaction(async txc => {
+    const readTxResultPromise = session.readTransaction(async (txc) => {
       const result = await txc.run(
         'MATCH (migration:Migration) RETURN migration {.*} ORDER BY migration.timestamp DESC',
       )
-      return result.records.map(r => r.get('migration'))
+      return result.records.map((r) => r.get('migration'))
     })
     try {
       const migrations = await readTxResultPromise
@@ -62,9 +63,9 @@ class Store {
     const driver = getDriver()
     const session = driver.session()
     const { migrations } = set
-    const writeTxResultPromise = session.writeTransaction(txc => {
+    const writeTxResultPromise = session.writeTransaction((txc) => {
       return Promise.all(
-        migrations.map(async migration => {
+        migrations.map(async (migration) => {
           const { title, description, timestamp } = migration
           const properties = { title, description, timestamp }
           const migrationResult = await txc.run(

@@ -29,7 +29,7 @@ beforeAll(() => {
   mutate = createTestClient(server).mutate
 })
 
-afterEach(async () => {
+beforeEach(async () => {
   await cleanDatabase()
 })
 
@@ -495,6 +495,12 @@ describe('DeleteUser', () => {
                   mutate({ mutation: deleteUserMutation, variables }),
                 ).resolves.toMatchObject(expectedResponse)
               })
+
+              it('deletes user avatar and post hero images', async () => {
+                await expect(neode.all('Image')).resolves.toHaveLength(22)
+                await mutate({ mutation: deleteUserMutation, variables })
+                await expect(neode.all('Image')).resolves.toHaveLength(20)
+              })
             })
           })
 
@@ -785,6 +791,12 @@ describe('DeleteUser', () => {
                   mutate({ mutation: deleteUserMutation, variables }),
                 ).resolves.toMatchObject(expectedResponse)
               })
+
+              it('deletes user avatar and post hero images', async () => {
+                await expect(neode.all('Image')).resolves.toHaveLength(22)
+                await mutate({ mutation: deleteUserMutation, variables })
+                await expect(neode.all('Image')).resolves.toHaveLength(20)
+              })
             })
           })
 
@@ -834,7 +846,6 @@ describe('DeleteUser', () => {
               ).resolves.toMatchObject(expectedResponse)
             })
           })
-
           describe('deletion of all post and comments requested', () => {
             beforeEach(() => {
               variables = { ...variables, resource: ['Post', 'Comment'] }
@@ -882,27 +893,27 @@ describe('DeleteUser', () => {
             })
           })
         })
+      })
+    })
 
-        describe('connected `EmailAddress` nodes', () => {
-          it('will be removed completely', async () => {
-            await expect(neode.all('EmailAddress')).resolves.toHaveLength(2)
-            await mutate({ mutation: deleteUserMutation, variables })
-            await expect(neode.all('EmailAddress')).resolves.toHaveLength(1)
-          })
-        })
+    describe('connected `EmailAddress` nodes', () => {
+      it('will be removed completely', async () => {
+        await expect(neode.all('EmailAddress')).resolves.toHaveLength(2)
+        await mutate({ mutation: deleteUserMutation, variables })
+        await expect(neode.all('EmailAddress')).resolves.toHaveLength(1)
+      })
+    })
 
-        describe('connected `SocialMedia` nodes', () => {
-          beforeEach(async () => {
-            const socialMedia = await Factory.build('socialMedia')
-            await socialMedia.relateTo(user, 'ownedBy')
-          })
+    describe('connected `SocialMedia` nodes', () => {
+      beforeEach(async () => {
+        const socialMedia = await Factory.build('socialMedia')
+        await socialMedia.relateTo(user, 'ownedBy')
+      })
 
-          it('will be removed completely', async () => {
-            await expect(neode.all('SocialMedia')).resolves.toHaveLength(1)
-            await mutate({ mutation: deleteUserMutation, variables })
-            await expect(neode.all('SocialMedia')).resolves.toHaveLength(0)
-          })
-        })
+      it('will be removed completely', async () => {
+        await expect(neode.all('SocialMedia')).resolves.toHaveLength(1)
+        await mutate({ mutation: deleteUserMutation, variables })
+        await expect(neode.all('SocialMedia')).resolves.toHaveLength(0)
       })
     })
   })

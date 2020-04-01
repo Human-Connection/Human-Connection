@@ -24,7 +24,6 @@ const narratorParams = {
   id: 'id-of-peter-pan',
   name: "Peter Pan",
   slug: "peter-pan",
-  avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/nerrsoft/128.jpg",
   ...termsAndConditionsAgreedVersion,
 };
 

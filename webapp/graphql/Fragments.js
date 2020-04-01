@@ -5,12 +5,14 @@ export const userFragment = gql`
     id
     slug
     name
-    avatar
+    avatar {
+      url
+    }
     disabled
     deleted
   }
 `
-export const locationAndBadgesFragment = lang => gql`
+export const locationAndBadgesFragment = (lang) => gql`
   fragment locationAndBadges on User {
     location {
       name: name${lang}
@@ -44,14 +46,16 @@ export const postFragment = gql`
     disabled
     deleted
     slug
-    image
     language
-    imageBlurred
+    image {
+      url
+      sensitive
+      aspectRatio
+    }
     author {
       ...user
     }
     pinnedAt
-    imageAspectRatio
     pinned
   }
 `

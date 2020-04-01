@@ -18,7 +18,7 @@ if (!hasEmailConfig) {
     console.log('Warning: Email middleware will not try to send mails.')
   }
 } else {
-  sendMail = async templateArgs => {
+  sendMail = async (templateArgs) => {
     const transporter = nodemailer.createTransport({
       host: CONFIG.SMTP_HOST,
       port: CONFIG.SMTP_PORT,

@@ -1,14 +1,14 @@
 import { neo4jgraphql } from 'neo4j-graphql-js'
-import fileUpload from './fileUpload'
 import { getNeode } from '../../db/neo4j'
 import { UserInputError, ForbiddenError } from 'apollo-server'
+import { mergeImage, deleteImage } from './images/images'
 import Resolver from './helpers/Resolver'
 import log from './helpers/databaseLogger'
 import createOrUpdateLocations from './users/location'
 
 const neode = getNeode()
 
-export const getMutedUsers = async context => {
+export const getMutedUsers = async (context) => {
   const { neode } = context
   const userModel = neode.model('User')
   let mutedUsers = neode
@@ -19,11 +19,11 @@ export const getMutedUsers = async context => {
     .to('muted', userModel)
     .return('muted')
   mutedUsers = await mutedUsers.execute()
-  mutedUsers = mutedUsers.records.map(r => r.get('muted').properties)
+  mutedUsers = mutedUsers.records.map((r) => r.get('muted').properties)
   return mutedUsers
 }
 
-export const getBlockedUsers = async context => {
+export const getBlockedUsers = async (context) => {
   const { neode } = context
   const userModel = neode.model('User')
   let blockedUsers = neode
@@ -34,7 +34,7 @@ export const getBlockedUsers = async context => {
     .to('blocked', userModel)
     .return('blocked')
   blockedUsers = await blockedUsers.execute()
-  blockedUsers = blockedUsers.records.map(r => r.get('blocked').properties)
+  blockedUsers = blockedUsers.records.map((r) => r.get('blocked').properties)
   return blockedUsers
 }
 
@@ -60,7 +60,7 @@ export default {
         let session
         try {
           session = context.driver.session()
-          const readTxResult = await session.readTransaction(txc => {
+          const readTxResult = await session.readTransaction((txc) => {
             const result = txc.run(
               `
             MATCH (user:User)-[:PRIMARY_EMAIL]->(e:EmailAddress {email: $args.email})
@@ -69,7 +69,7 @@ export default {
             )
             return result
           })
-          return readTxResult.records.map(r => r.get('user').properties)
+          return readTxResult.records.map((r) => r.get('user').properties)
         } finally {
           session.close()
         }
@@ -140,6 +140,8 @@ export default {
     },
     UpdateUser: async (_parent, params, context, _resolveInfo) => {
       const { termsAndConditionsAgreedVersion } = params
+      const { avatar: avatarInput } = params
+      delete params.avatar
       if (termsAndConditionsAgreedVersion) {
         const regEx = new RegExp(/^[0-9]+\.[0-9]+\.[0-9]+$/g)
         if (!regEx.test(termsAndConditionsAgreedVersion)) {
@@ -147,23 +149,26 @@ export default {
         }
         params.termsAndConditionsAgreedAt = new Date().toISOString()
       }
-      params = await fileUpload(params, { file: 'avatarUpload', url: 'avatar' })
       const session = context.driver.session()
 
-      const writeTxResultPromise = session.writeTransaction(async transaction => {
+      const writeTxResultPromise = session.writeTransaction(async (transaction) => {
         const updateUserTransactionResponse = await transaction.run(
           `
             MATCH (user:User {id: $params.id})
             SET user += $params
             SET user.updatedAt = toString(datetime())
-            RETURN user
+            RETURN user {.*}
           `,
           { params },
         )
-        return updateUserTransactionResponse.records.map(record => record.get('user').properties)
+        const [user] = updateUserTransactionResponse.records.map((record) => record.get('user'))
+        if (avatarInput) {
+          await mergeImage(user, 'AVATAR_IMAGE', avatarInput, { transaction })
+        }
+        return user
       })
       try {
-        const [user] = await writeTxResultPromise
+        const user = await writeTxResultPromise
         await createOrUpdateLocations(params.id, params.locationName, session)
         return user
       } catch (error) {
@@ -173,52 +178,67 @@ export default {
       }
     },
     DeleteUser: async (object, params, context, resolveInfo) => {
-      const { resource } = params
+      const { resource, id: userId } = params
       const session = context.driver.session()
-      const { id: userId } = params
-      try {
+
+      const deleteUserTxResultPromise = session.writeTransaction(async (transaction) => {
         if (resource && resource.length) {
-          await session.writeTransaction(transaction => {
-            resource.map(node => {
-              return transaction.run(
+          await Promise.all(
+            resource.map(async (node) => {
+              const txResult = await transaction.run(
                 `
-                    MATCH (resource:${node})<-[:WROTE]-(author:User {id: $userId})
-                    OPTIONAL MATCH (resource)<-[:COMMENTS]-(comment:Comment)
-                    SET resource.deleted = true
-                    SET resource.content = 'UNAVAILABLE'
-                    SET resource.contentExcerpt = 'UNAVAILABLE'
-                    SET comment.deleted = true
-                    RETURN author
-                  `,
+                MATCH (resource:${node})<-[:WROTE]-(author:User {id: $userId})
+                OPTIONAL MATCH (resource)<-[:COMMENTS]-(comment:Comment)
+                SET resource.deleted = true
+                SET resource.content = 'UNAVAILABLE'
+                SET resource.contentExcerpt = 'UNAVAILABLE'
+                SET resource.language = 'UNAVAILABLE'
+                SET resource.createdAt = 'UNAVAILABLE'
+                SET resource.updatedAt = 'UNAVAILABLE'
+                SET comment.deleted = true
+                RETURN resource {.*}
+              `,
                 {
                   userId,
                 },
               )
-            })
-          })
+              return Promise.all(
+                txResult.records
+                  .map((record) => record.get('resource'))
+                  .map((resource) => deleteImage(resource, 'HERO_IMAGE', { transaction })),
+              )
+            }),
+          )
         }
 
-        const deleteUserTxResultPromise = session.writeTransaction(async transaction => {
-          const deleteUserTransactionResponse = await transaction.run(
-            `
+        const deleteUserTransactionResponse = await transaction.run(
+          `
               MATCH (user:User {id: $userId})
               SET user.deleted = true
               SET user.name = 'UNAVAILABLE'
               SET user.about = 'UNAVAILABLE'
+              SET user.lastActiveAt = 'UNAVAILABLE'
+              SET user.createdAt = 'UNAVAILABLE'
+              SET user.updatedAt = 'UNAVAILABLE'
+              SET user.termsAndConditionsAgreedVersion = 'UNAVAILABLE'
+              SET user.encryptedPassword = null
               WITH user
               OPTIONAL MATCH (user)<-[:BELONGS_TO]-(email:EmailAddress)
               DETACH DELETE email
               WITH user
               OPTIONAL MATCH (user)<-[:OWNED_BY]-(socialMedia:SocialMedia)
               DETACH DELETE socialMedia
-              RETURN user
+              RETURN user {.*}
             `,
-            { userId },
-          )
-          log(deleteUserTransactionResponse)
-          return deleteUserTransactionResponse.records.map(record => record.get('user').properties)
-        })
-        const [user] = await deleteUserTxResultPromise
+          { userId },
+        )
+        log(deleteUserTransactionResponse)
+        const [user] = deleteUserTransactionResponse.records.map((record) => record.get('user'))
+        await deleteImage(user, 'AVATAR_IMAGE', { transaction })
+        return user
+      })
+      try {
+        const user = await deleteUserTxResultPromise
         return user
       } finally {
         session.close()
@@ -231,14 +251,12 @@ export default {
       const { id } = parent
       const statement = `MATCH(u:User {id: {id}})-[:PRIMARY_EMAIL]->(e:EmailAddress) RETURN e`
       const result = await neode.cypher(statement, { id })
-      const [{ email }] = result.records.map(r => r.get('e').properties)
+      const [{ email }] = result.records.map((r) => r.get('e').properties)
       return email
     },
     ...Resolver('User', {
       undefinedToNull: [
         'actorId',
-        'avatar',
-        'coverImg',
         'deleted',
         'disabled',
         'locationName',
@@ -272,6 +290,7 @@ export default {
         badgesCount: '<-[:REWARDED]-(related:Badge)',
       },
       hasOne: {
+        avatar: '-[:AVATAR_IMAGE]->(related:Image)',
         invitedBy: '<-[:INVITED]-(related:User)',
         location: '-[:IS_IN]->(related:Location)',
       },

@@ -29,7 +29,7 @@ const metascraper = Metascraper([
   // require('./rules/metascraper-embed')()
 ])
 
-const fetchEmbed = async url => {
+const fetchEmbed = async (url) => {
   let endpointUrl = findProvider(url)
   if (!endpointUrl) return {}
   endpointUrl = new URL(endpointUrl)
@@ -53,7 +53,7 @@ const fetchEmbed = async url => {
   }
 }
 
-const fetchResource = async url => {
+const fetchResource = async (url) => {
   const response = await fetch(url)
   const html = await response.text()
   const resource = await metascraper({ html, url })

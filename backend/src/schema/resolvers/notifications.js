@@ -158,7 +158,7 @@ export default {
     markAsRead: async (_parent, args, context, _resolveInfo) => {
       const { user: currentUser } = context
       const session = context.driver.session()
-      const writeTxResultPromise = session.writeTransaction(async transaction => {
+      const writeTxResultPromise = session.writeTransaction(async (transaction) => {
         const markNotificationAsReadTransactionResponse = await transaction.run(
           ` 
             MATCH (resource {id: $resourceId})-[notification:NOTIFIED {read: FALSE}]->(user:User {id: $id})
@@ -172,7 +172,7 @@ export default {
           },
         )
         log(markNotificationAsReadTransactionResponse)
-        return markNotificationAsReadTransactionResponse.records.map(record =>
+        return markNotificationAsReadTransactionResponse.records.map((record) =>
           record.get('notification'),
         )
       })
@@ -185,7 +185,7 @@ export default {
     },
   },
   NOTIFIED: {
-    id: async parent => {
+    id: async (parent) => {
       // serialize an ID to help the client update the cache
       return `${parent.reason}/${parent.from.id}/${parent.to.id}`
     },

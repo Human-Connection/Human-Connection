@@ -324,29 +324,21 @@
     "placeholder": ""
   },
   "filter-menu": {
-    "clearSearch": "",
-    "hashtag-search": "",
-    "title": ""
-  },
-  "filter-posts": {
-    "categories": {
-      "all": "",
-      "header": ""
-    },
-    "followers": {
-      "label": ""
-    },
-    "general": {
-      "header": ""
-    },
-    "language": {
-      "all": "",
-      "header": ""
-    }
+    "all": "",
+    "categories": "",
+    "emotions": "",
+    "filter-by": "",
+    "following": "",
+    "languages": ""
   },
   "followButton": {
     "follow": "",
     "following": ""
+  },
+  "hashtags-filter": {
+    "clearSearch": "",
+    "hashtag-search": "",
+    "title": ""
   },
   "index": {
     "change-filter-settings": "",

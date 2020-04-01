@@ -18,13 +18,13 @@ export function up(next) {
   rxSession
     .beginTransaction()
     .pipe(
-      flatMap(txc =>
+      flatMap((txc) =>
         concat(
           txc
             .run('MATCH (email:EmailAddress) RETURN email {.email}')
             .records()
             .pipe(
-              map(record => {
+              map((record) => {
                 const { email } = record.get('email')
                 const normalizedEmail = normalizeEmail(email)
                 return { email, normalizedEmail }
@@ -45,7 +45,7 @@ export function up(next) {
                   )
                   .records()
                   .pipe(
-                    map(r => ({
+                    map((r) => ({
                       oldEmail: email,
                       email: r.get('email'),
                       user: r.get('user'),
@@ -54,7 +54,7 @@ export function up(next) {
               }),
             ),
           txc.commit(),
-        ).pipe(catchError(err => txc.rollback().pipe(throwError(err)))),
+        ).pipe(catchError((err) => txc.rollback().pipe(throwError(err)))),
       ),
     )
     .subscribe({
@@ -72,7 +72,7 @@ export function up(next) {
         console.log('Merging of duplicate users completed')
         next()
       },
-      error: error => {
+      error: (error) => {
         next(new Error(error), null)
       },
     })

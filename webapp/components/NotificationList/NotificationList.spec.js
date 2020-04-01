@@ -7,7 +7,7 @@ import { testNotifications } from '~/components/utils/Notifications'
 
 const localVue = global.localVue
 
-localVue.filter('truncate', string => string)
+localVue.filter('truncate', (string) => string)
 
 config.stubs['client-only'] = '<span><slot /></span>'
 config.stubs['v-popover'] = '<span><slot /></span>'

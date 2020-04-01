@@ -18,7 +18,7 @@ function walkRecursive(data, fields, callback, _key) {
     })
   } else if (data && typeof data === 'object') {
     // lets get some keys and stir them
-    Object.keys(data).forEach(k => {
+    Object.keys(data).forEach((k) => {
       data[k] = walkRecursive(data[k], fields, callback, k)
     })
   }

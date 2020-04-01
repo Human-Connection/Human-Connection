@@ -7,7 +7,7 @@ import {
   commentFragment,
 } from './Fragments'
 
-export default i18n => {
+export default (i18n) => {
   const lang = i18n.locale().toUpperCase()
   return gql`
     ${userFragment}
@@ -53,13 +53,15 @@ export const minimisedUserQuery = () => {
         id
         slug
         name
-        avatar
+        avatar {
+          url
+        }
       }
     }
   `
 }
 
-export const notificationQuery = i18n => {
+export const notificationQuery = (i18n) => {
   return gql`
     ${userFragment}
     ${userCountsFragment}
@@ -129,7 +131,7 @@ export const notificationQuery = i18n => {
   `
 }
 
-export const markAsReadMutation = i18n => {
+export const markAsReadMutation = (i18n) => {
   return gql`
     ${userFragment}
     ${commentFragment}
@@ -206,7 +208,7 @@ export const notificationAdded = () => {
     }
   `
 }
-export const followUserMutation = i18n => {
+export const followUserMutation = (i18n) => {
   return gql`
     ${userFragment}
     ${userCountsFragment}
@@ -226,7 +228,7 @@ export const followUserMutation = i18n => {
   `
 }
 
-export const unfollowUserMutation = i18n => {
+export const unfollowUserMutation = (i18n) => {
   return gql`
     ${userFragment}
     ${userCountsFragment}
@@ -257,7 +259,7 @@ export const updateUserMutation = () => {
       $allowEmbedIframes: Boolean
       $showShoutsPublicly: Boolean
       $termsAndConditionsAgreedVersion: String
-      $avatarUpload: Upload
+      $avatar: ImageInput
     ) {
       UpdateUser(
         id: $id
@@ -268,7 +270,7 @@ export const updateUserMutation = () => {
         allowEmbedIframes: $allowEmbedIframes
         showShoutsPublicly: $showShoutsPublicly
         termsAndConditionsAgreedVersion: $termsAndConditionsAgreedVersion
-        avatarUpload: $avatarUpload
+        avatar: $avatar
       ) {
         id
         slug
@@ -279,7 +281,9 @@ export const updateUserMutation = () => {
         showShoutsPublicly
         locale
         termsAndConditionsAgreedVersion
-        avatar
+        avatar {
+          url
+        }
       }
     }
   `

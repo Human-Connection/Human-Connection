@@ -7,7 +7,7 @@ const publishNotifications = async (...promises) => {
   const notifications = await Promise.all(promises)
   notifications
     .flat()
-    .forEach(notificationAdded => pubsub.publish(NOTIFICATION_ADDED, { notificationAdded }))
+    .forEach((notificationAdded) => pubsub.publish(NOTIFICATION_ADDED, { notificationAdded }))
 }
 
 const debug = require('debug')('human-connection-backend:notificationsMiddleware')
@@ -28,7 +28,7 @@ const handleContentDataOfComment = async (resolve, root, args, context, resolveI
   let idsOfUsers = extractMentionedUsers(content)
   const comment = await resolve(root, args, context, resolveInfo)
   const [postAuthor] = await postAuthorOfComment(comment.id, { context })
-  idsOfUsers = idsOfUsers.filter(id => id !== postAuthor.id)
+  idsOfUsers = idsOfUsers.filter((id) => id !== postAuthor.id)
   await publishNotifications(
     notifyUsersOfMention('Comment', comment.id, idsOfUsers, 'mentioned_in_comment', context),
     notifyUsersOfComment('Comment', comment.id, postAuthor.id, 'commented_on_post', context),
@@ -40,7 +40,7 @@ const postAuthorOfComment = async (commentId, { context }) => {
   const session = context.driver.session()
   let postAuthorId
   try {
-    postAuthorId = await session.readTransaction(transaction => {
+    postAuthorId = await session.readTransaction((transaction) => {
       return transaction.run(
         `
           MATCH (author:User)-[:WROTE]->(:Post)<-[:COMMENTS]-(:Comment { id: $commentId })

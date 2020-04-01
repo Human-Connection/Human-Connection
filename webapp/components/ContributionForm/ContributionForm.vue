@@ -6,7 +6,7 @@
     :schema="formSchema"
     @submit="submit"
   >
-    <template slot-scope="{ errors }">
+    <template #default="{ errors }">
       <base-card>
         <template #heroImage>
           <img
@@ -106,29 +106,22 @@ export default {
     },
   },
   data() {
-    const {
-      title,
-      content,
-      image,
-      imageAspectRatio,
-      imageBlurred,
-      language,
-      categories,
-    } = this.contribution
+    const { title, content, image, language, categories } = this.contribution
 
-    const languageOptions = orderBy(locales, 'name').map(locale => {
+    const languageOptions = orderBy(locales, 'name').map((locale) => {
       return { label: locale.name, value: locale.code }
     })
+    const { sensitive: imageBlurred = false, aspectRatio: imageAspectRatio = null } = image || {}
 
     return {
       formData: {
         title: title || '',
         content: content || '',
         image: image || null,
-        imageAspectRatio: imageAspectRatio || null,
-        imageBlurred: imageBlurred || false,
-        language: languageOptions.find(option => option.value === language) || null,
-        categoryIds: categories ? categories.map(category => category.id) : [],
+        imageAspectRatio,
+        imageBlurred,
+        language: languageOptions.find((option) => option.value === language) || null,
+        categoryIds: categories ? categories.map((category) => category.id) : [],
       },
       formSchema: {
         title: { required: true, min: 3, max: 100 },
@@ -163,16 +156,28 @@ export default {
   },
   methods: {
     submit() {
+      let image = null
+      const { title, content, categoryIds } = this.formData
+      if (this.formData.image) {
+        image = {
+          sensitive: this.formData.imageBlurred,
+        }
+        if (this.imageUpload) {
+          image.upload = this.imageUpload
+          image.aspectRatio = this.formData.imageAspectRatio
+        }
+      }
       this.loading = true
       this.$apollo
         .mutate({
           mutation: this.contribution.id ? PostMutations().UpdatePost : PostMutations().CreatePost,
           variables: {
-            ...this.formData,
+            title,
+            content,
+            categoryIds,
             id: this.contribution.id || null,
             language: this.formData.language.value,
-            image: this.imageUpload ? null : this.formData.image,
-            imageUpload: this.imageUpload,
+            image,
           },
         })
         .then(({ data }) => {
@@ -185,7 +190,7 @@ export default {
             params: { id: result.id, slug: result.slug },
           })
         })
-        .catch(err => {
+        .catch((err) => {
           this.$toast.error(err.message)
           this.loading = false
         })
@@ -198,10 +203,13 @@ export default {
       if (file) {
         const reader = new FileReader()
         reader.onload = ({ target }) => {
-          this.formData.image = target.result
+          this.formData.image = {
+            ...this.formData.image,
+            url: target.result,
+          }
         }
-        this.imageUpload = file
         reader.readAsDataURL(file)
+        this.imageUpload = file
       }
     },
     addImageAspectRatio(aspectRatio) {

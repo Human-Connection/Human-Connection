@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 
-export default i18n => {
+export default (i18n) => {
   const lang = i18n.locale().toUpperCase()
   return {
     CreateComment: gql`
@@ -17,7 +17,9 @@ export default i18n => {
             id
             slug
             name
-            avatar
+            avatar {
+              url
+            }
             disabled
             deleted
             shoutedCount
@@ -47,7 +49,9 @@ export default i18n => {
             id
             slug
             name
-            avatar
+            avatar {
+              url
+            }
             disabled
             deleted
           }
@@ -67,7 +71,9 @@ export default i18n => {
             id
             slug
             name
-            avatar
+            avatar {
+              url
+            }
             disabled
             deleted
             shoutedCount

@@ -10,7 +10,7 @@ describe('EnterNoncePage', () => {
   beforeEach(() => {
     wrapper = null
     mocks = {
-      $t: jest.fn(t => t),
+      $t: jest.fn((t) => t),
       $route: {
         query: {},
       },

@@ -82,7 +82,7 @@ describe('getters', () => {
 
   describe('orderByOptions', () => {
     it('returns all options regardless of current state', () => {
-      const $t = jest.fn(t => t)
+      const $t = jest.fn((t) => t)
       expect(getters.orderOptions()({ $t })).toEqual([
         {
           key: 'store.posts.orderBy.oldest.label',
@@ -131,7 +131,7 @@ describe('mutations', () => {
 
   describe('RESET_CATEGORIES', () => {
     beforeEach(() => {
-      testMutation = categoryId => {
+      testMutation = (categoryId) => {
         mutations.RESET_CATEGORIES(state, categoryId)
         return getters.filter(state)
       }
@@ -149,7 +149,7 @@ describe('mutations', () => {
 
   describe('TOGGLE_LANGUAGE', () => {
     beforeEach(() => {
-      testMutation = languageCode => {
+      testMutation = (languageCode) => {
         mutations.TOGGLE_LANGUAGE(state, languageCode)
         return getters.filter(state)
       }
@@ -188,7 +188,7 @@ describe('mutations', () => {
 
   describe('TOGGLE_CATEGORY', () => {
     beforeEach(() => {
-      testMutation = categoryId => {
+      testMutation = (categoryId) => {
         mutations.TOGGLE_CATEGORY(state, categoryId)
         return getters.filter(state)
       }
@@ -228,7 +228,7 @@ describe('mutations', () => {
 
   describe('TOGGLE_FILTER_BY_FOLLOWED', () => {
     beforeEach(() => {
-      testMutation = userId => {
+      testMutation = (userId) => {
         mutations.TOGGLE_FILTER_BY_FOLLOWED(state, userId)
         return getters.filter(state)
       }
@@ -257,7 +257,7 @@ describe('mutations', () => {
 
   describe('SELECT_ORDER', () => {
     beforeEach(() => {
-      testMutation = key => {
+      testMutation = (key) => {
         mutations.SELECT_ORDER(state, key)
         return getters.orderBy(state)
       }

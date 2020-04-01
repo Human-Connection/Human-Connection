@@ -332,29 +332,21 @@
     "profile-not-found": "This profile could not be found"
   },
   "filter-menu": {
-    "clearSearch": "Clear search",
-    "hashtag-search": "Searching for #{hashtag}",
-    "title": "Your filter bubble"
-  },
-  "filter-posts": {
-    "categories": {
-      "all": "All",
-      "header": "Categories of Content"
-    },
-    "followers": {
-      "label": "Users I follow"
-    },
-    "general": {
-      "header": "Filter by …"
-    },
-    "language": {
-      "all": "All",
-      "header": "Languages"
-    }
+    "all": "All",
+    "categories": "Categories of Content",
+    "emotions": "Emotions",
+    "filter-by": "Filter by...",
+    "following": "Users I follow",
+    "languages": "Languages"
   },
   "followButton": {
     "follow": "Follow",
     "following": "Following"
+  },
+  "hashtags-filter": {
+    "clearSearch": "Clear search",
+    "hashtag-search": "Searching for #{hashtag}",
+    "title": "Your filter bubble"
   },
   "index": {
     "change-filter-settings": "Change your filter settings to get more results.",
@@ -609,6 +601,7 @@
     "failed": "Nothing found",
     "heading": {
       "Post": "Posts",
+      "Tag": "Hashtags",
       "User": "Users"
     },
     "hint": "What are you searching for?",

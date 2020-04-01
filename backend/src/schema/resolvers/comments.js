@@ -15,7 +15,7 @@ export default {
 
       const session = driver.session()
 
-      const writeTxResultPromise = session.writeTransaction(async transaction => {
+      const writeTxResultPromise = session.writeTransaction(async (transaction) => {
         const createCommentTransactionResponse = await transaction.run(
           ` 
             MATCH (post:Post {id: $postId})
@@ -30,7 +30,7 @@ export default {
           { userId: user.id, postId, params },
         )
         return createCommentTransactionResponse.records.map(
-          record => record.get('comment').properties,
+          (record) => record.get('comment').properties,
         )
       })
       try {
@@ -42,7 +42,7 @@ export default {
     },
     UpdateComment: async (_parent, params, context, _resolveInfo) => {
       const session = context.driver.session()
-      const writeTxResultPromise = session.writeTransaction(async transaction => {
+      const writeTxResultPromise = session.writeTransaction(async (transaction) => {
         const updateCommentTransactionResponse = await transaction.run(
           ` 
             MATCH (comment:Comment {id: $params.id})
@@ -53,7 +53,7 @@ export default {
           { params },
         )
         return updateCommentTransactionResponse.records.map(
-          record => record.get('comment').properties,
+          (record) => record.get('comment').properties,
         )
       })
       try {
@@ -65,7 +65,7 @@ export default {
     },
     DeleteComment: async (_parent, args, context, _resolveInfo) => {
       const session = context.driver.session()
-      const writeTxResultPromise = session.writeTransaction(async transaction => {
+      const writeTxResultPromise = session.writeTransaction(async (transaction) => {
         const deleteCommentTransactionResponse = await transaction.run(
           ` 
             MATCH (comment:Comment {id: $commentId})
@@ -77,7 +77,7 @@ export default {
           { commentId: args.id },
         )
         return deleteCommentTransactionResponse.records.map(
-          record => record.get('comment').properties,
+          (record) => record.get('comment').properties,
         )
       })
       try {

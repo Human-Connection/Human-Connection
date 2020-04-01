@@ -1,10 +1,10 @@
 import uniqueSlug from './slugify/uniqueSlug'
 
 const isUniqueFor = (context, type) => {
-  return async slug => {
+  return async (slug) => {
     const session = context.driver.session()
     try {
-      const existingSlug = await session.readTransaction(transaction => {
+      const existingSlug = await session.readTransaction((transaction) => {
         return transaction.run(
           `
             MATCH(p:${type} {slug: $slug }) 

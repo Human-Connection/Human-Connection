@@ -1,6 +1,6 @@
 <template>
   <ds-form v-model="formData" :schema="formSchema" @submit="handleSubmit">
-    <template slot-scope="{ errors }">
+    <template #default="{ errors }">
       <ds-input
         id="oldPassword"
         model="oldPassword"

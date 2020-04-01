@@ -28,14 +28,21 @@ beforeAll(async () => {
         password: '1234',
       },
     ),
-    Factory.build('user', {
-      id: 'u2',
-      role: 'user',
-      name: 'Offensive Name',
-      slug: 'offensive-name',
-      avatar: '/some/offensive/avatar.jpg',
-      about: 'This self description is very offensive',
-    }),
+    Factory.build(
+      'user',
+      {
+        id: 'u2',
+        role: 'user',
+        name: 'Offensive Name',
+        slug: 'offensive-name',
+        about: 'This self description is very offensive',
+      },
+      {
+        avatar: Factory.build('image', {
+          url: '/some/offensive/avatar.jpg',
+        }),
+      },
+    ),
     neode.create('Category', {
       id: 'cat9',
       name: 'Democracy & Politics',
@@ -96,10 +103,12 @@ beforeAll(async () => {
         title: 'Disabled post',
         content: 'This is an offensive post content',
         contentExcerpt: 'This is an offensive post content',
-        image: '/some/offensive/image.jpg',
         deleted: false,
       },
       {
+        image: Factory.build('image', {
+          url: '/some/offensive/image.jpg',
+        }),
         author: troll,
         categoryIds,
       },
@@ -213,7 +222,9 @@ describe('softDeleteMiddleware', () => {
               name
               slug
               about
-              avatar
+              avatar {
+                url
+              }
             }
           }
         }
@@ -229,7 +240,9 @@ describe('softDeleteMiddleware', () => {
               contributions {
                 title
                 slug
-                image
+                image {
+                  url
+                }
                 content
                 contentExcerpt
               }
@@ -253,7 +266,10 @@ describe('softDeleteMiddleware', () => {
         it('displays slug', () => expect(subject.slug).toEqual('offensive-name'))
         it('displays about', () =>
           expect(subject.about).toEqual('This self description is very offensive'))
-        it('displays avatar', () => expect(subject.avatar).toEqual('/some/offensive/avatar.jpg'))
+        it('displays avatar', () =>
+          expect(subject.avatar).toEqual({
+            url: expect.stringContaining('/some/offensive/avatar.jpg'),
+          }))
       })
 
       describe('Post', () => {
@@ -265,7 +281,10 @@ describe('softDeleteMiddleware', () => {
           expect(subject.content).toEqual('This is an offensive post content'))
         it('displays contentExcerpt', () =>
           expect(subject.contentExcerpt).toEqual('This is an offensive post content'))
-        it('displays image', () => expect(subject.image).toEqual('/some/offensive/image.jpg'))
+        it('displays image', () =>
+          expect(subject.image).toEqual({
+            url: expect.stringContaining('/some/offensive/image.jpg'),
+          }))
       })
 
       describe('Comment', () => {
@@ -288,7 +307,7 @@ describe('softDeleteMiddleware', () => {
         it('obfuscates name', () => expect(subject.name).toEqual('UNAVAILABLE'))
         it('obfuscates slug', () => expect(subject.slug).toEqual('UNAVAILABLE'))
         it('obfuscates about', () => expect(subject.about).toEqual('UNAVAILABLE'))
-        it('obfuscates avatar', () => expect(subject.avatar).toEqual('UNAVAILABLE'))
+        it('obfuscates avatar', () => expect(subject.avatar).toEqual(null))
       })
 
       describe('Post', () => {

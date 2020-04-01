@@ -17,10 +17,10 @@ const obfuscate = async (resolve, root, args, context, info) => {
     root.contentExcerpt = 'UNAVAILABLE'
     root.title = 'UNAVAILABLE'
     root.slug = 'UNAVAILABLE'
-    root.avatar = 'UNAVAILABLE'
+    root.avatar = null
     root.about = 'UNAVAILABLE'
     root.name = 'UNAVAILABLE'
-    root.image = null // avoid unecessary 500 errors
+    root.image = null
   }
   return resolve(root, args, context, info)
 }

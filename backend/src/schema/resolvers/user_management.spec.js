@@ -10,7 +10,7 @@ import { getNeode } from '../../db/neo4j'
 const neode = getNeode()
 let query, mutate, variables, req, user
 
-const disable = async id => {
+const disable = async (id) => {
   const moderator = await Factory.build('user', { id: 'u2', role: 'moderator' })
   const user = await neode.find('User', id)
   const reportAgainstUser = await Factory.build('report')
@@ -56,7 +56,7 @@ describe('isLoggedIn', () => {
       isLoggedIn
     }
   `
-  const respondsWith = async expected => {
+  const respondsWith = async (expected) => {
     await expect(query({ query: isLoggedInQuery })).resolves.toMatchObject(expected)
   }
 
@@ -106,14 +106,16 @@ describe('currentUser', () => {
         id
         slug
         name
-        avatar
+        avatar {
+          url
+        }
         email
         role
       }
     }
   `
 
-  const respondsWith = async expected => {
+  const respondsWith = async (expected) => {
     await expect(query({ query: currentUserQuery, variables })).resolves.toMatchObject(expected)
   }
 
@@ -131,13 +133,15 @@ describe('currentUser', () => {
           {
             id: 'u3',
             // the `id` is the only thing that has to match the decoded JWT bearer token
-            avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/jimmuirhead/128.jpg',
             name: 'Matilde Hermiston',
             slug: 'matilde-hermiston',
             role: 'user',
           },
           {
             email: 'test@example.org',
+            avatar: Factory.build('image', {
+              url: 'https://s3.amazonaws.com/uifaces/faces/twitter/jimmuirhead/128.jpg',
+            }),
           },
         )
         const userBearerToken = encode({ id: 'u3' })
@@ -149,7 +153,9 @@ describe('currentUser', () => {
           data: {
             currentUser: {
               id: 'u3',
-              avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/jimmuirhead/128.jpg',
+              avatar: Factory.build('image', {
+                url: 'https://s3.amazonaws.com/uifaces/faces/twitter/jimmuirhead/128.jpg',
+              }),
               email: 'test@example.org',
               name: 'Matilde Hermiston',
               slug: 'matilde-hermiston',
@@ -170,7 +176,7 @@ describe('login', () => {
     }
   `
 
-  const respondsWith = async expected => {
+  const respondsWith = async (expected) => {
     await expect(mutate({ mutation: loginMutation, variables })).resolves.toMatchObject(expected)
   }
 
@@ -187,7 +193,7 @@ describe('login', () => {
 
   describe('ask for a `token`', () => {
     describe('with a valid email/password combination', () => {
-      it('responds with a JWT bearer token', async done => {
+      it('responds with a JWT bearer token', async (done) => {
         const {
           data: { login: token },
         } = await mutate({ mutation: loginMutation, variables })
@@ -286,7 +292,7 @@ describe('change password', () => {
     }
   `
 
-  const respondsWith = async expected => {
+  const respondsWith = async (expected) => {
     await expect(mutate({ mutation: changePasswordMutation, variables })).resolves.toMatchObject(
       expected,
     )

@@ -6,7 +6,7 @@
     <ds-text v-html="submitMessage" />
   </base-card>
   <ds-form v-else v-model="form" :schema="formSchema" @submit="submit">
-    <template slot-scope="{ errors }">
+    <template #default="{ errors }">
       <base-card>
         <h2 class="title">{{ $t('settings.email.name') }}</h2>
         <ds-input
@@ -51,11 +51,11 @@ export default {
       currentUser: 'auth/user',
     }),
     form: {
-      get: function() {
+      get: function () {
         const { email } = this.currentUser
         return { email }
       },
-      set: function(formData) {
+      set: function (formData) {
         this.formData = formData
       },
     },

@@ -1,6 +1,6 @@
 <template>
   <ds-form v-model="form" :schema="formSchema" @submit="submit">
-    <template slot-scope="{ errors }">
+    <template #default="{ errors }">
       <base-card>
         <h2 class="title">{{ $t('settings.email.name') }}</h2>
         <ds-input
@@ -35,11 +35,11 @@ export default {
   },
   computed: {
     form: {
-      get: function() {
+      get: function () {
         const { email = '', nonce = '' } = this.$route.query
         return { email, nonce }
       },
-      set: function(formData) {
+      set: function (formData) {
         this.formData = formData
       },
     },

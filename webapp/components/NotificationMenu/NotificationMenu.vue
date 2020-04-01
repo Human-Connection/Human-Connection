@@ -7,7 +7,7 @@
     <base-button icon="bell" ghost circle />
   </nuxt-link>
   <dropdown v-else class="notifications-menu" offset="8" :placement="placement">
-    <template slot="default" slot-scope="{ toggleMenu }">
+    <template #default="{ toggleMenu }">
       <base-button @click="toggleMenu" ghost circle>
         <counter-icon icon="bell" :count="unreadNotificationsCount" danger />
       </base-button>
@@ -98,7 +98,7 @@ export default {
             notifications: unionBy(
               [newNotification],
               previousResult.notifications,
-              notification => notification.id,
+              (notification) => notification.id,
             ).sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)),
           }
         },

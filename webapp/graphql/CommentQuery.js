@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 
-export default app => {
+export default (app) => {
   const lang = app.$i18n.locale().toUpperCase()
   return gql`
     query Comment($postId: ID) {
@@ -12,7 +12,9 @@ export default app => {
           id
           slug
           name
-          avatar
+          avatar {
+            url
+          }
           disabled
           deleted
           shoutedCount

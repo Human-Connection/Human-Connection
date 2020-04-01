@@ -2,7 +2,7 @@
   <div>
     <vue-dropzone
       id="customdropzone"
-      :key="user.avatar"
+      :key="avatarUrl"
       ref="el"
       :use-custom-slot="true"
       :options="dropzoneOptions"
@@ -41,10 +41,16 @@ export default {
       hover: false,
     }
   },
+  computed: {
+    avatarUrl() {
+      const { avatar } = this.user
+      return avatar && avatar.url
+    },
+  },
   watch: {
     error() {
       const that = this
-      setTimeout(function() {
+      setTimeout(function () {
         that.error = false
       }, 2000)
     },
@@ -64,14 +70,16 @@ export default {
         .mutate({
           mutation: updateUserMutation(),
           variables: {
-            avatarUpload,
+            avatar: {
+              upload: avatarUpload,
+            },
             id: this.user.id,
           },
         })
         .then(() => {
           this.$toast.success(this.$t('user.avatar.submitted'))
         })
-        .catch(error => this.$toast.error(error.message))
+        .catch((error) => this.$toast.error(error.message))
     },
     verror(file, message) {
       if (file.status === 'error') {

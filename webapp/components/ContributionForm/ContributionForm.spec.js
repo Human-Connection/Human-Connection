@@ -70,7 +70,7 @@ describe('ContributionForm.vue', () => {
     },
     url: 'someUrlToImage',
   }
-  const image = '/uploads/1562010976466-avataaars'
+  const image = { sensitive: false, url: '/uploads/1562010976466-avataaars', aspectRatio: 1 }
   beforeEach(() => {
     mocks = {
       $t: jest.fn(),
@@ -140,7 +140,9 @@ describe('ContributionForm.vue', () => {
           postTitleInput = wrapper.find('.ds-input')
           postTitleInput.setValue(postTitle)
           await wrapper.vm.updateEditorContent(postContent)
-          englishLanguage = wrapper.findAll('li').filter(language => language.text() === 'English')
+          englishLanguage = wrapper
+            .findAll('li')
+            .filter((language) => language.text() === 'English')
           englishLanguage.trigger('click')
           dataPrivacyButton = await wrapper
             .find(CategoriesSelect)
@@ -199,17 +201,16 @@ describe('ContributionForm.vue', () => {
               language: 'en',
               id: null,
               categoryIds: ['cat12'],
-              imageUpload: null,
-              imageAspectRatio: null,
               image: null,
-              imageBlurred: false,
             },
           }
           postTitleInput = wrapper.find('.ds-input')
           postTitleInput.setValue(postTitle)
           await wrapper.vm.updateEditorContent(postContent)
           wrapper.find(CategoriesSelect).setData({ categories })
-          englishLanguage = wrapper.findAll('li').filter(language => language.text() === 'English')
+          englishLanguage = wrapper
+            .findAll('li')
+            .filter((language) => language.text() === 'English')
           englishLanguage.trigger('click')
           await Vue.nextTick()
           dataPrivacyButton = await wrapper
@@ -226,15 +227,25 @@ describe('ContributionForm.vue', () => {
 
         it('supports changing the language', async () => {
           expectedParams.variables.language = 'de'
-          deutschLanguage = wrapper.findAll('li').filter(language => language.text() === 'Deutsch')
+          deutschLanguage = wrapper
+            .findAll('li')
+            .filter((language) => language.text() === 'Deutsch')
           deutschLanguage.trigger('click')
           wrapper.find('form').trigger('submit')
           expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
         })
 
         it('supports adding a teaser image', async () => {
-          const spy = jest.spyOn(FileReader.prototype, 'readAsDataURL').mockImplementation(() => {})
-          expectedParams.variables.imageUpload = imageUpload
+          expectedParams.variables.image = {
+            aspectRatio: null,
+            sensitive: false,
+            upload: imageUpload,
+          }
+          const spy = jest
+            .spyOn(FileReader.prototype, 'readAsDataURL')
+            .mockImplementation(function () {
+              this.onload({ target: { result: 'someUrlToImage' } })
+            })
           wrapper.find(ImageUploader).vm.$emit('addHeroImage', imageUpload)
           await wrapper.find('form').trigger('submit')
           expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
@@ -283,7 +294,9 @@ describe('ContributionForm.vue', () => {
           await wrapper.vm.updateEditorContent(postContent)
           categoryIds = ['cat12']
           wrapper.find(CategoriesSelect).setData({ categories })
-          englishLanguage = wrapper.findAll('li').filter(language => language.text() === 'English')
+          englishLanguage = wrapper
+            .findAll('li')
+            .filter((language) => language.text() === 'English')
           englishLanguage.trigger('click')
           await Vue.nextTick()
           dataPrivacyButton = await wrapper
@@ -317,7 +330,6 @@ describe('ContributionForm.vue', () => {
                 name: 'Democracy & Politics',
               },
             ],
-            imageAspectRatio: 1,
           },
         }
         wrapper = Wrapper()
@@ -354,10 +366,9 @@ describe('ContributionForm.vue', () => {
               language: propsData.contribution.language,
               id: propsData.contribution.id,
               categoryIds: ['cat12'],
-              image,
-              imageUpload: null,
-              imageAspectRatio: 1,
-              imageBlurred: false,
+              image: {
+                sensitive: false,
+              },
             },
           }
         })
@@ -383,8 +394,7 @@ describe('ContributionForm.vue', () => {
 
         it('supports deleting a teaser image', async () => {
           expectedParams.variables.image = null
-          expectedParams.variables.imageAspectRatio = null
-          propsData.contribution.image = '/uploads/someimage.png'
+          propsData.contribution.image = { url: '/uploads/someimage.png' }
           wrapper = Wrapper()
           wrapper.find('[data-test="delete-button"]').trigger('click')
           await wrapper.find('form').trigger('submit')

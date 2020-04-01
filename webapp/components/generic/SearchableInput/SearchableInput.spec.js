@@ -19,7 +19,7 @@ describe('SearchableInput.vue', () => {
       $router: {
         push: jest.fn(),
       },
-      $t: jest.fn(string => string),
+      $t: jest.fn((string) => string),
     }
     getters = { 'auth/isModerator': () => false }
     wrapper = Wrapper()
@@ -98,13 +98,23 @@ describe('SearchableInput.vue', () => {
         select.element.value = 'Bob'
         select.trigger('input')
         const users = wrapper.findAll('.slug')
-        const bob = users.filter(item => item.text().match(/@bob-der-baumeister/))
+        const bob = users.filter((item) => item.text().match(/@bob-der-baumeister/))
         bob.trigger('click')
         await Vue.nextTick()
         expect(mocks.$router.push).toHaveBeenCalledWith({
           name: 'profile-id-slug',
           params: { id: 'u2', slug: 'bob-der-baumeister' },
         })
+      })
+
+      it('pushes hashtag query params', async () => {
+        select.element.value = 'Hash'
+        select.trigger('input')
+        const tags = wrapper.findAll('.hc-hashtag')
+        const tag = tags.filter((item) => item.text().match(/#Hashtag/))
+        tag.trigger('click')
+        await Vue.nextTick()
+        expect(mocks.$router.push).toHaveBeenCalledWith('?hashtag=Hashtag')
       })
     })
   })

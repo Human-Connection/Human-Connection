@@ -132,7 +132,7 @@ describe('shout and unshout posts', () => {
           },
         )
         const relationshipProperties = relation.records.map(
-          record => record.get('relationship').properties.createdAt,
+          (record) => record.get('relationship').properties.createdAt,
         )
         expect(relationshipProperties[0]).toEqual(expect.any(String))
       })

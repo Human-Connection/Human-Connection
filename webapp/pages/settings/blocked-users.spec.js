@@ -48,7 +48,7 @@ describe('blocked-users.vue', () => {
 
     describe('given a list of blocked users', () => {
       beforeEach(() => {
-        const blockedUsers = [{ id: 'u1', name: 'John Doe', slug: 'john-doe', avatar: '' }]
+        const blockedUsers = [{ id: 'u1', name: 'John Doe', slug: 'john-doe' }]
         wrapper.setData({ blockedUsers })
       })
 

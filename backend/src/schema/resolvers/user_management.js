@@ -16,7 +16,7 @@ export default {
       const { user, driver } = context
       if (!user) return null
       const session = driver.session()
-      const currentUserTransactionPromise = session.readTransaction(async transaction => {
+      const currentUserTransactionPromise = session.readTransaction(async (transaction) => {
         const result = await transaction.run(
           `
             MATCH (user:User {id: $id})
@@ -26,7 +26,7 @@ export default {
           { id: user.id },
         )
         log(result)
-        return result.records.map(record => record.get('user'))
+        return result.records.map((record) => record.get('user'))
       })
       try {
         const [currentUser] = await currentUserTransactionPromise
@@ -44,16 +44,16 @@ export default {
       email = normalizeEmail(email)
       const session = driver.session()
       try {
-        const loginReadTxResultPromise = session.readTransaction(async transaction => {
+        const loginReadTxResultPromise = session.readTransaction(async (transaction) => {
           const loginTransactionResponse = await transaction.run(
             `
               MATCH (user:User {deleted: false})-[:PRIMARY_EMAIL]->(e:EmailAddress {email: $userEmail})
-              RETURN user {.id, .slug, .name, .avatar, .encryptedPassword, .role, .disabled, email:e.email} as user LIMIT 1
+              RETURN user {.id, .slug, .name, .encryptedPassword, .role, .disabled, email:e.email} as user LIMIT 1
             `,
             { userEmail: email },
           )
           log(loginTransactionResponse)
-          return loginTransactionResponse.records.map(record => record.get('user'))
+          return loginTransactionResponse.records.map((record) => record.get('user'))
         })
         const [currentUser] = await loginReadTxResultPromise
         if (

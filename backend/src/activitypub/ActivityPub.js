@@ -7,7 +7,7 @@ import request from 'request'
 import NitroDataSource from './NitroDataSource'
 import router from './routes'
 import Collections from './Collections'
-import uuid from 'uuid/v4'
+import { v4 as uuid } from 'uuid'
 import CONFIG from '../config'
 const debug = require('debug')('ea')
 
@@ -202,14 +202,14 @@ export default class ActivityPub {
       debug('is public addressed')
       const sharedInboxEndpoints = await this.dataSource.getSharedInboxEndpoints()
       // serve shared inbox endpoints
-      sharedInboxEndpoints.map(sharedInbox => {
+      sharedInboxEndpoints.map((sharedInbox) => {
         return this.trySend(activity, fromName, new URL(sharedInbox).host, sharedInbox)
       })
-      activity.to = activity.to.filter(recipient => {
+      activity.to = activity.to.filter((recipient) => {
         return !isPublicAddressed({ to: recipient })
       })
       // serve the rest
-      activity.to.map(async recipient => {
+      activity.to.map(async (recipient) => {
         debug('serve rest')
         const actorObject = await this.getActorObject(recipient)
         return this.trySend(activity, fromName, new URL(recipient).host, actorObject.inbox)
@@ -219,7 +219,7 @@ export default class ActivityPub {
       const actorObject = await this.getActorObject(activity.to)
       return this.trySend(activity, fromName, new URL(activity.to).host, actorObject.inbox)
     } else if (Array.isArray(activity.to)) {
-      activity.to.map(async recipient => {
+      activity.to.map(async (recipient) => {
         const actorObject = await this.getActorObject(recipient)
         return this.trySend(activity, fromName, new URL(recipient).host, actorObject.inbox)
       })
@@ -231,7 +231,7 @@ export default class ActivityPub {
       return await signAndSend(activity, fromName, host, url)
     } catch (e) {
       if (tries > 0) {
-        setTimeout(function() {
+        setTimeout(function () {
           return this.trySend(activity, fromName, host, url, --tries)
         }, 20000)
       }
