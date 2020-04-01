@@ -64,7 +64,7 @@ Factory.define('basicUser')
     password: '1234',
     role: 'user',
     about: faker.lorem.paragraph,
-    termsAndConditionsAgreedVersion: '0.0.1',
+    termsAndConditionsAgreedVersion: '0.0.4',
     termsAndConditionsAgreedAt: '2019-08-01T10:47:19.212Z',
     allowEmbedIframes: false,
     showShoutsPublicly: false,

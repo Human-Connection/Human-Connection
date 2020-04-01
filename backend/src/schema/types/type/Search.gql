@@ -1,5 +1,7 @@
 union SearchResult = Post | User
 
 type Query {
+  searchPosts(query: String!, firstPosts: Int, postsOffset: Int): [Post]!
+  searchUsers(query: String!, firstUsers: Int, usersOffset: Int): [User]!
   searchResults(query: String!, limit: Int = 5): [SearchResult]!
 }

@@ -9,38 +9,54 @@
         icon="tasks"
         :message="$t('search.no-results', { search })"
       />
-      <masonry-grid v-else-if="activeTab === 'Post'">
-        <masonry-grid-item v-for="resource in activeResources" :key="resource.key">
-          <post-teaser :post="resource" />
-        </masonry-grid-item>
-      </masonry-grid>
+      <template v-else-if="activeTab === 'Post'">
+        <masonry-grid>
+          <masonry-grid-item v-for="resource in activeResources" :key="resource.key">
+            <post-teaser :post="resource" />
+          </masonry-grid-item>
+        </masonry-grid>
+        <pagination-buttons
+          :hasNext="hasMorePosts"
+          :hasPrevious="hasPreviousPosts"
+          @back="previousPosts"
+          @next="nextPosts"
+        />
+      </template>
       <ul v-else-if="activeTab === 'User'" class="user-list">
         <li v-for="resource in activeResources" :key="resource.key" class="item">
           <base-card :wideContent="true">
             <user-teaser :user="resource" />
           </base-card>
         </li>
+        <pagination-buttons
+          :hasNext="hasMoreUsers"
+          :hasPrevious="hasPreviousUsers"
+          @back="previousUsers"
+          @next="nextUsers"
+        />
       </ul>
     </section>
   </div>
 </template>
 
 <script>
-import { searchQuery } from '~/graphql/Search.js'
+import { searchPosts, searchUsers } from '~/graphql/Search.js'
 import HcEmpty from '~/components/Empty/Empty'
 import MasonryGrid from '~/components/MasonryGrid/MasonryGrid'
 import MasonryGridItem from '~/components/MasonryGrid/MasonryGridItem'
 import PostTeaser from '~/components/PostTeaser/PostTeaser'
 import TabNavigation from '~/components/_new/generic/TabNavigation/TabNavigation'
 import UserTeaser from '~/components/UserTeaser/UserTeaser'
+import PaginationButtons from '~/components/_new/generic/PaginationButtons/PaginationButtons'
 
 export default {
   components: {
+    TabNavigation,
     HcEmpty,
     MasonryGrid,
     MasonryGridItem,
     PostTeaser,
-    TabNavigation,
+    PaginationButtons,
     UserTeaser,
   },
   props: {
@@ -49,10 +65,18 @@ export default {
     },
   },
   data() {
+    const pageSize = 25
     return {
       posts: [],
       users: [],
       activeTab: null,
+      pageSize,
+      firstPosts: pageSize,
+      firstUsers: pageSize,
+      postsOffset: 0,
+      usersOffset: 0,
+      hasMorePosts: false,
+      hasMoreUsers: false,
     }
   },
   computed: {
@@ -75,30 +99,72 @@ export default {
         },
       ]
     },
+    hasPreviousPosts() {
+      return this.postsOffset > 0
+    },
+    hasPreviousUsers() {
+      return this.usersOffset > 0
+    },
   },
   methods: {
     switchTab(tab) {
       this.activeTab = tab
     },
+    previousPosts() {
+      this.postsOffset = Math.max(this.postsOffset - this.pageSize, 0)
+    },
+    nextPosts() {
+      this.postsOffset += this.pageSize
+    },
+    previousUsers() {
+      this.usersOffset = Math.max(this.usersOffset - this.pageSize, 0)
+    },
+    nextUsers() {
+      this.usersOffset += this.pageSize
+    },
   },
   apollo: {
-    searchResults: {
+    searchPosts: {
       query() {
-        return searchQuery
+        return searchPosts
       },
       variables() {
+        const { firstPosts, postsOffset, search } = this
         return {
-          query: this.search,
-          limit: 37,
+          query: search,
+          firstPosts,
+          postsOffset,
         }
       },
       skip() {
         return !this.search
       },
-      update({ searchResults }) {
-        this.posts = searchResults.filter(result => result.__typename === 'Post')
-        this.users = searchResults.filter(result => result.__typename === 'User')
-        if (searchResults.length) this.activeTab = searchResults[0].__typename
+      update({ searchPosts }) {
+        this.posts = searchPosts
+        this.hasMorePosts = this.posts.length >= this.pageSize
+        if (searchPosts.length) this.activeTab = 'Post'
+      },
+      fetchPolicy: 'cache-and-network',
+    },
+    searchUsers: {
+      query() {
+        return searchUsers
+      },
+      variables() {
+        const { firstUsers, usersOffset, search } = this
+        return {
+          query: search,
+          firstUsers,
+          usersOffset,
+        }
+      },
+      skip() {
+        return !this.search
+      },
+      update({ searchUsers }) {
+        this.users = searchUsers
+        this.hasMoreUsers = this.users.length >= this.pageSize
+        if (!searchPosts.length && searchUsers.length) this.activeTab = 'User'
       },
       fetchPolicy: 'cache-and-network',
     },
