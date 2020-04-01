@@ -1,23 +1,22 @@
 <template>
   <base-card class="follow-list">
     <template v-if="connections && connections.length">
-      <ds-text tag="h5" color="soft" class="spacer-x-small">
+      <h5 class="title spacer-x-small">
         {{ userName | truncate(15) }} {{ $t(`profile.network.${type}`) }}
-      </ds-text>
+      </h5>
       <div :class="connectionsClass">
         <user-teaser
           v-for="connection in filteredConnections"
-          :user="connection"
           :key="connection.id"
+          :user="connection"
           class="spacer-x-small"
         />
       </div>
       <base-button
         v-if="allConnectionsCount - connections.length"
         :loading="loading"
-        size="small"
-        color="softer"
         class="spacer-x-small"
+        size="small"
         @click="$emit('fetchAllConnections', type)"
       >
         {{
@@ -29,11 +28,11 @@
       <ds-input
         v-if="connections.length > 7"
         v-focus="true"
-        :placeholder="filter"
-        size="small"
-        icon="filter"
         :name="`${type}Filter`"
+        :placeholder="filter"
         class="spacer-x-small"
+        icon="filter"
+        size="small"
         @input.native="setFilter"
       />
     </template>
@@ -127,6 +126,11 @@ export default {
   position: relative;
   //max-height: ($size-avatar-small + $space-x-small * 2) * 8;
   width: auto;
+
+  > .title {
+    color: $text-color-soft;
+    font-size: $font-size-small + 0.03rem;
+  }
 
   .connections.--overflow {
     height: ($size-avatar-base + $space-x-small * 2) * 5;
