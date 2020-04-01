@@ -104,6 +104,7 @@ describe('resolvers/searches', () => {
                 },
               ],
             },
+            errors: undefined,
           })
         })
       })
@@ -122,6 +123,7 @@ describe('resolvers/searches', () => {
                 },
               ],
             },
+            errors: undefined,
           })
         })
       })
@@ -202,6 +204,7 @@ und hinter tausend Stäben keine Welt.`,
                     },
                   ]),
                 },
+                errors: undefined,
               })
             })
           })
@@ -222,6 +225,7 @@ und hinter tausend Stäben keine Welt.`,
                     },
                   ],
                 },
+                errors: undefined,
               })
             })
           })
@@ -240,6 +244,7 @@ und hinter tausend Stäben keine Welt.`,
                     },
                   ],
                 },
+                errors: undefined,
               })
             })
           })
@@ -262,6 +267,7 @@ und hinter tausend Stäben keine Welt.`,
                     },
                   ],
                 },
+                errors: undefined,
               })
             })
           })
@@ -282,6 +288,7 @@ und hinter tausend Stäben keine Welt.`,
                     },
                   ],
                 },
+                errors: undefined,
               })
             })
           })
@@ -302,6 +309,7 @@ und hinter tausend Stäben keine Welt.`,
                     },
                   ],
                 },
+                errors: undefined,
               })
             })
           })
@@ -331,6 +339,7 @@ und hinter tausend Stäben keine Welt.`,
                     },
                   ],
                 },
+                errors: undefined,
               })
             })
           })
@@ -358,6 +367,7 @@ und hinter tausend Stäben keine Welt.`,
                     },
                   ]),
                 },
+                errors: undefined,
               })
             })
           })
@@ -400,6 +410,7 @@ und hinter tausend Stäben keine Welt.`,
                   },
                 ]),
               },
+              errors: undefined,
             })
           })
         })
@@ -438,6 +449,7 @@ und hinter tausend Stäben keine Welt.`,
                   },
                 ]),
               },
+              errors: undefined,
             })
           })
         })
@@ -460,6 +472,7 @@ und hinter tausend Stäben keine Welt.`,
                   },
                 ],
               },
+              errors: undefined,
             })
           })
         })
