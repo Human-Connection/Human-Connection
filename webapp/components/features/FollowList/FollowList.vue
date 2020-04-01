@@ -7,18 +7,18 @@
       <div :class="connectionsClass">
         <user-teaser
           v-for="connection in filteredConnections"
-          class="spacer-x-small"
           :user="connection"
           :key="connection.id"
+          class="spacer-x-small"
         />
       </div>
       <base-button
         v-if="allConnectionsCount - connections.length"
-        @click="$emit('fetchAllConnections', type)"
         :loading="loading"
         size="small"
         color="softer"
         class="spacer-x-small"
+        @click="$emit('fetchAllConnections', type)"
       >
         {{
           $t('profile.network.andMore', {
@@ -28,13 +28,13 @@
       </base-button>
       <ds-input
         v-if="connections.length > 7"
-        @input.native="setFilter"
-        :placeholder="filter"
         v-focus="true"
+        :placeholder="filter"
         size="small"
         icon="filter"
         :name="`${type}Filter`"
         class="spacer-x-small"
+        @input.native="setFilter"
       />
     </template>
     <p v-else class="nobody-message">{{ userName }} {{ $t(`profile.network.${type}Nobody`) }}</p>
