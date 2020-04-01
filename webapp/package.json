@@ -101,7 +101,7 @@
     "@babel/plugin-syntax-dynamic-import": "^7.8.3",
     "@babel/preset-env": "~7.9.0",
     "@storybook/addon-a11y": "^5.3.18",
-    "@storybook/addon-actions": "^5.3.17",
+    "@storybook/addon-actions": "^5.3.18",
     "@storybook/addon-notes": "^5.3.18",
     "@storybook/vue": "~5.3.17",
     "@vue/cli-shared-utils": "~4.2.3",
