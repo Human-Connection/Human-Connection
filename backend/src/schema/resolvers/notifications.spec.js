@@ -230,29 +230,6 @@ describe('given some notifications', () => {
             ... on Comment {
               content
             }
-            # Wolle ... on Report {
-            #   id
-            #   filed {
-            #     reasonCategory
-            #     reasonDescription
-            #     reportedResource {
-            #       __typename
-            #       ... on User {
-            #         id
-            #         name
-            #       }
-            #       ... on Post {
-            #         id
-            #         title
-            #         content
-            #       }
-            #       ... on Comment {
-            #         id
-            #         content
-            #       }
-            #     }
-            #   }
-            # }
             ... on FiledReport {
               reportId
               reasonCategory
