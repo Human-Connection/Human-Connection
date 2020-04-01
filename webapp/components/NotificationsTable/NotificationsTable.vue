@@ -107,7 +107,7 @@ export default {
       }
     },
     notificationsData() {
-      return this.notifications.map(notification =>
+      return this.notifications.map((notification) =>
         extractNotificationDataOfCurrentUser(notification, this.currentUser),
       )
     },

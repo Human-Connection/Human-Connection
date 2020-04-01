@@ -656,7 +656,7 @@ describe('notifications', () => {
         })
         authenticatedUser = await notifiedUser.toJson()
       }
-      const setExpectedNotificationOfReportedResource = resource => {
+      const setExpectedNotificationOfReportedResource = (resource) => {
         return expect.objectContaining({
           data: {
             notifications: [

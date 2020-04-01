@@ -117,7 +117,7 @@
           <span
             v-if="
               notificationData.report.reasonDescription &&
-                notificationData.report.reasonDescription !== ''
+              notificationData.report.reasonDescription !== ''
             "
           >
             {{ notificationData.report.reasonDescription }}

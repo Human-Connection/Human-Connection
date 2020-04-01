@@ -49,7 +49,7 @@ const postAuthorOfComment = async (commentId, { context }) => {
         { commentId },
       )
     })
-    return postAuthorId.records.map(record => record.get('authorId'))
+    return postAuthorId.records.map((record) => record.get('authorId'))
   } catch (error) {
     debug(error)
   } finally {
@@ -98,14 +98,14 @@ const notifyUsersOfMention = async (label, id, idsOfUsers, reason, context) => {
     RETURN notification {.*, from: finalResource, to: properties(user)}
   `
   const session = context.driver.session()
-  const writeTxResultPromise = session.writeTransaction(async transaction => {
+  const writeTxResultPromise = session.writeTransaction(async (transaction) => {
     const notificationsTransactionResponse = await transaction.run(mentionedCypher, {
       id,
       idsOfUsers,
       reason,
     })
     log(notificationsTransactionResponse)
-    return notificationsTransactionResponse.records.map(record => record.get('notification'))
+    return notificationsTransactionResponse.records.map((record) => record.get('notification'))
   })
   try {
     const notifications = await writeTxResultPromise
@@ -121,7 +121,7 @@ const notifyUsersOfComment = async (label, commentId, postAuthorId, reason, cont
   if (context.user.id === postAuthorId) return []
   await validateNotifyUsers(label, reason)
   const session = context.driver.session()
-  const writeTxResultPromise = await session.writeTransaction(async transaction => {
+  const writeTxResultPromise = await session.writeTransaction(async (transaction) => {
     const notificationsTransactionResponse = await transaction.run(
       `
       MATCH (postAuthor:User {id: $postAuthorId})-[:WROTE]->(post:Post)<-[:COMMENTS]-(comment:Comment { id: $commentId })<-[:WROTE]-(commenter:User)
@@ -137,7 +137,7 @@ const notifyUsersOfComment = async (label, commentId, postAuthorId, reason, cont
       { commentId, postAuthorId, reason },
     )
     log(notificationsTransactionResponse)
-    return notificationsTransactionResponse.records.map(record => record.get('notification'))
+    return notificationsTransactionResponse.records.map((record) => record.get('notification'))
   })
   try {
     const notifications = await writeTxResultPromise
@@ -164,7 +164,7 @@ const handleFileReport = async (resolve, root, args, context, resolveInfo) => {
 const notifyReportFiler = async (reportId, resourceId, context) => {
   const { driver, user } = context
   const session = driver.session()
-  const writeTxResultPromise = await session.writeTransaction(async transaction => {
+  const writeTxResultPromise = await session.writeTransaction(async (transaction) => {
     const notificationsTransactionResponse = await transaction.run(
       `
         MATCH (resource {id: $resourceId})<-[:BELONGS_TO]-(report:Report {id: $reportId})<-[filed:FILED]-(submitter:User {id: $submitterId})
@@ -185,7 +185,7 @@ const notifyReportFiler = async (reportId, resourceId, context) => {
       },
     )
     log(notificationsTransactionResponse)
-    return notificationsTransactionResponse.records.map(record => record.get('notification'))
+    return notificationsTransactionResponse.records.map((record) => record.get('notification'))
   })
   try {
     const [notification] = await writeTxResultPromise

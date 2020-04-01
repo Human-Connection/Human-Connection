@@ -160,7 +160,7 @@ describe('NotificationsTable.vue', () => {
         it('renders the reason for the notification', () => {
           const dsTexts = thirdRowNotification.findAll('.ds-text')
           const reason = dsTexts.filter(
-            element => element.text() === 'notifications.reason.filed_report_on_resource.user',
+            (element) => element.text() === 'notifications.reason.filed_report_on_resource.user',
           )
           expect(reason.exists()).toBe(true)
         })

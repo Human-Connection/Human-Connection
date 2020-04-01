@@ -135,12 +135,12 @@ export default {
         // $ {offset} $ {limit}
       `
 
-      const readTxResultPromise = session.readTransaction(async transaction => {
+      const readTxResultPromise = session.readTransaction(async (transaction) => {
         const notificationsTransactionResponse = await transaction.run(cypher, {
           id: currentUser.id,
         })
         log(notificationsTransactionResponse)
-        const notifications = notificationsTransactionResponse.records.map(record =>
+        const notifications = notificationsTransactionResponse.records.map((record) =>
           record.get('notification'),
         )
         return notifications
