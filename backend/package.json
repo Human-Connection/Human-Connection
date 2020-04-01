@@ -102,7 +102,7 @@
     "slug": "~2.1.1",
     "subscriptions-transport-ws": "^0.9.16",
     "trunc-html": "~1.1.2",
-    "uuid": "~7.0.2",
+    "uuid": "~7.0.3",
     "validator": "^13.0.0",
     "wait-on": "~4.0.1",
     "xregexp": "^4.3.0"
