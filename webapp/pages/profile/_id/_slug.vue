@@ -270,6 +270,7 @@ export default {
     mode: 'out-in',
   },
   data() {
+    console.log('component data()')
     const filter = tabToFilterMapping({ tab: 'post', id: this.$route.params.id })
     return {
       User: [],
@@ -461,8 +462,8 @@ export default {
       variables() {
         return {
           id: this.$route.params.id,
-          followedByCount: this.followedByCount || 7,
-          followingCount: this.followingCount || 7,
+          followedByCount: this.followedByCount, 
+          followingCount: this.followingCount
         }
       },
       fetchPolicy: 'cache-and-network',
