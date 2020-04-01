@@ -63,6 +63,37 @@ describe('FollowList.vue', () => {
       })
     })
 
+    describe('given a type', () => {
+      describe('of `following`', () => {
+        it('uses the `following` data on :user', () => {
+          const wrapper = Wrapper({ user, type: 'following' })
+          wrapper.find('.base-button').trigger('click')
+
+          expect(wrapper.vm.connections).toEqual(user.following)
+          expect(wrapper.vm.allConnectionsCount).toBe(user.followingCount)
+          expect(wrapper.emitted('fetchAllConnections')).toEqual([['following']])
+        })
+      })
+
+      describe('of `followedBy`', () => {
+        it('uses the `followedBy` data on :user', () => {
+          const wrapper = Wrapper({ type: 'followedBy' })
+          wrapper.find('.base-button').trigger('click')
+
+          expect(wrapper.vm.connections).toEqual(user.followedBy)
+          expect(wrapper.vm.allConnectionsCount).toBe(user.followedByCount)
+          expect(wrapper.emitted('fetchAllConnections')).toEqual([['followedBy']])
+        })
+      })
+    })
+
+    describe('given no type', () => {
+      it('defaults type to `following`', () => {
+        const wrapper = Wrapper()
+        expect(wrapper.vm.type).toBe('following')
+      })
+    })
+
     describe('given a user', () => {
       describe('without connections', () => {
         it('displays the followingNobody message', () => {
@@ -81,51 +112,37 @@ describe('FollowList.vue', () => {
       })
 
       describe('with up to 7 loaded connections', () => {
-        let followingWrapper
-        let followedByWrapper
+        let wrapper
         beforeAll(() => {
-          followingWrapper = Wrapper()
-          followedByWrapper = Wrapper({ type: 'followedBy' })
+          wrapper = Wrapper()
         })
 
         it(`renders the connections`, () => {
-          expect(followedByWrapper.findAll('.user-teaser').length).toEqual(user.followedBy.length)
-          expect(followingWrapper.findAll('.user-teaser').length).toEqual(user.following.length)
+          expect(wrapper.findAll('.user-teaser').length).toEqual(user.following.length)
         })
 
         it(`has a button to load all remaining connections`, async () => {
-          followingWrapper.find('.base-button').trigger('click')
-          followedByWrapper.find('.base-button').trigger('click')
-          expect(followingWrapper.emitted('fetchAllConnections')).toBeTruthy()
-          expect(followedByWrapper.emitted('fetchAllConnections')).toBeTruthy()
+          wrapper.find('.base-button').trigger('click')
+          expect(wrapper.emitted('fetchAllConnections')).toBeTruthy()
         })
       })
 
       describe('with more than 7 loaded connections', () => {
-        let followingWrapper
-        let followedByWrapper
+        let wrapper
         beforeAll(() => {
-          followingWrapper = Wrapper({ user: allConnectionsUser })
-          followedByWrapper = Wrapper({ user: allConnectionsUser, type: 'followedBy' })
+          wrapper = Wrapper({ user: allConnectionsUser })
         })
 
         it('renders the connections', () => {
-          expect(followedByWrapper.findAll('.user-teaser')).toHaveLength(
-            allConnectionsUser.followedByCount,
-          )
-          expect(followingWrapper.findAll('.user-teaser')).toHaveLength(
-            allConnectionsUser.followingCount,
-          )
+          expect(wrapper.findAll('.user-teaser')).toHaveLength(allConnectionsUser.followingCount)
         })
 
         it('renders the user-teasers in an overflow-container', () => {
-          expect(followingWrapper.find('.--overflow').is('div')).toBe(true)
-          expect(followedByWrapper.find('.--overflow').is('div')).toBe(true)
+          expect(wrapper.find('.--overflow').is('div')).toBe(true)
         })
 
         it('renders a filter text input', () => {
-          expect(followingWrapper.find('[name="followingFilter"]').is('input')).toBe(true)
-          expect(followedByWrapper.find('[name="followedByFilter"]').is('input')).toBe(true)
+          expect(wrapper.find('[name="followingFilter"]').is('input')).toBe(true)
         })
       })
     })
