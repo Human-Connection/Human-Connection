@@ -1,5 +1,5 @@
 <template>
-  <ul class="tabs">
+  <ul class="tab-navigation">
     <li
       v-for="tab in tabs"
       :key="tab.type"
@@ -27,7 +27,7 @@ export default {
 </script>
 
 <style lang="scss">
-.tabs {
+.tab-navigation {
   display: flex;
   margin-top: $space-small;
 

@@ -90,7 +90,7 @@ describe('PostIndex', () => {
         expect(wrapper.vm.selected).toEqual(propsData.filterOptions[1].label)
       })
 
-      it('refreshes the notificaitons', () => {
+      it('refreshes the notifications', () => {
         expect(mocks.$apollo.queries.notifications.refresh).toHaveBeenCalledTimes(1)
       })
     })

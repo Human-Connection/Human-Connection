@@ -1,8 +1,11 @@
 <template>
   <div class="search-results">
     <tab-navigation :tabs="tabOptions" :activeTab="activeTab" @switchTab="switchTab" />
-    <section :class="['results', activeTab === 'User' && '--user', !activeResources.length && '--empty']">
-      <hc-empty v-if="!activeResources.length"
+    <section
+      :class="['results', activeTab === 'User' && '--user', !activeResources.length && '--empty']"
+    >
+      <hc-empty
+        v-if="!activeResources.length"
         icon="tasks"
         :message="$t('search.no-results', { search })"
       />
@@ -49,7 +52,7 @@ export default {
     return {
       posts: [],
       users: [],
-      activeTab: 'Post',
+      activeTab: null,
     }
   },
   computed: {
@@ -125,7 +128,7 @@ export default {
   }
 
   .user-list > .item {
-    transition: opacity .1s;
+    transition: opacity 0.1s;
 
     &:not(:last-child) {
       margin-bottom: $space-small;
