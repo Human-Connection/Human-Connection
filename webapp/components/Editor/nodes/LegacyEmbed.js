@@ -40,6 +40,7 @@ export default class Embed extends Node {
       },
       group: 'inline',
       inline: true,
+      selectable: false,
       parseDOM: [
         {
           tag: 'a[href].embed',
