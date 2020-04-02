@@ -332,29 +332,21 @@
     "profile-not-found": "Dieses Profil konnte nicht gefunden werden"
   },
   "filter-menu": {
-    "clearSearch": "Suche löschen",
-    "hashtag-search": "Suche nach #{hashtag}",
-    "title": "Deine Filterblase"
-  },
-  "filter-posts": {
-    "categories": {
-      "all": "Alle",
-      "header": "Themenkategorien"
-    },
-    "followers": {
-      "label": "Benutzern, denen ich folge"
-    },
-    "general": {
-      "header": "Filtern nach …"
-    },
-    "language": {
-      "all": "Alle",
-      "header": "Sprachen"
-    }
+    "all": "Alle",
+    "categories": "Themenkategorien",
+    "emotions": "Emotionen",
+    "filter-by": "Filtern nach...",
+    "following": "Benutzern, denen ich folge",
+    "languages": "Sprachen"
   },
   "followButton": {
     "follow": "Folgen",
     "following": "Folge Ich"
+  },
+  "hashtags-filter": {
+    "clearSearch": "Suche löschen",
+    "hashtag-search": "Suche nach #{hashtag}",
+    "title": "Deine Filterblase"
   },
   "index": {
     "change-filter-settings": "Verändere die Filter-Einstellungen, um mehr Ergebnisse zu erhalten.",
@@ -599,6 +591,7 @@
     "failed": "Nichts gefunden",
     "heading": {
       "Post": "Beiträge",
+      "Tag": "Hashtags",
       "User": "Benutzer"
     },
     "hint": "Wonach suchst Du?",

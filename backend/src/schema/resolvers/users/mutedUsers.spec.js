@@ -90,7 +90,7 @@ describe('muteUser', () => {
 
   beforeEach(() => {
     currentUser = undefined
-    muteAction = variables => {
+    muteAction = (variables) => {
       const { mutate } = createTestClient(server)
       const muteUserMutation = gql`
         mutation($id: ID!) {
@@ -307,7 +307,7 @@ describe('unmuteUser', () => {
 
   beforeEach(() => {
     currentUser = undefined
-    unmuteAction = variables => {
+    unmuteAction = (variables) => {
       const { mutate } = createTestClient(server)
       const unmuteUserMutation = gql`
         mutation($id: ID!) {

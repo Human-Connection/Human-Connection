@@ -35,7 +35,7 @@ const users = [
 
 storiesOf('Editor', module)
   .addDecorator(withA11y)
-  .addDecorator(storyFn => {
+  .addDecorator((storyFn) => {
     const ctx = storyFn()
     return {
       components: { ctx },

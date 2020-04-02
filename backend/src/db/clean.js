@@ -4,7 +4,7 @@ if (process.env.NODE_ENV === 'production') {
   throw new Error(`You cannot clean the database in production environment!`)
 }
 
-;(async function() {
+;(async function () {
   try {
     await cleanDatabase()
     console.log('Successfully deleted all nodes and relations!') // eslint-disable-line no-console

@@ -27,7 +27,7 @@ Vue.component('v-popover', {
 // Globally register base components
 const componentFiles = require.context('../components/_new/generic', true, /Base[a-zA-Z]+\.vue/)
 
-componentFiles.keys().forEach(fileName => {
+componentFiles.keys().forEach((fileName) => {
   const component = componentFiles(fileName)
   const componentConfig = component.default || component
   const componentName = component.name || fileName.replace(/^.+\//, '').replace('.vue', '')
@@ -39,7 +39,7 @@ componentFiles.keys().forEach(fileName => {
 const scssReq = require.context('!!raw-loader!~/assets/_new/styles', true, /.\.scss$/)
 const scssTokenFiles = scssReq
   .keys()
-  .map(filename => ({ filename, content: scssReq(filename).default }))
+  .map((filename) => ({ filename, content: scssReq(filename).default }))
 
 addParameters({
   designToken: {

@@ -52,7 +52,7 @@ export default {
       return find(this.locales, { code: this.$i18n.locale() })
     },
     routes() {
-      const routes = this.locales.map(locale => {
+      const routes = this.locales.map((locale) => {
         return {
           name: locale.name,
           path: locale.code,

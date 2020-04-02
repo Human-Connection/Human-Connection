@@ -6,9 +6,9 @@ export const description = `
   "Image" which contains metadata and image file urls.
 `
 
-const printSummaries = summaries => {
+const printSummaries = (summaries) => {
   console.log('=========================================')
-  summaries.forEach(stat => {
+  summaries.forEach((stat) => {
     console.log(stat.query.text)
     console.log(JSON.stringify(stat.counters, null, 2))
   })
@@ -18,15 +18,15 @@ const printSummaries = summaries => {
 export async function up() {
   const driver = getDriver()
   const session = driver.session()
-  const writeTxResultPromise = session.writeTransaction(async txc => {
+  const writeTxResultPromise = session.writeTransaction(async (txc) => {
     const runs = await Promise.all(
       [
         `
       MATCH (post:Post)
-      WHERE post.image IS NOT NULL
-      CREATE (post)-[:HERO_IMAGE]->(image:Image)
+      WHERE post.image IS NOT NULL AND post.deleted = FALSE
+      MERGE(image:Image {url: post.image})
+      CREATE (post)-[:HERO_IMAGE]->(image)
       SET
-        image.url         = post.image,
         image.sensitive   = post.imageBlurred,
         image.aspectRatio = post.imageAspectRatio
       REMOVE
@@ -36,19 +36,19 @@ export async function up() {
     `,
         `
       MATCH (user:User)
-      WHERE user.avatar IS NOT NULL
-      CREATE (user)-[:AVATAR_IMAGE]->(avatar:Image)
-      SET avatar.url = user.avatar
+      WHERE user.avatar IS NOT NULL AND user.deleted = FALSE
+      MERGE(avatar:Image {url: user.avatar})
+      CREATE (user)-[:AVATAR_IMAGE]->(avatar)
       REMOVE user.avatar
     `,
         `
       MATCH (user:User)
-      WHERE user.coverImg IS NOT NULL
-      CREATE (user)-[:COVER_IMAGE]->(coverImage:Image)
-      SET coverImage.url = user.coverImg
+      WHERE user.coverImg IS NOT NULL AND user.deleted = FALSE
+      MERGE(coverImage:Image {url: user.coverImg})
+      CREATE (user)-[:COVER_IMAGE]->(coverImage)
       REMOVE user.coverImg
     `,
-      ].map(s => txc.run(s)),
+      ].map((s) => txc.run(s)),
     )
     return runs.map(({ summary }) => summary)
   })
@@ -65,7 +65,7 @@ export async function up() {
 export async function down() {
   const driver = getDriver()
   const session = driver.session()
-  const writeTxResultPromise = session.writeTransaction(async txc => {
+  const writeTxResultPromise = session.writeTransaction(async (txc) => {
     const runs = await Promise.all(
       [
         `
@@ -86,7 +86,7 @@ export async function down() {
       SET user.coverImg = coverImage.url
       DETACH DELETE coverImage
     `,
-      ].map(s => txc.run(s)),
+      ].map((s) => txc.run(s)),
     )
     return runs.map(({ summary }) => summary)
   })

@@ -5,7 +5,7 @@ const updateHashtagsOfPost = async (postId, hashtags, context) => {
   const session = context.driver.session()
 
   try {
-    await session.writeTransaction(txc => {
+    await session.writeTransaction((txc) => {
       return txc.run(
         ` 
           MATCH (post:Post { id: $postId})

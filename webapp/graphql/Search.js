@@ -26,6 +26,9 @@ export const searchQuery = gql`
       ... on User {
         ...user
       }
+      ... on Tag {
+        id
+      }
     }
   }
 `

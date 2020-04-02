@@ -7,7 +7,7 @@ export default {
 
       const session = context.driver.session()
       try {
-        const shoutWriteTxResultPromise = session.writeTransaction(async transaction => {
+        const shoutWriteTxResultPromise = session.writeTransaction(async (transaction) => {
           const shoutTransactionResponse = await transaction.run(
             `
               MATCH (node {id: $id})<-[:WROTE]-(userWritten:User), (user:User {id: $userId})
@@ -22,7 +22,7 @@ export default {
             },
           )
           log(shoutTransactionResponse)
-          return shoutTransactionResponse.records.map(record => record.get('isShouted'))
+          return shoutTransactionResponse.records.map((record) => record.get('isShouted'))
         })
         const [isShouted] = await shoutWriteTxResultPromise
         return isShouted
@@ -35,7 +35,7 @@ export default {
       const { id, type } = params
       const session = context.driver.session()
       try {
-        const unshoutWriteTxResultPromise = session.writeTransaction(async transaction => {
+        const unshoutWriteTxResultPromise = session.writeTransaction(async (transaction) => {
           const unshoutTransactionResponse = await transaction.run(
             `
               MATCH (user:User {id: $userId})-[relation:SHOUTED]->(node {id: $id})
@@ -50,7 +50,7 @@ export default {
             },
           )
           log(unshoutTransactionResponse)
-          return unshoutTransactionResponse.records.map(record => record.get('isShouted'))
+          return unshoutTransactionResponse.records.map((record) => record.get('isShouted'))
         })
         const [isShouted] = await unshoutWriteTxResultPromise
         return isShouted

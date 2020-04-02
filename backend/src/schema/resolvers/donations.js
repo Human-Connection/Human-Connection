@@ -4,7 +4,7 @@ export default {
       const { driver } = context
       let donations
       const session = driver.session()
-      const writeTxResultPromise = session.writeTransaction(async txc => {
+      const writeTxResultPromise = session.writeTransaction(async (txc) => {
         const updateDonationsTransactionResponse = await txc.run(
           ` 
             MATCH (donations:Donations)
@@ -16,7 +16,7 @@ export default {
           { params },
         )
         return updateDonationsTransactionResponse.records.map(
-          record => record.get('donations').properties,
+          (record) => record.get('donations').properties,
         )
       })
       try {

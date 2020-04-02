@@ -69,7 +69,7 @@ export function verifySignature(url, headers) {
 
     const usedHeaders = headersString.split(' ')
     const verifyHeaders = {}
-    Object.keys(headers).forEach(key => {
+    Object.keys(headers).forEach((key) => {
       if (usedHeaders.includes(key.toLowerCase())) {
         verifyHeaders[key.toLowerCase()] = headers[key]
       }
@@ -119,7 +119,7 @@ function httpVerify(pubKey, signature, signingString, algorithm) {
 // This function can be used to extract the signature,headers,algorithm etc. out of the Signature Header.
 // Just pass what you want as key
 function extractKeyValueFromSignatureHeader(signatureHeader, key) {
-  const keyString = signatureHeader.split(',').filter(el => {
+  const keyString = signatureHeader.split(',').filter((el) => {
     return !!el.startsWith(key)
   })[0]
 

@@ -9,7 +9,7 @@ import { gql } from '../helpers/jest'
 const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
 
 /* eslint-disable no-multi-spaces */
-;(async function() {
+;(async function () {
   let authenticatedUser = null
   const driver = getDriver()
   const neode = getNeode()
@@ -598,7 +598,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       }),
     ])
     const [p2, p7, p8, p12] = await Promise.all(
-      ['p2', 'p7', 'p8', 'p12'].map(id => neode.find('Post', id)),
+      ['p2', 'p7', 'p8', 'p12'].map((id) => neode.find('Post', id)),
     )
     authenticatedUser = null
 

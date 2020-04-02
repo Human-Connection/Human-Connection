@@ -29,8 +29,8 @@ describe('CommentCard.vue', () => {
         locale: () => 'en',
       },
       $filters: {
-        truncate: a => a,
-        removeHtml: a => a,
+        truncate: (a) => a,
+        removeHtml: (a) => a,
       },
       $route: { hash: '' },
       $scrollTo: jest.fn(),

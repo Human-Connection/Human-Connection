@@ -2,7 +2,7 @@
   <div>
     <masonry-grid>
       <ds-grid-item v-if="hashtag" :row-span="2" column-span="fullWidth">
-        <filter-menu :hashtag="hashtag" @clearSearch="clearSearch" />
+        <hashtags-filter :hashtag="hashtag" @clearSearch="clearSearch" />
       </ds-grid-item>
       <ds-grid-item :row-span="2" column-span="fullWidth" class="top-info-bar">
         <!--<donation-info /> -->
@@ -65,7 +65,7 @@
 
 <script>
 // import DonationInfo from '~/components/DonationInfo/DonationInfo.vue'
-import FilterMenu from '~/components/FilterMenu/FilterMenu.vue'
+import HashtagsFilter from '~/components/HashtagsFilter/HashtagsFilter.vue'
 import HcEmpty from '~/components/Empty/Empty'
 import PostTeaser from '~/components/PostTeaser/PostTeaser.vue'
 import MasonryGrid from '~/components/MasonryGrid/MasonryGrid.vue'
@@ -78,7 +78,7 @@ import UpdateQuery from '~/components/utils/UpdateQuery'
 export default {
   components: {
     // DonationInfo,
-    FilterMenu,
+    HashtagsFilter,
     PostTeaser,
     HcEmpty,
     MasonryGrid,
@@ -130,6 +130,7 @@ export default {
       return this.$apollo.loading || (this.posts && this.posts.length > 0)
     },
   },
+  watchQuery: ['hashtag'],
   methods: {
     ...mapMutations({
       selectOrder: 'posts/SELECT_ORDER',
@@ -160,7 +161,7 @@ export default {
       })
     },
     deletePost(deletedPost) {
-      this.posts = this.posts.filter(post => {
+      this.posts = this.posts.filter((post) => {
         return post.id !== deletedPost.id
       })
     },
@@ -180,7 +181,7 @@ export default {
           this.resetPostList()
           this.$apollo.queries.Post.refetch()
         })
-        .catch(error => this.$toast.error(error.message))
+        .catch((error) => this.$toast.error(error.message))
     },
     unpinPost(post) {
       this.$apollo
@@ -193,7 +194,7 @@ export default {
           this.resetPostList()
           this.$apollo.queries.Post.refetch()
         })
-        .catch(error => this.$toast.error(error.message))
+        .catch((error) => this.$toast.error(error.message))
     },
   },
   apollo: {

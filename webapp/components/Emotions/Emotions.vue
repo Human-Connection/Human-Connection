@@ -37,7 +37,7 @@ export default {
     }),
   },
   created() {
-    Object.keys(this.PostsEmotionsCountByEmotion).map(emotion => {
+    Object.keys(this.PostsEmotionsCountByEmotion).map((emotion) => {
       this.emotionsCount(emotion)
     })
   },

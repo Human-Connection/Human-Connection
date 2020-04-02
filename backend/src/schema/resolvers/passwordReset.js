@@ -14,7 +14,7 @@ export default {
       const encryptedNewPassword = await bcrypt.hashSync(newPassword, 10)
       const session = driver.session()
       try {
-        const passwordResetTxPromise = session.writeTransaction(async transaction => {
+        const passwordResetTxPromise = session.writeTransaction(async (transaction) => {
           const passwordResetTransactionResponse = await transaction.run(
             `
               MATCH (passwordReset:PasswordReset {nonce: $nonce})
@@ -32,7 +32,9 @@ export default {
               encryptedNewPassword,
             },
           )
-          return passwordResetTransactionResponse.records.map(record => record.get('passwordReset'))
+          return passwordResetTransactionResponse.records.map((record) =>
+            record.get('passwordReset'),
+          )
         })
         const [reset] = await passwordResetTxPromise
         return !!(reset && reset.properties.usedAt)

@@ -20,7 +20,7 @@ const options = {
   host: REDIS_DOMAIN,
   port: REDIS_PORT,
   password: REDIS_PASSWORD,
-  retryStrategy: times => {
+  retryStrategy: (times) => {
     return Math.min(times * 50, 2000)
   },
 }
@@ -36,7 +36,7 @@ export const pubsub = prodPubsub || devPubsub
 const driver = getDriver()
 const neode = getNeode()
 
-const getContext = async req => {
+const getContext = async (req) => {
   const user = await decode(driver, req.headers.authorization)
   return {
     driver,
@@ -48,7 +48,7 @@ const getContext = async req => {
     },
   }
 }
-export const context = async options => {
+export const context = async (options) => {
   const { connection, req } = options
   if (connection) {
     return connection.context
@@ -57,7 +57,7 @@ export const context = async options => {
   }
 }
 
-const createServer = options => {
+const createServer = (options) => {
   const defaults = {
     context,
     schema: middleware(schema),
@@ -68,9 +68,9 @@ const createServer = options => {
     },
     debug: !!CONFIG.DEBUG,
     tracing: !!CONFIG.DEBUG,
-    formatError: error => {
+    formatError: (error) => {
       if (error.message === 'ERROR_VALIDATION') {
-        return new Error(error.originalError.details.map(d => d.message))
+        return new Error(error.originalError.details.map((d) => d.message))
       }
       return error
     },

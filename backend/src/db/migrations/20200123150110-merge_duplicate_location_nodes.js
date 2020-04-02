@@ -12,7 +12,7 @@ export function up(next) {
   rxSession
     .beginTransaction()
     .pipe(
-      flatMap(transaction =>
+      flatMap((transaction) =>
         concat(
           transaction
             .run(
@@ -23,7 +23,7 @@ export function up(next) {
             )
             .records()
             .pipe(
-              map(record => {
+              map((record) => {
                 const { id: locationId } = record.get('location')
                 return { locationId }
               }),
@@ -40,7 +40,7 @@ export function up(next) {
                   )
                   .records()
                   .pipe(
-                    map(record => ({
+                    map((record) => ({
                       location: record.get('location'),
                       updatedLocation: record.get('updatedLocation'),
                     })),
@@ -48,7 +48,7 @@ export function up(next) {
               }),
             ),
           transaction.commit(),
-        ).pipe(catchError(error => transaction.rollback().pipe(throwError(error)))),
+        ).pipe(catchError((error) => transaction.rollback().pipe(throwError(error)))),
       ),
     )
     .subscribe({
@@ -66,7 +66,7 @@ export function up(next) {
         console.log('Merging of duplicate locations completed')
         next()
       },
-      error: error => {
+      error: (error) => {
         next(new Error(error), null)
       },
     })

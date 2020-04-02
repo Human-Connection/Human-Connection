@@ -330,29 +330,21 @@
     "profile-not-found": "Este perfil no se pudo encontrar"
   },
   "filter-menu": {
-    "clearSearch": "Borrar búsqueda",
-    "hashtag-search": "Buscando a #{hashtag}",
-    "title": "Su burbuja de filtro"
-  },
-  "filter-posts": {
-    "categories": {
-      "all": "Todas",
-      "header": "Categorías de contenido"
-    },
-    "followers": {
-      "label": "Usuarios que sigo"
-    },
-    "general": {
-      "header": "Filtrar por...."
-    },
-    "language": {
-      "all": "Todos",
-      "header": "Idiomas"
-    }
+    "all": "Todas",
+    "categories": "Categorías de contenido",
+    "emotions": "Emociones",
+    "filter-by": "Filtrar por...",
+    "following": "Usuarios que sigo",
+    "languages": "Idiomas"
   },
   "followButton": {
     "follow": "Seguir",
     "following": "Siguiendo"
+  },
+  "hashtags-filter": {
+    "clearSearch": "Borrar búsqueda",
+    "hashtag-search": "Buscando a #{hashtag}",
+    "title": "Su burbuja de filtro"
   },
   "index": {
     "change-filter-settings": "Cambie la configuración de sus filtros para obtener más resultados.",

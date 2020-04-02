@@ -21,7 +21,7 @@ describe('AvatarMenu.vue', () => {
           return { href: '/profile/u343/matt' }
         }),
       },
-      $t: jest.fn(a => a),
+      $t: jest.fn((a) => a),
     }
     getters = {
       'auth/user': () => {
@@ -86,21 +86,21 @@ describe('AvatarMenu.vue', () => {
         it('displays a link to user profile', () => {
           const profileLink = wrapper
             .findAll('.ds-menu-item span')
-            .at(wrapper.vm.routes.findIndex(route => route.path === '/profile/u343/matt'))
+            .at(wrapper.vm.routes.findIndex((route) => route.path === '/profile/u343/matt'))
           expect(profileLink.exists()).toBe(true)
         })
 
         it('displays a link to the notifications page', () => {
           const notificationsLink = wrapper
             .findAll('.ds-menu-item span')
-            .at(wrapper.vm.routes.findIndex(route => route.path === '/notifications'))
+            .at(wrapper.vm.routes.findIndex((route) => route.path === '/notifications'))
           expect(notificationsLink.exists()).toBe(true)
         })
 
         it('displays a link to the settings page', () => {
           const settingsLink = wrapper
             .findAll('.ds-menu-item span')
-            .at(wrapper.vm.routes.findIndex(route => route.path === '/settings'))
+            .at(wrapper.vm.routes.findIndex((route) => route.path === '/settings'))
           expect(settingsLink.exists()).toBe(true)
         })
       })
@@ -121,7 +121,7 @@ describe('AvatarMenu.vue', () => {
         it('displays a link to moderation page', () => {
           const moderationLink = wrapper
             .findAll('.ds-menu-item span')
-            .at(wrapper.vm.routes.findIndex(route => route.path === '/moderation'))
+            .at(wrapper.vm.routes.findIndex((route) => route.path === '/moderation'))
           expect(moderationLink.exists()).toBe(true)
         })
 
@@ -147,7 +147,7 @@ describe('AvatarMenu.vue', () => {
         it('displays a link to admin page', () => {
           const adminLink = wrapper
             .findAll('.ds-menu-item span')
-            .at(wrapper.vm.routes.findIndex(route => route.path === '/admin'))
+            .at(wrapper.vm.routes.findIndex((route) => route.path === '/admin'))
           expect(adminLink.exists()).toBe(true)
         })
 

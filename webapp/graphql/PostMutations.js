@@ -23,6 +23,7 @@ export default () => {
           contentExcerpt
           language
           image {
+            url
             sensitive
           }
         }
@@ -52,6 +53,7 @@ export default () => {
           contentExcerpt
           language
           image {
+            url
             sensitive
             aspectRatio
           }

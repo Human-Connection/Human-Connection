@@ -1,4 +1,4 @@
-union SearchResult = Post | User
+union SearchResult = Post | User | Tag
 
 type Query {
   searchPosts(query: String!, firstPosts: Int, postsOffset: Int): [Post]!

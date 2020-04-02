@@ -37,7 +37,7 @@ export default {
 
       const { driver } = context
       const session = driver.session()
-      const writeTxResultPromise = session.writeTransaction(async transaction => {
+      const writeTxResultPromise = session.writeTransaction(async (transaction) => {
         const createUserTransactionResponse = await transaction.run(
           `
             MATCH(email:EmailAddress {nonce: $nonce, email: $email})
@@ -57,7 +57,7 @@ export default {
           `,
           { args, nonce, email },
         )
-        const [user] = createUserTransactionResponse.records.map(record => record.get('user'))
+        const [user] = createUserTransactionResponse.records.map((record) => record.get('user'))
         if (!user) throw new UserInputError('Invalid email or nonce')
         return user
       })

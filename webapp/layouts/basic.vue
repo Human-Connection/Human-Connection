@@ -4,12 +4,12 @@
       <ds-container width="x-large" class="main-navigation-container" style="padding: 10px 10px;">
         <ds-flex class="main-navigation-flex" centered>
           <ds-flex-item width="5.5%" />
-          <ds-flex-item style="flex-grow:1;" width="20%">
+          <ds-flex-item style="flex-grow: 1;" width="20%">
             <a @click="redirectToRoot">
               <ds-logo />
             </a>
           </ds-flex-item>
-          <ds-flex-item width="20%" style="flex-grow:0;">
+          <ds-flex-item width="20%" style="flex-grow: 0;">
             <locale-switch class="topbar-locale-switch" placement="top" offset="16" />
           </ds-flex-item>
         </ds-flex>

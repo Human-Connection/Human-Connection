@@ -9,7 +9,7 @@
       :icon-right="null"
       :options="options"
       :loading="loading"
-      :filter="item => item"
+      :filter="(item) => item"
       :no-options-available="emptyText"
       :auto-reset-search="!searchValue"
       :placeholder="$t('search.placeholder')"
@@ -35,6 +35,12 @@
         >
           <search-post :option="option" />
         </p>
+        <p
+          v-if="option.__typename === 'Tag'"
+          :class="{ 'option-with-heading': isFirstOfType(option) }"
+        >
+          <hc-hashtag :id="option.id" />
+        </p>
       </template>
     </ds-select>
     <base-button v-if="isActive" icon="close" circle ghost size="small" @click="clear" />
@@ -45,6 +51,7 @@
 import { isEmpty } from 'lodash'
 import SearchHeading from '~/components/generic/SearchHeading/SearchHeading.vue'
 import SearchPost from '~/components/generic/SearchPost/SearchPost.vue'
+import HcHashtag from '~/components/Hashtag/Hashtag.vue'
 import UserTeaser from '~/components/UserTeaser/UserTeaser.vue'
 
 export default {
@@ -52,6 +59,7 @@ export default {
   components: {
     SearchHeading,
     SearchPost,
+    HcHashtag,
     UserTeaser,
   },
   props: {
@@ -80,8 +88,8 @@ export default {
   methods: {
     isFirstOfType(option) {
       return (
-        this.options.findIndex(o => o === option) ===
-        this.options.findIndex(o => o.__typename === option.__typename)
+        this.options.findIndex((o) => o === option) ===
+        this.options.findIndex((o) => o.__typename === option.__typename)
       )
     },
     onFocus(event) {
@@ -134,12 +142,19 @@ export default {
     isPost(item) {
       return item.__typename === 'Post'
     },
+    isTag(item) {
+      return item.__typename === 'Tag'
+    },
     goToResource(item) {
       this.$nextTick(() => {
-        this.$router.push({
-          name: this.isPost(item) ? 'post-id-slug' : 'profile-id-slug',
-          params: { id: item.id, slug: item.slug },
-        })
+        if (!this.isTag(item)) {
+          this.$router.push({
+            name: this.isPost(item) ? 'post-id-slug' : 'profile-id-slug',
+            params: { id: item.id, slug: item.slug },
+          })
+        } else {
+          this.$router.push('?hashtag=' + item.id)
+        }
       })
     },
   },
