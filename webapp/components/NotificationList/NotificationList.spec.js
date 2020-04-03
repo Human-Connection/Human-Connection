@@ -30,6 +30,9 @@ describe('NotificationList.vue', () => {
     })
     mocks = {
       $t: jest.fn(),
+      $i18n: {
+        locale: () => 'en',
+      },
     }
     stubs = {
       NuxtLink: RouterLinkStub,
@@ -52,7 +55,7 @@ describe('NotificationList.vue', () => {
     })
 
     it('renders Notification.vue for each notification of the user', () => {
-      expect(wrapper.findAll(Notification)).toHaveLength(3)
+      expect(wrapper.findAll(Notification)).toHaveLength(5)
     })
   })
 

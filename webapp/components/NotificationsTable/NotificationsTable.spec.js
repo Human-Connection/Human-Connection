@@ -20,6 +20,9 @@ describe('NotificationsTable.vue', () => {
   beforeEach(() => {
     mocks = {
       $t: jest.fn((string) => string),
+      $i18n: {
+        locale: () => 'en',
+      },
     }
     stubs = {
       NuxtLink: RouterLinkStub,

@@ -1,5 +1,7 @@
 export const testNotifications = [
   {
+    createdAt: '2020-01-16T10:33:48.651Z',
+    updatedAt: '2020-01-16T10:33:48.651Z',
     read: false,
     reason: 'mentioned_in_post',
     from: {
@@ -16,6 +18,8 @@ export const testNotifications = [
     },
   },
   {
+    createdAt: '2020-01-15T16:33:48.651Z',
+    updatedAt: '2020-01-15T16:33:48.651Z',
     read: false,
     reason: 'mentioned_in_comment',
     from: {
@@ -41,6 +45,8 @@ export const testNotifications = [
     },
   },
   {
+    createdAt: '2020-01-14T12:33:48.651Z',
+    updatedAt: '2020-01-14T12:33:48.651Z',
     read: false,
     reason: 'filed_report_on_resource',
     from: {
@@ -53,6 +59,73 @@ export const testNotifications = [
         id: 'badWomen',
         slug: 'mrs.-badwomen',
         name: 'Mrs. Badwomen',
+      },
+    },
+  },
+  {
+    createdAt: '2019-08-31T17:33:48.651Z',
+    updatedAt: '2019-08-31T17:33:48.651Z',
+    read: false,
+    reason: 'filed_report_on_resource',
+    from: {
+      __typename: 'FiledReport',
+      reportId: 'reportOnUser',
+      reasonCategory: 'other',
+      reasonDescription: 'Disgusting!',
+      resource: {
+        __typename: 'Post',
+        id: 'badPost',
+        createdAt: '2019-10-29T15:38:25.184Z',
+        updatedAt: '2019-10-29T15:38:25.184Z',
+        disabled: false,
+        deleted: false,
+        title: 'post title',
+        content: 'this is a post content',
+        contentExcerpt: 'this is a post content',
+        author: {
+          id: 'post-author',
+          slug: 'post-author',
+          name: 'Post Author',
+        },
+      },
+    },
+  },
+  {
+    createdAt: '2019-08-31T17:33:48.651Z',
+    updatedAt: '2019-08-31T17:33:48.651Z',
+    read: false,
+    reason: 'filed_report_on_resource',
+    from: {
+      __typename: 'FiledReport',
+      reportId: 'reportOnUser',
+      reasonCategory: 'other',
+      reasonDescription: 'Disgusting!',
+      resource: {
+        __typename: 'Comment',
+        id: 'badComment',
+        createdAt: '2019-10-29T15:38:25.184Z',
+        updatedAt: '2019-10-29T15:38:25.184Z',
+        disabled: false,
+        deleted: false,
+        content: 'this is a comment content',
+        contentExcerpt: 'this is a comment content',
+        author: {
+          id: 'comment-author',
+          slug: 'comment-author',
+          name: 'Comment Author',
+        },
+        post: {
+          id: 'p4',
+          title: 'post title',
+          content: 'this is a post content',
+          contentExcerpt: 'this is a post content',
+          slug: 'some-post',
+          author: {
+            id: 'post-author',
+            slug: 'post-author',
+            name: 'Post Author',
+          },
+        },
       },
     },
   },

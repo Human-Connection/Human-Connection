@@ -293,7 +293,7 @@ describe('given some notifications', () => {
       })
 
       describe('no filters', () => {
-        it.only('returns all notifications of current user', async () => {
+        it('returns all notifications of current user', async () => {
           const expected = {
             data: {
               notifications: [
