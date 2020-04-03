@@ -12,18 +12,16 @@
       />
     </template>
     <template #triggerer="scope">
-      <ds-space margin-bottom="base">
-        <client-only>
-          <user-teaser
-            :user="scope.row.triggerer"
-            :date-time="scope.row.createdAt"
-            :class="{ 'notification-status': scope.row.read }"
-          />
-        </client-only>
-      </ds-space>
       <ds-text :class="{ 'notification-status': scope.row.read, reason: true }">
         {{ $t(`notifications.reason.${scope.row.reason}` + scope.row.reasonTranslationExtention) }}
       </ds-text>
+      <client-only>
+        <user-teaser
+          :user="scope.row.triggerer"
+          :date-time="scope.row.createdAt"
+          :class="{ 'notification-status': scope.row.read }"
+        />
+      </client-only>
     </template>
     <template #title="scope">
       <nuxt-link
