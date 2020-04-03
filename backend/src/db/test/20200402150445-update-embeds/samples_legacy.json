@@ -1,0 +1,6 @@
+{
+  "standalone": "<p><a href=\"https://youtu.be/jB6mI8uVxKU\" class=\"embed\" target=\"_blank\"></a></p>",
+  "inline": "<p>This is a video link <a href=\"https://youtu.be/jB6mI8uVxKU\" class=\"embed\" target=\"_blank\"></a>pasted into this line</p>",
+  "inlineComplete": "<p>This is a video link <a href=\"https://youtu.be/jB6mI8uVxKU\" class=\"embed\" target=\"_blank\"></a> pasted with this line</p>",
+  "explicitBlocks": "<p>This is a video link</p><p><a href=\"https://youtu.be/jB6mI8uVxKU\" class=\"embed\" target=\"_blank\"></a></p><p>with explicit paragraphs above and below</p>"
+}
