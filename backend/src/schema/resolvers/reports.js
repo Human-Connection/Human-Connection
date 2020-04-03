@@ -84,7 +84,7 @@ export default {
 
       const reportsReadTxPromise = session.readTransaction(async (transaction) => {
         const reportsTransactionResponse = await transaction.run(
-          // Wolle 
+          // Wolle
           // !!! this Cypher query returns multiple reports on the same resource! i will create an issue for refactoring (bug fixing)
           `
             MATCH (report:Report)-[:BELONGS_TO]->(resource)
