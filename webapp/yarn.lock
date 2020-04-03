@@ -9946,6 +9946,11 @@ java-properties@^1.0.0:
   resolved "https://registry.yarnpkg.com/java-properties/-/java-properties-1.0.2.tgz#ccd1fa73907438a5b5c38982269d0e771fe78211"
   integrity sha512-qjdpeo2yKlYTH7nFdK0vbZWuTCesk4o63v5iVOlhMQPfuIZQfW/HI35SjfhA+4qpg36rnFSvUK5b1m+ckIblQQ==
 
+javascript-detect-element-resize@^0.5.3:
+  version "0.5.3"
+  resolved "https://registry.yarnpkg.com/javascript-detect-element-resize/-/javascript-detect-element-resize-0.5.3.tgz#1a71cd51dfe565907f299012fe73a294104025de"
+  integrity sha1-GnHNUd/lZZB/KZAS/nOilBBAJd4=
+
 jest-changed-files@^25.2.3:
   version "25.2.3"
   resolved "https://registry.yarnpkg.com/jest-changed-files/-/jest-changed-files-25.2.3.tgz#ad19deef9e47ba37efb432d2c9a67dfd97cc78af"
@@ -15317,10 +15322,10 @@ storybook-chromatic@^2.2.2:
     tree-kill "^1.1.0"
     uuid "^3.3.2"
 
-storybook-design-token@^0.5.1:
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/storybook-design-token/-/storybook-design-token-0.5.1.tgz#9c7324400d3facab5a10315ac9fd08b051920cf3"
-  integrity sha512-x5gculmcGxV+7HrFbiW2fo1TvTwViwm+Gnleqi5ACIGrvge1CyckNkXZYygbqN4O+Ne3VHt04uh+E0gJHQCwuQ==
+storybook-design-token@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/storybook-design-token/-/storybook-design-token-0.7.0.tgz#825bae7b6e4edceaa393dd0b5f6726cb0a09c254"
+  integrity sha512-SosVlLpJmZnXsnGjqHo7Ou7WyTfjOWpPpaAcRLk3tAUMhCoZgYy+UJix0VP3kHRRZVIdrJBsOGaA86L6WlwBWA==
   dependencies:
     "@illinois/react-use-local-storage" "1.1.0"
     "@storybook/addons" "5.2.8"
@@ -15329,6 +15334,7 @@ storybook-design-token@^0.5.1:
     "@storybook/theming" "5.2.8"
     comment-parser "0.7.1"
     gonzales-pe "4.2.4"
+    javascript-detect-element-resize "^0.5.3"
     mensch "0.3.4"
     raw-loader "3.1.0"
     react-use-clipboard "0.1.4"
