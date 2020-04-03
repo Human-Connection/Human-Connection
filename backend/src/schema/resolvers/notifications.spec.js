@@ -226,9 +226,21 @@ describe('given some notifications', () => {
             __typename
             ... on Post {
               content
+              author {
+                id
+              }
             }
             ... on Comment {
               content
+              author {
+                id
+              }
+              post {
+                id
+                author {
+                  id
+                }
+              }
             }
             ... on FiledReport {
               reportId
@@ -244,10 +256,22 @@ describe('given some notifications', () => {
                   id
                   title
                   content
+                  author {
+                    id
+                  }
                 }
                 ... on Comment {
                   id
                   content
+                  author {
+                    id
+                  }
+                  post {
+                    id
+                    author {
+                      id
+                    }
+                  }
                 }
               }
             }
@@ -255,6 +279,7 @@ describe('given some notifications', () => {
         }
       }
     `
+
     describe('unauthenticated', () => {
       it('throws authorization error', async () => {
         const { errors } = await query({ query: notificationQuery })
@@ -268,7 +293,7 @@ describe('given some notifications', () => {
       })
 
       describe('no filters', () => {
-        it('returns all notifications of current user', async () => {
+        it.only('returns all notifications of current user', async () => {
           const expected = {
             data: {
               notifications: [
@@ -288,6 +313,9 @@ describe('given some notifications', () => {
                       id: 'p4',
                       title: 'Bad Post',
                       content: 'I am bad content !!!',
+                      author: {
+                        id: 'author',
+                      },
                     },
                   },
                 },
@@ -322,6 +350,15 @@ describe('given some notifications', () => {
                       __typename: 'Comment',
                       id: 'c4',
                       content: 'I am harassing content in a harassing comment to a bad post !!!',
+                      author: {
+                        id: 'author',
+                      },
+                      post: {
+                        id: 'p4',
+                        author: {
+                          id: 'author',
+                        },
+                      },
                     },
                   },
                 },
@@ -332,6 +369,9 @@ describe('given some notifications', () => {
                   from: {
                     __typename: 'Post',
                     content: 'You have been mentioned in a post',
+                    author: {
+                      id: 'author',
+                    },
                   },
                 }),
                 expect.objectContaining({
@@ -341,6 +381,15 @@ describe('given some notifications', () => {
                   from: {
                     __typename: 'Comment',
                     content: 'You have been mentioned in a comment',
+                    author: {
+                      id: 'author',
+                    },
+                    post: {
+                      id: 'p3',
+                      author: {
+                        id: 'author',
+                      },
+                    },
                   },
                 }),
                 expect.objectContaining({
@@ -350,6 +399,9 @@ describe('given some notifications', () => {
                   from: {
                     __typename: 'Post',
                     content: 'Already seen post mention',
+                    author: {
+                      id: 'author',
+                    },
                   },
                 }),
                 expect.objectContaining({
@@ -359,6 +411,15 @@ describe('given some notifications', () => {
                   from: {
                     __typename: 'Comment',
                     content: 'You have seen this comment mentioning already',
+                    author: {
+                      id: 'author',
+                    },
+                    post: {
+                      id: 'p3',
+                      author: {
+                        id: 'author',
+                      },
+                    },
                   },
                 }),
               ],

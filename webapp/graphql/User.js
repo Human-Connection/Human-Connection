@@ -64,7 +64,6 @@ export const minimisedUserQuery = () => {
 export const notificationQuery = (i18n) => {
   return gql`
     ${userFragment}
-    ${userCountsFragment}
     ${commentFragment}
     ${postFragment}
 
@@ -103,7 +102,6 @@ export const notificationQuery = (i18n) => {
               __typename
               ... on User {
                 ...user
-                ...userCounts
               }
               ... on Post {
                 ...post
@@ -154,6 +152,9 @@ export const markAsReadMutation = (i18n) => {
           }
           ... on Comment {
             ...comment
+            author {
+              ...user
+            }
             post {
               ...post
               author {
@@ -162,7 +163,33 @@ export const markAsReadMutation = (i18n) => {
             }
           }
           ... on FiledReport {
-            id
+            reportId
+            reasonCategory
+            reasonDescription
+            resource {
+              __typename
+              ... on User {
+                ...user
+              }
+              ... on Post {
+                ...post
+                author {
+                  ...user
+                }
+              }
+              ... on Comment {
+                ...comment
+                author {
+                  ...user
+                }
+                post {
+                  ...post
+                  author {
+                    ...user
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -200,6 +227,35 @@ export const notificationAdded = () => {
               ...post
               author {
                 ...user
+              }
+            }
+          }
+          ... on FiledReport {
+            reportId
+            reasonCategory
+            reasonDescription
+            resource {
+              __typename
+              ... on User {
+                ...user
+              }
+              ... on Post {
+                ...post
+                author {
+                  ...user
+                }
+              }
+              ... on Comment {
+                ...comment
+                author {
+                  ...user
+                }
+                post {
+                  ...post
+                  author {
+                    ...user
+                  }
+                }
               }
             }
           }

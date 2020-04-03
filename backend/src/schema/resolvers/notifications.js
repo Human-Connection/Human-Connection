@@ -7,13 +7,18 @@ const cypherReturnNotificationsWithCollectedResourceData = `
     [
       labels(resource)[0] = "Post", '
         MATCH (resource)<-[:WROTE]-(author:User)
-        RETURN resource {.*, __typename: labels(resource)[0], author: author} AS finalResource',
+        RETURN resource {.*, __typename: labels(resource)[0], author: properties(author)} AS finalResource',
       labels(resource)[0] = "Comment", '
         MATCH (author:User)-[:WROTE]->(resource)-[:COMMENTS]->(post:Post)<-[:WROTE]-(postAuthor:User)
-        RETURN resource {.*, __typename: labels(resource)[0], author: author, post: apoc.map.merge(properties(post), {__typename: labels(post)[0], author: properties(postAuthor)})} AS finalResource',
+        RETURN resource {.*, __typename: labels(resource)[0], author: properties(author), post: apoc.map.merge(properties(post), {__typename: labels(post)[0], author: properties(postAuthor)})} AS finalResource',
       labels(resource)[0] = "Report", '
         MATCH (reportedResource)<-[:BELONGS_TO]-(resource)<-[filed:FILED]-(user)
-        RETURN {__typename: "FiledReport", reportId: resource.id, createdAt: filed.createdAt, reasonCategory: filed.reasonCategory, reasonDescription: filed.reasonDescription, resource: apoc.map.merge(properties(reportedResource), {__typename: labels(reportedResource)[0]})} AS finalResource'
+
+        WITH user, filed, resource, reportedResource,
+        [(reportedResource)<-[:WROTE]-(author:User) | author {.*}] AS authors,
+        [(reportedResource)-[:COMMENTS]->(post:Post)<-[:WROTE]-(author:User) | post {.*, author: properties(author)} ] AS posts
+
+        RETURN {__typename: "FiledReport", reportId: resource.id, createdAt: filed.createdAt, reasonCategory: filed.reasonCategory, reasonDescription: filed.reasonDescription, resource: apoc.map.merge(properties(reportedResource), {__typename: labels(reportedResource)[0], author: authors[0], post: posts[0]})} AS finalResource'
     ],
     '',
     {
@@ -143,6 +148,16 @@ export default {
         const notifications = notificationsTransactionResponse.records.map((record) =>
           record.get('notification'),
         )
+        // Wolle notifications.forEach((element, index) => {
+        //   console.log('notification #', index, ': ', element)
+        //   if (element.from.__typename === 'FiledReport') {
+        //     if (element.from.resource.__typename === 'Comment') {
+        //       console.log('.from.resource.post.author: ', element.from.resource.post.author)
+        //       // console.log('.from.post.author: ', element.from.post.author)
+        //     }
+        //   }
+        // })
+        // Wolle console.log('notifications: ', notifications)
         return notifications
       })
       try {
@@ -187,7 +202,7 @@ export default {
   NOTIFIED: {
     id: async (parent) => {
       // serialize an ID to help the client update the cache
-      return `${parent.reason}/${parent.from.id}/${parent.to.id}`
+      return `${parent.reason}/${parent.from.id || parent.from.reportId}/${parent.to.id}`
     },
   },
 }

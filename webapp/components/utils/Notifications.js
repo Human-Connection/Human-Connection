@@ -169,5 +169,6 @@ export const extractNotificationDataOfCurrentUser = (notification, currentUser) 
     reasonTranslationExtention,
     linkTo: { name: linkName, params: linkParams, ...linkHashParam },
   }
+  // Wolle console.log('data: ', data)
   return data
 }
