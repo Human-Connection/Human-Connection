@@ -60,7 +60,6 @@ export const testNotifications = [
 
 export const extractNotificationDataOfCurrentUser = (notification, currentUser) => {
   const from = notification.from // for readability
-  // Wolle console.log('from: ', from)
   let user = null
   let post = null
   let comment = null
@@ -73,7 +72,7 @@ export const extractNotificationDataOfCurrentUser = (notification, currentUser) 
   let reasonTranslationExtention = ''
   let iconName, iconTooltip, triggerer, title, author, linkName, linkParams, linkHashParam
 
-  // extract data out of the deep structure of db response
+  // extract flattened data out of the deep structure of db response
 
   // leave undefined data as default, see above. so later by priority user, comment, post we get easely a clou what it is
   switch (from.__typename) {
@@ -169,6 +168,5 @@ export const extractNotificationDataOfCurrentUser = (notification, currentUser) 
     reasonTranslationExtention,
     linkTo: { name: linkName, params: linkParams, ...linkHashParam },
   }
-  // Wolle console.log('data: ', data)
   return data
 }
