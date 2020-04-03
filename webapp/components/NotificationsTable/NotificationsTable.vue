@@ -48,15 +48,18 @@
         <span class="notification-content-header-text">
           {{ $t(`notifications.report.category`) }}:
         </span>
-        {{ $t('report.reason.category.options.' + scope.row.report.reasonCategory) }}
+        {{ $t('report.reason.category.options.' + scope.row.filedReport.reasonCategory) }}
         <br />
         <span class="notification-content-header-text">
           {{ $t(`notifications.report.description`) }}:
         </span>
         <span
-          v-if="scope.row.report.reasonDescription && scope.row.report.reasonDescription !== ''"
+          v-if="
+            scope.row.filedReport.reasonDescription &&
+            scope.row.filedReport.reasonDescription !== ''
+          "
         >
-          {{ scope.row.report.reasonDescription }}
+          {{ scope.row.filedReport.reasonDescription }}
         </span>
         <span v-else>
           —

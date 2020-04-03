@@ -215,6 +215,8 @@ describe('given some notifications', () => {
   })
 
   describe('notifications', () => {
+    // properties should be deep nested and the same as in the "markAsReadMutation"
+    //  reason is to test if all deep nested data is collected correctly with the Cypher statement. if not there will be a GraphQL error
     const notificationQuery = gql`
       query($read: Boolean, $orderBy: NotificationOrdering) {
         notifications(read: $read, orderBy: $orderBy) {
@@ -556,21 +558,67 @@ describe('given some notifications', () => {
   })
 
   describe('markAsRead', () => {
+    // properties should be deep nested and the same as in the "notificationQuery"
+    //  reason is to test if all deep nested data is collected correctly with the Cypher statement. if not there will be a GraphQL error
     const markAsReadMutation = gql`
       mutation($id: ID!) {
         markAsRead(id: $id) {
           createdAt
+          updatedAt
           read
+          reason
           from {
             __typename
             ... on Post {
               content
+              author {
+                id
+              }
             }
             ... on Comment {
               content
+              author {
+                id
+              }
+              post {
+                id
+                author {
+                  id
+                }
+              }
             }
             ... on FiledReport {
               reportId
+              reasonCategory
+              reasonDescription
+              resource {
+                __typename
+                ... on User {
+                  id
+                  name
+                }
+                ... on Post {
+                  id
+                  title
+                  content
+                  author {
+                    id
+                  }
+                }
+                ... on Comment {
+                  id
+                  content
+                  author {
+                    id
+                  }
+                  post {
+                    id
+                    author {
+                      id
+                    }
+                  }
+                }
+              }
             }
           }
         }

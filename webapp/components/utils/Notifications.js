@@ -137,7 +137,7 @@ export const extractNotificationDataOfCurrentUser = (notification, currentUser) 
   let post = null
   let comment = null
   let contentExcerpt = null
-  let report = null
+  let filedReport = null
   let isUser = false
   let isPost = false
   let isComment = false
@@ -165,7 +165,7 @@ export const extractNotificationDataOfCurrentUser = (notification, currentUser) 
       triggerer = post.author
       break
     case 'FiledReport':
-      report = {
+      filedReport = {
         reasonCategory: from.reasonCategory,
         reasonDescription: from.reasonDescription,
       }
@@ -237,7 +237,7 @@ export const extractNotificationDataOfCurrentUser = (notification, currentUser) 
     author,
     title,
     contentExcerpt,
-    report,
+    filedReport,
     reasonTranslationExtention,
     linkTo: { name: linkName, params: linkParams, ...linkHashParam },
   }

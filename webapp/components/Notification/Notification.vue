@@ -30,16 +30,16 @@
         <div v-if="notificationData.isReport">
           <ds-space margin-bottom="x-small" />
           <strong>{{ $t(`notifications.report.category`) }}:</strong>
-          {{ $t('report.reason.category.options.' + notificationData.report.reasonCategory) }}
+          {{ $t('report.reason.category.options.' + notificationData.filedReport.reasonCategory) }}
           <br />
           <strong>{{ $t(`notifications.report.description`) }}:</strong>
           <span
             v-if="
-              notificationData.report.reasonDescription &&
-              notificationData.report.reasonDescription !== ''
+              notificationData.filedReport.reasonDescription &&
+              notificationData.filedReport.reasonDescription !== ''
             "
           >
-            {{ notificationData.report.reasonDescription }}
+            {{ notificationData.filedReport.reasonDescription }}
           </span>
           <span v-else>
             —

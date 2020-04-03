@@ -61,6 +61,7 @@ export const minimisedUserQuery = () => {
   `
 }
 
+// properties have be in all notifications queries, mutations, and subscriptions here the same !!!
 export const notificationQuery = (i18n) => {
   return gql`
     ${userFragment}
@@ -129,6 +130,7 @@ export const notificationQuery = (i18n) => {
   `
 }
 
+// properties have be in all notifications queries, mutations, and subscriptions here the same !!!
 export const markAsReadMutation = (i18n) => {
   return gql`
     ${userFragment}
@@ -197,6 +199,7 @@ export const markAsReadMutation = (i18n) => {
   `
 }
 
+// properties have be in all notifications queries, mutations, and subscriptions here the same !!!
 export const notificationAdded = () => {
   return gql`
     ${userFragment}
@@ -264,6 +267,7 @@ export const notificationAdded = () => {
     }
   `
 }
+
 export const followUserMutation = (i18n) => {
   return gql`
     ${userFragment}
