@@ -18,7 +18,11 @@
       </div>
       <div class="notifications-link-container">
         <nuxt-link :to="{ name: 'notifications' }">
-          {{ $t('notifications.pageLink') }}
+          {{
+            unreadNotificationsCount > 25
+              ? $t('notifications.manyNotifications', { unreadNotificationsCount })
+              : $t('notifications.pageLink')
+          }}
         </nuxt-link>
       </div>
     </template>
@@ -28,7 +32,12 @@
 <script>
 import { mapGetters } from 'vuex'
 import unionBy from 'lodash/unionBy'
-import { notificationQuery, markAsReadMutation, notificationAdded } from '~/graphql/User'
+import {
+  notificationQuery,
+  markAsReadMutation,
+  notificationAdded,
+  unreadNotificationsCountQuery,
+} from '~/graphql/User'
 import CounterIcon from '~/components/_new/generic/CounterIcon/CounterIcon'
 import Dropdown from '~/components/Dropdown'
 import NotificationList from '../NotificationList/NotificationList'
@@ -55,6 +64,9 @@ export default {
         await this.$apollo.mutate({
           mutation: markAsReadMutation(this.$i18n),
           variables,
+          update: () => {
+            this.unreadNotificationsCount--
+          },
         })
       } catch (err) {
         this.$toast.error(err.message)
@@ -65,12 +77,6 @@ export default {
     ...mapGetters({
       user: 'auth/user',
     }),
-    unreadNotificationsCount() {
-      const result = this.notifications.reduce((count, notification) => {
-        return notification.read ? count : count + 1
-      }, 0)
-      return result
-    },
   },
   apollo: {
     notifications: {
@@ -81,6 +87,7 @@ export default {
         return {
           read: false,
           orderBy: 'updatedAt_desc',
+          first: 25,
         }
       },
       subscribeToMore: {
@@ -106,6 +113,9 @@ export default {
       error(error) {
         this.$toast.error(error.message)
       },
+    },
+    unreadNotificationsCount: {
+      query: unreadNotificationsCountQuery,
     },
   },
 }

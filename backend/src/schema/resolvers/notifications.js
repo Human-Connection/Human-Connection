@@ -15,10 +15,9 @@ export default {
   },
   Query: {
     notifications: async (_parent, args, context, _resolveInfo) => {
-      const { user: currentUser } = context
-      const session = context.driver.session()
+      const { user: currentUser, driver } = context
+      const session = driver.session()
       let whereClause, orderByClause
-
       switch (args.read) {
         case true:
           whereClause = 'WHERE notification.read = TRUE'
@@ -41,7 +40,6 @@ export default {
       }
       const offset = args.offset && typeof args.offset === 'number' ? `SKIP ${args.offset}` : ''
       const limit = args.first && typeof args.first === 'number' ? `LIMIT ${args.first}` : ''
-
       const readTxResultPromise = session.readTransaction(async (transaction) => {
         const notificationsTransactionResponse = await transaction.run(
           ` 
@@ -64,6 +62,30 @@ export default {
       try {
         const notifications = await readTxResultPromise
         return notifications
+      } finally {
+        session.close()
+      }
+    },
+    unreadNotificationsCount: async (_parent, _args, context, _resolveInfo) => {
+      const { user: currentUser, driver } = context
+      const session = driver.session()
+
+      const readTxResultPromise = session.readTransaction(async (transaction) => {
+        const unreadNotificationsCountTransactionResponse = await transaction.run(
+          `
+            MATCH (resource {deleted: false, disabled: false})-[notification:NOTIFIED {read: false}]->(user:User {id:$id})
+            RETURN count(notification) as unreadNotificationsCount
+          `,
+          { id: currentUser.id },
+        )
+        log(unreadNotificationsCountTransactionResponse)
+        return unreadNotificationsCountTransactionResponse.records.map(
+          (record) => record.get('unreadNotificationsCount').low,
+        )
+      })
+      try {
+        const [unreadNotificationsCount] = await readTxResultPromise
+        return unreadNotificationsCount
       } finally {
         session.close()
       }

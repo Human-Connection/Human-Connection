@@ -174,6 +174,13 @@ export const notificationAdded = () => {
     }
   `
 }
+
+export const unreadNotificationsCountQuery = gql`
+  query {
+    unreadNotificationsCount
+  }
+`
+
 export const followUserMutation = (i18n) => {
   return gql`
     ${userFragment}

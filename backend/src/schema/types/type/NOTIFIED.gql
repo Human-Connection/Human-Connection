@@ -25,6 +25,7 @@ enum NotificationReason {
 
 type Query {
   notifications(read: Boolean, orderBy: NotificationOrdering, first: Int, offset: Int): [NOTIFIED]
+  unreadNotificationsCount: Int!
 }
   
 type Mutation {

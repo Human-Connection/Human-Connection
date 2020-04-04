@@ -1151,10 +1151,10 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
     )
 
     await Promise.all(
-      [...Array(45).keys()].map(() =>
+      [...Array(45).keys()].map((i) =>
         Factory.build(
           'post',
-          {},
+          { id: `p${i + 45}` },
           {
             categoryIds: ['cat1'],
             author: bobDerBaumeister,
@@ -1259,7 +1259,19 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         ),
       ),
     )
-
+    const notificationsCypher = `
+      MATCH (post:Post {id: $id}), (user:User {id: 'u3'})
+      CREATE (post)-[notification:NOTIFIED {reason: 'mentioned_in_post'}]->(user)
+      SET notification.read = FALSE
+      SET notification.createdAt = COALESCE(notification.createdAt, toString(datetime()))
+      SET notification.updatedAt = toString(datetime())
+      RETURN notification;
+    `
+    await Promise.all(
+      [...Array(45).keys()].map(async (i) => {
+        await neode.cypher(notificationsCypher, { id: `p${i + 45}` })
+      }),
+    )
     await Factory.build('donations')
     /* eslint-disable-next-line no-console */
     console.log('Seeded Data...')
