@@ -31,7 +31,7 @@ We are storing our images in the s3-compatible [DigitalOcean Spaces](https://www
 
 We still want to take backups of our images in case something happens to the images in the cloud. See these [instructions](https://www.digitalocean.com/docs/spaces/resources/s3cmd-usage/) about getting set up with `s3cmd` to take a copy of all images in a `Spaces` namespace, ie `human-connection-uploads`.
 
-After configuring `s3cmd` with your credentials, etc. I was able to make a backup with this command.
+After configuring `s3cmd` with your credentials, etc. you should be able to make a backup with this command.
 
 ```sh
 s3cmg get --recursive s3://human-connection-uploads --skip-existing
