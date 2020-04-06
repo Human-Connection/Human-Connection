@@ -16,7 +16,7 @@
       }}
     </p>
     <nuxt-link class="link" :to="notificationData.linkTo" @click.native="$emit('read')">
-      <base-card wideContent data-test="notification-base-card">
+      <base-card wideContent>
         <h2 v-if="notificationData.isPost || notificationData.isComment" class="title">
           {{ notificationData.title }}
         </h2>
