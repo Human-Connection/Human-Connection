@@ -84,7 +84,7 @@
     "metascraper-soundcloud": "^5.11.7",
     "metascraper-title": "^5.11.6",
     "metascraper-url": "^5.11.6",
-    "metascraper-video": "^5.11.6",
+    "metascraper-video": "^5.11.8",
     "metascraper-youtube": "^5.11.6",
     "migrate": "^1.6.2",
     "mime-types": "^2.1.26",
