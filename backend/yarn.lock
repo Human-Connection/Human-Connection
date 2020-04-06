@@ -6425,12 +6425,12 @@ metascraper-youtube@^5.11.6:
     is-reachable "~4.0.0"
     p-locate "~4.1.0"
 
-metascraper@^5.11.6:
-  version "5.11.6"
-  resolved "https://registry.yarnpkg.com/metascraper/-/metascraper-5.11.6.tgz#0dcae3fadfb0a40e5b9dcd0ccc34c84d7f7b821f"
-  integrity sha512-6rVHvzxocYdjctlW2Pi7NSxP9MSufcBZHgO66swfzkx/iEEfAKGUPUjbAOqjf9BeTw5zL8Oi8R2lBgtFinN/Tw==
+metascraper@^5.11.8:
+  version "5.11.8"
+  resolved "https://registry.yarnpkg.com/metascraper/-/metascraper-5.11.8.tgz#af8536e1e61436d0c939394a5dc7ad871f289257"
+  integrity sha512-AltlRzDO+ydsOyeaF78posFAY3YBqmgy57M2NbU+AKaQ0aWjspxmhXjMA7DOLjfHTDeff7B2115WvLhslbsU5A==
   dependencies:
-    "@metascraper/helpers" "^5.11.6"
+    "@metascraper/helpers" "^5.11.8"
     cheerio "~1.0.0-rc.3"
     cheerio-advanced-selectors "~2.0.1"
     lodash "~4.17.15"
