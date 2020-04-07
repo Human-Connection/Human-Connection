@@ -1,4 +1,4 @@
-import { shallowMount } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import SearchPost from './SearchPost.vue'
 
 const localVue = global.localVue
@@ -26,7 +26,7 @@ describe('SearchPost.vue', () => {
   })
 
   const Wrapper = () => {
-    return shallowMount(SearchPost, { mocks, localVue, propsData })
+    return mount(SearchPost, { mocks, localVue, propsData })
   }
 
   describe('shallowMount', () => {

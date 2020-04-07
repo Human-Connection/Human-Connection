@@ -1,22 +1,23 @@
 <template>
   <section class="search-post">
     <p class="label">{{ option.title | truncate(70) }}</p>
-    <span class="metadata">
+    <div class="metadata">
       <span class="counts">
-        {{ option.commentsCount }}
-        <base-icon name="comments" />
-        {{ option.shoutedCount }}
-        <base-icon name="bullhorn" />
+        <counter-icon icon="comments" :count="option.commentsCount" soft />
+        <counter-icon icon="bullhorn" :count="option.shoutedCount" soft />
       </span>
-      <span>
-        {{ option.author.name | truncate(32) }} -
-        {{ option.createdAt | dateTime('dd.MM.yyyy') }}
-      </span>
-    </span>
+      {{ option.author.name | truncate(32) }} - {{ option.createdAt | dateTime('dd.MM.yyyy') }}
+    </div>
   </section>
 </template>
+
 <script>
+import CounterIcon from '~/components/_new/generic/CounterIcon/CounterIcon'
+
 export default {
+  components: {
+    CounterIcon,
+  },
   name: 'SearchPost',
   props: {
     option: { type: Object, required: true },
@@ -29,30 +30,18 @@ export default {
 
   > .label {
     flex-grow: 1;
-    padding-left: $space-x-small;
-    font-size: $font-size-base;
+    padding: 0 $space-x-small;
   }
 
   > .metadata {
     display: flex;
     flex-direction: column;
-    white-space: nowrap;
-    padding-top: $space-xxx-small;
+    align-items: flex-end;
     color: $text-color-softer;
     font-size: $font-size-small;
 
-    > .counts {
-      display: flex;
-      flex-grow: 1;
-      justify-content: flex-end;
-      font-weight: $font-weight-bold;
-      > .base-icon {
-        margin-left: $space-xxx-small;
-      }
-
-      > .base-icon:first-child {
-        margin-right: $font-size-small;
-      }
+    > .counts > .counter-icon {
+      margin: 0 $space-x-small;
     }
   }
 }
