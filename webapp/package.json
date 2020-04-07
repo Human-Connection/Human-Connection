@@ -130,7 +130,6 @@
     "eslint-plugin-vue": "~6.2.2",
     "faker": "^4.1.0",
     "flush-promises": "^1.0.2",
-    "fuse.js": "^3.4.6",
     "identity-obj-proxy": "^3.0.0",
     "jest": "~25.2.7",
     "mutation-observer": "^1.0.3",
