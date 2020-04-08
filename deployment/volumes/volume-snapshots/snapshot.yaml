@@ -2,7 +2,7 @@
   apiVersion: snapshot.storage.k8s.io/v1alpha1
   kind: VolumeSnapshot
   metadata:
-    name: uploads-snapshot
+    name: YYYY-MM-DD-uploads-snapshot
     namespace: human-connection
   spec:
     source:
