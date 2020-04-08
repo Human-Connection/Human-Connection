@@ -2535,10 +2535,10 @@ currently-unhandled@^0.4.1:
   dependencies:
     array-find-index "^1.0.1"
 
-cypress-cucumber-preprocessor@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/cypress-cucumber-preprocessor/-/cypress-cucumber-preprocessor-2.1.0.tgz#a0b4f0d99f24b81b0ec9cf4c25217afb60905dc8"
-  integrity sha512-VR90Lm4CHkZiPPiB33gr6GRVBoYzwKzwlx/BUDk1eX4k6Sc9zxs1Suxf1ZT93nTtf/FkDofZTefYWl+k7jvAnw==
+cypress-cucumber-preprocessor@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/cypress-cucumber-preprocessor/-/cypress-cucumber-preprocessor-2.2.1.tgz#c58cdb3a4a351088151357657717e042883de639"
+  integrity sha512-7T/pVxD6oW0El08Dfj2vEyV1forQ0n8xHDOhwXHeQeHQJA+1o1pQbpcYirNUVMWlchp+ZRm/9q3+a1OXBF9Znw==
   dependencies:
     "@cypress/browserify-preprocessor" "^2.1.1"
     chai "^4.1.2"
