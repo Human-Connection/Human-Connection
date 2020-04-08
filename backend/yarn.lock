@@ -6403,12 +6403,12 @@ metascraper-lang@^5.11.8:
   dependencies:
     "@metascraper/helpers" "^5.11.8"
 
-metascraper-logo@^5.11.6:
-  version "5.11.6"
-  resolved "https://registry.yarnpkg.com/metascraper-logo/-/metascraper-logo-5.11.6.tgz#c0f08939fd72021d015cc16e0bb43dc41d79dc5f"
-  integrity sha512-H1kumbrf+I4Ogwm7fFhSZDJU8STRMa7kg77/wnmOK+1sirH8d2NOzTrEhDdoRMmpGYiU3XNjfukvZJbqPu2mvg==
+metascraper-logo@^5.11.8:
+  version "5.11.8"
+  resolved "https://registry.yarnpkg.com/metascraper-logo/-/metascraper-logo-5.11.8.tgz#61bb88381b51fe3cf6e6d1dea13d9a97538182d5"
+  integrity sha512-eej8M45YGDS7FCgRD6Q3YT7NkBwxwRAc+2JBTf/ZL+aNAZi+0J6403RRsK/LUxsl+fYFmqpasNzULvo+OhF5ag==
   dependencies:
-    "@metascraper/helpers" "^5.11.6"
+    "@metascraper/helpers" "^5.11.8"
 
 metascraper-publisher@^5.11.8:
   version "5.11.8"
