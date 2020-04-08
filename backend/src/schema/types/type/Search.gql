@@ -10,8 +10,14 @@ type userSearchResults {
   users: [User]!
 }
 
+type hashtagSearchResults {
+  hashtagCount: Int
+  hashtags: [Tag]!
+}
+
 type Query {
   searchPosts(query: String!, firstPosts: Int, postsOffset: Int): postSearchResults!
   searchUsers(query: String!, firstUsers: Int, usersOffset: Int): userSearchResults!
+  searchHashtags(query: String!, firstHashtags: Int, hashtagsOffset: Int): hashtagSearchResults!
   searchResults(query: String!, limit: Int = 5): [SearchResult]!
 }

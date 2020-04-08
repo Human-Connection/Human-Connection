@@ -89,6 +89,7 @@ export default shield(
       searchResults: allow,
       searchPosts: allow,
       searchUsers: allow,
+      searchHashtags: allow,
       embed: allow,
       Category: allow,
       Tag: allow,

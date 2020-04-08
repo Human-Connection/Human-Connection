@@ -91,6 +91,42 @@ export default {
         session.close()
       }
     },
+    searchHashtags: async (_parent, args, context, _resolveInfo) => {
+      const { query, hashtagsOffset, firstHashtags } = args
+      const { id: userId } = context.user
+
+      const tagCypher = `
+      CALL db.index.fulltext.queryNodes('tag_fulltext_search', $query)
+      YIELD node as tag, score
+      MATCH (tag)
+      WHERE score >= 0.0
+      AND NOT (tag.deleted = true OR tag.disabled = true)
+      RETURN { hashtagCount: toString(size(collect(tag))), hashtags: collect( tag {.*, __typename: labels(tag)[0]}) } AS hashtagResult
+      SKIP $hashtagsOffset
+      LIMIT $firstHashtags
+      `
+
+      const myQuery = queryString(query)
+
+      const session = context.driver.session()
+      const searchResultPromise = session.readTransaction(async (transaction) => {
+        const userTransactionResponse = await transaction.run(tagCypher, {
+          query: myQuery,
+          hashtagsOffset,
+          firstHashtags,
+          userId,
+        })
+        return userTransactionResponse
+      })
+
+      try {
+        const hashtagResults = await searchResultPromise
+        log(hashtagResults)
+        return hashtagResults.records[0].get('hashtagResult')
+      } finally {
+        session.close()
+      }
+    },
     searchResults: async (_parent, args, context, _resolveInfo) => {
       const { query, limit } = args
       const { id: thisUserId } = context.user
