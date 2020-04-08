@@ -11,24 +11,25 @@ export default {
 
       const postCypher = `
         CALL db.index.fulltext.queryNodes('post_fulltext_search', $query)
-        YIELD node as posts, score
-        MATCH (posts)<-[:WROTE]-(author:User)
+        YIELD node AS post, score
+        MATCH (post)<-[:WROTE]-(author:User)
         WHERE score >= 0.0
         AND NOT (
           author.deleted = true OR author.disabled = true
-          OR posts.deleted = true OR posts.disabled = true
+          OR post.deleted = true OR post.disabled = true
           OR (:User {id: $userId})-[:MUTED]->(author)
         )
-        WITH posts, author,
-        [(posts)<-[:COMMENTS]-(comment:Comment) | comment] as comments,
-        [(posts)<-[:SHOUTED]-(user:User) | user] as shouter
-        RETURN posts {
+        WITH post, author,
+        [(post)<-[:COMMENTS]-(comment:Comment) | comment] AS comments,
+        [(post)<-[:SHOUTED]-(user:User) | user] AS shouter
+        RETURN 
+        { postCount: toString(size(collect(post))), posts: collect(post {
           .*,
-          __typename: labels(posts)[0],
+          __typename: labels(post)[0],
           author: properties(author),
           commentsCount: toString(size(comments)),
           shoutedCount: toString(size(shouter))
-        }
+        })} AS postResult
         SKIP $postsOffset
         LIMIT $firstPosts
       `
@@ -36,7 +37,7 @@ export default {
       const myQuery = queryString(query)
 
       const session = context.driver.session()
-      const searchResultPromise = session.readTransaction(async transaction => {
+      const searchResultPromise = session.readTransaction(async (transaction) => {
         const postTransactionResponse = await transaction.run(postCypher, {
           query: myQuery,
           postsOffset,
@@ -48,7 +49,7 @@ export default {
       try {
         const postResults = await searchResultPromise
         log(postResults)
-        return postResults.records.map(record => record.get('posts'))
+        return postResults.records[0].get('postResult')
       } finally {
         session.close()
       }
@@ -59,18 +60,20 @@ export default {
 
       const userCypher = `
         CALL db.index.fulltext.queryNodes('user_fulltext_search', $query)
-        YIELD node as users, score
-        MATCH (users)
+        YIELD node as user, score
+        MATCH (user)
         WHERE score >= 0.0
-        AND NOT (users.deleted = true OR users.disabled = true)
-        RETURN users {.*, __typename: labels(users)[0]}
-        SKIP $usersOffset
+        AND NOT (user.deleted = true OR user.disabled = true)
+        RETURN 
+        { userCount: toString(size(collect(user))), users: collect(user {.*, __typename: labels(user)[0]}) }
+        AS userResult
+        SKIP $usersOffset 
         LIMIT $firstUsers
       `
       const myQuery = queryString(query)
 
       const session = context.driver.session()
-      const searchResultPromise = session.readTransaction(async transaction => {
+      const searchResultPromise = session.readTransaction(async (transaction) => {
         const userTransactionResponse = await transaction.run(userCypher, {
           query: myQuery,
           usersOffset,
@@ -83,7 +86,7 @@ export default {
       try {
         const userResults = await searchResultPromise
         log(userResults)
-        return userResults.records.map(record => record.get('users'))
+        return userResults.records[0].get('userResult')
       } finally {
         session.close()
       }

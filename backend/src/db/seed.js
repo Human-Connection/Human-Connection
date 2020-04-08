@@ -930,7 +930,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
 
     await Promise.all([...Array(30).keys()].map(() => Factory.build('user')))
     await Promise.all(
-      [...Array(30).keys()].map(index => Factory.build('user', { name: `Jenny${index}` })),
+      [...Array(30).keys()].map((index) => Factory.build('user', { name: `Jenny${index}` })),
     )
     await Promise.all(
       [...Array(30).keys()].map(() =>

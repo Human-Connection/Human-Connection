@@ -1,7 +1,17 @@
 union SearchResult = Post | User | Tag
 
+type postSearchResults {
+  postCount: Int
+  posts: [Post]!
+}
+
+type userSearchResults {
+  userCount: Int
+  users: [User]!
+}
+
 type Query {
-  searchPosts(query: String!, firstPosts: Int, postsOffset: Int): [Post]!
-  searchUsers(query: String!, firstUsers: Int, usersOffset: Int): [User]!
+  searchPosts(query: String!, firstPosts: Int, postsOffset: Int): postSearchResults!
+  searchUsers(query: String!, firstUsers: Int, usersOffset: Int): userSearchResults!
   searchResults(query: String!, limit: Int = 5): [SearchResult]!
 }
