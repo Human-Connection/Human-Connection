@@ -18,7 +18,7 @@ Before you create the snapshot, it is good practice to look at what snapshots ar
 kubectl get volumesnapshots -n human-connection
 ```
 
-To specify your snapshot, edit the file `snapshot.yaml` or simply use `neo4j-data.yaml` in this folder.
+To specify your snapshot, edit the file `snapshot.yaml` or simply edit and use `neo4j-data.yaml` in this folder.
 The `metadata.name` entry specifies the name of the snapshot. We recommend adding the date to the name similar to `YYYY-MM-DD-<your-Name>-snapshot`.
 
 Now send the `apply` command to do the snapshot:
