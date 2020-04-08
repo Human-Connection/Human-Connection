@@ -462,10 +462,10 @@
       "mentioned_in_comment": "Hat dich in einem Kommentar erwähnt …",
       "mentioned_in_post": "Hat dich in einem Beitrag erwähnt …"
     },
-    "report": {
+    "filedReport": {
       "category": "Kategorie der Meldung",
       "description": "Beschreibung",
-      "name": "Meldung"
+      "name": "Gesendete Meldung"
     },
     "title": "Benachrichtigungen",
     "user": "Benutzer"

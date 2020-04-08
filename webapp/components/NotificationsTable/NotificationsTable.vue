@@ -46,12 +46,12 @@
       <div v-if="scope.row.isReport" :class="{ 'notification-status': scope.row.read }">
         <ds-space margin-bottom="x-small" />
         <span class="notification-content-header-text">
-          {{ $t(`notifications.report.category`) }}:
+          {{ $t(`notifications.filedReport.category`) }}:
         </span>
         {{ $t('report.reason.category.options.' + scope.row.filedReport.reasonCategory) }}
         <br />
         <span class="notification-content-header-text">
-          {{ $t(`notifications.report.description`) }}:
+          {{ $t(`notifications.filedReport.description`) }}:
         </span>
         <span
           v-if="

@@ -171,7 +171,7 @@ export const extractNotificationDataOfCurrentUser = (notification, currentUser) 
       }
       isReport = true
       iconName = 'balance-scale'
-      iconTooltip = 'notifications.report.name'
+      iconTooltip = 'notifications.filedReport.name'
       triggerer = currentUser
       switch (from.resource.__typename) {
         case 'User':

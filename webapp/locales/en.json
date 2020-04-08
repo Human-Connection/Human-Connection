@@ -462,10 +462,10 @@
       "mentioned_in_comment": "Mentioned you in a comment …",
       "mentioned_in_post": "Mentioned you in a post …"
     },
-    "report": {
+    "filedReport": {
       "category": "Report category",
       "description": "Description",
-      "name": "Report"
+      "name": "Filed report"
     },
     "title": "Notifications",
     "user": "User"

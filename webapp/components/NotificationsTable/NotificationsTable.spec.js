@@ -178,9 +178,9 @@ describe('NotificationsTable.vue', () => {
           expect(wrapper.text()).toContain('@mrs.-badwomen')
         })
 
-        it('renders the identifier "notifications.report.category"', () => {
+        it('renders the identifier "notifications.filedReport.category"', () => {
           wrapper = Wrapper()
-          expect(wrapper.text()).toContain('notifications.report.category')
+          expect(wrapper.text()).toContain('notifications.filedReport.category')
         })
 
         it('renders the reported category', () => {
@@ -190,9 +190,9 @@ describe('NotificationsTable.vue', () => {
           )
         })
 
-        it('renders the identifier "notifications.report.description"', () => {
+        it('renders the identifier "notifications.filedReport.description"', () => {
           wrapper = Wrapper()
-          expect(wrapper.text()).toContain('notifications.report.description')
+          expect(wrapper.text()).toContain('notifications.filedReport.description')
         })
 
         it('renders the reported description', () => {
