@@ -445,6 +445,11 @@
     "comment": "Kommentar",
     "content": "Inhalt",
     "empty": "Bedaure, du hast momentan keinerlei Benachrichtigungen.",
+    "filedReport": {
+      "category": "Kategorie der Meldung",
+      "description": "Beschreibung",
+      "name": "Gesendete Meldung"
+    },
     "filterLabel": {
       "all": "Alle",
       "read": "Gelesen",
@@ -461,11 +466,6 @@
       },
       "mentioned_in_comment": "Hat dich in einem Kommentar erwähnt …",
       "mentioned_in_post": "Hat dich in einem Beitrag erwähnt …"
-    },
-    "filedReport": {
-      "category": "Kategorie der Meldung",
-      "description": "Beschreibung",
-      "name": "Gesendete Meldung"
     },
     "title": "Benachrichtigungen",
     "user": "Benutzer"

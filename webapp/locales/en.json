@@ -445,6 +445,11 @@
     "comment": "Comment",
     "content": "Content",
     "empty": "Sorry, you don't have any notifications at the moment.",
+    "filedReport": {
+      "category": "Report category",
+      "description": "Description",
+      "name": "Filed report"
+    },
     "filterLabel": {
       "all": "All",
       "read": "Read",
@@ -461,11 +466,6 @@
       },
       "mentioned_in_comment": "Mentioned you in a comment …",
       "mentioned_in_post": "Mentioned you in a post …"
-    },
-    "filedReport": {
-      "category": "Report category",
-      "description": "Description",
-      "name": "Filed report"
     },
     "title": "Notifications",
     "user": "User"
