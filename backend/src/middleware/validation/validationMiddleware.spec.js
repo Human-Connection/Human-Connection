@@ -335,7 +335,7 @@ describe('validateReport', () => {
       mutate({ mutation: reportMutation, variables: reportVariables }),
     ).resolves.toMatchObject({
       data: { fileReport: null },
-      errors: [{ message: 'You cannot report yourself!' }],
+      errors: [{ message: "You can't file a report about yourself!" }],
     })
   })
 })
