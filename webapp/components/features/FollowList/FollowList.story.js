@@ -53,7 +53,19 @@ storiesOf('FollowList', module)
       template: '<follow-list :user="user" type="following" />',
     }
   })
-  .add('with up to 7 connections', () => {
+  .add('with all connections loaded', () => {
+    return {
+      components: { FollowList },
+      store: helpers.store,
+      data() {
+        return { user: lessThanSevenUser }
+      },
+
+      template: '<follow-list :user="user"/>',
+    }
+  })
+
+  .add('with more connections loadable', () => {
     return {
       components: { FollowList },
       store: helpers.store,
@@ -69,18 +81,7 @@ storiesOf('FollowList', module)
       template: '<follow-list :user="user" @fetchAllConnections="fetchAllConnections"/>',
     }
   })
-
-  .add('with all connections', () => {
-    return {
-      components: { FollowList },
-      store: helpers.store,
-      data() {
-        return { user: allConnectionsUser }
-      },
-      template: '<follow-list :user="user" />',
-    }
-  })
-  .add('with a lot of connections', () => {
+  .add('with 1000 connections loaded', () => {
     return {
       components: { FollowList },
       store: helpers.store,
