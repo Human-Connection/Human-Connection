@@ -11,6 +11,7 @@ export default {
     icon: { type: String, required: true },
     count: { type: Number, required: true },
     danger: { type: Boolean, default: false },
+    soft: { type: Boolean, default: false },
   },
   computed: {
     cappedCount() {
@@ -18,7 +19,8 @@ export default {
     },
     counterClass() {
       let counterClass = 'count'
-      if (this.danger) counterClass += ' --danger'
+      if (this.soft) counterClass += ' --soft'
+      else if (this.danger) counterClass += ' --danger'
       if (this.count === 0) counterClass += ' --inactive'
 
       return counterClass
@@ -57,6 +59,11 @@ export default {
 
     &.--inactive {
       background-color: $color-neutral-60;
+    }
+
+    &.--soft {
+      background-color: $color-neutral-90;
+      color: $text-color-soft;
     }
   }
 }

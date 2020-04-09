@@ -26,6 +26,13 @@ storiesOf('Generic/CounterIcon', module)
     `,
   }))
 
+  .add('soft', () => ({
+    components: { CounterIcon },
+    template: `
+      <counter-icon icon="bell" :count="42" soft />
+    `,
+  }))
+
   .add('count is 0', () => ({
     components: { CounterIcon },
     template: `

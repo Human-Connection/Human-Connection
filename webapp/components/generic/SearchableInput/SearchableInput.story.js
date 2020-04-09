@@ -13,7 +13,7 @@ export const searchResults = [
     title: 'User Post by Jenny',
     value: 'User Post by Jenny',
     shoutedCount: 0,
-    commentCount: 4,
+    commentsCount: 4,
     createdAt: '2019-11-13T03:03:16.155Z',
     author: {
       id: 'u3',
@@ -28,7 +28,7 @@ export const searchResults = [
     title: 'Eum quos est molestiae enim magni consequuntur sed commodi eos.',
     value: 'Eum quos est molestiae enim magni consequuntur sed commodi eos.',
     shoutedCount: 0,
-    commentCount: 0,
+    commentsCount: 0,
     createdAt: '2019-11-13T03:00:45.478Z',
     author: {
       id: 'u6',
@@ -43,7 +43,7 @@ export const searchResults = [
     title: 'This is post #7',
     value: 'This is post #7',
     shoutedCount: 1,
-    commentCount: 1,
+    commentsCount: 1,
     createdAt: '2019-11-13T03:00:23.098Z',
     author: {
       id: 'u6',
@@ -58,7 +58,7 @@ export const searchResults = [
     title: 'This is post #12',
     value: 'This is post #12',
     shoutedCount: 0,
-    commentCount: 12,
+    commentsCount: 12,
     createdAt: '2019-11-13T03:00:23.098Z',
     author: {
       id: 'u6',
