@@ -124,18 +124,19 @@ export default {
   display: flex;
   flex-direction: column;
   position: relative;
-  //max-height: ($size-avatar-small + $space-x-small * 2) * 8;
   width: auto;
 
   > .title {
     color: $text-color-soft;
-    font-size: $font-size-small + 0.03rem;
+    font-size: $font-size-base;
   }
 
-  .connections.--overflow {
-    height: ($size-avatar-base + $space-x-small * 2) * 5;
-    margin-top: -$space-x-small;
-    overflow-y: auto;
+  .connections {
+    height: $size-height-connections;
+
+    &.--overflow {
+      overflow-y: auto;
+    }
   }
 
   .nobody-message {
@@ -143,12 +144,12 @@ export default {
     color: $text-color-soft;
   }
 
-> :nth-child(n):not(:last-child) {
+  > :nth-child(n):not(:last-child) {
     margin-bottom: $space-small;
-}
+  }
 
-.user-teaser {
+  .user-teaser {
     margin-bottom: $space-x-small;
-}
+  }
 }
 </style>
