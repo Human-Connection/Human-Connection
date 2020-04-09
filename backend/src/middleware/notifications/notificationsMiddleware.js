@@ -174,7 +174,16 @@ const notifyReportFiler = async (reportId, resourceId, context) => {
         ON MATCH SET notification.updatedAt = toString(datetime())
         SET notification.read = FALSE
         WITH notification, submitter,
-          {__typename: "FiledReport", reportId: report.id, createdAt: filed.createdAt, reasonCategory: filed.reasonCategory, reasonDescription: filed.reasonDescription, resource: apoc.map.merge(properties(resource), {__typename: labels(resource)[0]})} AS finalResource
+          {
+            __typename: "FiledReport",
+            reportId: report.id,
+            createdAt: filed.createdAt,
+            reasonCategory: filed.reasonCategory,
+            reasonDescription: filed.reasonDescription,
+            resource: apoc.map.merge(properties(resource), {
+              __typename: labels(resource)[0]
+            })
+          } AS finalResource
         RETURN notification {.*, from: finalResource, to: properties(submitter)} 
       `,
       {
