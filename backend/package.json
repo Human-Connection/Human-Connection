@@ -131,7 +131,7 @@
     "eslint-plugin-standard": "~4.0.1",
     "jest": "~25.2.7",
     "nodemon": "~2.0.2",
-    "prettier": "~2.0.2",
+    "prettier": "~2.0.4",
     "rosie": "^2.0.1",
     "supertest": "~4.0.2"
   },
