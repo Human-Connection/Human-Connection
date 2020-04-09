@@ -143,8 +143,12 @@ export default {
     color: $text-color-soft;
   }
 
-  .spacer-x-small {
-    margin: $space-x-small 0;
-  }
+> :nth-child(n):not(:last-child) {
+    margin-bottom: $space-small;
+}
+
+.user-teaser {
+    margin-bottom: $space-x-small;
+}
 }
 </style>

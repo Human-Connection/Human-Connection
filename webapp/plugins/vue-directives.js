@@ -7,12 +7,8 @@ export default ({ app }) => {
       // Focus the element
       Vue.nextTick(() => {
         if (binding.value !== false) {
-          let target = el
-          const isInput = target instanceof HTMLInputElement
-          if (!isInput) {
-            target = el.querySelector('input')
-          }
-          if (target && typeof target.focus === 'function') {
+          const target = el instanceof HTMLInputElement ? el : el.querySelector('input')
+          if (target) {
             target.focus()
           }
         }
