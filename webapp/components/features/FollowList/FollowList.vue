@@ -13,7 +13,7 @@
         />
       </div>
       <base-button
-        v-if="allConnectionsCount - connections.length"
+        v-if="hasMore"
         :loading="loading"
         class="spacer-x-small"
         size="small"
@@ -26,7 +26,7 @@
         }}
       </base-button>
       <ds-input
-        v-if="connections.length > 7"
+        v-if="!hasMore"
         v-focus="true"
         :name="`${type}Filter`"
         :placeholder="filter"
@@ -70,9 +70,11 @@ export default {
     connections() {
       return this.user[this.type]
     },
+    hasMore() {
+      return this.allConnectionsCount > this.connections.length
+    },
     connectionsClass() {
-      const overflow = this.connections.length > 7 ? ' --overflow' : ''
-      return `connections${overflow}`
+      return `connections${this.hasMore ? '' : ' --overflow'}`
     },
     filteredConnections() {
       if (!this.filter) {
