@@ -18,6 +18,14 @@ const user = {
   following: helpers.fakeUser(7),
 }
 
+const lessThanSevenUser = {
+  ...user,
+  followedByCount: 3,
+  followedBy: user.followedBy.slice(0, 3),
+  followingCount: 3,
+  following: user.following.slice(0, 3),
+}
+
 const allConnectionsUser = {
   ...user,
   followedBy: [...user.followedBy, ...helpers.fakeUser(5)],
@@ -32,12 +40,6 @@ const noConnectionsUser = {
   followingCount: 0,
 }
 
-const wrapTemplates = (templates) => `
-<div style="display: flex; flex-wrap: wrap;">
-${templates.map((template) => `<div style="margin: 8px;">${template}</div>`).join('')}
-</div>
-`
-
 storiesOf('FollowList', module)
   .addDecorator(withA11y)
   .addDecorator(helpers.layout)
@@ -48,10 +50,7 @@ storiesOf('FollowList', module)
       data() {
         return { user: noConnectionsUser }
       },
-      template: wrapTemplates([
-        '<follow-list :user="user" />',
-        '<follow-list :user="user" type="followedBy" />',
-      ]),
+      template: '<follow-list :user="user" type="following" />',
     }
   })
   .add('with up to 7 connections', () => {
@@ -67,10 +66,7 @@ storiesOf('FollowList', module)
           action('fetchAllConnections')(type, this.user)
         },
       },
-      template: wrapTemplates([
-        '<follow-list :user="user" @fetchAllConnections="fetchAllConnections"/>',
-        '<follow-list :user="user" type="followedBy" @fetchAllConnections="fetchAllConnections"/>',
-      ]),
+      template: '<follow-list :user="user" @fetchAllConnections="fetchAllConnections"/>',
     }
   })
 
@@ -81,10 +77,7 @@ storiesOf('FollowList', module)
       data() {
         return { user: allConnectionsUser }
       },
-      template: wrapTemplates([
-        '<follow-list :user="user" />',
-        '<follow-list :user="user" type="followedBy"/>',
-      ]),
+      template: '<follow-list :user="user" />',
     }
   })
   .add('with a lot of connections', () => {
@@ -102,10 +95,7 @@ storiesOf('FollowList', module)
           },
         }
       },
-      template: wrapTemplates([
-        '<follow-list :user="user" />',
-        '<follow-list :user="user" type="followedBy"/>',
-      ]),
+      template: '<follow-list :user="user" />',
     }
   })
   .add('Fuzzy Filter', () => {
@@ -115,9 +105,6 @@ storiesOf('FollowList', module)
       data() {
         return { user: fuzzyFilterUser }
       },
-      template: wrapTemplates([
-        '<follow-list :user="user" />',
-        '<follow-list :user="user" type="followedBy">',
-      ]),
+      template: '<follow-list :user="user" />',
     }
   })
