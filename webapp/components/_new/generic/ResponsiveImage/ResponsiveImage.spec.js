@@ -20,7 +20,7 @@ describe('ResponsiveImage.vue', () => {
       })
     })
 
-    describe('givem `null` as image prop', () => {
+    describe('given `null` as image prop', () => {
       beforeEach(() => {
         propsData.image = null
       })
