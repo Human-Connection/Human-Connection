@@ -7,18 +7,37 @@ const cypherReturnNotificationsWithCollectedResourceData = `
     [
       labels(resource)[0] = "Post", '
         MATCH (resource)<-[:WROTE]-(author:User)
-        RETURN resource {.*, __typename: labels(resource)[0], author: properties(author)} AS finalResource',
+        RETURN resource {.*, __typename: labels(resource)[0], author: properties(author)} AS finalResource
+      ',
       labels(resource)[0] = "Comment", '
         MATCH (author:User)-[:WROTE]->(resource)-[:COMMENTS]->(post:Post)<-[:WROTE]-(postAuthor:User)
-        RETURN resource {.*, __typename: labels(resource)[0], author: properties(author), post: apoc.map.merge(properties(post), {__typename: labels(post)[0], author: properties(postAuthor)})} AS finalResource',
+        RETURN resource {
+          .*, __typename: labels(resource)[0], author: properties(author), post: apoc.map.merge(properties(post), {
+            __typename: labels(post)[0],
+            author: properties(postAuthor)
+          })
+        } AS finalResource
+      ',
       labels(resource)[0] = "Report", '
         MATCH (reportedResource)<-[:BELONGS_TO]-(resource)<-[filed:FILED]-(user)
 
         WITH user, filed, resource, reportedResource,
-        [(reportedResource)<-[:WROTE]-(author:User) | author {.*}] AS authors,
-        [(reportedResource)-[:COMMENTS]->(post:Post)<-[:WROTE]-(author:User) | post {.*, author: properties(author)} ] AS posts
+          [(reportedResource)<-[:WROTE]-(author:User) | author {.*}] AS authors,
+          [(reportedResource)-[:COMMENTS]->(post:Post)<-[:WROTE]-(author:User) | post {.*, author: properties(author)} ] AS posts
 
-        RETURN {__typename: "FiledReport", reportId: resource.id, createdAt: filed.createdAt, reasonCategory: filed.reasonCategory, reasonDescription: filed.reasonDescription, resource: apoc.map.merge(properties(reportedResource), {__typename: labels(reportedResource)[0], author: authors[0], post: posts[0]})} AS finalResource'
+        RETURN {
+          __typename: "FiledReport",
+          reportId: resource.id,
+          createdAt: filed.createdAt,
+          reasonCategory: filed.reasonCategory,
+          reasonDescription: filed.reasonDescription,
+          resource: apoc.map.merge(properties(reportedResource), {
+            __typename: labels(reportedResource)[0],
+            author: authors[0],
+            post: posts[0]
+          })
+        } AS finalResource
+      '
     ],
     '',
     {
@@ -69,75 +88,14 @@ export default {
       const limit = args.first && typeof args.first === 'number' ? `LIMIT ${args.first}` : ''
 
       const cypher = `
-        // Wolle MATCH (resource)-[notification:NOTIFIED]->(user:User {id:$id})
-        // WHERE
-        //   ((labels(resource)[0] in ["Post", "Comment"] AND NOT resource.deleted AND NOT resource.disabled)
-        //   OR labels(resource)[0] in ["Report"])
-        //   $ {whereClause}
-        // WITH user, notification, resource,
-        // [(resource)<-[:WROTE]-(author:User) | author {.*}] AS authors,
-        // [(resource)-[:COMMENTS]->(post:Post)<-[:WROTE]-(author:User) | post {.*, author: properties(author)} ] AS posts,
-        // [(reportedResource)<-[:BELONGS_TO]-(resource)<-[file:FILED]-(user) | file {.*, reportedResource: apoc.map.merge(properties(reportedResource), {__typename: labels(reportedResource)[0]})} ] AS files
-        // WITH resource, user, notification, authors, posts, files,
-        // resource {.*, __typename: labels(resource)[0], author: authors[0], post: posts[0], filed: files, resource: files[0].reportedResource} AS finalResource
-        // RETURN notification {.*, from: finalResource, to: properties(user)}
-        // $ {orderByClause}
-        // $ {offset} $ {limit}
-
         MATCH (resource)-[notification:NOTIFIED]->(user:User {id:$id})
         WHERE
           ((labels(resource)[0] in ["Post", "Comment"] AND NOT resource.deleted AND NOT resource.disabled)
           OR labels(resource)[0] in ["Report"])
           ${whereClause}
         ${cypherReturnNotificationsWithCollectedResourceData}
-        // Wolle WITH resource, notification, user
-        // MATCH (author:User)-[:WROTE]->(resource)-[:COMMENTS]->(post:Post)<-[:WROTE]-(postAuthor:User)
-        // WITH resource, notification, user, author, post, postAuthor
-        // resource {.*, __typename: labels(resource)[0], author: author, post: apoc.map.merge(properties(post), {__typename: labels(post)[0], author: properties(postAuthor)})} AS finalResource',
-        // RETURN notification {.*, from: value.finalResource, to: properties(user)}
         ${orderByClause}
         ${offset} ${limit}
-
-        // Wolle
-        // the UNION ALL with ORDER BY and SKIP, LIMIT is possible since Neo4j 4.0. See https://neo4j.com/docs/cypher-manual/4.0/clauses/call-subquery/#subquery-post-union
-        // refactor the following to the new CALL {} subquery
-
-        // MATCH (author:User)-[:WROTE]->(post:Post)-[notification:NOTIFIED]->(user:User {id: $id})
-        // WHERE NOT post.deleted AND NOT post.disabled
-        //   $ {whereClause}
-        // WITH user, notification, post {.*, __typename: labels(post)[0], author: properties(author)}
-        // RETURN notification {.*, from: post, to: properties(user)}
-
-        // UNION ALL
-        // MATCH (author:User)-[:WROTE]->(comment:Comment)-[:COMMENTS]->(post:Post)<-[:WROTE]-(postAuthor:User),
-        //   (comment)-[notification:NOTIFIED]->(user:User {id: $id})
-        // WHERE NOT comment.deleted AND NOT comment.disabled
-        //   $ {whereClause}
-        // WITH user, notification, comment {.*, __typename: labels(comment)[0], author: properties(author), post: apoc.map.merge(properties(post), {__typename: labels(post)[0], author: properties(postAuthor)})}
-        // RETURN notification {.*, from: comment, to: properties(user)}
-
-        // UNION ALL
-        // MATCH (reportedResource)<-[:BELONGS_TO]-(report)<-[file:FILED]-(user:User {id:$id}),
-        //   (report:Report)-[notification:NOTIFIED]->(user)
-        // WHERE (reportedResource:User) OR (reportedResource:Post) OR (reportedResource:Comment)
-        //   $ {whereClause}
-        // // Wolle - Here the three different case are not distinguished and therefore Post is not added to Comment and the authors are not added etc.
-        // WITH
-        //   user,
-        //   notification,
-        //   {
-        //     __typename: "FiledReport",
-        //     createdAt: file.createdAt,
-        //     reasonCategory: file.reasonCategory,
-        //     reasonDescription: file.reasonDescription,
-        //     reportId: report.id,
-        //     resource: apoc.map.merge(properties(reportedResource), {
-        //       __typename: labels(reportedResource)[0]
-        //     })
-        //   } AS filedReport
-        // RETURN notification {.*, from: filedReport, to: properties(user)}
-        // $ {orderByClause}
-        // $ {offset} $ {limit}
       `
 
       const readTxResultPromise = session.readTransaction(async (transaction) => {
@@ -148,16 +106,6 @@ export default {
         const notifications = notificationsTransactionResponse.records.map((record) =>
           record.get('notification'),
         )
-        // Wolle notifications.forEach((element, index) => {
-        //   console.log('notification #', index, ': ', element)
-        //   if (element.from.__typename === 'FiledReport') {
-        //     if (element.from.resource.__typename === 'Comment') {
-        //       console.log('.from.resource.post.author: ', element.from.resource.post.author)
-        //       // console.log('.from.post.author: ', element.from.post.author)
-        //     }
-        //   }
-        // })
-        // Wolle console.log('notifications: ', notifications)
         return notifications
       })
       try {

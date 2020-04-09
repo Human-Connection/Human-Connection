@@ -101,18 +101,6 @@ export default {
               (notification) => notification.id,
             ).sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)),
           }
-          // Wolle const unitedNotifications = unionBy(
-          //     [newNotification],
-          //     previousResult.notifications,
-          //     (notification) => notification.id,
-          //   ).sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
-          // console.log('unitedNotifications: ', unitedNotifications)
-          // unitedNotifications.forEach((element, index) => {
-          //   console.log('unitedNotification #', index, ': ', element)
-          // })
-          // return {
-          //   notifications: unitedNotifications,
-          // }
         },
       },
       error(error) {
