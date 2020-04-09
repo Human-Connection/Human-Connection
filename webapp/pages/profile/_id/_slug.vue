@@ -90,17 +90,17 @@
           {{ $t('profile.network.title') }}
         </ds-heading>
         <follow-list
+          :loading="$apollo.loading"
           :user="user"
           type="followedBy"
           @fetchAllConnections="fetchAllConnections"
-          :loading="$apollo.loading"
         />
         <ds-space />
         <follow-list
+          :loading="$apollo.loading"
           :user="user"
           type="following"
           @fetchAllConnections="fetchAllConnections"
-          :loading="$apollo.loading"
         />
         <ds-space v-if="user.socialMedia && user.socialMedia.length" margin="large">
           <base-card style="position: relative; height: auto;">
@@ -270,7 +270,6 @@ export default {
     mode: 'out-in',
   },
   data() {
-    console.log('component data()')
     const filter = tabToFilterMapping({ tab: 'post', id: this.$route.params.id })
     return {
       User: [],
@@ -434,7 +433,8 @@ export default {
       this.user.followedBy = followedBy
     },
     fetchAllConnections(type) {
-      this[`${type}Count`] = Infinity
+      if (type === 'following') this.followingCount = Infinity
+      if (type === 'followedBy') this.followedByCount = Infinity
     },
   },
   apollo: {
@@ -462,8 +462,8 @@ export default {
       variables() {
         return {
           id: this.$route.params.id,
-          followedByCount: this.followedByCount, 
-          followingCount: this.followingCount
+          followedByCount: this.followedByCount,
+          followingCount: this.followingCount,
         }
       },
       fetchPolicy: 'cache-and-network',
