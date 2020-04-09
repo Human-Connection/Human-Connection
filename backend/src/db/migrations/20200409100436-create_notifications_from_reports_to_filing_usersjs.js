@@ -1,6 +1,7 @@
 import { getDriver } from '../../db/neo4j'
 
-export const description = 'Create notifications for all old filed reports to all of their submitters.'
+export const description =
+  'Create notifications for all old filed reports to all of their submitters.'
 
 export async function up(next) {
   const driver = getDriver()
