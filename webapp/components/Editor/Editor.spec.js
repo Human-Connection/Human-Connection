@@ -1,22 +1,28 @@
-import { mount } from '@vue/test-utils'
-import Editor from './Editor'
-
-import MutationObserver from 'mutation-observer'
 import Vue from 'vue'
+import VueRouter from 'vue-router'
+import { mount } from '@vue/test-utils'
+import MutationObserver from 'mutation-observer'
+
+import Editor from './Editor'
 
 global.MutationObserver = MutationObserver
 
 const localVue = global.localVue
+localVue.use(VueRouter)
+
+const localStorage = global.localStorage
 
 describe('Editor.vue', () => {
   let wrapper
   let propsData
   let mocks
+  let router
 
   const Wrapper = () => {
     return (wrapper = mount(Editor, {
       mocks,
       propsData,
+      router,
       localVue,
       sync: false,
       stubs: {
@@ -138,6 +144,67 @@ describe('Editor.vue', () => {
             wrapper.vm.editor.extensions.options.hashtag.onFilter(propsData.hashtags, 'hashtag'),
           ).toHaveLength(15)
         })
+      })
+    })
+  })
+
+  describe(':autosave', () => {
+    const getFirst = () => {
+      const storageKey = Object.keys(localStorage)[0]
+      const value = localStorage[storageKey]
+      return {
+        storageKey,
+        value,
+      }
+    }
+    describe('when false', () => {
+      let routerWrapper
+
+      beforeEach(() => {
+        router = new VueRouter({
+          routes: [{ path: 'post/create' }],
+        })
+        router.push('/post/create')
+        propsData.autosave = false
+        routerWrapper = Wrapper()
+      })
+
+      it('does nothing', () => {
+        jest.useFakeTimers()
+
+        const content = '<p>NOOP WIP</p>'
+        routerWrapper.vm.editor.setContent(content, true)
+        jest.runAllTimers()
+
+        expect(Object.keys(localStorage).length).toBe(0)
+      })
+    })
+
+    describe('when editing a post', () => {
+      let routerWrapper
+      const content = '<p>Post WIP</p>'
+      const setItemSpy = jest.spyOn(Storage.prototype, 'setItem')
+
+      beforeEach(() => {
+        router = new VueRouter({
+          routes: [{ path: 'post/create' }],
+        })
+        router.push('/post/create')
+        routerWrapper = Wrapper()
+      })
+
+      afterEach(setItemSpy.mockReset)
+
+      it('saves editor content to localStorage on input', async () => {
+        jest.useFakeTimers()
+
+        routerWrapper.vm.editor.setContent(content, true)
+        await jest.runAllTimers()
+
+        const { storageKey, value } = getFirst()
+        expect(setItemSpy).toHaveBeenCalled()
+        expect(storageKey.startsWith('draft:post:')).toBe(true)
+        expect(value).toBe(content)
       })
     })
   })

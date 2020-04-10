@@ -1,5 +1,6 @@
 import { storiesOf } from '@storybook/vue'
 import { withA11y } from '@storybook/addon-a11y'
+import StoryRouter from 'storybook-vue-router'
 import HcEditor from '~/components/Editor/Editor.vue'
 import helpers from '~/storybook/helpers'
 import Vue from 'vue'
@@ -35,6 +36,7 @@ const users = [
 
 storiesOf('Editor', module)
   .addDecorator(withA11y)
+  .addDecorator(StoryRouter())
   .addDecorator((storyFn) => {
     const ctx = storyFn()
     return {

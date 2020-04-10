@@ -52,6 +52,7 @@ export default {
     hashtags: { type: Array, default: () => null }, // If 'null', than the Hashtag extention is not assigned.
     value: { type: String, default: '' },
     doc: { type: Object, default: () => {} },
+    autosave: { type: Boolean, default: true },
   },
   data() {
     return {

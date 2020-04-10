@@ -4,6 +4,7 @@ import Link from '~/components/Editor/nodes/Link.js'
 import Strike from '~/components/Editor/marks/Strike'
 import Italic from '~/components/Editor/marks/Italic'
 import Bold from '~/components/Editor/marks/Bold'
+import AutoSave from '~/components/Editor/plugins/autoSave'
 import EmbedQuery from '~/graphql/EmbedQuery.js'
 import {
   Heading,
@@ -18,8 +19,8 @@ import {
 } from 'tiptap-extensions'
 
 export default function defaultExtensions(component) {
-  const { placeholder, $t, $apollo } = component
-  return [
+  const { autosave, placeholder, $t, $apollo, $route } = component
+  const extensions = [
     new Heading(),
     new HardBreak(),
     new Blockquote(),
@@ -54,4 +55,10 @@ export default function defaultExtensions(component) {
       },
     }),
   ]
+
+  if (autosave && $route) {
+    extensions.push(new AutoSave({ $route }))
+  }
+
+  return extensions
 }
