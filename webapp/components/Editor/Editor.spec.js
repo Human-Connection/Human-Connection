@@ -157,6 +157,10 @@ describe('Editor.vue', () => {
         value,
       }
     }
+
+    beforeAll(() => jest.useFakeTimers())
+    afterAll(() => jest.useRealTimers())
+
     describe('when false', () => {
       let routerWrapper
 
@@ -170,9 +174,8 @@ describe('Editor.vue', () => {
       })
 
       it('does nothing', () => {
-        jest.useFakeTimers()
-
         const content = '<p>NOOP WIP</p>'
+
         routerWrapper.vm.editor.setContent(content, true)
         jest.runAllTimers()
 
@@ -181,29 +184,50 @@ describe('Editor.vue', () => {
     })
 
     describe('when editing a post', () => {
-      let routerWrapper
       const content = '<p>Post WIP</p>'
-      const setItemSpy = jest.spyOn(Storage.prototype, 'setItem')
 
-      beforeEach(() => {
+      beforeEach(async () => {
         router = new VueRouter({
           routes: [{ path: 'post/create' }],
         })
         router.push('/post/create')
-        routerWrapper = Wrapper()
+
+        Wrapper().vm.editor.setContent(content, true)
+        await jest.runAllTimers()
       })
 
-      afterEach(setItemSpy.mockReset)
+      afterEach(() => {
+        localStorage.clear()
+      })
 
       it('saves editor content to localStorage on input', async () => {
-        jest.useFakeTimers()
-
-        routerWrapper.vm.editor.setContent(content, true)
-        await jest.runAllTimers()
-
         const { storageKey, value } = getFirst()
-        expect(setItemSpy).toHaveBeenCalled()
         expect(storageKey.startsWith('draft:post:')).toBe(true)
+        expect(value).toBe(content)
+      })
+    })
+
+    describe('when editing a comment', () => {
+      const postId = '33739246-fa27-42ae-94de-2f590a2d92c4'
+      const content = '<p>Comment WIP</p>'
+
+      beforeEach(async () => {
+        router = new VueRouter({
+          routes: [{ path: `/post/${postId}/foo-title-slug` }],
+        })
+        router.push(`/post/${postId}/foo-title-slug`)
+
+        Wrapper().vm.editor.setContent(content, true)
+        await jest.runAllTimers()
+      })
+
+      afterEach(() => {
+        localStorage.clear()
+      })
+
+      it('saves editor content to localStorage on input', async () => {
+        const { storageKey, value } = getFirst()
+        expect(storageKey).toBe(`draft:${postId}`)
         expect(value).toBe(content)
       })
     })

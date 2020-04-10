@@ -23,6 +23,13 @@ export default class AutoSave extends Extension {
     if (this.route.path === '/post/create') {
       return `draft:post:${this._postId}`
     }
+
+    const commentMatch = this.route.path.match(/^\/post\/([0-9a-f-]*)\/[\w-]*$/)
+    if (commentMatch) {
+      const key = `draft:${commentMatch[1]}`
+      return key
+    }
+
     return null
   }
 
@@ -38,16 +45,6 @@ export default class AutoSave extends Extension {
             )
           }
           return tr
-        },
-        state: {
-          init() {
-            return {
-              saveNextUpdate: false,
-            }
-          },
-          apply(_, prev) {
-            return { ...prev }
-          },
         },
       }),
     ]
