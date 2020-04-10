@@ -5,7 +5,6 @@ export default class AutoSave extends Extension {
   constructor({ $route }) {
     super()
     this.route = $route
-    this._postId = 'randomIdForPosts'
   }
 
   static toHTML(content, schema) {
@@ -15,16 +14,22 @@ export default class AutoSave extends Extension {
     return container.innerHTML
   }
 
-  get name() {
-    return 'auto_save'
+  static load(path) {
+    const key = AutoSave.getStorageKey(path)
+    return key ? localStorage[key] : null
   }
 
-  get storageKey() {
-    if (this.route.path === '/post/create') {
-      return `draft:post:${this._postId}`
+  static getStorageKey(path) {
+    if (path === '/post/create') {
+      // find a way to keep invisible random ids
+      // for posts.
+      // Once a draft is sent, the storage item
+      // is deleted.
+      const _postId = 'randomPostId'
+      return `draft:post:${_postId}`
     }
 
-    const commentMatch = this.route.path.match(/^\/post\/([0-9a-f-]*)\/[\w-]*$/)
+    const commentMatch = path.match(/^\/post\/([0-9a-f-]*)\/[\w-]*$/)
     if (commentMatch) {
       const key = `draft:${commentMatch[1]}`
       return key
@@ -33,12 +38,20 @@ export default class AutoSave extends Extension {
     return null
   }
 
+  get name() {
+    return 'auto_save'
+  }
+
+  get storageKey() {
+    return AutoSave.getStorageKey(this.route.path)
+  }
+
   get plugins() {
     return [
       new Plugin({
         key: new PluginKey('auto_save'),
         filterTransaction: (tr, editorState) => {
-          if (tr.docChanged) {
+          if (tr.docChanged && this.storageKey) {
             localStorage.setItem(
               this.storageKey,
               AutoSave.toHTML(tr.doc.content, editorState.config.schema),

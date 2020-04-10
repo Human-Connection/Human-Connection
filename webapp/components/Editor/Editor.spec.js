@@ -31,15 +31,15 @@ describe('Editor.vue', () => {
     }))
   }
 
-  beforeEach(() => {
-    propsData = {}
-    mocks = {
-      $t: () => 'some cool placeholder',
-    }
-    wrapper = Wrapper()
-  })
-
   describe('mount', () => {
+    beforeEach(() => {
+      propsData = {}
+      mocks = {
+        $t: () => 'some cool placeholder',
+      }
+      wrapper = Wrapper()
+    })
+
     it('renders', () => {
       expect(Wrapper().is('div')).toBe(true)
     })
@@ -149,7 +149,7 @@ describe('Editor.vue', () => {
   })
 
   describe(':autosave', () => {
-    const getFirst = () => {
+    const getFirstInStorage = () => {
       const storageKey = Object.keys(localStorage)[0]
       const value = localStorage[storageKey]
       return {
@@ -165,9 +165,16 @@ describe('Editor.vue', () => {
       let routerWrapper
 
       beforeEach(() => {
+        propsData = {}
+        mocks = {
+          $t: (key) => key,
+        }
         router = new VueRouter({
           routes: [{ path: 'post/create' }],
         })
+        mocks = {
+          $t: (key) => key,
+        }
         router.push('/post/create')
         propsData.autosave = false
         routerWrapper = Wrapper()
@@ -187,6 +194,10 @@ describe('Editor.vue', () => {
       const content = '<p>Post WIP</p>'
 
       beforeEach(async () => {
+        propsData = {}
+        mocks = {
+          $t: (key) => key,
+        }
         router = new VueRouter({
           routes: [{ path: 'post/create' }],
         })
@@ -201,7 +212,7 @@ describe('Editor.vue', () => {
       })
 
       it('saves editor content to localStorage on input', async () => {
-        const { storageKey, value } = getFirst()
+        const { storageKey, value } = getFirstInStorage()
         expect(storageKey.startsWith('draft:post:')).toBe(true)
         expect(value).toBe(content)
       })
@@ -212,6 +223,10 @@ describe('Editor.vue', () => {
       const content = '<p>Comment WIP</p>'
 
       beforeEach(async () => {
+        propsData = {}
+        mocks = {
+          $t: (key) => key,
+        }
         router = new VueRouter({
           routes: [{ path: `/post/${postId}/foo-title-slug` }],
         })
@@ -221,14 +236,20 @@ describe('Editor.vue', () => {
         await jest.runAllTimers()
       })
 
-      afterEach(() => {
+      afterAll(() => {
         localStorage.clear()
       })
 
       it('saves editor content to localStorage on input', async () => {
-        const { storageKey, value } = getFirst()
+        const { storageKey, value } = getFirstInStorage()
         expect(storageKey).toBe(`draft:${postId}`)
         expect(value).toBe(content)
+      })
+
+      it('loads an existing autosave', () => {
+        const { value: autoSaveHTML } = getFirstInStorage()
+        const _wrapper = Wrapper()
+        expect(_wrapper.vm.editor.getHTML()).toBe(autoSaveHTML)
       })
     })
   })
