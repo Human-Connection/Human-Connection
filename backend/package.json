@@ -42,7 +42,7 @@
     "apollo-cache-inmemory": "~1.6.5",
     "apollo-client": "~2.6.8",
     "apollo-link-context": "~1.0.19",
-    "apollo-link-http": "~1.5.16",
+    "apollo-link-http": "~1.5.17",
     "apollo-server": "~2.11.0",
     "apollo-server-express": "^2.12.0",
     "aws-sdk": "^2.652.0",
