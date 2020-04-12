@@ -226,6 +226,12 @@ describe('Editor.vue', () => {
         const lastEditedId = localStorage.getItem('autosave:post:last')
         expect(lastEditedId).toMatch(/^[a-f\d]{8}$/)
       })
+
+      it('loads last edited autosave', () => {
+        const wrapper = Wrapper()
+        const { value: autosaveHTML } = getFirstInStorage()
+        expect(wrapper.vm.editor.getHTML()).toBe(autosaveHTML)
+      })
     })
 
     describe('when editing a comment', () => {

@@ -7,14 +7,16 @@ export default class AutoSave extends Extension {
     super()
 
     this.route = $route
-    const { id, editorType } = AutoSave.for(this.route.path)
+    const { id = hash(Date.now().toString(), 0xb0b).toString(16), editorType } = AutoSave.for(
+      this.route.path,
+    )
     this.id = id
     this.editorType = editorType
   }
 
   static for(path) {
     if (path === '/post/create') {
-      return { editorType: 'post', id: hash(Date.now().toString(), 0xb0b).toString(16) }
+      return { editorType: 'post' }
     }
 
     const commentMatch = path.match(/^\/post\/([0-9a-f-]*)\/[\w-]*$/)
@@ -33,7 +35,7 @@ export default class AutoSave extends Extension {
   }
 
   static load(path) {
-    const { id, editorType } = AutoSave.for(path)
+    const { id = localStorage.getItem('autosave:post:last'), editorType } = AutoSave.for(path)
     const key = AutoSave.getStorageKey(id, editorType)
     return key ? localStorage[key] : null
   }
