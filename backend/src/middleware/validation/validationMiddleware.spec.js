@@ -78,7 +78,8 @@ const updateUserMutation = gql`
     }
   }
 `
-beforeAll(() => {
+
+beforeAll(async () => {
   const { server } = createServer({
     context: () => {
       return {
@@ -88,10 +89,9 @@ beforeAll(() => {
       }
     },
   })
-  mutate = createTestClient(server).mutate
-})
 
-beforeEach(async () => {
+  mutate = createTestClient(server).mutate
+
   users = await Promise.all([
     Factory.build('user', {
       id: 'reporting-user',
@@ -104,19 +104,23 @@ beforeEach(async () => {
       id: 'commenting-user',
     }),
   ])
+
   reportVariables = {
     resourceId: 'whatever',
     reasonCategory: 'other',
     reasonDescription: 'Violates code of conduct !!!',
   }
+
   disableVariables = {
     resourceId: 'undefined-resource',
     disable: true,
     closed: false,
   }
+
   reportingUser = users[0]
   moderatingUser = users[1]
   commentingUser = users[2]
+
   const posts = await Promise.all([
     Factory.build(
       'post',
@@ -140,7 +144,7 @@ beforeEach(async () => {
   offensivePost = posts[0]
 })
 
-afterEach(async () => {
+afterAll(async () => {
   await cleanDatabase()
 })
 
@@ -190,7 +194,7 @@ describe('validateCreateComment', () => {
 
   describe('validateUpdateComment', () => {
     let updateCommentVariables
-    beforeEach(async () => {
+    beforeAll(async () => {
       await Factory.build(
         'comment',
         {
