@@ -91,7 +91,11 @@ beforeAll(() => {
   mutate = createTestClient(server).mutate
 })
 
+let beforeEachIndex = 0
 beforeEach(async () => {
+  const timeId = `beforeEach#${beforeEachIndex}`
+  console.time(timeId)
+
   users = await Promise.all([
     Factory.build('user', {
       id: 'reporting-user',
@@ -138,10 +142,20 @@ beforeEach(async () => {
     ),
   ])
   offensivePost = posts[0]
+
+  console.timeEnd(timeId)
+  beforeEachIndex++
 })
 
+let afterEachIndex = 0
 afterEach(async () => {
+  const timeId = `afterEach#${afterEachIndex}`
+  console.time(timeId)
+
   await cleanDatabase()
+
+  console.timeEnd(timeId)
+  afterEachIndex++
 })
 
 describe('validateCreateComment', () => {
