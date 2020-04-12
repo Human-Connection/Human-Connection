@@ -35,7 +35,7 @@ describe('Editor.vue', () => {
     beforeEach(() => {
       propsData = {}
       mocks = {
-        $t: () => 'some cool placeholder',
+        $t: (t) => t,
       }
       wrapper = Wrapper()
     })
@@ -59,7 +59,7 @@ describe('Editor.vue', () => {
 
     it('translates the placeholder', () => {
       expect(wrapper.vm.editor.extensions.options.placeholder.emptyNodeText).toEqual(
-        'some cool placeholder',
+        'editor.placeholder',
       )
     })
 
@@ -162,30 +162,27 @@ describe('Editor.vue', () => {
     afterAll(() => jest.useRealTimers())
 
     describe('when false', () => {
-      let routerWrapper
+      const content = '<p>NOOP WIP</p>'
 
-      beforeEach(() => {
-        propsData = {}
-        mocks = {
-          $t: (key) => key,
+      beforeEach(async () => {
+        propsData = {
+          // <hc-editor :autosave="false" />
+          // plugin ignores all changes (transactions) on this instance
+          autosave: false,
         }
-        router = new VueRouter({
-          routes: [{ path: 'post/create' }],
-        })
         mocks = {
-          $t: (key) => key,
+          $t: (t) => t,
         }
-        router.push('/post/create')
-        propsData.autosave = false
-        routerWrapper = Wrapper()
+
+        // testing against localStorage, so letting
+        // the editor do its thing without keeping
+        // a reference is enough
+        Wrapper().vm.editor.setContent(content, true)
+
+        await jest.runAllTimers()
       })
 
       it('does nothing', () => {
-        const content = '<p>NOOP WIP</p>'
-
-        routerWrapper.vm.editor.setContent(content, true)
-        jest.runAllTimers()
-
         expect(Object.keys(localStorage).length).toBe(0)
       })
     })
@@ -194,10 +191,14 @@ describe('Editor.vue', () => {
       const content = '<p>Post WIP</p>'
 
       beforeEach(async () => {
-        propsData = {}
-        mocks = {
-          $t: (key) => key,
+        propsData = {
+          // :autosave defaults to true
         }
+        mocks = {
+          $t: (t) => t,
+        }
+
+        // plugin creates storage ids from $route.path
         router = new VueRouter({
           routes: [{ path: 'post/create' }],
         })
@@ -225,13 +226,12 @@ describe('Editor.vue', () => {
       beforeEach(async () => {
         propsData = {}
         mocks = {
-          $t: (key) => key,
+          $t: (t) => t,
         }
         router = new VueRouter({
           routes: [{ path: `/post/${postId}/foo-title-slug` }],
         })
         router.push(`/post/${postId}/foo-title-slug`)
-
         Wrapper().vm.editor.setContent(content, true)
         await jest.runAllTimers()
       })
@@ -247,9 +247,9 @@ describe('Editor.vue', () => {
       })
 
       it('loads an existing autosave', () => {
-        const { value: autoSaveHTML } = getFirstInStorage()
+        const { value: autosaveHTML } = getFirstInStorage()
         const _wrapper = Wrapper()
-        expect(_wrapper.vm.editor.getHTML()).toBe(autoSaveHTML)
+        expect(_wrapper.vm.editor.getHTML()).toBe(autosaveHTML)
       })
     })
   })
