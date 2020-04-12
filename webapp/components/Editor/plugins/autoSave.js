@@ -1,10 +1,28 @@
 import { Extension, Plugin, PluginKey } from 'tiptap'
 import { DOMSerializer } from 'prosemirror-model'
+import { h32 as hash } from 'xxhashjs'
 
 export default class AutoSave extends Extension {
   constructor({ $route }) {
     super()
+
     this.route = $route
+    const { id, editorType } = AutoSave.for(this.route.path)
+    this.id = id
+    this.editorType = editorType
+  }
+
+  static for(path) {
+    if (path === '/post/create') {
+      return { editorType: 'post', id: hash(Date.now().toString(), 0xb0b).toString(16) }
+    }
+
+    const commentMatch = path.match(/^\/post\/([0-9a-f-]*)\/[\w-]*$/)
+    if (commentMatch) {
+      return { editorType: 'comment', id: hash(commentMatch[1], 0xb0b).toString(16) }
+    }
+
+    return null
   }
 
   static toHTML(content, schema) {
@@ -15,27 +33,13 @@ export default class AutoSave extends Extension {
   }
 
   static load(path) {
-    const key = AutoSave.getStorageKey(path)
+    const { id, editorType } = AutoSave.for(path)
+    const key = AutoSave.getStorageKey(id, editorType)
     return key ? localStorage[key] : null
   }
 
-  static getStorageKey(path) {
-    if (path === '/post/create') {
-      // find a way to keep invisible random ids
-      // for posts.
-      // Once a draft is sent, the storage item
-      // is deleted.
-      const _postId = 'randomPostId'
-      return `draft:post:${_postId}`
-    }
-
-    const commentMatch = path.match(/^\/post\/([0-9a-f-]*)\/[\w-]*$/)
-    if (commentMatch) {
-      const key = `draft:${commentMatch[1]}`
-      return key
-    }
-
-    return null
+  static getStorageKey(id, editorType) {
+    return `autosave:${editorType}:${id}`
   }
 
   get name() {
@@ -43,7 +47,7 @@ export default class AutoSave extends Extension {
   }
 
   get storageKey() {
-    return AutoSave.getStorageKey(this.route.path)
+    return AutoSave.getStorageKey(this.id, this.editorType)
   }
 
   get plugins() {
@@ -56,6 +60,9 @@ export default class AutoSave extends Extension {
               this.storageKey,
               AutoSave.toHTML(tr.doc.content, editorState.config.schema),
             )
+            if (this.editorType === 'post') {
+              localStorage.setItem('autosave:post:last', this.id)
+            }
           }
           return tr
         },

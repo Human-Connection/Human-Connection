@@ -208,14 +208,23 @@ describe('Editor.vue', () => {
         await jest.runAllTimers()
       })
 
-      afterEach(() => {
+      afterAll(() => {
         localStorage.clear()
       })
 
       it('saves editor content to localStorage on input', async () => {
-        const { storageKey, value } = getFirstInStorage()
-        expect(storageKey.startsWith('draft:post:')).toBe(true)
+        const { value } = getFirstInStorage()
         expect(value).toBe(content)
+      })
+
+      it('generates a temporary id for the post', () => {
+        const { storageKey } = getFirstInStorage()
+        expect(storageKey).toMatch(/^autosave:post:[a-f\d]{8}$/)
+      })
+
+      it('stores temporary id of last edit', () => {
+        const lastEditedId = localStorage.getItem('autosave:post:last')
+        expect(lastEditedId).toMatch(/^[a-f\d]{8}$/)
       })
     })
 
@@ -242,7 +251,7 @@ describe('Editor.vue', () => {
 
       it('saves editor content to localStorage on input', async () => {
         const { storageKey, value } = getFirstInStorage()
-        expect(storageKey).toBe(`draft:${postId}`)
+        expect(storageKey).toMatch(/autosave:comment:[a-f\d]{8}/)
         expect(value).toBe(content)
       })
 
