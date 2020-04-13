@@ -7,14 +7,14 @@ export default class AutoSave extends Extension {
     super()
 
     this.route = $route
-    const { id = hash(Date.now().toString(), 0xb0b).toString(16), editorType } = AutoSave.for(
+    const { id = hash(Date.now().toString(), 0xb0b).toString(16), editorType } = AutoSave.fromPath(
       this.route.path,
     )
     this.id = id
     this.editorType = editorType
   }
 
-  static for(path) {
+  static fromPath(path) {
     if (path === '/post/create') {
       return { editorType: 'post' }
     }
@@ -24,7 +24,7 @@ export default class AutoSave extends Extension {
       return { editorType: 'comment', id: hash(commentMatch[1], 0xb0b).toString(16) }
     }
 
-    return null
+    return {}
   }
 
   static toHTML(content, schema) {
@@ -35,7 +35,7 @@ export default class AutoSave extends Extension {
   }
 
   static load(path) {
-    const { id = localStorage.getItem('autosave:post:last'), editorType } = AutoSave.for(path)
+    const { id = localStorage.getItem('autosave:post:last'), editorType } = AutoSave.fromPath(path)
     const key = AutoSave.getStorageKey(id, editorType)
     return key ? localStorage[key] : null
   }
