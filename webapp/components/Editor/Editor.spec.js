@@ -161,14 +161,14 @@ describe('Editor.vue', () => {
     beforeAll(() => jest.useFakeTimers())
     afterAll(() => jest.useRealTimers())
 
-    describe('when false', () => {
+    describe('when false (default)', () => {
       const content = '<p>NOOP WIP</p>'
 
       beforeEach(async () => {
         propsData = {
           // <hc-editor :autosave="false" />
           // plugin ignores all changes (transactions) on this instance
-          autosave: false,
+          // autosave: false (default)
         }
         mocks = {
           $t: (t) => t,
@@ -192,7 +192,7 @@ describe('Editor.vue', () => {
 
       beforeEach(async () => {
         propsData = {
-          // :autosave defaults to true
+          autosave: true,
         }
         mocks = {
           $t: (t) => t,
@@ -239,7 +239,9 @@ describe('Editor.vue', () => {
       const content = '<p>Comment WIP</p>'
 
       beforeEach(async () => {
-        propsData = {}
+        propsData = {
+          autosave: true,
+        }
         mocks = {
           $t: (t) => t,
         }

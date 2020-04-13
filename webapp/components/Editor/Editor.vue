@@ -54,7 +54,7 @@ export default {
     users: { type: Array, default: () => null }, // If 'null', than the Mention extention is not assigned.
     hashtags: { type: Array, default: () => null }, // If 'null', than the Hashtag extention is not assigned.
     doc: { type: Object, default: () => {} },
-    autosave: { type: Boolean, default: true },
+    autosave: { type: Boolean, default: false },
     value: {
       type: String,
       default: '',
