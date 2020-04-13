@@ -36,18 +36,7 @@ const users = [
 
 storiesOf('Editor', module)
   .addDecorator(withA11y)
-  .addDecorator(StoryRouter())
-  .addDecorator((storyFn) => {
-    const ctx = storyFn()
-    return {
-      components: { ctx },
-      template: `
-        <base-card style="width: 50%; min-width: 500px; margin: 0 auto;">
-          <ctx />
-        </base-card>
-      `,
-    }
-  })
+  .addDecorator(helpers.wrapInCard)
   .addDecorator(helpers.layout)
   .add('Empty', () => ({
     components: { HcEditor },
@@ -149,4 +138,44 @@ storiesOf('Editor', module)
       `,
     }),
     template: `<hc-editor :users="users" :value="content" />`,
+  }))
+
+storiesOf('Editor/AutoSave', module)
+  .addDecorator(
+    StoryRouter(
+      {},
+      {
+        initialEntry: '/post/create',
+      },
+    ),
+  )
+  .addDecorator(helpers.wrapInCard)
+  .addDecorator(helpers.layout)
+  .add('creating a post', () => ({
+    components: { HcEditor },
+    store: helpers.store,
+    data: () => ({
+      users,
+    }),
+    template: `<hc-editor :users="users" />`,
+  }))
+
+storiesOf('Editor/AutoSave', module)
+  .addDecorator(
+    StoryRouter(
+      {},
+      {
+        initialEntry: '/post/f00-b00-1d/post-slug-I-comment-on',
+      },
+    ),
+  )
+  .addDecorator(helpers.wrapInCard)
+  .addDecorator(helpers.layout)
+  .add('creating a comment', () => ({
+    components: { HcEditor },
+    store: helpers.store,
+    data: () => ({
+      users,
+    }),
+    template: `<hc-editor :users="users" />`,
   }))

@@ -7,9 +7,10 @@ export default class AutoSave extends Extension {
     super()
 
     this.route = $route
-    const { id = hash(Date.now().toString(), 0xb0b).toString(16), editorType } = AutoSave.fromPath(
-      this.route.path,
-    )
+    const {
+      id = hash(Date.now().toString(), 0xb0b).toString(16),
+      editorType = this.route.path,
+    } = AutoSave.fromPath(this.route.path)
     this.id = id
     this.editorType = editorType
   }
@@ -35,9 +36,13 @@ export default class AutoSave extends Extension {
   }
 
   static load(path) {
-    const { id = localStorage.getItem('autosave:post:last'), editorType } = AutoSave.fromPath(path)
-    const key = AutoSave.getStorageKey(id, editorType)
-    return key ? localStorage[key] : null
+    const { id, editorType = path } = AutoSave.fromPath(path)
+    const _id = localStorage.getItem(`autosave:${editorType}:last`)
+    if (!_id) {
+      return null
+    }
+    const key = AutoSave.getStorageKey(_id, editorType)
+    return localStorage[key]
   }
 
   static getStorageKey(id, editorType) {
@@ -62,9 +67,7 @@ export default class AutoSave extends Extension {
               this.storageKey,
               AutoSave.toHTML(tr.doc.content, editorState.config.schema),
             )
-            if (this.editorType === 'post') {
-              localStorage.setItem('autosave:post:last', this.id)
-            }
+            localStorage.setItem(`autosave:${this.editorType}:last`, this.id)
           }
           return tr
         },
