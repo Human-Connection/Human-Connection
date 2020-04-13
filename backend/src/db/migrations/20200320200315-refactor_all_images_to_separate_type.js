@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { getDriver } from '../../db/neo4j'
+import { getDriver } from '../neo4j'
 
 export const description = `
   Refactor all our image properties on posts and users to a dedicated type

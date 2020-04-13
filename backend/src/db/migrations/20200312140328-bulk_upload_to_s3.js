@@ -1,4 +1,4 @@
-import { getDriver } from '../../db/neo4j'
+import { getDriver } from '../neo4j'
 import { existsSync, createReadStream } from 'fs'
 import path from 'path'
 import { S3 } from 'aws-sdk'

@@ -1,4 +1,4 @@
-import { getDriver } from '../../db/neo4j'
+import { getDriver } from '../neo4j'
 
 export const description =
   'This migration adds a fulltext index for the tags in order to search for Hasthags.'

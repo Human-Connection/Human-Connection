@@ -1,4 +1,4 @@
-import { getDriver } from '../../db/neo4j'
+import { getDriver } from '../neo4j'
 
 export const description = `
   This migration creates a MUTED relationship between two edges(:User) that have a pre-existing BLOCKED relationship.

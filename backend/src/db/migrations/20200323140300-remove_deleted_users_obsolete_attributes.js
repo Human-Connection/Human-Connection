@@ -1,4 +1,4 @@
-import { getDriver } from '../../db/neo4j'
+import { getDriver } from '../neo4j'
 
 export const description =
   'We should not maintain obsolete attributes for users who have been deleted.'

@@ -1,4 +1,4 @@
-import { getDriver } from '../../db/neo4j'
+import { getDriver } from '../neo4j'
 
 export const description = `
   We introduced a new node label 'Image' and we need a primary key for it. Best
