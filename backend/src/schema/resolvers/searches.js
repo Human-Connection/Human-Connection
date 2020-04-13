@@ -3,51 +3,86 @@ import { queryString } from './searches/queryString'
 
 // see http://lucene.apache.org/core/8_3_1/queryparser/org/apache/lucene/queryparser/classic/package-summary.html#package.description
 
+const createCypher = (setup) => `
+  CALL db.index.fulltext.queryNodes('${setup.fulltextIndex}', $query)
+  YIELD node as resource, score
+  ${setup.match}
+  WHERE score >= 0.0
+  ${setup.notClause}
+  ${setup.withClause}
+  RETURN 
+  {
+    ${setup.countKeyName}: toString(size(collect(resource))),
+    ${setup.resultKeyName}: collect(resource { .*, __typename: labels(resource)[0]${setup.additionalMapping} })
+  }
+  AS ${setup.resultName}
+  SKIP $skip
+  LIMIT $limit
+`
+
+const simpleNotClause = 'AND NOT (resource.deleted = true OR resource.disabled = true)'
+
+const postNotClause = `AND NOT (
+    author.deleted = true OR author.disabled = true
+    OR resource.deleted = true OR resource.disabled = true
+    OR (:User {id: $userId})-[:MUTED]->(author)
+  )`
+
+const searchPostsSetup = {
+  fulltextIndex: 'post_fulltext_search',
+  match: 'MATCH (resource)<-[:WROTE]-(author:User)',
+  notClause: postNotClause,
+  withClause: `WITH resource, author,
+  [(resource)<-[:COMMENTS]-(comment:Comment) | comment] AS comments,
+  [(resource)<-[:SHOUTED]-(user:User) | user] AS shouter`,
+  additionalMapping: `, author: properties(author), commentsCount: toString(size(comments)), shoutedCount: toString(size(shouter))`,
+  countKeyName: 'postCount',
+  resultKeyName: 'posts',
+  resultName: 'postResult',
+}
+
+const searchUsersSetup = {
+  fulltextIndex: 'user_fulltext_search',
+  match: 'MATCH (resource)',
+  notClause: simpleNotClause,
+  withClause: '',
+  additionalMapping: '',
+  countKeyName: 'userCount',
+  resultKeyName: 'users',
+  resultName: 'userResult',
+}
+
+const searchHashtagsSetup = {
+  fulltextIndex: 'tag_fulltext_search',
+  match: 'MATCH (resource)',
+  notClause: simpleNotClause,
+  withClause: '',
+  additionalMapping: '',
+  countKeyName: 'hashtagCount',
+  resultKeyName: 'hashtags',
+  resultName: 'hashtagResult',
+}
+
+const searchResultPromise = async (session, setup, params) => {
+  return session.readTransaction(async (transaction) => {
+    return transaction.run(createCypher(setup), params)
+  })
+}
+
 export default {
   Query: {
     searchPosts: async (_parent, args, context, _resolveInfo) => {
       const { query, postsOffset, firstPosts } = args
       const { id: userId } = context.user
 
-      const postCypher = `
-        CALL db.index.fulltext.queryNodes('post_fulltext_search', $query)
-        YIELD node AS post, score
-        MATCH (post)<-[:WROTE]-(author:User)
-        WHERE score >= 0.0
-        AND NOT (
-          author.deleted = true OR author.disabled = true
-          OR post.deleted = true OR post.disabled = true
-          OR (:User {id: $userId})-[:MUTED]->(author)
-        )
-        WITH post, author,
-        [(post)<-[:COMMENTS]-(comment:Comment) | comment] AS comments,
-        [(post)<-[:SHOUTED]-(user:User) | user] AS shouter
-        RETURN 
-        { postCount: toString(size(collect(post))), posts: collect(post {
-          .*,
-          __typename: labels(post)[0],
-          author: properties(author),
-          commentsCount: toString(size(comments)),
-          shoutedCount: toString(size(shouter))
-        })} AS postResult
-        SKIP $postsOffset
-        LIMIT $firstPosts
-      `
-
-      const myQuery = queryString(query)
-
       const session = context.driver.session()
-      const searchResultPromise = session.readTransaction(async (transaction) => {
-        const postTransactionResponse = await transaction.run(postCypher, {
-          query: myQuery,
-          postsOffset,
-          firstPosts,
+      try {
+        const postResults = await searchResultPromise(session, searchPostsSetup, {
+          query: queryString(query),
+          skip: postsOffset,
+          limit: firstPosts,
           userId,
         })
-        return postTransactionResponse
-      })
-      try {
-        const postResults = await searchResultPromise
         log(postResults)
         return postResults.records[0].get('postResult')
       } finally {
@@ -58,33 +93,14 @@ export default {
       const { query, usersOffset, firstUsers } = args
       const { id: userId } = context.user
 
-      const userCypher = `
-        CALL db.index.fulltext.queryNodes('user_fulltext_search', $query)
-        YIELD node as user, score
-        MATCH (user)
-        WHERE score >= 0.0
-        AND NOT (user.deleted = true OR user.disabled = true)
-        RETURN 
-        { userCount: toString(size(collect(user))), users: collect(user {.*, __typename: labels(user)[0]}) }
-        AS userResult
-        SKIP $usersOffset 
-        LIMIT $firstUsers
-      `
-      const myQuery = queryString(query)
-
       const session = context.driver.session()
-      const searchResultPromise = session.readTransaction(async (transaction) => {
-        const userTransactionResponse = await transaction.run(userCypher, {
-          query: myQuery,
-          usersOffset,
-          firstUsers,
+      try {
+        const userResults = await searchResultPromise(session, searchUsersSetup, {
+          query: queryString(query),
+          skip: usersOffset,
+          limit: firstUsers,
           userId,
         })
-        return userTransactionResponse
-      })
-
-      try {
-        const userResults = await searchResultPromise
         log(userResults)
         return userResults.records[0].get('userResult')
       } finally {
@@ -95,32 +111,14 @@ export default {
       const { query, hashtagsOffset, firstHashtags } = args
       const { id: userId } = context.user
 
-      const tagCypher = `
-      CALL db.index.fulltext.queryNodes('tag_fulltext_search', $query)
-      YIELD node as tag, score
-      MATCH (tag)
-      WHERE score >= 0.0
-      AND NOT (tag.deleted = true OR tag.disabled = true)
-      RETURN { hashtagCount: toString(size(collect(tag))), hashtags: collect( tag {.*, __typename: labels(tag)[0]}) } AS hashtagResult
-      SKIP $hashtagsOffset
-      LIMIT $firstHashtags
-      `
-
-      const myQuery = queryString(query)
-
       const session = context.driver.session()
-      const searchResultPromise = session.readTransaction(async (transaction) => {
-        const userTransactionResponse = await transaction.run(tagCypher, {
-          query: myQuery,
-          hashtagsOffset,
-          firstHashtags,
+      try {
+        const hashtagResults = await searchResultPromise(session, searchHashtagsSetup, {
+          query: queryString(query),
+          skip: hashtagsOffset,
+          limit: firstHashtags,
           userId,
         })
-        return userTransactionResponse
-      })
-
-      try {
-        const hashtagResults = await searchResultPromise
         log(hashtagResults)
         return hashtagResults.records[0].get('hashtagResult')
       } finally {
