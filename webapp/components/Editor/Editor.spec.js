@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import { mount } from '@vue/test-utils'
+import { h32 as hash } from 'xxhashjs'
 import MutationObserver from 'mutation-observer'
 
 import Editor from './Editor'
@@ -166,7 +167,7 @@ describe('Editor.vue', () => {
 
       beforeEach(async () => {
         propsData = {
-          // <hc-editor :autosave="false" />
+          // <hc-editor :autosave="false|true" />
           // plugin ignores all changes (transactions) on this instance
           // autosave: false (default)
         }
@@ -187,7 +188,7 @@ describe('Editor.vue', () => {
       })
     })
 
-    describe('when editing a post', () => {
+    describe('when creating a post', () => {
       const content = '<p>Post WIP</p>'
 
       beforeEach(async () => {
@@ -219,18 +220,69 @@ describe('Editor.vue', () => {
 
       it('generates a temporary id for the post', () => {
         const { storageKey } = getFirstInStorage()
-        expect(storageKey).toMatch(/^autosave:post:[a-f\d]{8}$/)
+        expect(storageKey).toMatch(/^autosave:post:[a-f\d]{7,8}$/)
       })
 
       it('stores temporary id of last edit', () => {
         const lastEditedId = localStorage.getItem('autosave:post:last')
-        expect(lastEditedId).toMatch(/^[a-f\d]{8}$/)
+        expect(lastEditedId).toMatch(/^[a-f\d]{7,8}$/)
       })
 
       it('loads last edited autosave', () => {
         const wrapper = Wrapper()
-        const { value: autosaveHTML } = getFirstInStorage()
+        const lastId = localStorage.getItem('autosave:post:last')
+        const autosaveHTML = localStorage.getItem(`autosave:post:${lastId}`)
         expect(wrapper.vm.editor.getHTML()).toBe(autosaveHTML)
+      })
+    })
+
+    describe('when editing a post', () => {
+      const contentValue = '<p>Post WIP</p>'
+      const content = '<p>Post WIP autosaved</p>'
+      const postId = '4b3de466-ddab-487f-bd82-2839280bb56c'
+      const hashedPostId = hash(postId, 0xb0b).toString(16)
+
+      beforeEach(async () => {
+        propsData = {
+          autosave: true,
+          value: contentValue,
+        }
+        mocks = {
+          $t: (t) => t,
+        }
+
+        // plugin creates storage ids from $route.path
+        router = new VueRouter({
+          routes: [{ path: `/post/edit/${postId}}` }],
+        })
+        router.push(`/post/edit/${postId}`)
+
+        Wrapper().vm.editor.setContent(content, true)
+        await jest.runAllTimers()
+      })
+
+      afterAll(() => {
+        localStorage.clear()
+      })
+
+      it('saves editor content to localStorage on input', async () => {
+        const { value } = getFirstInStorage()
+        expect(value).toBe(content)
+      })
+
+      it("uses post's id for storageKey", () => {
+        const { storageKey } = getFirstInStorage()
+        expect(storageKey).toBe(`autosave:post:${hashedPostId}`)
+      })
+
+      it('does not mark itself as last edit', () => {
+        const lastEditedId = localStorage.getItem('autosave:post:last')
+        expect(lastEditedId).not.toBe(hashedPostId)
+      })
+
+      it('does not load the autosave', () => {
+        const wrapper = Wrapper()
+        expect(wrapper.vm.editor.getHTML()).toBe(contentValue)
       })
     })
 
@@ -259,7 +311,7 @@ describe('Editor.vue', () => {
 
       it('saves editor content to localStorage on input', async () => {
         const { storageKey, value } = getFirstInStorage()
-        expect(storageKey).toMatch(/autosave:comment:[a-f\d]{8}/)
+        expect(storageKey).toMatch(/autosave:comment:[a-f\d]{7,8}/)
         expect(value).toBe(content)
       })
 

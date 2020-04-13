@@ -67,7 +67,7 @@ const helpers = {
         </base-card>
       `,
     }
-  }
+  },
 }
 
 export default helpers

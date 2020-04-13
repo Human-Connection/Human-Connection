@@ -10,19 +10,26 @@ export default class AutoSave extends Extension {
     const {
       id = hash(Date.now().toString(), 0xb0b).toString(16),
       editorType = this.route.path,
+      mode = null,
     } = AutoSave.fromPath(this.route.path)
     this.id = id
     this.editorType = editorType
+    this.mode = mode
   }
 
   static fromPath(path) {
-    if (path === '/post/create') {
-      return { editorType: 'post' }
+    let [, editorType, mode, postId] =
+      path.match(/^\/?(post)\/(?:(create|edit)\/?)([a-f\d-]*)?$/) || []
+
+    if (editorType) {
+      postId = postId || Date.now().toString()
+      return { editorType, mode, id: hash(postId, 0xb0b).toString(16) }
     }
 
-    const commentMatch = path.match(/^\/post\/([0-9a-f-]*)\/[\w-]*$/)
-    if (commentMatch) {
-      return { editorType: 'comment', id: hash(commentMatch[1], 0xb0b).toString(16) }
+    const [, commentPostId] = path.match(/^\/post\/([a-f\d-]*)\/[\w-]*$/) || []
+
+    if (commentPostId) {
+      return { editorType: 'comment', id: hash(commentPostId, 0xb0b).toString(16) }
     }
 
     return {}
@@ -35,13 +42,16 @@ export default class AutoSave extends Extension {
     return container.innerHTML
   }
 
-  static load(path) {
-    const { id, editorType = path } = AutoSave.fromPath(path)
-    const _id = localStorage.getItem(`autosave:${editorType}:last`)
-    if (!_id) {
+  static lastSave(path) {
+    let { mode, editorType = path } = AutoSave.fromPath(path)
+
+    const id = localStorage.getItem(`autosave:${editorType}:last`)
+
+    if (mode === 'edit' || !id) {
       return null
     }
-    const key = AutoSave.getStorageKey(_id, editorType)
+
+    const key = AutoSave.getStorageKey(id, editorType)
     return localStorage[key]
   }
 
@@ -67,7 +77,10 @@ export default class AutoSave extends Extension {
               this.storageKey,
               AutoSave.toHTML(tr.doc.content, editorState.config.schema),
             )
-            localStorage.setItem(`autosave:${this.editorType}:last`, this.id)
+
+            if (this.mode !== 'edit') {
+              localStorage.setItem(`autosave:${this.editorType}:last`, this.id)
+            }
           }
           return tr
         },

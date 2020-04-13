@@ -113,7 +113,7 @@ export default {
       return extensions
     },
     autosaveContent() {
-      return this.autosave && this.$route ? AutoSave.load(this.$route.path) : ''
+      return this.autosave && this.$route ? AutoSave.lastSave(this.$route.path) : ''
     },
   },
   watch: {
