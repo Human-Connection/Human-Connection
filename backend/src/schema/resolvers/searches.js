@@ -15,9 +15,7 @@ const createCypher = (setup) => `
     ${setup.countKeyName}: toString(size(collect(resource))),
     ${setup.resultKeyName}: collect(resource { .*, __typename: labels(resource)[0]${setup.additionalMapping} })
   }
-  AS ${setup.resultName}
-  SKIP $skip
-  LIMIT $limit
+  AS result
 `
 
 const simpleNotClause = 'AND NOT (resource.deleted = true OR resource.disabled = true)'
@@ -38,7 +36,6 @@ const searchPostsSetup = {
   additionalMapping: `, author: properties(author), commentsCount: toString(size(comments)), shoutedCount: toString(size(shouter))`,
   countKeyName: 'postCount',
   resultKeyName: 'posts',
-  resultName: 'postResult',
 }
 
 const searchUsersSetup = {
@@ -49,7 +46,6 @@ const searchUsersSetup = {
   additionalMapping: '',
   countKeyName: 'userCount',
   resultKeyName: 'users',
-  resultName: 'userResult',
 }
 
 const searchHashtagsSetup = {
@@ -60,13 +56,43 @@ const searchHashtagsSetup = {
   additionalMapping: '',
   countKeyName: 'hashtagCount',
   resultKeyName: 'hashtags',
-  resultName: 'hashtagResult',
+}
+
+const runSearchTransaction = async (transaction, setup, params) => {
+  return transaction.run(createCypher(setup), params)
 }
 
 const searchResultPromise = async (session, setup, params) => {
   return session.readTransaction(async (transaction) => {
-    return transaction.run(createCypher(setup), params)
+    return runSearchTransaction(transaction, setup, params)
   })
+}
+
+const getSearchResults = async (context, setup, params) => {
+  const session = context.driver.session()
+  try {
+    const results = await searchResultPromise(session, setup, params)
+    log(results)
+    return results.records[0].get('result')
+  } finally {
+    session.close()
+  }
+}
+
+/*
+const multiSearchMap = [
+  { symbol: '!', setup: searchPostsSetup, resultName: 'posts' },
+  { symbol: '@', setup: searchUsersSetup, resultName: 'users' },
+  { symbol: '#', setup: searchHashtagsSetup, resultName: 'hashtags' },
+] */
+
+const applyLimits = async (result, skip, limit) => {
+  Object.keys(result).forEach((key) => {
+    if (typeof result[key] === 'object') {
+      result[key] = result[key].slice(skip, skip + limit)
+    }
+  })
+  return result
 }
 
 export default {
@@ -75,59 +101,49 @@ export default {
       const { query, postsOffset, firstPosts } = args
       const { id: userId } = context.user
 
-      const session = context.driver.session()
-      try {
-        const postResults = await searchResultPromise(session, searchPostsSetup, {
+      return applyLimits(
+        await getSearchResults(context, searchPostsSetup, {
           query: queryString(query),
-          skip: postsOffset,
-          limit: firstPosts,
           userId,
-        })
-        log(postResults)
-        return postResults.records[0].get('postResult')
-      } finally {
-        session.close()
-      }
+        }),
+        postsOffset,
+        firstPosts,
+      )
     },
     searchUsers: async (_parent, args, context, _resolveInfo) => {
       const { query, usersOffset, firstUsers } = args
-      const { id: userId } = context.user
-
-      const session = context.driver.session()
-      try {
-        const userResults = await searchResultPromise(session, searchUsersSetup, {
+      return applyLimits(
+        await getSearchResults(context, searchUsersSetup, {
           query: queryString(query),
-          skip: usersOffset,
-          limit: firstUsers,
-          userId,
-        })
-        log(userResults)
-        return userResults.records[0].get('userResult')
-      } finally {
-        session.close()
-      }
+        }),
+        usersOffset,
+        firstUsers,
+      )
     },
     searchHashtags: async (_parent, args, context, _resolveInfo) => {
       const { query, hashtagsOffset, firstHashtags } = args
-      const { id: userId } = context.user
-
-      const session = context.driver.session()
-      try {
-        const hashtagResults = await searchResultPromise(session, searchHashtagsSetup, {
+      return applyLimits(
+        await getSearchResults(context, searchHashtagsSetup, {
           query: queryString(query),
-          skip: hashtagsOffset,
-          limit: firstHashtags,
-          userId,
-        })
-        log(hashtagResults)
-        return hashtagResults.records[0].get('hashtagResult')
-      } finally {
-        session.close()
-      }
+        }),
+        hashtagsOffset,
+        firstHashtags,
+      )
     },
     searchResults: async (_parent, args, context, _resolveInfo) => {
       const { query, limit } = args
-      const { id: thisUserId } = context.user
+      const { id: userId } = context.user
+
+      // const searchType = query.replace(/^([!@#]?).*$/, '$1')
+      // const searchString = query.replace(/^([!@#])/, '')
+
+      /*
+      const params = {
+        query: queryString(searchString),
+        skip: 0,
+        limit,
+        userId,
+      } */
 
       const postCypher = `
       CALL db.index.fulltext.queryNodes('post_fulltext_search', $query)
@@ -137,7 +153,7 @@ export default {
       AND NOT (
         author.deleted = true OR author.disabled = true
         OR resource.deleted = true OR resource.disabled = true
-        OR (:User {id: $thisUserId})-[:MUTED]->(author)
+        OR (:User {id: $userId})-[:MUTED]->(author)
       )
       WITH resource, author,
       [(resource)<-[:COMMENTS]-(comment:Comment) | comment] as comments,
@@ -178,12 +194,11 @@ export default {
         const postTransactionResponse = transaction.run(postCypher, {
           query: myQuery,
           limit,
-          thisUserId,
+          userId,
         })
         const userTransactionResponse = transaction.run(userCypher, {
           query: myQuery,
           limit,
-          thisUserId,
         })
         const tagTransactionResponse = transaction.run(tagCypher, {
           query: myQuery,
