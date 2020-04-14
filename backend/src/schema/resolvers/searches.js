@@ -3,12 +3,11 @@ import { queryString } from './searches/queryString'
 
 // see http://lucene.apache.org/core/8_3_1/queryparser/org/apache/lucene/queryparser/classic/package-summary.html#package.description
 
-const createCypher = (setup) => `
+const cypherTemplate = (setup) => `
   CALL db.index.fulltext.queryNodes('${setup.fulltextIndex}', $query)
   YIELD node as resource, score
   ${setup.match}
-  WHERE score >= 0.0
-  ${setup.notClause}
+  ${setup.whereClause}
   ${setup.withClause}
   RETURN 
   {
@@ -18,9 +17,9 @@ const createCypher = (setup) => `
   AS result
 `
 
-const simpleNotClause = 'AND NOT (resource.deleted = true OR resource.disabled = true)'
+const simpleWhereClause = 'WHERE score >= 0.0 AND NOT (resource.deleted = true OR resource.disabled = true)'
 
-const postNotClause = `AND NOT (
+const postWhereClause = `WHERE score >= 0.0 AND NOT (
     author.deleted = true OR author.disabled = true
     OR resource.deleted = true OR resource.disabled = true
     OR (:User {id: $userId})-[:MUTED]->(author)
@@ -29,7 +28,7 @@ const postNotClause = `AND NOT (
 const searchPostsSetup = {
   fulltextIndex: 'post_fulltext_search',
   match: 'MATCH (resource)<-[:WROTE]-(author:User)',
-  notClause: postNotClause,
+  whereClause: postWhereClause,
   withClause: `WITH resource, author,
   [(resource)<-[:COMMENTS]-(comment:Comment) | comment] AS comments,
   [(resource)<-[:SHOUTED]-(user:User) | user] AS shouter`,
@@ -41,7 +40,7 @@ const searchPostsSetup = {
 const searchUsersSetup = {
   fulltextIndex: 'user_fulltext_search',
   match: 'MATCH (resource)',
-  notClause: simpleNotClause,
+  whereClause: simpleWhereClause,
   withClause: '',
   additionalMapping: '',
   countKeyName: 'userCount',
@@ -51,7 +50,7 @@ const searchUsersSetup = {
 const searchHashtagsSetup = {
   fulltextIndex: 'tag_fulltext_search',
   match: 'MATCH (resource)',
-  notClause: simpleNotClause,
+  whereClause: simpleWhereClause,
   withClause: '',
   additionalMapping: '',
   countKeyName: 'hashtagCount',
@@ -59,7 +58,7 @@ const searchHashtagsSetup = {
 }
 
 const runSearchTransaction = async (transaction, setup, params) => {
-  return transaction.run(createCypher(setup), params)
+  return transaction.run(cypherTemplate(setup), params)
 }
 
 const searchResultPromise = async (session, setup, params) => {
