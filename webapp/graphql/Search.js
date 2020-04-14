@@ -6,13 +6,9 @@ export const searchQuery = gql`
   ${postFragment}
   ${tagsCategoriesAndPinnedFragment}
 
-  query($query: String!, $firstPosts: Int, $firstUsers: Int, $offset: Int) {
-    searchResults(
-      query: $query
-      firstPosts: $firstPosts
-      firstUsers: $firstUsers
-      offset: $offset
-    ) {
+  query($query: String!) {
+    searchResults(query: $query, limit: 5)
+    {
       __typename
       ... on Post {
         ...post
@@ -40,6 +36,8 @@ export const searchPosts = gql`
 
   query($query: String!, $firstPosts: Int, $postsOffset: Int) {
     searchPosts(query: $query, firstPosts: $firstPosts, postsOffset: $postsOffset) {
+      postCount
+      posts {
       __typename
       ...post
       ...tagsCategoriesAndPinned
@@ -49,6 +47,7 @@ export const searchPosts = gql`
         ...user
       }
     }
+    }
   }
 `
 
@@ -57,8 +56,24 @@ export const searchUsers = gql`
 
   query($query: String!, $firstUsers: Int, $usersOffset: Int) {
     searchUsers(query: $query, firstUsers: $firstUsers, usersOffset: $usersOffset) {
+      userCount
+      users {
       __typename
       ...user
+      }
+    }
+  }
+`
+
+export const searchHashtags = gql`
+
+  query($query: String!, $firstHashtags: Int, $hashtagsOffset: Int) {
+    searchHashtags(query: $query, firstHashtags: $firstHashtags, hashtagsOffset: $hashtagsOffset) {
+      hashtagCount
+      hashtags {
+      __typename
+      id
+      }
     }
   }
 `
