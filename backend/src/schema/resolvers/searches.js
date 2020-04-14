@@ -5,19 +5,19 @@ import { queryString } from './searches/queryString'
 
 const cypherTemplate = (setup) => `
   CALL db.index.fulltext.queryNodes('${setup.fulltextIndex}', $query)
-  YIELD node as resource, score
+  YIELD node AS resource, score
   ${setup.match}
   ${setup.whereClause}
   ${setup.withClause}
   RETURN 
-  {
-    ${setup.countKeyName}: toString(size(collect(resource))),
-    ${setup.resultKeyName}: collect(resource { .*, __typename: labels(resource)[0]${setup.additionalMapping} })
-  }
+  ${setup.returnClause}
   AS result
+  SKIP $skip
+  ${setup.limit}
 `
 
-const simpleWhereClause = 'WHERE score >= 0.0 AND NOT (resource.deleted = true OR resource.disabled = true)'
+const simpleWhereClause =
+  'WHERE score >= 0.0 AND NOT (resource.deleted = true OR resource.disabled = true)'
 
 const postWhereClause = `WHERE score >= 0.0 AND NOT (
     author.deleted = true OR author.disabled = true
@@ -32,7 +32,14 @@ const searchPostsSetup = {
   withClause: `WITH resource, author,
   [(resource)<-[:COMMENTS]-(comment:Comment) | comment] AS comments,
   [(resource)<-[:SHOUTED]-(user:User) | user] AS shouter`,
-  additionalMapping: `, author: properties(author), commentsCount: toString(size(comments)), shoutedCount: toString(size(shouter))`,
+  returnClause: `resource {
+    .*,
+    __typename: labels(resource)[0],
+    author: properties(author),
+    commentsCount: toString(size(comments)),
+    shoutedCount: toString(size(shouter))
+  }`,
+  limit: 'LIMIT $limit',
   countKeyName: 'postCount',
   resultKeyName: 'posts',
 }
@@ -42,7 +49,8 @@ const searchUsersSetup = {
   match: 'MATCH (resource)',
   whereClause: simpleWhereClause,
   withClause: '',
-  additionalMapping: '',
+  returnClause: 'resource {.*, __typename: labels(resource)[0]}',
+  limit: 'LIMIT $limit',
   countKeyName: 'userCount',
   resultKeyName: 'users',
 }
@@ -52,22 +60,52 @@ const searchHashtagsSetup = {
   match: 'MATCH (resource)',
   whereClause: simpleWhereClause,
   withClause: '',
-  additionalMapping: '',
+  returnClause: 'resource {.*, __typename: labels(resource)[0]}',
+  limit: 'LIMIT $limit',
   countKeyName: 'hashtagCount',
   resultKeyName: 'hashtags',
 }
 
-const runSearchTransaction = async (transaction, setup, params) => {
-  return transaction.run(cypherTemplate(setup), params)
+const countUsersSetup = {
+  ...searchUsersSetup,
+  ...{
+    returnClause: 'toString(size(collect(resource)))',
+    limit: '',
+  },
+}
+const countPostsSetup = {
+  ...searchPostsSetup,
+  ...{
+    returnClause: 'toString(size(collect(resource)))',
+    limit: '',
+  },
+}
+const countHashtagsSetup = {
+  ...searchHashtagsSetup,
+  ...{
+    returnClause: 'toString(size(collect(resource)))',
+    limit: '',
+  },
 }
 
 const searchResultPromise = async (session, setup, params) => {
   return session.readTransaction(async (transaction) => {
-    return runSearchTransaction(transaction, setup, params)
+    return transaction.run(cypherTemplate(setup), params)
   })
 }
 
 const getSearchResults = async (context, setup, params) => {
+  const session = context.driver.session()
+  try {
+    const results = await searchResultPromise(session, setup, params)
+    log(results)
+    return results.records.map((r) => r.get('result'))
+  } finally {
+    session.close()
+  }
+}
+
+const countSearchResults = async (context, setup, params) => {
   const session = context.driver.session()
   try {
     const results = await searchResultPromise(session, setup, params)
@@ -85,49 +123,54 @@ const multiSearchMap = [
   { symbol: '#', setup: searchHashtagsSetup, resultName: 'hashtags' },
 ] */
 
-const applyLimits = async (result, skip, limit) => {
-  Object.keys(result).forEach((key) => {
-    if (typeof result[key] === 'object') {
-      result[key] = result[key].slice(skip, skip + limit)
-    }
-  })
-  return result
-}
-
 export default {
   Query: {
     searchPosts: async (_parent, args, context, _resolveInfo) => {
       const { query, postsOffset, firstPosts } = args
-      const { id: userId } = context.user
+      // const { id: userId } = context.user
+      const userId = '73'
 
-      return applyLimits(
-        await getSearchResults(context, searchPostsSetup, {
+      return {
+        postCount: countSearchResults(context, countPostsSetup, {
           query: queryString(query),
+          skip: 0,
           userId,
         }),
-        postsOffset,
-        firstPosts,
-      )
+        posts: getSearchResults(context, searchPostsSetup, {
+          query: queryString(query),
+          skip: postsOffset,
+          limit: firstPosts,
+          userId,
+        }),
+      }
     },
     searchUsers: async (_parent, args, context, _resolveInfo) => {
       const { query, usersOffset, firstUsers } = args
-      return applyLimits(
-        await getSearchResults(context, searchUsersSetup, {
+      return {
+        userCount: countSearchResults(context, countUsersSetup, {
           query: queryString(query),
+          skip: 0,
         }),
-        usersOffset,
-        firstUsers,
-      )
+        users: getSearchResults(context, searchUsersSetup, {
+          query: queryString(query),
+          skip: usersOffset,
+          limit: firstUsers,
+        }),
+      }
     },
     searchHashtags: async (_parent, args, context, _resolveInfo) => {
       const { query, hashtagsOffset, firstHashtags } = args
-      return applyLimits(
-        await getSearchResults(context, searchHashtagsSetup, {
+      return {
+        hashtagCount: countSearchResults(context, countHashtagsSetup, {
           query: queryString(query),
+          skip: 0,
         }),
-        hashtagsOffset,
-        firstHashtags,
-      )
+        hashtags: getSearchResults(context, searchHashtagsSetup, {
+          query: queryString(query),
+          skip: hashtagsOffset,
+          limit: firstHashtags,
+        }),
+      }
     },
     searchResults: async (_parent, args, context, _resolveInfo) => {
       const { query, limit } = args
