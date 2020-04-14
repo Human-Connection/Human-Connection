@@ -144,13 +144,13 @@ export default {
       return this.hashtagsOffset > 0
     },
     hasMorePosts() {
-      return (this.postPage + 1) * this.pageSize <= this.postCount
+      return (this.postPage + 1) * this.pageSize < this.postCount
     },
     hasMoreUsers() {
-      return (this.userPage + 1) * this.pageSize <= this.userCount
+      return (this.userPage + 1) * this.pageSize < this.userCount
     },
     hasMoreHashtags() {
-      return (this.hashtagPage + 1) * this.pageSize <= this.hashtagCount
+      return (this.hashtagPage + 1) * this.pageSize < this.hashtagCount
     },
   },
   methods: {
@@ -201,7 +201,7 @@ export default {
       update({ searchPosts }) {
         this.posts = searchPosts.posts
         this.postCount = searchPosts.postCount
-        if (searchPosts.posts.length) this.activeTab = 'Post'
+        if (this.postCount > 0) this.activeTab = 'Post'
       },
       fetchPolicy: 'cache-and-network',
     },
@@ -223,7 +223,7 @@ export default {
       update({ searchUsers }) {
         this.users = searchUsers.users
         this.userCount = searchUsers.userCount
-        if (!searchPosts.posts.length && searchUsers.users.length) this.activeTab = 'User'
+        if (this.postCount === 0 && this.userCount > 0) this.activeTab = 'User'
       },
       fetchPolicy: 'cache-and-network',
     },
@@ -245,11 +245,7 @@ export default {
       update({ searchHashtags }) {
         this.hashtags = searchHashtags.hashtags
         this.hashtagCount = searchHashtags.hashtagCount
-        if (
-          !searchPosts.posts.length &&
-          !searchUsers.users.length &&
-          searchHashtags.hashtags.length
-        )
+        if (this.postCount === 0 && this.userCount === 0 && this.hashtagCount > 0)
           this.activeTab = 'Hashtag'
       },
       fetchPolicy: 'cache-and-network',
