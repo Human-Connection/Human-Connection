@@ -123,7 +123,7 @@ Factory.define('post')
   .attrs({
     id: uuid,
     title: faker.lorem.sentence,
-    content: faker.lorem.paragraphs,
+    content: `<p>${faker.lorem.paragraphs(3, '</p><p>')}</p>`,
     visibility: 'public',
     deleted: false,
     imageBlurred: false,
@@ -176,7 +176,7 @@ Factory.define('comment')
   })
   .attrs({
     id: uuid,
-    content: faker.lorem.sentence,
+    content: `<p>${faker.lorem.sentence}</p>`,
   })
   .attr('contentExcerpt', ['contentExcerpt', 'content'], (contentExcerpt, content) => {
     return contentExcerpt || content
