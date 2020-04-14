@@ -24,12 +24,12 @@ beforeAll(async () => {
 })
 
 afterAll(async () => {
-  await cleanDatabase()
+  //  await cleanDatabase()
 })
 
 const searchQuery = gql`
   query($query: String!) {
-    findResources(query: $query, limit: 5) {
+    searchResults(query: $query, limit: 5) {
       __typename
       ... on Post {
         id
@@ -65,7 +65,7 @@ describe('resolvers/searches', () => {
         variables = { query: 'John' }
         await expect(query({ query: searchQuery, variables })).resolves.toMatchObject({
           data: {
-            findResources: [
+            searchResults: [
               {
                 id: 'a-user',
                 name: 'John Doe',
@@ -95,7 +95,7 @@ describe('resolvers/searches', () => {
           variables = { query: 'beitrag' }
           await expect(query({ query: searchQuery, variables })).resolves.toMatchObject({
             data: {
-              findResources: [
+              searchResults: [
                 {
                   __typename: 'Post',
                   id: 'a-post',
@@ -114,7 +114,7 @@ describe('resolvers/searches', () => {
           variables = { query: 'BEITRAG' }
           await expect(query({ query: searchQuery, variables })).resolves.toMatchObject({
             data: {
-              findResources: [
+              searchResults: [
                 {
                   __typename: 'Post',
                   id: 'a-post',
@@ -132,7 +132,7 @@ describe('resolvers/searches', () => {
         it('returns empty search results', async () => {
           await expect(
             query({ query: searchQuery, variables: { query: 'Unfug' } }),
-          ).resolves.toMatchObject({ data: { findResources: [] } })
+          ).resolves.toMatchObject({ data: { searchResults: [] } })
         })
       })
 
@@ -189,7 +189,7 @@ und hinter tausend Stäben keine Welt.`,
               variables = { query: 'beitrag' }
               await expect(query({ query: searchQuery, variables })).resolves.toMatchObject({
                 data: {
-                  findResources: expect.arrayContaining([
+                  searchResults: expect.arrayContaining([
                     {
                       __typename: 'Post',
                       id: 'a-post',
@@ -216,7 +216,7 @@ und hinter tausend Stäben keine Welt.`,
               variables = { query: 'tee-ei' }
               await expect(query({ query: searchQuery, variables })).resolves.toMatchObject({
                 data: {
-                  findResources: [
+                  searchResults: [
                     {
                       __typename: 'Post',
                       id: 'g-post',
@@ -235,7 +235,7 @@ und hinter tausend Stäben keine Welt.`,
               variables = { query: '„teeei“' }
               await expect(query({ query: searchQuery, variables })).resolves.toMatchObject({
                 data: {
-                  findResources: [
+                  searchResults: [
                     {
                       __typename: 'Post',
                       id: 'g-post',
@@ -256,7 +256,7 @@ und hinter tausend Stäben keine Welt.`,
               variables = { query: '(a - b)²' }
               await expect(query({ query: searchQuery, variables })).resolves.toMatchObject({
                 data: {
-                  findResources: [
+                  searchResults: [
                     {
                       __typename: 'Post',
                       id: 'c-post',
@@ -277,7 +277,7 @@ und hinter tausend Stäben keine Welt.`,
               variables = { query: '(a-b)²' }
               await expect(query({ query: searchQuery, variables })).resolves.toMatchObject({
                 data: {
-                  findResources: [
+                  searchResults: [
                     {
                       __typename: 'Post',
                       id: 'c-post',
@@ -298,7 +298,7 @@ und hinter tausend Stäben keine Welt.`,
               variables = { query: '+ b² 2.' }
               await expect(query({ query: searchQuery, variables })).resolves.toMatchObject({
                 data: {
-                  findResources: [
+                  searchResults: [
                     {
                       __typename: 'Post',
                       id: 'c-post',
@@ -321,7 +321,7 @@ und hinter tausend Stäben keine Welt.`,
               variables = { query: 'der panther' }
               await expect(query({ query: searchQuery, variables })).resolves.toMatchObject({
                 data: {
-                  findResources: [
+                  searchResults: [
                     {
                       __typename: 'Post',
                       id: 'd-post',
@@ -349,7 +349,7 @@ und hinter tausend Stäben keine Welt.`,
               variables = { query: 'Vorü Subs' }
               await expect(query({ query: searchQuery, variables })).resolves.toMatchObject({
                 data: {
-                  findResources: expect.arrayContaining([
+                  searchResults: expect.arrayContaining([
                     {
                       __typename: 'Post',
                       id: 'd-post',
@@ -395,7 +395,7 @@ und hinter tausend Stäben keine Welt.`,
             variables = { query: '-maria-' }
             await expect(query({ query: searchQuery, variables })).resolves.toMatchObject({
               data: {
-                findResources: expect.arrayContaining([
+                searchResults: expect.arrayContaining([
                   {
                     __typename: 'User',
                     id: 'c-user',
@@ -440,7 +440,7 @@ und hinter tausend Stäben keine Welt.`,
             variables = { query: 'beitrag' }
             await expect(query({ query: searchQuery, variables })).resolves.toMatchObject({
               data: {
-                findResources: expect.not.arrayContaining([
+                searchResults: expect.not.arrayContaining([
                   {
                     __typename: 'Post',
                     id: 'muted-post',
@@ -465,7 +465,7 @@ und hinter tausend Stäben keine Welt.`,
             variables = { query: 'myha' }
             await expect(query({ query: searchQuery, variables })).resolves.toMatchObject({
               data: {
-                findResources: [
+                searchResults: [
                   {
                     __typename: 'Tag',
                     id: 'myHashtag',

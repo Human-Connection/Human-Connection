@@ -11,7 +11,7 @@ import { user } from '~/components/UserTeaser/UserTeaser.story.js'
 
 helpers.init()
 
-const postMock = fields => {
+const postMock = (fields) => {
   return {
     ...post,
     id: faker.random.uuid(),
@@ -24,7 +24,7 @@ const postMock = fields => {
   }
 }
 
-const userMock = fields => {
+const userMock = (fields) => {
   return {
     ...user,
     id: faker.random.uuid(),

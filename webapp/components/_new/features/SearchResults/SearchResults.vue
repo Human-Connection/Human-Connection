@@ -15,7 +15,7 @@
             <post-teaser :post="resource" />
           </masonry-grid-item>
         </masonry-grid>
-        {{postPage}}
+        {{ postPage }}
         <pagination-buttons
           :hasNext="hasMorePosts"
           :hasPrevious="hasPreviousPosts"
@@ -73,7 +73,6 @@ export default {
     PostTeaser,
     PaginationButtons,
     UserTeaser,
-    searchHashtags,
     HcHashtag,
   },
   props: {
@@ -101,10 +100,6 @@ export default {
       postsOffset: 0,
       usersOffset: 0,
       hashtagsOffset: 0,
-      hasMorePosts: false,
-      hasMoreUsers: false,
-      hasMoreHashtags: false,
-   
     }
   },
   computed: {
@@ -125,17 +120,17 @@ export default {
         {
           type: 'Post',
           title: `${this.postCount} ${this.$t('search.heading.Post')}`,
-          disabled: this.postCount == 0,
+          disabled: this.postCount === 0,
         },
         {
           type: 'User',
           title: `${this.userCount} ${this.$t('search.heading.User')}`,
-          disabled: this.userCount == 0,
+          disabled: this.userCount === 0,
         },
-          {
+        {
           type: 'Hashtag',
           title: `${this.hashtagCount} ${this.$t('search.heading.Tag')}`,
-          disabled: this.hashtagCount == 0,
+          disabled: this.hashtagCount === 0,
         },
       ]
     },
@@ -148,33 +143,42 @@ export default {
     hasPreviousHashtags() {
       return this.hashtagsOffset > 0
     },
+    hasMorePosts() {
+      return (this.postPage + 1) * this.pageSize <= this.postCount
+    },
+    hasMoreUsers() {
+      return (this.userPage + 1) * this.pageSize <= this.userCount
+    },
+    hasMoreHashtags() {
+      return (this.hashtagPage + 1) * this.pageSize <= this.hashtagCount
+    },
   },
   methods: {
     switchTab(tab) {
       this.activeTab = tab
     },
     previousPosts() {
-      this.postsOffset = this.postPage * this.pageSize
       this.postPage--
+      this.postsOffset = this.postPage * this.pageSize
     },
     nextPosts() {
       this.postsOffset += this.pageSize
       this.postPage++
     },
     previousUsers() {
-      this.usersOffset = Math.max(this.usersOffset - this.pageSize, 0)
       this.userPage--
+      this.usersOffset = this.userPage * this.pageSize
     },
     nextUsers() {
       this.usersOffset += this.pageSize
       this.userPage++
     },
     previousHashtags() {
-      this.usersOffset = Math.max(this.usersOffset - this.pageSize, 0)
       this.hashtagPage--
+      this.hashtagsOffset = this.hashtagPage * this.pageSize
     },
     nextHashtags() {
-      this.usersOffset += this.pageSize
+      this.hashtagsOffset += this.pageSize
       this.hashtagPage++
     },
   },
@@ -197,7 +201,6 @@ export default {
       update({ searchPosts }) {
         this.posts = searchPosts.posts
         this.postCount = searchPosts.postCount
-        this.hasMorePosts = this.postCount >= (this.pageSize * this.postPage)
         if (searchPosts.posts.length) this.activeTab = 'Post'
       },
       fetchPolicy: 'cache-and-network',
@@ -220,33 +223,36 @@ export default {
       update({ searchUsers }) {
         this.users = searchUsers.users
         this.userCount = searchUsers.userCount
-        this.hasMoreUsers = this.users.length >= this.pageSize
         if (!searchPosts.posts.length && searchUsers.users.length) this.activeTab = 'User'
       },
       fetchPolicy: 'cache-and-network',
     },
     searchHashtags: {
-        query() {
-          return searchHashtags
-        },
-        variables() {
-          const { firstHashtags, hashtagsOffset, search } = this
-          return {
-            query: search,
-            firstHashtags,
-            hashtagsOffset,
-          }
-        },
-        skip() {
-          return !this.search
-        },
-        update({ searchHashtags }) {
-          this.hashtags = searchHashtags.hashtags
-          this.hashtagCount = searchHashtags.hashtagCount
-          this.hasMoreHashtags = this.hashtags.length >= this.pageSize
-          if (!searchPosts.posts.length && !searchUsers.users.length && searchHashtags.hashtags.length) this.activeTab = 'Hashtag'
-        },
-        fetchPolicy: 'cache-and-network',
+      query() {
+        return searchHashtags
+      },
+      variables() {
+        const { firstHashtags, hashtagsOffset, search } = this
+        return {
+          query: search,
+          firstHashtags,
+          hashtagsOffset,
+        }
+      },
+      skip() {
+        return !this.search
+      },
+      update({ searchHashtags }) {
+        this.hashtags = searchHashtags.hashtags
+        this.hashtagCount = searchHashtags.hashtagCount
+        if (
+          !searchPosts.posts.length &&
+          !searchUsers.users.length &&
+          searchHashtags.hashtags.length
+        )
+          this.activeTab = 'Hashtag'
+      },
+      fetchPolicy: 'cache-and-network',
     },
   },
 }
