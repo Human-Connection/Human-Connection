@@ -94,6 +94,7 @@
     "vue-sweetalert-icons": "~4.2.0",
     "vuex-i18n": "~1.13.1",
     "xregexp": "^4.3.0",
+    "xxhashjs": "^0.2.2",
     "zxcvbn": "^4.4.2"
   },
   "devDependencies": {

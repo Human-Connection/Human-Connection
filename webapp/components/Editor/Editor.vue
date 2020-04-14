@@ -29,6 +29,9 @@ import { replace, build } from 'xregexp/xregexp-all.js'
 import * as key from '../../constants/keycodes'
 import { HASHTAG, MENTION } from '../../constants/editor'
 import defaultExtensions from './defaultExtensions.js'
+
+import AutoSave from './plugins/autoSave.js'
+
 import EventHandler from './plugins/eventHandler.js'
 import Hashtag from './nodes/Hashtag.js'
 import Mention from './nodes/Mention.js'
@@ -50,8 +53,12 @@ export default {
   props: {
     users: { type: Array, default: () => null }, // If 'null', than the Mention extention is not assigned.
     hashtags: { type: Array, default: () => null }, // If 'null', than the Hashtag extention is not assigned.
-    value: { type: String, default: '' },
     doc: { type: Object, default: () => {} },
+    autosave: { type: Boolean, default: false },
+    value: {
+      type: String,
+      default: '',
+    },
   },
   data() {
     return {
@@ -105,6 +112,9 @@ export default {
       }
       return extensions
     },
+    autosaveContent() {
+      return this.autosave && this.$route ? AutoSave.lastSave(this.$route.path) : ''
+    },
   },
   watch: {
     placeholder: {
@@ -119,7 +129,7 @@ export default {
   },
   mounted() {
     this.editor = new Editor({
-      content: this.value || '',
+      content: this.value || this.autosaveContent || '',
       doc: this.doc,
       extensions: [
         // Hashtags must come first, see

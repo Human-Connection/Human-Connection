@@ -57,6 +57,17 @@ const helpers = {
       </layout>`,
     }
   },
+  wrapInCard(storyFn) {
+    const ctx = storyFn()
+    return {
+      components: { ctx },
+      template: `
+        <base-card style="width: 50%; min-width: 500px; margin: 0 auto;">
+            <ctx />
+        </base-card>
+      `,
+    }
+  },
 }
 
 export default helpers
