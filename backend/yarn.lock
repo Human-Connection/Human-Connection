@@ -1275,13 +1275,13 @@
     url-regex "~4.1.1"
     video-extensions "~1.1.0"
 
-"@metascraper/helpers@^5.11.6", "@metascraper/helpers@^5.11.8":
-  version "5.11.8"
-  resolved "https://registry.yarnpkg.com/@metascraper/helpers/-/helpers-5.11.8.tgz#24bf4440b4c24d1e5ba116005fbeb2ad3bf5b0cd"
-  integrity sha512-e0gpI2kOnlQ7nZH5amCNztN5GXNWPkA2rAkZhZ3ckpo1W5x4aw/h7FnOMjHftuNjeSWLeIplpn8VROJ9Hb3qyw==
+"@metascraper/helpers@^5.11.6", "@metascraper/helpers@^5.11.8", "@metascraper/helpers@^5.11.9":
+  version "5.11.9"
+  resolved "https://registry.yarnpkg.com/@metascraper/helpers/-/helpers-5.11.9.tgz#40113c271cacad99f3c75bd410156c83f41d0e5f"
+  integrity sha512-M5rVnrOdNVcygBTMbvfIyeik5TItdm/5Og9jN6KtSlK1e2N8bsuTrvUR7S0pQa288v1IKJRlUSUhYGv0rASgog==
   dependencies:
     audio-extensions "0.0.0"
-    chrono-node "~1.4.4"
+    chrono-node "~1.4.5"
     condense-whitespace "~2.0.0"
     entities "~2.0.0"
     file-extension "~4.0.5"
@@ -2877,10 +2877,10 @@ chrono-node@~1.3.11:
   dependencies:
     moment "2.21.0"
 
-chrono-node@~1.4.4:
-  version "1.4.4"
-  resolved "https://registry.yarnpkg.com/chrono-node/-/chrono-node-1.4.4.tgz#a6248257d3198996ea3d023b2bd20a268545350f"
-  integrity sha512-vwsQ2Z6RhkfIsFYvcZtifa0eSQC6pl08fgXkcZXkfGAJk/OkdYAuGqM2yLhPzsuK3N+BmaKFBie/jGvLsiYMbA==
+chrono-node@~1.4.5:
+  version "1.4.5"
+  resolved "https://registry.yarnpkg.com/chrono-node/-/chrono-node-1.4.5.tgz#27270e03692b4582a9b10e250ef50f326fafcd9a"
+  integrity sha512-0QDtWS1TOS/DKj2C3dPmklaWWGjH9JbVDwP8Ipvl97cNoCyD5cnyTmZs3+wN0rrCl99h92Q2As/rYVZjtF+ZzQ==
   dependencies:
     dayjs "^1.8.19"
 
@@ -6544,12 +6544,12 @@ metascraper-date@^5.11.8:
   dependencies:
     "@metascraper/helpers" "^5.11.8"
 
-metascraper-description@^5.11.6:
-  version "5.11.6"
-  resolved "https://registry.yarnpkg.com/metascraper-description/-/metascraper-description-5.11.6.tgz#515368b5ca88cb5fa1fd92c0946458795b03960f"
-  integrity sha512-rGD6hEWLHPlZ/091htCoFAJGft2oRDAaAoDcnafMdTBcuukBIpZ3QNOR3rYpliWHbpS8cwiX2Q9IawyqB4iK0g==
+metascraper-description@^5.11.9:
+  version "5.11.9"
+  resolved "https://registry.yarnpkg.com/metascraper-description/-/metascraper-description-5.11.9.tgz#388517f621e3e0d6abd9c4f68305cf556565499c"
+  integrity sha512-w7VqtWZ8uGUkyjDPB9MyaeehJALUu+SJ1lzA/TPuSE5moXMMOlfC0FbuyTe58hqpmFgtxeLukG23VSPs5DG+yg==
   dependencies:
-    "@metascraper/helpers" "^5.11.6"
+    "@metascraper/helpers" "^5.11.9"
 
 metascraper-image@^5.11.8:
   version "5.11.8"
