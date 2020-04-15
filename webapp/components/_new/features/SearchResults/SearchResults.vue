@@ -1,5 +1,6 @@
-<template>
+<template>  
   <div class="search-results">
+    <div class="search-results">{{$t('search.results', { searchCount:searchCount, search:search })}}</div>
     <tab-navigation :tabs="tabOptions" :activeTab="activeTab" @switchTab="switchTab" />
     <section
       :class="['results', activeTab === 'User' && '--user', !activeResourceCount > 0 && '--empty']"
@@ -100,6 +101,7 @@ export default {
       postsOffset: 0,
       usersOffset: 0,
       hashtagsOffset: 0,
+      searchCount: 0,
     }
   },
   computed: {
@@ -202,6 +204,7 @@ export default {
         this.posts = searchPosts.posts
         this.postCount = searchPosts.postCount
         if (this.postCount > 0) this.activeTab = 'Post'
+        this.searchCount = ( this.postCount + this.userCount + this.hashtagCount )
       },
       fetchPolicy: 'cache-and-network',
     },
