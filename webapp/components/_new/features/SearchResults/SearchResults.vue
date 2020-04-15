@@ -203,6 +203,7 @@ export default {
       update({ searchPosts }) {
         this.posts = searchPosts.posts
         this.postCount = searchPosts.postCount
+        this.searchCount = this.postCount + this.userCount + this.hashtagCount 
         if (this.postCount > 0) this.activeTab = 'Post'
       },
       fetchPolicy: 'cache-and-network',
@@ -225,6 +226,7 @@ export default {
       update({ searchUsers }) {
         this.users = searchUsers.users
         this.userCount = searchUsers.userCount
+        this.searchCount = this.postCount + this.userCount + this.hashtagCount 
         if (this.postCount === 0 && this.userCount > 0) this.activeTab = 'User'
       },
       fetchPolicy: 'cache-and-network',
