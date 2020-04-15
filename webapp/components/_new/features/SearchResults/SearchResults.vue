@@ -204,7 +204,6 @@ export default {
         this.posts = searchPosts.posts
         this.postCount = searchPosts.postCount
         if (this.postCount > 0) this.activeTab = 'Post'
-        this.searchCount = ( this.postCount + this.userCount + this.hashtagCount )
       },
       fetchPolicy: 'cache-and-network',
     },
@@ -248,6 +247,8 @@ export default {
       update({ searchHashtags }) {
         this.hashtags = searchHashtags.hashtags
         this.hashtagCount = searchHashtags.hashtagCount
+        this.searchCount = this.postCount + this.userCount + this.hashtagCount 
+
         if (this.postCount === 0 && this.userCount === 0 && this.hashtagCount > 0)
           this.activeTab = 'Hashtag'
       },
