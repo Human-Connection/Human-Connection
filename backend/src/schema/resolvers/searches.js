@@ -41,8 +41,6 @@ const searchPostsSetup = {
     shoutedCount: toString(size(shouter))
   }`,
   limit: 'LIMIT $limit',
-  countKeyName: 'postCount',
-  resultKeyName: 'posts',
 }
 
 const searchUsersSetup = {
@@ -52,8 +50,6 @@ const searchUsersSetup = {
   withClause: '',
   returnClause: 'resource {.*, __typename: labels(resource)[0]}',
   limit: 'LIMIT $limit',
-  countKeyName: 'userCount',
-  resultKeyName: 'users',
 }
 
 const searchHashtagsSetup = {
@@ -63,8 +59,6 @@ const searchHashtagsSetup = {
   withClause: '',
   returnClause: 'resource {.*, __typename: labels(resource)[0]}',
   limit: 'LIMIT $limit',
-  countKeyName: 'hashtagCount',
-  resultKeyName: 'hashtags',
 }
 
 const countSetup = {
@@ -110,12 +104,11 @@ const getSearchResults = async (context, setup, params, resultCallback = searchR
   }
 }
 
-/*
 const multiSearchMap = [
   { symbol: '!', setup: searchPostsSetup, resultName: 'posts' },
   { symbol: '@', setup: searchUsersSetup, resultName: 'users' },
   { symbol: '#', setup: searchHashtagsSetup, resultName: 'hashtags' },
-] */
+]
 
 export default {
   Query: {
@@ -184,35 +177,26 @@ export default {
       const { query, limit } = args
       const { id: userId } = context.user
 
-      // const searchType = query.replace(/^([!@#]?).*$/, '$1')
-      // const searchString = query.replace(/^([!@#])/, '')
+      const searchType = query.replace(/^([!@#]?).*$/, '$1')
+      const searchString = query.replace(/^([!@#])/, '')
 
-      /*
       const params = {
         query: queryString(searchString),
         skip: 0,
         limit,
         userId,
-      } */
+      }
 
-      return [
-        ...(await getSearchResults(context, searchPostsSetup, {
-          query: queryString(query),
-          skip: 0,
-          limit,
-          userId,
-        })),
-        ...(await getSearchResults(context, searchUsersSetup, {
-          query: queryString(query),
-          skip: 0,
-          limit,
-        })),
-        ...(await getSearchResults(context, searchHashtagsSetup, {
-          query: queryString(query),
-          skip: 0,
-          limit,
-        })),
-      ]
+      if (searchType === '')
+        return [
+          ...(await getSearchResults(context, searchPostsSetup, params)),
+          ...(await getSearchResults(context, searchUsersSetup, params)),
+          ...(await getSearchResults(context, searchHashtagsSetup, params)),
+        ]
+
+      params.limit = 15
+      const type = multiSearchMap.find((obj) => obj.symbol === searchType)
+      return getSearchResults(context, type.setup, params)
     },
   },
 }
