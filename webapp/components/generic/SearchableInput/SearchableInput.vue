@@ -20,6 +20,7 @@
       @keyup.esc.native="clear"
       @blur.capture.native="onBlur"
       @input.exact="onSelect"
+      
     >
       <template #option="{ option }">
         <search-heading v-if="isFirstOfType(option)" :resource-type="option.__typename" />
@@ -112,6 +113,7 @@ export default {
         path: '/search/search-results',
         query: { search: this.unprocessedSearchInput },
       })
+     this.$emit('clearSearch')
     },
     onDelete(event) {
       clearTimeout(this.searchProcess)
