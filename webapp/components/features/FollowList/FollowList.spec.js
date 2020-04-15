@@ -69,8 +69,8 @@ describe('FollowList.vue', () => {
           const wrapper = Wrapper({ user, type: 'following' })
           wrapper.find('.base-button').trigger('click')
 
-          expect(wrapper.vm.connections).toEqual(user.following)
           expect(wrapper.vm.allConnectionsCount).toBe(user.followingCount)
+          expect(wrapper.findAll('.user-teaser')).toHaveLength(user.following.length)
           expect(wrapper.emitted('fetchAllConnections')).toEqual([['following']])
         })
       })
@@ -80,8 +80,8 @@ describe('FollowList.vue', () => {
           const wrapper = Wrapper({ type: 'followedBy' })
           wrapper.find('.base-button').trigger('click')
 
-          expect(wrapper.vm.connections).toEqual(user.followedBy)
           expect(wrapper.vm.allConnectionsCount).toBe(user.followedByCount)
+          expect(wrapper.findAll('.user-teaser')).toHaveLength(user.followedBy.length)
           expect(wrapper.emitted('fetchAllConnections')).toEqual([['followedBy']])
         })
       })
@@ -90,7 +90,7 @@ describe('FollowList.vue', () => {
     describe('given no type', () => {
       it('defaults type to `following`', () => {
         const wrapper = Wrapper()
-        expect(wrapper.vm.type).toBe('following')
+        expect(wrapper.text()).toContain('profile.network.following')
       })
     })
 
@@ -98,15 +98,15 @@ describe('FollowList.vue', () => {
       describe('without connections', () => {
         it('displays the followingNobody message', () => {
           const wrapper = Wrapper({ user: noConnectionsUser })
-          expect(wrapper.find('.nobody-message').text()).toBe(
-            `${noConnectionsUser.name} ${wrapper.vm.$t(`profile.network.followingNobody`)}`,
+          expect(wrapper.find('.nobody-message').text()).toContain(
+            'profile.network.followingNobody',
           )
         })
 
         it('displays the followedByNobody message', () => {
           const wrapper = Wrapper({ user: noConnectionsUser, type: 'followedBy' })
-          expect(wrapper.find('.nobody-message').text()).toBe(
-            `${noConnectionsUser.name} ${wrapper.vm.$t(`profile.network.followedByNobody`)}`,
+          expect(wrapper.find('.nobody-message').text()).toContain(
+            'profile.network.followedByNobody',
           )
         })
       })
@@ -118,7 +118,7 @@ describe('FollowList.vue', () => {
         })
 
         it(`renders the connections`, () => {
-          expect(wrapper.findAll('.user-teaser').length).toEqual(user.following.length)
+          expect(wrapper.findAll('.user-teaser')).toHaveLength(user.following.length)
         })
 
         it(`has a button to load all remaining connections`, async () => {
