@@ -1,9 +1,0 @@
-{
-  "standalone": "<p><a href=\"https://youtu.be/jB6mI8uVxKU\" class=\"embed\" target=\"_blank\"></a></p>",
-  "multipleStandalone": "<p><a href=\"https://youtu.be/jB6mUd19xKU\" class=\"embed\" target=\"_blank\"></a><a href=\"https://youtu.be/jB6mI8uVxKU\" class=\"embed\" target=\"_blank\"></a></p>",
-  "inline": "<p>This is a video link <a href=\"https://youtu.be/jB6mI8uVxKU\" class=\"embed\" target=\"_blank\"><em>https://youtu.be/jB6mI8uVxKU</em></a>pasted into this line</p>",
-  "inlineComplete": "<p>This is a video link <a href=\"https://youtu.be/jB6mI8uVxKU\" class=\"embed\" target=\"_blank\"></a> pasted with this line</p>",
-  "explicitBlocks": "<p>This is a video link</p><p><a href=\"https://youtu.be/jB6mI8uVxKU\" class=\"embed\" target=\"_blank\"></a></p><p>with explicit paragraphs above and below</p>",
-  "multiple": "<p>This is a video link <a href=\"https://youtu.be/jB6mI8uVxKU\" class=\"embed\" target=\"_blank\"></a>pasted into this line, just like <a href=\"https://youtu.be/jB6mI9ka2KU\" class=\"embed\" target=\"_blank\"></a> these second and <a href=\"https://youtu.be/jB6mi3iaxKU\" class=\"embed\" target=\"_blank\"></a> third one.</p>",
-  "mixed": "<p>This is a video link <a href=\"https://youtu.be/jB6mI8uVxKU\" class=\"embed\" target=\"_blank\"></a>pasted into this line, just like <a href=\"https://youtu.be/jB6mI9ka2KU\" class=\"embed\" target=\"_blank\"></a> these second. But the </p><p><a href=\"https://youtu.be/jB6mi3iaxKU\" class=\"embed\" target=\"_blank\"></a></p><p> third was suddenly a block.</p>"
-}

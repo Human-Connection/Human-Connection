@@ -1,9 +1,0 @@
-{
-  "standalone": "<p></p><a href=\"https://youtu.be/jB6mI8uVxKU\" class=\"embed\" target=\"_blank\"></a><p></p>",
-  "multipleStandalone": "<p></p><a href=\"https://youtu.be/jB6mUd19xKU\" class=\"embed\" target=\"_blank\"></a><p></p><a href=\"https://youtu.be/jB6mI8uVxKU\" class=\"embed\" target=\"_blank\"></a><p></p>",
-  "inline": "<p>This is a video link </p><a href=\"https://youtu.be/jB6mI8uVxKU\" class=\"embed\" target=\"_blank\"><em>https://youtu.be/jB6mI8uVxKU</em></a><p>pasted into this line</p>",
-  "inlineComplete": "<p>This is a video link </p><a href=\"https://youtu.be/jB6mI8uVxKU\" class=\"embed\" target=\"_blank\"></a><p> pasted with this line</p>",
-  "explicitBlocks": "<p>This is a video link</p><a href=\"https://youtu.be/jB6mI8uVxKU\" class=\"embed\" target=\"_blank\"></a><p>with explicit paragraphs above and below</p>",
-  "multiple": "<p>This is a video link </p><a href=\"https://youtu.be/jB6mI8uVxKU\" class=\"embed\" target=\"_blank\"></a><p>pasted into this line, just like </p><a href=\"https://youtu.be/jB6mI9ka2KU\" class=\"embed\" target=\"_blank\"></a><p> these second and </p><a href=\"https://youtu.be/jB6mi3iaxKU\" class=\"embed\" target=\"_blank\"></a><p> third one.</p>",
-  "mixed": "<p>This is a video link </p><a href=\"https://youtu.be/jB6mI8uVxKU\" class=\"embed\" target=\"_blank\"></a><p>pasted into this line, just like </p><a href=\"https://youtu.be/jB6mI9ka2KU\" class=\"embed\" target=\"_blank\"></a><p> these second. But the </p><a href=\"https://youtu.be/jB6mi3iaxKU\" class=\"embed\" target=\"_blank\"></a><p> third was suddenly a block.</p>"
-}
