@@ -47,6 +47,21 @@ const searchQuery = gql`
     }
   }
 `
+
+const searchPostQuery = gql`
+  query($query: String!, $firstPosts: Int, $postsOffset: Int) {
+    searchPosts(query: $query, firstPosts: $firstPosts, postsOffset: $postsOffset) {
+      postCount
+      posts {
+        __typename
+        id
+        title
+        content
+      }
+    }
+  }
+`
+
 describe('resolvers/searches', () => {
   let variables
 
@@ -416,6 +431,128 @@ und hinter tausend Stäben keine Welt.`,
         })
       })
 
+      describe('adding a user and a hashtag with a name that is content of a post', () => {
+        beforeAll(async () => {
+          await Promise.all([
+            Factory.build('user', {
+              id: 'f-user',
+              name: 'Peter Panther',
+              slug: 'peter-panther',
+            }),
+            await Factory.build('tag', { id: 'Panther' }),
+          ])
+        })
+
+        describe('query the word that contains the post, the hashtag and the name of the user', () => {
+          it('finds the user, the post and the hashtag', async () => {
+            variables = { query: 'panther' }
+            await expect(query({ query: searchQuery, variables })).resolves.toMatchObject({
+              data: {
+                searchResults: expect.arrayContaining([
+                  {
+                    __typename: 'User',
+                    id: 'f-user',
+                    name: 'Peter Panther',
+                    slug: 'peter-panther',
+                  },
+                  {
+                    __typename: 'Post',
+                    id: 'd-post',
+                    title: 'Der Panther',
+                    content: `Sein Blick ist vom Vorübergehn der Stäbe<br>
+so müd geworden, daß er nichts mehr hält.<br>
+Ihm ist, als ob es tausend Stäbe gäbe<br>
+und hinter tausend Stäben keine Welt.`,
+                  },
+                  {
+                    __typename: 'Tag',
+                    id: 'Panther',
+                  },
+                ]),
+              },
+              errors: undefined,
+            })
+          })
+        })
+
+        describe('@query the word that contains the post, the hashtag and the name of the user', () => {
+          it('only finds the user', async () => {
+            variables = { query: '@panther' }
+            await expect(query({ query: searchQuery, variables })).resolves.toMatchObject({
+              data: {
+                searchResults: expect.not.arrayContaining([
+                  {
+                    __typename: 'Post',
+                    id: 'd-post',
+                    title: 'Der Panther',
+                    content: `Sein Blick ist vom Vorübergehn der Stäbe<br>
+so müd geworden, daß er nichts mehr hält.<br>
+Ihm ist, als ob es tausend Stäbe gäbe<br>
+und hinter tausend Stäben keine Welt.`,
+                  },
+                  {
+                    __typename: 'Tag',
+                    id: 'Panther',
+                  },
+                ]),
+              },
+              errors: undefined,
+            })
+          })
+        })
+
+        describe('!query the word that contains the post, the hashtag and the name of the user', () => {
+          it('only finds the post', async () => {
+            variables = { query: '!panther' }
+            await expect(query({ query: searchQuery, variables })).resolves.toMatchObject({
+              data: {
+                searchResults: expect.not.arrayContaining([
+                  {
+                    __typename: 'User',
+                    id: 'f-user',
+                    name: 'Peter Panther',
+                    slug: 'peter-panther',
+                  },
+                  {
+                    __typename: 'Tag',
+                    id: 'Panther',
+                  },
+                ]),
+              },
+              errors: undefined,
+            })
+          })
+        })
+
+        describe('#query the word that contains the post, the hashtag and the name of the user', () => {
+          it('only finds the hashtag', async () => {
+            variables = { query: '#panther' }
+            await expect(query({ query: searchQuery, variables })).resolves.toMatchObject({
+              data: {
+                searchResults: expect.not.arrayContaining([
+                  {
+                    __typename: 'User',
+                    id: 'f-user',
+                    name: 'Peter Panther',
+                    slug: 'peter-panther',
+                  },
+                  {
+                    __typename: 'Post',
+                    id: 'd-post',
+                    title: 'Der Panther',
+                    content: `Sein Blick ist vom Vorübergehn der Stäbe<br>
+so müd geworden, daß er nichts mehr hält.<br>
+Ihm ist, als ob es tausend Stäbe gäbe<br>
+und hinter tausend Stäben keine Welt.`,
+                  },
+                ]),
+              },
+              errors: undefined,
+            })
+          })
+        })
+      })
+
       describe('adding a post, written by a user who is muted by the authenticated user', () => {
         beforeAll(async () => {
           const mutedUser = await Factory.build('user', {
@@ -471,6 +608,30 @@ und hinter tausend Stäben keine Welt.`,
                     id: 'myHashtag',
                   },
                 ],
+              },
+              errors: undefined,
+            })
+          })
+        })
+      })
+
+      describe('searchPostQuery', () => {
+        describe('query with limit 1', () => {
+          it('has a count greater than 1', async () => {
+            variables = { query: 'beitrag', firstPosts: 1, postsOffset: 0 }
+            await expect(query({ query: searchPostQuery, variables })).resolves.toMatchObject({
+              data: {
+                searchPosts: {
+                  postCount: 2,
+                  posts: [
+                    {
+                      __typename: 'Post',
+                      id: 'a-post',
+                      title: 'Beitrag',
+                      content: 'Ein erster Beitrag',
+                    },
+                  ],
+                },
               },
               errors: undefined,
             })
