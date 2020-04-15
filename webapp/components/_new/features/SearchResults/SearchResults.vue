@@ -11,41 +11,77 @@
         :message="$t('search.no-results', { search })"
       />
       <template v-else-if="activeTab === 'Post'">
+         <pagination-buttons 
+           v-show="postCount > 25"
+          :hasNext="hasMorePosts"
+          :hasPrevious="hasPreviousPosts"
+          :hasResultPage="postPage"
+          :hasResultCount="postCount"
+          @back="previousPosts"
+          @next="nextPosts"
+        />
         <masonry-grid>
           <masonry-grid-item v-for="resource in activeResources" :key="resource.key">
             <post-teaser :post="resource" />
           </masonry-grid-item>
         </masonry-grid>
-        {{ postPage }}
-        <pagination-buttons
+     
+        <pagination-buttons 
+           v-show="postCount > 25"
           :hasNext="hasMorePosts"
           :hasPrevious="hasPreviousPosts"
+          :hasResultPage="postPage"
+          :hasResultCount="postCount"
           @back="previousPosts"
           @next="nextPosts"
         />
       </template>
       <ul v-else-if="activeTab === 'User'" class="user-list">
+  <pagination-buttons
+        v-show="userCount > 25"
+          :hasNext="hasMoreUsers"
+          :hasPrevious="hasPreviousUsers"
+          :hasResultPage="userPage"
+          :hasResultCount="userCount"
+          @back="previousUsers"
+          @next="nextUsers"
+        />
         <li v-for="resource in activeResources" :key="resource.key" class="item">
           <base-card :wideContent="true">
             <user-teaser :user="resource" />
           </base-card>
         </li>
         <pagination-buttons
+        v-show="userCount > 25"
           :hasNext="hasMoreUsers"
           :hasPrevious="hasPreviousUsers"
+          :hasResultPage="userPage"
+          :hasResultCount="userCount"
           @back="previousUsers"
           @next="nextUsers"
         />
       </ul>
       <ul v-else-if="activeTab === 'Hashtag'" class="hashtag-list">
+         <pagination-buttons
+        v-show="hashtagCount > 25"
+          :hasNext="hasMoreHashtags"
+          :hasPrevious="hasPreviousHashtags"
+          :hasResultPage="hashtagPage"
+          :hasResultCount="hashtagCount"
+          @back="previousHashtags"
+          @next="nextHashtags"
+        />
         <li v-for="resource in activeResources" :key="resource.key" class="item">
           <base-card :wideContent="true">
             <hc-hashtag :id="resource.id" />
           </base-card>
         </li>
         <pagination-buttons
+        v-show="hashtagCount > 25"
           :hasNext="hasMoreHashtags"
           :hasPrevious="hasPreviousHashtags"
+          :hasResultPage="hashtagPage"
+          :hasResultCount="hashtagCount"
           @back="previousHashtags"
           @next="nextHashtags"
         />
@@ -156,8 +192,13 @@ export default {
     },
   },
   methods: {
+    clearPage(){
+      this.postPage = 0
+      this.userPage = 0
+      this.hashtagPage = 0
+    },
     switchTab(tab) {
-      this.activeTab = tab
+      this.activeTab = tab      
     },
     previousPosts() {
       this.postPage--
@@ -205,6 +246,7 @@ export default {
         this.postCount = searchPosts.postCount
         this.searchCount = this.postCount + this.userCount + this.hashtagCount 
         if (this.postCount > 0) this.activeTab = 'Post'
+        this.clearPage
       },
       fetchPolicy: 'cache-and-network',
     },
@@ -228,6 +270,7 @@ export default {
         this.userCount = searchUsers.userCount
         this.searchCount = this.postCount + this.userCount + this.hashtagCount 
         if (this.postCount === 0 && this.userCount > 0) this.activeTab = 'User'
+        this.clearPage
       },
       fetchPolicy: 'cache-and-network',
     },
@@ -251,8 +294,8 @@ export default {
         this.hashtagCount = searchHashtags.hashtagCount
         this.searchCount = this.postCount + this.userCount + this.hashtagCount 
 
-        if (this.postCount === 0 && this.userCount === 0 && this.hashtagCount > 0)
-          this.activeTab = 'Hashtag'
+        if (this.postCount === 0 && this.userCount === 0 && this.hashtagCount > 0) this.activeTab = 'Hashtag'
+        this.clearPage
       },
       fetchPolicy: 'cache-and-network',
     },
@@ -263,7 +306,7 @@ export default {
 <style lang="scss">
 .search-results {
   > .results {
-    display: inline-block;
+   /* display: inline-block;*/
     padding: $space-small;
     background-color: $color-neutral-80;
     border-radius: 0 $border-radius-base $border-radius-base $border-radius-base;
