@@ -9,4 +9,4 @@
       - ReadWriteOnce
     resources:
       requests:
-        storage: {{ .Values.uploadsStorage }}
+        storage: 25Gi
