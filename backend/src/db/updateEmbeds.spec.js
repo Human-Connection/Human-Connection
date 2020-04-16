@@ -1,4 +1,4 @@
-import Factory, { postWithEmbed } from './factories'
+import Factory, { cleanDatabase, postWithEmbed } from './factories'
 import { transform } from './updateEmbeds'
 import storybookSamples from './test/20200402150445-update-embeds/samples_storybook.json'
 import productionSamples from './test/20200402150445-update-embeds/samples_production.json'
@@ -25,6 +25,8 @@ describe('updateEmbeds', () => {
       ),
     )
   })
+
+  afterAll(cleanDatabase)
 
   describe('postWithEmbed factory', () => {
     it('creates posts with legacy/inline embeds', async () => {
