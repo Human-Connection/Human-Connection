@@ -137,8 +137,8 @@ describe('FollowList.vue', () => {
           expect(wrapper.findAll('.user-teaser')).toHaveLength(allConnectionsUser.followingCount)
         })
 
-        it('renders the user-teasers in an overflow-container', () => {
-          expect(wrapper.find('.--overflow').is('div')).toBe(true)
+        it('renders the user-teasers as an overflowing list', () => {
+          expect(wrapper.find('.--overflow').is('ul')).toBe(true)
         })
 
         it('renders a filter text input', () => {

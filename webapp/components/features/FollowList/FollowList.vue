@@ -4,14 +4,15 @@
       <h5 class="title spacer-x-small">
         {{ userName | truncate(15) }} {{ $t(`profile.network.${type}`) }}
       </h5>
-      <div :class="connectionsClass">
-        <user-teaser
+      <ul :class="connectionsClass">
+        <li
           v-for="connection in filteredConnections"
           :key="connection.id"
-          :user="connection"
-          class="spacer-x-small"
-        />
-      </div>
+          class="connections__item"
+        >
+          <user-teaser :user="connection" />
+        </li>
+      </ul>
       <base-button
         v-if="hasMore"
         :loading="loading"
@@ -135,9 +136,20 @@ export default {
 
   .connections {
     height: $size-height-connections;
+    padding: $space-none;
+    list-style-type: none;
 
     &.--overflow {
       overflow-y: auto;
+    }
+
+    > .connections__item {
+      padding: $space-xx-small;
+
+      &.is-selected,
+      &:hover {
+        background-color: $background-color-primary-inverse;
+      }
     }
   }
 
@@ -148,10 +160,6 @@ export default {
 
   > :nth-child(n):not(:last-child) {
     margin-bottom: $space-small;
-  }
-
-  .user-teaser {
-    margin-bottom: $space-x-small;
   }
 }
 </style>
