@@ -6,17 +6,18 @@
       icon="arrow-left"
       circle
       data-test="previous-button"
-      v-scroll-to="'.main-navigation'"
     />
-    <span class="pagination-pageCount"> Seite {{ hasResultPage + 1 }} / {{ Math.round(hasResultCount / 25) + 1}} </span>
-   
+    <span class="pagination-pageCount">
+      Seite {{ hasResultPage + 1 }} / {{ Math.round(hasResultCount / 25) + 1 }}
+    </span>
+
     <base-button
       @click="$emit('next')"
       :disabled="!hasNext"
       icon="arrow-right"
       circle
       data-test="next-button"
-      v-scroll-to="'.main-navigation'"
+      v-scroll-to="'#search-results'"
     />
   </div>
 </template>
@@ -53,9 +54,8 @@ export default {
 }
 
 .pagination-pageCount {
- 
-    justify-content: space-around;
-  
-    margin: 8px auto;
-  }
+  justify-content: space-around;
+
+  margin: 8px auto;
+}
 </style>

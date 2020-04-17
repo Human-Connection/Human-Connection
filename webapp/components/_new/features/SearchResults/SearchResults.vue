@@ -1,6 +1,8 @@
-<template>  
-  <div class="search-results">
-    <div class="search-results">{{$t('search.results', { searchCount:searchCount, search:search })}}</div>
+<template>
+  <div id="search-results" class="search-results">
+    <div class="search-results">
+      {{ $t('search.results', { searchCount: searchCount, search: search }) }}
+    </div>
     <tab-navigation :tabs="tabOptions" :activeTab="activeTab" @switchTab="switchTab" />
     <section
       :class="['results', activeTab === 'User' && '--user', !activeResourceCount > 0 && '--empty']"
@@ -11,8 +13,8 @@
         :message="$t('search.no-results', { search })"
       />
       <template v-else-if="activeTab === 'Post'">
-         <pagination-buttons 
-           v-show="postCount > 25"
+        <pagination-buttons
+          v-show="postCount > 25"
           :hasNext="hasMorePosts"
           :hasPrevious="hasPreviousPosts"
           :hasResultPage="postPage"
@@ -25,9 +27,9 @@
             <post-teaser :post="resource" />
           </masonry-grid-item>
         </masonry-grid>
-     
-        <pagination-buttons 
-           v-show="postCount > 25"
+
+        <pagination-buttons
+          v-show="postCount > 25"
           :hasNext="hasMorePosts"
           :hasPrevious="hasPreviousPosts"
           :hasResultPage="postPage"
@@ -37,8 +39,8 @@
         />
       </template>
       <ul v-else-if="activeTab === 'User'" class="user-list">
-  <pagination-buttons
-        v-show="userCount > 25"
+        <pagination-buttons
+          v-show="userCount > 25"
           :hasNext="hasMoreUsers"
           :hasPrevious="hasPreviousUsers"
           :hasResultPage="userPage"
@@ -52,7 +54,7 @@
           </base-card>
         </li>
         <pagination-buttons
-        v-show="userCount > 25"
+          v-show="userCount > 25"
           :hasNext="hasMoreUsers"
           :hasPrevious="hasPreviousUsers"
           :hasResultPage="userPage"
@@ -62,8 +64,8 @@
         />
       </ul>
       <ul v-else-if="activeTab === 'Hashtag'" class="hashtag-list">
-         <pagination-buttons
-        v-show="hashtagCount > 25"
+        <pagination-buttons
+          v-show="hashtagCount > 25"
           :hasNext="hasMoreHashtags"
           :hasPrevious="hasPreviousHashtags"
           :hasResultPage="hashtagPage"
@@ -77,7 +79,7 @@
           </base-card>
         </li>
         <pagination-buttons
-        v-show="hashtagCount > 25"
+          v-show="hashtagCount > 25"
           :hasNext="hasMoreHashtags"
           :hasPrevious="hasPreviousHashtags"
           :hasResultPage="hashtagPage"
@@ -192,13 +194,13 @@ export default {
     },
   },
   methods: {
-    clearPage(){
+    clearPage() {
       this.postPage = 0
       this.userPage = 0
       this.hashtagPage = 0
     },
     switchTab(tab) {
-      this.activeTab = tab      
+      this.activeTab = tab
     },
     previousPosts() {
       this.postPage--
@@ -244,9 +246,9 @@ export default {
       update({ searchPosts }) {
         this.posts = searchPosts.posts
         this.postCount = searchPosts.postCount
-        this.searchCount = this.postCount + this.userCount + this.hashtagCount 
+        this.searchCount = this.postCount + this.userCount + this.hashtagCount
+        this.clearPage()
         if (this.postCount > 0) this.activeTab = 'Post'
-        this.clearPage
       },
       fetchPolicy: 'cache-and-network',
     },
@@ -268,9 +270,9 @@ export default {
       update({ searchUsers }) {
         this.users = searchUsers.users
         this.userCount = searchUsers.userCount
-        this.searchCount = this.postCount + this.userCount + this.hashtagCount 
+        this.searchCount = this.postCount + this.userCount + this.hashtagCount
+        this.clearPage()
         if (this.postCount === 0 && this.userCount > 0) this.activeTab = 'User'
-        this.clearPage
       },
       fetchPolicy: 'cache-and-network',
     },
@@ -292,10 +294,10 @@ export default {
       update({ searchHashtags }) {
         this.hashtags = searchHashtags.hashtags
         this.hashtagCount = searchHashtags.hashtagCount
-        this.searchCount = this.postCount + this.userCount + this.hashtagCount 
-
-        if (this.postCount === 0 && this.userCount === 0 && this.hashtagCount > 0) this.activeTab = 'Hashtag'
-        this.clearPage
+        this.searchCount = this.postCount + this.userCount + this.hashtagCount
+        this.clearPage()
+        if (this.postCount === 0 && this.userCount === 0 && this.hashtagCount > 0)
+          this.activeTab = 'Hashtag'
       },
       fetchPolicy: 'cache-and-network',
     },
@@ -306,7 +308,7 @@ export default {
 <style lang="scss">
 .search-results {
   > .results {
-   /* display: inline-block;*/
+    /* display: inline-block;*/
     padding: $space-small;
     background-color: $color-neutral-80;
     border-radius: 0 $border-radius-base $border-radius-base $border-radius-base;
