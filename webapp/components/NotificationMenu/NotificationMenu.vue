@@ -1,26 +1,22 @@
 <template>
-  <nuxt-link
-    v-if="!unreadNotificationsCount"
-    class="notifications-menu"
-    :to="{ name: 'notifications' }"
-  >
+  <nuxt-link v-if="!notificationsCount" class="notifications-menu" :to="{ name: 'notifications' }">
     <base-button icon="bell" ghost circle />
   </nuxt-link>
   <dropdown v-else class="notifications-menu" offset="8" :placement="placement">
     <template #default="{ toggleMenu }">
       <base-button @click="toggleMenu" ghost circle>
-        <counter-icon icon="bell" :count="unreadNotificationsCount" danger />
+        <counter-icon icon="bell" :count="notificationsCount" danger />
       </base-button>
     </template>
     <template slot="popover">
       <div class="notifications-menu-popover">
-        <notification-list :notifications="notifications" @markAsRead="markAsRead" />
+        <notification-list :notifications="unreadNotifications" @markAsRead="markAsRead" />
       </div>
       <div class="notifications-link-container">
         <nuxt-link :to="{ name: 'notifications' }">
           {{
-            unreadNotificationsCount > 25
-              ? $t('notifications.manyNotifications', { unreadNotificationsCount })
+            notificationsCount > 25
+              ? $t('notifications.manyNotifications', { notificationsCount })
               : $t('notifications.pageLink')
           }}
         </nuxt-link>
@@ -32,12 +28,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import unionBy from 'lodash/unionBy'
-import {
-  notificationQuery,
-  markAsReadMutation,
-  notificationAdded,
-  unreadNotificationsCountQuery,
-} from '~/graphql/User'
+import { notificationQuery, markAsReadMutation, notificationAdded } from '~/graphql/User'
 import CounterIcon from '~/components/_new/generic/CounterIcon/CounterIcon'
 import Dropdown from '~/components/Dropdown'
 import NotificationList from '../NotificationList/NotificationList'
@@ -51,7 +42,8 @@ export default {
   },
   data() {
     return {
-      notifications: [],
+      unreadNotifications: [],
+      notificationsCount: null,
     }
   },
   props: {
@@ -65,7 +57,7 @@ export default {
           mutation: markAsReadMutation(this.$i18n),
           variables,
           update: () => {
-            this.unreadNotificationsCount--
+            this.notificationsCount--
           },
         })
       } catch (err) {
@@ -90,6 +82,10 @@ export default {
           first: 25,
         }
       },
+      update({ notifications }) {
+        this.unreadNotifications = notifications.notifications
+        this.notificationsCount = notifications.notificationsCount
+      },
       subscribeToMore: {
         document: notificationAdded(),
         variables() {
@@ -102,9 +98,11 @@ export default {
             data: { notificationAdded: newNotification },
           } = subscriptionData
           return {
-            notifications: unionBy(
-              [newNotification],
-              previousResult.notifications,
+            notificationsCount:
+              previousResult.notificationsCount - newNotification.notificationsCount,
+            unreadNotifications: unionBy(
+              [newNotification.notifications],
+              previousResult.notifications.notifications,
               (notification) => notification.id,
             ).sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)),
           }
@@ -113,9 +111,6 @@ export default {
       error(error) {
         this.$toast.error(error.message)
       },
-    },
-    unreadNotificationsCount: {
-      query: unreadNotificationsCountQuery,
     },
   },
 }

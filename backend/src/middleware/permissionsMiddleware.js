@@ -104,7 +104,6 @@ export default shield(
       mutedUsers: isAuthenticated,
       blockedUsers: isAuthenticated,
       notifications: isAuthenticated,
-      unreadNotificationsCount: isAuthenticated,
       Donations: isAuthenticated,
     },
     Mutation: {

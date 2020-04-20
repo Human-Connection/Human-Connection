@@ -8,7 +8,9 @@ export default {
       subscribe: withFilter(
         () => pubsub.asyncIterator(NOTIFICATION_ADDED),
         (payload, variables) => {
-          return payload.notificationAdded.to.id === variables.userId
+          const { notifications } = payload.notificationAdded
+          const [currentUser] = notifications
+          return currentUser.to.id === variables.userId
         },
       ),
     },
@@ -50,42 +52,20 @@ export default {
           [(resource)-[:COMMENTS]->(post:Post)<-[:WROTE]-(author:User) | post{.*, author: properties(author)} ] AS posts
           WITH resource, user, notification, authors, posts,
           resource {.*, __typename: labels(resource)[0], author: authors[0], post: posts[0]} AS finalResource
-          RETURN notification {.*, from: finalResource, to: properties(user)}
           ${orderByClause}
+          RETURN { notificationsCount: toString(size(collect(notification))), notifications: collect(notification {.*, from: finalResource, to: properties(user)})} as noticationsResult
           ${offset} ${limit}
           `,
           { id: currentUser.id },
         )
         log(notificationsTransactionResponse)
-        return notificationsTransactionResponse.records.map((record) => record.get('notification'))
+        return notificationsTransactionResponse.records.map((record) =>
+          record.get('noticationsResult'),
+        )
       })
       try {
-        const notifications = await readTxResultPromise
+        const [notifications] = await readTxResultPromise
         return notifications
-      } finally {
-        session.close()
-      }
-    },
-    unreadNotificationsCount: async (_parent, _args, context, _resolveInfo) => {
-      const { user: currentUser, driver } = context
-      const session = driver.session()
-
-      const readTxResultPromise = session.readTransaction(async (transaction) => {
-        const unreadNotificationsCountTransactionResponse = await transaction.run(
-          `
-            MATCH (resource {deleted: false, disabled: false})-[notification:NOTIFIED {read: false}]->(user:User {id:$id})
-            RETURN count(notification) as unreadNotificationsCount
-          `,
-          { id: currentUser.id },
-        )
-        log(unreadNotificationsCountTransactionResponse)
-        return unreadNotificationsCountTransactionResponse.records.map(
-          (record) => record.get('unreadNotificationsCount').low,
-        )
-      })
-      try {
-        const [unreadNotificationsCount] = await readTxResultPromise
-        return unreadNotificationsCount
       } finally {
         session.close()
       }
