@@ -327,5 +327,28 @@ li > p {
   p {
     margin: 0 0 $space-x-small;
   }
+
+  ol {
+    counter-reset: item;
+    padding-left: $space-x-small;
+
+    li {
+      display: block;
+
+      &:before {
+        content: counters(item, '.') '.';
+        counter-increment: item;
+        margin-right: $space-x-small;
+      }
+
+      > p {
+        display: inline-block;
+      }
+    }
+  }
+
+  > ol {
+    padding-left: $space-small;
+  }
 }
 </style>
