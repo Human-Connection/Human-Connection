@@ -328,7 +328,28 @@ li > p {
     margin: 0 0 $space-x-small;
   }
 
+  ul {
+    li {
+      display: block;
+
+      &:before {
+        content: '';
+        background-image: $background-image-logo;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: $line-height-small;
+        padding: $space-none $space-x-small;
+        margin-right: $space-x-small;
+      }
+
+      > p {
+        display: inline-block;
+      }
+    }
+  }
+
   ol {
+    // https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Lists_and_Counters/Using_CSS_counters
     counter-reset: item;
     padding-left: $space-x-small;
 
@@ -347,7 +368,8 @@ li > p {
     }
   }
 
-  > ol {
+  > ol,
+  > ul {
     padding-left: $space-small;
   }
 }
