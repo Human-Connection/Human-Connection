@@ -1,7 +1,7 @@
 <template>
-  <ds-container class="container">
+  <div class="container">
     <slot />
-  </ds-container>
+  </div>
 </template>
 
 <style lang="scss">
@@ -10,5 +10,7 @@
 
 .container {
   padding: 5rem;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 </style>
