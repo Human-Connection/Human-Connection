@@ -79,15 +79,35 @@ storiesOf('Editor', module)
           <li><p>Also some list</p></li>
           <li><p>with</p></li>
           <li><p>several</p></li>
-          <li><p>points</p></li>
+          <li>
+            <p>points</p>
+            <ul>
+              <li>
+                <p>and indentations</p>
+                <p>as well as text parapgraphs</p>
+        <p>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p><p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p>
+              </li>
+            </ul>
+          </li>
         </ul>
 
         <h3>Ordered List</h3>
         <ol>
-          <li><p>justo</p></li>
-          <li><p>dolores</p></li>
-          <li><p>et ea rebum</p></li>
-          <li><p>kasd gubergren</p></li>
+          <li>
+            <p>ordered lists</p>
+            <p>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsu</p>
+            <ol>
+              <li>
+                <p>can have indentations</p>
+                <ol>
+                  <li>
+                <p>and text parapgraphs, too</p>
+        <p>At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p><p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p>
+                </li>
+                </ol>
+              </li>
+            </ol>
+          </li>
         </ol>
       `,
     }),

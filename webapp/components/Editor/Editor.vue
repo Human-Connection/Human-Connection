@@ -329,10 +329,12 @@ li > p {
   }
 
   ul {
+    padding-left: $space-small;
+
     li {
       display: block;
 
-      &:before {
+      p:first-child:before {
         content: '';
         background-image: $background-image-logo;
         background-position: center;
@@ -342,8 +344,8 @@ li > p {
         margin-right: $space-x-small;
       }
 
-      > p {
-        display: inline-block;
+      p:not(:first-child) {
+        padding-left: $space-base;
       }
     }
   }
@@ -351,26 +353,21 @@ li > p {
   ol {
     // https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Lists_and_Counters/Using_CSS_counters
     counter-reset: item;
-    padding-left: $space-x-small;
+    padding-left: $space-small;
 
     li {
       display: block;
 
-      &:before {
+      p:first-child:before {
         content: counters(item, '.') '.';
         counter-increment: item;
         margin-right: $space-x-small;
       }
 
-      > p {
-        display: inline-block;
+      p:not(:first-child) {
+        padding-left: $space-base;
       }
     }
-  }
-
-  > ol,
-  > ul {
-    padding-left: $space-small;
   }
 }
 </style>
