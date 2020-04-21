@@ -1,6 +1,6 @@
 <template>
   <base-button
-    class="follow-button"
+    class="track-button"
     :disabled="disabled || !followId"
     :loading="loading"
     :icon="icon"
@@ -85,7 +85,7 @@ export default {
 </script>
 
 <style lang="scss">
-.follow-button {
+.track-button {
   display: block;
   width: 100%;
 }
