@@ -6,14 +6,11 @@ import helpers from '~/storybook/helpers'
 
 helpers.init()
 
-
 const localVue = global.localVue
 localVue.directive('scrollTo', jest.fn())
 
 config.stubs['client-only'] = '<span><slot /></span>'
 config.stubs['nuxt-link'] = '<span><slot /></span>'
-
-
 
 describe('SearchResults', () => {
   let mocks, getters, propsData, wrapper
@@ -50,47 +47,29 @@ describe('SearchResults', () => {
         })
       })
 
-
       describe('contains users less as 25 results', () => {
         beforeEach(() => {
-          wrapper.setData( { users: helpers.fakeUser(1), userCount:1, activeTab: 'User' })
-        })
-
-        it('renders pagination', () => {
-          expect(wrapper.find('.pagination-buttons').exists()).toBe(true)
+          wrapper.setData({ users: helpers.fakeUser(1), userCount: 1, activeTab: 'User' })
         })
 
         it('show NOT pagination', () => {
-         
-         expect(wrapper.find('.pagination-buttons').attributes().style).toBe('display: none;')
-          
-        })
-        
-      describe('contains users more as 25 results', () => {
-        beforeEach(() => {
-          wrapper.setData( { users: helpers.fakeUser(52), userCount:52, activeTab: 'User' })
+          expect(wrapper.find('.pagination-buttons').attributes().style).toBe('display: none;')
         })
 
-        it('renders user-list pagination', () => {
-          expect(wrapper.find('.user-list').exists()).toBe(true)
-        })
+        describe('contains users more as 25 results', () => {
+          beforeEach(() => {
+            wrapper.setData({ users: helpers.fakeUser(52), userCount: 52, activeTab: 'User' })
+          })
 
-        it('renders pagination', () => {
-          expect(wrapper.find('.pagination-buttons').exists()).toBe(true)
-        })
+          it('show pagination', () => {
+            expect(wrapper.find('.pagination-buttons').attributes().style).toBe('')
+          })
 
-         it('show pagination', () => {
-         
-         expect(wrapper.find('.pagination-buttons').attributes().style).toBe('')
-          
+          it('renders user-list pagination', () => {
+            expect(wrapper.find('.user-list').exists()).toBe(true)
+          })
         })
       })
-
-
-  
-
-      })
-
 
       /*
         describe('contains posts', () => {
@@ -117,7 +96,6 @@ describe('SearchResults', () => {
           })
         })
       */
-
     })
   })
 })

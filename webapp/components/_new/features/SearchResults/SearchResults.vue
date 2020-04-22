@@ -199,7 +199,7 @@ export default {
     },
     searchCount() {
       return this.postCount + this.userCount + this.hashtagCount
-    }
+    },
   },
   methods: {
     clearPage() {
