@@ -3,9 +3,11 @@
     <span class="initials">{{ userInitials }}</span>
     <base-icon v-if="isAnonymous" name="eye-slash" />
     <img
-      v-else
+      v-if="user && user.avatar"
       :src="user.avatar | proxyApiUrl"
       class="image"
+      :alt="user.name"
+      :title="user.name"
       @error="$event.target.style.display = 'none'"
     />
   </div>

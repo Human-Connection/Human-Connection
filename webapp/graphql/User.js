@@ -14,7 +14,7 @@ export default (i18n) => {
     ${userCountsFragment}
     ${locationAndBadgesFragment(lang)}
 
-    query User($id: ID!) {
+    query User($id: ID!, $followedByCount: Int, $followingCount: Int) {
       User(id: $id) {
         ...user
         ...userCounts
@@ -26,12 +26,12 @@ export default (i18n) => {
         isMuted
         isBlocked
         blocked
-        following(first: 7) {
+        following(first: $followingCount) {
           ...user
           ...userCounts
           ...locationAndBadges
         }
-        followedBy(first: 7) {
+        followedBy(first: $followedByCount) {
           ...user
           ...userCounts
           ...locationAndBadges
