@@ -145,7 +145,6 @@ export default {
       postsOffset: 0,
       usersOffset: 0,
       hashtagsOffset: 0,
-      searchCount: 0,
     }
   },
   computed: {
@@ -198,6 +197,9 @@ export default {
     hasMoreHashtags() {
       return (this.hashtagPage + 1) * this.pageSize < this.hashtagCount
     },
+    searchCount() {
+      return this.postCount + this.userCount + this.hashtagCount
+    }
   },
   methods: {
     clearPage() {
@@ -252,7 +254,6 @@ export default {
       update({ searchPosts }) {
         this.posts = searchPosts.posts
         this.postCount = searchPosts.postCount
-        this.searchCount = this.postCount + this.userCount + this.hashtagCount
         this.clearPage()
         if (this.postCount > 0) this.activeTab = 'Post'
       },
@@ -276,7 +277,6 @@ export default {
       update({ searchUsers }) {
         this.users = searchUsers.users
         this.userCount = searchUsers.userCount
-        this.searchCount = this.postCount + this.userCount + this.hashtagCount
         this.clearPage()
         if (this.postCount === 0 && this.userCount > 0) this.activeTab = 'User'
       },
@@ -300,7 +300,6 @@ export default {
       update({ searchHashtags }) {
         this.hashtags = searchHashtags.hashtags
         this.hashtagCount = searchHashtags.hashtagCount
-        this.searchCount = this.postCount + this.userCount + this.hashtagCount
         this.clearPage()
         if (this.postCount === 0 && this.userCount === 0 && this.hashtagCount > 0)
           this.activeTab = 'Hashtag'

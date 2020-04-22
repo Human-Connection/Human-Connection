@@ -1,13 +1,19 @@
 import { config, mount } from '@vue/test-utils'
 import Vuex from 'vuex'
 import SearchResults from './SearchResults'
-import { post } from '~/components/PostTeaser/PostTeaser.story'
-import { user } from '~/components/UserTeaser/UserTeaser.story'
+
+import helpers from '~/storybook/helpers'
+
+helpers.init()
+
 
 const localVue = global.localVue
+localVue.directive('scrollTo', jest.fn())
 
 config.stubs['client-only'] = '<span><slot /></span>'
 config.stubs['nuxt-link'] = '<span><slot /></span>'
+
+
 
 describe('SearchResults', () => {
   let mocks, getters, propsData, wrapper
@@ -44,37 +50,74 @@ describe('SearchResults', () => {
         })
       })
 
-      describe('contains posts', () => {
+
+      describe('contains users less as 25 results', () => {
         beforeEach(() => {
-          console.log
-          wrapper.setData({ posts: [post], activeTab: 'Post' })
+          wrapper.setData( { users: helpers.fakeUser(1), userCount:1, activeTab: 'User' })
         })
 
-        it('renders post-teaser component', () => {
-          expect(wrapper.find('.post-teaser').exists()).toBe(true)
+        it('renders pagination', () => {
+          expect(wrapper.find('.pagination-buttons').exists()).toBe(true)
         })
-      })
 
-      describe('contains users', () => {
+        it('show NOT pagination', () => {
+         
+         expect(wrapper.find('.pagination-buttons').attributes().style).toBe('display: none;')
+          
+        })
+        
+      describe('contains users more as 25 results', () => {
         beforeEach(() => {
-          wrapper.setData({ users: [user], activeTab: 'User' })
+          wrapper.setData( { users: helpers.fakeUser(52), userCount:52, activeTab: 'User' })
         })
 
-        it('renders user-list', () => {
+        it('renders user-list pagination', () => {
           expect(wrapper.find('.user-list').exists()).toBe(true)
         })
-      })
 
-      describe('switchTab', () => {
-        beforeEach(() => {
-          wrapper.setData({ posts: [post], users: [user], activeTab: 'Post' })
-          wrapper.find('.tab-navigation').vm.$emit('switchTab', 'User')
+        it('renders pagination', () => {
+          expect(wrapper.find('.pagination-buttons').exists()).toBe(true)
         })
 
-        it('switches activeTab when event is emitted', () => {
-          expect(wrapper.find('.user-list').exists()).toBe(true)
+         it('show pagination', () => {
+         
+         expect(wrapper.find('.pagination-buttons').attributes().style).toBe('')
+          
         })
       })
+
+
+  
+
+      })
+
+
+      /*
+        describe('contains posts', () => {
+          beforeEach(() => {
+            console.log
+            wrapper.setData({ posts: [post], activeTab: 'Post' })
+          })
+
+          it('renders post-teaser component', () => {
+            expect(wrapper.find('.post-teaser').exists()).toBe(true)
+          })
+        })
+      */
+
+      /*
+        describe('switchTab', () => {
+          beforeEach(() => {
+            wrapper.setData({ posts: [post], users: [user], activeTab: 'Post' })
+            wrapper.find('.tab-navigation').vm.$emit('switchTab', 'User')
+          })
+
+          it('switches activeTab when event is emitted', () => {
+            expect(wrapper.find('.user-list').exists()).toBe(true)
+          })
+        })
+      */
+
     })
   })
 })
