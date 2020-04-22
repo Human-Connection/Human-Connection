@@ -595,7 +595,7 @@
       "User": "Users"
     },
     "hint": "What are you searching for?",
-    "results": " \"{searchCount}\" Results found for \"{search}\" ",
+    "results": "{searchCount} Results founding",
     "no-results": "No results found for \"{search}\". Try a different search term!",
     "placeholder": "Search"
   },

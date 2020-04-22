@@ -60,13 +60,6 @@ describe('SearchableInput.vue', () => {
       expect(select.element.value).toBe('abcd')
     })
 
-    it('searches for the term when enter is pressed', async () => {
-      select.element.value = 'ab'
-      select.trigger('input')
-      select.trigger('keyup.enter')
-      await expect(wrapper.emitted().query[0]).toEqual(['ab'])
-    })
-
     it('calls onDelete when the delete key is pressed', () => {
       const spy = jest.spyOn(wrapper.vm, 'onDelete')
       select.trigger('input')
@@ -115,6 +108,16 @@ describe('SearchableInput.vue', () => {
         tag.trigger('click')
         await Vue.nextTick()
         expect(mocks.$router.push).toHaveBeenCalledWith('?hashtag=Hashtag')
+      })
+    })
+
+    it('searches for the term when enter is pressed', async () => {
+      select.element.value = 'ab'
+      select.trigger('input')
+      select.trigger('keyup.enter')
+      expect(mocks.$router.push).toHaveBeenCalledWith({
+        path: '/search/search-results',
+        query: { search: 'ab' },
       })
     })
   })

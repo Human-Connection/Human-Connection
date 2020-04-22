@@ -1,14 +1,20 @@
 <template>
   <div id="search-results" class="search-results">
-    <div class="search-results">
-      {{ $t('search.results', { searchCount: searchCount, search: search }) }}
+    <div>
+      <ds-section>
+        <ds-text class="search-results">
+          <strong>{{ searchCount }}</strong>
+          {{ $t('search.results') }}
+        </ds-text>
+      </ds-section>
     </div>
+
     <tab-navigation :tabs="tabOptions" :activeTab="activeTab" @switchTab="switchTab" />
     <section
       :class="['results', activeTab === 'User' && '--user', !activeResourceCount > 0 && '--empty']"
     >
       <hc-empty
-        v-if="!activeResourceCount"
+        v-if="!activeResourceCount || searchCount === 0"
         icon="tasks"
         :message="$t('search.no-results', { search })"
       />

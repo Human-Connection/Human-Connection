@@ -46,6 +46,7 @@ describe('SearchResults', () => {
 
       describe('contains posts', () => {
         beforeEach(() => {
+          console.log
           wrapper.setData({ posts: [post], activeTab: 'Post' })
         })
 
