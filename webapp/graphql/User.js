@@ -265,9 +265,11 @@ export const checkSlugAvailableQuery = gql`
 
 export const currentUserQuery = gql`
   ${userFragment}
+  ${userCountsFragment}
   query {
     currentUser {
       ...user
+      ...userCounts
       email
       role
       about
