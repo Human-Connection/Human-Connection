@@ -9,23 +9,15 @@
     </label>
     <ds-input v-model="enableDeletionValue" />
     <p class="notice">{{ $t('settings.deleteUserAccount.accountDescription') }}</p>
-    <label v-if="currentUser.contributionsCount" class="checkbox">
+    <label class="checkbox">
       <input type="checkbox" v-model="deleteContributions" />
-      {{
-        $t('settings.deleteUserAccount.contributionsCount', {
-          count: currentUser.contributionsCount,
-        })
-      }}
+      {{ $t('settings.deleteUserAccount.contributionsCount') }}
     </label>
-    <label v-if="currentUser.commentedCount" class="checkbox">
+    <label class="checkbox">
       <input type="checkbox" v-model="deleteComments" />
-      {{
-        $t('settings.deleteUserAccount.commentedCount', {
-          count: currentUser.commentedCount,
-        })
-      }}
+      {{ $t('settings.deleteUserAccount.commentedCount') }}
     </label>
-    <section v-if="deleteEnabled" class="warning">
+    <section class="warning">
       <p>{{ $t('settings.deleteUserAccount.accountWarning') }}</p>
     </section>
     <base-button
@@ -49,8 +41,8 @@ export default {
   name: 'DeleteData',
   data() {
     return {
-      deleteContributions: false,
-      deleteComments: false,
+      deleteContributions: true,
+      deleteComments: true,
       enableDeletionValue: null,
     }
   },
