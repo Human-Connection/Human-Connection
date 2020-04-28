@@ -20,11 +20,11 @@
       />
       <template v-else-if="activeTab === 'Post'">
         <pagination-buttons
-          v-show="postCount > 25"
+          v-show="postCount > pageSize"
           :hasNext="hasMorePosts"
           :hasPrevious="hasPreviousPosts"
-          :hasResultPage="postPage"
-          :hasResultCount="postCount"
+          :activePage="postPage"
+          :totalResultCount="postCount"
           @back="previousPosts"
           @next="nextPosts"
         />
@@ -35,22 +35,22 @@
         </masonry-grid>
 
         <pagination-buttons
-          v-show="postCount > 25"
+          v-show="postCount > pageSize"
           :hasNext="hasMorePosts"
           :hasPrevious="hasPreviousPosts"
-          :hasResultPage="postPage"
-          :hasResultCount="postCount"
+          :activePage="postPage"
+          :totalResultCount="postCount"
           @back="previousPosts"
           @next="nextPosts"
         />
       </template>
       <ul v-else-if="activeTab === 'User'" class="user-list">
         <pagination-buttons
-          v-show="userCount > 25"
+          v-show="userCount > pageSize"
           :hasNext="hasMoreUsers"
           :hasPrevious="hasPreviousUsers"
-          :hasResultPage="userPage"
-          :hasResultCount="userCount"
+          :activePage="userPage"
+          :totalResultCount="userCount"
           @back="previousUsers"
           @next="nextUsers"
         />
@@ -60,22 +60,22 @@
           </base-card>
         </li>
         <pagination-buttons
-          v-show="userCount > 25"
+          v-show="userCount > pageSize"
           :hasNext="hasMoreUsers"
           :hasPrevious="hasPreviousUsers"
-          :hasResultPage="userPage"
-          :hasResultCount="userCount"
+          :activePage="userPage"
+          :totalResultCount="userCount"
           @back="previousUsers"
           @next="nextUsers"
         />
       </ul>
       <ul v-else-if="activeTab === 'Hashtag'" class="hashtag-list">
         <pagination-buttons
-          v-show="hashtagCount > 25"
+          v-show="hashtagCount > pageSize"
           :hasNext="hasMoreHashtags"
           :hasPrevious="hasPreviousHashtags"
-          :hasResultPage="hashtagPage"
-          :hasResultCount="hashtagCount"
+          :activePage="hashtagPage"
+          :totalResultCount="hashtagCount"
           @back="previousHashtags"
           @next="nextHashtags"
         />
@@ -85,11 +85,11 @@
           </base-card>
         </li>
         <pagination-buttons
-          v-show="hashtagCount > 25"
+          v-show="hashtagCount > pageSize"
           :hasNext="hasMoreHashtags"
           :hasPrevious="hasPreviousHashtags"
-          :hasResultPage="hashtagPage"
-          :hasResultCount="hashtagCount"
+          :activePage="hashtagPage"
+          :totalResultCount="hashtagCount"
           @back="previousHashtags"
           @next="nextHashtags"
         />
@@ -124,9 +124,12 @@ export default {
     search: {
       type: String,
     },
+    pageSize: {
+      type: Number,
+      default: 24
+    },
   },
   data() {
-    const pageSize = 25
     return {
       posts: [],
       users: [],
@@ -138,10 +141,9 @@ export default {
       hashtagCount: 0,
       hashtagPage: 0,
       activeTab: null,
-      pageSize,
-      firstPosts: pageSize,
-      firstUsers: pageSize,
-      firstHashtags: pageSize,
+      firstPosts: this.pageSize,
+      firstUsers: this.pageSize,
+      firstHashtags: this.pageSize,
       postsOffset: 0,
       usersOffset: 0,
       hashtagsOffset: 0,
@@ -189,6 +191,10 @@ export default {
       return this.hashtagsOffset > 0
     },
     hasMorePosts() {
+      console.log("this.postPage",this.postPage)
+      console.log("this.pageSize",this.pageSize)
+      console.log("this.postCount",this.postCount)
+      
       return (this.postPage + 1) * this.pageSize < this.postCount
     },
     hasMoreUsers() {

@@ -8,7 +8,8 @@
       data-test="previous-button"
     />
     <span class="pagination-pageCount">
-      Seite {{ hasResultPage + 1 }} / {{ Math.round(hasResultCount / 25) + 1 }}
+      {{ totalResultCount }} - {{  pageSize }} - {{activePage}} - {{ Math.round(totalResultCount )  }}
+      Seite {{ activePage + 1 }} / {{ Math.round(totalResultCount / pageSize) + 1 }}
     </span>
 
     <base-button
@@ -25,6 +26,10 @@
 <script>
 export default {
   props: {
+    pageSize: {
+      type: Number,
+      default: 24
+    },
     hasNext: {
       type: Boolean,
       default: false,
@@ -33,15 +38,16 @@ export default {
       type: Boolean,
       default: false,
     },
-    hasResultPage: {
+    activePage: {
       type: Number,
       default: 0,
     },
-    hasResultCount: {
+    totalResultCount: {
       type: Number,
       default: 0,
     },
   },
+ 
 }
 </script>
 

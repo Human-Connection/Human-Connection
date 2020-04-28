@@ -595,7 +595,7 @@
       "User": "Benutzer"
     },
     "hint": "Wonach suchst Du?",
-    "results": "Ergebnisse gefunden ",
+    "results": "Ergebnisse gefunden",
     "no-results": "Keine Ergebnisse für \"{search}\" gefunden. Versuch' es mit einem anderen Begriff!",
     "placeholder": "Suchen"
   },
