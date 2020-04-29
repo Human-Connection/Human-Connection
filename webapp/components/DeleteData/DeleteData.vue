@@ -1,5 +1,5 @@
 <template>
-  <base-card class="delete-data">
+  <base-card v-if="currentUser.role !== 'admin'" class="delete-data">
     <h2 class="title">
       <base-icon name="warning" />
       {{ $t('settings.deleteUserAccount.name') }}
@@ -9,23 +9,31 @@
     </label>
     <ds-input v-model="enableDeletionValue" />
     <p class="notice">{{ $t('settings.deleteUserAccount.accountDescription') }}</p>
-    <label v-if="currentUser.contributionsCount" class="checkbox">
+    <label class="checkbox">
       <input type="checkbox" v-model="deleteContributions" />
       {{
-        $t('settings.deleteUserAccount.contributionsCount', {
-          count: currentUser.contributionsCount,
-        })
+        $t(
+          'settings.deleteUserAccount.contributionsCount',
+          {
+            count: currentUserCount.contributionsCount,
+          },
+          currentUserCount.contributionsCount,
+        )
       }}
     </label>
-    <label v-if="currentUser.commentedCount" class="checkbox">
+    <label class="checkbox">
       <input type="checkbox" v-model="deleteComments" />
       {{
-        $t('settings.deleteUserAccount.commentedCount', {
-          count: currentUser.commentedCount,
-        })
+        $t(
+          'settings.deleteUserAccount.commentedCount',
+          {
+            count: currentUserCount.commentedCount,
+          },
+          currentUserCount.commentedCount,
+        )
       }}
     </label>
-    <section v-if="deleteEnabled" class="warning">
+    <section class="warning">
       <p>{{ $t('settings.deleteUserAccount.accountWarning') }}</p>
     </section>
     <base-button
@@ -39,11 +47,15 @@
       {{ $t('settings.deleteUserAccount.name') }}
     </base-button>
   </base-card>
+  <base-card v-else class="delete-data">
+    :) {{ $t('settings.deleteUserAccount.adminInfo') }}
+  </base-card>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import gql from 'graphql-tag'
+import { currentUserCountQuery } from '~/graphql/User'
 
 export default {
   name: 'DeleteData',
@@ -52,7 +64,18 @@ export default {
       deleteContributions: false,
       deleteComments: false,
       enableDeletionValue: null,
+      currentUserCount: [],
     }
+  },
+  apollo: {
+    currentUser: {
+      query() {
+        return currentUserCountQuery()
+      },
+      update(currentUser) {
+        this.currentUserCount = currentUser.currentUser
+      },
+    },
   },
   computed: {
     ...mapGetters({
