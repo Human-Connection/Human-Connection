@@ -61,8 +61,8 @@ export default {
   name: 'DeleteData',
   data() {
     return {
-      deleteContributions: true,
-      deleteComments: true,
+      deleteContributions: false,
+      deleteComments: false,
       enableDeletionValue: null,
       currentUserCount: [],
     }
