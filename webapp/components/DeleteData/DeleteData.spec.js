@@ -93,7 +93,6 @@ describe('DeleteData.vue', () => {
         deleteAccountBtn = wrapper.find('[data-test="delete-button"]')
       })
 
-
       it("deletes user's posts and comments if requested by default", () => {
         mocks.$t.mockImplementation(() => deleteContributionsMessage)
         enableContributionDeletionCheckbox = wrapper.findAll('input[type="checkbox"]').at(0)
@@ -109,7 +108,6 @@ describe('DeleteData.vue', () => {
           }),
         )
       })
-
 
       it('if deleteEnabled is true and only deletes user ', () => {
         mocks.$t.mockImplementation(() => deleteContributionsMessage)
@@ -158,8 +156,6 @@ describe('DeleteData.vue', () => {
           }),
         )
       })
-
- 
 
       it('shows a success toaster after successful mutation', async () => {
         await deleteAccountBtn.trigger('click')
