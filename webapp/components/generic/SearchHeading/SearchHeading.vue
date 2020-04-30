@@ -1,6 +1,6 @@
 <template>
   <ds-heading soft size="h5" class="search-heading">
-    {{ $t(`search.heading.${resourceType}`) }}
+    {{ $t(`search.heading.${resourceType}`, {}, 2) }}
   </ds-heading>
 </template>
 <script>

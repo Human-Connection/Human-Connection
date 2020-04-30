@@ -590,12 +590,12 @@
   "search": {
     "failed": "Nichts gefunden",
     "heading": {
-      "Post": "Beiträge",
-      "Tag": "Hashtags",
+      "Post": "Beitrag ::: Beiträge",
+      "Tag": "Hashtag ::: Hashtags",
       "User": "Benutzer"
     },
     "hint": "Wonach suchst Du?",
-    "results": "Ergebnisse gefunden",
+    "results": "Ergebniss gefunden ::: Ergebnisse gefunden",
     "no-results": "Keine Ergebnisse für \"{search}\" gefunden. Versuch' es mit einem anderen Begriff!",
     "placeholder": "Suchen"
   },

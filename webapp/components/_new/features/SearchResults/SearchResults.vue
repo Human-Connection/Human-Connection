@@ -4,7 +4,7 @@
       <ds-section>
         <ds-text class="search-results">
           <strong>{{ searchCount }}</strong>
-          {{ $t('search.results') }}
+          {{ $t('search.results', {}, searchCount) }}
         </ds-text>
       </ds-section>
     </div>
@@ -166,7 +166,7 @@ export default {
       return [
         {
           type: 'Post',
-          title: `${this.postCount} ${this.$t('search.heading.Post')}`,
+          title: `${this.postCount} ${this.$t('search.heading.Post', {}, this.postCount)}`,
           disabled: this.postCount === 0,
         },
         {
@@ -176,7 +176,7 @@ export default {
         },
         {
           type: 'Hashtag',
-          title: `${this.hashtagCount} ${this.$t('search.heading.Tag')}`,
+          title: `${this.hashtagCount} ${this.$t('search.heading.Tag', {}, this.hashtagCount)}`,
           disabled: this.hashtagCount === 0,
         },
       ]
