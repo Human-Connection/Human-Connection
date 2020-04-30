@@ -1,5 +1,5 @@
 <template>
-  <base-card v-if="currentUser.role !== 'admin'" class="delete-data">
+  <base-card class="delete-data">
     <h2 class="title">
       <base-icon name="warning" />
       {{ $t('settings.deleteUserAccount.name') }}
@@ -46,9 +46,6 @@
     >
       {{ $t('settings.deleteUserAccount.name') }}
     </base-button>
-  </base-card>
-  <base-card v-else class="delete-data">
-    :) {{ $t('settings.deleteUserAccount.adminInfo') }}
   </base-card>
 </template>
 
