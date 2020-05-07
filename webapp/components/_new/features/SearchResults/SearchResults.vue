@@ -18,82 +18,54 @@
         icon="tasks"
         :message="$t('search.no-results', { search })"
       />
-      <template v-else-if="activeTab === 'Post'">
+      <template  >
         <pagination-buttons
-          v-show="postCount > pageSize"
-          :hasNext="hasMorePosts"
-          :hasPrevious="hasPreviousPosts"
-          :activePage="postPage"
-          :totalResultCount="postCount"
-          @back="previousPosts"
-          @next="nextPosts"
+          v-show="resultsCount > pageSize"
+          :hasMoreResults="hasMoreResults"
+          :hasPreviousResult="hasPreviousResult"
+          :activePage="resultsPage"
+          :totalResultCount="resultsCount"
+          :resultPages="resultPages"
+          @back="previousResults"
+          @next="nextResults"
         />
-        <masonry-grid>
+        <masonry-grid v-show="activeTab === 'Post'">
           <masonry-grid-item v-for="resource in activeResources" :key="resource.key">
             <post-teaser :post="resource" />
           </masonry-grid-item>
         </masonry-grid>
 
-        <pagination-buttons
-          v-show="postCount > pageSize"
-          :hasNext="hasMorePosts"
-          :hasPrevious="hasPreviousPosts"
-          :activePage="postPage"
-          :totalResultCount="postCount"
-          @back="previousPosts"
-          @next="nextPosts"
-        />
-      </template>
-      <ul v-else-if="activeTab === 'User'" class="user-list">
-        <pagination-buttons
-          v-show="userCount > pageSize"
-          :hasNext="hasMoreUsers"
-          :hasPrevious="hasPreviousUsers"
-          :activePage="userPage"
-          :totalResultCount="userCount"
-          @back="previousUsers"
-          @next="nextUsers"
-        />
+
+        <ul v-show="activeTab === 'User'" class="user-list">
+       
         <li v-for="resource in activeResources" :key="resource.key" class="item">
           <base-card :wideContent="true">
             <user-teaser :user="resource" />
           </base-card>
         </li>
-        <pagination-buttons
-          v-show="userCount > pageSize"
-          :hasNext="hasMoreUsers"
-          :hasPrevious="hasPreviousUsers"
-          :activePage="userPage"
-          :totalResultCount="userCount"
-          @back="previousUsers"
-          @next="nextUsers"
-        />
+      
       </ul>
-      <ul v-else-if="activeTab === 'Hashtag'" class="hashtag-list">
-        <pagination-buttons
-          v-show="hashtagCount > pageSize"
-          :hasNext="hasMoreHashtags"
-          :hasPrevious="hasPreviousHashtags"
-          :activePage="hashtagPage"
-          :totalResultCount="hashtagCount"
-          @back="previousHashtags"
-          @next="nextHashtags"
-        />
+      <ul v-show="activeTab === 'Hashtag'" class="hashtag-list">
+         
         <li v-for="resource in activeResources" :key="resource.key" class="item">
           <base-card :wideContent="true">
             <hc-hashtag :id="resource.id" />
           </base-card>
         </li>
-        <pagination-buttons
-          v-show="hashtagCount > pageSize"
-          :hasNext="hasMoreHashtags"
-          :hasPrevious="hasPreviousHashtags"
-          :activePage="hashtagPage"
-          :totalResultCount="hashtagCount"
-          @back="previousHashtags"
-          @next="nextHashtags"
-        />
+        
       </ul>
+
+        <pagination-buttons
+          v-show="resultsCount > pageSize"
+          :hasMoreResults="hasMoreResults"
+          :hasPreviousResult="hasPreviousResult"
+          :activePage="resultsPage"
+          :totalResultCount="resultsCount"
+          @back="previousResults"
+          @next="nextResults"
+        />
+      </template>
+     
     </section>
   </div>
 </template>
@@ -134,29 +106,43 @@ export default {
       posts: [],
       users: [],
       hashtags: [],
+
+      resultsPage: 0,
+      resultsCount: 0,
+
       postCount: 0,
-      postPage: 0,
+
       userCount: 0,
       userPage: 0,
+
       hashtagCount: 0,
       hashtagPage: 0,
+
       activeTab: null,
+      resultPages: 1,
+      activeResultPage: 1,
+
       firstPosts: this.pageSize,
       firstUsers: this.pageSize,
       firstHashtags: this.pageSize,
+
       postsOffset: 0,
       usersOffset: 0,
       hashtagsOffset: 0,
+
+      hasPagination: false,
     }
   },
   computed: {
     activeResources() {
+      console.log("activeResources()")
       if (this.activeTab === 'Post') return this.posts
       else if (this.activeTab === 'User') return this.users
       else if (this.activeTab === 'Hashtag') return this.hashtags
       else return []
     },
     activeResourceCount() {
+      console.log("activeResourceCount()")
       if (this.activeTab === 'Post') return this.postCount
       else if (this.activeTab === 'User') return this.userCount
       else if (this.activeTab === 'Hashtag') return this.hashtagCount
@@ -181,87 +167,94 @@ export default {
         },
       ]
     },
-    hasPreviousPosts() {
-      return this.postsOffset > 0
+    hasPreviousResult(){
+       console.log("hasPreviousResult()")
+          if (this.activeTab === 'Post') return this.postsOffset > 0
+      else if (this.activeTab === 'User') return this.usersOffset > 0
+      else if (this.activeTab === 'Hashtag') return this.hashtagsOffset > 0
+      else return []
     },
-    hasPreviousUsers() {
-      return this.usersOffset > 0
-    },
-    hasPreviousHashtags() {
-      return this.hashtagsOffset > 0
-    },
-    hasMorePosts() {
-      console.log("this.postPage",this.postPage)
-      console.log("this.pageSize",this.pageSize)
-      console.log("this.postCount",this.postCount)
-      
-      return (this.postPage + 1) * this.pageSize < this.postCount
-    },
-    hasMoreUsers() {
-      return (this.userPage + 1) * this.pageSize < this.userCount
-    },
-    hasMoreHashtags() {
-      return (this.hashtagPage + 1) * this.pageSize < this.hashtagCount
-    },
+     hasMoreResults() {
+      console.log("hasMoreResults()")
+       if (this.activeTab === 'Post') return this.postsOffset < this.resultsCount
+      else if (this.activeTab === 'User') return this.usersOffset  < this.resultsCount
+      else if (this.activeTab === 'Hashtag') return  this.hashtagsOffset  < this.resultsCount
+      else return []
+     },
+   
     searchCount() {
       return this.postCount + this.userCount + this.hashtagCount
     },
   },
   methods: {
     clearPage() {
-      this.postPage = 0
-      this.userPage = 0
-      this.hashtagPage = 0
+      this.resultsPage = 0
+  
     },
     switchTab(tab) {
       this.activeTab = tab
     },
-    previousPosts() {
-      this.postPage--
-      this.postsOffset = this.postPage * this.pageSize
+    previousResults() {
+      console.log("previousResults()")
+        if (this.activeTab === 'Post') {
+         
+           this.resultsPage = this.postPage - 1
+           this.postsOffset - this.pageSize
+           
+        }
+      else if (this.activeTab === 'User') {
+        this.resultsPage =  this.userPage - 1
+        this.usersOffset - this.pageSize
+      }
+      else if (this.activeTab === 'Hashtag') {
+        this.resultsPage  = this.hashtagPage - 1
+        this.hashtagsOffset -  this.pageSize
+      }
+      else return []
+     
     },
-    nextPosts() {
-      this.postsOffset += this.pageSize
-      this.postPage++
-    },
-    previousUsers() {
-      this.userPage--
-      this.usersOffset = this.userPage * this.pageSize
-    },
-    nextUsers() {
-      this.usersOffset += this.pageSize
-      this.userPage++
-    },
-    previousHashtags() {
-      this.hashtagPage--
-      this.hashtagsOffset = this.hashtagPage * this.pageSize
-    },
-    nextHashtags() {
-      this.hashtagsOffset += this.pageSize
-      this.hashtagPage++
+     nextResults() {
+      console.log("nextResults()")
+       if (this.activeTab === 'Post') {
+          this.resultsPage  = parseInt(this.postPage) + 1
+           this.postsOffset + this.pageSize
+        }
+      else if (this.activeTab === 'User') {
+        this.resultsPage  =  this.userPage + 1
+        this.usersOffset + this.pageSize
+       }
+      else if (this.activeTab === 'Hashtag') {
+        this.resultsPage  = this.hashtagPage + 1
+         this.hashtagsOffset + this.pageSize
+       }
+      else return []
+      
     },
   },
   apollo: {
-    searchPosts: {
+   searchHashtags: {
       query() {
-        return searchPosts
+        return searchHashtags
       },
       variables() {
-        const { firstPosts, postsOffset, search } = this
+        const { firstHashtags, hashtagsOffset, search } = this
         return {
           query: search,
-          firstPosts,
-          postsOffset,
+          firstHashtags,
+          hashtagsOffset,
         }
       },
       skip() {
         return !this.search
       },
-      update({ searchPosts }) {
-        this.posts = searchPosts.posts
-        this.postCount = searchPosts.postCount
-        this.clearPage()
-        if (this.postCount > 0) this.activeTab = 'Post'
+      update({ searchHashtags }) {
+         console.log(" update({ searchHashtags }")
+        this.hashtags = searchHashtags.hashtags
+        this.resultsCount  = searchHashtags.hashtagCount
+        this.hashtagCount  = searchHashtags.hashtagCount
+         if (this.resultsCount > this.pageSize) this.hasPagination = true
+        if (this.postCount === 0 && this.userCount === 0 && this.hashtagCount > 0)
+          this.activeTab = 'Hashtag'
       },
       fetchPolicy: 'cache-and-network',
     },
@@ -281,34 +274,41 @@ export default {
         return !this.search
       },
       update({ searchUsers }) {
+         console.log(" update({ searchUsers }")
         this.users = searchUsers.users
-        this.userCount = searchUsers.userCount
-        this.clearPage()
-        if (this.postCount === 0 && this.userCount > 0) this.activeTab = 'User'
+        this.resultsCount  = searchUsers.userCount
+        this.userCount  = searchUsers.userCount
+        if (this.resultsCount > this.pageSize) this.hasPagination = true
+        if (this.resultsCount === 0 && this.userCount > 0) this.activeTab = 'User'
       },
       fetchPolicy: 'cache-and-network',
     },
-    searchHashtags: {
+      searchPosts: {
       query() {
-        return searchHashtags
+        return searchPosts
       },
       variables() {
-        const { firstHashtags, hashtagsOffset, search } = this
+
+        const { firstPosts, postsOffset, search } = this
+        console.log("firstPosts",firstPosts)
+        console.log("postsOffset",postsOffset)
         return {
           query: search,
-          firstHashtags,
-          hashtagsOffset,
+          firstPosts,
+          postsOffset,
         }
+      
       },
       skip() {
         return !this.search
       },
-      update({ searchHashtags }) {
-        this.hashtags = searchHashtags.hashtags
-        this.hashtagCount = searchHashtags.hashtagCount
-        this.clearPage()
-        if (this.postCount === 0 && this.userCount === 0 && this.hashtagCount > 0)
-          this.activeTab = 'Hashtag'
+      update({ searchPosts }) {
+        console.log(" update({ searchPosts }")
+        this.posts = searchPosts.posts
+         this.postCount = searchPosts.postCount
+        this.resultsCount = this.postCount
+        if (this.resultsCount > this.pageSize) this.hasPagination = true
+        if (this.postCount > 0) this.activeTab = 'Post'
       },
       fetchPolicy: 'cache-and-network',
     },

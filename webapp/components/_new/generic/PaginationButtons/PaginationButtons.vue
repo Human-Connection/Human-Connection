@@ -2,19 +2,20 @@
   <div class="pagination-buttons">
     <base-button
       @click="$emit('back')"
-      :disabled="!hasPrevious"
+      :disabled="!hasPreviousResult"
       icon="arrow-left"
       circle
       data-test="previous-button"
     />
+         
     <span class="pagination-pageCount">
-      {{ totalResultCount }} - {{  pageSize }} - {{activePage}} - {{ Math.round(totalResultCount )  }}
+     
       Seite {{ activePage + 1 }} / {{ Math.round(totalResultCount / pageSize) + 1 }}
     </span>
 
     <base-button
       @click="$emit('next')"
-      :disabled="!hasNext"
+      :disabled="!hasMoreResults"
       icon="arrow-right"
       circle
       data-test="next-button"
@@ -30,16 +31,19 @@ export default {
       type: Number,
       default: 24
     },
-    hasNext: {
+    hasMoreResults: {
       type: Boolean,
       default: false,
     },
-    hasPrevious: {
+    hasPreviousResult: {
       type: Boolean,
-      default: false,
     },
     activePage: {
       type: Number,
+      default: 0,
+    },
+    resultPages: {
+       type: Number,
       default: 0,
     },
     totalResultCount: {
@@ -47,7 +51,6 @@ export default {
       default: 0,
     },
   },
- 
 }
 </script>
 
