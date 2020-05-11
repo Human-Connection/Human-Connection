@@ -598,7 +598,7 @@
     "no-results": "No results found for \"{search}\". Try a different search term!",
     "page": "Page",
     "placeholder": "Search",
-    "results": "Results found"
+    "results": "result found ::: results found"
   },
   "settings": {
     "blocked-users": {

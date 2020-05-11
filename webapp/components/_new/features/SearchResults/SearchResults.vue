@@ -30,20 +30,20 @@
           :key="'Top'"
           :pageSize="pageSize"
         />
-        <masonry-grid v-show="activeTab === 'Post'">
+        <masonry-grid v-if="activeTab === 'Post'">
           <masonry-grid-item v-for="resource in activeResources" :key="resource.key">
             <post-teaser :post="resource" />
           </masonry-grid-item>
         </masonry-grid>
 
-        <ul v-show="activeTab === 'User'" class="user-list">
+        <ul v-if="activeTab === 'User'" class="user-list">
           <li v-for="resource in activeResources" :key="resource.key" class="item">
             <base-card :wideContent="true">
               <user-teaser :user="resource" />
             </base-card>
           </li>
         </ul>
-        <ul v-show="activeTab === 'Hashtag'" class="hashtag-list">
+        <ul v-if="activeTab === 'Hashtag'" class="hashtag-list">
           <li v-for="resource in activeResources" :key="resource.key" class="item">
             <base-card :wideContent="true">
               <hc-hashtag :id="resource.id" />
@@ -180,7 +180,9 @@ export default {
   },
   methods: {
     clearPage() {
-      this.resultsPage = 0
+      this.postPage = 0
+      this.userPage = 0
+      this.hashtagPage = 0
     },
     switchTab(tab) {
       this.activeTab = tab
