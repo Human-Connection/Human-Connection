@@ -592,12 +592,13 @@
     "heading": {
       "Post": "Beitrag ::: Beiträge",
       "Tag": "Hashtag ::: Hashtags",
-      "User": "Benutzer"
+      "User": "Benutzer ::: Benutzer"
     },
     "hint": "Wonach suchst Du?",
-    "results": "Ergebniss gefunden ::: Ergebnisse gefunden",
     "no-results": "Keine Ergebnisse für \"{search}\" gefunden. Versuch' es mit einem anderen Begriff!",
-    "placeholder": "Suchen"
+    "page": "Seite",
+    "placeholder": "Suchen",
+    "results": "Ergebniss gefunden ::: Ergebnisse gefunden"
   },
   "settings": {
     "blocked-users": {

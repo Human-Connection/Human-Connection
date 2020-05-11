@@ -1,19 +1,21 @@
 <template>
   <div class="pagination-buttons">
     <base-button
+      v-show="hasPreviousResult"
       @click="$emit('back')"
       :disabled="!hasPreviousResult"
       icon="arrow-left"
       circle
       data-test="previous-button"
     />
-         
+
     <span class="pagination-pageCount">
-     
-      Seite {{ activePage + 1 }} / {{ Math.round(totalResultCount / pageSize) + 1 }}
+      {{ $t('search.page') }} {{ activePage + 1 }} /
+      {{ Math.floor((activeResourceCount - 1) / pageSize) + 1 }}
     </span>
 
     <base-button
+      v-show="hasMoreResults"
       @click="$emit('next')"
       :disabled="!hasMoreResults"
       icon="arrow-right"
@@ -29,7 +31,7 @@ export default {
   props: {
     pageSize: {
       type: Number,
-      default: 24
+      default: 24,
     },
     hasMoreResults: {
       type: Boolean,
@@ -42,11 +44,11 @@ export default {
       type: Number,
       default: 0,
     },
-    resultPages: {
-       type: Number,
+    totalResultCount: {
+      type: Number,
       default: 0,
     },
-    totalResultCount: {
+    activeResourceCount: {
       type: Number,
       default: 0,
     },
