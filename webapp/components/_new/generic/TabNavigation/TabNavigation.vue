@@ -3,7 +3,12 @@
     <li
       v-for="tab in tabs"
       :key="tab.type"
-      :class="[activeTab === tab.type && '--active', tab.disabled && '--disabled', 'tab']"
+      :class="[
+        activeTab === tab.type && '--active',
+        tab.disabled && '--disabled',
+        'tab',
+        tab.type + '-tab',
+      ]"
       role="button"
       @click="$emit('switchTab', tab.type)"
     >

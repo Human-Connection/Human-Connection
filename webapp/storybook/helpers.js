@@ -70,6 +70,20 @@ const helpers = {
       }
     })
   },
+  fakePost(n) {
+    return new Array(n || 1).fill(0).map(() => {
+      const title = faker.lorem.words()
+      const content = faker.lorem.paragraph()
+      return {
+        id: faker.random.uuid(),
+        title,
+        content,
+        slug: faker.lorem.slug(title),
+        shoutedCount: faker.random.number(),
+        commentsCount: faker.random.number(),
+      }
+    })
+  },
 }
 
 export default helpers

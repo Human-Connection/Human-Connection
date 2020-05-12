@@ -1,12 +1,12 @@
 <template>
   <div class="pagination-buttons">
     <base-button
-      v-show="hasPreviousResult"
+      v-if="hasPreviousResult"
       @click="$emit('back')"
       :disabled="!hasPreviousResult"
       icon="arrow-left"
       circle
-      data-test="previous-button"
+      class="previous-button"
     />
 
     <span class="pagination-pageCount">
@@ -15,12 +15,12 @@
     </span>
 
     <base-button
-      v-show="hasMoreResults"
+      v-if="hasMoreResults"
       @click="$emit('next')"
       :disabled="!hasMoreResults"
       icon="arrow-right"
       circle
-      data-test="next-button"
+      class="next-button"
       v-scroll-to="'#search-results'"
     />
   </div>

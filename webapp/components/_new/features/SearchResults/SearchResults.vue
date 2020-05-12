@@ -2,7 +2,7 @@
   <div id="search-results" class="search-results">
     <div>
       <ds-section>
-        <ds-text class="search-results">
+        <ds-text class="total-search-results">
           <strong>{{ searchCount }}</strong>
           {{ $t('search.results', {}, searchCount) }}
         </ds-text>
@@ -20,7 +20,7 @@
       />
       <template>
         <pagination-buttons
-          v-show="activeResourceCount > pageSize"
+          v-if="activeResourceCount > pageSize"
           :hasMoreResults="hasMoreResults"
           :hasPreviousResult="hasPreviousResult"
           :activePage="activePage"
@@ -52,7 +52,7 @@
         </ul>
 
         <pagination-buttons
-          v-show="activeResourceCount > pageSize"
+          v-if="activeResourceCount > pageSize"
           :hasMoreResults="hasMoreResults"
           :hasPreviousResult="hasPreviousResult"
           :activePage="activePage"
