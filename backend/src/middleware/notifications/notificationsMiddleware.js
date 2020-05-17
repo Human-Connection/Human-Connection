@@ -90,7 +90,7 @@ const notifyUsersOfMention = async (label, id, idsOfUsers, reason, context) => {
     SET notification.read = FALSE
     SET notification.createdAt = COALESCE(notification.createdAt, toString(datetime()))
     SET notification.updatedAt = toString(datetime())
-    RETURN notification {.*, from: finalResource, to: properties(user)}
+    RETURN { notificationsCount: toString(size(collect(notification))), notifications: collect(notification {.*, from: finalResource, to: properties(user)}) } as noticationsResult
   `
   const session = context.driver.session()
   const writeTxResultPromise = session.writeTransaction(async (transaction) => {
@@ -99,10 +99,10 @@ const notifyUsersOfMention = async (label, id, idsOfUsers, reason, context) => {
       idsOfUsers,
       reason,
     })
-    return notificationTransactionResponse.records.map((record) => record.get('notification'))
+    return notificationTransactionResponse.records.map((record) => record.get('noticationsResult'))
   })
   try {
-    const notifications = await writeTxResultPromise
+    const [notifications] = await writeTxResultPromise
     return notifications
   } catch (error) {
     throw new Error(error)
@@ -126,14 +126,14 @@ const notifyUsersOfComment = async (label, commentId, postAuthorId, reason, cont
       SET notification.updatedAt = toString(datetime())
       WITH notification, postAuthor, post,
       comment {.*, __typename: labels(comment)[0], author: properties(commenter), post:  post {.*, author: properties(postAuthor) } } AS finalResource
-      RETURN notification {.*, from: finalResource, to: properties(postAuthor)}
+      RETURN { notificationsCount: toString(size(collect(notification))), notifications: collect(notification {.*, from: finalResource, to: properties(postAuthor)}) } as noticationsResult
     `,
       { commentId, postAuthorId, reason },
     )
-    return notificationTransactionResponse.records.map((record) => record.get('notification'))
+    return notificationTransactionResponse.records.map((record) => record.get('noticationsResult'))
   })
   try {
-    const notifications = await writeTxResultPromise
+    const [notifications] = await writeTxResultPromise
     return notifications
   } finally {
     session.close()

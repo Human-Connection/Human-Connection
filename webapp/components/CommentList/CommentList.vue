@@ -48,7 +48,7 @@ export default {
       return anchor === '#comments'
     },
     updateCommentList(updatedComment) {
-      this.postComments = this.postComments.map((comment) => {
+      this.post.comments = this.postComments.map((comment) => {
         return comment.id === updatedComment.id ? updatedComment : comment
       })
     },

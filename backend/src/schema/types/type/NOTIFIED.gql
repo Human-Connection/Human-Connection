@@ -8,6 +8,11 @@ type NOTIFIED {
   reason: NotificationReason
 }
 
+type notificationsResult {
+  notificationsCount: Int!
+  notifications: [NOTIFIED]
+}
+
 union NotificationSource = Post | Comment
 
 enum NotificationOrdering {
@@ -24,7 +29,7 @@ enum NotificationReason {
 }
 
 type Query {
-  notifications(read: Boolean, orderBy: NotificationOrdering, first: Int, offset: Int): [NOTIFIED]
+  notifications(read: Boolean, orderBy: NotificationOrdering, first: Int, offset: Int): notificationsResult!
 }
   
 type Mutation {
@@ -32,5 +37,5 @@ type Mutation {
 }
 
 type Subscription {
-  notificationAdded(userId: ID!): NOTIFIED
+  notificationAdded(userId: ID!): notificationsResult
 }

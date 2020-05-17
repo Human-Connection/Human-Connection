@@ -69,28 +69,30 @@ export const notificationQuery = (i18n) => {
 
     query($read: Boolean, $orderBy: NotificationOrdering, $first: Int, $offset: Int) {
       notifications(read: $read, orderBy: $orderBy, first: $first, offset: $offset) {
-        id
-        read
-        reason
-        createdAt
-        updatedAt
-        from {
-          __typename
-          ... on Post {
-            ...post
-            author {
-              ...user
-            }
-          }
-          ... on Comment {
-            ...comment
-            author {
-              ...user
-            }
-            post {
+        notificationsCount
+        notifications {
+          id
+          read
+          reason
+          createdAt
+          updatedAt
+          from {
+            ... on Post {
               ...post
               author {
                 ...user
+              }
+            }
+            ... on Comment {
+              ...comment
+              author {
+                ...user
+              }
+              post {
+                ...post
+                author {
+                  ...user
+                }
               }
             }
           }
@@ -144,28 +146,31 @@ export const notificationAdded = () => {
 
     subscription notifications($userId: ID!) {
       notificationAdded(userId: $userId) {
-        id
-        read
-        reason
-        createdAt
-        updatedAt
-        from {
-          __typename
-          ... on Post {
-            ...post
-            author {
-              ...user
-            }
-          }
-          ... on Comment {
-            ...comment
-            author {
-              ...user
-            }
-            post {
+        notificationsCount
+        notifications {
+          id
+          read
+          reason
+          createdAt
+          updatedAt
+          from {
+            __typename
+            ... on Post {
               ...post
               author {
                 ...user
+              }
+            }
+            ... on Comment {
+              ...comment
+              author {
+                ...user
+              }
+              post {
+                ...post
+                author {
+                  ...user
+                }
               }
             }
           }
@@ -174,6 +179,7 @@ export const notificationAdded = () => {
     }
   `
 }
+
 export const followUserMutation = (i18n) => {
   return gql`
     ${userFragment}

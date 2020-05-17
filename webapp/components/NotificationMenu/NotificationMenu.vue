@@ -1,24 +1,24 @@
 <template>
-  <nuxt-link
-    v-if="!unreadNotificationsCount"
-    class="notifications-menu"
-    :to="{ name: 'notifications' }"
-  >
+  <nuxt-link v-if="!notificationsCount" class="notifications-menu" :to="{ name: 'notifications' }">
     <base-button icon="bell" ghost circle />
   </nuxt-link>
   <dropdown v-else class="notifications-menu" offset="8" :placement="placement">
     <template #default="{ toggleMenu }">
       <base-button @click="toggleMenu" ghost circle>
-        <counter-icon icon="bell" :count="unreadNotificationsCount" danger />
+        <counter-icon icon="bell" :count="notificationsCount" danger />
       </base-button>
     </template>
     <template slot="popover">
       <div class="notifications-menu-popover">
-        <notification-list :notifications="notifications" @markAsRead="markAsRead" />
+        <notification-list :notifications="unreadNotifications" @markAsRead="markAsRead" />
       </div>
       <div class="notifications-link-container">
         <nuxt-link :to="{ name: 'notifications' }">
-          {{ $t('notifications.pageLink') }}
+          {{
+            notificationsCount > 25
+              ? $t('notifications.manyNotifications', { notificationsCount })
+              : $t('notifications.pageLink')
+          }}
         </nuxt-link>
       </div>
     </template>
@@ -42,7 +42,8 @@ export default {
   },
   data() {
     return {
-      notifications: [],
+      unreadNotifications: [],
+      notificationsCount: null,
     }
   },
   props: {
@@ -55,6 +56,9 @@ export default {
         await this.$apollo.mutate({
           mutation: markAsReadMutation(this.$i18n),
           variables,
+          update: () => {
+            this.notificationsCount--
+          },
         })
       } catch (err) {
         this.$toast.error(err.message)
@@ -65,12 +69,6 @@ export default {
     ...mapGetters({
       user: 'auth/user',
     }),
-    unreadNotificationsCount() {
-      const result = this.notifications.reduce((count, notification) => {
-        return notification.read ? count : count + 1
-      }, 0)
-      return result
-    },
   },
   apollo: {
     notifications: {
@@ -81,7 +79,12 @@ export default {
         return {
           read: false,
           orderBy: 'updatedAt_desc',
+          first: 25,
         }
+      },
+      update({ notifications }) {
+        this.unreadNotifications = notifications.notifications
+        this.notificationsCount = notifications.notificationsCount
       },
       subscribeToMore: {
         document: notificationAdded(),
@@ -95,9 +98,11 @@ export default {
             data: { notificationAdded: newNotification },
           } = subscriptionData
           return {
-            notifications: unionBy(
-              [newNotification],
-              previousResult.notifications,
+            notificationsCount:
+              previousResult.notificationsCount - newNotification.notificationsCount,
+            unreadNotifications: unionBy(
+              [newNotification.notifications],
+              previousResult.notifications.notifications,
               (notification) => notification.id,
             ).sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)),
           }

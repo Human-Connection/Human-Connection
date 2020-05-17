@@ -450,6 +450,7 @@
       "read": "Read",
       "unread": "Unread"
     },
+    "manyNotifications": "See all {notificationsCount} notifications",
     "pageLink": "All notifications",
     "post": "Post",
     "reason": {

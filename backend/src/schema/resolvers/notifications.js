@@ -8,17 +8,18 @@ export default {
       subscribe: withFilter(
         () => pubsub.asyncIterator(NOTIFICATION_ADDED),
         (payload, variables) => {
-          return payload.notificationAdded.to.id === variables.userId
+          const { notifications } = payload.notificationAdded
+          const [currentUser] = notifications
+          return currentUser.to.id === variables.userId
         },
       ),
     },
   },
   Query: {
     notifications: async (_parent, args, context, _resolveInfo) => {
-      const { user: currentUser } = context
-      const session = context.driver.session()
+      const { user: currentUser, driver } = context
+      const session = driver.session()
       let whereClause, orderByClause
-
       switch (args.read) {
         case true:
           whereClause = 'WHERE notification.read = TRUE'
@@ -41,7 +42,6 @@ export default {
       }
       const offset = args.offset && typeof args.offset === 'number' ? `SKIP ${args.offset}` : ''
       const limit = args.first && typeof args.first === 'number' ? `LIMIT ${args.first}` : ''
-
       const readTxResultPromise = session.readTransaction(async (transaction) => {
         const notificationsTransactionResponse = await transaction.run(
           ` 
@@ -52,17 +52,19 @@ export default {
           [(resource)-[:COMMENTS]->(post:Post)<-[:WROTE]-(author:User) | post{.*, author: properties(author)} ] AS posts
           WITH resource, user, notification, authors, posts,
           resource {.*, __typename: labels(resource)[0], author: authors[0], post: posts[0]} AS finalResource
-          RETURN notification {.*, from: finalResource, to: properties(user)}
           ${orderByClause}
+          RETURN { notificationsCount: toString(size(collect(notification))), notifications: collect(notification {.*, from: finalResource, to: properties(user)})} as noticationsResult
           ${offset} ${limit}
           `,
           { id: currentUser.id },
         )
         log(notificationsTransactionResponse)
-        return notificationsTransactionResponse.records.map((record) => record.get('notification'))
+        return notificationsTransactionResponse.records.map((record) =>
+          record.get('noticationsResult'),
+        )
       })
       try {
-        const notifications = await readTxResultPromise
+        const [notifications] = await readTxResultPromise
         return notifications
       } finally {
         session.close()

@@ -94,12 +94,6 @@ export default {
       createdAt: { type: 'string', isoDate: true, default: () => new Date().toISOString() },
     },
   },
-  notifications: {
-    type: 'relationship',
-    relationship: 'NOTIFIED',
-    target: 'User',
-    direction: 'in',
-  },
   termsAndConditionsAgreedVersion: {
     type: 'string',
     allow: [null],
