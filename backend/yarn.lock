@@ -8247,10 +8247,10 @@ sane@^4.0.3:
     minimist "^1.1.1"
     walker "~1.0.5"
 
-sanitize-html@~1.22.0:
-  version "1.22.1"
-  resolved "https://registry.yarnpkg.com/sanitize-html/-/sanitize-html-1.22.1.tgz#5b36c92ab27917ddd2775396815c2bc1a6268310"
-  integrity sha512-++IMC00KfMQc45UWZJlhWOlS9eMrME38sFG9GXfR+k6oBo9JXSYQgTOZCl9j3v/smFTRNT9XNwz5DseFdMY+2Q==
+sanitize-html@~1.24.0:
+  version "1.24.0"
+  resolved "https://registry.yarnpkg.com/sanitize-html/-/sanitize-html-1.24.0.tgz#9cd42f236512bfcf6259424e958551148c165a7f"
+  integrity sha512-TAIFx39V/y06jDd4YUz7ntCdMUXN5Z28pSG7sTP2BCLXwHA9+ermacDpQs35Evo4p6YSgmaPdSbGiX4Fgptuuw==
   dependencies:
     chalk "^2.4.1"
     htmlparser2 "^4.1.0"
