@@ -64,7 +64,7 @@
       <!-- Tags -->
       <div v-if="post.tags && post.tags.length" class="tags">
         <ds-space margin="xx-small" />
-        <hc-hashtag v-for="tag in post.tags" :key="tag.id" :id="tag.id" />
+        <hc-hashtag v-for="tag in sortedTags" :key="tag.id" :id="tag.id" />
       </div>
       <ds-space margin-top="x-large">
         <ds-flex :gutter="{ lg: 'small' }">
@@ -178,6 +178,20 @@ export default {
       const { author } = this.post
       if (!author) return false
       return this.$store.getters['auth/user'].id === author.id
+    },
+    sortedTags() {
+      // Make sure the property is valid.
+      if (!this.post.tags || !this.post.tags.length) return false
+      /*  Using .slice(0) to make a shallow copy. Otherwise a vue/no-side-effects-in-computed-properties error
+          would be thrown because sort() sorts in place. A shallow copy is fine because only first level objects are
+          affected by the sort, the original this.post.tags object remains unchanged.
+      */
+      return this.post.tags.slice(0).sort(function (a, b) {
+        // Converting to lowercase to make sort case insensitive.
+        const tagA = a.id.toLowerCase()
+        const tagB = b.id.toLowerCase()
+        return tagA < tagB ? -1 : tagA > tagB ? 1 : 0
+      })
     },
   },
   methods: {
