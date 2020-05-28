@@ -1,9 +1,4 @@
 {
-  "modals": {
-    "deleteUser": {
-      "created": "Created"
-    }
-  },
   "actions": {
     "cancel": "Cancel",
     "create": "Create",
@@ -385,6 +380,11 @@
     "explanation": "At the moment we are doing some scheduled maintenance, please try again later.",
     "questions": "Any Questions or concerns, send an e-mail to",
     "title": "Human Connection is under maintenance"
+  },
+  "modals": {
+    "deleteUser": {
+      "created": "Created"
+    }
   },
   "moderation": {
     "name": "Moderation",

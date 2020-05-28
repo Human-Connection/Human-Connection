@@ -1,9 +1,4 @@
 {
-  "modals": {
-    "deleteUser": {
-      "created": "Erstellt"
-    }
-  },
   "actions": {
     "cancel": "Abbrechen",
     "create": "Erstellen",
@@ -385,6 +380,11 @@
     "explanation": "Derzeit führen wir einige geplante Wartungsarbeiten durch, bitte versuche es später erneut.",
     "questions": "Bei Fragen oder Problemen erreichst Du uns per E-Mail an",
     "title": "Human Connection befindet sich in der Wartung"
+  },
+  "modals": {
+    "deleteUser": {
+      "created": "Erstellt"
+    }
   },
   "moderation": {
     "name": "Moderation",
