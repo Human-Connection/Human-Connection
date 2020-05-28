@@ -99,7 +99,7 @@ export default class NitroDataSource {
       followersCollection.totalItems = followersCount
       debug(`followers = ${JSON.stringify(followers, null, 2)}`)
       await Promise.all(
-        followers.map(async follower => {
+        followers.map(async (follower) => {
           followersCollection.orderedItems.push(constructIdFromName(follower.slug))
         }),
       )
@@ -161,7 +161,7 @@ export default class NitroDataSource {
       followingCollection.totalItems = followingCount
 
       await Promise.all(
-        following.map(async user => {
+        following.map(async (user) => {
           followingCollection.orderedItems.push(await constructIdFromName(user.slug))
         }),
       )
@@ -238,7 +238,7 @@ export default class NitroDataSource {
       const outboxCollection = createOrderedCollectionPage(slug, 'outbox')
       outboxCollection.totalItems = posts.length
       await Promise.all(
-        posts.map(async post => {
+        posts.map(async (post) => {
           outboxCollection.orderedItems.push(
             await createArticleObject(
               post.activityId,
@@ -283,7 +283,7 @@ export default class NitroDataSource {
     orderedItems = onlyNewestItem ? [orderedItems.pop()] : orderedItems
 
     return Promise.all(
-      orderedItems.map(async follower => {
+      orderedItems.map(async (follower) => {
         debug(`follower = ${follower}`)
         const fromUserId = await this.ensureUser(follower)
         debug(`fromUserId = ${fromUserId}`)
@@ -311,7 +311,7 @@ export default class NitroDataSource {
     const fromUserId = await this.ensureUser(constructIdFromName(fromUserName))
     orderedItems = onlyNewestItem ? [orderedItems.pop()] : orderedItems
     return Promise.all(
-      orderedItems.map(async following => {
+      orderedItems.map(async (following) => {
         debug(`follower = ${following}`)
         const toUserId = await this.ensureUser(following)
         debug(`fromUserId = ${fromUserId}`)
@@ -343,10 +343,7 @@ export default class NitroDataSource {
     }
     const title = postObject.summary
       ? postObject.summary
-      : postObject.content
-          .split(' ')
-          .slice(0, 5)
-          .join(' ')
+      : postObject.content.split(' ').slice(0, 5).join(' ')
     const postId = extractIdFromActivityId(postObject.id)
     debug('inside create post')
     let result = await this.client.mutate({
@@ -560,10 +557,7 @@ export default class NitroDataSource {
       debug('ensureUser: user not exists.. createUser')
       // user does not exist.. create it
       const pw = crypto.randomBytes(16).toString('hex')
-      const slug = name
-        .toLowerCase()
-        .split(' ')
-        .join('-')
+      const slug = name.toLowerCase().split(' ').join('-')
       const result = await this.client.mutate({
         mutation: gql`
             mutation {

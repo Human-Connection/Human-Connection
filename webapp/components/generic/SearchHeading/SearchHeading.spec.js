@@ -7,7 +7,7 @@ describe('SearchHeading.vue', () => {
   let mocks, wrapper, propsData
   beforeEach(() => {
     mocks = {
-      $t: jest.fn(string => string),
+      $t: jest.fn((string) => string),
     }
     propsData = {
       resourceType: 'Post',

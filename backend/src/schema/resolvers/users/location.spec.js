@@ -107,7 +107,7 @@ describe('userMiddleware', () => {
         `MATCH (city:Location)-[:IS_IN]->(state:Location)-[:IS_IN]->(country:Location) return city {.*}, state {.*}, country {.*}`,
       )
       expect(
-        locations.records.map(record => {
+        locations.records.map((record) => {
           return {
             city: record.get('city'),
             state: record.get('state'),

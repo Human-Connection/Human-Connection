@@ -3,9 +3,11 @@
     <span class="initials">{{ userInitials }}</span>
     <base-icon v-if="isAnonymous" name="eye-slash" />
     <img
-      v-else
+      v-if="user && user.avatar"
       :src="user.avatar | proxyApiUrl"
       class="image"
+      :alt="user.name"
+      :title="user.name"
       @error="$event.target.style.display = 'none'"
     />
   </div>
@@ -18,7 +20,7 @@ export default {
     size: {
       type: String,
       required: false,
-      validator: value => {
+      validator: (value) => {
         return value.match(/(small|large)/)
       },
     },
@@ -34,11 +36,7 @@ export default {
     userInitials() {
       if (this.isAnonymous) return ''
 
-      return this.user.name
-        .match(/\b\w/g)
-        .join('')
-        .substring(0, 3)
-        .toUpperCase()
+      return this.user.name.match(/\b\w/g).join('').substring(0, 3).toUpperCase()
     },
   },
 }

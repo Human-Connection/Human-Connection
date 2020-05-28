@@ -17,12 +17,12 @@ export default class Link extends TipTapLink {
         {
           // if this is an embed link or a hashtag, ignore
           tag: 'a[href]:not(.embed):not([data-hashtag-id])',
-          getAttrs: dom => ({
+          getAttrs: (dom) => ({
             href: dom.getAttribute('href'),
           }),
         },
       ],
-      toDOM: node => [
+      toDOM: (node) => [
         'a',
         {
           ...node.attrs,

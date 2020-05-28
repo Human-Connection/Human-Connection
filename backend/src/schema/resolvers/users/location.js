@@ -7,9 +7,9 @@ import CONFIG from '../../../config'
 
 const debug = Debug('human-connection:location')
 
-const fetch = url => {
+const fetch = (url) => {
   return new Promise((resolve, reject) => {
-    request(url, function(error, response, body) {
+    request(url, function (error, response, body) {
       if (error) {
         reject(error)
       } else {
@@ -57,7 +57,7 @@ const createLocation = async (session, mapboxData) => {
   }
   mutation += ' RETURN l.id'
 
-  await session.writeTransaction(transaction => {
+  await session.writeTransaction((transaction) => {
     return transaction.run(mutation, data)
   })
 }
@@ -82,7 +82,7 @@ const createOrUpdateLocations = async (userId, locationName, session) => {
 
   let data
 
-  res.features.forEach(item => {
+  res.features.forEach((item) => {
     if (item.matching_place_name === locationName) {
       data = item
     }
@@ -103,9 +103,9 @@ const createOrUpdateLocations = async (userId, locationName, session) => {
   let parent = data
 
   if (data.context) {
-    await asyncForEach(data.context, async ctx => {
+    await asyncForEach(data.context, async (ctx) => {
       await createLocation(session, ctx)
-      await session.writeTransaction(transaction => {
+      await session.writeTransaction((transaction) => {
         return transaction.run(
           `
               MATCH (parent:Location {id: $parentId}), (child:Location {id: $childId})
@@ -122,7 +122,7 @@ const createOrUpdateLocations = async (userId, locationName, session) => {
     })
   }
   // delete all current locations from user and add new location
-  await session.writeTransaction(transaction => {
+  await session.writeTransaction((transaction) => {
     return transaction.run(
       `
           MATCH (user:User {id: $userId})-[relationship:IS_IN]->(location:Location)

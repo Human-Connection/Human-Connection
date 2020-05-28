@@ -11,7 +11,7 @@
     </li>
     <template v-if="isHashtag">
       <li v-if="!query" class="suggestion-list__item hint">{{ $t('editor.hashtag.addLetter') }}</li>
-      <template v-else-if="!filteredItems.find(el => el.id === query)">
+      <template v-else-if="!filteredItems.find((el) => el.id === query)">
         <li class="suggestion-list__item hint">{{ $t('editor.hashtag.addHashtag') }}</li>
         <li class="suggestion-list__item" @click="selectItem({ id: query })">
           #{{ query | truncate(50) }}

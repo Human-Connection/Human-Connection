@@ -330,29 +330,21 @@
     "profile-not-found": "Этот профиль не удалось найти"
   },
   "filter-menu": {
-    "clearSearch": "Очистить поиск",
-    "hashtag-search": "Поиск по #{hashtag}",
-    "title": "Ваш фильтр пузыря"
-  },
-  "filter-posts": {
-    "categories": {
-      "all": "Все",
-      "header": "Категории"
-    },
-    "followers": {
-      "label": "Мои подписки"
-    },
-    "general": {
-      "header": "Другие фильтры"
-    },
-    "language": {
-      "all": "Все",
-      "header": "Языки"
-    }
+    "all": "Все",
+    "categories": "Категории",
+    "emotions": "",
+    "filter-by": "Другие фильтры",
+    "following": "Мои подписки",
+    "languages": "Языки"
   },
   "followButton": {
     "follow": "Подписаться",
     "following": "Вы подписаны"
+  },
+  "hashtags-filter": {
+    "clearSearch": "Очистить поиск",
+    "hashtag-search": "Поиск по #{hashtag}",
+    "title": "Ваш фильтр пузыря"
   },
   "index": {
     "change-filter-settings": "Измените настройки фильтра, чтобы получить больше результатов.",

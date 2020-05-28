@@ -54,7 +54,7 @@ export default {
       const myQuery = queryString(query)
 
       const session = context.driver.session()
-      const searchResultPromise = session.readTransaction(async transaction => {
+      const searchResultPromise = session.readTransaction(async (transaction) => {
         const postTransactionResponse = transaction.run(postCypher, {
           query: myQuery,
           limit,
@@ -81,7 +81,7 @@ export default {
         log(postResults)
         log(userResults)
         log(tagResults)
-        return [...postResults.records, ...userResults.records, ...tagResults.records].map(r =>
+        return [...postResults.records, ...userResults.records, ...tagResults.records].map((r) =>
           r.get('resource'),
         )
       } finally {

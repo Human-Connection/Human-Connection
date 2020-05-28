@@ -65,7 +65,7 @@ export default {
   },
   methods: {
     removePostFromList(deletedPost) {
-      this.post.relatedContributions = this.post.relatedContributions.filter(contribution => {
+      this.post.relatedContributions = this.post.relatedContributions.filter((contribution) => {
         return contribution.id !== deletedPost.id
       })
     },

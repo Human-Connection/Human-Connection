@@ -15,7 +15,7 @@ export default function UniqueSlugForm({ translate, apollo, currentUser }) {
           asyncValidator(rule, value, callback) {
             debounce(() => {
               const variables = { slug: value }
-              apollo.query({ query: checkSlugAvailableQuery, variables }).then(response => {
+              apollo.query({ query: checkSlugAvailableQuery, variables }).then((response) => {
                 const {
                   data: { User },
                 } = response

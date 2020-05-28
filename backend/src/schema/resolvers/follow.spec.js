@@ -81,7 +81,7 @@ beforeEach(async () => {
       email: 'test@example.org',
       password: '1234',
     },
-  ).then(user => user.toJson())
+  ).then((user) => user.toJson())
   user2 = await Factory.build(
     'user',
     {
@@ -92,7 +92,7 @@ beforeEach(async () => {
       email: 'test2@example.org',
       password: '1234',
     },
-  ).then(user => user.toJson())
+  ).then((user) => user.toJson())
 
   authenticatedUser = user1
   variables = { id: user2.id }
@@ -146,7 +146,7 @@ describe('follow', () => {
         { id: 'u1' },
       )
       const relationshipProperties = relation.records.map(
-        record => record.get('relationship').properties.createdAt,
+        (record) => record.get('relationship').properties.createdAt,
       )
       expect(relationshipProperties[0]).toEqual(expect.any(String))
     })

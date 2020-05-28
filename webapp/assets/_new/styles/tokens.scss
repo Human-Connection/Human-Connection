@@ -230,6 +230,7 @@ $space-small: 16px;
 $space-x-small: 8px;
 $space-xx-small: 4px;
 $space-xxx-small: 2px;
+$space-none: 0;
 
 /**
  * @tokens Size Height
@@ -240,6 +241,7 @@ $size-height-base: 42px;
 $size-height-large: 50px;
 $size-height-xlarge: 60px;
 $size-height-footer: 64px;
+$size-height-connections: 315px;
 $size-tappable-square: 44px;
 $size-ribbon: 6px;
 
@@ -248,7 +250,9 @@ $size-ribbon: 6px;
  * @presenter Spacing
  */
 
+$size-width-filter-sidebar: 85px;
 $size-width-paginate: 100px;
+$size-max-width-filter-menu: 1026px;
 
 /**
  * @tokens Size Avatar

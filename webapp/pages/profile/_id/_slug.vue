@@ -90,65 +90,19 @@
         <ds-heading tag="h3" soft style="text-align: center; margin-bottom: 10px;">
           {{ $t('profile.network.title') }}
         </ds-heading>
-        <base-card style="position: relative; height: auto;">
-          <ds-space v-if="user.following && user.following.length" margin="x-small">
-            <ds-text tag="h5" color="soft">
-              {{ userName | truncate(15) }} {{ $t('profile.network.following') }}
-            </ds-text>
-          </ds-space>
-          <template v-if="user.following && user.following.length">
-            <ds-space v-for="follow in uniq(user.following)" :key="follow.id" margin="x-small">
-              <!-- TODO: find better solution for rendering errors -->
-              <client-only>
-                <user-teaser :user="follow" />
-              </client-only>
-            </ds-space>
-            <ds-space v-if="user.followingCount - user.following.length" margin="small">
-              <ds-text size="small" color="softer">
-                {{
-                  $t('profile.network.andMore', {
-                    number: user.followingCount - user.following.length,
-                  })
-                }}
-              </ds-text>
-            </ds-space>
-          </template>
-          <template v-else>
-            <p style="text-align: center; opacity: .5;">
-              {{ userName }} {{ $t('profile.network.followingNobody') }}
-            </p>
-          </template>
-        </base-card>
+        <follow-list
+          :loading="$apollo.loading"
+          :user="user"
+          type="followedBy"
+          @fetchAllConnections="fetchAllConnections"
+        />
         <ds-space />
-        <base-card style="position: relative; height: auto;">
-          <ds-space v-if="user.followedBy && user.followedBy.length" margin="x-small">
-            <ds-text tag="h5" color="soft">
-              {{ userName | truncate(15) }} {{ $t('profile.network.followedBy') }}
-            </ds-text>
-          </ds-space>
-          <template v-if="user.followedBy && user.followedBy.length">
-            <ds-space v-for="follow in uniq(user.followedBy)" :key="follow.id" margin="x-small">
-              <!-- TODO: find better solution for rendering errors -->
-              <client-only>
-                <user-teaser :user="follow" />
-              </client-only>
-            </ds-space>
-            <ds-space v-if="user.followedByCount - user.followedBy.length" margin="small">
-              <ds-text size="small" color="softer">
-                {{
-                  $t('profile.network.andMore', {
-                    number: user.followedByCount - user.followedBy.length,
-                  })
-                }}
-              </ds-text>
-            </ds-space>
-          </template>
-          <template v-else>
-            <p style="text-align: center; opacity: .5;">
-              {{ userName }} {{ $t('profile.network.followedByNobody') }}
-            </p>
-          </template>
-        </base-card>
+        <follow-list
+          :loading="$apollo.loading"
+          :user="user"
+          type="following"
+          @fetchAllConnections="fetchAllConnections"
+        />
         <ds-space v-if="user.socialMedia && user.socialMedia.length" margin="large">
           <base-card style="position: relative; height: auto;">
             <ds-space margin="x-small">
@@ -272,11 +226,11 @@
 
 <script>
 import uniqBy from 'lodash/uniqBy'
-import UserTeaser from '~/components/UserTeaser/UserTeaser'
 import PostTeaser from '~/components/PostTeaser/PostTeaser.vue'
 import HcFollowButton from '~/components/FollowButton.vue'
 import HcCountTo from '~/components/CountTo.vue'
 import HcBadges from '~/components/Badges.vue'
+import FollowList from '~/components/features/FollowList/FollowList'
 import HcEmpty from '~/components/Empty/Empty'
 import ContentMenu from '~/components/ContentMenu/ContentMenu'
 import HcUpload from '~/components/Upload'
@@ -300,7 +254,6 @@ const tabToFilterMapping = ({ tab, id }) => {
 
 export default {
   components: {
-    UserTeaser,
     PostTeaser,
     HcFollowButton,
     HcCountTo,
@@ -311,6 +264,7 @@ export default {
     HcUpload,
     MasonryGrid,
     MasonryGridItem,
+    FollowList,
   },
   transition: {
     name: 'slide-up',
@@ -327,6 +281,8 @@ export default {
       tabActive: 'post',
       filter,
       followedByCountStartValue: 0,
+      followedByCount: 7,
+      followingCount: 7,
     }
   },
   computed: {
@@ -338,7 +294,7 @@ export default {
     },
     socialMediaLinks() {
       const { socialMedia = [] } = this.user
-      return socialMedia.map(socialMedia => {
+      return socialMedia.map((socialMedia) => {
         const { url } = socialMedia
         const matches = url.match(/^(?:https?:\/\/)?(?:[^@\n])?(?:www\.)?([^:/\n?]+)/g)
         const [domain] = matches || []
@@ -356,16 +312,9 @@ export default {
       return slug && `@${slug}`
     },
   },
-  watch: {
-    User(val) {
-      if (!val || !val.length) {
-        throw new Error('User not found!')
-      }
-    },
-  },
   methods: {
     removePostFromList(deletedPost) {
-      this.posts = this.posts.filter(post => {
+      this.posts = this.posts.filter((post) => {
         return post.id !== deletedPost.id
       })
     },
@@ -456,7 +405,7 @@ export default {
           this.resetPostList()
           this.$apollo.queries.profilePagePosts.refetch()
         })
-        .catch(error => this.$toast.error(error.message))
+        .catch((error) => this.$toast.error(error.message))
     },
     unpinPost(post) {
       this.$apollo
@@ -469,7 +418,7 @@ export default {
           this.resetPostList()
           this.$apollo.queries.profilePagePosts.refetch()
         })
-        .catch(error => this.$toast.error(error.message))
+        .catch((error) => this.$toast.error(error.message))
     },
     optimisticFollow({ followedByCurrentUser }) {
       /*
@@ -482,7 +431,7 @@ export default {
         this.user.followedBy = [currentUser, ...this.user.followedBy]
       } else {
         this.user.followedByCount--
-        this.user.followedBy = this.user.followedBy.filter(user => user.id !== currentUser.id)
+        this.user.followedBy = this.user.followedBy.filter((user) => user.id !== currentUser.id)
       }
       this.user.followedByCurrentUser = followedByCurrentUser
     },
@@ -491,6 +440,10 @@ export default {
       this.user.followedByCount = followedByCount
       this.user.followedByCurrentUser = followedByCurrentUser
       this.user.followedBy = followedBy
+    },
+    fetchAllConnections(type) {
+      if (type === 'following') this.followingCount = Infinity
+      if (type === 'followedBy') this.followedByCount = Infinity
     },
   },
   apollo: {
@@ -516,7 +469,11 @@ export default {
         return UserQuery(this.$i18n)
       },
       variables() {
-        return { id: this.$route.params.id }
+        return {
+          id: this.$route.params.id,
+          followedByCount: this.followedByCount,
+          followingCount: this.followingCount,
+        }
       },
       fetchPolicy: 'cache-and-network',
     },

@@ -26,7 +26,7 @@ describe('ConfirmModal.vue', () => {
     mocks = {
       $t: jest.fn(),
       $filters: {
-        truncate: a => a,
+        truncate: (a) => a,
       },
     }
   })

@@ -19,11 +19,18 @@ export async function up(next) {
     await transaction.commit()
     next()
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(error)
-    await transaction.rollback()
-    // eslint-disable-next-line no-console
-    console.log('rolled back')
+    const { message } = error
+    if (message.includes('There already exists an index')) {
+      // all fine
+      // eslint-disable-next-line no-console
+      console.log(message)
+      next()
+    } else {
+      await transaction.rollback()
+      // eslint-disable-next-line no-console
+      console.log('rolled back')
+      throw new Error(error)
+    }
   } finally {
     session.close()
   }

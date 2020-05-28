@@ -108,7 +108,7 @@ export default {
   data() {
     const { title, content, image, language, categories } = this.contribution
 
-    const languageOptions = orderBy(locales, 'name').map(locale => {
+    const languageOptions = orderBy(locales, 'name').map((locale) => {
       return { label: locale.name, value: locale.code }
     })
     const { sensitive: imageBlurred = false, aspectRatio: imageAspectRatio = null } = image || {}
@@ -120,8 +120,8 @@ export default {
         image: image || null,
         imageAspectRatio,
         imageBlurred,
-        language: languageOptions.find(option => option.value === language) || null,
-        categoryIds: categories ? categories.map(category => category.id) : [],
+        language: languageOptions.find((option) => option.value === language) || null,
+        categoryIds: categories ? categories.map((category) => category.id) : [],
       },
       formSchema: {
         title: { required: true, min: 3, max: 100 },
@@ -190,7 +190,7 @@ export default {
             params: { id: result.id, slug: result.slug },
           })
         })
-        .catch(err => {
+        .catch((err) => {
           this.$toast.error(err.message)
           this.loading = false
         })

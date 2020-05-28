@@ -5,7 +5,7 @@ import cors from 'cors'
 const debug = require('debug')('ea:webfinger')
 const regex = /acct:([a-z0-9_-]*)@([a-z0-9_-]*)/
 
-const createWebFinger = name => {
+const createWebFinger = (name) => {
   const { host } = new URL(CONFIG.CLIENT_URI)
   return {
     subject: `acct:${name}@${host}`,
@@ -30,11 +30,11 @@ export async function handler(req, res) {
 
   const session = req.app.get('driver').session()
   try {
-    const [slug] = await session.readTransaction(async t => {
+    const [slug] = await session.readTransaction(async (t) => {
       const result = await t.run('MATCH (u:User {slug: $slug}) RETURN u.slug AS slug', {
         slug: name,
       })
-      return result.records.map(record => record.get('slug'))
+      return result.records.map((record) => record.get('slug'))
     })
     if (!slug)
       return res.status(404).json({
@@ -52,7 +52,7 @@ export async function handler(req, res) {
   }
 }
 
-export default function() {
+export default function () {
   const router = express.Router()
   router.use('/webfinger', cors(), express.urlencoded({ extended: true }), handler)
   return router

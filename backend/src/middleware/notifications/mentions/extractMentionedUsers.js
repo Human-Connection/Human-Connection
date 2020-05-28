@@ -1,6 +1,6 @@
 import cheerio from 'cheerio'
 
-export default content => {
+export default (content) => {
   if (!content) return []
   const $ = cheerio.load(content)
   const userIds = $('a.mention[data-mention-id]')
@@ -9,7 +9,7 @@ export default content => {
     })
     .get()
   return userIds
-    .map(id => id.trim())
-    .filter(id => !!id)
+    .map((id) => id.trim())
+    .filter((id) => !!id)
     .filter((id, index, allIds) => allIds.indexOf(id) === index)
 }

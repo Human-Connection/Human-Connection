@@ -92,7 +92,7 @@ export default {
           this.logout()
           this.$router.history.push('/')
         })
-        .catch(error => {
+        .catch((error) => {
           this.$toast.error(error.message)
         })
     },

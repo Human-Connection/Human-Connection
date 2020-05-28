@@ -9,7 +9,7 @@ import { gql } from '../helpers/jest'
 const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
 
 /* eslint-disable no-multi-spaces */
-;(async function() {
+;(async function () {
   let authenticatedUser = null
   const driver = getDriver()
   const neode = getNeode()
@@ -598,7 +598,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       }),
     ])
     const [p2, p7, p8, p12] = await Promise.all(
-      ['p2', 'p7', 'p8', 'p12'].map(id => neode.find('Post', id)),
+      ['p2', 'p7', 'p8', 'p12'].map((id) => neode.find('Post', id)),
     )
     authenticatedUser = null
 
@@ -928,7 +928,15 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       trollingComment.update({ disabled: true, updatedAt: new Date().toISOString(), closed: true }),
     ])
 
-    await Promise.all([...Array(30).keys()].map(() => Factory.build('user')))
+    const additionalUsers = await Promise.all(
+      [...Array(30).keys()].map(() => Factory.build('user')),
+    )
+    await Promise.all(
+      additionalUsers.map(async (user) => {
+        await jennyRostock.relateTo(user, 'following')
+        await user.relateTo(jennyRostock, 'following')
+      }),
+    )
 
     await Promise.all(
       [...Array(30).keys()].map(() =>

@@ -30,12 +30,7 @@
               style="flex-grow: 0; flex-basis: auto;"
             >
               <client-only>
-                <filter-posts
-                  v-show="showFilterPostsDropdown"
-                  placement="top-start"
-                  offset="8"
-                  :categories="categories"
-                />
+                <filter-menu v-show="showFilterMenuDropdown" />
               </client-only>
             </ds-flex-item>
             <ds-flex-item
@@ -85,8 +80,7 @@ import SearchField from '~/components/features/SearchField/SearchField.vue'
 import Modal from '~/components/Modal'
 import NotificationMenu from '~/components/NotificationMenu/NotificationMenu'
 import seo from '~/mixins/seo'
-import FilterPosts from '~/components/FilterPosts/FilterPosts.vue'
-import CategoryQuery from '~/graphql/CategoryQuery.js'
+import FilterMenu from '~/components/FilterMenu/FilterMenu.vue'
 import PageFooter from '~/components/PageFooter/PageFooter'
 import AvatarMenu from '~/components/AvatarMenu/AvatarMenu'
 
@@ -97,7 +91,7 @@ export default {
     Modal,
     NotificationMenu,
     AvatarMenu,
-    FilterPosts,
+    FilterMenu,
     PageFooter,
   },
   mixins: [seo],
@@ -105,34 +99,20 @@ export default {
     return {
       mobileSearchVisible: false,
       toggleMobileMenu: false,
-      categories: [],
     }
   },
   computed: {
     ...mapGetters({
       isLoggedIn: 'auth/isLoggedIn',
     }),
-    showFilterPostsDropdown() {
+    showFilterMenuDropdown() {
       const [firstRoute] = this.$route.matched
       return firstRoute && firstRoute.name === 'index'
-    },
-  },
-  watch: {
-    Category(category) {
-      this.categories = category || []
     },
   },
   methods: {
     toggleMobileMenuView() {
       this.toggleMobileMenu = !this.toggleMobileMenu
-    },
-  },
-  apollo: {
-    Category: {
-      query() {
-        return CategoryQuery()
-      },
-      fetchPolicy: 'cache-and-network',
     },
   },
 }

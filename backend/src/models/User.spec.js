@@ -28,7 +28,7 @@ describe('slug', () => {
     )
   })
 
-  it('must be unique', async done => {
+  it('must be unique', async (done) => {
     await neode.create('User', { slug: 'Matt' })
     try {
       await expect(neode.create('User', { slug: 'Matt' })).rejects.toThrow('already exists')
@@ -52,8 +52,8 @@ describe('slug', () => {
   })
 
   describe('characters', () => {
-    const createUser = attrs => {
-      return neode.create('User', attrs).then(user => user.toJson())
+    const createUser = (attrs) => {
+      return neode.create('User', attrs).then((user) => user.toJson())
     }
 
     it('-', async () => {

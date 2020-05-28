@@ -8,7 +8,7 @@ import CONFIG from '../config/index.js'
 
 const neode = getNeode()
 
-const uniqueImageUrl = imageUrl => {
+const uniqueImageUrl = (imageUrl) => {
   const newUrl = new URL(imageUrl, CONFIG.CLIENT_URI)
   newUrl.search = `random=${uuid()}`
   return newUrl.toString()
@@ -18,7 +18,7 @@ export const cleanDatabase = async (options = {}) => {
   const { driver = getDriver() } = options
   const session = driver.session()
   try {
-    await session.writeTransaction(transaction => {
+    await session.writeTransaction((transaction) => {
       return transaction.run(
         `
           MATCH (everything)
@@ -73,7 +73,7 @@ Factory.define('basicUser')
   .attr('slug', ['slug', 'name'], (slug, name) => {
     return slug || slugify(name, { lower: true })
   })
-  .attr('encryptedPassword', ['password'], password => {
+  .attr('encryptedPassword', ['password'], (password) => {
     return hashSync(password, 10)
   })
 
@@ -104,17 +104,17 @@ Factory.define('user')
 
 Factory.define('post')
   .option('categoryIds', [])
-  .option('categories', ['categoryIds'], categoryIds => {
-    if (categoryIds.length) return Promise.all(categoryIds.map(id => neode.find('Category', id)))
+  .option('categories', ['categoryIds'], (categoryIds) => {
+    if (categoryIds.length) return Promise.all(categoryIds.map((id) => neode.find('Category', id)))
     // there must be at least one category
     return Promise.all([Factory.build('category')])
   })
   .option('tagIds', [])
-  .option('tags', ['tagIds'], tagIds => {
-    return Promise.all(tagIds.map(id => neode.find('Tag', id)))
+  .option('tags', ['tagIds'], (tagIds) => {
+    return Promise.all(tagIds.map((id) => neode.find('Tag', id)))
   })
   .option('authorId', null)
-  .option('author', ['authorId'], authorId => {
+  .option('author', ['authorId'], (authorId) => {
     if (authorId) return neode.find('User', authorId)
     return Factory.build('user')
   })
@@ -129,7 +129,7 @@ Factory.define('post')
     imageBlurred: false,
     imageAspectRatio: 1.333,
   })
-  .attr('pinned', ['pinned'], pinned => {
+  .attr('pinned', ['pinned'], (pinned) => {
     // Convert false to null
     return pinned || null
   })
@@ -139,7 +139,7 @@ Factory.define('post')
   .attr('slug', ['slug', 'title'], (slug, title) => {
     return slug || slugify(title, { lower: true })
   })
-  .attr('language', ['language'], language => {
+  .attr('language', ['language'], (language) => {
     return language || 'en'
   })
   .after(async (buildObject, options) => {
@@ -152,8 +152,8 @@ Factory.define('post')
     ])
     await Promise.all([
       post.relateTo(author, 'author'),
-      Promise.all(categories.map(c => c.relateTo(post, 'post'))),
-      Promise.all(tags.map(t => t.relateTo(post, 'post'))),
+      Promise.all(categories.map((c) => c.relateTo(post, 'post'))),
+      Promise.all(tags.map((t) => t.relateTo(post, 'post'))),
     ])
     if (image) await post.relateTo(image, 'image')
     if (buildObject.pinned) {
@@ -165,12 +165,12 @@ Factory.define('post')
 
 Factory.define('comment')
   .option('postId', null)
-  .option('post', ['postId'], postId => {
+  .option('post', ['postId'], (postId) => {
     if (postId) return neode.find('Post', postId)
     return Factory.build('post')
   })
   .option('authorId', null)
-  .option('author', ['authorId'], authorId => {
+  .option('author', ['authorId'], (authorId) => {
     if (authorId) return neode.find('User', authorId)
     return Factory.build('user')
   })

@@ -319,29 +319,21 @@
     "placeholder": "Écrivez quelque chose d'inspirant..."
   },
   "filter-menu": {
-    "clearSearch": "Réinitialiser la recherche",
-    "hashtag-search": "Recherche de #{hashtag}",
-    "title": "Votre bulle de filtre"
-  },
-  "filter-posts": {
-    "categories": {
-      "all": "Toutes",
-      "header": "Catégories de contenu"
-    },
-    "followers": {
-      "label": "Utilisateurs que je suis"
-    },
-    "general": {
-      "header": "Filtrer par ...."
-    },
-    "language": {
-      "all": "Tous",
-      "header": "Langues"
-    }
+    "all": "Toutes",
+    "categories": "Catégories de contenu",
+    "emotions": "Émotions",
+    "filter-by": "Filtrer par...",
+    "following": "Utilisateurs que je suis",
+    "languages": "Langues"
   },
   "followButton": {
     "follow": "Suivre",
     "following": "Je suis les"
+  },
+  "hashtags-filter": {
+    "clearSearch": "Réinitialiser la recherche",
+    "hashtag-search": "Recherche de #{hashtag}",
+    "title": "Votre bulle de filtre"
   },
   "index": {
     "change-filter-settings": "Modifiez les paramètres de filtrage pour obtenir plus de résultats.",

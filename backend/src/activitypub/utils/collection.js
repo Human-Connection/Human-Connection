@@ -60,13 +60,10 @@ export function sendCollection(collectionName, req, res) {
 
 function attachThenCatch(promise, res) {
   return promise
-    .then(collection => {
-      res
-        .status(200)
-        .contentType('application/activity+json')
-        .send(collection)
+    .then((collection) => {
+      res.status(200).contentType('application/activity+json').send(collection)
     })
-    .catch(err => {
+    .catch((err) => {
       debug(`error getting a Collection: = ${err}`)
       res.status(500).end()
     })

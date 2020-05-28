@@ -10,7 +10,7 @@ import { getNeode } from '../../db/neo4j'
 const neode = getNeode()
 let query, mutate, variables, req, user
 
-const disable = async id => {
+const disable = async (id) => {
   const moderator = await Factory.build('user', { id: 'u2', role: 'moderator' })
   const user = await neode.find('User', id)
   const reportAgainstUser = await Factory.build('report')
@@ -56,7 +56,7 @@ describe('isLoggedIn', () => {
       isLoggedIn
     }
   `
-  const respondsWith = async expected => {
+  const respondsWith = async (expected) => {
     await expect(query({ query: isLoggedInQuery })).resolves.toMatchObject(expected)
   }
 
@@ -115,7 +115,7 @@ describe('currentUser', () => {
     }
   `
 
-  const respondsWith = async expected => {
+  const respondsWith = async (expected) => {
     await expect(query({ query: currentUserQuery, variables })).resolves.toMatchObject(expected)
   }
 
@@ -176,7 +176,7 @@ describe('login', () => {
     }
   `
 
-  const respondsWith = async expected => {
+  const respondsWith = async (expected) => {
     await expect(mutate({ mutation: loginMutation, variables })).resolves.toMatchObject(expected)
   }
 
@@ -193,7 +193,7 @@ describe('login', () => {
 
   describe('ask for a `token`', () => {
     describe('with a valid email/password combination', () => {
-      it('responds with a JWT bearer token', async done => {
+      it('responds with a JWT bearer token', async (done) => {
         const {
           data: { login: token },
         } = await mutate({ mutation: loginMutation, variables })
@@ -292,7 +292,7 @@ describe('change password', () => {
     }
   `
 
-  const respondsWith = async expected => {
+  const respondsWith = async (expected) => {
     await expect(mutate({ mutation: changePasswordMutation, variables })).resolves.toMatchObject(
       expected,
     )

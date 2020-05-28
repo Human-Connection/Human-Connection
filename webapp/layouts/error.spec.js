@@ -10,7 +10,7 @@ describe('error.vue', () => {
 
   beforeEach(() => {
     mocks = {
-      $t: jest.fn(key => key),
+      $t: jest.fn((key) => key),
     }
   })
 

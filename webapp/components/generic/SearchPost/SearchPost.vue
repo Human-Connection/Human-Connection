@@ -1,34 +1,23 @@
 <template>
-  <ds-flex class="search-post">
-    <ds-flex-item class="search-option-label">
-      <ds-text>{{ option.title | truncate(70) }}</ds-text>
-    </ds-flex-item>
-    <ds-flex-item class="search-option-meta" width="280px">
-      <ds-flex>
-        <ds-flex-item>
-          <ds-text size="small" color="softer" class="search-post-meta">
-            <span class="comments-count">
-              {{ option.commentsCount }}
-              <base-icon name="comments" />
-            </span>
-            <span class="shouted-count">
-              {{ option.shoutedCount }}
-              <base-icon name="bullhorn" />
-            </span>
-          </ds-text>
-        </ds-flex-item>
-        <ds-flex-item>
-          <ds-text size="small" color="softer" align="right" class="search-post-author">
-            {{ option.author.name | truncate(32) }} -
-            {{ option.createdAt | dateTime('dd.MM.yyyy') }}
-          </ds-text>
-        </ds-flex-item>
-      </ds-flex>
-    </ds-flex-item>
-  </ds-flex>
+  <section class="search-post">
+    <p class="label">{{ option.title | truncate(70) }}</p>
+    <div class="metadata">
+      <span class="counts">
+        <counter-icon icon="comments" :count="option.commentsCount" soft />
+        <counter-icon icon="bullhorn" :count="option.shoutedCount" soft />
+      </span>
+      {{ option.author.name | truncate(32) }} - {{ option.createdAt | dateTime('dd.MM.yyyy') }}
+    </div>
+  </section>
 </template>
+
 <script>
+import CounterIcon from '~/components/_new/generic/CounterIcon/CounterIcon'
+
 export default {
+  components: {
+    CounterIcon,
+  },
   name: 'SearchPost',
   props: {
     option: { type: Object, required: true },
@@ -37,35 +26,23 @@ export default {
 </script>
 <style lang="scss">
 .search-post {
-  width: 100%;
-}
-.search-option-label {
-  align-self: center;
-  padding-left: $space-x-small;
-}
-.search-option-meta {
-  align-self: center;
-  .ds-flex {
+  display: flex;
+
+  > .label {
+    flex-grow: 1;
+    padding: 0 $space-x-small;
+  }
+
+  > .metadata {
+    display: flex;
     flex-direction: column;
+    align-items: flex-end;
+    color: $text-color-softer;
+    font-size: $font-size-small;
+
+    > .counts > .counter-icon {
+      margin: 0 $space-x-small;
+    }
   }
-}
-.search-post-meta {
-  float: right;
-  padding-top: 2px;
-  white-space: nowrap;
-  word-wrap: none;
-  .base-icon {
-    vertical-align: sub;
-  }
-}
-.shouted-count {
-  width: 36px;
-  display: inline-block;
-  text-align: right;
-  font-weight: $font-weight-bold;
-}
-.comments-count {
-  text-align: right;
-  font-weight: $font-weight-bold;
 }
 </style>
