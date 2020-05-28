@@ -76,7 +76,7 @@ export default {
     },
 
     modalData(userdata) {
-      return function(userdata) {
+      return function (userdata) {
         return {
           name: 'confirm',
           data: {
@@ -147,7 +147,7 @@ export default {
           }, 1500)
           this.loading = false
         })
-        .catch(err => {
+        .catch((err) => {
           this.$emit('close')
           this.success = false
           this.$toast.error(err.message)
