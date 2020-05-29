@@ -190,7 +190,7 @@ export default {
           the height with respect to the width.
       */
       return {
-        '--hero-image-aspect-ratio': this.post.image.aspectRatio,
+        '--hero-image-aspect-ratio': 1 / this.post.image.aspectRatio,
       }
     },
   },
