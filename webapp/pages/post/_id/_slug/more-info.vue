@@ -14,7 +14,7 @@
       <h3>
         {{ $t('post.moreInfo.titleOfHashtagsSection') }}
       </h3>
-      <hc-hashtag v-for="tag in post.tags" :key="tag.id" :id="tag.id" />
+      <hc-hashtag v-for="tag in sortedTags" :key="tag.id" :id="tag.id" />
     </template>
     <h3>{{ $t('post.moreInfo.titleOfRelatedContributionsSection') }}</h3>
     <ds-section>
@@ -61,6 +61,17 @@ export default {
   computed: {
     post() {
       return this.Post ? this.Post[0] || {} : {}
+    },
+    sortedTags() {
+      // Make sure the property is valid.
+      if (!this.post.tags || !this.post.tags.length) return false
+      // Sorting actually happens in place but that should not be a problem.
+      return this.post.tags.sort(function (a, b) {
+          // Converting to lowercase to make sort case insensitive.
+          const tagA = a.id.toLowerCase()
+          const tagB = b.id.toLowerCase()
+          return tagA < tagB ? -1 : tagA > tagB ? 1 : 0
+        })
     },
   },
   methods: {

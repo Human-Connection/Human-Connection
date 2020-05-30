@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import Vue from 'vue'
 import PostSlug from './index.vue'
 import CommentList from '~/components/CommentList/CommentList'
+import HcHashtag from '~/components/Hashtag/Hashtag'
 
 config.stubs['client-only'] = '<span><slot /></span>'
 config.stubs['nuxt-link'] = '<span><slot /></span>'
@@ -141,6 +142,49 @@ describe('PostSlug', () => {
           id: 'commentAuthorId',
           slug: 'ogerly',
         })
+      })
+    })
+
+    describe('tags shown in tag cloud', () => {
+      beforeEach(async () => {
+        // Create backendData with tags, not alphabetically sorted.
+        backendData.post.tags = [
+          { id: 'c' },
+          { id: 'qw' },
+          { id: 'BQ' },
+          { id: '42' },
+          { id: 'Bw' },
+          { id: 'a' },
+        ]
+        
+        wrapper = await Wrapper()
+      })
+
+      it('are present', async () => {
+        // Get length from backendData and compare against number of tags present in component.
+        expect(wrapper.findAll(HcHashtag).length).toBe(backendData.post.tags.length)
+      })
+
+      it('are alphabetically ordered', async () => {
+        // Get all HcHastag components
+        let wrappers = wrapper.findAll(HcHashtag).wrappers
+        // Exctract ID properties (tag names) from component.
+        let ids = []
+        wrappers.forEach((x) => {
+          ids.push({
+            id: x.props().id,
+          })
+        })
+        // Compare extracted IDs with solution.
+        let idsAlphabetically = [
+          { id: '42' },
+          { id: 'a' },
+          { id: 'BQ' },
+          { id: 'Bw' },
+          { id: 'c' },
+          { id: 'qw' },
+        ]
+        expect(ids).toStrictEqual(idsAlphabetically)
       })
     })
   })
