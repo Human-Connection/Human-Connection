@@ -156,7 +156,7 @@ describe('PostSlug', () => {
           { id: 'Bw' },
           { id: 'a' },
         ]
-        
+
         wrapper = await Wrapper()
       })
 
@@ -167,16 +167,16 @@ describe('PostSlug', () => {
 
       it('are alphabetically ordered', async () => {
         // Get all HcHastag components
-        let wrappers = wrapper.findAll(HcHashtag).wrappers
+        const wrappers = wrapper.findAll(HcHashtag).wrappers
         // Exctract ID properties (tag names) from component.
-        let ids = []
+        const ids = []
         wrappers.forEach((x) => {
           ids.push({
             id: x.props().id,
           })
         })
         // Compare extracted IDs with solution.
-        let idsAlphabetically = [
+        const idsAlphabetically = [
           { id: '42' },
           { id: 'a' },
           { id: 'BQ' },
