@@ -1,17 +1,15 @@
 import gql from 'graphql-tag'
-import { userFragment, postFragment, tagsCategoriesAndPinnedFragment } from './Fragments'
+import { userFragment, postFragment } from './Fragments'
 
 export const searchQuery = gql`
   ${userFragment}
   ${postFragment}
-  ${tagsCategoriesAndPinnedFragment}
 
   query($query: String!) {
     searchResults(query: $query, limit: 5) {
       __typename
       ... on Post {
         ...post
-        ...tagsCategoriesAndPinned
         commentsCount
         shoutedCount
         author {
@@ -31,7 +29,6 @@ export const searchQuery = gql`
 export const searchPosts = gql`
   ${userFragment}
   ${postFragment}
-  ${tagsCategoriesAndPinnedFragment}
 
   query($query: String!, $firstPosts: Int, $postsOffset: Int) {
     searchPosts(query: $query, firstPosts: $firstPosts, postsOffset: $postsOffset) {
@@ -39,7 +36,6 @@ export const searchPosts = gql`
       posts {
         __typename
         ...post
-        ...tagsCategoriesAndPinned
         commentsCount
         shoutedCount
         author {
