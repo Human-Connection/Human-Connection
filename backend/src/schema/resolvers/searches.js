@@ -28,7 +28,7 @@ const postWhereClause = `WHERE score >= 0.0
 
 const searchPostsSetup = {
   fulltextIndex: 'post_fulltext_search',
-  match: 'MATCH (resource)<-[:WROTE]-(author:User)',
+  match: 'MATCH (resource:Post)<-[:WROTE]-(author:User)',
   whereClause: postWhereClause,
   withClause: `WITH resource, author,
   [(resource)<-[:COMMENTS]-(comment:Comment) | comment] AS comments,
@@ -45,7 +45,7 @@ const searchPostsSetup = {
 
 const searchUsersSetup = {
   fulltextIndex: 'user_fulltext_search',
-  match: 'MATCH (resource)',
+  match: 'MATCH (resource:User)',
   whereClause: simpleWhereClause,
   withClause: '',
   returnClause: 'resource {.*, __typename: labels(resource)[0]}',
@@ -54,7 +54,7 @@ const searchUsersSetup = {
 
 const searchHashtagsSetup = {
   fulltextIndex: 'tag_fulltext_search',
-  match: 'MATCH (resource)',
+  match: 'MATCH (resource:Tag)',
   whereClause: simpleWhereClause,
   withClause: '',
   returnClause: 'resource {.*, __typename: labels(resource)[0]}',

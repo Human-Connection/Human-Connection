@@ -111,7 +111,7 @@ describe('SearchableInput.vue', () => {
       })
     })
 
-    it('searches for the term when enter is pressed', async () => {
+    it('opens the search result page when enter is pressed', async () => {
       select.element.value = 'ab'
       select.trigger('input')
       select.trigger('keyup.enter')

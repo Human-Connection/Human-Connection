@@ -928,10 +928,19 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       trollingComment.update({ disabled: true, updatedAt: new Date().toISOString(), closed: true }),
     ])
 
-    await Promise.all([...Array(30).keys()].map(() => Factory.build('user')))
+    const additionalUsers = await Promise.all([...Array(30).keys()].map(() => Factory.build('user')))
+    
+    await Promise.all(
+      additionalUsers.map(async (user) => {
+        await jennyRostock.relateTo(user, 'following')
+        await user.relateTo(jennyRostock, 'following')
+      }),
+    )
+    
     await Promise.all(
       [...Array(30).keys()].map((index) => Factory.build('user', { name: `Jenny${index}` })),
     )
+    
     await Promise.all(
       [...Array(30).keys()].map(() =>
         Factory.build(
@@ -947,6 +956,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         ),
       ),
     )
+    
     await Promise.all(
       [...Array(30).keys()].map(() =>
         Factory.build(

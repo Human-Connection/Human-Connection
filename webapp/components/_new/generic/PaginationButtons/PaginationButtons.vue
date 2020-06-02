@@ -3,7 +3,6 @@
     <base-button
       v-if="hasPreviousResult"
       @click="$emit('back')"
-      :disabled="!hasPreviousResult"
       icon="arrow-left"
       circle
       class="previous-button"
@@ -17,7 +16,6 @@
     <base-button
       v-if="hasMoreResults"
       @click="$emit('next')"
-      :disabled="!hasMoreResults"
       icon="arrow-right"
       circle
       class="next-button"
