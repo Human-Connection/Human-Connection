@@ -13,7 +13,7 @@ We write unit tests with the help of [Jest](https://jestjs.io/) and [Vue Test Ut
 To run all tests use the command `yarn test` in the `/webapp` directory. Other useful commands are:
 - `yarn test -t test-name` to run tests including `test-name` in their file or test names
 - `yarn test -o` to run tests related to files that have been changed since the latest commit
-- `yarn run path/to/component.spec.js` to run a single test file
+- `yarn test path/to/component.spec.js` to run a single test file
 
 ## Documentation and manual testing
 
