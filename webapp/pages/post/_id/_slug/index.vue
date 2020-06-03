@@ -116,7 +116,11 @@ import UserTeaser from '~/components/UserTeaser/UserTeaser'
 import HcShoutButton from '~/components/ShoutButton.vue'
 import CommentForm from '~/components/CommentForm/CommentForm'
 import CommentList from '~/components/CommentList/CommentList'
-import { postMenuModalsData, deletePostMutation } from '~/components/utils/PostHelpers'
+import {
+  postMenuModalsData,
+  deletePostMutation,
+  sortTagsAlphabetically,
+} from '~/components/utils/PostHelpers'
 import PostQuery from '~/graphql/PostQuery'
 import HcEmotions from '~/components/Emotions/Emotions'
 import PostMutations from '~/graphql/PostMutations'
@@ -180,18 +184,7 @@ export default {
       return this.$store.getters['auth/user'].id === author.id
     },
     sortedTags() {
-      // Make sure the property is valid.
-      if (!this.post.tags || !this.post.tags.length) return false
-      /*  Using .slice(0) to make a shallow copy. Otherwise a vue/no-side-effects-in-computed-properties error
-          would be thrown because sort() sorts in place. A shallow copy is fine because only first level objects are
-          affected by the sort, the original this.post.tags object remains unchanged.
-      */
-      return this.post.tags.slice(0).sort(function (a, b) {
-        // Converting to lowercase to make sort case insensitive.
-        const tagA = a.id.toLowerCase()
-        const tagB = b.id.toLowerCase()
-        return tagA < tagB ? -1 : tagA > tagB ? 1 : 0
-      })
+      return sortTagsAlphabetically(this.post.tags)
     },
   },
   methods: {
