@@ -37,7 +37,7 @@ Then("I should see the following posts in the select dropdown:", table => {
 });
 
 Then("I should see the following users in the select dropdown:", table => {
-  cy.get(".ds-heading").should("contain", "Users");
+  cy.get(".search-heading").should("contain", "Users");
   table.hashes().forEach(({ slug }) => {
     cy.get(".ds-select-dropdown").should("contain", slug);
   });
@@ -79,6 +79,26 @@ Then(
   "I should see posts with the searched-for term in the select dropdown",
   () => {
     cy.get(".ds-select-dropdown").should(
+      "contain",
+      "101 Essays that will change the way you think"
+    );
+  }
+);
+
+Then("I should see the search results page", () => {
+  cy.location("pathname").should(
+    "eq",
+    "/search/search-results"
+  );
+  cy.location("search").should(
+    "eq",
+    "?search=PR"
+  );
+});
+
+Then("I should see the following posts on the search results page",
+  () => {
+    cy.get(".post-teaser").should(
       "contain",
       "101 Essays that will change the way you think"
     );

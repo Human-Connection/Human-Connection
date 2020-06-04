@@ -8,7 +8,7 @@ Feature: Search
     And we have the following posts in our database:
       | id | title                                         | content                                 |
       | p1 | 101 Essays that will change the way you think | 101 Essays, of course (PR)!             |
-      | p2 | No searched for content                       | will be found in this post, I guarantee |
+      | p2 | No content                       | will be found in this post, I guarantee |
     And we have the following user accounts:
       | slug            | name            | id               |
       | search-for-me   | Search for me   | user-for-search  |
@@ -23,10 +23,10 @@ Feature: Search
       | title                                         |
       | 101 Essays that will change the way you think |
 
-  Scenario: Press enter starts search
+  Scenario: Press enter opens search page
     When I type "PR" and press Enter
-    Then I should have one item in the select dropdown
-    Then I should see the following posts in the select dropdown:
+    Then I should see the search results page
+    Then I should see the following posts on the search results page
       | title                                         |
       | 101 Essays that will change the way you think |
 
