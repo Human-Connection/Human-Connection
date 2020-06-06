@@ -199,6 +199,7 @@ export default {
       return {
         '--hero-image-aspect-ratio': 1 / this.post.image.aspectRatio,
       }
+    },
   },
   methods: {
     reply(message) {
