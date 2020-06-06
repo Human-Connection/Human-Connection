@@ -14,7 +14,7 @@
       <h3>
         {{ $t('post.moreInfo.titleOfHashtagsSection') }}
       </h3>
-      <hc-hashtag v-for="tag in post.tags" :key="tag.id" :id="tag.id" />
+      <hc-hashtag v-for="tag in sortedTags" :key="tag.id" :id="tag.id" />
     </template>
     <h3>{{ $t('post.moreInfo.titleOfRelatedContributionsSection') }}</h3>
     <ds-section>
@@ -44,6 +44,7 @@ import HcHashtag from '~/components/Hashtag/Hashtag'
 import { relatedContributions } from '~/graphql/PostQuery'
 import MasonryGrid from '~/components/MasonryGrid/MasonryGrid.vue'
 import MasonryGridItem from '~/components/MasonryGrid/MasonryGridItem.vue'
+import { sortTagsAlphabetically } from '~/components/utils/PostHelpers'
 
 export default {
   transition: {
@@ -61,6 +62,9 @@ export default {
   computed: {
     post() {
       return this.Post ? this.Post[0] || {} : {}
+    },
+    sortedTags() {
+      return sortTagsAlphabetically(this.post.tags)
     },
   },
   methods: {

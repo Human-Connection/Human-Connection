@@ -65,7 +65,7 @@
       <!-- Tags -->
       <div v-if="post.tags && post.tags.length" class="tags">
         <ds-space margin="xx-small" />
-        <hc-hashtag v-for="tag in post.tags" :key="tag.id" :id="tag.id" />
+        <hc-hashtag v-for="tag in sortedTags" :key="tag.id" :id="tag.id" />
       </div>
       <ds-space margin-top="x-large">
         <ds-flex :gutter="{ lg: 'small' }">
@@ -117,7 +117,11 @@ import UserTeaser from '~/components/UserTeaser/UserTeaser'
 import HcShoutButton from '~/components/ShoutButton.vue'
 import CommentForm from '~/components/CommentForm/CommentForm'
 import CommentList from '~/components/CommentList/CommentList'
-import { postMenuModalsData, deletePostMutation } from '~/components/utils/PostHelpers'
+import {
+  postMenuModalsData,
+  deletePostMutation,
+  sortTagsAlphabetically,
+} from '~/components/utils/PostHelpers'
 import PostQuery from '~/graphql/PostQuery'
 import HcEmotions from '~/components/Emotions/Emotions'
 import PostMutations from '~/graphql/PostMutations'
@@ -180,6 +184,9 @@ export default {
       if (!author) return false
       return this.$store.getters['auth/user'].id === author.id
     },
+    sortedTags() {
+      return sortTagsAlphabetically(this.post.tags)
+    },
     heroImageStyle() {
       /*  Return false when image property is not present or is not a number
           so no unnecessary css variables are set.
@@ -192,7 +199,6 @@ export default {
       return {
         '--hero-image-aspect-ratio': 1 / this.post.image.aspectRatio,
       }
-    },
   },
   methods: {
     reply(message) {
