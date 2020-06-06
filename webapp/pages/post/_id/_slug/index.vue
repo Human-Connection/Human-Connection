@@ -8,6 +8,7 @@
         'disabled-content': post.disabled,
         '--blur-image': blurred,
       }"
+      :style="heroImageStyle"
     >
       <template #heroImage v-if="post.image">
         <img :src="post.image | proxyApiUrl" class="image" />
@@ -186,6 +187,19 @@ export default {
     sortedTags() {
       return sortTagsAlphabetically(this.post.tags)
     },
+    heroImageStyle() {
+      /*  Return false when image property is not present or is not a number
+          so no unnecessary css variables are set.
+      */
+      if (!this.post.image || typeof this.post.image.aspectRatio !== 'number') return false
+
+      /*  Return the aspect ratio as a css variable. Later to be used when calculating
+          the height with respect to the width.
+      */
+      return {
+        '--hero-image-aspect-ratio': 1 / this.post.image.aspectRatio,
+      }
+    },
   },
   methods: {
     reply(message) {
@@ -255,6 +269,22 @@ export default {
 .post-page {
   > .hero-image {
     position: relative;
+    /*  The padding top makes sure the correct height is set (according to the
+        hero image aspect ratio) before the hero image loads so
+        the autoscroll works correctly when following a comment link. 
+    */
+    padding-top: calc(var(--hero-image-aspect-ratio) * 100%);
+
+    /*  Letting the image fill the container, since the container
+        is the one determining height
+    */
+    > .image {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+    }
   }
 
   > .menu {
