@@ -25,7 +25,11 @@
 
       <p>
         {{ $t('code-of-conduct.get-help') }}
-        <a class="hc-editor-link-blot" href="mailto:moderation@human-connection.org" target="_blank">
+        <a
+          class="hc-editor-link-blot"
+          href="mailto:moderation@human-connection.org"
+          target="_blank"
+        >
           moderation@human-connection.org
         </a>
       </p>
