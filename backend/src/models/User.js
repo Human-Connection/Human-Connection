@@ -12,6 +12,12 @@ export default {
     target: 'Image',
     direction: 'out',
   },
+  profileHeader: {
+    type: 'relationship',
+    relationship: 'PROFILE_HEADER_IMAGE',
+    target: 'Image',
+    direction: 'out',
+  },
   deleted: { type: 'boolean', default: false },
   disabled: { type: 'boolean', default: false },
   role: { type: 'string', default: 'user' },

@@ -91,14 +91,22 @@ Factory.define('user')
       url: faker.internet.avatar(),
     }),
   )
+  /*  Defaults to false since a lot of existing tests are based on finding a certain
+      amount of images without further checks causing them to fail when finding these
+      extra profile header images. A couple of users are given profile headers
+      explicitly in seed.js.
+  */
+  .option('profileHeader', () => false)
   .after(async (buildObject, options) => {
-    const [user, email, avatar] = await Promise.all([
+    const [user, email, avatar, profileHeader] = await Promise.all([
       neode.create('User', buildObject),
       neode.create('EmailAddress', { email: options.email }),
       options.avatar,
+      options.profileHeader,
     ])
     await Promise.all([user.relateTo(email, 'primaryEmail'), email.relateTo(user, 'belongsTo')])
     if (avatar) await user.relateTo(avatar, 'avatar')
+    if (profileHeader) await user.relateTo(profileHeader, 'profileHeader')
     return user
   })
 

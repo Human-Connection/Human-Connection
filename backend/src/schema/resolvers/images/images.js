@@ -105,7 +105,7 @@ const uploadImageFile = async (upload, uploadCallback) => {
 const sanitizeRelationshipType = (relationshipType) => {
   // Cypher query language does not allow to parameterize relationship types
   // See: https://github.com/neo4j/neo4j/issues/340
-  if (!['HERO_IMAGE', 'AVATAR_IMAGE'].includes(relationshipType)) {
+  if (!['HERO_IMAGE', 'AVATAR_IMAGE', 'PROFILE_HEADER_IMAGE'].includes(relationshipType)) {
     throw new Error(`Unknown relationship type ${relationshipType}`)
   }
 }

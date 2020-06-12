@@ -21,7 +21,9 @@ const statisticsQuery = gql`
     }
   }
 `
-beforeAll(() => {
+beforeAll(async () => {
+  // Clean the database so no artifacts from other test files are interfering.
+  await cleanDatabase()
   authenticatedUser = undefined
   const { server } = createServer({
     context: () => {

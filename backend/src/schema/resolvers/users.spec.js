@@ -341,11 +341,17 @@ describe('DeleteUser', () => {
     beforeEach(async () => {
       variables = { id: ' u343', resource: [] }
 
-      user = await Factory.build('user', {
-        name: 'My name should be deleted',
-        about: 'along with my about',
-        id: 'u343',
-      })
+      user = await Factory.build(
+        'user',
+        {
+          name: 'My name should be deleted',
+          about: 'along with my about',
+          id: 'u343',
+        },
+        {
+          profileHeader: Factory.build('image'),
+        },
+      )
     })
 
     describe('authenticated as Admin', () => {
@@ -496,8 +502,8 @@ describe('DeleteUser', () => {
                 ).resolves.toMatchObject(expectedResponse)
               })
 
-              it('deletes user avatar and post hero images', async () => {
-                await expect(neode.all('Image')).resolves.toHaveLength(22)
+              it('deletes user avatar, profile header and post hero images', async () => {
+                await expect(neode.all('Image')).resolves.toHaveLength(23)
                 await mutate({ mutation: deleteUserMutation, variables })
                 await expect(neode.all('Image')).resolves.toHaveLength(20)
               })
@@ -627,11 +633,17 @@ describe('DeleteUser', () => {
     beforeEach(async () => {
       variables = { id: 'u343', resource: [] }
 
-      user = await Factory.build('user', {
-        name: 'My name should be deleted',
-        about: 'along with my about',
-        id: 'u343',
-      })
+      user = await Factory.build(
+        'user',
+        {
+          name: 'My name should be deleted',
+          about: 'along with my about',
+          id: 'u343',
+        },
+        {
+          profileHeader: Factory.build('image'),
+        },
+      )
       await Factory.build(
         'user',
         {
@@ -792,8 +804,8 @@ describe('DeleteUser', () => {
                 ).resolves.toMatchObject(expectedResponse)
               })
 
-              it('deletes user avatar and post hero images', async () => {
-                await expect(neode.all('Image')).resolves.toHaveLength(22)
+              it('deletes user avatar, profile header and post hero images', async () => {
+                await expect(neode.all('Image')).resolves.toHaveLength(23)
                 await mutate({ mutation: deleteUserMutation, variables })
                 await expect(neode.all('Image')).resolves.toHaveLength(20)
               })

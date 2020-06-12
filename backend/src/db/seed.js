@@ -168,6 +168,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         },
         {
           email: 'moderator@example.org',
+          profileHeader: Factory.build('image'),
         },
       ),
       Factory.build(
@@ -180,6 +181,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         },
         {
           email: 'user@example.org',
+          profileHeader: Factory.build('image'),
         },
       ),
       Factory.build(
@@ -192,6 +194,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         },
         {
           email: 'huey@example.org',
+          profileHeader: Factory.build('image'),
         },
       ),
       Factory.build(

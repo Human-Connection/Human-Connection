@@ -109,6 +109,9 @@ describe('currentUser', () => {
         avatar {
           url
         }
+        profileHeader {
+          url
+        }
         email
         role
       }
@@ -142,6 +145,9 @@ describe('currentUser', () => {
             avatar: Factory.build('image', {
               url: 'https://s3.amazonaws.com/uifaces/faces/twitter/jimmuirhead/128.jpg',
             }),
+            profileHeader: Factory.build('image', {
+              url: 'https://s3.amazonaws.com/uifaces/faces/twitter/hellofeverrrr/128.jpg',
+            }),
           },
         )
         const userBearerToken = encode({ id: 'u3' })
@@ -155,6 +161,9 @@ describe('currentUser', () => {
               id: 'u3',
               avatar: Factory.build('image', {
                 url: 'https://s3.amazonaws.com/uifaces/faces/twitter/jimmuirhead/128.jpg',
+              }),
+              profileHeader: Factory.build('image', {
+                url: 'https://s3.amazonaws.com/uifaces/faces/twitter/hellofeverrrr/128.jpg',
               }),
               email: 'test@example.org',
               name: 'Matilde Hermiston',

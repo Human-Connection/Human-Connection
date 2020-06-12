@@ -18,6 +18,7 @@ const obfuscate = async (resolve, root, args, context, info) => {
     root.title = 'UNAVAILABLE'
     root.slug = 'UNAVAILABLE'
     root.avatar = null
+    root.profileHeader = null
     root.about = 'UNAVAILABLE'
     root.name = 'UNAVAILABLE'
     root.image = null
