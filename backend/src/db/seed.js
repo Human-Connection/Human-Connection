@@ -181,7 +181,6 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         },
         {
           email: 'user@example.org',
-          profileHeader: Factory.build('image'),
         },
       ),
       Factory.build(
