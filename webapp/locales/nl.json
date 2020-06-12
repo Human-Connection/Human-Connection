@@ -172,5 +172,10 @@
     "taxident": "Identificatienummer voor de belasting over de toegevoegde waarde overeenkomstig § 27 a Wet op de belasting over de toegevoegde waarde (Duitsland).",
     "termsAc": "Gebruiksvoorwaarden",
     "tribunal": "registerrechtbank"
+  },
+  "user": {
+    "profileHeader": {
+      "submitted": "Uploaden geslaagd!"
+    }
   }
 }

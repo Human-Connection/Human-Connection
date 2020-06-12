@@ -830,6 +830,9 @@
   "user": {
     "avatar": {
       "submitted": "Erfolgreich hochgeladen!"
+    },
+    "profileHeader": {
+      "submitted": "Erfolgreich hochgeladen!"
     }
   }
 }

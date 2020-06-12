@@ -20,6 +20,9 @@ export default (i18n) => {
         ...userCounts
         ...locationAndBadges
         about
+        profileHeader {
+          url
+        }
         locationName
         createdAt
         followedByCurrentUser
@@ -226,6 +229,7 @@ export const updateUserMutation = () => {
       $showShoutsPublicly: Boolean
       $termsAndConditionsAgreedVersion: String
       $avatar: ImageInput
+      $profileHeader: ImageInput
     ) {
       UpdateUser(
         id: $id
@@ -237,6 +241,7 @@ export const updateUserMutation = () => {
         showShoutsPublicly: $showShoutsPublicly
         termsAndConditionsAgreedVersion: $termsAndConditionsAgreedVersion
         avatar: $avatar
+        profileHeader: $profileHeader
       ) {
         id
         slug
@@ -248,6 +253,9 @@ export const updateUserMutation = () => {
         locale
         termsAndConditionsAgreedVersion
         avatar {
+          url
+        }
+        profileHeader {
           url
         }
       }

@@ -722,6 +722,9 @@
   "user": {
     "avatar": {
       "submitted": "Carregado com sucesso!"
+    },
+    "profileHeader": {
+      "submitted": "Carregado com sucesso!"
     }
   }
 }

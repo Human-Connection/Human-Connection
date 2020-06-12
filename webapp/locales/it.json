@@ -734,6 +734,9 @@
   "user": {
     "avatar": {
       "submitted": ""
+    },
+    "profileHeader": {
+      "submitted": "Caricamento eseguito correttamente!"
     }
   }
 }

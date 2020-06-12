@@ -827,6 +827,9 @@
   "user": {
     "avatar": {
       "submitted": "Carga con éxito"
+    },
+    "profileHeader": {
+      "submitted": "Carga con éxito!"
     }
   }
 }

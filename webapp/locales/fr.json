@@ -791,6 +791,9 @@
   "user": {
     "avatar": {
       "submitted": "Téléchargement réussi"
+    },
+    "profileHeader": {
+      "submitted": "Téléchargement réussi"
     }
   }
 }

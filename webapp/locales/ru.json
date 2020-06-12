@@ -823,6 +823,9 @@
   "user": {
     "avatar": {
       "submitted": "Успешная загрузка!"
+    },
+    "profileHeader": {
+      "submitted": "Успешная загрузка!"
     }
   }
 }

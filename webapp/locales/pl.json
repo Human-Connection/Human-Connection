@@ -363,6 +363,9 @@
   "user": {
     "avatar": {
       "submitted": "Przesłano pomyślnie"
+    },
+    "profileHeader": {
+      "submitted": "Przesłano pomyślnie"
     }
   }
 }
