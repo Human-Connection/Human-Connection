@@ -38,6 +38,7 @@ The following features will be implemented. This gets done in three steps:
 
 * Upload and Change Avatar
 * Upload and Change Profile Picture
+* Upload and Change Profile Header Image
 * Edit Social Media Accounts
 * Edit Locale information
 * Show and delete Bookmarks \(later\)
