@@ -25,6 +25,7 @@ beforeEach(() => {
 })
 
 beforeAll(() => {
+  cleanDatabase()
   const { server } = createServer({
     context: () => {
       return {
