@@ -123,15 +123,10 @@ export default {
 <style lang="scss">
 .profile-header {
   height: 100%;
-  position: relative;
   background-color: DarkGrey; /* Fallback color */
 }
 
 .profile-header-image {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
   width: 100%;
 }
 
@@ -169,7 +164,10 @@ export default {
 
 .profileHeader-attachments-upload-area {
   height: 100%;
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
   display: flex;
   align-items: center;
   justify-content: center;

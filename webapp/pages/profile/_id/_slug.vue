@@ -2,7 +2,7 @@
   <div>
     <ds-flex v-if="user" :width="{ base: '100%' }" gutter="base">
       <ds-flex-item width="100%">
-        <base-card class="profile-header">
+        <base-card class="profile-header-card">
           <user-profile-header :user="user" :editable="myProfile"></user-profile-header>
         </base-card>
       </ds-flex-item>
@@ -550,8 +550,8 @@ export default {
   }
 }
 
-.profile-header {
+.profile-header-card {
   padding: 0px; /* Overwrite default card padding to 0. */
-  height: 250px;
+  max-height: 250px;
 }
 </style>
