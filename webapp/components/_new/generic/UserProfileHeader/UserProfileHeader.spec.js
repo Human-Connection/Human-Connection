@@ -59,7 +59,7 @@ describe('UserProfileHeader.vue', () => {
       })
     })
 
-    describe('with a relative avatar url', () => {
+    describe('with a relative header url', () => {
       beforeEach(() => {
         propsData = {
           user: {
@@ -77,7 +77,7 @@ describe('UserProfileHeader.vue', () => {
       })
     })
 
-    describe('with an absolute avatar url', () => {
+    describe('with an absolute header url', () => {
       beforeEach(() => {
         propsData = {
           user: {
@@ -90,7 +90,7 @@ describe('UserProfileHeader.vue', () => {
         wrapper = Wrapper()
       })
 
-      it('keeps the avatar URL as is', () => {
+      it('keeps the header URL as is', () => {
         // e.g. our seeds have absolute image URLs
         expect(wrapper.find('img').attributes('src')).toBe(
           'https://s3.amazonaws.com/uifaces/faces/twitter/sawalazar/128.jpg',
