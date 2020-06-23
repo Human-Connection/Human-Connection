@@ -174,8 +174,11 @@
     "tribunal": "registerrechtbank"
   },
   "user": {
+    "avatar": {
+      "submitted": "Uploaden van profielfoto geslaagd!"
+    },
     "profileHeader": {
-      "submitted": "Uploaden geslaagd!"
+      "submitted": "Uploaden van profielbanner geslaagd!"
     }
   }
 }

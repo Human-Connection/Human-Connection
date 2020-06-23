@@ -721,10 +721,10 @@
   },
   "user": {
     "avatar": {
-      "submitted": "Carregado com sucesso!"
+      "submitted": "Imagem de avatar upload bem sucedido!"
     },
     "profileHeader": {
-      "submitted": "Carregado com sucesso!"
+      "submitted": "Imagem de cabeçalho upload bem sucedido!"
     }
   }
 }

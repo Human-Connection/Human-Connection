@@ -733,10 +733,10 @@
   },
   "user": {
     "avatar": {
-      "submitted": ""
+      "submitted": "Caricamento dell'immagine del profilo eseguito correttamente!"
     },
     "profileHeader": {
-      "submitted": "Caricamento eseguito correttamente!"
+      "submitted": "Caricamento immagine intestazione riuscito!"
     }
   }
 }
