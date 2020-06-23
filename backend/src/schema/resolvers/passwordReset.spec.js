@@ -24,8 +24,8 @@ beforeEach(() => {
   variables = {}
 })
 
-beforeAll(() => {
-  cleanDatabase()
+beforeAll(async () => {
+  await cleanDatabase()
   const { server } = createServer({
     context: () => {
       return {
