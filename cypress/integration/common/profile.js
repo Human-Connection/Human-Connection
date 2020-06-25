@@ -58,5 +58,5 @@ Then("I cannot upload a profile header image", () => {
   cy.get(".base-card")
     .children()
     .should("not.have.id", "profileHeaderDropzone")
-    .should("have.class", "profile-header");
+    .should("have.class", "profile-header-card");
 });
