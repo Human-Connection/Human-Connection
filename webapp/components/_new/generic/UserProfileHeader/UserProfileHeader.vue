@@ -1,5 +1,5 @@
 <template>
-  <div class="profile-header">
+  <div class="profile-header" :style="headerStyles">
     <vue-dropzone
       v-if="user && this.editable"
       id="profileHeaderDropzone"
@@ -75,6 +75,25 @@ export default {
       const { profileHeader } = this.user
       return profileHeader && profileHeader.url
     },
+    headerStyles() {
+      /*  Allow the header to shrink when a profileHeaderUrl is present,
+          this prevents a grey bar from showing up on mobile.
+      */
+      if (this.profileHeaderUrl) {
+        return {
+          // Still setting some height in case the user uploads a super super wide picture.
+          // In that case the height would, in theory, be able to go to 0 thus changing a profile
+          // picture won't be possible anymore.
+          '--min-height': 20 + 'px',
+          '--max-height': 250 + 'px',
+        }
+      } else {
+        // If no picture is present, the height is fixed to 250 so user can click the upload zone.
+        return {
+          '--height': 250 + 'px',
+        }
+      }
+    },
   },
   watch: {
     error() {
@@ -122,7 +141,9 @@ export default {
 
 <style lang="scss">
 .profile-header {
-  height: 100%;
+  min-height: var(--min-height);
+  max-height: var(--max-height);
+  height: var(--height);
   background-color: DarkGrey; /* Fallback color */
 }
 

@@ -552,6 +552,5 @@ export default {
 
 .profile-header-card {
   padding: 0px; /* Overwrite default card padding to 0. */
-  max-height: 250px;
 }
 </style>
