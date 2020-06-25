@@ -15,6 +15,7 @@ const action = () => {
 }
 
 beforeAll(async () => {
+  await cleanDatabase()
   // For performance reasons we do this only once
   const users = await Promise.all([
     Factory.build('user', { id: 'u1', role: 'user' }),
