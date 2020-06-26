@@ -72,6 +72,7 @@ export default {
       return 'Profile header image of ' + this.user.name
     },
     profileHeaderUrl() {
+      if (this.user == null || this.user.profileHeader == null) return false
       const { profileHeader } = this.user
       return profileHeader && profileHeader.url
     },
