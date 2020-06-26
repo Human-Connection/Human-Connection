@@ -18,7 +18,7 @@ Then("I should be able to change my profile picture", () => {
   cy.get(".profile-avatar img")
     .should("have.attr", "src")
     .and("contains", "onourjourney");
-  cy.contains(".iziToast-message", "Upload successful").should(
+  cy.contains(".iziToast-message", "Avatar upload successful!").should(
     "have.length",
     1
   );
@@ -36,7 +36,7 @@ Then("I should be able to change my profile header picture", () => {
   cy.get(".profile-header-image")
     .should("have.attr", "src")
     .and("contains", "onourjourney");
-  cy.contains(".iziToast-message", "Upload successful").should(
+  cy.contains(".iziToast-message", "Avatar upload successful!").should(
     "have.length",
     1
   );
