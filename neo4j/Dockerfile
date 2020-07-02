@@ -1,4 +1,4 @@
-FROM neo4j:3.5.14-enterprise
+FROM neo4j:4.1.0-enterprise
 LABEL Description="Neo4J database of the Social Network Human-Connection.org with preinstalled database constraints and indices" Vendor="Human Connection gGmbH" Version="0.0.1" Maintainer="Human Connection gGmbH (developer@human-connection.org)"
 
 ARG BUILD_COMMIT
