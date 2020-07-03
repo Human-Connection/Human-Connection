@@ -28,5 +28,5 @@ cp .env.template .env
 yarn install
 cd "${GIT_ROOT}"
 
-(cd "${GIT_ROOT}/backend" && /sbin/tini -g -- yarn run dev &)
-(cd "${GIT_ROOT}/frontend" && /sbin/tini -g -- yarn run dev &)
+# (cd "${GIT_ROOT}/backend" && /sbin/tini -g -- yarn run dev &)
+# (cd "${GIT_ROOT}/frontend" && /sbin/tini -g -- yarn run dev &)

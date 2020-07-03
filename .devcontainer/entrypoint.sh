@@ -4,9 +4,10 @@ echo $(whoami)
 
 /usr/local/share/docker-init.sh
 
-[ -x "/workspace/Human-Connection/deployment/codespaces/bootstrap.sh" ] && \
-  bash "/workspace/Human-Connection/deployment/codespaces/bootstrap.sh"
-
+if [ -f "/workspace/Human-Connection/deployment/codespaces/bootstrap.sh" ] ; then
+  echo "setting up Human-Connection"
+  "/workspace/Human-Connection/deployment/codespaces/bootstrap.sh"
+fi
 
 "$@"
 
