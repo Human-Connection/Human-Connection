@@ -4,8 +4,8 @@ echo $(whoami)
 
 /usr/local/share/docker-init.sh
 
-[ -x "${HOME}/workspace/Human-Connection/deployment/codespaces/bootstrap.sh" ] && \
-  bash "${HOME}/workspace/Human-Connection/deployment/codespaces/bootstrap.sh"
+[ -x "/workspace/Human-Connection/deployment/codespaces/bootstrap.sh" ] && \
+  bash "/workspace/Human-Connection/deployment/codespaces/bootstrap.sh"
 
 
 "$@"
