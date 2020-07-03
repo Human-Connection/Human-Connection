@@ -56,7 +56,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     # Install tini
     && curl -L --fail --silent --show-error "https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini" > /sbin/tini \
     && echo "${TINI_SHA256}  /sbin/tini" | sha256sum -c --strict --quiet \
-    && chmod +x /sbin/tini
+    && chmod +x /sbin/tini \
     #
     # Clean up
     && apt-get autoremove -y \
