@@ -16,7 +16,7 @@ ARG TARGET_SOCKET=/var/run/docker.sock
 ENV TINI_VERSION="v0.18.0" \
     TINI_SHA256="12d20136605531b09a2c2dac02ccee85e1b874eb322ef6baf7561cd93f93c855"
 
-EXPOSE [4000, 3000]
+EXPOSE 3000
 
 COPY containeruser.sh /bin/containeruser.sh
 COPY entrypoint.sh /bin/entrypoint.sh
