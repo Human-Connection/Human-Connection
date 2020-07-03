@@ -2,7 +2,7 @@
     "name": "RedSol Node.js 12",
     "dockerComposeFile": "docker-compose.yml",
     "service": "docker-from-docker",
-    "workspaceFolder": "/workspace",
+    "workspaceFolder": "/workspace/Human-Connection",
     // Set *default* container specific settings.json values on container create.
     "settings": {
         "terminal.integrated.shell.linux": "/bin/zsh"
