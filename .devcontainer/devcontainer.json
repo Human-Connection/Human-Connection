@@ -1,7 +1,11 @@
 {
     "name": "RedSol Node.js 12",
-    "dockerComposeFile": "docker-compose.yml",
-    "service": "docker-from-docker",
+    // The order of the files is important since later files override previous ones
+    "dockerComposeFile": [
+        "../docker-compose.yml", 
+        "docker-compose.yml"
+    ],
+    "service": "devcontainer",
     "workspaceMount": "source=${localWorkspaceFolder}/Human-Connection,target=/workspace,type=bind,consistency=cached",
     "workspaceFolder": "/workspace/Human-Connection",
     // Set *default* container specific settings.json values on container create.

@@ -5,7 +5,7 @@
 
 version: '3'
 services:
-  docker-from-docker:
+  devcontainer:
     # Uncomment the next line to use a non-root user for all processes. You can also
     # simply use the "remoteUser" property in devcontainer.json if you just want VS Code
     # and its sub-processes (terminals, tasks, debugging) to execute as the user. On Linux,
@@ -32,4 +32,15 @@ services:
 
     # Overrides default command so things don't shut down after the process ends.
     entrypoint: /bin/entrypoint.sh
-    command: sleep infinity 
+    command: sleep infinity
+    networks:
+     - hc-network 
+  webapp:
+    volumes:
+      - ../webapp:/workspace/nitro-web:cached
+  backend:
+    volumes:
+      - ../backend:/workspace/nitro-backend:cached
+  neo4j:
+    volumes:
+      - ../neo4j:/workspace/neo4j:cached
