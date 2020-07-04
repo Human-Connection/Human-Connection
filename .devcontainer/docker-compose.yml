@@ -18,7 +18,7 @@ services:
 
     volumes:
       # Update this to wherever you want VS Code to mount the folder of your project
-      - ..:/workspace/Human-Connection:cached
+      - .:/workspace/Human-Connection:cached
 
       # Forwards the local Docker socket to the container.
       - /var/run/docker.sock:/var/run/docker-host.sock 
@@ -34,12 +34,18 @@ services:
     command: sleep infinity
     networks:
      - hc-network 
-  webapp:   
+  webapp:
+    build:
+      context: webapp
+      target: build-and-test   
     volumes:
-      - ../webapp:/workspace/nitro-web:cached
-  backend:    
+      - ./webapp:/workspace/nitro-web:cached
+  backend:
+    build:
+      context: backend
+      target: build-and-test    
     volumes:
-      - ../backend:/workspace/nitro-backend:cached
+      - ./backend:/workspace/nitro-backend:cached
   neo4j:
     volumes:
-      - ../neo4j:/workspace/neo4j:cached
+      - ./neo4j:/workspace/neo4j:cached
