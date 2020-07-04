@@ -34,12 +34,26 @@ services:
     command: sleep infinity
     networks:
      - hc-network 
-  webapp:
+  webapp:   
+    build:
+      context: ../webapp
+      target: production
+      args:
+        - "BUILD_COMMIT=${TRAVIS_COMMIT}"
     volumes:
       - ../webapp:/workspace/nitro-web:cached
-  backend:
+  backend:    
+    build:
+      context: ../backend
+      target: production
+      args:
+        - "BUILD_COMMIT=${TRAVIS_COMMIT}"
     volumes:
       - ../backend:/workspace/nitro-backend:cached
   neo4j:
+    build:
+      context: ../neo4j
+      args:
+        - "BUILD_COMMIT=${TRAVIS_COMMIT}"
     volumes:
       - ../neo4j:/workspace/neo4j:cached
