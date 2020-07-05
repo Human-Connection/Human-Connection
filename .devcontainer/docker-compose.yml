@@ -38,14 +38,12 @@ services:
     environment:
     # For Backend
       - HOST=0.0.0.0
-      - GRAPHQL_URI=http://devcontainer:4000
       - MAPBOX_TOKEN="pk.eyJ1IjoiaHVtYW4tY29ubmVjdGlvbiIsImEiOiJjajl0cnBubGoweTVlM3VwZ2lzNTNud3ZtIn0.bZ8KK9l70omjXbEkkbHGsQ"
     # For Frontend
       - NEO4J_URI=bolt://neo4j:7687
       - GRAPHQL_URI=http://devcontainer:4000
       - CLIENT_URI=http://devcontainer:3000
       - JWT_SECRET=b/&&7b78BF&fv/Vd
-      - MAPBOX_TOKEN=pk.eyJ1IjoiaHVtYW4tY29ubmVjdGlvbiIsImEiOiJjajl0cnBubGoweTVlM3VwZ2lzNTNud3ZtIn0.KZ8KK9l70omjXbEkkbHGsQ
       - PRIVATE_KEY_PASSPHRASE=a7dsf78sadg87ad87sfagsadg78
       - "DEBUG=${DEBUG}"
     ports:
