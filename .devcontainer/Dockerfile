@@ -46,7 +46,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
        zsh \
     && chmod +x /bin/entrypoint.sh \
     && chmod +x /bin/containeruser.sh \
-    && chmod +x /etc/profile.d/profile_devcontainer_alias.sh \
+    && chmod +x /bin/profile_devcontainer_alias.sh \
     && /bin/containeruser.sh \
     # Use Docker script from script library to set things up (installs: docker, docker-compose, sets up dind, and a bunch of other stuff)
     && curl -sSL $DOCKER_SCRIPT_SOURCE -o /tmp/docker-setup.sh \
