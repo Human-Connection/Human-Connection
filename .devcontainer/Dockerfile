@@ -16,10 +16,9 @@ ARG TARGET_SOCKET=/var/run/docker.sock
 ENV TINI_VERSION="v0.18.0" \
     TINI_SHA256="12d20136605531b09a2c2dac02ccee85e1b874eb322ef6baf7561cd93f93c855"
 
-EXPOSE 3000
-
 COPY containeruser.sh /bin/containeruser.sh
 COPY entrypoint.sh /bin/entrypoint.sh
+COPY profile_devcontainer_alias.sh /etc/profile.d/profile_devcontainer_alias.sh
 
 RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get update \
@@ -46,6 +45,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
        zsh \
     && chmod +x /bin/entrypoint.sh \
     && chmod +x /bin/containeruser.sh \
+    && chmod +x /etc/profile.d/profile_devcontainer_alias.sh \
     && /bin/containeruser.sh \
     # Use Docker script from script library to set things up (installs: docker, docker-compose, sets up dind, and a bunch of other stuff)
     && curl -sSL $DOCKER_SCRIPT_SOURCE -o /tmp/docker-setup.sh \

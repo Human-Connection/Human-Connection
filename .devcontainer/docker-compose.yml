@@ -39,13 +39,15 @@ services:
       context: webapp
       target: build-and-test   
     volumes:
-      - ./webapp:/workspace/nitro-web:cached
+      - .:/workspace/Human-Connection:cached
+    command: yarn run dev
   backend:
     build:
       context: backend
       target: build-and-test    
     volumes:
-      - ./backend:/workspace/nitro-backend:cached
+      - .:/workspace/Human-Connection:cached
+    command: yarn run dev
   neo4j:
     volumes:
       - ./neo4j:/workspace/neo4j:cached
