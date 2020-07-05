@@ -22,6 +22,11 @@ services:
 
       # Forwards the local Docker socket to the container.
       - /var/run/docker.sock:/var/run/docker-host.sock 
+      # For Backend
+      - backend_node_modules:/nitro-backend/node_modules
+      - uploads:/nitro-backend/public/uploads
+      # For Frontend
+      - webapp_node_modules:/nitro-web/node_modules
 
     # Uncomment the next four lines if you will use a ptrace-based debuggers like C++, Go, and Rust.
     # cap_add:
@@ -31,23 +36,44 @@ services:
 
     # Overrides default command so things don't shut down after the process ends.
     entrypoint: /bin/entrypoint.sh
-    command: sleep infinity
+    environment:
+    # For Backend
+      - HOST=0.0.0.0
+      - GRAPHQL_URI=http://devcontainer:4000
+      - MAPBOX_TOKEN="pk.eyJ1IjoiaHVtYW4tY29ubmVjdGlvbiIsImEiOiJjajl0cnBubGoweTVlM3VwZ2lzNTNud3ZtIn0.bZ8KK9l70omjXbEkkbHGsQ"
+    # For Frontend
+      - NEO4J_URI=bolt://neo4j:7687
+      - GRAPHQL_URI=http://devcontainer:4000
+      - CLIENT_URI=http://devcontainer:3000
+      - JWT_SECRET=b/&&7b78BF&fv/Vd
+      - MAPBOX_TOKEN=pk.eyJ1IjoiaHVtYW4tY29ubmVjdGlvbiIsImEiOiJjajl0cnBubGoweTVlM3VwZ2lzNTNud3ZtIn0.KZ8KK9l70omjXbEkkbHGsQ
+      - PRIVATE_KEY_PASSPHRASE=a7dsf78sadg87ad87sfagsadg78
+      - "DEBUG=${DEBUG}"
+    ports:
+      - 3000:3000
+      - 4000:4000
+    command: bash /bin/bootstrap.sh
     networks:
      - hc-network 
-  webapp:
-    build:
-      context: webapp
-      target: build-and-test   
-    volumes:
-      - .:/workspace/Human-Connection:cached
-    command: yarn run dev
-  backend:
-    build:
-      context: backend
-      target: build-and-test    
-    volumes:
-      - .:/workspace/Human-Connection:cached
-    command: yarn run dev
   neo4j:
+    image: humanconnection/neo4j:latest
+    build:
+      context: neo4j
+      args:
+        - "BUILD_COMMIT=${TRAVIS_COMMIT}"
+    networks:
+      - hc-network
+    environment:
+      - NEO4J_AUTH=none
+      - NEO4J_dbms_security_procedures_unrestricted=algo.*,apoc.*
+      - NEO4J_ACCEPT_LICENSE_AGREEMENT=yes
+    ports:
+      - 7687:7687
+      - 7474:7474
     volumes:
-      - ./neo4j:/workspace/neo4j:cached
+      - neo4j_data:/dat
+volumes:
+  webapp_node_modules:
+  backend_node_modules:
+  neo4j_data:
+  uploads:

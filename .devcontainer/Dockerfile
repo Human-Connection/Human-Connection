@@ -18,7 +18,8 @@ ENV TINI_VERSION="v0.18.0" \
 
 COPY containeruser.sh /bin/containeruser.sh
 COPY entrypoint.sh /bin/entrypoint.sh
-COPY profile_devcontainer_alias.sh /etc/profile.d/profile_devcontainer_alias.sh
+COPY bootstrap.sh /bin/bootstrap.sh
+COPY profile_devcontainer_alias.sh /bin/profile_devcontainer_alias.sh
 
 RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get update \
@@ -67,4 +68,4 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 USER $USERNAME
 
 ENTRYPOINT "/bin/entrypoint.sh"
-CMD [ "sleep", "infinity" ]
+CMD [ "bash" "/bin/bootstrap.sh" ]
