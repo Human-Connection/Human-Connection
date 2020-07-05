@@ -11,14 +11,12 @@ services:
     # you may need to update USER_UID and USER_GID in .devcontainer/Dockerfile to match your
     # user if not 1000. See https://aka.ms/vscode-remote/containers/non-root for details.
     # user: vscode
-
     build: 
-      context: ./.devcontainer
+      context: .
       dockerfile: Dockerfile
-
     volumes:
       # Update this to wherever you want VS Code to mount the folder of your project
-      - .:/workspace/Human-Connection:cached
+      - ..:/workspace/Human-Connection:cached
       # Forwards the local Docker socket to the container.
       - /var/run/docker.sock:/var/run/docker-host.sock 
       # For Backend
@@ -26,13 +24,11 @@ services:
       - uploads:/nitro-backend/public/uploads
       # For Frontend
       - webapp_node_modules:/nitro-web/node_modules
-
     # Uncomment the next four lines if you will use a ptrace-based debuggers like C++, Go, and Rust.
     # cap_add:
     #  - SYS_PTRACE
     # security_opt:
     #   - seccomp:unconfined
-
     # Overrides default command so things don't shut down after the process ends.
     entrypoint: /bin/entrypoint.sh
     environment:
@@ -55,7 +51,7 @@ services:
   neo4j:
     image: humanconnection/neo4j:latest
     build:
-      context: neo4j
+      context: ../neo4j
       args:
         - "BUILD_COMMIT=${TRAVIS_COMMIT}"
     networks:
