@@ -65,6 +65,8 @@ services:
       - 7474:7474
     volumes:
       - neo4j_data:/dat
+networks:
+  hc-network:
 volumes:
   webapp_node_modules:
   backend_node_modules:
