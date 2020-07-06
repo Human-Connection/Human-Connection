@@ -19,6 +19,13 @@ function bootstrap_webapp() {
     /usr/bin/nohup yarn run dev > webapp.out.log 2> webapp.err.log < /dev/null &
     cd "${_PWD}"
 }
+
+function profile_alias() {
+    if !grep profile_devcontainer_alias.sh "${HOME}/.profile" > /dev/null 2<&1; then
+      echo "setting up ${HOME}/.profile"
+      echo "source \"${GIT_ROOT}/.devcontainer/profile_devcontainer_alias.sh\"">> "${HOME}/.profile"
+    fi
+}
 #
 # starup local services for dev
 # export SCRIPT_DIR="$(cd $(dirname $0) && pwd)"
@@ -27,6 +34,7 @@ export GIT_ROOT="${1:-/workspace/Human-Connection}"
 echo "Starting app bootstrap -  ${GIT_ROOT}"
 bootstrap_backend
 bootstrap_webapp
+profile_alias
 
 # we don't want the app to exit
 echo 'Done building - wait forever'

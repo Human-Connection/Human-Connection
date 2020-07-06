@@ -19,7 +19,6 @@ ENV TINI_VERSION="v0.18.0" \
 COPY containeruser.sh /bin/containeruser.sh
 COPY entrypoint.sh /bin/entrypoint.sh
 COPY bootstrap.sh /bin/bootstrap.sh
-COPY profile_devcontainer_alias.sh /bin/profile_devcontainer_alias.sh
 
 RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get update \
@@ -41,12 +40,12 @@ RUN export DEBIAN_FRONTEND=noninteractive \
        procps \
        socat \
        sudo \
+       unzip \
        vim \
        bash \
        zsh \
     && chmod +x /bin/entrypoint.sh \
     && chmod +x /bin/containeruser.sh \
-    && chmod +x /bin/profile_devcontainer_alias.sh \
     && /bin/containeruser.sh \
     # Use Docker script from script library to set things up (installs: docker, docker-compose, sets up dind, and a bunch of other stuff)
     && curl -sSL $DOCKER_SCRIPT_SOURCE -o /tmp/docker-setup.sh \
@@ -58,6 +57,13 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && curl -L --fail --silent --show-error "https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini" > /sbin/tini \
     && echo "${TINI_SHA256}  /sbin/tini" | sha256sum -c --strict --quiet \
     && chmod +x /sbin/tini \
+    #
+    # Install ngrok
+    # setup ngrok https://dashboard.ngrok.com/get-started/setup
+    && curl -L https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip > /tmp/ngrok.zip \
+    && unzip /tmp/ngrok.zip -d /usr/local/bin \
+    && rm -f /tmp/ngrok.zip \
+    && ngrok --version \
     #
     # Clean up
     && apt-get autoremove -y \
