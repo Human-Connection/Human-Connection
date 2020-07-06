@@ -29,7 +29,7 @@
     "@babel/core": "^7.9.0",
     "@babel/preset-env": "^7.9.0",
     "@babel/register": "^7.9.0",
-    "auto-changelog": "^1.16.4",
+    "auto-changelog": "^2.2.0",
     "bcryptjs": "^2.4.3",
     "codecov": "^3.6.5",
     "cross-env": "^7.0.2",
