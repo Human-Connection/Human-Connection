@@ -46,12 +46,23 @@ function ngrok_warn_auth() {
   echo 
 }
 
+# seed the database
+function seed() {
+  _PWD="$(pwd)"
+  cd "${GIT_ROOT}/backend"
+  yarn db:seed
+  cd "${_PWD}"
+}
+
 # start ngrok
 function ngrok_start() {
     services="webapp backend"
+    auth_config='-config "${HOME}/.ngrok2/ngrok.yml"'
+    ngrok_config='-config "${GIT_ROOT}/.devcontainer/ngrok.yml"'
     if [ ! -f "${HOME}/.ngrok2/ngrok.yml" ]; then
       ngrok_warn_auth
       services="webapp"
+      auth_config=''
     fi
 
     if [ -f "${GIT_ROOT}/.devcontainer/ngrok.pid" ]; then
@@ -62,10 +73,7 @@ function ngrok_start() {
     fi
 
     eval /usr/bin/nohup ngrok start \
-    -log=stdout \
-    -config "${HOME}/.ngrok2/ngrok.yml" \
-    -config "${GIT_ROOT}/.devcontainer/ngrok.yml" \
-      ${services} \
+    -log=stdout ${auth_config} ${ngrok_config} ${services} \
         > "${GIT_ROOT}/.devcontainer/ngrok.out.log" \
        2> "${GIT_ROOT}/.devcontainer/ngrok.err.log" < /dev/null &
     PID=$!

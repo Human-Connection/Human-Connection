@@ -21,7 +21,9 @@ function bootstrap_webapp() {
 }
 
 function profile_alias() {
-    if !grep profile_devcontainer_alias.sh "${HOME}/.profile" > /dev/null 2<&1; then
+    if grep profile_devcontainer_alias.sh "${HOME}/.profile" > /dev/null 2<&1; then
+      echo ".profile is setup"
+    else
       echo "setting up ${HOME}/.profile"
       echo "source \"${GIT_ROOT}/.devcontainer/profile_devcontainer_alias.sh\"">> "${HOME}/.profile"
     fi
@@ -32,9 +34,9 @@ function profile_alias() {
 # export GIT_ROOT="$(cd "${SCRIPT_DIR}" && git rev-parse --show-toplevel)"
 export GIT_ROOT="${1:-/workspace/Human-Connection}"
 echo "Starting app bootstrap -  ${GIT_ROOT}"
+profile_alias
 bootstrap_backend
 bootstrap_webapp
-profile_alias
 
 # we don't want the app to exit
 echo 'Done building - wait forever'
