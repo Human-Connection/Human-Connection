@@ -3,13 +3,13 @@ export default async function uniqueSlug(string, isUnique) {
   const slug = slugify(string || 'anonymous', {
     lower: true,
     charmap: {
-        'Ä' : 'ae',
-        'ä' : 'ae',
-        'Ö' : 'oe',
-        'ö' : 'oe',
-        'Ü' : 'ue',
-        'ü' : 'ue',
-    }
+      Ä: 'ae',
+      ä: 'ae',
+      Ö: 'oe',
+      ö: 'oe',
+      Ü: 'ue',
+      ü: 'ue',
+    },
   })
   if (await isUnique(slug)) return slug
 
