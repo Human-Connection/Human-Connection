@@ -1,0 +1,7 @@
+tunnels:
+    webapp:
+      proto: http
+      addr: 3000
+    backend:
+        proto: http
+        addr: 4000
