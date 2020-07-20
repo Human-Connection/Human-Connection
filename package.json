@@ -31,7 +31,7 @@
     "@babel/register": "^7.9.0",
     "auto-changelog": "^1.16.4",
     "bcryptjs": "^2.4.3",
-    "codecov": "^3.6.5",
+    "codecov": "^3.7.1",
     "cross-env": "^7.0.2",
     "cucumber": "^6.0.5",
     "cypress": "^4.2.0",
