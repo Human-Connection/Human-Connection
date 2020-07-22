@@ -140,8 +140,9 @@ export default {
     },
     UpdateUser: async (_parent, params, context, _resolveInfo) => {
       const { termsAndConditionsAgreedVersion } = params
-      const { avatar: avatarInput } = params
+      const { avatar: avatarInput, profileHeader: profileHeaderInput } = params
       delete params.avatar
+      delete params.profileHeader
       if (termsAndConditionsAgreedVersion) {
         const regEx = new RegExp(/^[0-9]+\.[0-9]+\.[0-9]+$/g)
         if (!regEx.test(termsAndConditionsAgreedVersion)) {
@@ -164,6 +165,9 @@ export default {
         const [user] = updateUserTransactionResponse.records.map((record) => record.get('user'))
         if (avatarInput) {
           await mergeImage(user, 'AVATAR_IMAGE', avatarInput, { transaction })
+        }
+        if (profileHeaderInput) {
+          await mergeImage(user, 'PROFILE_HEADER_IMAGE', profileHeaderInput, { transaction })
         }
         return user
       })
@@ -235,6 +239,7 @@ export default {
         log(deleteUserTransactionResponse)
         const [user] = deleteUserTransactionResponse.records.map((record) => record.get('user'))
         await deleteImage(user, 'AVATAR_IMAGE', { transaction })
+        await deleteImage(user, 'PROFILE_HEADER_IMAGE', { transaction })
         return user
       })
       try {
@@ -291,6 +296,7 @@ export default {
       },
       hasOne: {
         avatar: '-[:AVATAR_IMAGE]->(related:Image)',
+        profileHeader: '-[:PROFILE_HEADER_IMAGE]->(related:Image)',
         invitedBy: '<-[:INVITED]-(related:User)',
         location: '-[:IS_IN]->(related:Location)',
       },

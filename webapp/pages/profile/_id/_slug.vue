@@ -1,7 +1,11 @@
 <template>
   <div>
-    <ds-space />
     <ds-flex v-if="user" :width="{ base: '100%' }" gutter="base">
+      <ds-flex-item width="100%">
+        <base-card class="profile-header-card">
+          <user-profile-header :user="user" :editable="myProfile"></user-profile-header>
+        </base-card>
+      </ds-flex-item>
       <ds-flex-item :width="{ base: '100%', sm: 2, md: 2, lg: 1 }">
         <base-card
           :class="{ 'disabled-content': user.disabled }"
@@ -242,6 +246,7 @@ import { muteUser, unmuteUser } from '~/graphql/settings/MutedUsers'
 import { blockUser, unblockUser } from '~/graphql/settings/BlockedUsers'
 import PostMutations from '~/graphql/PostMutations'
 import UpdateQuery from '~/components/utils/UpdateQuery'
+import UserProfileHeader from '~/components/_new/generic/UserProfileHeader/UserProfileHeader'
 
 const tabToFilterMapping = ({ tab, id }) => {
   return {
@@ -264,6 +269,7 @@ export default {
     MasonryGrid,
     MasonryGridItem,
     FollowList,
+    UserProfileHeader,
   },
   transition: {
     name: 'slide-up',
@@ -542,5 +548,9 @@ export default {
     width: 100%;
     margin-bottom: $space-x-small;
   }
+}
+
+.profile-header-card {
+  padding: 0px; /* Overwrite default card padding to 0. */
 }
 </style>

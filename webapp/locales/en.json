@@ -829,7 +829,10 @@
   },
   "user": {
     "avatar": {
-      "submitted": "Upload successful!"
+      "submitted": "Avatar upload successful!"
+    },
+    "profileHeader": {
+      "submitted": "Header upload successful!"
     }
   }
 }

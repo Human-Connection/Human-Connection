@@ -15,4 +15,4 @@ Feature: Upload UserProfile Image
   Scenario: Unable to change another user's avatar
     Given I am logged in with a "user" role
     And I visit another user's profile page
-    Then I cannot upload a picture
+    Then I cannot upload a profile picture

@@ -826,7 +826,10 @@
   },
   "user": {
     "avatar": {
-      "submitted": "Carga con éxito"
+      "submitted": "Carga de foto de perfil exitoso!"
+    },
+    "profileHeader": {
+      "submitted": "Carga de encabezado exitosa!"
     }
   }
 }

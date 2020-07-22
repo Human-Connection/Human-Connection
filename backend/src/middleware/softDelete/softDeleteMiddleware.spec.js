@@ -15,6 +15,7 @@ const action = () => {
 }
 
 beforeAll(async () => {
+  await cleanDatabase()
   // For performance reasons we do this only once
   const users = await Promise.all([
     Factory.build('user', { id: 'u1', role: 'user' }),
@@ -40,6 +41,9 @@ beforeAll(async () => {
       {
         avatar: Factory.build('image', {
           url: '/some/offensive/avatar.jpg',
+        }),
+        profileHeader: Factory.build('image', {
+          url: '/some/offensive/profileHeader.jpg',
         }),
       },
     ),
@@ -225,6 +229,9 @@ describe('softDeleteMiddleware', () => {
               avatar {
                 url
               }
+              profileHeader {
+                url
+              }
             }
           }
         }
@@ -270,6 +277,10 @@ describe('softDeleteMiddleware', () => {
           expect(subject.avatar).toEqual({
             url: expect.stringContaining('/some/offensive/avatar.jpg'),
           }))
+        it('display profile header', () =>
+          expect(subject.profileHeader).toEqual({
+            url: expect.stringContaining('/some/offensive/profileHeader.jpg'),
+          }))
       })
 
       describe('Post', () => {
@@ -308,6 +319,7 @@ describe('softDeleteMiddleware', () => {
         it('obfuscates slug', () => expect(subject.slug).toEqual('UNAVAILABLE'))
         it('obfuscates about', () => expect(subject.about).toEqual('UNAVAILABLE'))
         it('obfuscates avatar', () => expect(subject.avatar).toEqual(null))
+        it('obfuscates profile header', () => expect(subject.profileHeader).toEqual(null))
       })
 
       describe('Post', () => {

@@ -26,6 +26,7 @@ type User {
   email: String! @cypher(statement: "MATCH (this)-[:PRIMARY_EMAIL]->(e:EmailAddress) RETURN e.email")
   slug: String!
   avatar: Image @relation(name: "AVATAR_IMAGE", direction: "OUT")
+  profileHeader: Image @relation(name: "PROFILE_HEADER_IMAGE", direction: "OUT")
   deleted: Boolean
   disabled: Boolean
   role: UserGroup!
@@ -192,6 +193,7 @@ type Mutation {
   email: String
   slug: String
   avatar: ImageInput
+  profileHeader: ImageInput
   locationName: String
   about: String
   termsAndConditionsAgreedVersion: String

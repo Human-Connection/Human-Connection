@@ -362,7 +362,10 @@
   },
   "user": {
     "avatar": {
-      "submitted": "Przesłano pomyślnie"
+      "submitted": "Obraz awatara Wysyłanie zakończone!"
+    },
+    "profileHeader": {
+      "submitted": "Obraz nagłówka Wysyłanie zakończone!"
     }
   }
 }
