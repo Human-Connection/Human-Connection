@@ -85,6 +85,11 @@ export default {
           path: `/settings`,
           icon: 'cogs',
         },
+        {
+          name: this.$t('organizations.add'),
+          path: `/organization/create`,
+          icon: 'globe',
+        },
       ]
       if (this.isModerator) {
         routes.push({

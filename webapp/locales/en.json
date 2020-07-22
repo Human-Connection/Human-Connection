@@ -460,6 +460,9 @@
     "title": "Notifications",
     "user": "User"
   },
+  "organizations": {
+    "add": "Add organization"
+  },
   "post": {
     "comment": {
       "reply": "Reply",
