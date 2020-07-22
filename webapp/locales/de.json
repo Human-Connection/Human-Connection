@@ -465,6 +465,9 @@
     "title": "Benachrichtigungen",
     "user": "Benutzer"
   },
+  "organizations": {
+    "add": "Organisation hinzufügen"
+  },
   "post": {
     "comment": {
       "reply": "Antworten",
