@@ -23,6 +23,7 @@ type Category {
   createdAt: String
   updatedAt: String
   posts: [Post]! @relation(name: "CATEGORIZED", direction: "IN")
+  organizations: [Organization]! @relation(name: "CATEGORIZED", direction: "IN")
   postCount: Int! @cypher(statement: "MATCH (this)<-[:CATEGORIZED]-(r:Post) RETURN COUNT(r)")
 }
 
