@@ -1,0 +1,51 @@
+type Organization {
+  id: ID!
+  name: String!
+  slug: String!
+
+  avatar: Image @relation(name: "AVATAR_IMAGE", direction: "OUT")
+  image: Image @relation(name: "HERO_IMAGE", direction: "OUT")
+
+  createdBy: User @relation(name: "CREATED", direction: "IN")
+  verifiedBy: User @relation(name: "VERIFIED", direction: "IN")
+  approved: Boolean!
+
+  createdAt: String
+  updatedAt: String
+
+  location: Location @cypher(statement: "MATCH (this)-[:IS_IN]->(l:Location) RETURN l")
+  locationName: String
+
+  tags: [Tag]! @relation(name: "TAGGED", direction: "OUT")
+  categories: [Category]! @relation(name: "CATEGORIZED", direction: "OUT")
+
+  description: String
+  socialMedia: [SocialMedia] @relation(name: "OWNED_BY", direction: "IN")
+}
+
+type Mutation {
+  CreateOrganization(
+    id: ID
+    name: String!
+    slug: String
+    avatar: ImageInput,
+    image: ImageInput,
+    locationName: String
+    tags: [String]
+    categoryIds: [ID]
+    description: String
+  ): Organization
+}
+
+type Query {
+  Organization(
+    id: ID
+    name: String!
+    slug: String
+    locationName: String
+    tags: [String]
+    categoryIds: [ID]
+    approved: Boolean
+    verifiedBy: ID
+  ): [Organization]
+}
