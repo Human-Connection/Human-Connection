@@ -903,10 +903,10 @@
     core-js-pure "^3.0.0"
     regenerator-runtime "^0.13.2"
 
-"@babel/runtime@^7.5.5", "@babel/runtime@^7.8.4", "@babel/runtime@^7.8.7":
-  version "7.8.7"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.8.7.tgz#8fefce9802db54881ba59f90bb28719b4996324d"
-  integrity sha512-+AATMUFppJDw6aiR5NVPHqIQBlV/Pj8wY/EZH+lmvRdUo9xBaz/rF3alAwFJQavvKfeOlPE7oaaDHVbcySbCsg==
+"@babel/runtime@^7.5.5", "@babel/runtime@^7.8.4", "@babel/runtime@^7.8.7", "@babel/runtime@^7.9.6":
+  version "7.10.5"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.10.5.tgz#303d8bd440ecd5a491eae6117fd3367698674c5c"
+  integrity sha512-otddXKhdNn7d0ptoFRHtMLa8LqDxLYwTjB4nYgM1yy5N6gU/MUf8zqyyLltCH3yAVitBzmwK4us+DD0l/MauAg==
   dependencies:
     regenerator-runtime "^0.13.4"
 
@@ -4758,10 +4758,10 @@ graceful-fs@^4.2.3:
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.3.tgz#4a12ff1b60376ef09862c2093edd908328be8423"
   integrity sha512-a30VEBm4PEdx1dRB7MFK7BejejvCvBronbLjht+sHuGYj8PHs7M/5Z+rt5lw551vZ7yfTCj4Vuyy3mSJytDWRQ==
 
-graphql-auth-directives@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/graphql-auth-directives/-/graphql-auth-directives-2.1.0.tgz#85b83817844e2ec5fba8fe5de444287d6dd0f85a"
-  integrity sha512-mRVsjeMeMABPyjxyzl9mhkcW02YBwSj7dnu7C6wy2dIhiby6xTKy6Q54C8KeqXSYsy6ua4VmBH++d7GKqpvIoA==
+graphql-auth-directives@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/graphql-auth-directives/-/graphql-auth-directives-2.2.0.tgz#fd31f548c13ca574fe232a475f898edaab17c0f7"
+  integrity sha512-BpY8JZKM0/TlZ2WNkuSWuOFd0sUjstMNgPneVVJvnVJfThFCxYnapN7Sa1GRnqIDeyAV5fjoFy4/3FuYSLhFXg==
   dependencies:
     apollo-errors "^1.9.0"
     graphql-tools "^4.0.4"
@@ -6450,10 +6450,15 @@ lodash.unescape@4.0.1:
   resolved "https://registry.yarnpkg.com/lodash.unescape/-/lodash.unescape-4.0.1.tgz#bf2249886ce514cda112fae9218cdc065211fc9c"
   integrity sha1-vyJJiGzlFM2hEvrpIYzcBlIR/Jw=
 
-lodash@4.17.15, lodash@^4.15.0, lodash@^4.17.11, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.5, lodash@~4.17.11, lodash@~4.17.14, lodash@~4.17.15:
+lodash@4.17.15:
   version "4.17.15"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
   integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
+
+lodash@^4.15.0, lodash@^4.17.11, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.5, lodash@~4.17.11, lodash@~4.17.14, lodash@~4.17.15:
+  version "4.17.19"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.19.tgz#e48ddedbe30b3321783c5b4301fbd353bc1e4a4b"
+  integrity sha512-JNvd8XER9GQX0v2qJgsaN/mzFCNA5BRe/j8JN9d+tWyGLSodKQHKFicdwNYzWwI3wjRnaKPsGj1XkBjx/F96DQ==
 
 loglevel@^1.6.7:
   version "1.6.8"
@@ -6967,28 +6972,29 @@ neo4j-driver@^1.7.6:
     text-encoding-utf-8 "^1.0.2"
     uri-js "^4.2.2"
 
-neo4j-driver@^4.0.1, neo4j-driver@^4.0.2:
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/neo4j-driver/-/neo4j-driver-4.0.2.tgz#78de3b91e91572bcbd9d2e02554322fe1ab399ea"
-  integrity sha512-xQN4BZZsweaNNac7FDYAV6f/JybghwY3lk4fwblS8V5KQ+DBMPe4Pthh672mp+wEYZGyzPalq5CfpcBrWaZ4Gw==
+neo4j-driver@^4.0.2, neo4j-driver@^4.1.0:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/neo4j-driver/-/neo4j-driver-4.1.1.tgz#0d25de398256117b6088fc5e4466100ee4ae5f57"
+  integrity sha512-VK4YzeTG/uxYLUOR3Sh7/bx6RRXY/BJ0C3Y2zt69jSUKtijnboX7yGob+7y5b+HI8/c1TdN7dSXKkWf0b+vwBQ==
   dependencies:
-    "@babel/runtime" "^7.5.5"
-    rxjs "^6.5.2"
+    "@babel/runtime" "^7.9.6"
+    rxjs "^6.5.5"
     text-encoding-utf-8 "^1.0.2"
     uri-js "^4.2.2"
 
-neo4j-graphql-js@^2.11.5:
-  version "2.11.5"
-  resolved "https://registry.yarnpkg.com/neo4j-graphql-js/-/neo4j-graphql-js-2.11.5.tgz#4e887d727ec05b2c57ab81fad373fa3fcb734e39"
-  integrity sha512-vex6PRqDT5wdxYgmw9p5oii9EUbflEkjzpjJ0tG1JfhWl5e7W/CLHfjT6wyl5wWRq8WYYvREAX3ADsdNapqUtw==
+neo4j-graphql-js@^2.15.0:
+  version "2.15.0"
+  resolved "https://registry.yarnpkg.com/neo4j-graphql-js/-/neo4j-graphql-js-2.15.0.tgz#de58fe167ff12f344ab2c4b246bee81813dc732c"
+  integrity sha512-Q1lsh2HuSVE1mwFWsb8+R4S1ouYW4ZBb+nsVbJE+7t59zFUzeOVjIT4UimDWh0Fx8yhiVOekGN3dcJWnizye8Q==
   dependencies:
     "@babel/runtime" "^7.5.5"
     "@babel/runtime-corejs2" "^7.5.5"
+    apollo-server-errors "^2.4.1"
     debug "^4.1.1"
     graphql "^14.2.1"
-    graphql-auth-directives "^2.1.0"
-    lodash "^4.17.15"
-    neo4j-driver "^4.0.1"
+    graphql-auth-directives "^2.2.0"
+    lodash "^4.17.19"
+    neo4j-driver "^4.1.0"
 
 neode@^0.3.7:
   version "0.3.7"
@@ -8309,10 +8315,17 @@ run-parallel@^1.1.9:
   resolved "https://registry.yarnpkg.com/run-parallel/-/run-parallel-1.1.9.tgz#c9dd3a7cf9f4b2c4b6244e173a6ed866e61dd679"
   integrity sha512-DEqnSRTDw/Tc3FXf49zedI638Z9onwUotBMiUFKmrO2sdFKIbXamXGQ3Axd4qgphxKB4kw/qP1w5kTxnfU1B9Q==
 
-rxjs@^6.4.0, rxjs@^6.5.2, rxjs@^6.5.4:
+rxjs@^6.4.0, rxjs@^6.5.4:
   version "6.5.4"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.5.4.tgz#e0777fe0d184cec7872df147f303572d414e211c"
   integrity sha512-naMQXcgEo3csAEGvw/NydRA0fuS2nDZJiw1YUWFKU7aPPAPGZEsD4Iimit96qwCieH6y614MCLYwdkrWx7z/7Q==
+  dependencies:
+    tslib "^1.9.0"
+
+rxjs@^6.5.5:
+  version "6.6.0"
+  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.6.0.tgz#af2901eedf02e3a83ffa7f886240ff9018bbec84"
+  integrity sha512-3HMA8z/Oz61DUHe+SdOiQyzIf4tOx5oQHmMir7IZEu6TMqCLHT4LRcmNaUS0NwOz8VLvmmBduMsoaUvMaIiqzg==
   dependencies:
     tslib "^1.9.0"
 
