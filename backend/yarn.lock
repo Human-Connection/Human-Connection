@@ -1282,25 +1282,25 @@
     url-regex "~4.1.1"
     video-extensions "~1.1.0"
 
-"@metascraper/helpers@^5.11.6", "@metascraper/helpers@^5.11.8":
-  version "5.11.8"
-  resolved "https://registry.yarnpkg.com/@metascraper/helpers/-/helpers-5.11.8.tgz#24bf4440b4c24d1e5ba116005fbeb2ad3bf5b0cd"
-  integrity sha512-e0gpI2kOnlQ7nZH5amCNztN5GXNWPkA2rAkZhZ3ckpo1W5x4aw/h7FnOMjHftuNjeSWLeIplpn8VROJ9Hb3qyw==
+"@metascraper/helpers@^5.11.6", "@metascraper/helpers@^5.11.8", "@metascraper/helpers@^5.13.1":
+  version "5.13.1"
+  resolved "https://registry.yarnpkg.com/@metascraper/helpers/-/helpers-5.13.1.tgz#427cce18b57e316d442f30ef96ae5cd20884233d"
+  integrity sha512-iGnjUlkTUWn5czMVLRNR+rjVJpLv/xLR0qYyOblnjjt2AJ2r7PtVs8JIFQdYu3eGK+KeCxQCiWy79S6Ks7bonQ==
   dependencies:
     audio-extensions "0.0.0"
-    chrono-node "~1.4.4"
+    chrono-node "2.1.5"
     condense-whitespace "~2.0.0"
-    entities "~2.0.0"
+    entities "~2.0.3"
     file-extension "~4.0.5"
     has-values "~2.0.1"
     image-extensions "~1.1.0"
     is-relative-url "~3.0.0"
     is-uri "~1.2.0"
-    iso-639-3 "~2.0.0"
+    iso-639-3 "~2.1.0"
     isostring "0.0.1"
-    lodash "~4.17.15"
+    lodash "~4.17.19"
     memoize-one "~5.1.1"
-    mime-types "~2.1.26"
+    mime-types "~2.1.27"
     normalize-url "~5.0.0"
     smartquotes "~2.3.1"
     title "~3.4.2"
@@ -2927,19 +2927,19 @@ chownr@^1.1.1:
   resolved "https://registry.yarnpkg.com/chownr/-/chownr-1.1.2.tgz#a18f1e0b269c8a6a5d3c86eb298beb14c3dd7bf6"
   integrity sha512-GkfeAQh+QNy3wquu9oIZr6SS5x7wGdSgNQvD10X3r+AZr1Oys22HW8kAmDMvNg2+Dm0TeGaEuO8gFwdBXxwO8A==
 
+chrono-node@2.1.5:
+  version "2.1.5"
+  resolved "https://registry.yarnpkg.com/chrono-node/-/chrono-node-2.1.5.tgz#b691b0e925d75f0c9ebff518673af6543cc3b2d9"
+  integrity sha512-KshuspQwOhVcZ/8cY11p2+230qIX8VE9P7W8LdwSMWbMwu3TKl6BcHLccmkCt4m+QUK23yuOMD61yPXmjC++bg==
+  dependencies:
+    dayjs "^1.8.29"
+
 chrono-node@~1.3.11:
   version "1.3.11"
   resolved "https://registry.yarnpkg.com/chrono-node/-/chrono-node-1.3.11.tgz#b86a26b7e3157edcc4fe3374e1b6f90caedc8e39"
   integrity sha512-jDWRnY6nYvzfV3HPYBqo+tot7tcsUs9i3arGbMdI0TouPSXP2C2y/Ctp27rxKTQDi6yuTxAB2cw+Q6igGhOhdQ==
   dependencies:
     moment "2.21.0"
-
-chrono-node@~1.4.4:
-  version "1.4.4"
-  resolved "https://registry.yarnpkg.com/chrono-node/-/chrono-node-1.4.4.tgz#a6248257d3198996ea3d023b2bd20a268545350f"
-  integrity sha512-vwsQ2Z6RhkfIsFYvcZtifa0eSQC6pl08fgXkcZXkfGAJk/OkdYAuGqM2yLhPzsuK3N+BmaKFBie/jGvLsiYMbA==
-  dependencies:
-    dayjs "^1.8.19"
 
 ci-info@^1.5.0:
   version "1.6.0"
@@ -3408,10 +3408,10 @@ dateformat@^2.0.0:
   resolved "https://registry.yarnpkg.com/dateformat/-/dateformat-2.2.0.tgz#4065e2013cf9fb916ddfd82efb506ad4c6769062"
   integrity sha1-QGXiATz5+5Ft39gu+1Bq1MZ2kGI=
 
-dayjs@^1.8.19:
-  version "1.8.19"
-  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.8.19.tgz#5117dc390d8f8e586d53891dbff3fa308f51abfe"
-  integrity sha512-7kqOoj3oQSmqbvtvGFLU5iYqies+SqUiEGNT0UtUPPxcPYgY1BrkXR0Cq2R9HYSimBXN+xHkEN4Hi399W+Ovlg==
+dayjs@^1.8.29:
+  version "1.8.31"
+  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.8.31.tgz#0cd1114c2539dd5ad9428be0c38df6d4bb40b9d3"
+  integrity sha512-mPh1mslned+5PuIuiUfbw4CikHk6AEAf2Baxih+wP5fssv+wmlVhvgZ7mq+BhLt7Sr/Hc8leWDiwe6YnrpNt3g==
 
 debug@2.6.9, debug@^2.2.0, debug@^2.3.3, debug@^2.6.9:
   version "2.6.9"
@@ -3763,10 +3763,15 @@ entities@^1.1.1, entities@~1.1.1:
   resolved "https://registry.yarnpkg.com/entities/-/entities-1.1.2.tgz#bdfa735299664dfafd34529ed4f8522a275fea56"
   integrity sha512-f2LZMYl1Fzu7YSBKg+RoROelpOaNrcGmE9AZubeDfrCEia483oW4MI4VyFd5VNHIgQ/7qm1I0wUHK1eJnn2y2w==
 
-entities@^2.0.0, entities@~2.0.0:
+entities@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/entities/-/entities-2.0.0.tgz#68d6084cab1b079767540d80e56a39b423e4abf4"
   integrity sha512-D9f7V0JSRwIxlRI2mjMqufDrRDnx8p+eEOz7aUM9SuvF8gsBzra0/6tbjl1m8eQHrZlYj6PxqE00hZ1SAIKPLw==
+
+entities@~2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/entities/-/entities-2.0.3.tgz#5c487e5742ab93c15abb5da22759b8590ec03b7f"
+  integrity sha512-MyoZ0jgnLvB2X3Lg5HqpFmn1kybDiIfEQmKzTb5apr51Rb+T3KdmMiqa70T+bhGnyv7bQ6WMj2QMHpGMmlrUYQ==
 
 error-ex@^1.2.0, error-ex@^1.3.1:
   version "1.3.2"
@@ -5638,10 +5643,10 @@ iso-639-3@~1.1.0:
   resolved "https://registry.yarnpkg.com/iso-639-3/-/iso-639-3-1.1.0.tgz#83722daf55490a707c318ae18a33ba3bab06c843"
   integrity sha512-l3BAnxNpyRIZA4mEzI2md/YVrxQ3hI8hiQe7TFyQknjyOh8vCzobZuAXTFHELco0FBkYRx4FkAlIqkKrHhnzgw==
 
-iso-639-3@~2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/iso-639-3/-/iso-639-3-2.0.0.tgz#5844c6b885cbeac3571d407de5b5fdcb92f3505f"
-  integrity sha512-Pp+ctEs/pna6/rj05a5VR3qYxJHBZi95wp20C6Snf/WeghrkR/4G44LPJFqlbyo67XntkcUaxwrGmMeyY+F4mA==
+iso-639-3@~2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/iso-639-3/-/iso-639-3-2.1.0.tgz#f3733c7f2754c1bde34a8960b2a17146a4b41053"
+  integrity sha512-NYcq+YfrCFVGw/xWhRB9mhCSWxlOxYv3eK3WzWzc86P8huEZ7UDQq8Bu0zKqpZFOdq221Gy8VWWLr1aaYc+FJA==
 
 isobject@^2.0.0:
   version "2.1.0"
@@ -6455,6 +6460,11 @@ lodash@4.17.15, lodash@^4.15.0, lodash@^4.17.11, lodash@^4.17.13, lodash@^4.17.1
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
   integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
 
+lodash@~4.17.19:
+  version "4.17.19"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.19.tgz#e48ddedbe30b3321783c5b4301fbd353bc1e4a4b"
+  integrity sha512-JNvd8XER9GQX0v2qJgsaN/mzFCNA5BRe/j8JN9d+tWyGLSodKQHKFicdwNYzWwI3wjRnaKPsGj1XkBjx/F96DQ==
+
 loglevel@^1.6.7:
   version "1.6.8"
   resolved "https://registry.yarnpkg.com/loglevel/-/loglevel-1.6.8.tgz#8a25fb75d092230ecd4457270d80b54e28011171"
@@ -6660,12 +6670,12 @@ metascraper-lang@^5.11.8:
   dependencies:
     "@metascraper/helpers" "^5.11.8"
 
-metascraper-logo@^5.11.6:
-  version "5.11.6"
-  resolved "https://registry.yarnpkg.com/metascraper-logo/-/metascraper-logo-5.11.6.tgz#c0f08939fd72021d015cc16e0bb43dc41d79dc5f"
-  integrity sha512-H1kumbrf+I4Ogwm7fFhSZDJU8STRMa7kg77/wnmOK+1sirH8d2NOzTrEhDdoRMmpGYiU3XNjfukvZJbqPu2mvg==
+metascraper-logo@^5.13.1:
+  version "5.13.1"
+  resolved "https://registry.yarnpkg.com/metascraper-logo/-/metascraper-logo-5.13.1.tgz#0ae355fce084d5177e03a3641691eba6cb8dc981"
+  integrity sha512-RYCovxtby5jAtLnaATKpdUbXkBtZcnbMVvsR8hFDZzbXjVxBZOanqddOJp7TeKl5k1HmTuQIekV5WsN0cN9lZQ==
   dependencies:
-    "@metascraper/helpers" "^5.11.6"
+    "@metascraper/helpers" "^5.13.1"
 
 metascraper-publisher@^5.11.8:
   version "5.11.8"
@@ -6782,14 +6792,14 @@ mime-db@1.44.0:
   resolved "https://registry.yarnpkg.com/mime-db/-/mime-db-1.44.0.tgz#fa11c5eb0aca1334b4233cb4d52f10c5a6272f92"
   integrity sha512-/NOTfLrsPBVeH7YtFPgsVWveuL+4SjjYxaQ1xtM1KMFj7HdxlBlxeyNLzhyJVx7r4rZGJAZ/6lkKCitSc/Nmpg==
 
-mime-types@^2.1.12:
+mime-types@^2.1.12, mime-types@~2.1.27:
   version "2.1.27"
   resolved "https://registry.yarnpkg.com/mime-types/-/mime-types-2.1.27.tgz#47949f98e279ea53119f5722e0f34e529bec009f"
   integrity sha512-JIhqnCasI9yD+SsmkquHBxTSEuZdQX5BuQnS2Vc7puQQQ+8yiP5AY5uWhpdv4YL4VM5c6iliiYWPgJ/nJQLp7w==
   dependencies:
     mime-db "1.44.0"
 
-mime-types@^2.1.26, mime-types@~2.1.19, mime-types@~2.1.22, mime-types@~2.1.24, mime-types@~2.1.26:
+mime-types@^2.1.26, mime-types@~2.1.19, mime-types@~2.1.22, mime-types@~2.1.24:
   version "2.1.26"
   resolved "https://registry.yarnpkg.com/mime-types/-/mime-types-2.1.26.tgz#9c921fc09b7e149a65dfdc0da4d20997200b0a06"
   integrity sha512-01paPWYgLrkqAyrlDorC1uDwl2p3qZT7yl806vW7DvDoxwXi46jsjFbg+WdwotBIk6/MbEhO/dh5aZ5sNj/dWQ==
