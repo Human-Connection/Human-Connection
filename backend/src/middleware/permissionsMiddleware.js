@@ -84,6 +84,7 @@ export default shield(
   {
     Query: {
       '*': deny,
+      Organization: allow,
       findPosts: allow,
       findUsers: allow,
       findResources: allow,
