@@ -40,7 +40,7 @@ type Mutation {
 type Query {
   Organization(
     id: ID
-    name: String!
+    name: String
     slug: String
     locationName: String
     tags: [String]
