@@ -373,6 +373,11 @@
     "questions": "Bei Fragen oder Problemen erreichst Du uns per E-Mail an",
     "title": "Human Connection befindet sich in der Wartung"
   },
+  "modals": {
+    "deleteUser": {
+      "created": "Erstellt"
+    }
+  },
   "moderation": {
     "name": "Moderation",
     "reports": {
@@ -632,8 +637,12 @@
     "deleteUserAccount": {
       "accountDescription": "Sei dir bewusst, dass deine Beiträge und Kommentare für unsere Community wichtig sind. Wenn du sie trotzdem löschen möchtest, musst du sie unten markieren.",
       "accountWarning": "Dein Konto, deine Beiträge oder Kommentare kannst du nach dem Löschen WEDER VERWALTEN NOCH WIEDERHERSTELLEN!",
+      "accountWarningAdmin": "Das Konto, die Beiträge oder Kommentare können nach dem Löschen WEDER VERWALTEN NOCH WIEDERHERGESTELLT WERDEN!",
+      "accountWarningIsAdmin": "Achtung! Du löschst jetzt ein Benutzerkonto!",
       "commentedCount": "Meine {count} Kommentare löschen",
+      "confirmDeleting": "Benutzerkonto jetzt löschen",
       "contributionsCount": "Meine {count} Beiträge löschen",
+      "infoAdmin": "Alle Beiträge und Kommentare des Users werden zusätzlich gelöscht!",
       "name": "Benutzerkonto löschen",
       "pleaseConfirm": "Zerstörerische Aktion! Gib „{confirm}“ ein, um zu bestätigen.",
       "success": "Konto erfolgreich gelöscht!"

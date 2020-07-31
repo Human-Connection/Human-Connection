@@ -8,7 +8,9 @@
       {{ $t('settings.deleteUserAccount.pleaseConfirm', { confirm: currentUser.name }) }}
     </label>
     <ds-input v-model="enableDeletionValue" />
-    <p class="notice">{{ $t('settings.deleteUserAccount.accountDescription') }}</p>
+    <p v-show="enableDeletionValue" class="notice">
+      {{ $t('settings.deleteUserAccount.accountDescription') }}
+    </p>
     <label v-if="currentUser.contributionsCount" class="checkbox">
       <input type="checkbox" v-model="deleteContributions" />
       {{
@@ -25,7 +27,7 @@
         })
       }}
     </label>
-    <section v-if="deleteEnabled" class="warning">
+    <section class="warning">
       <p>{{ $t('settings.deleteUserAccount.accountWarning') }}</p>
     </section>
     <base-button

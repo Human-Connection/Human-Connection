@@ -23,6 +23,7 @@
               @unmute="unmuteUser"
               @block="blockUser"
               @unblock="unblockUser"
+              @delete="deleteUser"
             />
           </client-only>
           <ds-space margin="small">
@@ -384,6 +385,14 @@ export default {
       } finally {
         this.$apollo.queries.User.refetch()
       }
+    },
+    async deleteUser(userdata) {
+      this.$store.commit('modal/SET_OPEN', {
+        name: 'delete',
+        data: {
+          userdata: userdata,
+        },
+      })
     },
     pinPost(post) {
       this.$apollo
