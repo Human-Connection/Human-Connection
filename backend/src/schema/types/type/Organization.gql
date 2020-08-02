@@ -7,8 +7,12 @@ type Organization {
   image: Image @relation(name: "HERO_IMAGE", direction: "OUT")
 
   createdBy: User @relation(name: "CREATED", direction: "IN")
+
+  """
   verifiedBy: User @relation(name: "VERIFIED", direction: "IN")
   approved: Boolean!
+  approvedAt: String
+  """
 
   createdAt: String
   updatedAt: String
@@ -21,6 +25,7 @@ type Organization {
 
   description: String
   socialMedia: [SocialMedia] @relation(name: "OWNED_BY", direction: "IN")
+  eMail: String
 }
 
 type Mutation {
