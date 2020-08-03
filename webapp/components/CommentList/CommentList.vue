@@ -1,7 +1,7 @@
 <template>
   <div id="comments" class="comment-list">
     <h3 class="title">
-      <counter-icon icon="comments" :count="postComments.length" />
+      <counter-icon icon="comments" :count="postComments.filter(comment => !comment.deleted).length" />
       {{ $t('common.comment', null, 0) }}
     </h3>
     <div v-if="postComments" id="comments" class="comments">
