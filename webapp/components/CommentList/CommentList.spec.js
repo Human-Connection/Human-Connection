@@ -28,6 +28,13 @@ describe('CommentList.vue', () => {
               content: 'this is a comment',
               author: { id: 'some-user' },
             },
+            {
+              id: 'comment135',
+              contentExcerpt: 'this is a deleted comment',
+              content: 'this is a deleted comment',
+              deleted: true,
+              author: { id: 'some-user' },
+            }
           ],
         },
       }
