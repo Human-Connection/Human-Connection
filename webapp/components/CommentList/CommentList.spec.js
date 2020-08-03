@@ -34,7 +34,7 @@ describe('CommentList.vue', () => {
               content: 'this is a deleted comment',
               deleted: true,
               author: { id: 'some-user' },
-            }
+            },
           ],
         },
       }
