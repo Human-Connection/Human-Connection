@@ -8,24 +8,25 @@
     <div>
       <ds-section>
         <ds-flex>
-          <ds-flex-item>
+          <ds-flex-item width="50%">
             <user-teaser :user="userdata" />
           </ds-flex-item>
-          <ds-flex-item>
-            <ds-text size="small">
-              {{ $t('modals.deleteUser.created') }}:
+          <ds-flex-item width="20%">
+            <ds-text size="small">   
+                        
+              <relative-date-time :date-time="userdata.createdAt" class="relative-date-time"/>
               <br />
-              <relative-date-time :date-time="userdata.createdAt" />
+                {{ $t('modals.deleteUser.created') }}            
             </ds-text>
           </ds-flex-item>
-          <ds-flex-item>
+          <ds-flex-item width="15%">
             <ds-number
               size="small"
               :count="userdata.contributionsCount"
               :label="$t('common.post', null, userdata.contributionsCount)"
             />
           </ds-flex-item>
-          <ds-flex-item>
+          <ds-flex-item width="15%">
             <ds-number
               size="small"
               :count="userdata.commentedCount"
@@ -174,5 +175,8 @@ export default {
   opacity: 1;
   z-index: $z-index-modal;
   border-radius: $border-radius-x-large;
+}
+.relative-date-time {
+  font-weight: 700;
 }
 </style>
