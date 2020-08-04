@@ -15,9 +15,9 @@
         $t(
           'settings.deleteUserAccount.contributionsCount',
           {
-            count: currentUserCount.contributionsCount,
+            count: currentUserCounts.contributionsCount,
           },
-          currentUserCount.contributionsCount,
+          currentUserCounts.contributionsCount,
         )
       }}
     </label>
@@ -27,9 +27,9 @@
         $t(
           'settings.deleteUserAccount.commentedCount',
           {
-            count: currentUserCount.commentedCount,
+            count: currentUserCounts.commentedCount,
           },
-          currentUserCount.commentedCount,
+          currentUserCounts.commentedCount,
         )
       }}
     </label>
@@ -61,7 +61,7 @@ export default {
       deleteContributions: false,
       deleteComments: false,
       enableDeletionValue: null,
-      currentUserCount: [],
+      currentUserCounts: {},
     }
   },
   apollo: {
@@ -70,7 +70,7 @@ export default {
         return currentUserCountQuery()
       },
       update(currentUser) {
-        this.currentUserCount = currentUser.currentUser
+        this.currentUserCounts = currentUser.currentUser
       },
     },
   },
