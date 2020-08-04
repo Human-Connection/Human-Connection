@@ -39,3 +39,10 @@ export default {
   },
 }
 </script>
+<style lang="scss">
+h3,
+h4,
+hr {
+  margin: 8px 0;
+}
+</style>
