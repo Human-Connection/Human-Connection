@@ -24,10 +24,10 @@
       <h3>{{ $t('editor.embed.data_privacy_warning') }}</h3>
       <ds-text>{{ $t('editor.embed.data_privacy_info') }} {{ embedPublisher }}</ds-text>
       <div class="buttons">
-        <base-button @click="closeOverlay()" data-test="cancel-button">
+        <base-button @click="closeOverlay()" data-test="cancel-button" danger>
           {{ $t('actions.cancel') }}
         </base-button>
-        <base-button primary @click="allowEmbed()" data-test="play-now-button">
+        <base-button @click="allowEmbed()" data-test="play-now-button" filled>
           {{ $t('editor.embed.play_now') }}
         </base-button>
       </div>
