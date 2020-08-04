@@ -10,7 +10,11 @@
     <ds-input v-model="enableDeletionValue" />
     <p class="notice">{{ $t('settings.deleteUserAccount.accountDescription') }}</p>
     <label class="checkbox">
-      <input type="checkbox" v-model="deleteContributions" data-test="contributions-deletion-checkbox"/>
+      <input
+        type="checkbox"
+        v-model="deleteContributions"
+        data-test="contributions-deletion-checkbox"
+      />
       {{
         $t(
           'settings.deleteUserAccount.contributionsCount',
