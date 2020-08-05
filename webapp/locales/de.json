@@ -329,6 +329,7 @@
     "cannot-edit-post": "Dieser Beitrag kann nicht editiert werden",
     "default": "Ein Fehler ist aufgetreten",
     "post-not-found": "Dieser Beitrag konnte nicht gefunden werden",
+    "organization-not-found": "Diese Organisation konnte nicht gefunden werden",
     "profile-not-found": "Dieses Profil konnte nicht gefunden werden"
   },
   "filter-menu": {
@@ -461,7 +462,14 @@
     "user": "Benutzer"
   },
   "organizations": {
-    "add": "Organisation hinzufügen"
+    "add": "Organisation hinzufügen",
+    "form": {
+      "name": "Name der Organisation",
+      "description": "Beschreibung",
+      "descriptionHint": "Eine kurze Beschreibung der Organisation",
+      "labelCity": "Stadt oder Region der Organisation",
+      "success": "Gespeichert!"
+    }
   },
   "post": {
     "comment": {

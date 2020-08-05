@@ -1,18 +1,18 @@
 <template>
   <ds-flex :width="{ base: '100%' }" gutter="base">
     <ds-flex-item :width="{ base: '100%', md: 5 }">
-      <hc-contribution-form />
+      <organization-form />
     </ds-flex-item>
     <ds-flex-item :width="{ base: '100%', md: 1 }">&nbsp;</ds-flex-item>
   </ds-flex>
 </template>
 
 <script>
-import HcContributionForm from '~/components/ContributionForm/ContributionForm'
+import OrganizationForm from '~/components/OrganizationForm/OrganizationForm'
 
 export default {
   components: {
-    HcContributionForm,
+    OrganizationForm,
   },
 }
 </script>
