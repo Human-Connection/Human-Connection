@@ -329,6 +329,7 @@
     "cannot-edit-post": "This post cannot be edited",
     "default": "An error occurred",
     "post-not-found": "This post could not be found",
+    "organization-not-found": "This organization could not be found",
     "profile-not-found": "This profile could not be found"
   },
   "filter-menu": {
@@ -466,7 +467,14 @@
     "user": "User"
   },
   "organizations": {
-    "add": "Add organization"
+    "add": "Add organization",
+    "form": {
+      "name": "Name of the organization",
+      "description": "Description",
+      "descriptionHint": "A short description of the organization",
+      "labelCity": "City or region of the organization",
+      "success": "Saved!"
+    }
   },
   "post": {
     "comment": {
