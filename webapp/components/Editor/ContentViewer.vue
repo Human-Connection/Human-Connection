@@ -39,3 +39,10 @@ export default {
   },
 }
 </script>
+<style lang="scss">
+.ProseMirror h3,
+.ProseMirror h4,
+.ProseMirror hr {
+  margin: 24px 0 8px;
+}
+</style>
