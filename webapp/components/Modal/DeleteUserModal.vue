@@ -12,11 +12,10 @@
             <user-teaser :user="userdata" />
           </ds-flex-item>
           <ds-flex-item width="20%">
-            <ds-text size="small">   
-                        
-              <relative-date-time :date-time="userdata.createdAt" class="relative-date-time"/>
+            <ds-text size="small">
+              <relative-date-time :date-time="userdata.createdAt" class="relative-date-time" />
               <br />
-                {{ $t('modals.deleteUser.created') }}            
+              {{ $t('modals.deleteUser.created') }}
             </ds-text>
           </ds-flex-item>
           <ds-flex-item width="15%">
@@ -162,7 +161,7 @@ export default {
 
 <style lang="scss">
 .ds-modal {
-  max-width: 600px !important;
+  max-width: 700px !important;
 }
 .hc-modal-success {
   pointer-events: none;
