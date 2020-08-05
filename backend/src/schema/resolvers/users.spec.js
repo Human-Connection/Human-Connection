@@ -18,35 +18,6 @@ let variables
 const driver = getDriver()
 const neode = getNeode()
 
-const deleteUserMutation = gql`
-  mutation($id: ID!, $resource: [Deletable]) {
-    DeleteUser(id: $id, resource: $resource) {
-      id
-      name
-      about
-      deleted
-      contributions {
-        id
-        content
-        contentExcerpt
-        deleted
-        comments {
-          id
-          content
-          contentExcerpt
-          deleted
-        }
-      }
-      comments {
-        id
-        content
-        contentExcerpt
-        deleted
-      }
-    }
-  }
-`
-
 beforeAll(() => {
   const { server } = createServer({
     context: () => {
@@ -67,18 +38,22 @@ beforeEach(async () => {
 
 describe('User', () => {
   describe('query by email address', () => {
+    let userQuery
+
     beforeEach(async () => {
+      userQuery = gql`
+        query($email: String) {
+          User(email: $email) {
+            name
+          }
+        }
+      `
+      variables = {
+        email: 'any-email-address@example.org',
+      }
+
       await Factory.build('user', { name: 'Johnny' }, { email: 'any-email-address@example.org' })
     })
-
-    const userQuery = gql`
-      query($email: String) {
-        User(email: $email) {
-          name
-        }
-      }
-    `
-    const variables = { email: 'any-email-address@example.org' }
 
     it('is forbidden', async () => {
       await expect(query({ query: userQuery, variables })).resolves.toMatchObject({
@@ -127,37 +102,35 @@ describe('User', () => {
 })
 
 describe('UpdateUser', () => {
-  let variables
+  let updateUserMutation
 
   beforeEach(async () => {
+    updateUserMutation = gql`
+      mutation(
+        $id: ID!
+        $name: String
+        $termsAndConditionsAgreedVersion: String
+        $locationName: String
+      ) {
+        UpdateUser(
+          id: $id
+          name: $name
+          termsAndConditionsAgreedVersion: $termsAndConditionsAgreedVersion
+          locationName: $locationName
+        ) {
+          id
+          name
+          termsAndConditionsAgreedVersion
+          termsAndConditionsAgreedAt
+          locationName
+        }
+      }
+    `
     variables = {
       id: 'u47',
       name: 'John Doughnut',
     }
-  })
 
-  const updateUserMutation = gql`
-    mutation(
-      $id: ID!
-      $name: String
-      $termsAndConditionsAgreedVersion: String
-      $locationName: String
-    ) {
-      UpdateUser(
-        id: $id
-        name: $name
-        termsAndConditionsAgreedVersion: $termsAndConditionsAgreedVersion
-        locationName: $locationName
-      ) {
-        id
-        name
-        termsAndConditionsAgreedVersion
-        termsAndConditionsAgreedAt
-        locationName
-      }
-    }
-  `
-  beforeEach(async () => {
     user = await Factory.build(
       'user',
       {
@@ -276,7 +249,37 @@ describe('UpdateUser', () => {
 })
 
 describe('Delete a user', () => {
+  let deleteUserMutation
+
   beforeEach(async () => {
+    deleteUserMutation = gql`
+      mutation($id: ID!, $resource: [Deletable]) {
+        DeleteUser(id: $id, resource: $resource) {
+          id
+          name
+          about
+          deleted
+          contributions {
+            id
+            content
+            contentExcerpt
+            deleted
+            comments {
+              id
+              content
+              contentExcerpt
+              deleted
+            }
+          }
+          comments {
+            id
+            content
+            contentExcerpt
+            deleted
+          }
+        }
+      }
+    `
     variables = { id: ' u343', resource: [] }
 
     user = await Factory.build('user', {
@@ -348,7 +351,7 @@ describe('Delete a user', () => {
 
       describe('deleting a user account', () => {
         beforeEach(() => {
-          variables = { ...variables, id: 'u343' }
+          variables = { id: 'u343' }
         })
 
         describe('given posts and comments', () => {
