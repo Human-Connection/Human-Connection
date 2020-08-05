@@ -632,8 +632,8 @@
     "deleteUserAccount": {
       "accountDescription": "Be aware that your Posts and Comments are important to our community. If you still choose to delete them, you have to mark them below.",
       "accountWarning": "You CAN'T MANAGE and CAN'T RECOVER your Account, Posts, or Comments after deleting your account!",
-      "commentedCount": "Delete my {count} comments",
-      "contributionsCount": "Delete my {count} posts",
+      "commentedCount": "Delete my {count} comment ::: Delete my {count} comments",
+      "contributionsCount": "Delete my {count} post ::: Delete my {count} posts",
       "name": "Delete user account",
       "pleaseConfirm": "Destructive action! Type “{confirm}” to confirm.",
       "success": "Account successfully deleted!"

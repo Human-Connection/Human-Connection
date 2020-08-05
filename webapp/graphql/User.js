@@ -283,3 +283,12 @@ export const currentUserQuery = gql`
     }
   }
 `
+
+export const currentUserCountQuery = () => gql`
+  ${userCountsFragment}
+  query {
+    currentUser {
+      ...userCounts
+    }
+  }
+`
