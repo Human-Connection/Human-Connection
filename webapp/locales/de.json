@@ -306,7 +306,7 @@
   "editor": {
     "embed": {
       "always_allow": "Einzubettende Inhalte von Drittanbietern immer erlauben (diese Einstellung ist jederzeit änderbar)",
-      "data_privacy_info": "Deine Daten wurden noch nicht an Drittanbieter weitergegeben. Wenn Du dieses Video jetzt abspielst, registriert der folgende Anbieter wahrscheinlich Deine Nutzerdaten:",
+      "data_privacy_info": "Deine Daten wurden noch nicht an Drittanbieter weitergegeben. Wenn Du diesen Inhalt jetzt abspielst, registriert der folgende Anbieter wahrscheinlich Deine Nutzerdaten:",
       "data_privacy_warning": "Achte auf Deine Daten!",
       "play_now": "Jetzt ansehen"
     },
