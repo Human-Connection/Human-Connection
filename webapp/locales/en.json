@@ -306,7 +306,7 @@
   "editor": {
     "embed": {
       "always_allow": "Always allow embedded content by third party providers (this setting can be changed any time)",
-      "data_privacy_info": "Your data has not yet been shared with any third party providers. If you proceed to watch this content the following provider will likely collect user data:",
+      "data_privacy_info": "Your data has not yet been shared with any third party providers. If you proceed to play this content the following provider will likely collect user data:",
       "data_privacy_warning": "Data Privacy Warning!",
       "play_now": "Continue"
     },
