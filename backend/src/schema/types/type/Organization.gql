@@ -8,7 +8,7 @@ type Organization {
   """
   image: Image @relation(name: "HERO_IMAGE", direction: "OUT")
 
-  createdBy: User @relation(name: "CREATED", direction: "IN")
+  creator: User @relation(name: "CREATED", direction: "IN")
 
   """
   verifiedBy: User @relation(name: "VERIFIED", direction: "IN")
