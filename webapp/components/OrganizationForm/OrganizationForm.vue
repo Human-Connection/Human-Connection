@@ -44,15 +44,6 @@
           {{ formData.name.length }}/{{ formSchema.name.max }}
           <base-icon v-if="errors && errors.name" name="warning" />
         </ds-chip>
-        <ds-input
-          class="organization-space-bottom"
-          id="description"
-          model="description"
-          type="textarea"
-          rows="3"
-          :label="$t('organizations.form.description')"
-          :placeholder="$t('organizations.form.descriptionHint')"
-        />
         <ds-select
           class="organization-space-bottom"
           id="city"
@@ -63,6 +54,15 @@
           :placeholder="$t('organizations.form.labelCity')"
           :loading="loadingGeo"
           @input.native="handleCityInput"
+        />
+        <ds-input
+          class="organization-space-bottom"
+          id="description"
+          model="description"
+          type="textarea"
+          rows="3"
+          :label="$t('organizations.form.description')"
+          :placeholder="$t('organizations.form.descriptionHint')"
         />
         <categories-select model="categoryIds" :existingCategoryIds="formData.categoryIds" />
         <ds-chip size="base" :color="errors && errors.categoryIds && 'danger'">
@@ -87,7 +87,7 @@
  import { CancelToken } from 'axios'
  import orderBy from 'lodash/orderBy'
  import { mapGetters } from 'vuex'
- import PostMutations from '~/graphql/OrganizationMutations.js'
+ import OrganizationMutations from '~/graphql/OrganizationMutations.js'
  import CategoriesSelect from '~/components/CategoriesSelect/CategoriesSelect'
  import ImageUploader from '~/components/ImageUploader/ImageUploader'
 
@@ -151,7 +151,8 @@
    methods: {
      submit() {
        let image = null
-       const { name, description, categoryIds, locationName } = this.formData
+       const { name, description, categoryIds } = this.formData
+       const locationName = this.formData.locationName.label || this.formData.locationName
        if (this.formData.image) {
          image = {
            sensitive: this.formData.imageBlurred,
@@ -164,7 +165,7 @@
        this.loading = true
        this.$apollo
            .mutate({
-             mutation: this.organization.id ? PostMutations().UpdateOrganization : PostMutations().CreateOrganization,
+             mutation: this.organization.id ? OrganizationMutations().UpdateOrganization : OrganizationMutations().CreateOrganization,
              variables: {
                name,
                description,

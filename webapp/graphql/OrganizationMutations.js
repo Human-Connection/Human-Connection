@@ -11,9 +11,9 @@ export default () => {
         $image: ImageInput
       ) {
         CreateOrganization(
-          name: $title
-          description: $content
-          locationName: $language
+          name: $name
+          description: $description
+          locationName: $locationName
           categoryIds: $categoryIds
           image: $image
         ) {

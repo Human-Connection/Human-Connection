@@ -114,6 +114,7 @@ export default shield(
       Signup: or(publicRegistration, isAdmin),
       SignupVerification: allow,
       UpdateUser: onlyYourself,
+      CreateOrganization: isAuthenticated,
       CreatePost: isAuthenticated,
       UpdatePost: isAuthor,
       DeletePost: isAuthor,
