@@ -35,6 +35,13 @@ describe('CommentList.vue', () => {
               deleted: true,
               author: { id: 'some-user' },
             },
+            {
+              id: 'comment136',
+              contentExcerpt: 'this is a disabled comment',
+              content: 'this is a disabled comment',
+              disabled: true,
+              author: { id: 'some-user' },
+            },
           ],
         },
       }
@@ -77,7 +84,7 @@ describe('CommentList.vue', () => {
       })
     }
 
-    it('displays a comments counter', () => {
+    it('displays a comments counter that ignores disabled and deleted comments', () => {
       wrapper = Wrapper()
       expect(wrapper.find('.count').text()).toEqual('1')
     })
