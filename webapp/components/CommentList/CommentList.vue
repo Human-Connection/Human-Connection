@@ -36,16 +36,8 @@ export default {
     },
   },
   computed: {
-    postComments() {
-      return (this.post && this.post.comments) || []
-    },
     commentsCount() {
-      return (
-        (this.post &&
-          this.post.comments &&
-          this.post.comments.filter((comment) => !comment.deleted && !comment.disabled).length) ||
-        0
-      )
+      return (this.post && this.post.comments && this.post.comments.filter(comment => !comment.deleted && !comment.disabled).length) || 0
     },
   },
   methods: {
