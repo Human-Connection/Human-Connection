@@ -7,7 +7,10 @@ import Resolver from './helpers/Resolver'
 export default {
   Query: {
     Organization: async (object, params, context, resolveInfo) => {
-      return neo4jgraphql(object, params, context, resolveInfo)
+      console.log("Organization", params)
+      let tmp = await neo4jgraphql(object, params, context, resolveInfo)
+      console.log(tmp)
+      return tmp
     },
   },
   Mutation: {

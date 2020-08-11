@@ -21,18 +21,6 @@
             @addImageAspectRatio="addImageAspectRatio"
           />
         </template>
-        <div v-if="formData.image" class="blur-toggle">
-          <label for="blur-img">{{ $t('organization.inappropriatePicture') }}</label>
-          <input type="checkbox" id="blur-img" v-model="formData.imageBlurred" />
-          <a
-            href="https://support.human-connection.org/kb/faq.php?id=113"
-            target="_blank"
-            class="link"
-          >
-            {{ $t('organization.inappropriatePictureText') }}
-            <base-icon name="question-circle" />
-          </a>
-        </div>
         <ds-input
           model="name"
           :placeholder="$t('organizations.form.name')"
@@ -116,7 +104,6 @@
          description: description || '',
          image: image || null,
          imageAspectRatio,
-         imageBlurred,
          locationName: locationName || '',
          categoryIds: categories ? categories.map((category) => category.id) : [],
        },
@@ -133,7 +120,6 @@
              return []
            },
          },
-         imageBlurred: { required: false },
        },
        loading: false,
        users: [],
@@ -178,7 +164,7 @@
            .then(({ data }) => {
              this.loading = false
              this.$toast.success(this.$t('organization.success'))
-             const result = data[this.organization.id ? 'UpdatePost' : 'CreatePost']
+             const result = data[this.organization.id ? 'UpdateOrganization' : 'CreateOrganization']
 
              this.$router.push({
                name: 'organization-id-slug',
