@@ -6,14 +6,12 @@ import { createTestClient } from 'apollo-server-testing'
 
 const categoryIds = ['cat9']
 let user
-//let anotherUser
-//let moderator
-//let admin
+let admin
 
 let query
 let mutate
 let authenticatedUser
-//let variables
+let variables
 
 const driver = getDriver()
 const neode = getNeode()
@@ -78,7 +76,7 @@ describe('User', () => {
         }
       }
     `
-    const variables = { email: 'any-email-address@example.org' }
+    variables = { email: 'any-email-address@example.org' }
 
     it('is forbidden', async () => {
       await expect(query({ query: userQuery, variables })).resolves.toMatchObject({
@@ -275,70 +273,6 @@ describe('UpdateUser', () => {
     })
   })
 })
-/*
-describe('Delete a User as another user', () => {
-  beforeEach(async () => {
-    variables = { id: ' u343', resource: [] }
-
-    user = await Factory.build('user', {
-      name: 'My name should be deleted',
-      about: 'along with my about',
-      id: 'u343',
-    })
-  })
-
-  beforeEach(async () => {
-    anotherUser = await Factory.build(
-      'user',
-      {
-        role: 'user',
-      },
-      {
-        email: 'user@example.org',
-        password: '1234',
-      },
-    )
-
-    authenticatedUser = await anotherUser.toJson()
-  })
-
-  it("an ordinary user has no authorization to delete another user's account", async () => {
-    const { errors } = await mutate({ mutation: deleteUserMutation, variables })
-    expect(errors[0]).toHaveProperty('message', 'Not Authorised!')
-  })
-})
-
-describe('Delete a User as moderator', () => {
-  beforeEach(async () => {
-    variables = { id: ' u343', resource: [] }
-
-    user = await Factory.build('user', {
-      name: 'My name should be deleted',
-      about: 'along with my about',
-      id: 'u343',
-    })
-  })
-
-  beforeEach(async () => {
-    moderator = await Factory.build(
-      'user',
-      {
-        role: 'moderator',
-      },
-      {
-        email: 'moderator@example.org',
-        password: '1234',
-      },
-    )
-
-    authenticatedUser = await moderator.toJson()
-  })
-
-  it('moderator is not allowed to delete other user accounts', async () => {
-    const { errors } = await mutate({ mutation: deleteUserMutation, variables })
-    expect(errors[0]).toHaveProperty('message', 'Not Authorised!')
-  })
-})
 
 describe('Delete a User as admin', () => {
   beforeEach(async () => {
@@ -452,106 +386,6 @@ describe('Delete a User as admin', () => {
           )
         })
 
-        describe('deletion of all post requested', () => {
-          beforeEach(() => {
-            variables = { ...variables, resource: ['Post'] }
-          })
-
-          it('on request', async () => {
-            const expectedResponse = {
-              data: {
-                DeleteUser: {
-                  id: 'u343',
-                  name: 'UNAVAILABLE',
-                  about: 'UNAVAILABLE',
-                  deleted: true,
-                  contributions: [
-                    {
-                      id: 'p139',
-                      content: 'UNAVAILABLE',
-                      contentExcerpt: 'UNAVAILABLE',
-                      deleted: true,
-                      comments: [
-                        {
-                          id: 'c156',
-                          content: 'UNAVAILABLE',
-                          contentExcerpt: 'UNAVAILABLE',
-                          deleted: true,
-                        },
-                      ],
-                    },
-                  ],
-                  comments: [
-                    {
-                      id: 'c155',
-                      content: 'Comment by user u343',
-                      contentExcerpt: 'Comment by user u343',
-                      deleted: false,
-                    },
-                  ],
-                },
-              },
-              errors: undefined,
-            }
-            await expect(
-              mutate({ mutation: deleteUserMutation, variables }),
-            ).resolves.toMatchObject(expectedResponse)
-          })
-
-          it('deletes user avatar and post hero images', async () => {
-            await expect(neode.all('Image')).resolves.toHaveLength(22)
-            await mutate({ mutation: deleteUserMutation, variables })
-            await expect(neode.all('Image')).resolves.toHaveLength(20)
-          })
-        })
-
-        describe('deletion of all comments requested', () => {
-          beforeEach(() => {
-            variables = { ...variables, resource: ['Comment'] }
-          })
-
-          it('marks comments as deleted', async () => {
-            const expectedResponse = {
-              data: {
-                DeleteUser: {
-                  id: 'u343',
-                  name: 'UNAVAILABLE',
-                  about: 'UNAVAILABLE',
-                  deleted: true,
-                  contributions: [
-                    {
-                      id: 'p139',
-                      content: 'Post by user u343',
-                      contentExcerpt: 'Post by user u343',
-                      deleted: false,
-                      comments: [
-                        {
-                          id: 'c156',
-                          content: "A comment by someone else on user u343's post",
-                          contentExcerpt: "A comment by someone else on user u343's post",
-                          deleted: false,
-                        },
-                      ],
-                    },
-                  ],
-                  comments: [
-                    {
-                      id: 'c155',
-                      content: 'UNAVAILABLE',
-                      contentExcerpt: 'UNAVAILABLE',
-                      deleted: true,
-                    },
-                  ],
-                },
-              },
-              errors: undefined,
-            }
-            await expect(
-              mutate({ mutation: deleteUserMutation, variables }),
-            ).resolves.toMatchObject(expectedResponse)
-          })
-        })
-
         describe('deletion of all posts and comments requested', () => {
           beforeEach(() => {
             variables = { ...variables, resource: ['Comment', 'Post'] }
@@ -624,5 +458,3 @@ describe('Delete a User as admin', () => {
     })
   })
 })
-
-*/

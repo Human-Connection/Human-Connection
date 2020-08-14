@@ -156,7 +156,7 @@ export default {
             path: '/settings',
             icon: 'edit',
           })
-          if (this.isAdmin === true) {
+          if (this.isAdmin === true && !this.isOwner) {
             routes.push({
               label: this.$t(`settings.deleteUserAccount.name`),
               callback: () => {

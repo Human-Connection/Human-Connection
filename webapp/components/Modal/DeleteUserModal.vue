@@ -1,5 +1,5 @@
 <template>
-  <ds-modal :title="title" :is-open="isOpen" @cancel="cancel">
+  <ds-modal class="delete-user-modal" :title="title" :is-open="isOpen" @cancel="cancel">
     <transition name="ds-transition-fade">
       <ds-flex v-if="success" class="hc-modal-success" centered>
         <sweetalert-icon icon="success" />
@@ -67,7 +67,8 @@ export default {
       isOpen: true,
       success: false,
       loading: false,
-      isAdmin: this.$store.getters['auth/isAdmin'],
+      // isAdmin: this.$store.getters['auth/isAdmin'],
+      isAdmin: true,
     }
   },
   computed: {

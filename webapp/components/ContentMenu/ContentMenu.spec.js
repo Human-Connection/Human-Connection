@@ -134,6 +134,47 @@ describe('ContentMenu.vue', () => {
           ],
         ])
       })
+
+      it('can delete another user', () => {
+        getters['auth/user'] = () => {
+          return { id: 'some-user', slug: 'some-user' }
+        }
+        const wrapper = openContentMenu({
+          resourceType: 'user',
+          resource: {
+            id: 'another-user',
+            slug: 'another-user',
+          },
+        })
+        wrapper
+          .findAll('.ds-menu-item')
+          .filter((item) => item.text() === 'settings.deleteUserAccount.name')
+          .at(0)
+          .trigger('click')
+        expect(wrapper.emitted('delete')).toEqual([
+          [
+            {
+              id: 'another-user',
+              slug: 'another-user',
+            },
+          ],
+        ])
+      })
+
+      it('can not delete the own account', () => {
+        const wrapper = openContentMenu({
+          resourceType: 'user',
+          resource: {
+            id: 'some-user',
+            slug: 'some-user',
+          },
+        })
+        expect(
+          wrapper
+            .findAll('.ds-menu-item')
+            .filter((item) => item.text() === 'settings.deleteUserAccount.name'),
+        ).toEqual({})
+      })
     })
 
     describe('owner of comment can', () => {
