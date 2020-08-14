@@ -14,17 +14,25 @@
     <label v-if="currentUser.contributionsCount" class="checkbox">
       <input type="checkbox" v-model="deleteContributions" />
       {{
-        $t('settings.deleteUserAccount.contributionsCount', {
-          count: currentUser.contributionsCount,
-        })
+        $t(
+          'settings.deleteUserAccount.contributionsCount',
+          {
+            count: currentUserCounts.contributionsCount,
+          },
+          currentUserCounts.contributionsCount,
+        )
       }}
     </label>
-    <label v-if="currentUser.commentedCount" class="checkbox">
-      <input type="checkbox" v-model="deleteComments" />
+    <label class="checkbox">
+      <input type="checkbox" v-model="deleteComments" data-test="comments-deletion-checkbox" />
       {{
-        $t('settings.deleteUserAccount.commentedCount', {
-          count: currentUser.commentedCount,
-        })
+        $t(
+          'settings.deleteUserAccount.commentedCount',
+          {
+            count: currentUserCounts.commentedCount,
+          },
+          currentUserCounts.commentedCount,
+        )
       }}
     </label>
     <section class="warning">
@@ -44,8 +52,9 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import gql from 'graphql-tag'
+import { currentUserCountQuery } from '~/graphql/User'
 
 export default {
   name: 'DeleteData',
@@ -54,7 +63,18 @@ export default {
       deleteContributions: false,
       deleteComments: false,
       enableDeletionValue: null,
+      currentUserCounts: {},
     }
+  },
+  apollo: {
+    currentUser: {
+      query() {
+        return currentUserCountQuery()
+      },
+      update(currentUser) {
+        this.currentUserCounts = currentUser.currentUser
+      },
+    },
   },
   computed: {
     ...mapGetters({

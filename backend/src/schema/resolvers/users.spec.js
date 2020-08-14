@@ -6,11 +6,13 @@ import { createTestClient } from 'apollo-server-testing'
 
 const categoryIds = ['cat9']
 let user
+let anotherUser
+let moderator
 let admin
+let authenticatedUser
 
 let query
 let mutate
-let authenticatedUser
 let variables
 
 const driver = getDriver()
@@ -65,18 +67,21 @@ beforeEach(async () => {
 
 describe('User', () => {
   describe('query by email address', () => {
+    let userQuery
+
     beforeEach(async () => {
+      userQuery = gql`
+        query($email: String) {
+          User(email: $email) {
+            name
+          }
+        }
+      `
+      variables = {
+        email: 'any-email-address@example.org',
+      }
       await Factory.build('user', { name: 'Johnny' }, { email: 'any-email-address@example.org' })
     })
-
-    const userQuery = gql`
-      query($email: String) {
-        User(email: $email) {
-          name
-        }
-      }
-    `
-    variables = { email: 'any-email-address@example.org' }
 
     it('is forbidden', async () => {
       await expect(query({ query: userQuery, variables })).resolves.toMatchObject({
@@ -125,38 +130,35 @@ describe('User', () => {
 })
 
 describe('UpdateUser', () => {
-  let variables
+  let updateUserMutation
 
   beforeEach(async () => {
+    updateUserMutation = gql`
+      mutation(
+        $id: ID!
+        $name: String
+        $termsAndConditionsAgreedVersion: String
+        $locationName: String
+      ) {
+        UpdateUser(
+          id: $id
+          name: $name
+          termsAndConditionsAgreedVersion: $termsAndConditionsAgreedVersion
+          locationName: $locationName
+        ) {
+          id
+          name
+          termsAndConditionsAgreedVersion
+          termsAndConditionsAgreedAt
+          locationName
+        }
+      }
+    `
     variables = {
       id: 'u47',
       name: 'John Doughnut',
     }
-  })
 
-  const updateUserMutation = gql`
-    mutation(
-      $id: ID!
-      $name: String
-      $termsAndConditionsAgreedVersion: String
-      $locationName: String
-    ) {
-      UpdateUser(
-        id: $id
-        name: $name
-        termsAndConditionsAgreedVersion: $termsAndConditionsAgreedVersion
-        locationName: $locationName
-      ) {
-        id
-        name
-        termsAndConditionsAgreedVersion
-        termsAndConditionsAgreedAt
-        locationName
-      }
-    }
-  `
-
-  beforeEach(async () => {
     user = await Factory.build(
       'user',
       {
@@ -288,6 +290,8 @@ describe('Delete a User as admin', () => {
   describe('authenticated as Admin', () => {
     beforeEach(async () => {
       admin = await Factory.build(
+
+
         'user',
         {
           role: 'admin',
@@ -453,6 +457,7 @@ describe('Delete a User as admin', () => {
           await expect(neode.all('SocialMedia')).resolves.toHaveLength(1)
           await mutate({ mutation: deleteUserMutation, variables })
           await expect(neode.all('SocialMedia')).resolves.toHaveLength(0)
+
         })
       })
     })

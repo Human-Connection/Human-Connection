@@ -15,12 +15,10 @@ describe('DeleteData.vue', () => {
   let enableContributionDeletionCheckbox
   let enableCommentDeletionCheckbox
   const deleteAccountName = 'Delete MyAccount'
-  const deleteContributionsMessage = 'Delete my 2 posts'
-  const deleteCommentsMessage = 'Delete my 3 comments'
 
   beforeEach(() => {
     mocks = {
-      $t: jest.fn(),
+      $t: jest.fn((a) => a),
       $apollo: {
         mutate: jest
           .fn()
@@ -45,7 +43,7 @@ describe('DeleteData.vue', () => {
     }
     getters = {
       'auth/user': () => {
-        return { id: 'u343', name: deleteAccountName, contributionsCount: 2, commentedCount: 3 }
+        return { id: 'u343', name: deleteAccountName }
       },
     }
     actions = { 'auth/logout': jest.fn() }
@@ -68,15 +66,15 @@ describe('DeleteData.vue', () => {
       jest.clearAllMocks()
     })
 
-    it('defaults to deleteContributions to false', () => {
+    it('checkbox deleteContributions defaults be false', () => {
       expect(wrapper.vm.deleteContributions).toEqual(false)
     })
 
-    it('defaults to deleteComments to false', () => {
+    it('checkbox deleteComments defaults be false', () => {
       expect(wrapper.vm.deleteComments).toEqual(false)
     })
 
-    it('defaults to deleteEnabled to false', () => {
+    it('deleteButton defaults be false', () => {
       expect(wrapper.vm.deleteEnabled).toEqual(false)
     })
 
@@ -93,7 +91,7 @@ describe('DeleteData.vue', () => {
         deleteAccountBtn = wrapper.find('[data-test="delete-button"]')
       })
 
-      it('if deleteEnabled is true and only deletes user by default', () => {
+      it('if deleteEnabled is true and only deletes user ', () => {
         deleteAccountBtn.trigger('click')
         expect(mocks.$apollo.mutate).toHaveBeenCalledWith(
           expect.objectContaining({
@@ -105,9 +103,28 @@ describe('DeleteData.vue', () => {
         )
       })
 
+      it("deletes user's posts and comments if requested by default ", () => {
+        enableContributionDeletionCheckbox = wrapper.find(
+          '[data-test="contributions-deletion-checkbox"]',
+        )
+        enableContributionDeletionCheckbox.trigger('click')
+        enableCommentDeletionCheckbox = wrapper.find('[data-test="comments-deletion-checkbox"]')
+        enableCommentDeletionCheckbox.trigger('click')
+        deleteAccountBtn.trigger('click')
+        expect(mocks.$apollo.mutate).toHaveBeenCalledWith(
+          expect.objectContaining({
+            variables: {
+              id: 'u343',
+              resource: ['Post', 'Comment'],
+            },
+          }),
+        )
+      })
+
       it("deletes a user's posts if requested", () => {
-        mocks.$t.mockImplementation(() => deleteContributionsMessage)
-        enableContributionDeletionCheckbox = wrapper.findAll('input[type="checkbox"]').at(0)
+        enableContributionDeletionCheckbox = wrapper.find(
+          '[data-test="contributions-deletion-checkbox"]',
+        )
         enableContributionDeletionCheckbox.trigger('click')
         deleteAccountBtn.trigger('click')
         expect(mocks.$apollo.mutate).toHaveBeenCalledWith(
@@ -121,8 +138,7 @@ describe('DeleteData.vue', () => {
       })
 
       it("deletes a user's comments if requested", () => {
-        mocks.$t.mockImplementation(() => deleteCommentsMessage)
-        enableCommentDeletionCheckbox = wrapper.findAll('input[type="checkbox"]').at(1)
+        enableCommentDeletionCheckbox = wrapper.find('[data-test="comments-deletion-checkbox"]')
         enableCommentDeletionCheckbox.trigger('click')
         deleteAccountBtn.trigger('click')
         expect(mocks.$apollo.mutate).toHaveBeenCalledWith(
@@ -130,24 +146,6 @@ describe('DeleteData.vue', () => {
             variables: {
               id: 'u343',
               resource: ['Comment'],
-            },
-          }),
-        )
-      })
-
-      it("deletes a user's posts and comments if requested", () => {
-        mocks.$t.mockImplementation(() => deleteContributionsMessage)
-        enableContributionDeletionCheckbox = wrapper.findAll('input[type="checkbox"]').at(0)
-        enableContributionDeletionCheckbox.trigger('click')
-        mocks.$t.mockImplementation(() => deleteCommentsMessage)
-        enableCommentDeletionCheckbox = wrapper.findAll('input[type="checkbox"]').at(1)
-        enableCommentDeletionCheckbox.trigger('click')
-        deleteAccountBtn.trigger('click')
-        expect(mocks.$apollo.mutate).toHaveBeenCalledWith(
-          expect.objectContaining({
-            variables: {
-              id: 'u343',
-              resource: ['Post', 'Comment'],
             },
           }),
         )
