@@ -6,8 +6,6 @@ import { createTestClient } from 'apollo-server-testing'
 
 const categoryIds = ['cat9']
 let user
-let anotherUser
-let moderator
 let admin
 let authenticatedUser
 
@@ -290,8 +288,6 @@ describe('Delete a User as admin', () => {
   describe('authenticated as Admin', () => {
     beforeEach(async () => {
       admin = await Factory.build(
-
-
         'user',
         {
           role: 'admin',
@@ -457,7 +453,6 @@ describe('Delete a User as admin', () => {
           await expect(neode.all('SocialMedia')).resolves.toHaveLength(1)
           await mutate({ mutation: deleteUserMutation, variables })
           await expect(neode.all('SocialMedia')).resolves.toHaveLength(0)
-
         })
       })
     })
