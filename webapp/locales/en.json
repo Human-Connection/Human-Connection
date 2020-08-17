@@ -327,6 +327,7 @@
     "503-default": "Service Unavailable",
     "back-to-index": "Back to index page",
     "cannot-edit-post": "This post cannot be edited",
+    "cannot-edit-organization": "This organization cannot be edited",
     "default": "An error occurred",
     "post-not-found": "This post could not be found",
     "organization-not-found": "This organization could not be found",
@@ -469,6 +470,9 @@
       "descriptionHint": "A short description of the organization",
       "labelCity": "City or region of the organization",
       "success": "Saved!"
+    },
+    "menu": {
+      "edit": "Edit"
     }
   },
   "post": {
