@@ -4,15 +4,11 @@
       v-if="organization && ready"
       :class="{
             'post-page': true,
-            '--blur-image': blurred,
             }"
       :style="heroImageStyle"
     >
       <template #heroImage v-if="organization.image">
         <img :src="organization.image | proxyApiUrl" class="image" />
-        <aside v-show="organization.image" class="blur-toggle">
-          <img v-show="blurred" :src="organization.image | proxyApiUrl" class="preview" />
-        </aside>
       </template>
       <section class="menu">
         <user-teaser :user="organization.creator" :date-time="organization.createdAt">
@@ -20,9 +16,23 @@
             <ds-text v-if="organization.createdAt !== organization.updatedAt">({{ $t('post.edited') }})</ds-text>
           </template>
         </user-teaser>
+        <client-only>
+          <content-menu
+            placement="bottom-end"
+            resource-type="organization"
+            :resource="organization"
+            :modalsData="menuModalsData"
+            :is-owner="isAuthor"
+          />
+        </client-only>
       </section>
       <ds-space margin-bottom="small" />
       <h2 class="title hyphenate-text">{{ organization.name }}</h2>
+      <ds-space margin-bottom="small" />
+      <ds-text v-if="organization.location" align="center" color="soft" size="small">
+        <base-icon name="map-marker" />
+        {{ organization.location.name }}
+      </ds-text>
       <ds-space margin-bottom="small" />
       <content-viewer class="content hyphenate-text" :content="organization.description" />
       <!-- eslint-enable vue/no-v-html -->
@@ -89,7 +99,6 @@
      }
    },
    mounted() {
-     console.log("organization", this.organization)
      setTimeout(() => {
        // NOTE: quick fix for jumping flexbox implementation
        // will be fixed in a future update of the styleguide
@@ -148,6 +157,7 @@
          }
        },
        update({ Organization }) {
+         console.log(this.organization)
          this.organization = Organization[0] || {}
          this.name = this.organization.name
          const { image } = this.organization
@@ -185,27 +195,6 @@
      display: flex;
      justify-content: space-between;
      align-items: center;
-   }
-
-   &.--blur-image > .hero-image > .image {
-     filter: blur($blur-radius);
-   }
-
-   .blur-toggle {
-     position: absolute;
-     bottom: 0;
-     right: 0;
-
-     display: flex;
-     align-items: center;
-
-     height: 80px;
-     padding: 12px;
-
-     .preview {
-       height: 100%;
-       margin-right: 12px;
-     }
    }
 
    .comments {

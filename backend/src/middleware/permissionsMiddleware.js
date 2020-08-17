@@ -65,6 +65,30 @@ const isAuthor = rule({
   }
 })
 
+const isCreator = rule({
+  cache: 'no_cache',
+})(async (_parent, args, { user, driver }) => {
+  if (!user) return false
+  const { id: resourceId } = args
+  const session = driver.session()
+  const creatorReadTxPromise = session.readTransaction(async (transaction) => {
+    const creatorTransactionResponse = await transaction.run(
+      `
+        MATCH (resource {id: $resourceId})<-[:CREATED]-(creator {id: $userId})
+        RETURN creator
+      `,
+      { resourceId, userId: user.id },
+    )
+    return creatorTransactionResponse.records.map((record) => record.get('creator'))
+  })
+  try {
+    const [creator] = await creatorReadTxPromise
+    return !!creator
+  } finally {
+    session.close()
+  }
+})
+
 const isDeletingOwnAccount = rule({
   cache: 'no_cache',
 })(async (parent, args, context, info) => {
@@ -115,6 +139,7 @@ export default shield(
       SignupVerification: allow,
       UpdateUser: onlyYourself,
       CreateOrganization: isAuthenticated,
+      UpdateOrganization: or(isCreator, isAdmin, isModerator),
       CreatePost: isAuthenticated,
       UpdatePost: isAuthor,
       DeletePost: isAuthor,

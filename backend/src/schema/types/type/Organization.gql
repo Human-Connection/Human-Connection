@@ -39,8 +39,19 @@ type Mutation {
     id: ID
     name: String!
     slug: String
-    avatar: ImageInput,
-    image: ImageInput,
+    avatar: ImageInput
+    image: ImageInput
+    locationName: String
+    eMail: String
+    categoryIds: [ID]
+    description: String
+  ): Organization
+  UpdateOrganization(
+    id: ID
+    name: String!
+    slug: String
+    avatar: ImageInput
+    image: ImageInput
     locationName: String
     eMail: String
     categoryIds: [ID]

@@ -28,5 +28,33 @@ export default () => {
         }
       }
     `,
+    UpdateOrganization: gql`
+      mutation(
+        $id: ID!
+        $name: String!
+        $description: String
+        $locationName: String
+        $categoryIds: [ID]
+        $image: ImageInput
+      ) {
+        UpdateOrganization(
+          id: $id
+          name: $name
+          description: $description
+          locationName: $locationName
+          categoryIds: $categoryIds
+          image: $image
+        ) {
+          name
+          slug
+          description
+          locationName
+          image {
+            url
+            sensitive
+          }
+        }
+      }
+    `,
   }
 }

@@ -62,7 +62,7 @@ const createLocation = async (session, mapboxData) => {
   })
 }
 
-const createOrUpdateLocations = async (userId, locationName, session) => {
+const createOrUpdateLocations = async (resourceId, locationName, session) => {
   if (isEmpty(locationName)) {
     return
   }
@@ -74,6 +74,8 @@ const createOrUpdateLocations = async (userId, locationName, session) => {
     )}`,
   )
 
+  console.log('createOrUpdateLocations', resourceId, locationName)
+  
   debug(res)
 
   if (!res || !res.features || !res.features[0]) {
@@ -103,6 +105,7 @@ const createOrUpdateLocations = async (userId, locationName, session) => {
   let parent = data
 
   if (data.context) {
+    console.log('....', data.context)
     await asyncForEach(data.context, async (ctx) => {
       await createLocation(session, ctx)
       await session.writeTransaction((transaction) => {
@@ -121,18 +124,18 @@ const createOrUpdateLocations = async (userId, locationName, session) => {
       parent = ctx
     })
   }
-  // delete all current locations from user and add new location
+  // delete all current locations from resource and add new location
   await session.writeTransaction((transaction) => {
     return transaction.run(
       `
-          MATCH (user:User {id: $userId})-[relationship:IS_IN]->(location:Location)
+          MATCH (resource {id: $resourceId})-[relationship:IS_IN]->(location:Location)
           DETACH DELETE relationship
-          WITH user
+          WITH resource
           MATCH (location:Location {id: $locationId})
-          MERGE (user)-[:IS_IN]->(location)
-          RETURN location.id, user.id
+          MERGE (resource)-[:IS_IN]->(location)
+          RETURN location.id, resource.id
         `,
-      { userId: userId, locationId: data.id },
+      { resourceId: resourceId, locationId: data.id },
     )
   })
 }
