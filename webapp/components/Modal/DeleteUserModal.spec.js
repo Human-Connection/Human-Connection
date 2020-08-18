@@ -3,11 +3,13 @@ import Vuex from 'vuex'
 import DeleteUserModal from './DeleteUserModal.vue'
 const localVue = global.localVue
 config.stubs['sweetalert-icon'] = '<span><slot /></span>'
+config.stubs['nuxt-link'] = '<span><slot /></span>'
 
 localVue.use(DeleteUserModal)
 
 const getters = {
   'auth/isAdmin': () => true,
+  'auth/isModerator': () => false
 }
 
 describe('DeleteUserModal.vue', () => {
