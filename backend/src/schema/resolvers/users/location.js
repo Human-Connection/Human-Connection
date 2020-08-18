@@ -74,8 +74,6 @@ const createOrUpdateLocations = async (resourceId, locationName, session) => {
     )}`,
   )
 
-  console.log('createOrUpdateLocations', resourceId, locationName)
-  
   debug(res)
 
   if (!res || !res.features || !res.features[0]) {
@@ -105,7 +103,6 @@ const createOrUpdateLocations = async (resourceId, locationName, session) => {
   let parent = data
 
   if (data.context) {
-    console.log('....', data.context)
     await asyncForEach(data.context, async (ctx) => {
       await createLocation(session, ctx)
       await session.writeTransaction((transaction) => {
@@ -124,12 +121,22 @@ const createOrUpdateLocations = async (resourceId, locationName, session) => {
       parent = ctx
     })
   }
-  // delete all current locations from resource and add new location
+  // delete all current locations from resource
   await session.writeTransaction((transaction) => {
     return transaction.run(
       `
           MATCH (resource {id: $resourceId})-[relationship:IS_IN]->(location:Location)
           DETACH DELETE relationship
+          RETURN resource.id
+        `,
+      { resourceId: resourceId },
+    )
+  })
+  //  and add new location
+  await session.writeTransaction((transaction) => {
+    return transaction.run(
+      `
+          MATCH (resource {id: $resourceId})
           WITH resource
           MATCH (location:Location {id: $locationId})
           MERGE (resource)-[:IS_IN]->(location)
