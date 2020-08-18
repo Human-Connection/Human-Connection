@@ -8,39 +8,39 @@
 </template>
 
 <script>
- import OrganizationForm from '~/components/OrganizationForm/OrganizationForm'
- import OrganizationQuery from '~/graphql/OrganizationQuery'
- import { mapGetters } from 'vuex'
+import OrganizationForm from '~/components/OrganizationForm/OrganizationForm'
+import OrganizationQuery from '~/graphql/OrganizationQuery'
+import { mapGetters } from 'vuex'
 
- export default {
-   components: {
-     OrganizationForm,
-   },
-   computed: {
-     ...mapGetters({
-       user: 'auth/user',
-     }),
-   },
-   async asyncData(context) {
-     const {
-       app,
-       store,
-       error,
-       params: { id },
-     } = context
-     const client = app.apolloProvider.defaultClient
-     const {
-       data: {
-         Organization: [organization],
-       },
-     } = await client.query({
-       query: OrganizationQuery(app.$i18n),
-       variables: { id },
-     })
-     if (organization.creator.id !== store.getters['auth/user'].id) {
-       error({ statusCode: 403, message: 'error-pages.cannot-edit-organization' })
-     }
-     return { organization }
-   },
- }
+export default {
+  components: {
+    OrganizationForm,
+  },
+  computed: {
+    ...mapGetters({
+      user: 'auth/user',
+    }),
+  },
+  async asyncData(context) {
+    const {
+      app,
+      store,
+      error,
+      params: { id },
+    } = context
+    const client = app.apolloProvider.defaultClient
+    const {
+      data: {
+        Organization: [organization],
+      },
+    } = await client.query({
+      query: OrganizationQuery(app.$i18n),
+      variables: { id },
+    })
+    if (organization.creator.id !== store.getters['auth/user'].id) {
+      error({ statusCode: 403, message: 'error-pages.cannot-edit-organization' })
+    }
+    return { organization }
+  },
+}
 </script>

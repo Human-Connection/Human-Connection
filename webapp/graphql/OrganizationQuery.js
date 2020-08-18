@@ -1,9 +1,6 @@
 import gql from 'graphql-tag'
 
-import {
-  userFragment,
-  organizationFragment,
-} from './Fragments'
+import { userFragment, organizationFragment } from './Fragments'
 
 export default (i18n) => {
   const lang = i18n.locale().toUpperCase()
@@ -18,4 +15,3 @@ export default (i18n) => {
     }
   `
 }
-
