@@ -2,8 +2,8 @@ import { v4 as uuid } from 'uuid'
 import { neo4jgraphql } from 'neo4j-graphql-js'
 import { mergeImage } from './images/images'
 import Resolver from './helpers/Resolver'
+import { UserInputError } from 'apollo-server'
 import createOrUpdateLocations from './users/location'
-
 
 export default {
   Query: {
@@ -36,7 +36,9 @@ export default {
           `,
           { userId: context.user.id, categoryIds, params },
         )
-        const [organization] = createOrganizationTransactionResponse.records.map((record) => record.get('organization'))
+        const [organization] = createOrganizationTransactionResponse.records.map((record) =>
+          record.get('organization'),
+        )
         if (imageInput) {
           await mergeImage(organization, 'HERO_IMAGE', imageInput, { transaction })
         }
@@ -56,7 +58,6 @@ export default {
     },
     UpdateOrganization: async (_parent, params, context, _resolveInfo) => {
       const { categoryIds, image: imageInput } = params
-      console.log(categoryIds)
       delete params.categoryIds
       delete params.image
       const session = context.driver.session()
@@ -81,22 +82,22 @@ export default {
         updateOrganizationCypher += `
           UNWIND $categoryIds AS categoryId
           MATCH (category:Category {id: categoryId})
-          MERGE (orgnaization)-[:CATEGORIZED]->(category)
+          MERGE (organization)-[:CATEGORIZED]->(category)
           WITH organization
         `
       }
 
       updateOrganizationCypher += `RETURN organization {.*}`
-      console.log(updateOrganizationCypher)
       const updateOrganizationVariables = { categoryIds, params }
-      console.log(updateOrganizationVariables)
       try {
         const writeTxResultPromise = session.writeTransaction(async (transaction) => {
           const updateOrganizationTransactionResponse = await transaction.run(
             updateOrganizationCypher,
             updateOrganizationVariables,
           )
-          const [organization] = updateOrganizationTransactionResponse.records.map((record) => record.get('organization'))
+          const [organization] = updateOrganizationTransactionResponse.records.map((record) =>
+            record.get('organization'),
+          )
           await mergeImage(organization, 'HERO_IMAGE', imageInput, { transaction })
           return organization
         })
@@ -112,7 +113,7 @@ export default {
     ...Resolver('Organization', {
       undefinedToNull: [],
       hasMany: {
-        //tags: '-[:TAGGED]->(related:Tag)',
+        // tags: '-[:TAGGED]->(related:Tag)',
         categories: '-[:CATEGORIZED]->(related:Category)',
       },
       hasOne: {
@@ -120,10 +121,8 @@ export default {
         image: '-[:HERO_IMAGE]->(related:Image)',
         location: '-[:IS_IN]->(related:Location)',
       },
-      count: {
-      },
-      boolean: {
-      },
+      count: {},
+      boolean: {},
     }),
   },
 }
