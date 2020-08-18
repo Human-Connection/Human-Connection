@@ -52,7 +52,7 @@ const newlyCreatedNodesWithLocales = [
       id: expect.stringContaining('country'),
       type: 'country',
       name: 'United States of America',
-      nameEN: 'United States of America',
+      nameEN: 'United States',
       nameDE: 'Vereinigte Staaten',
       namePT: 'Estados Unidos',
       nameES: 'Estados Unidos',
