@@ -9,7 +9,7 @@ localVue.use(DeleteUserModal)
 
 const getters = {
   'auth/isAdmin': () => true,
-  'auth/isModerator': () => false
+  'auth/isModerator': () => false,
 }
 
 describe('DeleteUserModal.vue', () => {
