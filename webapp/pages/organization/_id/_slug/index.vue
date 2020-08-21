@@ -10,14 +10,14 @@
       <template #heroImage v-if="organization.image">
         <img :src="organization.image | proxyApiUrl" class="image" />
       </template>
+
+      <ds-text v-if="organization.location" align="right" color="soft" size="small">
+        <base-icon name="map-marker" />
+        {{ organization.location.name }}
+      </ds-text>
+
       <section class="menu">
-        <user-teaser :user="organization.creator" :date-time="organization.createdAt">
-          <template #dateTime>
-            <ds-text v-if="organization.createdAt !== organization.updatedAt">
-              ({{ $t('post.edited') }})
-            </ds-text>
-          </template>
-        </user-teaser>
+        <h2 class="title hyphenate-text">{{ organization.name }}</h2>
         <client-only>
           <content-menu
             placement="bottom-end"
@@ -29,19 +29,12 @@
         </client-only>
       </section>
       <ds-space margin-bottom="small" />
-      <h2 class="title hyphenate-text">{{ organization.name }}</h2>
-      <ds-space margin-bottom="small" />
-      <ds-text v-if="organization.location" align="center" color="soft" size="small">
-        <base-icon name="map-marker" />
-        {{ organization.location.name }}
-      </ds-text>
-      <ds-space margin-bottom="small" />
+
       <content-viewer class="content hyphenate-text" :content="organization.description" />
       <!-- eslint-enable vue/no-v-html -->
       <ds-space margin="xx-large" />
       <!-- Categories -->
       <div class="categories">
-        <ds-space margin="xx-small" />
         <hc-category
           v-for="category in organization.categories"
           :key="category.id"
@@ -50,11 +43,20 @@
         />
       </div>
       <ds-space margin-bottom="small" />
+
       <!-- Tags -->
       <div v-if="organization.tags && organization.tags.length" class="tags">
         <ds-space margin="xx-small" />
         <hc-hashtag v-for="tag in sortedTags" :key="tag.id" :id="tag.id" />
       </div>
+
+      <ds-space margin-bottom="large" />
+
+      <hr />
+      <section class="menu">
+        <ds-text size="small">Created by:</ds-text>
+        <user-teaser :user="organization.creator" :date-time="organization.createdAt"></user-teaser>
+      </section>
     </base-card>
   </transition>
 </template>
