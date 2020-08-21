@@ -181,7 +181,7 @@ export default {
         the autoscroll works correctly when following a comment link. 
       */
     padding-top: calc(var(--hero-image-aspect-ratio) * 100%);
-    width: 100%;
+   /* width: 100%; */
 
     /*  Letting the image fill the container, since the container
         is the one determining height
