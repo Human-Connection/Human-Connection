@@ -2,7 +2,7 @@
   <ds-container width="medium">
     <base-card>
       <template #imageColumn>
-        <img class="image" alt="Human Connection" src="/img/sign-up/nicetomeetyou.svg" />
+        <img alt="Human Connection" src="/img/sign-up/nicetomeetyou.svg" />
       </template>
       <nuxt-child />
       <template #topMenu>

@@ -102,7 +102,7 @@ export default {
     align-items: center;
     padding-right: $space-base;
 
-    .image {
+    .image, image {
       width: 100%;
       max-width: 200px;
     }
