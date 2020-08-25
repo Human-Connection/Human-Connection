@@ -1,0 +1,28 @@
+type Organization {
+  id: ID!
+  name: String
+  description: String
+  iconName: String
+  urlIcon: String
+  ranking: Int
+  hourHand: String
+  createdAt: String
+  updatedAt: String
+  services: [Service] @relation(name: "PROVIDES", direction: "OUT")
+  plan: Plan @relation(name: "SUBSCRIBED", direction: "OUT")
+  location: Location @cypher(statement: "MATCH (this)-[:IS_IN]->(l:Location) RETURN l")
+}
+
+type Query {
+  Organization(
+    id: ID
+    name: String
+    description: String
+    iconName: String
+    urlIcon: String
+    ranking: Int
+    hourHand: String
+    createdAt: String
+    updatedAt: String
+  ): [Organization]
+}

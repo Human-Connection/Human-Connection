@@ -39,6 +39,28 @@ Factory.define('category')
     return neode.create('Category', buildObject)
   })
 
+Factory.define('plan')
+  .attr('id', uuid)
+  .attr('name', 'Plan')
+  .after((buildObject, options) => {
+    return neode.create('Plan', buildObject)
+  })
+
+Factory.define('organization')
+  .attr('id', uuid)
+  .attr('name', 'Organization')
+  .after((buildObject, options) => {
+    return neode.create('Organization', buildObject)
+  })
+
+Factory.define('serviceCategory')
+  .attr('id', uuid)
+  .attr('icon', 'globe')
+  .attr('name', 'Service Category 1')
+  .after((buildObject, options) => {
+    return neode.create('ServiceCategory', buildObject)
+  })
+
 Factory.define('badge')
   .attr('type', 'crowdfunding')
   .attr('status', 'permanent')
@@ -189,6 +211,31 @@ Factory.define('comment')
     ])
     await Promise.all([comment.relateTo(author, 'author'), comment.relateTo(post, 'post')])
     return comment
+  })
+
+Factory.define('service')
+  .option('organizationId', null)
+  .option('o', ['organizationId'], (organizationId) => {
+    if (organizationId) return neode.find('Organization', organizationId)
+    return Factory.build('organization')
+  })
+  .option('serviceCategoryId', null)
+  .option('c', ['serviceCategoryId'], (serviceCategoryId) => {
+    if (serviceCategoryId) return neode.find('ServiceCategory', serviceCategoryId)
+    return Factory.build('serviceCategory')
+  })
+  .attrs({
+    id: uuid,
+    name: faker.lorem.sentence,
+  })
+  .after(async (buildObject, options) => {
+    const [service, o, c] = await Promise.all([
+      neode.create('Service', buildObject),
+      options.o,
+      options.c,
+    ])
+    await Promise.all([service.relateTo(o, 'organization'), service.relateTo(c, 'serviceCategory')])
+    return service
   })
 
 Factory.define('donations')
