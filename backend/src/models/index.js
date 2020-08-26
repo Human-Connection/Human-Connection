@@ -13,6 +13,7 @@ export default {
   Organization: require('./Organization.js').default,
   ServiceCategory: require('./ServiceCategory.js').default,
   Service: require('./Service.js').default,
+  SuggestedResource: require('./SuggestedResource.js').default,
   Plan: require('./Plan.js').default,
   Tag: require('./Tag.js').default,
   Location: require('./Location.js').default,

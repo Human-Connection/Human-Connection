@@ -1,4 +1,4 @@
-enum _CategoryOrdering {
+enum _SCategoryOrdering {
   id_asc
   id_desc
   name_asc
@@ -29,6 +29,7 @@ type Query {
     icon: String
     createdAt: String
     updatedAt: String
-    orderBy: [_CommentOrdering]
+    orderBy: [_SCategoryOrdering]
   ): [ServiceCategory]
+  usedCategories: [ServiceCategory] @cypher(statement: "MATCH (this)-[:SCATEGORY]->(o:Organization) RETURN DISTINCT this")
 }
