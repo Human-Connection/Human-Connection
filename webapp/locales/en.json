@@ -638,7 +638,7 @@
       "accountDescription": "Be aware that your Posts and Comments are important to our community. If you still choose to delete them, you have to mark them below.",
       "accountWarning": "You CAN'T MANAGE and CAN'T RECOVER your Account, Posts, or Comments after deleting your account!",
       "accountWarningAdmin": "The account, contributions or comments can NOT BE ADMINISTERED OR RESTORED after deletion!",
-      "accountWarningIsAdmin": "Heads up! You are about to delete a user account!",
+      "accountWarningIsAdmin": "Attention! You are about to delete a user account!",
       "commentedCount": "Delete my {count} comment ::: Delete my {count} comments",
       "confirmDeleting": "Delete user account now",
       "contributionsCount": "Delete my {count} post ::: Delete my {count} posts",
