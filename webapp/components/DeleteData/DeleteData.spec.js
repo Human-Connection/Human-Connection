@@ -50,12 +50,20 @@ describe('DeleteData.vue', () => {
   })
 
   describe('mount', () => {
+    const data = () => {
+      return {
+        currentUserCounts: {
+          contributionsCount: 4,
+          commentedCount: 2,
+        },
+      }
+    }
     const Wrapper = () => {
       const store = new Vuex.Store({
         getters,
         actions,
       })
-      return mount(DeleteData, { mocks, localVue, store })
+      return mount(DeleteData, { mocks, localVue, store, data })
     }
 
     beforeEach(() => {

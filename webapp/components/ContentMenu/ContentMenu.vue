@@ -191,6 +191,15 @@ export default {
               icon: 'user-times',
             })
           }
+          if (this.isAdmin === true) {
+            routes.push({
+              label: this.$t(`settings.deleteUserAccount.name`),
+              callback: () => {
+                this.$emit('delete', this.resource)
+              },
+              icon: 'trash',
+            })
+          }
         }
       }
 

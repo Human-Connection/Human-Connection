@@ -373,6 +373,11 @@
     "questions": "Any Questions or concerns, send an e-mail to",
     "title": "Human Connection is under maintenance"
   },
+  "modals": {
+    "deleteUser": {
+      "created": "Created"
+    }
+  },
   "moderation": {
     "name": "Moderation",
     "reports": {
@@ -632,8 +637,12 @@
     "deleteUserAccount": {
       "accountDescription": "Be aware that your Posts and Comments are important to our community. If you still choose to delete them, you have to mark them below.",
       "accountWarning": "You CAN'T MANAGE and CAN'T RECOVER your Account, Posts, or Comments after deleting your account!",
+      "accountWarningAdmin": "The account, contributions or comments can NOT BE ADMINISTERED OR RESTORED after deletion!",
+      "accountWarningIsAdmin": "Attention! You are about to delete a user account!",
       "commentedCount": "Delete my {count} comment ::: Delete my {count} comments",
+      "confirmDeleting": "Delete user account now",
       "contributionsCount": "Delete my {count} post ::: Delete my {count} posts",
+      "infoAdmin": "All contributions and comments of the user will be deleted additionally!",
       "name": "Delete user account",
       "pleaseConfirm": "Destructive action! Type “{confirm}” to confirm.",
       "success": "Account successfully deleted!"
