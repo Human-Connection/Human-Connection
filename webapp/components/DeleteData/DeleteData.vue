@@ -11,7 +11,7 @@
     <p v-show="enableDeletionValue" class="notice">
       {{ $t('settings.deleteUserAccount.accountDescription') }}
     </p>
-    <label v-if="currentUserCounts.contributionsCount" class="checkbox">
+    <label class="checkbox">
       <input
         type="checkbox"
         v-model="deleteContributions"

@@ -642,7 +642,7 @@
       "commentedCount": "Delete my {count} comment ::: Delete my {count} comments",
       "confirmDeleting": "Delete user account now",
       "contributionsCount": "Delete my {count} post ::: Delete my {count} posts",
-      "infoAdmin": "All contributions and comments of the user are additionally deleted!",
+      "infoAdmin": "All contributions and comments of the user will be deleted additionally!",
       "name": "Delete user account",
       "pleaseConfirm": "Destructive action! Type “{confirm}” to confirm.",
       "success": "Account successfully deleted!"

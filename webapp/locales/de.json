@@ -637,7 +637,7 @@
     "deleteUserAccount": {
       "accountDescription": "Sei dir bewusst, dass deine Beiträge und Kommentare für unsere Community wichtig sind. Wenn du sie trotzdem löschen möchtest, musst du sie unten markieren.",
       "accountWarning": "Dein Konto, deine Beiträge oder Kommentare kannst du nach dem Löschen WEDER VERWALTEN NOCH WIEDERHERSTELLEN!",
-      "accountWarningAdmin": "Das Konto, die Beiträge oder Kommentare können nach dem Löschen WEDER VERWALTEN NOCH WIEDERHERGESTELLT WERDEN!",
+      "accountWarningAdmin": "Das Konto, die Beiträge oder Kommentare können nach dem Löschen WEDER VERWALTET NOCH WIEDERHERGESTELLT WERDEN!",
       "accountWarningIsAdmin": "Achtung! Du löschst jetzt ein Benutzerkonto!",
       "commentedCount": "Meinen {count} Kommentar löschen ::: Meine {count} Kommentare löschen",
       "confirmDeleting": "Benutzerkonto jetzt löschen",

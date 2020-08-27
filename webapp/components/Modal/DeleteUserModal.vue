@@ -13,24 +13,24 @@
           </ds-flex-item>
           <ds-flex-item width="20%">
             <ds-text size="small">
-              <relative-date-time :date-time="userdata.createdAt" class="relative-date-time" />
+              <span class="bold">{{ $t('modals.deleteUser.created') }}</span>
               <br />
-              {{ $t('modals.deleteUser.created') }}
+              <relative-date-time :date-time="userdata.createdAt" />
             </ds-text>
           </ds-flex-item>
           <ds-flex-item width="15%">
-            <ds-number
-              size="small"
-              :count="userdata.contributionsCount"
-              :label="$t('common.post', null, userdata.contributionsCount)"
-            />
+            <ds-text size="small">
+              <span class="bold">{{ $t('common.post', null, userdata.contributionsCount) }}</span>
+              <br />
+              {{ userdata.contributionsCount }}
+            </ds-text>
           </ds-flex-item>
           <ds-flex-item width="15%">
-            <ds-number
-              size="small"
-              :count="userdata.commentedCount"
-              :label="$t('common.comment', null, userdata.commentedCount)"
-            />
+            <ds-text size="small">
+              <span class="bold">{{ $t('common.comment', null, userdata.commentedCount) }}</span>
+              <br />
+              {{ userdata.commentedCount }}
+            </ds-text>
           </ds-flex-item>
         </ds-flex>
       </ds-section>
@@ -176,7 +176,7 @@ export default {
   z-index: $z-index-modal;
   border-radius: $border-radius-x-large;
 }
-.relative-date-time {
+.bold {
   font-weight: 700;
 }
 </style>
