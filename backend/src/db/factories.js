@@ -163,6 +163,51 @@ Factory.define('post')
     return post
   })
 
+Factory.define('organization')
+  .option('categoryIds', [])
+  .option('categories', ['categoryIds'], (categoryIds) => {
+    if (categoryIds.length) return Promise.all(categoryIds.map((id) => neode.find('Category', id)))
+    // there must be at least one category
+    return Promise.all([Factory.build('category')])
+  })
+  //.option('tagIds', [])
+  /*.option('tags', ['tagIds'], (tagIds) => {
+    return Promise.all(tagIds.map((id) => neode.find('Tag', id)))
+  })*/
+  .option('creatorId', null)
+  .option('creator', ['creatorId'], (creatorId) => {
+    if (creatorId) return neode.find('User', creatorId)
+    return Factory.build('user')
+  })
+  .option('image', () => Factory.build('image'))
+  .attrs({
+    id: uuid,
+    name: faker.company.companyName,
+    description: faker.lorem.paragraphs,
+//    deleted: false,
+//    imageBlurred: false,
+    imageAspectRatio: 1.333,
+  })
+  .attr('slug', ['slug', 'name'], (slug, name) => {
+    return slug || slugify(name, { lower: true })
+  })
+  .after(async (buildObject, options) => {
+    const [organization, creator, image, categories] = await Promise.all([
+      neode.create('Organization', buildObject),
+      options.creator,
+      options.image,
+      options.categories,
+//      options.tags,
+    ])
+    await Promise.all([
+      organization.relateTo(creator, 'creator'),
+      Promise.all(categories.map((c) => c.relateTo(organization, 'organization'))),
+//      Promise.all(tags.map((t) => t.relateTo(organization, 'organization'))),
+    ])
+    if (image) await organization.relateTo(image, 'image')
+    return organization
+  })
+
 Factory.define('comment')
   .option('postId', null)
   .option('post', ['postId'], (postId) => {

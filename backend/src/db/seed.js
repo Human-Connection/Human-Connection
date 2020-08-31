@@ -753,6 +753,66 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         },
       ),
     ])
+    
+    const [o1, o2, o3, o4, o5] = await Promise.all([
+      Factory.build(
+        'organization',
+        {
+          id: 'o1',
+        },
+        {
+          creator: jennyRostock,
+          categoryIds: ['cat1', 'cat3'],
+        },
+      ),
+      Factory.build(
+        'organization',
+        {
+          id: 'o2',
+        },
+        {
+          creator: jennyRostock,
+          categoryIds: ['cat1', 'cat4'],
+        },
+      ),
+      Factory.build(
+        'organization',
+        {
+          id: 'o3',
+        },
+        {
+          creator: jennyRostock,
+          categoryIds: ['cat3'],
+        },
+      ),
+      Factory.build(
+        'organization',
+        {
+          id: 'o4',
+        },
+        {
+          creator: louie,
+          categoryIds: ['cat4', 'cat5'],
+        },
+      ),
+      Factory.build(
+        'organization',
+        {
+          id: 'o5',
+        },
+        {
+          creator: louie,
+          categoryIds: ['cat3', 'cat4'],
+        },
+      ),
+    ])
+    await Promise.all([
+      o1.relateTo(Berlin, 'isIn'),
+      o2.relateTo(Berlin, 'isIn'),
+      o3.relateTo(Berlin, 'isIn'),
+      o4.relateTo(Hamburg, 'isIn'),
+      o5.relateTo(Paris, 'isIn'),
+    ])
 
     const trollingComment = comments[0]
 

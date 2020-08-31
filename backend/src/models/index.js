@@ -15,4 +15,5 @@ export default {
   Donations: require('./Donations.js').default,
   Report: require('./Report.js').default,
   Migration: require('./Migration.js').default,
+  Organization: require('./Organization.js').default,
 }
