@@ -104,10 +104,10 @@ describe('AvatarMenu.vue', () => {
           expect(settingsLink.exists()).toBe(true)
         })
 
-        it('displays a link to the create organization page', () => {
+        it('displays a link to the organization list page', () => {
           const settingsLink = wrapper
             .findAll('.ds-menu-item span')
-            .at(wrapper.vm.routes.findIndex((route) => route.path === '/organization/create'))
+            .at(wrapper.vm.routes.findIndex((route) => route.path === '/organization/list'))
           expect(settingsLink.exists()).toBe(true)
         })
       })

@@ -86,8 +86,8 @@ export default {
           icon: 'cogs',
         },
         {
-          name: this.$t('organizations.add'),
-          path: `/organization/create`,
+          name: this.$t('organizations.name'),
+          path: `/organization/list`,
           icon: 'globe',
         },
       ]
