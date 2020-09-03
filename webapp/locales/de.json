@@ -468,6 +468,7 @@
     "user": "Benutzer"
   },
   "organizations": {
+    "name": "Organisationen",
     "add": "Organisation hinzufügen",
     "form": {
       "description": "Beschreibung",
