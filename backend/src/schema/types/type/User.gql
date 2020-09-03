@@ -51,6 +51,8 @@ type User {
   friendsCount: Int! @cypher(statement: "MATCH (this)<-[:FRIENDS]->(r:User) RETURN COUNT(DISTINCT r)")
 
   following: [User]! @relation(name: "FOLLOWS", direction: "OUT")
+  orgFollowing: [Organization]! @relation(name: "FOLLOWS", direction: "OUT")
+  serviceInterested: [Service]! @cypher(statement: "MATCH (this)-[r:INTERESTED]->(s:Service) RETURN s ORDER BY r.createdAt DESC")
   followingCount: Int! @cypher(statement: "MATCH (this)-[:FOLLOWS]->(r:User) RETURN COUNT(DISTINCT r)")
 
   followedBy: [User]! @relation(name: "FOLLOWS", direction: "IN")

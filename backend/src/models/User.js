@@ -36,6 +36,24 @@ export default {
       createdAt: { type: 'string', isoDate: true, default: () => new Date().toISOString() },
     },
   },
+  orgFollowing: {
+    type: 'relationship',
+    relationship: 'FOLLOWS',
+    target: 'Organization',
+    direction: 'out',
+    properties: {
+      createdAt: { type: 'string', isoDate: true, default: () => new Date().toISOString() },
+    },
+  },
+  serviceInterested: {
+    type: 'relationship',
+    relationship: 'INTERESTED',
+    target: 'Service',
+    direction: 'out',
+    properties: {
+      createdAt: { type: 'string', isoDate: true, default: () => new Date().toISOString() },
+    },
+  },
   followedBy: {
     type: 'relationship',
     relationship: 'FOLLOWS',

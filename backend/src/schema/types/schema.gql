@@ -9,6 +9,8 @@ type Mutation {
   # Unshout the given Type and ID
   unshout(id: ID!, type: ShoutTypeEnum): Boolean!
   followUser(id: ID!): User
+  followOrg(id: ID!): Organization
+  showInterest(id: ID!): Service
   unfollowUser(id: ID!): User
 }
 

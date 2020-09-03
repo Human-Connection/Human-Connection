@@ -132,6 +132,8 @@ export default shield(
       reward: isAdmin,
       unreward: isAdmin,
       followUser: isAuthenticated,
+      followOrg: isAuthenticated,
+      showInterest: isAuthenticated,
       unfollowUser: isAuthenticated,
       shout: isAuthenticated,
       unshout: isAuthenticated,
