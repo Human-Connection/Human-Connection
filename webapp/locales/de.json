@@ -468,7 +468,6 @@
     "user": "Benutzer"
   },
   "organizations": {
-    "name": "Organisationen",
     "add": "Organisation hinzufügen",
     "form": {
       "description": "Beschreibung",
@@ -479,7 +478,8 @@
     },
     "menu": {
       "edit": "Bearbeiten"
-    }
+    },
+    "name": "Organisationen"
   },
   "post": {
     "comment": {

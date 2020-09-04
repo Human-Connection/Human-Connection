@@ -468,7 +468,6 @@
     "user": "User"
   },
   "organizations": {
-    "name": "Organizations",
     "add": "Add organization",
     "form": {
       "description": "Description",
@@ -479,7 +478,8 @@
     },
     "menu": {
       "edit": "Edit"
-    }
+    },
+    "name": "Organizations"
   },
   "post": {
     "comment": {
