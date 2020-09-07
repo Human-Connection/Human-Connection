@@ -32,7 +32,7 @@
 
       <content-viewer class="content hyphenate-text" :content="organization.description" />
       <!-- eslint-enable vue/no-v-html -->
-      <ds-space margin="xx-large" />
+      <ds-space margin="large" />
       <!-- Categories -->
       <div class="categories">
         <hc-category
@@ -43,7 +43,6 @@
         />
       </div>
       <ds-space margin-bottom="small" />
-
       <!-- Tags -->
       <div v-if="organization.tags && organization.tags.length" class="tags">
         <ds-space margin="xx-small" />

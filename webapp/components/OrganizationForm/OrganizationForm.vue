@@ -38,15 +38,13 @@
           :loading="loadingGeo"
           @input.native="handleCityInput"
         />
-        <ds-input
-          class="organization-space-bottom"
-          id="description"
-          model="description"
-          type="textarea"
-          rows="3"
-          :label="$t('organizations.form.description')"
-          :placeholder="$t('organizations.form.descriptionHint')"
+        <hc-editor
+          :users="users"
+          :value="formData.description"
+          :hashtags="hashtags"
+          @input="updateEditorContent"
         />
+        <ds-space margin="large" />
         <categories-select model="categoryIds" :existingCategoryIds="formData.categoryIds" />
         <ds-chip size="base" :color="errors && errors.categoryIds && 'danger'">
           {{ formData.categoryIds.length }} / 3
@@ -69,6 +67,7 @@
 import gql from 'graphql-tag'
 import { CancelToken } from 'axios'
 import { mapGetters } from 'vuex'
+import HcEditor from '~/components/Editor/Editor'
 import OrganizationMutations from '~/graphql/OrganizationMutations.js'
 import CategoriesSelect from '~/components/CategoriesSelect/CategoriesSelect'
 import ImageUploader from '~/components/ImageUploader/ImageUploader'
@@ -78,6 +77,7 @@ const mapboxToken = process.env.MAPBOX_TOKEN
 
 export default {
   components: {
+    HcEditor,
     CategoriesSelect,
     ImageUploader,
   },
@@ -173,7 +173,7 @@ export default {
         })
     },
     updateEditorContent(value) {
-      this.$refs.organizationForm.update('content', value)
+      this.$refs.organizationForm.update('description', value)
     },
     addHeroImage(file) {
       this.formData.image = null

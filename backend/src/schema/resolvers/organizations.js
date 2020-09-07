@@ -113,7 +113,7 @@ export default {
     ...Resolver('Organization', {
       undefinedToNull: [],
       hasMany: {
-        // tags: '-[:TAGGED]->(related:Tag)',
+        tags: '-[:TAGGED]->(related:Tag)',
         categories: '-[:CATEGORIZED]->(related:Category)',
       },
       hasOne: {
