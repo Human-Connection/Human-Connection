@@ -20,7 +20,7 @@ export default {
   slug: { type: 'string', allow: [null], unique: 'true' },
   description: { type: 'string', disallow: [null], min: 3 },
   createdAt: { type: 'string', isoDate: true, default: () => new Date().toISOString() },
-    updatedAt: {
+  updatedAt: {
     type: 'string',
     isoDate: true,
     required: true,

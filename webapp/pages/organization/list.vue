@@ -24,6 +24,12 @@
                   :name="$t(`contribution.category.name.${category.slug}`)"
                 />
               </div>
+              <ds-space margin-bottom="small" />
+              <!-- Tags -->
+              <div v-if="orga.tags && orga.tags.length" class="tags">
+                <ds-space margin="xx-small" />
+                <hc-hashtag v-for="tag in sortedTags(orga.tags)" :key="tag.id" :id="tag.id" />
+              </div>
             </base-card>
           </nuxt-link>
         </li>
@@ -34,9 +40,12 @@
 <script>
 import gql from 'graphql-tag'
 import HcCategory from '~/components/Category'
+import HcHashtag from '~/components/Hashtag/Hashtag'
+import { sortTagsAlphabetically } from '~/components/utils/PostHelpers'
 
 export default {
   components: {
+    HcHashtag,
     HcCategory,
   },
   data() {
@@ -61,6 +70,9 @@ export default {
       if (!(id && slug)) return ''
       return `/organization/${id}/${slug}`
     },
+    sortedTags(tags) {
+      return sortTagsAlphabetically(tags)
+    },
   },
   apollo: {
     Organization: {
@@ -78,6 +90,9 @@ export default {
                 name
                 icon
                 slug
+              }
+              tags {
+                id
               }
             }
           }

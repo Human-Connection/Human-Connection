@@ -127,5 +127,8 @@ export const organizationFragment = (lang) => gql`
     }
     description
     eMail
+    tags {
+      id
+    }
   }
 `

@@ -22,9 +22,8 @@ type Organization {
   location: Location @cypher(statement: "MATCH (this)-[:IS_IN]->(l:Location) RETURN l")
   locationName: String
 
-  """
   tags: [Tag]! @relation(name: "TAGGED", direction: "OUT")
-  """
+
   categories: [Category]! @relation(name: "CATEGORIZED", direction: "OUT")
 
   description: String
