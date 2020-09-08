@@ -4758,13 +4758,13 @@ graceful-fs@^4.2.3:
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.3.tgz#4a12ff1b60376ef09862c2093edd908328be8423"
   integrity sha512-a30VEBm4PEdx1dRB7MFK7BejejvCvBronbLjht+sHuGYj8PHs7M/5Z+rt5lw551vZ7yfTCj4Vuyy3mSJytDWRQ==
 
-graphql-auth-directives@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/graphql-auth-directives/-/graphql-auth-directives-2.1.0.tgz#85b83817844e2ec5fba8fe5de444287d6dd0f85a"
-  integrity sha512-mRVsjeMeMABPyjxyzl9mhkcW02YBwSj7dnu7C6wy2dIhiby6xTKy6Q54C8KeqXSYsy6ua4VmBH++d7GKqpvIoA==
+graphql-auth-directives@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/graphql-auth-directives/-/graphql-auth-directives-2.2.1.tgz#42e29431910e5205b752c378e6a344fa527ba4e8"
+  integrity sha512-8tOb1fG09u9DTSdxfPA+zjG8E3q7YfcSFWF39XVg9Puht7zZaiwUiRtEPGP3kmfivXCevrzYkeoeDnyaPJEpBA==
   dependencies:
     apollo-errors "^1.9.0"
-    graphql-tools "^4.0.4"
+    graphql-tools "^4.0.7"
     jsonwebtoken "^8.3.0"
 
 graphql-custom-directives@~0.2.14:
@@ -4847,7 +4847,7 @@ graphql-tools-fork@9.0.1:
     node-fetch "^2.6.0"
     uuid "^7.0.2"
 
-graphql-tools@^4.0.0, graphql-tools@^4.0.4, graphql-tools@^4.0.5:
+graphql-tools@^4.0.0, graphql-tools@^4.0.5, graphql-tools@^4.0.7:
   version "4.0.8"
   resolved "https://registry.yarnpkg.com/graphql-tools/-/graphql-tools-4.0.8.tgz#e7fb9f0d43408fb0878ba66b522ce871bafe9d30"
   integrity sha512-MW+ioleBrwhRjalKjYaLQbr+920pHBgy9vM/n47sswtns8+96sRn5M/G+J1eu7IMeKWiN/9p6tmwCHU7552VJg==
@@ -6450,10 +6450,15 @@ lodash.unescape@4.0.1:
   resolved "https://registry.yarnpkg.com/lodash.unescape/-/lodash.unescape-4.0.1.tgz#bf2249886ce514cda112fae9218cdc065211fc9c"
   integrity sha1-vyJJiGzlFM2hEvrpIYzcBlIR/Jw=
 
-lodash@4.17.15, lodash@^4.15.0, lodash@^4.17.11, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.5, lodash@~4.17.11, lodash@~4.17.14, lodash@~4.17.15:
+lodash@4.17.15:
   version "4.17.15"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
   integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
+
+lodash@^4.15.0, lodash@^4.17.11, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.5, lodash@~4.17.11, lodash@~4.17.14, lodash@~4.17.15:
+  version "4.17.20"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.20.tgz#b44a9b6297bcb698f1c51a3545a2b3b368d59c52"
+  integrity sha512-PlhdFcillOINfeV7Ni6oF1TAEayyZBoZ8bcshTHqOYJYlrqzRK5hagpagky5o4HfCzzd1TRkXPMFq6cKk9rGmA==
 
 loglevel@^1.6.7:
   version "1.6.8"
@@ -6967,28 +6972,29 @@ neo4j-driver@^1.7.6:
     text-encoding-utf-8 "^1.0.2"
     uri-js "^4.2.2"
 
-neo4j-driver@^4.0.1, neo4j-driver@^4.0.2:
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/neo4j-driver/-/neo4j-driver-4.0.2.tgz#78de3b91e91572bcbd9d2e02554322fe1ab399ea"
-  integrity sha512-xQN4BZZsweaNNac7FDYAV6f/JybghwY3lk4fwblS8V5KQ+DBMPe4Pthh672mp+wEYZGyzPalq5CfpcBrWaZ4Gw==
+neo4j-driver@^4.0.2, neo4j-driver@^4.1.0:
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/neo4j-driver/-/neo4j-driver-4.1.2.tgz#b7dc520a8b64b7dccd143058cf6cdf6fd6cb9ccd"
+  integrity sha512-hD13lwOuWi53IorgxL0/7HdBrR74VsQTMzZbp45a5e+vhciGtkqsfPH4oy33g+UOeORmxQ1y/lLnKpYe0Ll6xg==
   dependencies:
     "@babel/runtime" "^7.5.5"
     rxjs "^6.5.2"
     text-encoding-utf-8 "^1.0.2"
     uri-js "^4.2.2"
 
-neo4j-graphql-js@^2.11.5:
-  version "2.11.5"
-  resolved "https://registry.yarnpkg.com/neo4j-graphql-js/-/neo4j-graphql-js-2.11.5.tgz#4e887d727ec05b2c57ab81fad373fa3fcb734e39"
-  integrity sha512-vex6PRqDT5wdxYgmw9p5oii9EUbflEkjzpjJ0tG1JfhWl5e7W/CLHfjT6wyl5wWRq8WYYvREAX3ADsdNapqUtw==
+neo4j-graphql-js@^2.16.3:
+  version "2.16.3"
+  resolved "https://registry.yarnpkg.com/neo4j-graphql-js/-/neo4j-graphql-js-2.16.3.tgz#6693d72cef912e2131187c42fb4f2c69cc32f702"
+  integrity sha512-06iiW5+83L7yaNg1jJ4DnFiuVYsi83Mth2y0w+Eu4/7PEW5QLtEiTBPZIwD6BWNRYB8b6L15d0R+rEAb2kf6uA==
   dependencies:
     "@babel/runtime" "^7.5.5"
     "@babel/runtime-corejs2" "^7.5.5"
+    apollo-server-errors "^2.4.1"
     debug "^4.1.1"
     graphql "^14.2.1"
-    graphql-auth-directives "^2.1.0"
-    lodash "^4.17.15"
-    neo4j-driver "^4.0.1"
+    graphql-auth-directives "^2.2.1"
+    lodash "^4.17.19"
+    neo4j-driver "^4.1.0"
 
 neode@^0.3.7:
   version "0.3.7"
