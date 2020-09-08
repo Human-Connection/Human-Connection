@@ -24,7 +24,6 @@
                   :name="$t(`contribution.category.name.${category.slug}`)"
                 />
               </div>
-              <ds-space margin-bottom="small" />
               <!-- Tags -->
               <div v-if="orga.tags && orga.tags.length" class="tags">
                 <ds-space margin="xx-small" />

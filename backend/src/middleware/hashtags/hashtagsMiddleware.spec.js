@@ -30,6 +30,24 @@ const updatePostMutation = gql`
   }
 `
 
+const createOrganizationMutation = gql`
+  mutation($id: ID, $name: String!, $description: String!, $categoryIds: [ID]!) {
+    CreateOrganization(id: $id, name: $name, description: $description, categoryIds: $categoryIds) {
+      id
+      name
+      description
+    }
+  }
+`
+const updateOrganizationMutation = gql`
+  mutation($id: ID!, $name: String!, $description: String!, $categoryIds: [ID]!) {
+    UpdateOrganization(id: $id, description: $description, name: $name, categoryIds: $categoryIds) {
+      name
+      description
+    }
+  }
+`
+
 beforeAll(() => {
   const createServerResult = createServer({
     context: () => {
@@ -103,6 +121,17 @@ describe('hashtags', () => {
       }
     }
   `
+
+  const organizationWithHastagsQuery = gql`
+    query($id: ID) {
+      Organization(id: $id) {
+        tags {
+          id
+        }
+      }
+    }
+  `
+
   const postWithHastagsVariables = {
     id,
   }
@@ -204,6 +233,109 @@ describe('hashtags', () => {
             expect.objectContaining({
               data: {
                 Post: [
+                  {
+                    tags: expect.arrayContaining(expected),
+                  },
+                ],
+              },
+            }),
+          )
+        })
+      })
+    })
+
+    describe('create a Organization with Hashtags', () => {
+      beforeEach(async () => {
+        await mutate({
+          mutation: createOrganizationMutation,
+          variables: {
+            id,
+            name: title,
+            description: postContent,
+            categoryIds,
+          },
+        })
+      })
+
+      it('both hashtags are created with the "id" set to their "name"', async () => {
+        const expected = [
+          {
+            id: 'Democracy',
+          },
+          {
+            id: 'Liberty',
+          },
+        ]
+        await expect(
+          query({
+            query: organizationWithHastagsQuery,
+            variables: postWithHastagsVariables,
+          }),
+        ).resolves.toEqual(
+          expect.objectContaining({
+            data: {
+              Organization: [
+                {
+                  tags: expect.arrayContaining(expected),
+                },
+              ],
+            },
+          }),
+        )
+      })
+
+      describe('updates the Organization by removing, keeping and adding one hashtag respectively', () => {
+        // The already existing hashtag has no class at this point.
+        const organizationDescription = `
+          <p>
+            Hey Dude,
+            <a
+              class="hashtag"
+              data-hashtag-id="Elections"
+              href="?hashtag=Elections"
+            >
+              #Elections
+            </a>
+            should work equal for everybody!? That seems to be the only way to
+            have equal
+            <a
+              data-hashtag-id="Liberty"
+              href="?hashtag=Liberty"
+            >
+              #Liberty
+            </a>
+            for everyone.
+          </p>
+        `
+
+        it('only one previous Hashtag and the new Hashtag exists', async () => {
+          await mutate({
+            mutation: updateOrganizationMutation,
+            variables: {
+              id,
+              name: title,
+              description: organizationDescription,
+              categoryIds,
+            },
+          })
+
+          const expected = [
+            {
+              id: 'Elections',
+            },
+            {
+              id: 'Liberty',
+            },
+          ]
+          await expect(
+            query({
+              query: organizationWithHastagsQuery,
+              variables: postWithHastagsVariables,
+            }),
+          ).resolves.toEqual(
+            expect.objectContaining({
+              data: {
+                Organization: [
                   {
                     tags: expect.arrayContaining(expected),
                   },
