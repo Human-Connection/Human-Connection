@@ -38,5 +38,9 @@ export default {
       args.slug = args.slug || (await uniqueSlug(args.title, isUniqueFor(context, 'Post')))
       return resolve(root, args, context, info)
     },
+    UpdateOrganization: async (resolve, root, args, context, info) => {
+      args.slug = args.slug || (await uniqueSlug(args.name, isUniqueFor(context, 'Organization')))
+      return resolve(root, args, context, info)
+    },
   },
 }
