@@ -35,10 +35,13 @@
         <base-button :loading="pending" filled name="submit" type="submit" icon="sign-in">
           {{ $t('login.login') }}
         </base-button>
-        <p>
+        <p v-if="activeNetwork">
           {{ $t('login.no-account') }}
           <nuxt-link to="/registration/signup">{{ $t('login.register') }}</nuxt-link>
         </p>
+        <p v-else >
+          <span>Archiv Modus. Read only!</span>
+          </p>
       </form>
       <template #topMenu>
         <locale-switch offset="5" />
@@ -49,6 +52,7 @@
 
 <script>
 import LocaleSwitch from '~/components/LocaleSwitch/LocaleSwitch'
+import ARCHIV from '~/constants/archiv-version.js'
 
 export default {
   components: {

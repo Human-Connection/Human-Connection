@@ -1,8 +1,13 @@
-import { rule, shield, deny, allow, or } from 'graphql-shield'
+import { rule, shield, deny, allow, or, and } from 'graphql-shield'
 import { getNeode } from '../db/neo4j'
 import CONFIG from '../config'
 
 const debug = !!CONFIG.DEBUG
+
+// pleace change "ARCHIV" in file cypress/constants/archiv-version.js
+// pleace change "ARCHIV" in file webapp/constants/archiv-version.js
+const activeNetwork = true
+
 const allowExternalErrors = true
 
 const neode = getNeode()
@@ -110,37 +115,37 @@ export default shield(
       '*': deny,
       login: allow,
       SignupByInvitation: allow,
-      Signup: or(publicRegistration, isAdmin),
+      Signup: and(activeNetwork , or(publicRegistration, isAdmin)),
       SignupVerification: allow,
-      UpdateUser: onlyYourself,
-      CreatePost: isAuthenticated,
-      UpdatePost: isAuthor,
+      UpdateUser: and(activeNetwork, onlyYourself),
+      CreatePost: and(activeNetwork, isAuthenticated),
+      UpdatePost: and(activeNetwork, isAuthor),
       DeletePost: isAuthor,
       fileReport: isAuthenticated,
-      CreateSocialMedia: isAuthenticated,
-      UpdateSocialMedia: isMySocialMedia,
+      CreateSocialMedia: and(activeNetwork, isAuthenticated),
+      UpdateSocialMedia: and(activeNetwork, isMySocialMedia),
       DeleteSocialMedia: isMySocialMedia,
       // AddBadgeRewarded: isAdmin,
       // RemoveBadgeRewarded: isAdmin,
       reward: isAdmin,
       unreward: isAdmin,
-      followUser: isAuthenticated,
+      followUser: and(activeNetwork, isAuthenticated),
       unfollowUser: isAuthenticated,
-      shout: isAuthenticated,
+      shout: and(activeNetwork, isAuthenticated),
       unshout: isAuthenticated,
       changePassword: isAuthenticated,
       review: isModerator,
-      CreateComment: isAuthenticated,
-      UpdateComment: isAuthor,
+      CreateComment: and(activeNetwork, isAuthenticated),
+      UpdateComment: and(activeNetwork, isAuthor),
       DeleteComment: isAuthor,
       DeleteUser: or(isDeletingOwnAccount, isAdmin),
       requestPasswordReset: allow,
       resetPassword: allow,
-      AddPostEmotions: isAuthenticated,
+      AddPostEmotions: and(activeNetwork, isAuthenticated),
       RemovePostEmotions: isAuthenticated,
-      muteUser: isAuthenticated,
+      muteUser: and(activeNetwork, isAuthenticated),
       unmuteUser: isAuthenticated,
-      blockUser: isAuthenticated,
+      blockUser: and(activeNetwork, isAuthenticated),
       unblockUser: isAuthenticated,
       markAsRead: isAuthenticated,
       AddEmailAddress: isAuthenticated,
