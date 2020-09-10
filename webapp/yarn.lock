@@ -3216,10 +3216,10 @@
   dependencies:
     eslint-config-prettier "^6.0.0"
 
-"@vue/server-test-utils@~1.0.0-beta.31":
-  version "1.0.0-beta.32"
-  resolved "https://registry.yarnpkg.com/@vue/server-test-utils/-/server-test-utils-1.0.0-beta.32.tgz#698424d5d76fea10ee3d2ec45f2416e31681f01e"
-  integrity sha512-1dxJyrO805pr4tyNckAwRojxby3g37IHpmBURInz4yccsiwHsOhSi1tR23HovOocqmu1/NttiI5rHtv9MtL9Ig==
+"@vue/server-test-utils@~1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@vue/server-test-utils/-/server-test-utils-1.1.0.tgz#90d67ebe71c2e1e3715fb3fc0c7c999d94bf26ee"
+  integrity sha512-LhkNnKhxOOH2lsTppaa7UC2XMqJmwgg/bpdyBevvX85w/y41LIR1q1tuEJaQOtqPaVbaQQYDDf0b+wHoTUUQZg==
   dependencies:
     "@types/cheerio" "^0.22.10"
     cheerio "^1.0.0-rc.2"
