@@ -290,6 +290,10 @@
       "title": "Beitrag sperren",
       "type": "Beitrag"
     },
+    "organization": {
+      "message": "Bist Du sicher, dass Du die Organisation „<b>{name}</b>“ deaktivieren möchtest?",
+      "title": "Organisation deaktivieren"
+    },
     "submit": "Deaktivieren",
     "success": "Erfolgreich deaktiviert",
     "user": {
@@ -554,6 +558,9 @@
       "message": "Bist Du sicher, dass Du den Beitrag „<b>{name}</b>“ freigeben möchtest?",
       "title": "Beitrag freigeben",
       "type": "Beitrag"
+    },
+    "organization": {
+      "title": "Organisation freigeben"
     },
     "submit": "freigeben",
     "success": "Erfolgreich freigegeben!",
