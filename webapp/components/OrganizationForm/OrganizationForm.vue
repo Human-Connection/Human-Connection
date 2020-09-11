@@ -159,7 +159,7 @@ export default {
         })
         .then(({ data }) => {
           this.loading = false
-          this.$toast.success(this.$t('organization.form.success'))
+          this.$toast.success(this.$t('organizations.form.success'))
           const result = data[this.organization.id ? 'UpdateOrganization' : 'CreateOrganization']
 
           this.$router.push({
