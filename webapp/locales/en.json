@@ -290,6 +290,10 @@
       "title": "Disable Contribution",
       "type": "Contribution"
     },
+    "organization": {
+      "message": "Do you really want to disable the organization  \"<b>{name}</b>\"?",
+      "title": "Disable Organization"
+    },
     "submit": "Disable",
     "success": "Disabled successfully!",
     "user": {
@@ -549,6 +553,9 @@
       "message": "Do you really want to release the contribution \"<b>{name}</b>\"?",
       "title": "Release Contribution",
       "type": "Contribution"
+    },
+    "organization": {
+      "title": "Release Organization"
     },
     "submit": "Release",
     "success": "Released successfully!",
