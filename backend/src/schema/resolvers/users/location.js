@@ -122,27 +122,19 @@ const createOrUpdateLocations = async (resourceId, locationName, session) => {
     })
   }
   // delete all current locations from resource
-  await session.writeTransaction((transaction) => {
-    return transaction.run(
-      `
-          MATCH (resource {id: $resourceId})-[relationship:IS_IN]->(location:Location)
-          DETACH DELETE relationship
-          RETURN resource.id
-        `,
-      { resourceId: resourceId },
-    )
-  })
   //  and add new location
   await session.writeTransaction((transaction) => {
     return transaction.run(
       `
           MATCH (resource {id: $resourceId})
+          OPTIONAL MATCH (resource)-[relationship:IS_IN]->(location:Location)
+          DELETE relationship
           WITH resource
           MATCH (location:Location {id: $locationId})
           MERGE (resource)-[:IS_IN]->(location)
           RETURN location.id, resource.id
         `,
-      { resourceId: resourceId, locationId: data.id },
+      { resourceId, locationId: data.id },
     )
   })
 }

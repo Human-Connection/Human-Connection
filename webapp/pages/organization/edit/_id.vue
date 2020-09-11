@@ -19,6 +19,8 @@ export default {
   computed: {
     ...mapGetters({
       user: 'auth/user',
+      isAdmin: 'auth/isAdmin',
+      isModrator: 'auth/isModerator',
     }),
   },
   async asyncData(context) {
@@ -37,7 +39,13 @@ export default {
       query: OrganizationQuery(app.$i18n),
       variables: { id },
     })
-    if (organization.creator.id !== store.getters['auth/user'].id) {
+    if (
+      !(
+        store.getters['auth/isAdmin'] ||
+        store.getters['auth/isModerator'] ||
+        organization.creator.id === store.getters['auth/user'].id
+      )
+    ) {
       error({ statusCode: 403, message: 'error-pages.cannot-edit-organization' })
     }
     return { organization }
