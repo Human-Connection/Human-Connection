@@ -180,12 +180,13 @@ Factory.define('organization')
     return Factory.build('user')
   })
   .option('image', () => Factory.build('image'))
-  .option('locationName', () => Factory.build('image'))
+  .option('locationName', () => '')
   .attrs({
     id: uuid,
     name: faker.company.companyName,
     description: faker.lorem.paragraphs,
     locationName: faker.address.city,
+    email: faker.internet.email,
     //    deleted: false,
     //    imageBlurred: false,
     imageAspectRatio: 1.333,

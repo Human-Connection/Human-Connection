@@ -19,6 +19,7 @@ export default {
   name: { type: 'string', disallow: [null], min: 3 },
   slug: { type: 'string', allow: [null], unique: 'true' },
   description: { type: 'string', disallow: [null], min: 3 },
+  email: { type: 'string', allow: [null] },
   createdAt: { type: 'string', isoDate: true, default: () => new Date().toISOString() },
   updatedAt: {
     type: 'string',
