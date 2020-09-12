@@ -29,10 +29,13 @@
         </client-only>
       </section>
       <ds-space margin-bottom="small" />
-
+      <ds-text align="left" size="small">
+        <a :href="`mailto:${organization.email}`">{{ organization.email }}</a>
+      </ds-text>
+      <ds-space margin-bottom="small" />
       <content-viewer class="content hyphenate-text" :content="organization.description" />
       <!-- eslint-enable vue/no-v-html -->
-      <ds-space margin="large" />
+      <ds-space margin="small" />
       <!-- Categories -->
       <div class="categories">
         <hc-category

@@ -476,6 +476,7 @@
     "form": {
       "description": "Description",
       "descriptionHint": "A short description of the organization",
+      "email": "e-Mail address to contact the organization",
       "labelCity": "City or region of the organization",
       "name": "Name of the organization",
       "success": "Saved!"

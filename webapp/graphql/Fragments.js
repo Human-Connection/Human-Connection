@@ -126,7 +126,7 @@ export const organizationFragment = (lang) => gql`
       icon
     }
     description
-    eMail
+    email
     tags {
       id
     }

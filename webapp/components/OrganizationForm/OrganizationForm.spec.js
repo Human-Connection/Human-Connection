@@ -44,6 +44,7 @@ const categories = [
 describe('OrganizationForm.vue', () => {
   let wrapper,
     organizationNameInput,
+    emailInput,
     expectedParams,
     cancelBtn,
     mocks,
@@ -51,6 +52,7 @@ describe('OrganizationForm.vue', () => {
     categoryIds,
     dataPrivacyButton
   const organizationName = 'this is the name of an organization'
+  const organizationEmail = 'contact@example.org'
   const organizationNameTooShort = 'xx'
   let organizationNameTooLong = ''
   for (let i = 0; i < 101; i++) {
@@ -129,7 +131,8 @@ describe('OrganizationForm.vue', () => {
       describe('invalid form submission', () => {
         beforeEach(async () => {
           wrapper.find(CategoriesSelect).setData({ categories })
-          organizationNameInput = wrapper.find('.ds-input')
+          organizationNameInput = wrapper.find('input[name="name"]')
+          emailInput = wrapper.find('input[name="email"]')
           organizationNameInput.setValue(organizationName)
           await wrapper.vm.updateEditorContent(organizationDescription)
           dataPrivacyButton = await wrapper
@@ -164,6 +167,18 @@ describe('OrganizationForm.vue', () => {
         })
         */
 
+        it('has an email address', async () => {
+          emailInput.setValue('')
+          wrapper.find('form').trigger('submit')
+          expect(mocks.$apollo.mutate).not.toHaveBeenCalled()
+        })
+
+        it('has a valid email address', async () => {
+          emailInput.setValue('no email')
+          wrapper.find('form').trigger('submit')
+          expect(mocks.$apollo.mutate).not.toHaveBeenCalled()
+        })
+
         it('has at least one category', async () => {
           dataPrivacyButton = await wrapper
             .find(CategoriesSelect)
@@ -192,10 +207,13 @@ describe('OrganizationForm.vue', () => {
               categoryIds: ['cat12'],
               image: null,
               locationName: '',
+              email: 'contact@example.org',
             },
           }
-          organizationNameInput = wrapper.find('.ds-input')
+          organizationNameInput = wrapper.find('input[name="name"]')
           organizationNameInput.setValue(organizationName)
+          emailInput = wrapper.find('input[name="email"]')
+          emailInput.setValue(organizationEmail)
           await wrapper.vm.updateEditorContent(organizationDescription)
           wrapper.find(CategoriesSelect).setData({ categories })
           await Vue.nextTick()
@@ -206,7 +224,7 @@ describe('OrganizationForm.vue', () => {
           await Vue.nextTick()
         })
 
-        it('creates an organization with valid name, description, and at least one category', async () => {
+        it('creates an organization with valid name, email, and at least one category', async () => {
           await wrapper.find('form').trigger('submit')
           expect(mocks.$apollo.mutate).toHaveBeenCalledWith(expect.objectContaining(expectedParams))
         })
@@ -257,8 +275,10 @@ describe('OrganizationForm.vue', () => {
             message: 'Not Authorised!',
           })
           wrapper = Wrapper()
-          organizationNameInput = wrapper.find('.ds-input')
+          organizationNameInput = wrapper.find('input[name="name"]')
           organizationNameInput.setValue(organizationName)
+          emailInput = wrapper.find('input[name="email"]')
+          emailInput.setValue(organizationEmail)
           await wrapper.vm.updateEditorContent(organizationDescription)
           categoryIds = ['cat12']
           wrapper.find(CategoriesSelect).setData({ categories })
@@ -294,6 +314,7 @@ describe('OrganizationForm.vue', () => {
               },
             ],
             locationName: '',
+            email: 'contact@example.org',
           },
         }
         wrapper = Wrapper()
@@ -317,6 +338,7 @@ describe('OrganizationForm.vue', () => {
                 description: organizationDescription,
                 categoryIds,
                 locationName: '',
+                email: organizationEmail,
               },
             },
           })
@@ -332,6 +354,7 @@ describe('OrganizationForm.vue', () => {
                 sensitive: null,
               },
               locationName: '',
+              email: organizationEmail,
             },
           }
         })
