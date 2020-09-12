@@ -471,6 +471,7 @@
     "form": {
       "description": "Beschreibung",
       "descriptionHint": "Eine kurze Beschreibung der Organisation",
+      "email": "Kontak-E-Mail-Adresse der Organisation",
       "labelCity": "Stadt oder Region der Organisation",
       "name": "Name der Organisation",
       "success": "Gespeichert!"

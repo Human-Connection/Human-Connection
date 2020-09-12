@@ -9,6 +9,7 @@ export default () => {
         $locationName: String
         $categoryIds: [ID]
         $image: ImageInput
+        $email: String
       ) {
         CreateOrganization(
           name: $name
@@ -16,11 +17,13 @@ export default () => {
           locationName: $locationName
           categoryIds: $categoryIds
           image: $image
+          email: $email
         ) {
           name
           slug
           description
           locationName
+          email
           image {
             url
             sensitive
@@ -36,6 +39,7 @@ export default () => {
         $locationName: String
         $categoryIds: [ID]
         $image: ImageInput
+        $email: String
       ) {
         UpdateOrganization(
           id: $id
@@ -44,11 +48,13 @@ export default () => {
           locationName: $locationName
           categoryIds: $categoryIds
           image: $image
+          email: $email
         ) {
           name
           slug
           description
           locationName
+          email
           image {
             url
             sensitive

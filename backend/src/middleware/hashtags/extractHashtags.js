@@ -10,6 +10,7 @@ const regX = build('^((\\pL+[\\pL0-9]*)|([0-9]+\\pL+[\\pL0-9]*))$')
 
 export default function (content) {
   if (!content) return []
+  console.log('content', content)
   const $ = cheerio.load(content)
   // We can not search for class '.hashtag', because the classes are removed at the 'xss' middleware.
   //   But we have to know, which Hashtags are removed from the content as well, so we search for the 'a' html-tag.

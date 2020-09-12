@@ -30,7 +30,7 @@ type Organization {
   """
   socialMedia: [SocialMedia] @relation(name: "OWNED_BY", direction: "IN")
   """
-  eMail: String
+  email: String
 }
 
 type Mutation {
@@ -41,7 +41,7 @@ type Mutation {
     avatar: ImageInput
     image: ImageInput
     locationName: String
-    eMail: String
+    email: String
     categoryIds: [ID]
     description: String
   ): Organization
@@ -52,7 +52,7 @@ type Mutation {
     avatar: ImageInput
     image: ImageInput
     locationName: String
-    eMail: String
+    email: String
     categoryIds: [ID]
     description: String
   ): Organization
@@ -66,5 +66,6 @@ type Query {
     locationName: String
     categoryIds: [ID]
     lang: String
-  ): [Organization]
+    email: String
+   ): [Organization]
 }

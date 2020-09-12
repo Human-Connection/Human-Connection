@@ -45,6 +45,13 @@
           @input="updateEditorContent"
         />
         <ds-space margin="large" />
+        <ds-input
+          model="email"
+          :placeholder="$t('organizations.form.email')"
+          name="email"
+          size="large"
+        />
+        <ds-space margin="large" />
         <categories-select model="categoryIds" :existingCategoryIds="formData.categoryIds" />
         <ds-chip size="base" :color="errors && errors.categoryIds && 'danger'">
           {{ formData.categoryIds.length }} / 3
@@ -88,7 +95,7 @@ export default {
     },
   },
   data() {
-    const { name, description, image, categories, locationName } = this.organization
+    const { name, description, image, categories, locationName, email } = this.organization
 
     const { aspectRatio: imageAspectRatio = null } = image || {}
 
@@ -97,6 +104,7 @@ export default {
         name: name || '',
         description: description || '',
         image: image || null,
+        email: email || null,
         imageAspectRatio,
         locationName: locationName || '',
         categoryIds: categories ? categories.map((category) => category.id) : [],
@@ -104,6 +112,11 @@ export default {
       formSchema: {
         name: { required: true, min: 3, max: 100 },
         description: { required: false },
+        email: {
+          type: 'email',
+          required: true,
+          message: this.$t('common.validations.email'),
+        },
         categoryIds: {
           type: 'array',
           required: true,
@@ -131,7 +144,7 @@ export default {
   methods: {
     submit() {
       let image = null
-      const { name, description, categoryIds } = this.formData
+      const { name, description, categoryIds, email } = this.formData
       const locationName = this.formData.locationName.label || this.formData.locationName
       if (this.formData.image) {
         image = {
@@ -152,6 +165,7 @@ export default {
             name,
             description,
             categoryIds,
+            email,
             id: this.organization.id || null,
             image,
             locationName,
