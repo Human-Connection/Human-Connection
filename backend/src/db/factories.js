@@ -127,7 +127,7 @@ Factory.define('post')
     visibility: 'public',
     deleted: false,
     imageBlurred: false,
-    imageAspectRatio: 1.333,
+    imageAspectRatio: 1,
   })
   .attr('pinned', ['pinned'], (pinned) => {
     // Convert false to null
@@ -189,7 +189,7 @@ Factory.define('organization')
     email: faker.internet.email,
     //    deleted: false,
     //    imageBlurred: false,
-    imageAspectRatio: 1.333,
+    imageAspectRatio: 1,
   })
   .attr('slug', ['slug', 'name'], (slug, name) => {
     return slug || slugify(name, { lower: true })
