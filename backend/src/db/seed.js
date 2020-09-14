@@ -819,6 +819,19 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       o5.relateTo(Paris, 'isIn'),
     ])
 
+    await Promise.all(
+      [...Array(30).keys()].map(() =>
+        Factory.build(
+          'organization',
+          {  },
+          {
+            categoryIds: ['cat1'],
+            creator: jennyRostock,
+          },
+        ),
+      ),
+    )
+
     const trollingComment = comments[0]
 
     await Promise.all([

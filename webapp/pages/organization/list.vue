@@ -33,83 +33,97 @@
           </nuxt-link>
         </li>
       </ul>
+      <pagination-buttons :hasNext="hasNext" :hasPrevious="hasPrevious" @next="next" @back="back" />
     </base-card>
   </div>
 </template>
 <script>
-import gql from 'graphql-tag'
-import HcCategory from '~/components/Category'
-import HcHashtag from '~/components/Hashtag/Hashtag'
-import { sortTagsAlphabetically } from '~/components/utils/PostHelpers'
+ import gql from 'graphql-tag'
+ import HcCategory from '~/components/Category'
+ import HcHashtag from '~/components/Hashtag/Hashtag'
+ import { sortTagsAlphabetically } from '~/components/utils/PostHelpers'
+ import PaginationButtons from '~/components/_new/generic/PaginationButtons/PaginationButtons'
 
-export default {
-  components: {
-    HcHashtag,
-    HcCategory,
-  },
-  data() {
-    const pageSize = 15
-    return {
-      offset: 0,
-      pageSize,
-      first: pageSize,
-      Organization: [],
-      hasNext: false,
-      filter: null,
-      form: {
-        formData: {
-          query: '',
-        },
-      },
-    }
-  },
-  methods: {
-    organizationLink(orga) {
-      const { id, slug } = orga
-      if (!(id && slug)) return ''
-      return `/organization/${id}/${slug}`
-    },
-    sortedTags(tags) {
-      return sortTagsAlphabetically(tags)
-    },
-  },
-  apollo: {
-    Organization: {
-      query() {
-        return gql`
-          query($first: Int, $offset: Int) {
-            Organization(first: $first, offset: $offset) {
-              id
-              name
-              slug
-              location {
-                name
-              }
-              categories {
-                name
-                icon
-                slug
-              }
-              tags {
-                id
-              }
-            }
-          }
-        `
-      },
-      variables() {
-        const { offset, first } = this
-        const variables = { first, offset }
-        return variables
-      },
-      update({ Organization }) {
-        if (!Organization) return []
-        this.hasNext = Organization.length >= this.pageSize
-        if (Organization.length <= 0 && this.offset > 0) return this.Organization // edge case, avoid a blank page
-        return Organization.map((o, i) => Object.assign({}, o, { index: this.offset + i }))
-      },
-    },
-  },
-}
+ export default {
+   components: {
+     HcHashtag,
+     HcCategory,
+     PaginationButtons,
+   },
+   data() {
+     const pageSize = 15
+     return {
+       offset: 0,
+       pageSize,
+       first: pageSize,
+       Organization: [],
+       hasNext: false,
+       filter: null,
+       form: {
+         formData: {
+           query: '',
+         },
+       },
+     }
+   },
+   computed: {
+     hasPrevious() {
+       return this.offset > 0
+     },
+   },
+   methods: {
+     organizationLink(orga) {
+       const { id, slug } = orga
+       if (!(id && slug)) return ''
+       return `/organization/${id}/${slug}`
+     },
+     sortedTags(tags) {
+       return sortTagsAlphabetically(tags)
+     },
+     back() {
+       this.offset = Math.max(this.offset - this.pageSize, 0)
+     },
+     next() {
+       this.offset += this.pageSize
+     },
+   },
+   apollo: {
+     Organization: {
+       query() {
+         return gql`
+           query($first: Int, $offset: Int) {
+             Organization(first: $first, offset: $offset) {
+               id
+               name
+               slug
+               location {
+                 name
+               }
+               categories {
+                 name
+                 icon
+                 slug
+               }
+               tags {
+                 id
+               }
+             }
+           }
+         `
+       },
+       variables() {
+         const { offset, first } = this
+         const variables = { first, offset }
+         return variables
+       },
+       update({ Organization }) {
+         if (!Organization) return []
+         this.hasNext = Organization.length >= this.pageSize
+         if (Organization.length <= 0 && this.offset > 0) return this.Organization // edge case, avoid a blank page
+         return Organization.map((o, i) => Object.assign({}, o, { index: this.offset + i }))
+       },
+     },
+   },
+ }
 </script>
 <style lang="scss"></style>
