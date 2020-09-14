@@ -150,12 +150,12 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         'user',
         {
           id: 'u1',
-          name: 'Peter Lustig',
-          slug: 'peter-lustig',
+          name: 'Heiker Araujo',
+          slug: 'heiker-araujo',
           role: 'admin',
         },
         {
-          email: 'admin@example.org',
+          email: 'heiker.araujo@cleteci.com',
         },
       ),
       Factory.build(

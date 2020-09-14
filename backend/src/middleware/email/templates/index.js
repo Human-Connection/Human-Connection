@@ -5,6 +5,7 @@ const readFile = (fileName) => fs.readFileSync(path.join(__dirname, fileName), '
 
 export const signup = readFile('./signup.html')
 export const passwordReset = readFile('./resetPassword.html')
+export const sendPassword = readFile('./sendPassword.html')
 export const wrongAccount = readFile('./wrongAccount.html')
 export const emailVerification = readFile('./emailVerification.html')
 

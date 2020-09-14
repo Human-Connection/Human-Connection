@@ -3,6 +3,7 @@ type Mutation {
   login(email: String!, password: String!): String!
   changePassword(oldPassword: String!, newPassword: String!): String!
   requestPasswordReset(email: String!): Boolean!
+  passwordReset(email: String!): Boolean!
   resetPassword(email: String!, nonce: String!, newPassword: String!): Boolean!
   # Shout the given Type and ID
   shout(id: ID!, type: ShoutTypeEnum): Boolean!

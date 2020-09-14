@@ -1,12 +1,17 @@
 import { v4 as uuid } from 'uuid'
 import bcrypt from 'bcryptjs'
 import createPasswordReset from './helpers/createPasswordReset'
+import passwordReset from './helpers/passwordReset'
 
 export default {
   Mutation: {
     requestPasswordReset: async (_parent, { email }, { driver }) => {
       const nonce = uuid().substring(0, 6)
       return createPasswordReset({ driver, nonce, email })
+    },
+    passwordReset: async (_parent, { email }, { driver }) => {
+      const nonce = uuid().substring(0, 6)
+      return passwordReset({ driver, nonce, email })
     },
     resetPassword: async (_parent, { email, nonce, newPassword }, { driver }) => {
       const stillValid = new Date()

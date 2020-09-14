@@ -144,6 +144,7 @@ export default shield(
       DeleteComment: isAuthor,
       DeleteUser: or(isDeletingOwnAccount, isAdmin),
       requestPasswordReset: allow,
+      passwordReset: allow,
       resetPassword: allow,
       AddPostEmotions: isAuthenticated,
       RemovePostEmotions: isAuthenticated,
