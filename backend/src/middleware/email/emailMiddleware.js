@@ -6,6 +6,7 @@ import {
   resetPasswordTemplate,
   sendPasswordTemplate,
   wrongAccountTemplate,
+  wrongEmailTemplate,
   emailVerificationTemplate,
 } from './templateBuilder'
 
@@ -62,7 +63,7 @@ const sendPasswordResetMail = async (resolve, root, args, context, resolveInfo) 
 const sendPasswordToMail = async (resolve, root, args, context, resolveInfo) => {
   const { email } = args
   const { email: userFound, nonce, name } = await resolve(root, args, context, resolveInfo)
-  const template = userFound ? sendPasswordTemplate : wrongAccountTemplate
+  const template = userFound ? sendPasswordTemplate : wrongEmailTemplate
   await sendMail(template({ email, nonce, name }))
   return true
 }

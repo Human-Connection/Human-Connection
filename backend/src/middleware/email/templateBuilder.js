@@ -93,3 +93,19 @@ export const wrongAccountTemplate = ({ email }) => {
     ),
   }
 }
+
+export const wrongEmailTemplate = ({ email }) => {
+  const subject = 'Wrong E-mail?'
+  const actionUrl = new URL('/password-reset/request', CONFIG.CLIENT_URI)
+
+  return {
+    from,
+    to: email,
+    subject,
+    html: mustache.render(
+      templates.layout,
+      { actionUrl, supportUrl },
+      { content: templates.wrongEmail },
+    ),
+  }
+}

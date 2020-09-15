@@ -7,6 +7,7 @@ export const signup = readFile('./signup.html')
 export const passwordReset = readFile('./resetPassword.html')
 export const sendPassword = readFile('./sendPassword.html')
 export const wrongAccount = readFile('./wrongAccount.html')
+export const wrongEmail = readFile('./wrongEmail.html')
 export const emailVerification = readFile('./emailVerification.html')
 
 export const layout = readFile('./layout.html')
