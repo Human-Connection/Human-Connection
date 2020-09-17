@@ -25,7 +25,7 @@ if (!hasEmailConfig) {
       host: CONFIG.SMTP_HOST,
       port: CONFIG.SMTP_PORT,
       ignoreTLS: CONFIG.SMTP_IGNORE_TLS === 'true',
-      secure: false, // true for 465, false for other ports
+      secure: true, // true for 465, false for other ports
       auth: hasAuthData && {
         user: CONFIG.SMTP_USERNAME,
         pass: CONFIG.SMTP_PASSWORD,
