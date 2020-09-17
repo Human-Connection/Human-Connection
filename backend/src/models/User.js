@@ -4,6 +4,7 @@ export default {
   id: { type: 'string', primary: true, default: uuid }, // TODO: should be type: 'uuid' but simplified for our tests
   actorId: { type: 'string', allow: [null] },
   name: { type: 'string', disallow: [null], min: 3 },
+  lastName: { type: 'string', disallow: [null], min: 3 },
   slug: { type: 'string', unique: 'true', regex: /^[a-z0-9_-]+$/, lowercase: true },
   encryptedPassword: 'string',
   avatar: {

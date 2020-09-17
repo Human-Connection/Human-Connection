@@ -118,6 +118,7 @@ export default shield(
       SignupByInvitation: allow,
       Signup: or(publicRegistration, isAdmin),
       SignupVerification: allow,
+      CreateUser: allow,
       UpdateUser: onlyYourself,
       CreatePost: isAuthenticated,
       CreateSuggestedResource: allow,

@@ -6,6 +6,7 @@ type EmailAddress {
 
 type Mutation {
   Signup(email: String!): EmailAddress
+  CreateUser(email: String!, name: String!, lastName: String, password: String!): Boolean
   SignupByInvitation(email: String!, token: String!): EmailAddress
   SignupVerification(
     nonce: String!
