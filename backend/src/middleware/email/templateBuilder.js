@@ -3,7 +3,7 @@ import CONFIG from '../../config'
 
 import * as templates from './templates'
 
-const from = '"Red Solidaria" <info@human-connection.org>'
+const from = '"Red Sol" <info@human-connection.org>'
 const supportUrl = 'https://human-connection.org/en/contact'
 
 export const signupTemplate = ({ email, nonce }) => {
