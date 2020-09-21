@@ -58,12 +58,6 @@ export default {
       first: pageSize,
       Organization: [],
       hasNext: false,
-      filter: null,
-      form: {
-        formData: {
-          query: '',
-        },
-      },
     }
   },
   computed: {
