@@ -1,20 +1,20 @@
 <template>
   <div class="pagination-buttons">
     <base-button
-      v-if="hasPreviousResult"
+      v-if="hasPrevious"
       @click="$emit('back')"
       icon="arrow-left"
       circle
       class="previous-button"
     />
 
-    <span class="pagination-pageCount">
+    <span v-if="showPageCounter" class="pagination-pageCount">
       {{ $t('search.page') }} {{ activePage + 1 }} /
       {{ Math.floor((activeResourceCount - 1) / pageSize) + 1 }}
     </span>
 
     <base-button
-      v-if="hasMoreResults"
+      v-if="hasNext"
       @click="$emit('next')"
       icon="arrow-right"
       circle
@@ -31,11 +31,11 @@ export default {
       type: Number,
       default: 24,
     },
-    hasMoreResults: {
+    hasNext: {
       type: Boolean,
       default: false,
     },
-    hasPreviousResult: {
+    hasPrevious: {
       type: Boolean,
     },
     activePage: {
@@ -49,6 +49,10 @@ export default {
     activeResourceCount: {
       type: Number,
       default: 0,
+    },
+    showPageCounter: {
+      type: Boolean,
+      default: false,
     },
   },
 }

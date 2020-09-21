@@ -21,8 +21,9 @@
       <template>
         <pagination-buttons
           v-if="activeResourceCount > pageSize"
-          :hasMoreResults="hasMoreResults"
-          :hasPreviousResult="hasPreviousResult"
+          :hasNext="hasNext"
+          :showPageCounter="true"
+          :hasPrevious="hasPrevious"
           :activePage="activePage"
           :activeResourceCount="activeResourceCount"
           @back="previousResults"
@@ -53,9 +54,10 @@
 
         <pagination-buttons
           v-if="activeResourceCount > pageSize"
-          :hasMoreResults="hasMoreResults"
-          :hasPreviousResult="hasPreviousResult"
+          :hasNext="hasNext"
+          :hasPrevious="hasPrevious"
           :activePage="activePage"
+          :showPageCounter="true"
           :activeResourceCount="activeResourceCount"
           @back="previousResults"
           @next="nextResults"
@@ -161,13 +163,13 @@ export default {
         },
       ]
     },
-    hasPreviousResult() {
+    hasPrevious() {
       if (this.activeTab === 'Post') return this.postsOffset > 0
       if (this.activeTab === 'User') return this.usersOffset > 0
       if (this.activeTab === 'Hashtag') return this.hashtagsOffset > 0
       return false
     },
-    hasMoreResults() {
+    hasNext() {
       if (this.activeTab === 'Post') return (this.postPage + 1) * this.pageSize < this.postCount
       if (this.activeTab === 'User') return (this.userPage + 1) * this.pageSize < this.userCount
       if (this.activeTab === 'Hashtag')
