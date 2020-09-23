@@ -235,9 +235,9 @@ describe('UpdateUser', () => {
     })
 
     it('supports updating location', async () => {
-      variables = { ...variables, locationName: 'Hamburg, New Jersey, United States of America' }
+      variables = { ...variables, locationName: 'Hamburg, New Jersey, United States' }
       await expect(mutate({ mutation: updateUserMutation, variables })).resolves.toMatchObject({
-        data: { UpdateUser: { locationName: 'Hamburg, New Jersey, United States of America' } },
+        data: { UpdateUser: { locationName: 'Hamburg, New Jersey, United States' } },
         errors: undefined,
       })
     })
