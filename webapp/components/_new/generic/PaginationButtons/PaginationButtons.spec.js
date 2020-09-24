@@ -13,7 +13,6 @@ describe('PaginationButtons.vue', () => {
   let wrapper
   const mocks = {
     $t: jest.fn(),
-    scrollTo: jest.fn(),
   }
 
   const Wrapper = () => {

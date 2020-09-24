@@ -11,14 +11,26 @@
       ]"
       role="button"
       @click="$emit('switchTab', tab.type)"
+      :style="tabWidth"
     >
-      {{ tab.title }}
+      <ds-space margin="small">
+        <client-only placeholder="Loading...">
+          <ds-number :label="tab.title">
+            <hc-count-to slot="count" :end-val="tab.count" />
+          </ds-number>
+        </client-only>
+      </ds-space>
     </li>
   </ul>
 </template>
 
 <script>
+import HcCountTo from '~/components/CountTo.vue'
+
 export default {
+  components: {
+    HcCountTo,
+  },
   props: {
     tabs: {
       type: Array,
@@ -26,6 +38,11 @@ export default {
     },
     activeTab: {
       type: String,
+    },
+  },
+  computed: {
+    tabWidth() {
+      return 'width: ' + String(100.0 / this.tabs.length) + '%'
     },
   },
 }

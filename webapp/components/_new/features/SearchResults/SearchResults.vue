@@ -1,12 +1,14 @@
 <template>
   <div id="search-results" class="search-results">
     <div>
-      <ds-section>
-        <ds-text class="total-search-results">
-          <strong>{{ searchCount }}</strong>
-          {{ $t('search.results', {}, searchCount) }}
-        </ds-text>
-      </ds-section>
+      <ds-text class="total-search-results">
+        {{ $t('search.for') }} "
+        <strong>{{ search }}</strong>
+        "
+        <br />
+        <strong>{{ searchCount }}</strong>
+        {{ $t('search.results', {}, searchCount) }}
+      </ds-text>
     </div>
 
     <tab-navigation :tabs="tabOptions" :activeTab="activeTab" @switchTab="switchTab" />
@@ -63,6 +65,7 @@
           @next="nextResults"
           :key="'Bottom'"
           :pageSize="pageSize"
+          :srollTo="'#search-results'"
         />
       </template>
     </section>
@@ -148,17 +151,20 @@ export default {
       return [
         {
           type: 'Post',
-          title: `${this.postCount} ${this.$t('search.heading.Post', {}, this.postCount)}`,
+          title: this.$t('search.heading.Post', {}, this.postCount),
+          count: this.postCount,
           disabled: this.postCount === 0,
         },
         {
           type: 'User',
-          title: `${this.userCount} ${this.$t('search.heading.User', {}, this.userCount)}`,
+          title: this.$t('search.heading.User', {}, this.userCount),
+          count: this.userCount,
           disabled: this.userCount === 0,
         },
         {
           type: 'Hashtag',
-          title: `${this.hashtagCount} ${this.$t('search.heading.Tag', {}, this.hashtagCount)}`,
+          title: this.$t('search.heading.Tag', {}, this.hashtagCount),
+          count: this.hashtagCount,
           disabled: this.hashtagCount === 0,
         },
       ]
@@ -206,6 +212,7 @@ export default {
       }
     },
     nextResults() {
+      // scroll to top??
       switch (this.activeTab) {
         case 'Post':
           this.postPage++

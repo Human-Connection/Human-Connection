@@ -19,7 +19,6 @@
       icon="arrow-right"
       circle
       class="next-button"
-      v-scroll-to="'#search-results'"
     />
   </div>
 </template>

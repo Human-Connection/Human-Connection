@@ -589,6 +589,7 @@
   },
   "search": {
     "failed": "Nichts gefunden",
+    "for": "Suche nach ",
     "heading": {
       "Post": "Beitrag ::: Beiträge",
       "Tag": "Hashtag ::: Hashtags",
