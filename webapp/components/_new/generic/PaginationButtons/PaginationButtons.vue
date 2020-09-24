@@ -1,11 +1,11 @@
 <template>
   <div class="pagination-buttons">
     <base-button
-      v-if="hasPrevious"
-      @click="$emit('back')"
+      :disabled="!hasPrevious"
       icon="arrow-left"
       circle
       class="previous-button"
+      @click="$emit('back')"
     />
 
     <span v-if="showPageCounter" class="pagination-pageCount">
@@ -14,11 +14,11 @@
     </span>
 
     <base-button
-      v-if="hasNext"
-      @click="$emit('next')"
+      :disabled="!hasNext"
       icon="arrow-right"
       circle
       class="next-button"
+      @click="$emit('next')"
     />
   </div>
 </template>

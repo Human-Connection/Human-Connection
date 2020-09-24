@@ -28,10 +28,10 @@
           :hasPrevious="hasPrevious"
           :activePage="activePage"
           :activeResourceCount="activeResourceCount"
-          @back="previousResults"
-          @next="nextResults"
           :key="'Top'"
           :pageSize="pageSize"
+          @back="previousResults"
+          @next="nextResults"
         />
         <masonry-grid v-if="activeTab === 'Post'">
           <masonry-grid-item v-for="resource in activeResources" :key="resource.key">
@@ -46,6 +46,7 @@
             </base-card>
           </li>
         </ul>
+
         <ul v-if="activeTab === 'Hashtag'" class="hashtag-list">
           <li v-for="resource in activeResources" :key="resource.key" class="item">
             <base-card :wideContent="true">
@@ -61,11 +62,11 @@
           :activePage="activePage"
           :showPageCounter="true"
           :activeResourceCount="activeResourceCount"
-          @back="previousResults"
-          @next="nextResults"
           :key="'Bottom'"
           :pageSize="pageSize"
           :srollTo="'#search-results'"
+          @back="previousResults"
+          @next="nextResults"
         />
       </template>
     </section>

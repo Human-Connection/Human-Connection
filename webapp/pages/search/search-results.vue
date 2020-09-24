@@ -10,7 +10,7 @@ export default {
   watchQuery: ['search'],
   head() {
     return {
-      title: 'SearchResults',
+      title: this.$t('search.title'),
     }
   },
   components: {

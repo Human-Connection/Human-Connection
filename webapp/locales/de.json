@@ -599,7 +599,8 @@
     "no-results": "Keine Ergebnisse für \"{search}\" gefunden. Versuch' es mit einem anderen Begriff!",
     "page": "Seite",
     "placeholder": "Suchen",
-    "results": "Ergebniss gefunden ::: Ergebnisse gefunden"
+    "results": "Ergebnis gefunden ::: Ergebnisse gefunden",
+    "title": "Suchergebnisse"
   },
   "settings": {
     "blocked-users": {
