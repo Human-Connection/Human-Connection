@@ -1,0 +1,10 @@
+type UserData {
+  user: User!
+  posts: [Post]
+}
+
+type Query {
+  userData(
+    id: ID
+  ): UserData
+}

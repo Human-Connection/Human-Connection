@@ -105,6 +105,7 @@ export default shield(
       blockedUsers: isAuthenticated,
       notifications: isAuthenticated,
       Donations: isAuthenticated,
+      userData: isAuthenticated,
     },
     Mutation: {
       '*': deny,
