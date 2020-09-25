@@ -34,7 +34,12 @@ describe('SearchResults', () => {
     propsData = {
       pageSize: 12,
     }
+    // Wolle jest.useFakeTimers()
     wrapper = Wrapper()
+  })
+
+  afterEach(() => {
+    // Wolle jest.clearAllMocks()
   })
 
   describe('mount', () => {
@@ -49,8 +54,10 @@ describe('SearchResults', () => {
         })
       })
 
+      // Wolle beforeEach(jest.useFakeTimers)
+    
       describe('result contains 25 posts, 8 users and 0 hashtags', () => {
-        beforeEach(() => {
+        beforeEach(async () => {
           wrapper.setData({
             posts: helpers.fakePost(12),
             postCount: 25,
@@ -58,6 +65,7 @@ describe('SearchResults', () => {
             userCount: 8,
             activeTab: 'Post',
           })
+          // Wolle await wrapper.vm.$nextTick()
         })
 
         it('shows a total of 33 results', () => {
@@ -65,11 +73,16 @@ describe('SearchResults', () => {
         })
 
         it('shows tab with 25 posts found', () => {
-          expect(wrapper.find('.Post-tab').text()).toContain('25')
+          const postTab = wrapper.find('[data-test="Post-tab"]')
+          // console.log('postTab: ', postTab.html())
+          // console.log('wrapper: ', wrapper)
+          // Wolle jest.runAllTimers()
+          expect(postTab.text()).toContain('25')
         })
 
         it('shows tab with 8 users found', () => {
-          expect(wrapper.find('.User-tab').text()).toContain('8')
+          const userTab = wrapper.find('[data-test="User-tab"]')
+          expect(userTab.text()).toContain('8')
         })
 
         it('shows tab with 0 hashtags found', () => {
@@ -130,8 +143,9 @@ describe('SearchResults', () => {
           expect(wrapper.find('.next-button').exists()).toBe(true)
         })
 
-        it('displays no previous page button for the 25 posts', () => {
-          expect(wrapper.find('.previous-button').exists()).toBe(false)
+        it('deactivates previous page button for the 25 posts', () => {
+          const previousButton = wrapper.find('[data-test="previous-button"]')
+          expect(previousButton.attributes().disabled).toEqual('disabled')
         })
 
         it('displays page 2 / 3 when next-button is clicked', async () => {
@@ -180,11 +194,12 @@ describe('SearchResults', () => {
           ).toMatchObject({ query: undefined, firstPosts: 12, postsOffset: 24 })
         })
 
-        it('displays no next page button when next-button is clicked twice', async () => {
-          wrapper.find('.next-button').trigger('click')
-          wrapper.find('.next-button').trigger('click')
+        it('deactivates next page button when next-button is clicked twice', async () => {
+          const nextButton = wrapper.find('[data-test="next-button"]')
+          nextButton.trigger('click')
+          nextButton.trigger('click')
           await wrapper.vm.$nextTick()
-          await expect(wrapper.find('.next-button').exists()).toBe(false)
+          expect(nextButton.attributes().disabled).toEqual('disabled')
         })
 
         it('displays the previous page button when next-button is clicked twice', async () => {

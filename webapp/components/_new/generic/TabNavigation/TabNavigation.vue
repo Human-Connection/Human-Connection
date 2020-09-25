@@ -1,5 +1,6 @@
 <template>
   <ul class="tab-navigation">
+    <!-- Wolle Fix warning for 'switchTab', see below. -->
     <li
       v-for="tab in tabs"
       :key="tab.type"
@@ -9,16 +10,23 @@
         'tab',
         tab.type + '-tab',
       ]"
-      role="button"
-      @click="$emit('switchTab', tab.type)"
       :style="tabWidth"
+      role="button"
+      :data-test="tab.type + '-tab'"
+      @click="$emit('switchTab', tab.type)"
     >
+      <!-- Wolle <ds-space :class="lowerCase('Post-tab')" margin="small"> -->
       <ds-space margin="small">
-        <client-only placeholder="Loading...">
+        <!-- <ds-number :label="tab.title"> -->
+          <!-- Wolle <hc-count-to slot="count" :end-val="tab.count" /> -->
+          {{ tab.count }}
+        <!-- </ds-number> -->
+        <!-- <client-only placeholder="Loading...">
           <ds-number :label="tab.title">
-            <hc-count-to slot="count" :end-val="tab.count" />
+            Wolle <hc-count-to slot="count" :end-val="tab.count" />
+            {{ tab.count }}
           </ds-number>
-        </client-only>
+        </client-only> -->
       </ds-space>
     </li>
   </ul>
