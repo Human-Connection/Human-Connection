@@ -1,23 +1,25 @@
 <template>
   <div class="pagination-buttons">
     <base-button
+      class="previous-button"
       :disabled="!hasPrevious"
       icon="arrow-left"
       circle
-      class="previous-button"
+      data-test="previous-button"
       @click="$emit('back')"
     />
 
-    <span v-if="showPageCounter" class="pagination-pageCount">
+    <span v-if="showPageCounter" class="pagination-pageCount" data-test="pagination-pageCount">
       {{ $t('search.page') }} {{ activePage + 1 }} /
       {{ Math.floor((activeResourceCount - 1) / pageSize) + 1 }}
     </span>
 
     <base-button
+      class="next-button"
       :disabled="!hasNext"
       icon="arrow-right"
       circle
-      class="next-button"
+      data-test="next-button"
       @click="$emit('next')"
     />
   </div>
