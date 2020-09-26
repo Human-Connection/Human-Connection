@@ -960,12 +960,11 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       sc2.relateTo(s3, 'services'),
       sc3.relateTo(s5, 'services'),
       sc4.relateTo(s6, 'services'),
-      sc1.relateTo(org1, 'organizations'),
-      sc1.relateTo(org2, 'organizations'),
-      sc2.relateTo(org1, 'organizations'),
-      sc3.relateTo(org2, 'organizations'),
-      sc4.relateTo(org1, 'organizations'),
-      sc1.relateTo(org1, 'organizations'),
+      org1.relateTo(sc1, 'serviceCategories'),
+      org2.relateTo(sc1, 'serviceCategories'),
+      org1.relateTo(sc2, 'serviceCategories'),
+      org2.relateTo(sc3, 'serviceCategories'),
+      org1.relateTo(sc4, 'serviceCategories'),
     ])
 
     await Promise.all([

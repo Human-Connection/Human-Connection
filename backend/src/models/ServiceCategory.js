@@ -24,14 +24,4 @@ export default {
       updatedAt: { type: 'string', isoDate: true, default: () => new Date().toISOString() },
     },
   },
-  organizations: {
-    type: 'relationship',
-    relationship: 'SCATEGORY',
-    target: 'Organization',
-    direction: 'out',
-    properties: {
-      createdAt: { type: 'string', isoDate: true, default: () => new Date().toISOString() },
-      updatedAt: { type: 'string', isoDate: true, default: () => new Date().toISOString() },
-    },
-  },
 }

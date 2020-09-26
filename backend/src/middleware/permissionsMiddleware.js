@@ -94,6 +94,7 @@ export default shield(
       Service: allow,
       ServiceCategory: allow,
       usedCategories: allow,
+      byIdOrOrgKeyWord: allow,
       SuggestedResource: allow,
       Tag: allow,
       reports: isModerator,

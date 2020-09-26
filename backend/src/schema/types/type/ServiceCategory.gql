@@ -19,7 +19,6 @@ type ServiceCategory {
   createdAt: String
   updatedAt: String
   services: [Service]! @relation(name: "DENOMINATION", direction: "OUT")
-  organizations: [Organization] @relation(name: "SCATEGORY", direction: "OUT")
 }
 
 type Query {
@@ -31,5 +30,4 @@ type Query {
     updatedAt: String
     orderBy: [_SCategoryOrdering]
   ): [ServiceCategory]
-  usedCategories: [ServiceCategory] @cypher(statement: "MATCH (this)-[:SCATEGORY]->(o:Organization) RETURN DISTINCT this")
 }

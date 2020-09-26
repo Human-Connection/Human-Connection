@@ -25,6 +25,16 @@ export default {
       updatedAt: { type: 'string', isoDate: true, default: () => new Date().toISOString() },
     },
   },
+  serviceCategories: {
+    type: 'relationship',
+    relationship: 'SCATEGORIES',
+    target: 'ServiceCategory',
+    direction: 'out',
+    properties: {
+      createdAt: { type: 'string', isoDate: true, default: () => new Date().toISOString() },
+      updatedAt: { type: 'string', isoDate: true, default: () => new Date().toISOString() },
+    },
+  },
   plan: {
     type: 'relationship',
     relationship: 'SUBSCRIBED',
