@@ -123,7 +123,9 @@
 
       <ds-flex-item :width="{ base: '100%', sm: 3, md: 5, lg: 3 }">
         <masonry-grid>
-          <ds-grid-item class="profile-top-navigation" :row-span="3" column-span="fullWidth">
+          <!-- TapNavigation -->
+          <new-tab-navigation :tabs="tabOptions" :activeTab="tabActive" @switch="handleTab" />
+          <!-- Wolle <ds-grid-item class="profile-top-navigation" :row-span="3" column-span="fullWidth">
             <base-card class="ds-tab-nav">
               <ul class="Tabs">
                 <li class="Tabs__tab pointer" :class="{ active: tabActive === 'post' }">
@@ -165,8 +167,9 @@
                 </li>
               </ul>
             </base-card>
-          </ds-grid-item>
+          </ds-grid-item> -->
 
+          <!-- feed -->
           <ds-grid-item :row-span="2" column-span="fullWidth">
             <ds-space centered>
               <nuxt-link :to="{ name: 'post-create' }">
@@ -236,6 +239,7 @@ import HcUpload from '~/components/Upload'
 import UserAvatar from '~/components/_new/generic/UserAvatar/UserAvatar'
 import MasonryGrid from '~/components/MasonryGrid/MasonryGrid.vue'
 import MasonryGridItem from '~/components/MasonryGrid/MasonryGridItem.vue'
+import NewTabNavigation from '~/components/_new/generic/TabNavigation/NewTabNavigation'
 import { profilePagePosts } from '~/graphql/PostQuery'
 import UserQuery from '~/graphql/User'
 import { muteUser, unmuteUser } from '~/graphql/settings/MutedUsers'
@@ -264,6 +268,7 @@ export default {
     MasonryGrid,
     MasonryGridItem,
     FollowList,
+    NewTabNavigation,
   },
   transition: {
     name: 'slide-up',
@@ -309,6 +314,28 @@ export default {
     userSlug() {
       const { slug } = this.user || {}
       return slug && `@${slug}`
+    },
+    tabOptions() {
+      return [
+        {
+          type: 'post',
+          title: this.$t('common.post', null, this.user.contributionsCount),
+          count: this.user.contributionsCount,
+          disabled: this.user.contributionsCount === 0,
+        },
+        {
+          type: 'comment',
+          title: this.$t('profile.commented'),
+          count: this.user.commentedCount,
+          disabled: this.user.commentedCount === 0,
+        },
+        {
+          type: 'shout',
+          title: this.$t('profile.shouted'),
+          count: this.user.shoutedCount,
+          disabled: this.user.shoutedCount === 0,
+        },
+      ]
     },
   },
   methods: {
@@ -473,33 +500,33 @@ export default {
 </script>
 
 <style lang="scss">
-.pointer {
-  cursor: pointer;
-}
+// Wolle .pointer {
+//   cursor: pointer;
+// }
 
-.Tabs {
-  position: relative;
-  background-color: #fff;
-  height: 100%;
-  display: flex;
-  margin: 0;
-  padding: 0;
-  list-style: none;
+// Wolle .Tabs {
+//   position: relative;
+//   background-color: #fff;
+//   height: 100%;
+//   display: flex;
+//   margin: 0;
+//   padding: 0;
+//   list-style: none;
 
-  &__tab {
-    text-align: center;
-    height: 100%;
-    flex-grow: 1;
+//   &__tab {
+//     text-align: center;
+//     height: 100%;
+//     flex-grow: 1;
 
-    &:hover {
-      border-bottom: 2px solid #c9c6ce;
-    }
+//     &:hover {
+//       border-bottom: 2px solid #c9c6ce;
+//     }
 
-    &.active {
-      border-bottom: 2px solid #17b53f;
-    }
-  }
-}
+//     &.active {
+//       border-bottom: 2px solid #17b53f;
+//     }
+//   }
+// }
 .profile-avatar.user-avatar {
   margin: auto;
   margin-top: -60px;
@@ -511,26 +538,26 @@ export default {
     right: $space-x-small;
   }
 }
-.profile-top-navigation {
-  position: sticky;
-  top: 53px;
-  z-index: 2;
-}
-.ds-tab-nav.base-card {
-  padding: 0;
+// Wolle .profile-top-navigation {
+//   position: sticky;
+//   top: 53px;
+//   z-index: 2;
+// }
+// Wolle .ds-tab-nav.base-card {
+//   padding: 0;
 
-  .ds-tab-nav-item {
-    &.ds-tab-nav-item-active {
-      border-bottom: 3px solid #17b53f;
-      &:first-child {
-        border-bottom-left-radius: $border-radius-x-large;
-      }
-      &:last-child {
-        border-bottom-right-radius: $border-radius-x-large;
-      }
-    }
-  }
-}
+//   .ds-tab-nav-item {
+//     &.ds-tab-nav-item-active {
+//       border-bottom: 3px solid #17b53f;
+//       &:first-child {
+//         border-bottom-left-radius: $border-radius-x-large;
+//       }
+//       &:last-child {
+//         border-bottom-right-radius: $border-radius-x-large;
+//       }
+//     }
+//   }
+// }
 .profile-post-add-button {
   box-shadow: $box-shadow-x-large;
 }
