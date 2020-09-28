@@ -92,5 +92,22 @@ export default {
 
       return encode(await currentUser.toJson())
     },
+    changeUserPassword: async (_, { newPassword }, { driver, user }) => {
+      const currentUser = await neode.find('User', user.id)
+
+      const encryptedPassword = currentUser.get('encryptedPassword')
+
+      if (await bcrypt.compareSync(newPassword, encryptedPassword)) {
+        throw new AuthenticationError('Old password and new password should be different')
+      }
+
+      const newEncryptedPassword = await bcrypt.hashSync(newPassword, 10)
+      await currentUser.update({
+        encryptedPassword: newEncryptedPassword,
+        updatedAt: new Date().toISOString(),
+      })
+
+      return encode(await currentUser.toJson())
+    },
   },
 }
