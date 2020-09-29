@@ -5,7 +5,7 @@ export default {
       const cypher = `
         MATCH (u:User { id: $id })
         WITH u AS user
-        MATCH (p:Post)
+        OPTIONAL MATCH (p:Post)
         WHERE (p)<-[:COMMENTS]-(:Comment)<-[:WROTE]-(user)
         OR (user)-[:WROTE]->(p)
         RETURN { user: properties(user), posts: collect(properties(p)) }
