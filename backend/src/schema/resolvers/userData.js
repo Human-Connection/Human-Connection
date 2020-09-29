@@ -1,5 +1,3 @@
-import log from './helpers/databaseLogger'
-
 export default {
   Query: {
     userData: async (object, args, context, resolveInfo) => {
@@ -23,7 +21,6 @@ export default {
 
       try {
         const result = await resultPromise
-        log(result.records[0].get('result'))
         return result.records[0].get('result')
       } finally {
         session.close()
