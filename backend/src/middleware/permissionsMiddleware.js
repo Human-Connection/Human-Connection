@@ -140,7 +140,7 @@ export default shield(
       shout: isAuthenticated,
       unshout: isAuthenticated,
       changePassword: isAuthenticated,
-      changeUserPassword: allow,
+      changeUserPassword: isAuthenticated,
       review: isModerator,
       CreateComment: isAuthenticated,
       UpdateComment: isAuthor,

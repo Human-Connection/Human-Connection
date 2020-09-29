@@ -46,6 +46,15 @@ export default {
       createdAt: { type: 'string', isoDate: true, default: () => new Date().toISOString() },
     },
   },
+  ownerOf: {
+    type: 'relationship',
+    relationship: 'APPROPRIATED_OF',
+    target: 'Organization',
+    direction: 'out',
+    properties: {
+      createdAt: { type: 'string', isoDate: true, default: () => new Date().toISOString() },
+    },
+  },
   serviceInterested: {
     type: 'relationship',
     relationship: 'INTERESTED',
