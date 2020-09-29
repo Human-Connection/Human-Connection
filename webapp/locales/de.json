@@ -648,7 +648,9 @@
       "success": "Konto erfolgreich gelöscht!"
     },
     "download": {
-      "name": "Daten herunterladen"
+      "json": "als JSON",
+      "name": "Daten herunterladen",
+      "xml": "als XML"
     },
     "email": {
       "change-successful": "Deine E-Mail-Adresse wurde erfolgreich geändert.",
