@@ -124,7 +124,7 @@
       <ds-flex-item :width="{ base: '100%', sm: 3, md: 5, lg: 3 }">
         <masonry-grid>
           <!-- TapNavigation -->
-          <new-tab-navigation :tabs="tabOptions" :activeTab="tabActive" @switch="handleTab" />
+          <new-tab-navigation :tabs="tabOptions" :activeTab="tabActive" @switch-tab="handleTab" />
           <!-- Wolle <ds-grid-item class="profile-top-navigation" :row-span="3" column-span="fullWidth">
             <base-card class="ds-tab-nav">
               <ul class="Tabs">
@@ -345,9 +345,11 @@ export default {
       })
     },
     handleTab(tab) {
-      this.tabActive = tab
-      this.filter = tabToFilterMapping({ tab, id: this.$route.params.id })
-      this.resetPostList()
+      if (this.tabActive !== tab) {
+        this.tabActive = tab
+        this.filter = tabToFilterMapping({ tab, id: this.$route.params.id })
+        this.resetPostList()
+      }
     },
     uniq(items, field = 'id') {
       return uniqBy(items, field)

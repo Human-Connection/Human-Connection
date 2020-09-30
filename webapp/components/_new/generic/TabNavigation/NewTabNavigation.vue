@@ -12,24 +12,32 @@
       :style="tabWidth"
       role="button"
       :data-test="tab.type + '-tab'"
-      @click="$emit('switchTab', tab.type)"
+      @click="$emit('switch-tab', tab.type)"
     >
       <ds-space margin="small">
           {{ tab.count }}
       </ds-space>
     </li>
   </ul> -->
-  <ds-grid-item class="profile-top-navigation" :row-span="3" column-span="fullWidth">
+  <!-- Wolle <ds-grid-item class="profile-top-navigation" :row-span="3" column-span="fullWidth"> -->
+  <ds-grid-item class="profile-top-navigation" :row-span="tabs.length" column-span="fullWidth">
     <base-card class="ds-tab-nav">
       <ul class="Tabs">
         <li
           v-for="tab in tabs"
           :key="tab.type"
-          class="Tabs__tab pointer" :class="{ active: activeTab === tab.type }">
-          <a @click="$emit('switch', tab.type)">
+          :class="[
+            'Tabs__tab',
+            'pointer',
+            activeTab === tab.type && '--active',
+            tab.disabled && '--disabled',
+          ]"
+        >
+          <a @click="switchTab(tab)">
             <ds-space margin="small">
               <!-- Wolle translate -->
-              <client-only placeholder="Loading...">
+              <!-- <client-only placeholder="Loading..."> -->
+              <client-only :placeholder="$t('client-only.loading')">
                 <ds-number :label="tab.title">
                   <hc-count-to slot="count" :end-val="tab.count" />
                 </ds-number>
@@ -44,12 +52,12 @@
 
 <script>
 import HcCountTo from '~/components/CountTo.vue'
-import MasonryGridItem from '~/components/MasonryGrid/MasonryGridItem.vue'
+// Wolle import MasonryGridItem from '~/components/MasonryGrid/MasonryGridItem.vue'
 
 export default {
   components: {
     HcCountTo,
-    MasonryGridItem,
+    // Wolle MasonryGridItem,
   },
   props: {
     tabs: {
@@ -65,14 +73,13 @@ export default {
   //     return 'width: ' + String(100.0 / this.tabs.length) + '%'
   //   },
   // },
-  // Wolle
-  // methods: {
-  //   tabTitle(index) {
-  //     console.log('activeTab: ', this.activeTab)
-  //     console.log('tabTitle: ', this.tabs[index].title)
-  //     return this.tabs[index].title
-  //   },
-  // },
+  methods: {
+    switchTab(tab) {
+      if (!tab.disabled) {
+        this.$emit('switch-tab', tab.type)
+      }
+    },
+  },
 }
 </script>
 
@@ -109,7 +116,6 @@ export default {
 //   }
 // }
 
-
 .pointer {
   cursor: pointer;
 }
@@ -132,8 +138,14 @@ export default {
       border-bottom: 2px solid #c9c6ce;
     }
 
-    &.active {
+    &.--active {
       border-bottom: 2px solid #17b53f;
+    }
+    &.--disabled {
+      opacity: $opacity-disabled;
+      &:hover {
+        border-bottom: none;
+      }
     }
   }
 }

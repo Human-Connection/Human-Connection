@@ -13,13 +13,13 @@
       :style="tabWidth"
       role="button"
       :data-test="tab.type + '-tab'"
-      @click="$emit('switchTab', tab.type)"
+      @click="$emit('switch-tab', tab.type)"
     >
       <!-- Wolle <ds-space :class="lowerCase('Post-tab')" margin="small"> -->
       <ds-space margin="small">
         <!-- <ds-number :label="tab.title"> -->
-          <!-- Wolle <hc-count-to slot="count" :end-val="tab.count" /> -->
-          {{ tab.count }}
+        <!-- Wolle <hc-count-to slot="count" :end-val="tab.count" /> -->
+        {{ tab.count }}
         <!-- </ds-number> -->
         <!-- <client-only placeholder="Loading...">
           <ds-number :label="tab.title">
@@ -33,12 +33,12 @@
 </template>
 
 <script>
-import HcCountTo from '~/components/CountTo.vue'
+// Wolle import HcCountTo from '~/components/CountTo.vue'
 
 export default {
-  components: {
-    HcCountTo,
-  },
+  // Wolle components: {
+  //   HcCountTo,
+  // },
   props: {
     tabs: {
       type: Array,

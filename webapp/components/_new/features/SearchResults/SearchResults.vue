@@ -1,6 +1,6 @@
 <template>
   <div id="search-results" class="search-results">
-    <div>
+    <!-- Wolle <div>
       <ds-text class="total-search-results">
         {{ $t('search.for') }} "
         <strong>{{ search }}</strong>
@@ -9,9 +9,121 @@
         <strong>{{ searchCount }}</strong>
         {{ $t('search.results', {}, searchCount) }}
       </ds-text>
-    </div>
+    </div> -->
 
-    <tab-navigation :tabs="tabOptions" :activeTab="activeTab" @switchTab="switchTab" />
+    <ds-flex-item :width="{ base: '100%', sm: 3, md: 5, lg: 3 }">
+      <masonry-grid>
+        <!-- tabs -->
+        <new-tab-navigation :tabs="tabOptions" :activeTab="activeTab" @switch-tab="switchTab" />
+
+        <!-- search text and result count -->
+        <ds-grid-item class="grid-total-search-results" :row-span="1" column-span="fullWidth">
+          <ds-space margin-bottom="xxx-small" margin-top="xxx-small" centered>
+            <ds-text class="total-search-results">
+              {{ $t('search.for') }}
+              <strong>{{ '"' + search + '"' }}</strong>
+              <!-- Wolle "<strong>{{ search }}</strong>":
+              <strong>{{ searchCount }}</strong>
+              {{ $t('search.results', {}, searchCount) }} -->
+            </ds-text>
+          </ds-space>
+        </ds-grid-item>
+
+        <!-- search results -->
+
+        <template v-if="!(!activeResourceCount || searchCount === 0)">
+          <!-- pagination buttons -->
+          <ds-grid-item v-if="activeResourceCount > pageSize" :row-span="2" column-span="fullWidth">
+            <ds-space centered>
+              <pagination-buttons
+                :hasNext="hasNext"
+                :showPageCounter="true"
+                :hasPrevious="hasPrevious"
+                :activePage="activePage"
+                :activeResourceCount="activeResourceCount"
+                :key="'Top'"
+                :pageSize="pageSize"
+                @back="previousResults"
+                @next="nextResults"
+              />
+            </ds-space>
+          </ds-grid-item>
+
+          <!-- posts -->
+          <template v-if="activeTab === 'Post'">
+            <masonry-grid-item
+              v-for="post in activeResources"
+              :key="post.id"
+              :imageAspectRatio="post.image && post.image.aspectRatio"
+            >
+              <post-teaser
+                :post="post"
+                :width="{ base: '100%', md: '100%', xl: '50%' }"
+                @removePostFromList="removePostFromList"
+                @pinPost="pinPost"
+                @unpinPost="unpinPost"
+              />
+            </masonry-grid-item>
+          </template>
+          <!-- users -->
+          <template v-if="activeTab === 'User'">
+            <ds-grid-item v-for="user in activeResources" :key="user.id" :row-span="2">
+              <base-card :wideContent="true">
+                <user-teaser :user="user" />
+              </base-card>
+            </ds-grid-item>
+          </template>
+          <!-- hashtags -->
+          <template v-if="activeTab === 'Hashtag'">
+            <ds-grid-item v-for="hashtag in activeResources" :key="hashtag.id" :row-span="2">
+              <base-card :wideContent="true">
+                <hc-hashtag :id="hashtag.id" />
+              </base-card>
+            </ds-grid-item>
+          </template>
+
+          <!-- pagination buttons -->
+          <ds-grid-item v-if="activeResourceCount > pageSize" :row-span="2" column-span="fullWidth">
+            <ds-space centered>
+              <pagination-buttons
+                :hasNext="hasNext"
+                :hasPrevious="hasPrevious"
+                :activePage="activePage"
+                :showPageCounter="true"
+                :activeResourceCount="activeResourceCount"
+                :key="'Bottom'"
+                :pageSize="pageSize"
+                :srollTo="'#search-results'"
+                @back="previousResults"
+                @next="nextResults"
+              />
+            </ds-space>
+          </ds-grid-item>
+        </template>
+        <!-- Wolle <template v-else-if="$apollo.loading">
+          <ds-grid-item column-span="fullWidth">
+            <ds-space centered>
+              <ds-spinner size="base"></ds-spinner>
+            </ds-space>
+          </ds-grid-item>
+        </template> -->
+        <!-- Wolle double! -->
+        <!-- Wolle <template v-else>
+          <ds-grid-item column-span="fullWidth">
+            <hc-empty margin="xx-large" icon="file" />
+          </ds-grid-item>
+        </template> -->
+        <!-- no results -->
+        <ds-grid-item v-else :row-span="7" column-span="fullWidth">
+          <ds-space centered>
+            <hc-empty icon="tasks" :message="$t('search.no-results', { search })" />
+          </ds-space>
+        </ds-grid-item>
+      </masonry-grid>
+    </ds-flex-item>
+
+    <!-- Wolle old -->
+    <!-- <tab-navigation :tabs="tabOptions" :activeTab="activeTab" @switch-tab="switchTab" />
     <section
       :class="['results', activeTab === 'User' && '--user', !activeResourceCount > 0 && '--empty']"
     >
@@ -69,7 +181,7 @@
           @next="nextResults"
         />
       </template>
-    </section>
+    </section> -->
   </div>
 </template>
 
@@ -79,14 +191,16 @@ import HcEmpty from '~/components/Empty/Empty'
 import MasonryGrid from '~/components/MasonryGrid/MasonryGrid'
 import MasonryGridItem from '~/components/MasonryGrid/MasonryGridItem'
 import PostTeaser from '~/components/PostTeaser/PostTeaser'
-import TabNavigation from '~/components/_new/generic/TabNavigation/TabNavigation'
+// Wolle import TabNavigation from '~/components/_new/generic/TabNavigation/TabNavigation'
+import NewTabNavigation from '~/components/_new/generic/TabNavigation/NewTabNavigation'
 import UserTeaser from '~/components/UserTeaser/UserTeaser'
 import PaginationButtons from '~/components/_new/generic/PaginationButtons/PaginationButtons'
 import HcHashtag from '~/components/Hashtag/Hashtag'
 
 export default {
   components: {
-    TabNavigation,
+    // Wolle TabNavigation,
+    NewTabNavigation,
     HcEmpty,
     MasonryGrid,
     MasonryGridItem,
@@ -194,7 +308,9 @@ export default {
       this.hashtagPage = 0
     },
     switchTab(tab) {
-      this.activeTab = tab
+      if (this.activeTab !== tab) {
+        this.activeTab = tab
+      }
     },
     previousResults() {
       switch (this.activeTab) {
@@ -303,6 +419,7 @@ export default {
 </script>
 
 <style lang="scss">
+// Wolle check if still needed 👇🏼
 .search-results {
   > .results {
     /* display: inline-block;*/
@@ -334,5 +451,18 @@ export default {
       opacity: 0.8;
     }
   }
+}
+
+// Wolle new
+.grid-total-search-results {
+  padding: 0;
+  margin: 0;
+  // margin-bottom: $space-x-small;
+
+  // > .base-button {
+  //   display: block;
+  //   width: 100%;
+  //   margin-bottom: $space-x-small;
+  // }
 }
 </style>

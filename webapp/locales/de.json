@@ -75,6 +75,9 @@
       }
     }
   },
+  "client-only": {
+    "loading": "Lade …"
+  },
   "code-of-conduct": {
     "consequences": {
       "description": "Wenn ein Gemeinschaftsmitglied inakzeptables Verhalten an den Tag legt, können die verantwortlichen Betreiber, Moderatoren und Administratoren des Netzwerks angemessene Maßnahmen ergreifen, u.a.:",

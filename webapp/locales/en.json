@@ -75,6 +75,9 @@
       }
     }
   },
+  "client-only": {
+    "loading": "Loading …"
+  },
   "code-of-conduct": {
     "consequences": {
       "description": "If a community member exhibits unacceptable behaviour, the responsible operators, moderators and administrators of the network may take appropriate measures, including but not limited to:",

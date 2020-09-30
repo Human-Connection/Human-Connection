@@ -55,7 +55,7 @@ describe('SearchResults', () => {
       })
 
       // Wolle beforeEach(jest.useFakeTimers)
-    
+
       describe('result contains 25 posts, 8 users and 0 hashtags', () => {
         beforeEach(async () => {
           wrapper.setData({

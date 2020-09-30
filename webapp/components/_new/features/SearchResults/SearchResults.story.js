@@ -89,7 +89,7 @@ storiesOf('SearchResults', module)
                 <tab-navigation
                   :tabs="tabOptions"
                   :activeTab="activeTab"
-                  @switchTab="tab => activeTab = tab"
+                  @switch-tab="tab => activeTab = tab"
                 />
                 <section>
                   <ul v-if="activeResources.length">
@@ -132,7 +132,7 @@ storiesOf('SearchResults', module)
                 <tab-navigation
                   :tabs="tabOptions"
                   :activeTab="activeTab"
-                  @switchTab="tab => activeTab = tab"
+                  @switch-tab="tab => activeTab = tab"
                 />
                 <section>
                   <ul v-if="activeResources.length">
