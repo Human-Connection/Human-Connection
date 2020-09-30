@@ -823,7 +823,7 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       [...Array(30).keys()].map(() =>
         Factory.build(
           'organization',
-          {  },
+          {},
           {
             categoryIds: ['cat1'],
             creator: jennyRostock,
