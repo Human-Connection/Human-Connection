@@ -133,7 +133,7 @@ export default {
         })
       }
 
-      if (!this.isOwner && !this.resourceType === 'organization') {
+      if (!this.isOwner && !(this.resourceType === 'organization')) {
         routes.push({
           label: this.$t(`report.${this.resourceType}.title`),
           callback: () => {
@@ -203,6 +203,15 @@ export default {
                 this.$emit('block', this.resource)
               },
               icon: 'user-times',
+            })
+          }
+          if (this.isAdmin === true) {
+            routes.push({
+              label: this.$t(`settings.deleteUserAccount.name`),
+              callback: () => {
+                this.$emit('delete', this.resource)
+              },
+              icon: 'trash',
             })
           }
         }

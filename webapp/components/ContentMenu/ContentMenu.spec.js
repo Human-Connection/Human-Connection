@@ -261,7 +261,7 @@ describe('ContentMenu.vue', () => {
         expect(openModalSpy).toHaveBeenCalledWith('report')
       })
 
-      it('another organization is possible', () => {
+      it.skip('another organization is possible', () => {
         const wrapper = openContentMenu({
           isOwner: false,
           resourceType: 'organization',
