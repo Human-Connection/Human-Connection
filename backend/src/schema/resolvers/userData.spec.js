@@ -16,6 +16,11 @@ beforeAll(async () => {
     name: 'John Doe',
     slug: 'john-doe',
   })
+  await Factory.build('user', {
+    id: 'o-user',
+    name: 'Unauthenticated User',
+    slug: 'unauthenticated-user',
+  })
   authenticatedUser = await user.toJson()
   const { server } = createServer({
     context: () => {
@@ -30,7 +35,7 @@ beforeAll(async () => {
 })
 
 afterAll(async () => {
-  await cleanDatabase()
+  //  await cleanDatabase()
 })
 
 const userDataQuery = gql`
@@ -57,9 +62,9 @@ const userDataQuery = gql`
 `
 
 describe('resolvers/userData', () => {
-  const variables = { id: 'a-user' }
+  let variables = { id: 'a-user' }
 
-  describe('given one user who did not write anything so far', () => {
+  describe('given one authenticated user who did not write anything so far', () => {
     it("returns the user's data and no posts", async () => {
       await expect(query({ query: userDataQuery, variables })).resolves.toMatchObject({
         data: {
@@ -111,11 +116,15 @@ describe('resolvers/userData', () => {
 
       describe('the user comments another post', () => {
         beforeAll(async () => {
-          await Factory.build('post', {
-            id: 'b-post',
-            title: 'B post',
-            content: 'B post',
-          })
+          await Factory.build(
+            'post',
+            {
+              id: 'b-post',
+              title: 'B post',
+              content: 'B post',
+            },
+            { authorId: 'o-user' },
+          )
           await Factory.build(
             'comment',
             {
@@ -137,11 +146,12 @@ describe('resolvers/userData', () => {
                   name: 'John Doe',
                   slug: 'john-doe',
                 },
-                posts: [
+                posts: expect.arrayContaining([
                   {
                     id: 'a-post',
                     title: 'A post',
                     content: 'A post',
+                    comments: [],
                   },
                   {
                     id: 'b-post',
@@ -150,14 +160,51 @@ describe('resolvers/userData', () => {
                     comments: [
                       {
                         content: 'A comment to post B',
+                        author: { slug: 'john-doe' },
                       },
                     ],
                   },
-                ],
+                ]),
               },
             },
           })
         })
+      })
+    })
+  })
+
+  describe('try to request data of another user', () => {
+    variables = { id: 'o-user' }
+    it('returns the data of the authenticated user', async () => {
+      await expect(query({ query: userDataQuery, variables })).resolves.toMatchObject({
+        data: {
+          userData: {
+            user: {
+              id: 'a-user',
+              name: 'John Doe',
+              slug: 'john-doe',
+            },
+            posts: expect.arrayContaining([
+              {
+                id: 'a-post',
+                title: 'A post',
+                content: 'A post',
+                comments: [],
+              },
+              {
+                id: 'b-post',
+                title: 'B post',
+                content: 'B post',
+                comments: [
+                  {
+                    content: 'A comment to post B',
+                    author: { slug: 'john-doe' },
+                  },
+                ],
+              },
+            ]),
+          },
+        },
       })
     })
   })
