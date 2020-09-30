@@ -13,9 +13,6 @@
 
     <ds-flex-item :width="{ base: '100%', sm: 3, md: 5, lg: 3 }">
       <masonry-grid>
-        <!-- tabs -->
-        <new-tab-navigation :tabs="tabOptions" :activeTab="activeTab" @switch-tab="switchTab" />
-
         <!-- search text and result count -->
         <ds-grid-item class="grid-total-search-results" :row-span="1" column-span="fullWidth">
           <ds-space margin-bottom="xxx-small" margin-top="xxx-small" centered>
@@ -28,6 +25,9 @@
             </ds-text>
           </ds-space>
         </ds-grid-item>
+
+        <!-- tabs -->
+        <new-tab-navigation :tabs="tabOptions" :activeTab="activeTab" @switch-tab="switchTab" />
 
         <!-- search results -->
 
@@ -56,12 +56,16 @@
               :key="post.id"
               :imageAspectRatio="post.image && post.image.aspectRatio"
             >
-              <post-teaser
+              <!-- Wolle implement <post-teaser
                 :post="post"
                 :width="{ base: '100%', md: '100%', xl: '50%' }"
                 @removePostFromList="removePostFromList"
                 @pinPost="pinPost"
                 @unpinPost="unpinPost"
+              /> -->
+              <post-teaser
+                :post="post"
+                :width="{ base: '100%', md: '100%', xl: '50%' }"
               />
             </masonry-grid-item>
           </template>

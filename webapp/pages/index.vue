@@ -64,6 +64,7 @@
 </template>
 
 <script>
+// Wolle import postActions from '~/mixins/postActions'
 // import DonationInfo from '~/components/DonationInfo/DonationInfo.vue'
 import HashtagsFilter from '~/components/HashtagsFilter/HashtagsFilter.vue'
 import HcEmpty from '~/components/Empty/Empty'
@@ -84,6 +85,7 @@ export default {
     MasonryGrid,
     MasonryGridItem,
   },
+  // Wolle mixins: [postActions],
   data() {
     const { hashtag = null } = this.$route.query
     return {
