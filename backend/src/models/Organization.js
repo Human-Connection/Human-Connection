@@ -3,7 +3,10 @@ import { v4 as uuid } from 'uuid'
 export default {
   id: { type: 'string', primary: true, default: uuid },
   name: { type: 'string', required: true },
+  phone: { type: 'string', required: false, default: 'Not Assigned' },
+  webPage: { type: 'string', required: false, default: 'Not Assigned' },
   description: { type: 'string', required: false, default: 'Not Assigned' },
+  servicesDesc: { type: 'string', required: false, default: 'Not Assigned' },
   iconName: { type: 'string', required: false, default: 'Not Assigned' },
   urlIcon: { type: 'string', required: false, default: 'Not Assigned' },
   ranking: { type: 'number', required: false, default: 0 },

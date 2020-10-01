@@ -1,6 +1,9 @@
 type Organization {
   id: ID!
   name: String
+  phone: String
+  webPage: String
+  servicesDesc: String
   description: String
   iconName: String
   urlIcon: String
