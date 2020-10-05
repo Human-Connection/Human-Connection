@@ -121,6 +121,7 @@ export default shield(
       SignupVerification: allow,
       CreateUser: allow,
       UpdateUser: onlyYourself,
+      UpdateOrganization: allow,
       CreatePost: isAuthenticated,
       CreateSuggestedResource: allow,
       UpdatePost: isAuthor,
@@ -140,7 +141,7 @@ export default shield(
       shout: isAuthenticated,
       unshout: isAuthenticated,
       changePassword: isAuthenticated,
-      changeUserPassword: isAuthenticated,
+      changeUserPassword: allow, // TODO change to isAuthenticated
       review: isModerator,
       CreateComment: isAuthenticated,
       UpdateComment: isAuthor,

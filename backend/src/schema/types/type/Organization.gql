@@ -32,3 +32,10 @@ type Query {
   usedCategories: [ServiceCategory] @cypher(statement: "MATCH (o:Organization)-[:SCATEGORIES]-> (this) RETURN DISTINCT this")
   byIdOrOrgKeyWord(id: ID, keyWord: String): [Organization] @cypher(statement: "MATCH (o:Organization)-[:SCATEGORIES]-> (this {id: id}) where LOWER(o.name) CONTAINS LOWER(keyWord) OR LOWER(o.description) CONTAINS LOWER(keyWord) RETURN DISTINCT o")
 }
+
+type Mutation {
+  UpdateOrganization (
+  id: ID!
+  name: String
+  ): Organization
+}

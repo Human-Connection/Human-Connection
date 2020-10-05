@@ -4,6 +4,8 @@ import { AuthenticationError } from 'apollo-server'
 import { getNeode } from '../../db/neo4j'
 import normalizeEmail from './helpers/normalizeEmail'
 import log from './helpers/databaseLogger'
+import jwt from 'jsonwebtoken'
+import CONFIG from '../../config'
 
 const neode = getNeode()
 
@@ -92,9 +94,16 @@ export default {
 
       return encode(await currentUser.toJson())
     },
-    changeUserPassword: async (_, { newPassword }, { driver, user }) => {
-      const currentUser = await neode.find('User', user.id)
-
+    changeUserPassword: async (_, { newPassword, token }) => {
+      let id = null
+      try {
+        const decoded = await jwt.verify(token, CONFIG.JWT_SECRET)
+        id = decoded.sub
+      } catch (err) {
+        return null
+      }
+      const currentUser = await neode.find('User', id)
+      if (!currentUser) return null
       const encryptedPassword = currentUser.get('encryptedPassword')
 
       if (await bcrypt.compareSync(newPassword, encryptedPassword)) {
