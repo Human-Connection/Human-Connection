@@ -1,6 +1,7 @@
 type Service {
   id: ID!
   name: String
+  description: String
   organization: Organization @relation(name: "BELONGS", direction: "OUT")
   serviceCategory: ServiceCategory @relation(name: "CATEGORY", direction: "OUT")
   createdAt: String
@@ -11,6 +12,7 @@ type Query {
   Service(
     id: ID
     name: String
+    description: String
     createdAt: String
     updatedAt: String
   ): [Service]
