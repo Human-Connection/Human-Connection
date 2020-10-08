@@ -199,7 +199,7 @@
               <post-teaser
                 :post="post"
                 :width="{ base: '100%', md: '100%', xl: '50%' }"
-                @removePostFromList="removePostFromList(post, posts)"
+                @removePostFromList="posts = removePostFromList(post, posts)"
                 @pinPost="pinPost(post, refetchPostList)"
                 @unpinPost="unpinPost(post, refetchPostList)"
               />
@@ -341,11 +341,6 @@ export default {
     },
   },
   methods: {
-    // Wolle removePostFromList(deletedPost) {
-    //   this.posts = this.posts.filter((post) => {
-    //     return post.id !== deletedPost.id
-    //   })
-    // },
     handleTab(tab) {
       if (this.tabActive !== tab) {
         this.tabActive = tab
@@ -420,32 +415,6 @@ export default {
         this.$apollo.queries.User.refetch()
       }
     },
-    // Wolle pinPost(post) {
-    //   this.$apollo
-    //     .mutate({
-    //       mutation: PostMutations().pinPost,
-    //       variables: { id: post.id },
-    //     })
-    //     .then(() => {
-    //       this.$toast.success(this.$t('post.menu.pinnedSuccessfully'))
-    //       this.resetPostList()
-    //       this.$apollo.queries.profilePagePosts.refetch()
-    //     })
-    //     .catch((error) => this.$toast.error(error.message))
-    // },
-    // Wolle unpinPost(post) {
-    //   this.$apollo
-    //     .mutate({
-    //       mutation: PostMutations().unpinPost,
-    //       variables: { id: post.id },
-    //     })
-    //     .then(() => {
-    //       this.$toast.success(this.$t('post.menu.unpinnedSuccessfully'))
-    //       this.resetPostList()
-    //       this.$apollo.queries.profilePagePosts.refetch()
-    //     })
-    //     .catch((error) => this.$toast.error(error.message))
-    // },
     optimisticFollow({ followedByCurrentUser }) {
       /*
        * Note: followedByCountStartValue is updated to avoid counting from 0 when follow/unfollow

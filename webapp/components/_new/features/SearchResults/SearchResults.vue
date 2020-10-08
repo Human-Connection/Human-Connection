@@ -45,7 +45,7 @@
               <post-teaser
                 :post="post"
                 :width="{ base: '100%', md: '100%', xl: '50%' }"
-                @removePostFromList="removePostFromList(post, posts)"
+                @removePostFromList="posts = removePostFromList(post, posts)"
                 @pinPost="pinPost(post, refetchPostList)"
                 @unpinPost="unpinPost(post, refetchPostList)"
               />

@@ -27,9 +27,9 @@
           <post-teaser
             :post="relatedPost"
             :width="{ base: '100%', lg: 1 }"
-            @removePostFromList="removePostFromList(relatedPost, post.relatedContributions)"
-            @pinPost="pinPost(relatedPost)"
-            @unpinPost="unpinPost(relatedPost)"
+            @removePostFromList="post.relatedContributions = removePostFromList(relatedPost, post.relatedContributions)"
+            @pinPost="pinPost(relatedPost, refetchPostList)"
+            @unpinPost="unpinPost(relatedPost, refetchPostList)"
           />
         </masonry-grid-item>
       </masonry-grid>
@@ -68,11 +68,9 @@ export default {
     },
   },
   methods: {
-    // Wolle removePostFromList(deletedPost) {
-    //   this.post.relatedContributions = this.post.relatedContributions.filter((contribution) => {
-    //     return contribution.id !== deletedPost.id
-    //   })
-    // },
+    refetchPostList() {
+      this.$apollo.queries.Post.refetch()
+    },
   },
   apollo: {
     Post: {
