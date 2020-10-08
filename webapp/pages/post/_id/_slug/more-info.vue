@@ -27,7 +27,9 @@
           <post-teaser
             :post="relatedPost"
             :width="{ base: '100%', lg: 1 }"
-            @removePostFromList="removePostFromList"
+            @removePostFromList="removePostFromList(relatedPost, post.relatedContributions)"
+            @pinPost="pinPost(relatedPost)"
+            @unpinPost="unpinPost(relatedPost)"
           />
         </masonry-grid-item>
       </masonry-grid>
@@ -37,6 +39,7 @@
 </template>
 
 <script>
+import postListActions from '~/mixins/postListActions'
 import HcEmpty from '~/components/Empty/Empty'
 import PostTeaser from '~/components/PostTeaser/PostTeaser.vue'
 import HcCategory from '~/components/Category'
@@ -46,10 +49,6 @@ import MasonryGrid from '~/components/MasonryGrid/MasonryGrid.vue'
 import MasonryGridItem from '~/components/MasonryGrid/MasonryGridItem.vue'
 
 export default {
-  transition: {
-    name: 'slide-up',
-    mode: 'out-in',
-  },
   components: {
     PostTeaser,
     HcCategory,
@@ -58,17 +57,22 @@ export default {
     MasonryGrid,
     MasonryGridItem,
   },
+  transition: {
+    name: 'slide-up',
+    mode: 'out-in',
+  },
+  mixins: [postListActions],
   computed: {
     post() {
       return this.Post ? this.Post[0] || {} : {}
     },
   },
   methods: {
-    removePostFromList(deletedPost) {
-      this.post.relatedContributions = this.post.relatedContributions.filter((contribution) => {
-        return contribution.id !== deletedPost.id
-      })
-    },
+    // Wolle removePostFromList(deletedPost) {
+    //   this.post.relatedContributions = this.post.relatedContributions.filter((contribution) => {
+    //     return contribution.id !== deletedPost.id
+    //   })
+    // },
   },
   apollo: {
     Post: {

@@ -28,9 +28,9 @@
         >
           <post-teaser
             :post="post"
-            @removePostFromList="deletePost"
-            @pinPost="pinPost"
-            @unpinPost="unpinPost"
+            @removePostFromList="removePostFromList(post, posts)"
+            @pinPost="pinPost(post, refetchPostList)"
+            @unpinPost="unpinPost(post, refetchPostList)"
           />
         </masonry-grid-item>
       </template>
@@ -64,7 +64,7 @@
 </template>
 
 <script>
-// Wolle import postActions from '~/mixins/postActions'
+import postListActions from '~/mixins/postListActions'
 // import DonationInfo from '~/components/DonationInfo/DonationInfo.vue'
 import HashtagsFilter from '~/components/HashtagsFilter/HashtagsFilter.vue'
 import HcEmpty from '~/components/Empty/Empty'
@@ -73,7 +73,7 @@ import MasonryGrid from '~/components/MasonryGrid/MasonryGrid.vue'
 import MasonryGridItem from '~/components/MasonryGrid/MasonryGridItem.vue'
 import { mapGetters, mapMutations } from 'vuex'
 import { filterPosts } from '~/graphql/PostQuery.js'
-import PostMutations from '~/graphql/PostMutations'
+// Wolle import PostMutations from '~/graphql/PostMutations'
 import UpdateQuery from '~/components/utils/UpdateQuery'
 
 export default {
@@ -85,7 +85,7 @@ export default {
     MasonryGrid,
     MasonryGridItem,
   },
-  // Wolle mixins: [postActions],
+  mixins: [postListActions],
   data() {
     const { hashtag = null } = this.$route.query
     return {
@@ -162,42 +162,46 @@ export default {
         updateQuery: UpdateQuery(this, { $state, pageKey: 'Post' }),
       })
     },
-    deletePost(deletedPost) {
-      this.posts = this.posts.filter((post) => {
-        return post.id !== deletedPost.id
-      })
-    },
+    // Wolle deletePost(deletedPost) {
+    //   this.posts = this.posts.filter((post) => {
+    //     return post.id !== deletedPost.id
+    //   })
+    // },
     resetPostList() {
       this.offset = 0
       this.posts = []
       this.hasMore = true
     },
-    pinPost(post) {
-      this.$apollo
-        .mutate({
-          mutation: PostMutations().pinPost,
-          variables: { id: post.id },
-        })
-        .then(() => {
-          this.$toast.success(this.$t('post.menu.pinnedSuccessfully'))
-          this.resetPostList()
-          this.$apollo.queries.Post.refetch()
-        })
-        .catch((error) => this.$toast.error(error.message))
+    refetchPostList() {
+      this.resetPostList()
+      this.$apollo.queries.Post.refetch()
     },
-    unpinPost(post) {
-      this.$apollo
-        .mutate({
-          mutation: PostMutations().unpinPost,
-          variables: { id: post.id },
-        })
-        .then(() => {
-          this.$toast.success(this.$t('post.menu.unpinnedSuccessfully'))
-          this.resetPostList()
-          this.$apollo.queries.Post.refetch()
-        })
-        .catch((error) => this.$toast.error(error.message))
-    },
+    // Wolle pinPost(post) {
+    //   this.$apollo
+    //     .mutate({
+    //       mutation: PostMutations().pinPost,
+    //       variables: { id: post.id },
+    //     })
+    //     .then(() => {
+    //       this.$toast.success(this.$t('post.menu.pinnedSuccessfully'))
+    //       this.resetPostList()
+    //       this.$apollo.queries.Post.refetch()
+    //     })
+    //     .catch((error) => this.$toast.error(error.message))
+    // },
+    // unpinPost(post) {
+    //   this.$apollo
+    //     .mutate({
+    //       mutation: PostMutations().unpinPost,
+    //       variables: { id: post.id },
+    //     })
+    //     .then(() => {
+    //       this.$toast.success(this.$t('post.menu.unpinnedSuccessfully'))
+    //       this.resetPostList()
+    //       this.$apollo.queries.Post.refetch()
+    //     })
+    //     .catch((error) => this.$toast.error(error.message))
+    // },
   },
   apollo: {
     Post: {

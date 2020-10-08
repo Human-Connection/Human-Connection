@@ -1,5 +1,5 @@
 import gql from 'graphql-tag'
-import { userFragment, postFragment } from './Fragments'
+import { userFragment, postFragment, tagsCategoriesAndPinnedFragment } from './Fragments'
 
 export const searchQuery = gql`
   ${userFragment}
@@ -29,6 +29,7 @@ export const searchQuery = gql`
 export const searchPosts = gql`
   ${userFragment}
   ${postFragment}
+  ${tagsCategoriesAndPinnedFragment}
 
   query($query: String!, $firstPosts: Int, $postsOffset: Int) {
     searchPosts(query: $query, firstPosts: $firstPosts, postsOffset: $postsOffset) {
@@ -36,6 +37,7 @@ export const searchPosts = gql`
       posts {
         __typename
         ...post
+        ...tagsCategoriesAndPinned
         commentsCount
         shoutedCount
         author {

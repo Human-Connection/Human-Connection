@@ -1,27 +1,13 @@
 <template>
   <div id="search-results" class="search-results">
-    <!-- Wolle <div>
-      <ds-text class="total-search-results">
-        {{ $t('search.for') }} "
-        <strong>{{ search }}</strong>
-        "
-        <br />
-        <strong>{{ searchCount }}</strong>
-        {{ $t('search.results', {}, searchCount) }}
-      </ds-text>
-    </div> -->
-
     <ds-flex-item :width="{ base: '100%', sm: 3, md: 5, lg: 3 }">
       <masonry-grid>
-        <!-- search text and result count -->
+        <!-- search text -->
         <ds-grid-item class="grid-total-search-results" :row-span="1" column-span="fullWidth">
           <ds-space margin-bottom="xxx-small" margin-top="xxx-small" centered>
             <ds-text class="total-search-results">
               {{ $t('search.for') }}
-              <strong>{{ '"' + search + '"' }}</strong>
-              <!-- Wolle "<strong>{{ search }}</strong>":
-              <strong>{{ searchCount }}</strong>
-              {{ $t('search.results', {}, searchCount) }} -->
+              <strong>{{ '"' + (search || '') + '"' }}</strong>
             </ds-text>
           </ds-space>
         </ds-grid-item>
@@ -56,16 +42,12 @@
               :key="post.id"
               :imageAspectRatio="post.image && post.image.aspectRatio"
             >
-              <!-- Wolle implement <post-teaser
-                :post="post"
-                :width="{ base: '100%', md: '100%', xl: '50%' }"
-                @removePostFromList="removePostFromList"
-                @pinPost="pinPost"
-                @unpinPost="unpinPost"
-              /> -->
               <post-teaser
                 :post="post"
                 :width="{ base: '100%', md: '100%', xl: '50%' }"
+                @removePostFromList="removePostFromList(post, posts)"
+                @pinPost="pinPost(post, refetchPostList)"
+                @unpinPost="unpinPost(post, refetchPostList)"
               />
             </masonry-grid-item>
           </template>
@@ -190,6 +172,7 @@
 </template>
 
 <script>
+import postListActions from '~/mixins/postListActions'
 import { searchPosts, searchUsers, searchHashtags } from '~/graphql/Search.js'
 import HcEmpty from '~/components/Empty/Empty'
 import MasonryGrid from '~/components/MasonryGrid/MasonryGrid'
@@ -213,6 +196,7 @@ export default {
     UserTeaser,
     HcHashtag,
   },
+  mixins: [postListActions],
   props: {
     search: {
       type: String,
@@ -348,6 +332,9 @@ export default {
           this.hashtagsOffset += this.pageSize
           break
       }
+    },
+    refetchPostList() {
+      this.$apollo.queries.searchPosts.refetch()
     },
   },
   apollo: {

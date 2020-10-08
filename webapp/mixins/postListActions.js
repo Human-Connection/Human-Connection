@@ -1,11 +1,15 @@
+import PostMutations from '~/graphql/PostMutations'
+
 export default {
   methods: {
-    deletePost(deletedPost) {
-      this.posts = this.posts.filter((post) => {
+    removePostFromList(deletedPost, posts) {
+      // Wolle this.posts = this.posts.filter((post) => {
+      posts = posts.filter((post) => {
         return post.id !== deletedPost.id
       })
+      return posts
     },
-    pinPost(post) {
+    pinPost(post, refetchPostList = () => {}) {
       this.$apollo
         .mutate({
           mutation: PostMutations().pinPost,
@@ -15,12 +19,13 @@ export default {
         })
         .then(() => {
           this.$toast.success(this.$t('post.menu.pinnedSuccessfully'))
-          this.resetPostList()
-          this.$apollo.queries.Post.refetch()
+          // Wolle this.resetPostList()
+          refetchPostList()
+          // Wolle this.$apollo.queries.Post.refetch()
         })
         .catch((error) => this.$toast.error(error.message))
     },
-    unpinPost(post) {
+    unpinPost(post, refetchPostList = () => {}) {
       this.$apollo
         .mutate({
           mutation: PostMutations().unpinPost,
@@ -30,8 +35,9 @@ export default {
         })
         .then(() => {
           this.$toast.success(this.$t('post.menu.unpinnedSuccessfully'))
-          this.resetPostList()
-          this.$apollo.queries.Post.refetch()
+          // Wolle this.resetPostList()
+          refetchPostList()
+          // Wolle this.$apollo.queries.Post.refetch()
         })
         .catch((error) => this.$toast.error(error.message))
     },
