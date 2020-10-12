@@ -2,6 +2,7 @@ type Service {
   id: ID!
   name: String
   description: String
+  isGeneral: Boolean
   organization: Organization @relation(name: "BELONGS", direction: "OUT")
   serviceCategory: ServiceCategory @relation(name: "CATEGORY", direction: "OUT")
   createdAt: String
@@ -15,5 +16,6 @@ type Query {
     description: String
     createdAt: String
     updatedAt: String
+    isGeneral: Boolean
   ): [Service]
 }

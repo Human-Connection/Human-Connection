@@ -4,6 +4,7 @@ export default {
   id: { type: 'string', primary: true, default: uuid },
   name: { type: 'string', required: true, default: false },
   description: { type: 'string', required: false, default: 'Not Assigned' },
+  isGeneral: { type: 'boolean', default: false },
   createdAt: { type: 'string', isoDate: true, default: () => new Date().toISOString() },
   updatedAt: {
     type: 'string',
