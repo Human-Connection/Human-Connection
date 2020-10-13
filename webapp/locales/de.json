@@ -650,6 +650,12 @@
     "download": {
       "name": "Daten herunterladen"
     },
+    "upload": {
+      "isEmpty": "Input ist leer",
+      "name": "Beiträge importieren",
+      "placeholder": "Hier den exportierten Json einfügen",
+      "submit": "Importieren"
+    },
     "email": {
       "change-successful": "Deine E-Mail-Adresse wurde erfolgreich geändert.",
       "labelEmail": "E-Mail-Adresse ändern",
