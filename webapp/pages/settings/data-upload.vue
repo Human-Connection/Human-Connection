@@ -76,7 +76,8 @@ export default {
         key: this.messageCounter++,
       })
       posts.forEach(async (post) => {
-        const { title, content, categoryIds, language } = post
+        const { title, content, language } = post
+        const categoryIds = post.categories.map((cat) => cat.id)
         this.$apollo
           .mutate({
             mutation: PostMutations().CreatePost,
