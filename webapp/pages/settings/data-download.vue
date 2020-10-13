@@ -4,9 +4,13 @@
     <base-button @click="onClick(jsonData)" icon="download" secondary filled>
       {{ $t('settings.download.json') }}
     </base-button>
-    <base-button @click="onClick(xmlData)" icon="download" secondary filled>
-      {{ $t('settings.download.xml') }}
-    </base-button>
+    <ds-space margin="large" />
+    <ds-text>{{ $t('settings.download.description') }}</ds-text>
+    <ds-space margin="large" />
+    <base-card v-for="image in imageList" :key="image.key">
+      <a :href="image.url">{{ image.title }}</a>
+      <ds-space margin="xxx-small" />
+    </base-card>
   </base-card>
 </template>
 
@@ -14,7 +18,7 @@
 import { mapGetters } from 'vuex'
 import { userDataQuery } from '~/graphql/User'
 import BaseButton from '~/components/_new/generic/BaseButton/BaseButton.vue'
-import { json2xml } from 'xml-js'
+import isEmpty from 'lodash/isEmpty'
 
 export default {
   components: {
@@ -32,14 +36,19 @@ export default {
     jsonData() {
       return { data: JSON.stringify(this.userData, null, 2), type: 'json' }
     },
-    xmlData() {
-      return {
-        data: json2xml(
-          { userData: this.userData },
-          { compact: true, ignoreComment: true, spaces: 2 },
-        ),
-        type: 'xml',
-      }
+    imageList() {
+      if (isEmpty(this.userData)) return null
+      const userId = this.userData.user.id
+      if (isEmpty(userId)) return null
+      return this.userData.posts
+        .filter((post) => post.author.id === userId)
+        .map((post) => {
+          const obj = {}
+          obj.key = post.id
+          obj.url = post.image.url
+          obj.title = post.title
+          return obj
+        })
     },
   },
   methods: {

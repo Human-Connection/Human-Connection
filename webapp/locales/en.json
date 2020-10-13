@@ -648,9 +648,9 @@
       "success": "Account successfully deleted!"
     },
     "download": {
+      "description": "Click on the button above to download the content of your posts and comments. To download the images of your posts, you have to click on the corresponding link below.",
       "json": "as JSON",
-      "name": "Download Data",
-      "xml": "as XML"
+      "name": "Download Data"
     },
     "email": {
       "change-successful": "Your e-mail address has been changed successfully.",

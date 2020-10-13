@@ -648,9 +648,9 @@
       "success": "Konto erfolgreich gelöscht!"
     },
     "download": {
+      "description": "Klicke auf den Knopf oben, um den Inhalt deiner Posts und Kommentare herunterzuladen. Um die Bilder der posts herunterzuladen, musst du auf den jeweiligen Link unten klicken.",
       "json": "als JSON",
-      "name": "Daten herunterladen",
-      "xml": "als XML"
+      "name": "Daten herunterladen"
     },
     "email": {
       "change-successful": "Deine E-Mail-Adresse wurde erfolgreich geändert.",
