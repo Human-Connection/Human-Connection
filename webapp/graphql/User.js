@@ -305,6 +305,10 @@ export const userDataQuery = (i18n) => {
         }
         posts {
           ...post
+          categories {
+            id
+            name
+          }
           comments {
             author {
               slug
