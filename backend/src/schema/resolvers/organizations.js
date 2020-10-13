@@ -27,6 +27,24 @@ export default {
         session.close()
       }
     },
+    provideAtentionCategory: async (_parent, params, context, _resolveInfo) => {
+      const session = context.driver.session()
+      const writeTxResultPromise = session.writeTransaction(async (transaction) => {
+        const [org] = true
+        return true
+      })
+      try {
+        const user = await writeTxResultPromise
+        return user
+      } catch (error) {
+        throw new UserInputError(error.message)
+      } finally {
+        session.close()
+      }
+    },
+    provideAtentionService: async (_parent, params, context, _resolveInfo) => {
+      return true
+    },
   },
   Organization: {
     ...Resolver('Organization', {

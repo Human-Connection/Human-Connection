@@ -122,6 +122,8 @@ export default shield(
       CreateUser: allow,
       UpdateUser: onlyYourself,
       UpdateOrganization: allow,
+      provideAtentionCategory: allow,
+      provideAtentionService: allow,
       CreatePost: isAuthenticated,
       CreateSuggestedResource: allow,
       UpdatePost: isAuthor,

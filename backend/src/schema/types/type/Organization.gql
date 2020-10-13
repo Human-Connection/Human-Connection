@@ -42,4 +42,14 @@ type Mutation {
   description: String
   servicesDesc: String
   ): Organization
+  provideAtentionCategory (
+    orgID: ID!
+    userID: String
+    categoryID: String
+  ): Boolean
+  provideAtentionService (
+    orgID: ID!
+    userID: String
+    ServiceID: String
+  ): Boolean
 }
