@@ -650,6 +650,12 @@
     "download": {
       "name": "Download Data"
     },
+    "upload": {
+      "isEmpty": "Input is empty",
+      "name": "Import posts",
+      "placeholder": "Paste the exported Json here",
+      "submit": "Import"
+    },
     "email": {
       "change-successful": "Your e-mail address has been changed successfully.",
       "labelEmail": "Change your e-mail address",
