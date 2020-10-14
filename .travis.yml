@@ -42,10 +42,10 @@ script:
   - docker-compose exec webapp yarn run lint
   - docker-compose exec webapp yarn run test --ci --verbose=false --coverage
   # Fullstack
+  - docker-compose down
+  - docker-compose -f docker-compose.yml up -d
+  - wait-on http://localhost:7474
   # disable for last deploy, because of flakiness!
-  # - docker-compose down
-  # - docker-compose -f docker-compose.yml up -d
-  # - wait-on http://localhost:7474
   # - yarn run cypress:run --record
   # - yarn run cucumber
   # Coverage
