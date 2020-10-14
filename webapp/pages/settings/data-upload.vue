@@ -8,7 +8,13 @@
       rows="3"
       :placeholder="$t('settings.upload.placeholder')"
     />
-    <base-button secondary filled icon="upload" @click="importData" :disabled="processing || dataImport === ''">
+    <base-button
+      secondary
+      filled
+      icon="upload"
+      @click="importData"
+      :disabled="processing || dataImport === ''"
+    >
       {{ $t('settings.upload.submit') }}
     </base-button>
     <ds-space v-if="messagesPresent" margin="large" />
@@ -39,6 +45,11 @@ export default {
     },
   },
   methods: {
+    handleError(err) {
+      this.$toast.error(err.message)
+      this.dataImport = ''
+      this.processing = false
+    },
     importData(data) {
       this.messages = []
       this.processing = true
@@ -51,24 +62,21 @@ export default {
       try {
         input = JSON.parse(this.dataImport)
       } catch (err) {
-        this.$toast.error(err.message)
-        this.processing = false
+        this.handleError(err)
         return
       }
       this.messages.push({ text: 'input parsed successfully', key: this.messageCounter++ })
       try {
         userId = input.user.id
       } catch (err) {
-        this.$toast.error(err.message)
-        this.processing = false
+        this.handleError(err)
         return
       }
       this.messages.push({ text: 'user ID is ' + userId, key: this.messageCounter++ })
       try {
         posts = input.posts.filter((post) => post.author.id === userId)
       } catch (err) {
-        this.$toast.error(err.message)
-        this.processing = false
+        this.handleError(err)
         return
       }
       this.messages.push({
@@ -96,6 +104,7 @@ export default {
             this.$toast.error(err.message)
           })
       })
+      this.dataImport = ''
       this.processing = false
     },
   },
