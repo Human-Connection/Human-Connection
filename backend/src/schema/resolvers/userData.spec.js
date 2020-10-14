@@ -35,7 +35,7 @@ beforeAll(async () => {
 })
 
 afterAll(async () => {
-  //  await cleanDatabase()
+  await cleanDatabase()
 })
 
 const userDataQuery = gql`

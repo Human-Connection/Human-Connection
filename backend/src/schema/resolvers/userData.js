@@ -3,8 +3,8 @@ export default {
     userData: async (object, args, context, resolveInfo) => {
       const id = context.user.id
       const cypher = `
-        MATCH (u:User { id: $id })
-        WITH u AS user
+        MATCH (user:User { id: $id })
+        WITH user
         OPTIONAL MATCH (p:Post)
         WHERE (p)<-[:COMMENTS]-(:Comment)<-[:WROTE]-(user)
         OR (user)-[:WROTE]->(p)
