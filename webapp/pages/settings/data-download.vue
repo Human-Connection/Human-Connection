@@ -48,12 +48,12 @@ export default {
       document.body.appendChild(fileLink)
       fileLink.click()
     },
-    downloadImage({ url, title }) {
+    downloadImage({ url }) {
       this.$axios.get(url, { responseType: 'blob' }).then((response) => {
         const blob = new Blob([response.data], { type: 'application/pdf' })
         const link = document.createElement('a')
         link.href = URL.createObjectURL(blob)
-        link.download = title
+        link.download = url
         link.click()
         URL.revokeObjectURL(link.href)
       })
