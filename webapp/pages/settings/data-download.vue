@@ -1,14 +1,14 @@
 <template>
   <base-card>
     <h2 class="title">{{ $t('settings.download.name') }}</h2>
-    <base-button @click="onClick(jsonData)" icon="download" secondary filled>
+    <base-button @click="onClick(jsonData)" icon="download" secondary filled :disabled="loading">
       {{ $t('settings.download.json') }}
     </base-button>
     <ds-space margin="large" />
     <ds-text>{{ $t('settings.download.description') }}</ds-text>
     <ds-space margin="large" />
     <base-card v-for="image in imageList" :key="image.key">
-      <a :href="image.url">{{ image.title }}</a>
+      <a :href="image.url" @click.prevent="downloadImage(image)">{{ image.title }}</a>
       <ds-space margin="xxx-small" />
     </base-card>
   </base-card>
@@ -27,6 +27,8 @@ export default {
   data() {
     return {
       userData: {},
+      loading: true,
+      imageList: [],
     }
   },
   computed: {
@@ -35,20 +37,6 @@ export default {
     }),
     jsonData() {
       return { data: JSON.stringify(this.userData, null, 2), type: 'json' }
-    },
-    imageList() {
-      if (isEmpty(this.userData)) return null
-      const userId = this.userData.user.id
-      if (isEmpty(userId)) return null
-      return this.userData.posts
-        .filter((post) => post.author.id === userId)
-        .map((post) => {
-          const obj = {}
-          obj.key = post.id
-          obj.url = post.image.url
-          obj.title = post.title
-          return obj
-        })
     },
   },
   methods: {
@@ -59,6 +47,16 @@ export default {
       fileLink.setAttribute('download', 'userData.' + method.type)
       document.body.appendChild(fileLink)
       fileLink.click()
+    },
+    downloadImage({ url, title }) {
+      this.$axios.get(url, { responseType: 'blob' }).then((response) => {
+        const blob = new Blob([response.data], { type: 'application/pdf' })
+        const link = document.createElement('a')
+        link.href = URL.createObjectURL(blob)
+        link.download = title
+        link.click()
+        URL.revokeObjectURL(link.href)
+      })
     },
   },
   apollo: {
@@ -71,6 +69,19 @@ export default {
       },
       update({ userData }) {
         this.userData = userData
+        this.loading = false
+        if (isEmpty(this.userData)) return null
+        const userId = this.userData.user.id
+        if (isEmpty(userId)) return null
+        this.imageList = this.userData.posts
+          .filter((post) => post.author.id === userId && post.image)
+          .map((post) => {
+            const obj = {}
+            obj.key = post.id
+            obj.url = post.image.url
+            obj.title = post.title
+            return obj
+          })
       },
     },
   },
