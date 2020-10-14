@@ -50,10 +50,10 @@ export default {
     },
     downloadImage({ url }) {
       this.$axios.get(url, { responseType: 'blob' }).then((response) => {
-        const blob = new Blob([response.data], { type: 'application/pdf' })
+        const blob = new Blob([response.data])
         const link = document.createElement('a')
         link.href = URL.createObjectURL(blob)
-        link.download = url
+        link.download = url.replace(/^.+\//g, '')
         link.click()
         URL.revokeObjectURL(link.href)
       })

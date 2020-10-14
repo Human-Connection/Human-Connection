@@ -42,6 +42,7 @@ script:
   - docker-compose exec webapp yarn run lint
   - docker-compose exec webapp yarn run test --ci --verbose=false --coverage
   # Fullstack
+  # disable for last deploy, because of flakiness!
   # - docker-compose down
   # - docker-compose -f docker-compose.yml up -d
   # - wait-on http://localhost:7474
