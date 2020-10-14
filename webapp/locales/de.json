@@ -648,6 +648,8 @@
       "success": "Konto erfolgreich gelöscht!"
     },
     "download": {
+      "description": "Klicke auf den Knopf oben, um den Inhalt deiner Beiträge und Kommentare herunterzuladen. Um die Bilder der Beiträge herunterzuladen, musst du auf den jeweiligen Link unten klicken.",
+      "json": "als JSON",
       "name": "Daten herunterladen"
     },
     "email": {
