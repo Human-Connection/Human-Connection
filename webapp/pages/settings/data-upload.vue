@@ -8,7 +8,7 @@
       rows="3"
       :placeholder="$t('settings.upload.placeholder')"
     />
-    <base-button secondary filled icon="upload" @click="importData" :disabled="processing">
+    <base-button secondary filled icon="upload" @click="importData" :disabled="processing || dataImport === ''">
       {{ $t('settings.upload.submit') }}
     </base-button>
     <ds-space v-if="messagesPresent" margin="large" />
