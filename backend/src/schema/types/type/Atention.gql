@@ -62,7 +62,7 @@ type Mutation {
   provideAtentionService(
     orgID: ID!
     userID: ID!
-    ServiceID: ID!
+    serviceID: ID!
   ): Atention
   provideAtentionCategory(
     orgID: ID!

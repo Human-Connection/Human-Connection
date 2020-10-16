@@ -104,6 +104,7 @@ export default shield(
       profilePagePosts: allow,
       Comment: allow,
       Atention: allow,
+      totalAtentions: allow,
       User: or(noEmailFilter, isAdmin),
       isLoggedIn: allow,
       Badge: allow,

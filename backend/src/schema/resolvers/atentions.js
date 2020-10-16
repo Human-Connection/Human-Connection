@@ -5,7 +5,7 @@ export default {
   Mutation: {
     provideAtentionService: async (object, params, context, resolveInfo) => {
       const { orgID } = params
-      const { ServiceID } = params
+      const { serviceID } = params
       const { userID } = params
       const { driver } = context
       // Adding relationship from atention to organization by passing in the orgId,
@@ -13,7 +13,7 @@ export default {
       // because we use relationships for this. So, we are deleting it from params
       // before atention creation.
       delete params.orgID
-      delete params.ServiceID
+      delete params.serviceID
       delete params.userID
       params.id = uuid()
 
@@ -23,7 +23,7 @@ export default {
         const createAtentionTransactionResponse = await transaction.run(
           ` 
             MATCH (org:Organization {id: $orgID})
-            MATCH (ser:Service {id: $ServiceID})
+            MATCH (ser:Service {id: $serviceID})
             MATCH (recipient:User {id: $userID})
             WITH org, recipient, ser
             CREATE (atention:Atention {params})
@@ -33,7 +33,7 @@ export default {
             MERGE (ser)<-[:ASERVICE]-(atention)
             RETURN atention
           `,
-          { userID: userID, orgID, ServiceID, params },
+          { userID: userID, orgID, serviceID, params },
         )
         return createAtentionTransactionResponse.records.map(
           (record) => record.get('atention').properties,
