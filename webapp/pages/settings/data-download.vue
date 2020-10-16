@@ -8,7 +8,7 @@
     <ds-text>{{ $t('settings.download.description') }}</ds-text>
     <ds-space margin="large" />
     <base-card v-for="image in imageList" :key="image.key">
-      <a :href="image.url" @click.prevent="downloadImage(image)">{{ image.title }}</a>
+      <a :href="image.url" target="_blank" rel="noopener noreferrer">{{ image.title }}</a>
       <ds-space margin="xxx-small" />
     </base-card>
   </base-card>
@@ -48,16 +48,6 @@ export default {
       document.body.appendChild(fileLink)
       fileLink.click()
     },
-    downloadImage({ url }) {
-      this.$axios.get(url, { responseType: 'blob' }).then((response) => {
-        const blob = new Blob([response.data])
-        const link = document.createElement('a')
-        link.href = URL.createObjectURL(blob)
-        link.download = url.replace(/^.+\//g, '')
-        link.click()
-        URL.revokeObjectURL(link.href)
-      })
-    },
   },
   apollo: {
     queryUserData: {
@@ -83,6 +73,7 @@ export default {
             return obj
           })
       },
+      fetchPolicy: 'cache-and-network',
     },
   },
 }
