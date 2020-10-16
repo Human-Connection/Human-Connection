@@ -23,7 +23,7 @@ export default {
         const createAtentionTransactionResponse = await transaction.run(
           ` 
             MATCH (org:Organization {id: $orgID})
-            MATCH (ser:Service {id: $serviceID})
+            MATCH (ser:Service {id: $ServiceID})
             MATCH (recipient:User {id: $userID})
             WITH org, recipient, ser
             CREATE (atention:Atention {params})
