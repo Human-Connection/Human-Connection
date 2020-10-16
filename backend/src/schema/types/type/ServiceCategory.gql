@@ -30,4 +30,5 @@ type Query {
     updatedAt: String
     orderBy: [_SCategoryOrdering]
   ): [ServiceCategory]
+  totalAtentionCategory(id: ID, orgID: ID): Int @cypher(statement: "MATCH (this {id: id})<-[r:ACATEGORY]-(a:Atention)-[o:ATENTIONS]->(org:Organization {id: orgID}) RETURN COUNT (a)")
 }
