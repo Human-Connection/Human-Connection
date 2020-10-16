@@ -103,6 +103,7 @@ export default shield(
       Post: allow,
       profilePagePosts: allow,
       Comment: allow,
+      Atention: allow,
       User: or(noEmailFilter, isAdmin),
       isLoggedIn: allow,
       Badge: allow,

@@ -9,6 +9,7 @@ export default {
   SocialMedia: require('./SocialMedia.js').default,
   Post: require('./Post.js').default,
   Comment: require('./Comment.js').default,
+  Atention: require('./Atention.js').default,
   Category: require('./Category.js').default,
   Organization: require('./Organization.js').default,
   ServiceCategory: require('./ServiceCategory.js').default,

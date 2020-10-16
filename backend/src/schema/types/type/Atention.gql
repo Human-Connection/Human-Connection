@@ -1,0 +1,72 @@
+enum _AtentionOrdering {
+  id_asc
+  id_desc
+  content_asc
+  content_desc
+  createdAt_asc
+  createdAt_desc
+  updatedAt_asc
+  updatedAt_desc
+}
+
+input _AtentionFilter {
+  AND: [_AtentionFilter!]
+  OR: [_AtentionFilter!]
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  author: _UserFilter
+  author_not: _UserFilter
+  author_in: [_UserFilter!]
+  author_not_in: [_UserFilter!]
+  content: String
+  content_not: String
+  content_in: [String!]
+  content_not_in: [String!]
+  content_contains: String
+  content_not_contains: String
+  content_starts_with: String
+  content_not_starts_with: String
+  content_ends_with: String
+  content_not_ends_with: String
+  post: _PostFilter
+  post_not: _PostFilter
+  post_in: [_PostFilter!]
+  post_not_in: [_PostFilter!]
+}
+
+type Atention {
+  id: ID!
+  recipient: User @relation(name: "RECEIVED", direction: "IN")
+  organization: Organization @relation(name: "ATENTIONS", direction: "OUT")
+  service: Service @relation(name: "ASERVICE", direction: "OUT")
+  scategory: ServiceCategory @relation(name: "ACATEGORY", direction: "OUT")
+  createdAt: String
+  updatedAt: String
+}
+
+type Query {
+  Atention(
+    id: ID
+    createdAt: String
+    updatedAt: String
+    first: Int
+    offset: Int
+    orderBy: [_AtentionOrdering]
+    filter: _AtentionFilter
+  ): [Atention]
+}
+
+type Mutation {
+  provideAtentionService(
+    orgID: ID!
+    userID: ID!
+    ServiceID: ID!
+  ): Atention
+  provideAtentionCategory(
+    orgID: ID!
+    userID: ID!
+    categoryID: ID!
+  ): Atention
+}
