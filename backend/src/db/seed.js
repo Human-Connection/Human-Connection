@@ -150,8 +150,8 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         'user',
         {
           id: 'u1',
-          name: 'Peter Lustig',
-          slug: 'peter-lustig',
+          name: 'Hector Nathan',
+          slug: 'h-nathan',
           role: 'admin',
         },
         {
@@ -366,6 +366,149 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
         slug: 'global-peace-nonviolence',
         icon: 'angellist',
       }),
+    ])
+
+    const [pl1, pl2] = await Promise.all([
+      Factory.build('plan', {
+        id: 'pl1',
+        name: 'Default Entry Plan',
+      }),
+      Factory.build('plan', {
+        id: 'pl2',
+        name: 'Standard Plan',
+      }),
+      Factory.build('plan', {
+        id: 'pl3',
+        name: 'Advanced Plan',
+      }),
+    ])
+
+    const [org1, org2] = await Promise.all([
+      Factory.build(
+        'organization',
+        {
+          id: 'org1',
+          name: 'Organization 1',
+          description: 'This is a test description',
+          urlIcon: 'https://drive.google.com/file/d/1CW',
+          ranking: 4,
+          hourHand: '5:00 am a 5:00 pm',
+        },
+        {
+          planId: 'pl1',
+        },
+      ),
+      Factory.build(
+        'organization',
+        {
+          id: 'org2',
+          name: 'Organization 2',
+          description: 'This is a test description',
+          urlIcon: 'https://drive.google.com/file/d/1CW',
+          ranking: 4,
+          hourHand: '5:00 am a 5:00 pm',
+        },
+        {
+          planId: 'pl2',
+        },
+      ),
+    ])
+
+    const [sc1, sc2, sc3, sc4] = await Promise.all([
+      Factory.build('serviceCategory', {
+        id: 'sc1',
+        name: 'Comida',
+        icon: 'smile',
+      }),
+      Factory.build('serviceCategory', {
+        id: 'sc2',
+        name: 'Salud',
+        icon: 'heart-o',
+      }),
+      Factory.build('serviceCategory', {
+        id: 'sc3',
+        name: 'Transporte',
+        icon: 'smile',
+      }),
+      Factory.build('serviceCategory', {
+        id: 'sc4',
+        name: 'Educacion',
+        icon: 'heart-o',
+      }),
+      Factory.build('serviceCategory', {
+        id: 'sc5',
+        name: 'Not Used Test',
+        icon: 'heart-o',
+      }),
+    ])
+
+    const [s1, s2, s3, s4, s5, s6] = await Promise.all([
+      Factory.build(
+        'service',
+        {
+          id: 's1',
+          name: 'Service 1',
+        },
+        {
+          serviceCategoryId: 'sc1',
+          organizationId: 'org1',
+        },
+      ),
+      Factory.build(
+        'service',
+        {
+          id: 's2',
+          name: 'Service 2',
+        },
+        {
+          serviceCategoryId: 'sc1',
+          organizationId: 'org1',
+        },
+      ),
+      Factory.build(
+        'service',
+        {
+          id: 's3',
+          name: 'Service 3',
+        },
+        {
+          serviceCategoryId: 'sc2',
+          organizationId: 'org1',
+        },
+      ),
+      Factory.build(
+        'service',
+        {
+          id: 's4',
+          name: 'Service 4',
+        },
+        {
+          serviceCategoryId: 'sc1',
+          organizationId: 'org2',
+        },
+      ),
+      Factory.build(
+        'service',
+        {
+          id: 's5',
+          name: 'Service 5',
+        },
+        {
+          serviceCategoryId: 'sc3',
+          organizationId: 'org2',
+        },
+      ),
+      Factory.build(
+        'service',
+        {
+          id: 's6',
+          name: 'Service 6',
+        },
+        {
+          serviceCategoryId: 'sc4',
+          organizationId: 'org1',
+        },
+      ),
     ])
 
     const [environment, nature, democracy, freedom] = await Promise.all([
@@ -795,6 +938,33 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       huey.relateTo(p2, 'emoted', { emotion: 'funny' }),
       dewey.relateTo(p1, 'emoted', { emotion: 'surprised' }),
       louie.relateTo(p0, 'emoted', { emotion: 'cry' }),
+      org1.relateTo(pl2, 'plan'),
+      org2.relateTo(pl1, 'plan'),
+      org1.relateTo(s1, 'services'),
+      org1.relateTo(s2, 'services'),
+      org1.relateTo(s3, 'services'),
+      org1.relateTo(s6, 'services'),
+      org1.relateTo(Hamburg, 'isIn'),
+      org2.relateTo(Hamburg, 'isIn'),
+      org2.relateTo(s4, 'services'),
+      org2.relateTo(s5, 'services'),
+      s1.relateTo(org1, 'organization'),
+      s2.relateTo(org1, 'organization'),
+      s3.relateTo(org1, 'organization'),
+      s4.relateTo(org2, 'organization'),
+      s5.relateTo(org2, 'organization'),
+      s6.relateTo(org1, 'organization'),
+      sc1.relateTo(s1, 'services'),
+      sc1.relateTo(s2, 'services'),
+      sc1.relateTo(s4, 'services'),
+      sc2.relateTo(s3, 'services'),
+      sc3.relateTo(s5, 'services'),
+      sc4.relateTo(s6, 'services'),
+      org1.relateTo(sc1, 'serviceCategories'),
+      org2.relateTo(sc1, 'serviceCategories'),
+      org1.relateTo(sc2, 'serviceCategories'),
+      org2.relateTo(sc3, 'serviceCategories'),
+      org1.relateTo(sc4, 'serviceCategories'),
     ])
 
     await Promise.all([

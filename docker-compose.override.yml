@@ -25,9 +25,11 @@ services:
       - ./backend:/nitro-backend
     command: yarn run dev
     environment:
-      - SMTP_HOST=mailserver
-      - SMTP_PORT=25
+      - SMTP_HOST=smtp.gmail.com
+      - SMTP_PORT=465
       - SMTP_IGNORE_TLS=true
+      - SMTP_USERNAME=redsol.international@gmail.com
+      - SMTP_PASSWORD=Justicia5.
       - "DEBUG=${DEBUG}"
       - PUBLIC_REGISTRATION=false
   maintenance:

@@ -1,0 +1,15 @@
+type Plan {
+  id: ID!
+  name: String
+  createdAt: String
+  updatedAt: String
+}
+
+type Query {
+  Plan(
+    id: ID
+    name: String
+    createdAt: String
+    updatedAt: String
+  ): [Plan]
+}

@@ -1,0 +1,34 @@
+type SuggestedResource {
+  id: ID!
+  orgName: String
+  webPage: String
+  location: String
+  phoneNumber: String
+  description: String
+  createdAt: String
+  updatedAt: String
+}
+
+type Query {
+  SuggestedResource(
+    id: ID
+    orgName: String
+    webPage: String
+    location: String
+    phoneNumber: String
+    description: String
+    createdAt: String
+    updatedAt: String
+  ): [SuggestedResource]
+}
+
+type Mutation {
+  CreateSuggestedResource(
+    id: ID
+    orgName: String
+    webPage: String
+    location: String
+    phoneNumber: String
+    description: String
+  ): SuggestedResource
+}

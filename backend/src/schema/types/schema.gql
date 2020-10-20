@@ -2,13 +2,17 @@ type Mutation {
   # Get a JWT Token for the given Email and password
   login(email: String!, password: String!): String!
   changePassword(oldPassword: String!, newPassword: String!): String!
+  changeUserPassword(newPassword: String!, token: String!): String!
   requestPasswordReset(email: String!): Boolean!
+  passwordReset(email: String!): Boolean!
   resetPassword(email: String!, nonce: String!, newPassword: String!): Boolean!
   # Shout the given Type and ID
   shout(id: ID!, type: ShoutTypeEnum): Boolean!
   # Unshout the given Type and ID
   unshout(id: ID!, type: ShoutTypeEnum): Boolean!
   followUser(id: ID!): User
+  followOrg(id: ID!): Organization
+  showInterest(id: ID!): Service
   unfollowUser(id: ID!): User
 }
 

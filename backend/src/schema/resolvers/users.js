@@ -297,6 +297,8 @@ export default {
       hasMany: {
         followedBy: '<-[:FOLLOWS]-(related:User)',
         following: '-[:FOLLOWS]->(related:User)',
+        orgFollowing: '-[:FOLLOWS]->(related:Organization)',
+        serviceInterested: '-[:INTERESTED]->(related:Service)',
         friends: '-[:FRIENDS]-(related:User)',
         socialMedia: '<-[:OWNED_BY]-(related:SocialMedia)',
         contributions: '-[:WROTE]->(related:Post)',

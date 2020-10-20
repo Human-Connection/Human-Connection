@@ -4,7 +4,9 @@ import { htmlToText } from 'nodemailer-html-to-text'
 import {
   signupTemplate,
   resetPasswordTemplate,
+  sendPasswordTemplate,
   wrongAccountTemplate,
+  wrongEmailTemplate,
   emailVerificationTemplate,
 } from './templateBuilder'
 
@@ -23,7 +25,7 @@ if (!hasEmailConfig) {
       host: CONFIG.SMTP_HOST,
       port: CONFIG.SMTP_PORT,
       ignoreTLS: CONFIG.SMTP_IGNORE_TLS === 'true',
-      secure: false, // true for 465, false for other ports
+      secure: true, // true for 465, false for other ports
       auth: hasAuthData && {
         user: CONFIG.SMTP_USERNAME,
         pass: CONFIG.SMTP_PASSWORD,
@@ -58,6 +60,14 @@ const sendPasswordResetMail = async (resolve, root, args, context, resolveInfo) 
   return true
 }
 
+const sendPasswordToMail = async (resolve, root, args, context, resolveInfo) => {
+  const { email } = args
+  const { email: userFound, nonce, name } = await resolve(root, args, context, resolveInfo)
+  const template = userFound ? sendPasswordTemplate : wrongEmailTemplate
+  await sendMail(template({ email, nonce, name }))
+  return true
+}
+
 const sendEmailVerificationMail = async (resolve, root, args, context, resolveInfo) => {
   const response = await resolve(root, args, context, resolveInfo)
   const { email, nonce, name } = response
@@ -70,6 +80,7 @@ export default {
   Mutation: {
     AddEmailAddress: sendEmailVerificationMail,
     requestPasswordReset: sendPasswordResetMail,
+    passwordReset: sendPasswordToMail,
     Signup: sendSignupMail,
     SignupByInvitation: sendSignupMail,
   },

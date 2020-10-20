@@ -4,6 +4,7 @@ export default {
   id: { type: 'string', primary: true, default: uuid }, // TODO: should be type: 'uuid' but simplified for our tests
   actorId: { type: 'string', allow: [null] },
   name: { type: 'string', disallow: [null], min: 3 },
+  lastName: { type: 'string', disallow: [null], min: 3 },
   slug: { type: 'string', unique: 'true', regex: /^[a-z0-9_-]+$/, lowercase: true },
   encryptedPassword: 'string',
   avatar: {
@@ -31,6 +32,33 @@ export default {
     type: 'relationship',
     relationship: 'FOLLOWS',
     target: 'User',
+    direction: 'out',
+    properties: {
+      createdAt: { type: 'string', isoDate: true, default: () => new Date().toISOString() },
+    },
+  },
+  orgFollowing: {
+    type: 'relationship',
+    relationship: 'FOLLOWS',
+    target: 'Organization',
+    direction: 'out',
+    properties: {
+      createdAt: { type: 'string', isoDate: true, default: () => new Date().toISOString() },
+    },
+  },
+  ownerOf: {
+    type: 'relationship',
+    relationship: 'APPROPRIATED_OF',
+    target: 'Organization',
+    direction: 'out',
+    properties: {
+      createdAt: { type: 'string', isoDate: true, default: () => new Date().toISOString() },
+    },
+  },
+  serviceInterested: {
+    type: 'relationship',
+    relationship: 'INTERESTED',
+    target: 'Service',
     direction: 'out',
     properties: {
       createdAt: { type: 'string', isoDate: true, default: () => new Date().toISOString() },

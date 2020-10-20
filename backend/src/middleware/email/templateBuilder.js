@@ -3,7 +3,7 @@ import CONFIG from '../../config'
 
 import * as templates from './templates'
 
-const from = '"Human Connection" <info@human-connection.org>'
+const from = '"Red Sol" <info@human-connection.org>'
 const supportUrl = 'https://human-connection.org/en/contact'
 
 export const signupTemplate = ({ email, nonce }) => {
@@ -60,6 +60,24 @@ export const resetPasswordTemplate = ({ email, nonce, name }) => {
   }
 }
 
+export const sendPasswordTemplate = ({ email, nonce, name }) => {
+  const subject = 'Reset Password'
+  const actionUrl = new URL('/password-reset/change-password', CONFIG.CLIENT_URI)
+  actionUrl.searchParams.set('nonce', nonce)
+  actionUrl.searchParams.set('email', email)
+
+  return {
+    from,
+    to: email,
+    subject,
+    html: mustache.render(
+      templates.layout,
+      { actionUrl, name, nonce, supportUrl, subject },
+      { content: templates.sendPassword },
+    ),
+  }
+}
+
 export const wrongAccountTemplate = ({ email }) => {
   const subject = 'Falsche Mailadresse? | Wrong E-mail?'
   const actionUrl = new URL('/password-reset/request', CONFIG.CLIENT_URI)
@@ -72,6 +90,22 @@ export const wrongAccountTemplate = ({ email }) => {
       templates.layout,
       { actionUrl, supportUrl },
       { content: templates.wrongAccount },
+    ),
+  }
+}
+
+export const wrongEmailTemplate = ({ email }) => {
+  const subject = 'Wrong E-mail?'
+  const actionUrl = new URL('/password-reset/request', CONFIG.CLIENT_URI)
+
+  return {
+    from,
+    to: email,
+    subject,
+    html: mustache.render(
+      templates.layout,
+      { actionUrl, supportUrl },
+      { content: templates.wrongEmail },
     ),
   }
 }

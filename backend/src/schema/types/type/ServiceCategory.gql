@@ -1,0 +1,34 @@
+enum _SCategoryOrdering {
+  id_asc
+  id_desc
+  name_asc
+  name_desc
+  createdAt_asc
+  createdAt_desc
+  updatedAt_asc
+  updatedAt_desc
+}
+
+type ServiceCategory {
+  id: ID!
+  name: String!
+  icon: String!
+  order: Int
+  classification: String
+  description: String
+  createdAt: String
+  updatedAt: String
+  services: [Service]! @relation(name: "DENOMINATION", direction: "OUT")
+}
+
+type Query {
+  ServiceCategory(
+    id: ID
+    name: String
+    icon: String
+    createdAt: String
+    updatedAt: String
+    orderBy: [_SCategoryOrdering]
+  ): [ServiceCategory]
+  totalAtentionCategory(id: ID, orgID: ID): Int @cypher(statement: "MATCH (this {id: id})<-[r:ACATEGORY]-(a:Atention)-[o:ATENTIONS]->(org:Organization {id: orgID}) RETURN COUNT (a)")
+}

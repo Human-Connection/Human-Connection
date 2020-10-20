@@ -1,0 +1,22 @@
+type Service {
+  id: ID!
+  name: String
+  description: String
+  isGeneral: Boolean
+  organization: Organization @relation(name: "BELONGS", direction: "OUT")
+  serviceCategory: ServiceCategory @relation(name: "CATEGORY", direction: "OUT")
+  createdAt: String
+  updatedAt: String
+}
+
+type Query {
+  Service(
+    id: ID
+    name: String
+    description: String
+    createdAt: String
+    updatedAt: String
+    isGeneral: Boolean
+  ): [Service]
+  totalAtentionService(id: ID, orgID: ID): Int @cypher(statement: "MATCH (this {id: id})<-[r:ASERVICE]-(a:Atention)-[o:ATENTIONS]->(org:Organization {id: orgID}) RETURN COUNT (a)")
+}

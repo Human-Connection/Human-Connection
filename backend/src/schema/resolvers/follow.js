@@ -20,6 +20,30 @@ export default {
       return followedUser.toJson()
     },
 
+    followOrg: async (_object, params, context, _resolveInfo) => {
+      const { id: followedOrgId } = params
+      const { user: currentUser } = context
+
+      const [user, followedOrg] = await Promise.all([
+        neode.find('User', currentUser.id),
+        neode.find('Organization', followedOrgId),
+      ])
+      await user.relateTo(followedOrg, 'orgFollowing')
+      return followedOrg.toJson()
+    },
+
+    showInterest: async (_object, params, context, _resolveInfo) => {
+      const { id: interestedServiceId } = params
+      const { user: currentUser } = context
+
+      const [user, interestedSer] = await Promise.all([
+        neode.find('User', currentUser.id),
+        neode.find('Service', interestedServiceId),
+      ])
+      await user.relateTo(interestedSer, 'serviceInterested')
+      return interestedSer.toJson()
+    },
+
     unfollowUser: async (_object, params, context, _resolveInfo) => {
       const { id: followedUserId } = params
       const { user: currentUser } = context

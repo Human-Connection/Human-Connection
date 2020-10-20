@@ -1,0 +1,45 @@
+type Organization {
+  id: ID!
+  name: String
+  phone: String
+  webPage: String
+  servicesDesc: String
+  description: String
+  iconName: String
+  urlIcon: String
+  ranking: Int
+  hourHand: String
+  createdAt: String
+  updatedAt: String
+  services: [Service] @relation(name: "PROVIDES", direction: "OUT")
+  plan: Plan @relation(name: "SUBSCRIBED", direction: "OUT")
+  location: Location @cypher(statement: "MATCH (this)-[:IS_IN]->(l:Location) RETURN l")
+  serviceCategories: [ServiceCategory] @relation(name: "SCATEGORIES", direction: "OUT")
+}
+
+type Query {
+  Organization(
+    id: ID
+    name: String
+    description: String
+    iconName: String
+    urlIcon: String
+    ranking: Int
+    hourHand: String
+    createdAt: String
+    updatedAt: String
+  ): [Organization]
+  usedCategories: [ServiceCategory] @cypher(statement: "MATCH (o:Organization)-[:SCATEGORIES]-> (this) RETURN DISTINCT this")
+  byIdOrOrgKeyWord(id: ID, keyWord: String): [Organization] @cypher(statement: "MATCH (o:Organization)-[:SCATEGORIES]-> (this {id: id}) where LOWER(o.name) CONTAINS LOWER(keyWord) OR LOWER(o.description) CONTAINS LOWER(keyWord) RETURN DISTINCT o")
+}
+
+type Mutation {
+  UpdateOrganization (
+  id: ID!
+  name: String
+  webPage: String
+  phone: String
+  description: String
+  servicesDesc: String
+  ): Organization
+}
