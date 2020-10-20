@@ -10,7 +10,7 @@ export default {
       const { driver } = context
       // Adding relationship from atention to organization by passing in the orgId,
       // but we do not want to create the atention with orgId as an attribute
-      // because we use relationships for this. So, we are deleting it from params
+      // because we use relationships for this. So, we are deleting it from param
       // before atention creation.
       delete params.orgID
       delete params.serviceID
