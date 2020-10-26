@@ -113,63 +113,6 @@ describe('resolvers/userData', () => {
           },
         })
       })
-
-      describe('the user comments another post', () => {
-        beforeAll(async () => {
-          await Factory.build(
-            'post',
-            {
-              id: 'b-post',
-              title: 'B post',
-              content: 'B post',
-            },
-            { authorId: 'o-user' },
-          )
-          await Factory.build(
-            'comment',
-            {
-              content: 'A comment to post B',
-            },
-            {
-              postId: 'b-post',
-              authorId: 'a-user',
-            },
-          )
-        })
-
-        it('returns the written post and the commented post', async () => {
-          await expect(query({ query: userDataQuery, variables })).resolves.toMatchObject({
-            data: {
-              userData: {
-                user: {
-                  id: 'a-user',
-                  name: 'John Doe',
-                  slug: 'john-doe',
-                },
-                posts: expect.arrayContaining([
-                  {
-                    id: 'a-post',
-                    title: 'A post',
-                    content: 'A post',
-                    comments: [],
-                  },
-                  {
-                    id: 'b-post',
-                    title: 'B post',
-                    content: 'B post',
-                    comments: [
-                      {
-                        content: 'A comment to post B',
-                        author: { slug: 'john-doe' },
-                      },
-                    ],
-                  },
-                ]),
-              },
-            },
-          })
-        })
-      })
     })
   })
 
@@ -190,17 +133,6 @@ describe('resolvers/userData', () => {
                 title: 'A post',
                 content: 'A post',
                 comments: [],
-              },
-              {
-                id: 'b-post',
-                title: 'B post',
-                content: 'B post',
-                comments: [
-                  {
-                    content: 'A comment to post B',
-                    author: { slug: 'john-doe' },
-                  },
-                ],
               },
             ]),
           },

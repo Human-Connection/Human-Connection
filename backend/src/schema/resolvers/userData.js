@@ -5,14 +5,34 @@ export default {
       const cypher = `
         MATCH (user:User { id: $id })
         WITH user
-        OPTIONAL MATCH (p:Post)
-        WHERE ((p)<-[:COMMENTS]-(:Comment)<-[:WROTE]-(user)
-        OR (user)-[:WROTE]->(p))
-        AND p.deleted = FALSE
-        AND p.disabled = FALSE
-        RETURN { user: properties(user), posts: collect(properties(p)) }
-        AS result
-      `
+        OPTIONAL MATCH (posts:Post)
+        WHERE (user)-[:WROTE]->(posts)
+        AND posts.deleted = FALSE
+        AND posts.disabled = FALSE
+        RETURN { user: properties(user),
+          posts: collect( 
+            posts {
+              .*,
+              author: [
+                (posts)<-[:WROTE]-(author:User) |
+                author {
+                  .*
+                }  
+              ][0],
+              comments: [
+                (posts)<-[:COMMENTS]-(comment:Comment)
+                WHERE comment.disabled = FALSE
+                AND comment.deleted = FALSE |
+                  comment {
+                    .*,
+                    author: [ (comment)<-[:WROTE]-(commentator:User) |
+                      commentator { .name, .slug, .id } ][0]
+                  }
+              ],
+              categories: [ (posts)-[:CATEGORIZED]->(category:Category) |
+                category { .name, .id } ]
+          })
+        } AS result`
       const session = context.driver.session()
       const resultPromise = session.readTransaction(async (transaction) => {
         const transactionResponse = transaction.run(cypher, {
@@ -23,10 +43,21 @@ export default {
 
       try {
         const result = await resultPromise
-        return result.records[0].get('result')
+        const userData = result.records[0].get('result')
+        userData.posts.sort(byCreationDate)
+        if (userData.posts.comments) {
+          userData.posts.each((post) => post.comments.sort(byCreationDate))
+        }
+        return userData
       } finally {
         session.close()
       }
     },
   },
+}
+
+const byCreationDate = (a, b) => {
+  if (a.createdAt < b.createdAt) return -1
+  if (a.createdAt > b.createdAt) return 1
+  return 0
 }
