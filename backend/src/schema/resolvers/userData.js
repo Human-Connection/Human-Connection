@@ -45,9 +45,7 @@ export default {
         const result = await resultPromise
         const userData = result.records[0].get('result')
         userData.posts.sort(byCreationDate)
-        if (userData.posts.comments) {
-          userData.posts.each((post) => post.comments.sort(byCreationDate))
-        }
+        userData.posts.forEach((post) => post.comments.sort(byCreationDate))
         return userData
       } finally {
         session.close()
