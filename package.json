@@ -1,6 +1,6 @@
 {
   "name": "human-connection",
-  "version": "0.6.3",
+  "version": "0.6.4",
   "description": "Fullstack and API tests with cypress and cucumber for Human Connection",
   "author": "Human Connection gGmbh",
   "license": "MIT",
