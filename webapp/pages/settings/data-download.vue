@@ -1,7 +1,14 @@
 <template>
   <base-card>
     <h2 class="title">{{ $t('settings.download.name') }}</h2>
-    <base-button @click="onClick(jsonData)" icon="download" secondary filled :disabled="loading">
+    <base-button
+      @click="onClick(jsonData)"
+      icon="download"
+      secondary
+      filled
+      :disabled="loading"
+      :loading="loading"
+    >
       {{ $t('settings.download.json') }}
     </base-button>
     <ds-space margin="large" />
