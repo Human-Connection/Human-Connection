@@ -40,7 +40,7 @@
     "cypress-plugin-retries": "^1.5.2",
     "date-fns": "^2.12.0",
     "dotenv": "^8.2.0",
-    "expect": "^25.3.0",
+    "expect": "^26.6.2",
     "faker": "Marak/faker.js#master",
     "graphql-request": "^1.8.2",
     "import": "^0.0.6",
