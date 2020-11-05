@@ -6,7 +6,8 @@ export default {
         MATCH (user:User { id: $id })
         WITH user
         OPTIONAL MATCH (posts:Post)
-        WHERE (user)-[:WROTE]->(posts)
+        WHERE ((posts)<-[:COMMENTS]-(:Comment)<-[:WROTE]-(user)
+        OR (user)-[:WROTE]->(posts))
         AND posts.deleted = FALSE
         AND posts.disabled = FALSE
         RETURN { user: properties(user),
