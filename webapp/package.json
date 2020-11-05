@@ -76,7 +76,7 @@
     "graphql": "~14.6.0",
     "jsonwebtoken": "~8.5.1",
     "linkify-it": "~2.2.0",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "nuxt": "~2.12.1",
     "nuxt-dropzone": "^1.0.4",
     "nuxt-env": "~0.1.0",
