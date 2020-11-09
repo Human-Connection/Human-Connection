@@ -63,7 +63,7 @@
     "@nuxtjs/axios": "~5.9.7",
     "@nuxtjs/dotenv": "~1.4.1",
     "@nuxtjs/pwa": "^3.0.0-beta.20",
-    "@nuxtjs/sentry": "^4.0.0",
+    "@nuxtjs/sentry": "^4.4.0",
     "@nuxtjs/style-resources": "~1.0.0",
     "accounting": "~0.4.1",
     "apollo-cache-inmemory": "~1.6.5",
