@@ -103,6 +103,13 @@ describe('AvatarMenu.vue', () => {
             .at(wrapper.vm.routes.findIndex((route) => route.path === '/settings'))
           expect(settingsLink.exists()).toBe(true)
         })
+
+        it('displays a link to the organization list page', () => {
+          const settingsLink = wrapper
+            .findAll('.ds-menu-item span')
+            .at(wrapper.vm.routes.findIndex((route) => route.path === '/organization/list'))
+          expect(settingsLink.exists()).toBe(true)
+        })
       })
 
       describe('role moderator', () => {
@@ -125,9 +132,9 @@ describe('AvatarMenu.vue', () => {
           expect(moderationLink.exists()).toBe(true)
         })
 
-        it('displays a total of 4 links', () => {
+        it('displays a total of 5 links', () => {
           const allLinks = wrapper.findAll('.ds-menu-item')
-          expect(allLinks).toHaveLength(4)
+          expect(allLinks).toHaveLength(5)
         })
       })
 
@@ -151,9 +158,9 @@ describe('AvatarMenu.vue', () => {
           expect(adminLink.exists()).toBe(true)
         })
 
-        it('displays a total of 5 links', () => {
+        it('displays a total of 6 links', () => {
           const allLinks = wrapper.findAll('.ds-menu-item')
-          expect(allLinks).toHaveLength(5)
+          expect(allLinks).toHaveLength(6)
         })
       })
     })

@@ -99,3 +99,36 @@ export const commentFragment = gql`
     contentExcerpt
   }
 `
+
+export const organizationFragment = (lang) => gql`
+  fragment organization on Organization {
+    id
+    name
+    slug
+    image {
+      url
+      sensitive
+      aspectRatio
+    }
+    creator {
+      ...user
+    }
+    createdAt
+    updatedAt
+    locationName
+    location {
+      name: name${lang}
+    }
+    categories {
+      id
+      slug
+      name
+      icon
+    }
+    description
+    email
+    tags {
+      id
+    }
+  }
+`

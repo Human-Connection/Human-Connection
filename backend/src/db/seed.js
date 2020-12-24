@@ -754,6 +754,84 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       ),
     ])
 
+    const [o1, o2, o3, o4, o5] = await Promise.all([
+      Factory.build(
+        'organization',
+        {
+          id: 'o1',
+          locationName: 'Berlin, Germany',
+        },
+        {
+          creator: jennyRostock,
+          categoryIds: ['cat1', 'cat3'],
+        },
+      ),
+      Factory.build(
+        'organization',
+        {
+          id: 'o2',
+          locationName: 'Berlin, Germany',
+        },
+        {
+          creator: jennyRostock,
+          categoryIds: ['cat1', 'cat4'],
+        },
+      ),
+      Factory.build(
+        'organization',
+        {
+          id: 'o3',
+          locationName: 'Berlin, Germany',
+        },
+        {
+          creator: jennyRostock,
+          categoryIds: ['cat3'],
+        },
+      ),
+      Factory.build(
+        'organization',
+        {
+          id: 'o4',
+          locationName: 'Hamburg, Germany',
+        },
+        {
+          creator: louie,
+          categoryIds: ['cat4', 'cat5'],
+        },
+      ),
+      Factory.build(
+        'organization',
+        {
+          id: 'o5',
+          locationName: 'Paris, France',
+        },
+        {
+          creator: louie,
+          categoryIds: ['cat3', 'cat4'],
+        },
+      ),
+    ])
+    await Promise.all([
+      o1.relateTo(Berlin, 'isIn'),
+      o2.relateTo(Berlin, 'isIn'),
+      o3.relateTo(Berlin, 'isIn'),
+      o4.relateTo(Hamburg, 'isIn'),
+      o5.relateTo(Paris, 'isIn'),
+    ])
+
+    await Promise.all(
+      [...Array(30).keys()].map(() =>
+        Factory.build(
+          'organization',
+          {},
+          {
+            categoryIds: ['cat1'],
+            creator: jennyRostock,
+          },
+        ),
+      ),
+    )
+
     const trollingComment = comments[0]
 
     await Promise.all([
@@ -761,6 +839,9 @@ const languages = ['de', 'en', 'es', 'fr', 'it', 'pt', 'pl']
       democracy.relateTo(p11, 'post'),
       democracy.relateTo(p15, 'post'),
       democracy.relateTo(p7, 'post'),
+      democracy.relateTo(o1, 'organization'),
+      democracy.relateTo(o2, 'organization'),
+      democracy.relateTo(o3, 'organization'),
       environment.relateTo(p1, 'post'),
       environment.relateTo(p5, 'post'),
       environment.relateTo(p9, 'post'),

@@ -161,6 +161,75 @@ describe('slugifyMiddleware', () => {
     })
   })
 
+  describe('CreateOrganization', () => {
+    const categoryIds = ['cat9']
+    const createOrganizationMutation = gql`
+      mutation($name: String!, $categoryIds: [ID]!, $slug: String) {
+        CreateOrganization(name: $name, categoryIds: $categoryIds, slug: $slug) {
+          slug
+        }
+      }
+    `
+
+    beforeEach(() => {
+      variables = {
+        ...variables,
+        name: 'I am a brand new organization',
+        categoryIds,
+      }
+    })
+
+    it('generates a slug based on name', async () => {
+      await expect(
+        mutate({
+          mutation: createOrganizationMutation,
+          variables,
+        }),
+      ).resolves.toMatchObject({
+        data: {
+          CreateOrganization: {
+            slug: 'i-am-a-brand-new-organization',
+          },
+        },
+      })
+    })
+
+    describe('if slug exists', () => {
+      beforeEach(async () => {
+        await Factory.build(
+          'organization',
+          {
+            name: 'Pre-existing organization',
+            slug: 'pre-existing-organization',
+          },
+          {
+            categoryIds,
+          },
+        )
+      })
+
+      it('chooses another slug', async () => {
+        variables = {
+          ...variables,
+          name: 'Pre-existing organization',
+          categoryIds,
+        }
+        await expect(
+          mutate({
+            mutation: createOrganizationMutation,
+            variables,
+          }),
+        ).resolves.toMatchObject({
+          data: {
+            CreateOrganization: {
+              slug: 'pre-existing-organization-1',
+            },
+          },
+        })
+      })
+    })
+  })
+
   describe('SignupVerification', () => {
     const mutation = gql`
       mutation(

@@ -62,6 +62,20 @@ export default {
     routes() {
       const routes = []
 
+      if (
+        (this.isOwner || this.isAdmin || this.isModerator) &&
+        this.resourceType === 'organization'
+      ) {
+        routes.push({
+          label: this.$t(`organizations.menu.edit`),
+          name: 'organization-edit-id',
+          params: {
+            id: this.resource.id,
+          },
+          icon: 'edit',
+        })
+      }
+
       if (this.resourceType === 'contribution') {
         if (this.isOwner) {
           routes.push({
@@ -119,7 +133,7 @@ export default {
         })
       }
 
-      if (!this.isOwner) {
+      if (!this.isOwner && !(this.resourceType === 'organization')) {
         routes.push({
           label: this.$t(`report.${this.resourceType}.title`),
           callback: () => {

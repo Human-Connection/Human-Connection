@@ -14,4 +14,10 @@ export default {
     target: 'Post',
     direction: 'in',
   },
+  organization: {
+    type: 'relationship',
+    relationship: 'TAGGED',
+    target: 'Organization',
+    direction: 'in',
+  },
 }

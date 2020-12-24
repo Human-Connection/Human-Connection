@@ -10,7 +10,7 @@ type Report {
   resource: ReportedResource!
 }
 
-union ReportedResource = User | Post | Comment
+union ReportedResource = User | Post | Comment | Organization
 
 enum ReportRule {
   latestReviewUpdatedAtRules

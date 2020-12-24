@@ -290,6 +290,10 @@
       "title": "Disable Contribution",
       "type": "Contribution"
     },
+    "organization": {
+      "message": "Do you really want to disable the organization  \"<b>{name}</b>\"?",
+      "title": "Disable Organization"
+    },
     "submit": "Disable",
     "success": "Disabled successfully!",
     "user": {
@@ -326,8 +330,10 @@
     "500-default": "Internal Server Error",
     "503-default": "Service Unavailable",
     "back-to-index": "Back to index page",
+    "cannot-edit-organization": "This organization cannot be edited",
     "cannot-edit-post": "This post cannot be edited",
     "default": "An error occurred",
+    "organization-not-found": "This organization could not be found",
     "post-not-found": "This post could not be found",
     "profile-not-found": "This profile could not be found"
   },
@@ -465,6 +471,21 @@
     "title": "Notifications",
     "user": "User"
   },
+  "organizations": {
+    "add": "Add organization",
+    "form": {
+      "description": "Description",
+      "descriptionHint": "A short description of the organization",
+      "email": "e-Mail address to contact the organization",
+      "labelCity": "City or region of the organization",
+      "name": "Name of the organization",
+      "success": "Saved!"
+    },
+    "menu": {
+      "edit": "Edit"
+    },
+    "name": "Organizations"
+  },
   "post": {
     "comment": {
       "reply": "Reply",
@@ -538,6 +559,9 @@
       "message": "Do you really want to release the contribution \"<b>{name}</b>\"?",
       "title": "Release Contribution",
       "type": "Contribution"
+    },
+    "organization": {
+      "title": "Release Organization"
     },
     "submit": "Release",
     "success": "Released successfully!",

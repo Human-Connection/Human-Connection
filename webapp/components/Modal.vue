@@ -68,6 +68,8 @@ export default {
           return title
         case 'comment':
           return author && author.name
+        case 'organization':
+          return name
         default:
           return null
       }

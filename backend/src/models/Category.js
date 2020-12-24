@@ -18,4 +18,10 @@ export default {
     target: 'Post',
     direction: 'in',
   },
+  organization: {
+    type: 'relationship',
+    relationship: 'CATEGORIZED',
+    target: 'Organization',
+    direction: 'in',
+  },
 }
