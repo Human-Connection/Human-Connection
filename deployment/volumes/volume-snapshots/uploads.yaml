@@ -2,11 +2,15 @@
   kind: PersistentVolumeClaim
   apiVersion: v1
   metadata:
-    name: neo4j-data-claim
+    name: uploads-claim
     namespace: human-connection
   spec:
+    dataSource:
+      name: 2020-04-06-uploads-snapshot
+      kind: VolumeSnapshot
+      apiGroup: snapshot.storage.k8s.io
     accessModes:
       - ReadWriteOnce
     resources:
       requests:
-        storage: 5Gi
+        storage: 25Gi
