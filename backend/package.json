@@ -68,7 +68,7 @@
     "ioredis": "^4.16.1",
     "jsonwebtoken": "~8.5.1",
     "linkifyjs": "~2.1.8",
-    "lodash": "~4.17.14",
+    "lodash": "~4.17.21",
     "merge-graphql-schemas": "^1.7.7",
     "metascraper": "^5.11.8",
     "metascraper-audio": "^5.11.8",
