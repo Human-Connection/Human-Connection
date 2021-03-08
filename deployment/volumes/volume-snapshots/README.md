@@ -9,12 +9,26 @@ Kubernetes announced this feature in a [blog post](https://kubernetes.io/blog/20
 ## Create a Volume Snapshot
 
 There is an example in this folder how you can e.g. create a volume snapshot for
-the persistent volume claim `neo4j-data-claim`:
+the persistent volume claim `neo4j-data-claim` or any other claim.
+
+Before you create the snapshot, it is good practice to look at what snapshots are already done:
+
+```sh
+# list existing snapshots
+kubectl get volumesnapshots -n human-connection
+```
+
+To specify your snapshot, edit the file `snapshot.yaml` or simply edit and use `neo4j-data.yaml` in this folder.
+The `metadata.name` entry specifies the name of the snapshot. We recommend adding the date to the name similar to `YYYY-MM-DD-<your-Name>-snapshot`.
+
+Now send the `apply` command to do the snapshot:
 
 ```sh
 # in folder deployment/volumes/volume-snapshots/
 kubectl apply -f snapshot.yaml
 ```
+
+You should check to see if the snapshot was taken using the `get volumesnapshots` command above.
 
 If you are on Digital Ocean the volume snapshot should show up in the Web UI:
 

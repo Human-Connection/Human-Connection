@@ -34,5 +34,5 @@ We still want to take backups of our images in case something happens to the ima
 After configuring `s3cmd` with your credentials, etc. you should be able to make a backup with this command.
 
 ```sh
-s3cmg get --recursive s3://human-connection-uploads --skip-existing
+s3cmg get --recursive --skip-existing s3://human-connection-uploads/ <path-of/your-encrypted-locale-volume>
 ```
