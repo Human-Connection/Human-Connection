@@ -1,0 +1,17 @@
+type Service {
+  id: ID!
+  name: String
+  organization: Organization @relation(name: "BELONGS", direction: "OUT")
+  serviceCategory: ServiceCategory @relation(name: "CATEGORY", direction: "OUT")
+  createdAt: String
+  updatedAt: String
+}
+
+type Query {
+  Service(
+    id: ID
+    name: String
+    createdAt: String
+    updatedAt: String
+  ): [Service]
+}
