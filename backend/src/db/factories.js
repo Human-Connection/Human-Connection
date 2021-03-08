@@ -31,6 +31,11 @@ export const cleanDatabase = async (options = {}) => {
   }
 }
 
+const editorContentParagraphs = (n) => {
+  const _n = n || Math.ceil(Math.random() * 5)
+  return `<p>${faker.lorem.paragraphs(_n, '</p><p>')}</p>`
+}
+
 Factory.define('category')
   .attr('id', uuid)
   .attr('icon', 'globe')
@@ -123,7 +128,7 @@ Factory.define('post')
   .attrs({
     id: uuid,
     title: faker.lorem.sentence,
-    content: faker.lorem.paragraphs,
+    content: editorContentParagraphs(),
     visibility: 'public',
     deleted: false,
     imageBlurred: false,
@@ -163,6 +168,33 @@ Factory.define('post')
     return post
   })
 
+export const postWithEmbed = Factory.define('postWithEmbed')
+  .extend('post')
+  .attr('content', () => {
+    const embed = '<a href="https://maifideo.komm/?f=92Ka-2kan" class="embed"></a>'
+    const paragraphs = editorContentParagraphs()
+    let insertIndex, atIndexIsText, beforeIndexIsGt, beforeIndexIsSpace
+
+    // verify embed insertion point, not to produce someting like
+    //   <p>Quidem dolores...</<a ... class="embed">p><p>...
+    // basically, don't put them in a tag and only between words
+    do {
+      // +3, because all post content starts with <p>
+      insertIndex = Math.floor(Math.random() * paragraphs.length) + 3
+
+      const charAtInsertIndex = paragraphs.charAt(insertIndex)
+      const charBeforeInsertIndex = paragraphs.charAt(insertIndex - 1)
+
+      atIndexIsText = /[^<>/]/.test(charAtInsertIndex)
+      beforeIndexIsGt = charBeforeInsertIndex === '>'
+      beforeIndexIsSpace = charBeforeInsertIndex === ' '
+    } while (!(atIndexIsText && (beforeIndexIsGt || beforeIndexIsSpace)))
+
+    const before = paragraphs.slice(0, insertIndex)
+    const after = paragraphs.slice(insertIndex + 1)
+    return `${before}${embed}${after}`
+  })
+
 Factory.define('comment')
   .option('postId', null)
   .option('post', ['postId'], (postId) => {
@@ -176,7 +208,7 @@ Factory.define('comment')
   })
   .attrs({
     id: uuid,
-    content: faker.lorem.sentence,
+    content: `<p>${faker.lorem.sentence}</p>`,
   })
   .attr('contentExcerpt', ['contentExcerpt', 'content'], (contentExcerpt, content) => {
     return contentExcerpt || content

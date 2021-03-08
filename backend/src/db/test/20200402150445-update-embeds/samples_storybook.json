@@ -1,0 +1,37 @@
+[
+  {
+    "type": "standanlone",
+    "legacy": "<p><a href=\"https://youtu.be/jB6mI8uVxKU\" class=\"embed\" target=\"_blank\"></a></p>",
+    "target": "<p></p><a href=\"https://youtu.be/jB6mI8uVxKU\" class=\"embed\" target=\"_blank\"></a><p></p>"
+  },
+  {
+    "type": "multipleStandalone",
+    "legacy": "<p><a href=\"https://youtu.be/jB6mUd19xKU\" class=\"embed\" target=\"_blank\"></a><a href=\"https://youtu.be/jB6mI8uVxKU\" class=\"embed\" target=\"_blank\"></a></p>",
+    "target": "<p></p><a href=\"https://youtu.be/jB6mUd19xKU\" class=\"embed\" target=\"_blank\"></a><p></p><a href=\"https://youtu.be/jB6mI8uVxKU\" class=\"embed\" target=\"_blank\"></a><p></p>"
+  },
+  {
+    "type": "inline",
+    "legacy": "<p>This is a video link <a href=\"https://youtu.be/jB6mI8uVxKU\" class=\"embed\" target=\"_blank\"><em>https://youtu.be/jB6mI8uVxKU</em></a>pasted into this line</p>",
+    "target": "<p>This is a video link </p><a href=\"https://youtu.be/jB6mI8uVxKU\" class=\"embed\" target=\"_blank\"><em>https://youtu.be/jB6mI8uVxKU</em></a><p>pasted into this line</p>"
+  },
+  {
+    "type": "inlineComplete",
+    "legacy": "<p>This is a video link <a href=\"https://youtu.be/jB6mI8uVxKU\" class=\"embed\" target=\"_blank\"></a> pasted with this line</p>",
+    "target": "<p>This is a video link </p><a href=\"https://youtu.be/jB6mI8uVxKU\" class=\"embed\" target=\"_blank\"></a><p> pasted with this line</p>"
+  },
+  {
+    "type": "explicitBlocks",
+    "legacy": "<p>This is a video link</p><p><a href=\"https://youtu.be/jB6mI8uVxKU\" class=\"embed\" target=\"_blank\"></a></p><p>with explicit paragraphs above and below</p>",
+    "target": "<p>This is a video link</p><a href=\"https://youtu.be/jB6mI8uVxKU\" class=\"embed\" target=\"_blank\"></a><p>with explicit paragraphs above and below</p>"
+  },
+  {
+    "type": "multiple",
+    "legacy": "<p>This is a video link <a href=\"https://youtu.be/jB6mI8uVxKU\" class=\"embed\" target=\"_blank\"></a>pasted into this line, just like <a href=\"https://youtu.be/jB6mI9ka2KU\" class=\"embed\" target=\"_blank\"></a> these second and <a href=\"https://youtu.be/jB6mi3iaxKU\" class=\"embed\" target=\"_blank\"></a> third one.</p>",
+    "target": "<p>This is a video link </p><a href=\"https://youtu.be/jB6mI8uVxKU\" class=\"embed\" target=\"_blank\"></a><p>pasted into this line, just like </p><a href=\"https://youtu.be/jB6mI9ka2KU\" class=\"embed\" target=\"_blank\"></a><p> these second and </p><a href=\"https://youtu.be/jB6mi3iaxKU\" class=\"embed\" target=\"_blank\"></a><p> third one.</p>"
+  },
+  {
+    "type": "mixed",
+    "legacy": "<p>This is a video link <a href=\"https://youtu.be/jB6mI8uVxKU\" class=\"embed\" target=\"_blank\"></a>pasted into this line, just like <a href=\"https://youtu.be/jB6mI9ka2KU\" class=\"embed\" target=\"_blank\"></a> these second. But the </p><p><a href=\"https://youtu.be/jB6mi3iaxKU\" class=\"embed\" target=\"_blank\"></a></p><p> third was suddenly a block.</p>",
+    "target": "<p>This is a video link </p><a href=\"https://youtu.be/jB6mI8uVxKU\" class=\"embed\" target=\"_blank\"></a><p>pasted into this line, just like </p><a href=\"https://youtu.be/jB6mI9ka2KU\" class=\"embed\" target=\"_blank\"></a><p> these second. But the </p><a href=\"https://youtu.be/jB6mi3iaxKU\" class=\"embed\" target=\"_blank\"></a><p> third was suddenly a block.</p>"
+  }
+]

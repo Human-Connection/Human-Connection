@@ -1,0 +1,27 @@
+[
+  {
+    "type": "paragraphBefore",
+    "legacy": "<p>Wir nach</p><p><a href=\"https://youtube.com/watch?v=TTS2KeBAghY\" class=\"embed\" target=\"_blank\"></a></p>",
+    "target": "<p>Wir nach</p><a href=\"https://youtube.com/watch?v=TTS2KeBAghY\" class=\"embed\" target=\"_blank\"></a><p></p>"
+  },
+  {
+    "type": "standalone",
+    "legacy": "<p><a href=\"https://youtu.be/jB6mI8uVxKU\" class=\"embed\" target=\"_blank\"></a></p>",
+    "target": "<p></p><a href=\"https://youtu.be/jB6mI8uVxKU\" class=\"embed\" target=\"_blank\"></a><p></p>"
+  },
+  {
+    "type": "standaloneVimeo",
+    "legacy": "<p><a href=\"https://vimeo.com/381730881\" class=\"embed\" target=\"_blank\"></a></p>",
+    "target": "<p></p><a href=\"https://vimeo.com/381730881\" class=\"embed\" target=\"_blank\"></a><p></p>"
+  },
+  {
+    "type": "inline",
+    "legacy": "<p>Das Video gibt es auf Youtube und (werbefrei) auf Vimeo    <a href=\"https://vimeo.com/401707371\" class=\"linkified\" target=\"_blank\">https://vimeo.com/401707371</a> :</p><p><a href=\"https://vimeo.com/401707371\" class=\"embed\" target=\"_blank\"></a></p>",
+    "target": "<p>Das Video gibt es auf Youtube und (werbefrei) auf Vimeo    <a href=\"https://vimeo.com/401707371\" class=\"linkified\" target=\"_blank\">https://vimeo.com/401707371</a> :</p><a href=\"https://vimeo.com/401707371\" class=\"embed\" target=\"_blank\"></a><p></p>"
+  },
+  {
+    "type": "withNonEmbedLink",
+    "legacy": "<p>Hier ist die Videoaufzeichnung auf Peertube:    <a href=\"https://tube.tchncs.de/videos/watch/97548046-a677-41fd-b8a1-ca8663d2580a\" class=\"embed\" target=\"_blank\"></a> und das gleiche nochmal auf der kommerziellen Plattform <a href=\"https://www.youtube.com/watch?v=kDLg8oEWFYY\" target=\"_blank\">Youtube</a>.</p><p>Meine Vorlesungsfolien findet ihr hier: <a href=\"https://speakerdeck.com/roschaefer/systems-development-and-frameworks-number-0-introduction\" class=\"embed\" target=\"_blank\"></a></p>",
+    "target": "<p>Hier ist die Videoaufzeichnung auf Peertube:    </p><a href=\"https://tube.tchncs.de/videos/watch/97548046-a677-41fd-b8a1-ca8663d2580a\" class=\"embed\" target=\"_blank\"></a><p> und das gleiche nochmal auf der kommerziellen Plattform <a href=\"https://www.youtube.com/watch?v=kDLg8oEWFYY\" target=\"_blank\">Youtube</a>.</p><p>Meine Vorlesungsfolien findet ihr hier: </p><a href=\"https://speakerdeck.com/roschaefer/systems-development-and-frameworks-number-0-introduction\" class=\"embed\" target=\"_blank\"></a><p></p>"
+  }
+]
