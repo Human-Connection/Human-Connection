@@ -1,26 +1,58 @@
 <template>
-  <article :class="{ '--read': notification.read, notification: true }">
+  <article :class="{ '--read': notificationData.read, notification: true }">
     <client-only>
-      <user-teaser :user="from.author" :date-time="from.createdAt" />
+      <user-teaser :user="notificationData.triggerer" :date-time="notificationData.createdAt" />
     </client-only>
-    <p class="description">{{ $t(`notifications.reason.${notification.reason}`) }}</p>
-    <nuxt-link
-      class="link"
-      :to="{ name: 'post-id-slug', params, ...hashParam }"
-      @click.native="$emit('read')"
-    >
+    <p class="description" data-test="reason-text">
+      <base-icon
+        :name="notificationData.iconName"
+        v-tooltip="{ content: $t(notificationData.iconTooltip), placement: 'right' }"
+      />
+      {{
+        $t(
+          `notifications.reason.${notificationData.reason}` +
+            notificationData.reasonTranslationExtention,
+        )
+      }}
+    </p>
+    <nuxt-link class="link" :to="notificationData.linkTo" @click.native="$emit('read')">
       <base-card wideContent>
-        <h2 class="title">{{ from.title || from.post.title }}</h2>
-        <p>
-          <strong v-if="isComment" class="comment">{{ $t(`notifications.comment`) }}:</strong>
-          {{ from.contentExcerpt | removeHtml }}
+        <h2 v-if="notificationData.isPost || notificationData.isComment" class="title">
+          {{ notificationData.title }}
+        </h2>
+        <user-teaser v-if="notificationData.isUser" :user="notificationData.user" />
+        <p v-else>
+          <strong v-if="notificationData.isComment" class="comment">
+            {{ $t(`notifications.comment`) }}:
+          </strong>
+          {{ notificationData.contentExcerpt | removeHtml }}
         </p>
+        <div v-if="notificationData.isReport">
+          <ds-space margin-bottom="x-small" />
+          <strong>{{ $t(`notifications.filedReport.category`) }}:</strong>
+          {{ $t('report.reason.category.options.' + notificationData.filedReport.reasonCategory) }}
+          <br />
+          <strong>{{ $t(`notifications.filedReport.description`) }}:</strong>
+          <span
+            v-if="
+              notificationData.filedReport.reasonDescription &&
+              notificationData.filedReport.reasonDescription !== ''
+            "
+          >
+            {{ notificationData.filedReport.reasonDescription }}
+          </span>
+          <span v-else>
+            —
+          </span>
+        </div>
       </base-card>
     </nuxt-link>
   </article>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import { extractNotificationDataOfCurrentUser } from '~/components/utils/Notifications'
 import UserTeaser from '~/components/UserTeaser/UserTeaser'
 
 export default {
@@ -35,21 +67,11 @@ export default {
     },
   },
   computed: {
-    from() {
-      return this.notification.from
-    },
-    isComment() {
-      return this.from.__typename === 'Comment'
-    },
-    params() {
-      const post = this.isComment ? this.from.post : this.from
-      return {
-        id: post.id,
-        slug: post.slug,
-      }
-    },
-    hashParam() {
-      return this.isComment ? { hash: `#commentId-${this.from.id}` } : {}
+    ...mapGetters({
+      currentUser: 'auth/user',
+    }),
+    notificationData() {
+      return extractNotificationDataOfCurrentUser(this.notification, this.currentUser)
     },
   },
 }

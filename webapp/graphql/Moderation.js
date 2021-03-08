@@ -1,7 +1,6 @@
 import gql from 'graphql-tag'
 
 export const reportsListQuery = () => {
-  // no limit for the moment like before: "reports(first: 20, orderBy: createdAt_desc)"
   return gql`
     query(
       $orderBy: ReportOrdering

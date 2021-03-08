@@ -4,7 +4,7 @@
       v-for="notification in notifications"
       :key="notification.id"
       :notification="notification"
-      @read="markAsRead(notification.from.id)"
+      @read="markAsRead(notification.from.id || notification.from.reportId)"
     />
   </div>
 </template>

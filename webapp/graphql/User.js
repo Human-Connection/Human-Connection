@@ -61,6 +61,7 @@ export const minimisedUserQuery = () => {
   `
 }
 
+// properties have to be in all notifications queries, mutations, and subscriptions here the same !!!
 export const notificationQuery = (i18n) => {
   return gql`
     ${userFragment}
@@ -94,12 +95,42 @@ export const notificationQuery = (i18n) => {
               }
             }
           }
+          ... on FiledReport {
+            reportId
+            reasonCategory
+            reasonDescription
+            resource {
+              __typename
+              ... on User {
+                ...user
+              }
+              ... on Post {
+                ...post
+                author {
+                  ...user
+                }
+              }
+              ... on Comment {
+                ...comment
+                author {
+                  ...user
+                }
+                post {
+                  ...post
+                  author {
+                    ...user
+                  }
+                }
+              }
+            }
+          }
         }
       }
     }
   `
 }
 
+// properties have to be in all notifications queries, mutations, and subscriptions here the same !!!
 export const markAsReadMutation = (i18n) => {
   return gql`
     ${userFragment}
@@ -123,10 +154,42 @@ export const markAsReadMutation = (i18n) => {
           }
           ... on Comment {
             ...comment
+            author {
+              ...user
+            }
             post {
               ...post
               author {
                 ...user
+              }
+            }
+          }
+          ... on FiledReport {
+            reportId
+            reasonCategory
+            reasonDescription
+            resource {
+              __typename
+              ... on User {
+                ...user
+              }
+              ... on Post {
+                ...post
+                author {
+                  ...user
+                }
+              }
+              ... on Comment {
+                ...comment
+                author {
+                  ...user
+                }
+                post {
+                  ...post
+                  author {
+                    ...user
+                  }
+                }
               }
             }
           }
@@ -136,6 +199,7 @@ export const markAsReadMutation = (i18n) => {
   `
 }
 
+// properties have to be in all notifications queries, mutations, and subscriptions here the same !!!
 export const notificationAdded = () => {
   return gql`
     ${userFragment}
@@ -169,11 +233,41 @@ export const notificationAdded = () => {
               }
             }
           }
+          ... on FiledReport {
+            reportId
+            reasonCategory
+            reasonDescription
+            resource {
+              __typename
+              ... on User {
+                ...user
+              }
+              ... on Post {
+                ...post
+                author {
+                  ...user
+                }
+              }
+              ... on Comment {
+                ...comment
+                author {
+                  ...user
+                }
+                post {
+                  ...post
+                  author {
+                    ...user
+                  }
+                }
+              }
+            }
+          }
         }
       }
     }
   `
 }
+
 export const followUserMutation = (i18n) => {
   return gql`
     ${userFragment}

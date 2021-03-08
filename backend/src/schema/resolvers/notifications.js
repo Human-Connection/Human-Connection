@@ -2,6 +2,51 @@ import log from './helpers/databaseLogger'
 import { withFilter } from 'graphql-subscriptions'
 import { pubsub, NOTIFICATION_ADDED } from '../../server'
 
+const cypherReturnNotificationsWithCollectedResourceData = `
+  CALL apoc.case(
+    [
+      labels(resource)[0] = "Post", '
+        MATCH (resource)<-[:WROTE]-(author:User)
+        RETURN resource {.*, __typename: labels(resource)[0], author: properties(author)} AS finalResource
+      ',
+      labels(resource)[0] = "Comment", '
+        MATCH (author:User)-[:WROTE]->(resource)-[:COMMENTS]->(post:Post)<-[:WROTE]-(postAuthor:User)
+        RETURN resource {
+          .*, __typename: labels(resource)[0], author: properties(author), post: apoc.map.merge(properties(post), {
+            __typename: labels(post)[0],
+            author: properties(postAuthor)
+          })
+        } AS finalResource
+      ',
+      labels(resource)[0] = "Report", '
+        MATCH (reportedResource)<-[:BELONGS_TO]-(resource)<-[filed:FILED]-(user)
+
+        WITH user, filed, resource, reportedResource,
+          [(reportedResource)<-[:WROTE]-(author:User) | author {.*}] AS authors,
+          [(reportedResource)-[:COMMENTS]->(post:Post)<-[:WROTE]-(author:User) | post {.*, author: properties(author)} ] AS posts
+
+        RETURN {
+          __typename: "FiledReport",
+          reportId: resource.id,
+          createdAt: filed.createdAt,
+          reasonCategory: filed.reasonCategory,
+          reasonDescription: filed.reasonDescription,
+          resource: apoc.map.merge(properties(reportedResource), {
+            __typename: labels(reportedResource)[0],
+            author: authors[0],
+            post: posts[0]
+          })
+        } AS finalResource
+      '
+    ],
+    '',
+    {
+      resource: resource,
+      user: user
+    }) YIELD value
+    RETURN notification {.*, from: value.finalResource, to: properties(user)}
+`
+
 export default {
   Subscription: {
     notificationAdded: {
@@ -21,10 +66,10 @@ export default {
 
       switch (args.read) {
         case true:
-          whereClause = 'WHERE notification.read = TRUE'
+          whereClause = 'AND notification.read = TRUE'
           break
         case false:
-          whereClause = 'WHERE notification.read = FALSE'
+          whereClause = 'AND notification.read = FALSE'
           break
         default:
           whereClause = ''
@@ -42,24 +87,26 @@ export default {
       const offset = args.offset && typeof args.offset === 'number' ? `SKIP ${args.offset}` : ''
       const limit = args.first && typeof args.first === 'number' ? `LIMIT ${args.first}` : ''
 
-      const readTxResultPromise = session.readTransaction(async (transaction) => {
-        const notificationsTransactionResponse = await transaction.run(
-          ` 
-          MATCH (resource {deleted: false, disabled: false})-[notification:NOTIFIED]->(user:User {id:$id})
+      const cypher = `
+        MATCH (resource)-[notification:NOTIFIED]->(user:User {id:$id})
+        WHERE
+          ((labels(resource)[0] in ["Post", "Comment"] AND NOT resource.deleted AND NOT resource.disabled)
+          OR labels(resource)[0] in ["Report"])
           ${whereClause}
-          WITH user, notification, resource,
-          [(resource)<-[:WROTE]-(author:User) | author {.*}] AS authors,
-          [(resource)-[:COMMENTS]->(post:Post)<-[:WROTE]-(author:User) | post{.*, author: properties(author)} ] AS posts
-          WITH resource, user, notification, authors, posts,
-          resource {.*, __typename: labels(resource)[0], author: authors[0], post: posts[0]} AS finalResource
-          RETURN notification {.*, from: finalResource, to: properties(user)}
-          ${orderByClause}
-          ${offset} ${limit}
-          `,
-          { id: currentUser.id },
-        )
+        ${cypherReturnNotificationsWithCollectedResourceData}
+        ${orderByClause}
+        ${offset} ${limit}
+      `
+
+      const readTxResultPromise = session.readTransaction(async (transaction) => {
+        const notificationsTransactionResponse = await transaction.run(cypher, {
+          id: currentUser.id,
+        })
         log(notificationsTransactionResponse)
-        return notificationsTransactionResponse.records.map((record) => record.get('notification'))
+        const notifications = notificationsTransactionResponse.records.map((record) =>
+          record.get('notification'),
+        )
+        return notifications
       })
       try {
         const notifications = await readTxResultPromise
@@ -69,23 +116,23 @@ export default {
       }
     },
   },
+
   Mutation: {
-    markAsRead: async (parent, args, context, resolveInfo) => {
+    markAsRead: async (_parent, args, context, _resolveInfo) => {
       const { user: currentUser } = context
       const session = context.driver.session()
       const writeTxResultPromise = session.writeTransaction(async (transaction) => {
         const markNotificationAsReadTransactionResponse = await transaction.run(
           ` 
-            MATCH (resource {id: $resourceId})-[notification:NOTIFIED {read: FALSE}]->(user:User {id:$id})
+            MATCH (resource {id: $resourceId})-[notification:NOTIFIED {read: FALSE}]->(user:User {id: $id})
             SET notification.read = TRUE
-            WITH user, notification, resource,
-            [(resource)<-[:WROTE]-(author:User) | author {.*}] AS authors,
-            [(resource)-[:COMMENTS]->(post:Post)<-[:WROTE]-(author:User) | post{.*, author: properties(author)} ] AS posts
-            WITH resource, user, notification, authors, posts,
-            resource {.*, __typename: labels(resource)[0], author: authors[0], post: posts[0]} AS finalResource
-            RETURN notification {.*, from: finalResource, to: properties(user)}
+            WITH resource, notification, user
+            ${cypherReturnNotificationsWithCollectedResourceData}
           `,
-          { resourceId: args.id, id: currentUser.id },
+          {
+            resourceId: args.id,
+            id: currentUser.id,
+          },
         )
         log(markNotificationAsReadTransactionResponse)
         return markNotificationAsReadTransactionResponse.records.map((record) =>
@@ -93,8 +140,8 @@ export default {
         )
       })
       try {
-        const [notifications] = await writeTxResultPromise
-        return notifications
+        const [notification] = await writeTxResultPromise
+        return notification
       } finally {
         session.close()
       }
@@ -103,7 +150,7 @@ export default {
   NOTIFIED: {
     id: async (parent) => {
       // serialize an ID to help the client update the cache
-      return `${parent.reason}/${parent.from.id}/${parent.to.id}`
+      return `${parent.reason}/${parent.from.id || parent.from.reportId}/${parent.to.id}`
     },
   },
 }

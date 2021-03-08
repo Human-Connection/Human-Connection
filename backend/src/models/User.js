@@ -94,11 +94,35 @@ export default {
       createdAt: { type: 'string', isoDate: true, default: () => new Date().toISOString() },
     },
   },
-  notifications: {
+  notified: {
     type: 'relationship',
     relationship: 'NOTIFIED',
-    target: 'User',
+    target: ['Post', 'Comment'],
     direction: 'in',
+    properties: {
+      createdAt: {
+        type: 'string',
+        isoDate: true,
+        required: true,
+        default: () => new Date().toISOString(),
+      },
+      updatedAt: {
+        type: 'string',
+        isoDate: true,
+        required: true,
+        default: () => new Date().toISOString(),
+      },
+      read: { type: 'boolean', default: false },
+      reason: {
+        type: 'string',
+        valid: [
+          'mentioned_in_post',
+          'mentioned_in_comment',
+          'commented_on_post',
+          'filed_report_on_resource',
+        ],
+      },
+    },
   },
   termsAndConditionsAgreedVersion: {
     type: 'string',

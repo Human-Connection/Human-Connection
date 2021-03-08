@@ -1,28 +1,30 @@
-import { getDriver } from '../neo4j'
+import { getDriver } from '../../db/neo4j'
 
 export const description =
-  'We should not maintain obsolete attributes for users who have been deleted.'
+  'Create notifications for all old filed reports to all of their submitters.'
 
 export async function up(next) {
   const driver = getDriver()
   const session = driver.session()
   const transaction = session.beginTransaction()
   const updateDeletedUserAttributes = await transaction.run(`
-    MATCH (user:User)
-    WHERE user.deleted = TRUE
-    SET user.createdAt = 'UNAVAILABLE'
-    SET user.updatedAt = 'UNAVAILABLE'
-    SET user.lastActiveAt = 'UNAVAILABLE'
-    SET user.termsAndConditionsAgreedVersion = 'UNAVAILABLE'
-    SET user.avatar = null
-    SET user.coverImg = null
-    RETURN user {.*};
+    MATCH (submitter:User)-[filed:FILED]->(report:Report)
+    WHERE NOT (submitter)<-[:NOTIFIED]-(report)
+    CREATE (submitter)<-[notification:NOTIFIED]-(report)
+    SET notification.createdAt = filed.createdAt,
+      notification.updatedAt = notification.createdAt,
+      notification.read = FALSE,
+      notification.reason = 'filed_report_on_resource'
+    RETURN notification {.*};
   `)
+
   try {
     // Implement your migration here.
-    const users = await updateDeletedUserAttributes.records.map((record) => record.get('user'))
+    const notifications = await updateDeletedUserAttributes.records.map((record) =>
+      record.get('notification'),
+    )
     // eslint-disable-next-line no-console
-    console.log(users)
+    console.log(notifications)
     await transaction.commit()
     next()
   } catch (error) {

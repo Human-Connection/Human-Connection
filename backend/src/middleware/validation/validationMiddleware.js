@@ -60,10 +60,10 @@ const validateUpdatePost = async (resolve, root, args, context, info) => {
   return validatePost(resolve, root, args, context, info)
 }
 
-const validateReport = async (resolve, root, args, context, info) => {
+const validateFiledReport = async (resolve, root, args, context, info) => {
   const { resourceId } = args
   const { user } = context
-  if (resourceId === user.id) throw new Error('You cannot report yourself!')
+  if (resourceId === user.id) throw new Error("You can't file a report about yourself!")
   return resolve(root, args, context, info)
 }
 
@@ -141,7 +141,7 @@ export default {
     CreatePost: validatePost,
     UpdatePost: validateUpdatePost,
     UpdateUser: validateUpdateUser,
-    fileReport: validateReport,
+    fileReport: validateFiledReport,
     review: validateReview,
   },
 }

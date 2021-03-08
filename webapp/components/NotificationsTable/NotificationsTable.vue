@@ -1,54 +1,77 @@
 <template>
-  <ds-table v-if="notifications && notifications.length" :data="notifications" :fields="fields">
+  <ds-table
+    v-if="notificationsData && notificationsData.length"
+    :data="notificationsData"
+    :fields="fields"
+  >
     <template #icon="scope">
       <base-icon
-        v-if="scope.row.from.post"
-        name="comment"
-        v-tooltip="{ content: $t('notifications.comment'), placement: 'right' }"
-      />
-      <base-icon
-        v-else
-        name="bookmark"
-        v-tooltip="{ content: $t('notifications.post'), placement: 'right' }"
-      />
-    </template>
-    <template #user="scope">
-      <ds-space margin-bottom="base">
-        <client-only>
-          <user-teaser
-            :user="scope.row.from.author"
-            :date-time="scope.row.from.createdAt"
-            :class="{ 'notification-status': scope.row.read }"
-          />
-        </client-only>
-      </ds-space>
-      <ds-text :class="{ 'notification-status': scope.row.read, reason: true }">
-        {{ $t(`notifications.reason.${scope.row.reason}`) }}
-      </ds-text>
-    </template>
-    <template #post="scope">
-      <nuxt-link
-        class="notification-mention-post"
+        :name="scope.row.iconName"
+        v-tooltip="{ content: $t(scope.row.iconTooltip), placement: 'right' }"
         :class="{ 'notification-status': scope.row.read }"
-        :to="{
-          name: 'post-id-slug',
-          params: params(scope.row.from),
-          hash: hashParam(scope.row.from),
-        }"
-        @click.native="markNotificationAsRead(scope.row.from.id)"
+      />
+    </template>
+    <template #triggerer="scope">
+      <ds-text :class="{ 'notification-status': scope.row.read, reason: true }">
+        {{ $t(`notifications.reason.${scope.row.reason}` + scope.row.reasonTranslationExtention) }}
+      </ds-text>
+      <client-only>
+        <user-teaser
+          :user="scope.row.triggerer"
+          :date-time="scope.row.createdAt"
+          :class="{ 'notification-status': scope.row.read }"
+        />
+      </client-only>
+    </template>
+    <template #title="scope">
+      <nuxt-link
+        data-test="notification-title-link"
+        :class="{ 'notification-status': scope.row.read }"
+        :to="scope.row.linkTo"
+        @click.native="markNotificationAsRead(scope.row.notificationSourceId)"
       >
-        <b>{{ scope.row.from.title || scope.row.from.post.title | truncate(50) }}</b>
+        <b>{{ scope.row.title | truncate(50) }}</b>
       </nuxt-link>
     </template>
-    <template #content="scope">
-      <b :class="{ 'notification-status': scope.row.read }">
-        {{ scope.row.from.contentExcerpt | removeHtml }}
-      </b>
+    <template #metadata="scope">
+      <div v-if="scope.row.isUser" :class="{ 'notification-status': scope.row.read }">
+        <user-teaser :user="scope.row.user" />
+      </div>
+      <div v-else-if="scope.row.contentExcerpt" :class="{ 'notification-status': scope.row.read }">
+        <span v-if="scope.row.isComment" class="notification-content-header-text">
+          {{ $t(`notifications.comment`) }}:
+        </span>
+        {{ scope.row.contentExcerpt | removeHtml }}
+      </div>
+      <div v-if="scope.row.isReport" :class="{ 'notification-status': scope.row.read }">
+        <ds-space margin-bottom="x-small" />
+        <span class="notification-content-header-text">
+          {{ $t(`notifications.filedReport.category`) }}:
+        </span>
+        {{ $t('report.reason.category.options.' + scope.row.filedReport.reasonCategory) }}
+        <br />
+        <span class="notification-content-header-text">
+          {{ $t(`notifications.filedReport.description`) }}:
+        </span>
+        <span
+          v-if="
+            scope.row.filedReport.reasonDescription &&
+            scope.row.filedReport.reasonDescription !== ''
+          "
+        >
+          {{ scope.row.filedReport.reasonDescription }}
+        </span>
+        <span v-else>
+          —
+        </span>
+      </div>
     </template>
   </ds-table>
   <hc-empty v-else icon="alert" :message="$t('notifications.empty')" />
 </template>
 <script>
+import { mapGetters } from 'vuex'
+import { extractNotificationDataOfCurrentUser } from '~/components/utils/Notifications'
 import UserTeaser from '~/components/UserTeaser/UserTeaser'
 import HcEmpty from '~/components/Empty/Empty'
 
@@ -61,41 +84,36 @@ export default {
     notifications: { type: Array, default: () => [] },
   },
   computed: {
+    ...mapGetters({
+      currentUser: 'auth/user',
+    }),
     fields() {
       return {
         icon: {
           label: ' ',
-          width: '5',
+          width: '3%',
         },
-        user: {
-          label: this.$t('notifications.user'),
-          width: '45%',
-        },
-        post: {
-          label: this.$t('notifications.post'),
+        triggerer: {
+          label: ' ',
           width: '25%',
         },
-        content: {
-          label: this.$t('notifications.content'),
+        title: {
+          label: ' ',
           width: '25%',
+        },
+        metadata: {
+          label: ' ',
+          width: '47%',
         },
       }
+    },
+    notificationsData() {
+      return this.notifications.map((notification) =>
+        extractNotificationDataOfCurrentUser(notification, this.currentUser),
+      )
     },
   },
   methods: {
-    isComment(notificationSource) {
-      return notificationSource.__typename === 'Comment'
-    },
-    params(notificationSource) {
-      const post = this.isComment(notificationSource) ? notificationSource.post : notificationSource
-      return {
-        id: post.id,
-        slug: post.slug,
-      }
-    },
-    hashParam(notificationSource) {
-      return this.isComment(notificationSource) ? `#commentId-${notificationSource.id}` : ''
-    },
     markNotificationAsRead(notificationSourceId) {
       this.$emit('markNotificationAsRead', notificationSourceId)
     },
@@ -105,5 +123,9 @@ export default {
 <style lang="scss">
 .notification-status {
   opacity: $opacity-soft;
+}
+.notification-content-header-text {
+  font-weight: 700;
+  margin-right: 0.1rem;
 }
 </style>

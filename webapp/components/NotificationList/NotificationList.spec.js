@@ -3,7 +3,7 @@ import NotificationList from './NotificationList'
 import Notification from '../Notification/Notification'
 import Vuex from 'vuex'
 
-import { notifications } from '~/components/utils/Notifications'
+import { testNotifications } from '~/components/utils/Notifications'
 
 const localVue = global.localVue
 
@@ -30,11 +30,14 @@ describe('NotificationList.vue', () => {
     })
     mocks = {
       $t: jest.fn(),
+      $i18n: {
+        locale: () => 'en',
+      },
     }
     stubs = {
       NuxtLink: RouterLinkStub,
     }
-    propsData = { notifications }
+    propsData = { notifications: testNotifications }
   })
 
   describe('shallowMount', () => {
@@ -52,7 +55,7 @@ describe('NotificationList.vue', () => {
     })
 
     it('renders Notification.vue for each notification of the user', () => {
-      expect(wrapper.findAll(Notification)).toHaveLength(2)
+      expect(wrapper.findAll(Notification)).toHaveLength(5)
     })
   })
 
@@ -71,12 +74,12 @@ describe('NotificationList.vue', () => {
       wrapper = Wrapper()
     })
 
-    describe('click on a notification', () => {
+    describe("emit 'read' like as clicked on a notification", () => {
       beforeEach(() => {
-        wrapper.find('.notification > .link').trigger('click')
+        wrapper.find(Notification).vm.$emit('read')
       })
 
-      it("emits 'markAsRead' with the id of the notification source", () => {
+      it("emits 'markAsRead' with the id of the notification source if 'read' was emited", () => {
         expect(wrapper.emitted('markAsRead')[0]).toEqual(['post-1'])
       })
     })

@@ -1,13 +1,12 @@
 import { gql } from '../../helpers/jest'
-import { cleanDatabase } from '../../db/factories'
+import Factory, { cleanDatabase } from '../../db/factories'
 import { createTestClient } from 'apollo-server-testing'
-import { getNeode, getDriver } from '../../db/neo4j'
+import { getDriver } from '../../db/neo4j'
 import createServer, { pubsub } from '../../server'
 
 let server, query, mutate, notifiedUser, authenticatedUser
 let publishSpy
 const driver = getDriver()
-const neode = getNeode()
 const categoryIds = ['cat9']
 const createPostMutation = gql`
   mutation($id: ID, $title: String!, $postContent: String!, $categoryIds: [ID]!) {
@@ -34,6 +33,17 @@ const createCommentMutation = gql`
     }
   }
 `
+const fileReportMutation = gql`
+  mutation($resourceId: ID!, $reasonCategory: ReasonCategory!, $reasonDescription: String!) {
+    fileReport(
+      resourceId: $resourceId
+      reasonCategory: $reasonCategory
+      reasonDescription: $reasonDescription
+    ) {
+      reportId
+    }
+  }
+`
 
 beforeAll(async () => {
   await cleanDatabase()
@@ -42,7 +52,6 @@ beforeAll(async () => {
     context: () => {
       return {
         user: authenticatedUser,
-        neode: neode,
         driver,
       }
     },
@@ -55,8 +64,14 @@ beforeAll(async () => {
 
 beforeEach(async () => {
   publishSpy.mockClear()
-  notifiedUser = await neode.create(
-    'User',
+  await Factory.build('category', {
+    id: 'cat9',
+    name: 'Democracy & Politics',
+    slug: 'democracy-politics',
+    icon: 'university',
+  })
+  notifiedUser = await Factory.build(
+    'user',
     {
       id: 'you',
       name: 'Al Capone',
@@ -67,11 +82,7 @@ beforeEach(async () => {
       password: '1234',
     },
   )
-  await neode.create('Category', {
-    id: 'cat9',
-    name: 'Democracy & Politics',
-    icon: 'university',
-  })
+  authenticatedUser = await notifiedUser.toJson()
 })
 
 afterEach(async () => {
@@ -79,12 +90,12 @@ afterEach(async () => {
 })
 
 describe('notifications', () => {
-  const notificationQuery = gql`
+  const notificationsQuery = gql`
     query($read: Boolean) {
       notifications(read: $read, orderBy: updatedAt_desc) {
+        createdAt
         read
         reason
-        createdAt
         from {
           __typename
           ... on Post {
@@ -95,10 +106,63 @@ describe('notifications', () => {
             id
             content
           }
+          ... on FiledReport {
+            reportId
+            reasonCategory
+            reasonDescription
+            resource {
+              __typename
+              ... on User {
+                id
+                name
+              }
+              ... on Post {
+                id
+                content
+              }
+              ... on Comment {
+                id
+                content
+              }
+            }
+          }
         }
       }
     }
   `
+
+  let title
+  let postContent
+  let postAuthor
+  const createPostAction = async () => {
+    authenticatedUser = await postAuthor.toJson()
+    await mutate({
+      mutation: createPostMutation,
+      variables: {
+        id: 'p47',
+        title,
+        postContent,
+        categoryIds,
+      },
+    })
+    authenticatedUser = await notifiedUser.toJson()
+  }
+
+  let commentContent
+  let commentAuthor
+  const createCommentOnPostAction = async () => {
+    await createPostAction()
+    authenticatedUser = await commentAuthor.toJson()
+    await mutate({
+      mutation: createCommentMutation,
+      variables: {
+        id: 'c47',
+        postId: 'p47',
+        commentContent,
+      },
+    })
+    authenticatedUser = await notifiedUser.toJson()
+  }
 
   describe('authenticated', () => {
     beforeEach(async () => {
@@ -106,40 +170,6 @@ describe('notifications', () => {
     })
 
     describe('given another user', () => {
-      let title
-      let postContent
-      let postAuthor
-
-      const createPostAction = async () => {
-        authenticatedUser = await postAuthor.toJson()
-        await mutate({
-          mutation: createPostMutation,
-          variables: {
-            id: 'p47',
-            title,
-            postContent,
-            categoryIds,
-          },
-        })
-        authenticatedUser = await notifiedUser.toJson()
-      }
-
-      let commentContent
-      let commentAuthor
-      const createCommentOnPostAction = async () => {
-        await createPostAction()
-        authenticatedUser = await commentAuthor.toJson()
-        await mutate({
-          mutation: createCommentMutation,
-          variables: {
-            id: 'c47',
-            postId: 'p47',
-            commentContent,
-          },
-        })
-        authenticatedUser = await notifiedUser.toJson()
-      }
-
       describe('comments on my post', () => {
         beforeEach(async () => {
           title = 'My post'
@@ -150,8 +180,8 @@ describe('notifications', () => {
         describe('commenter is not me', () => {
           beforeEach(async () => {
             commentContent = 'Commenters comment.'
-            commentAuthor = await neode.create(
-              'User',
+            commentAuthor = await Factory.build(
+              'user',
               {
                 id: 'commentAuthor',
                 name: 'Mrs Comment',
@@ -184,7 +214,7 @@ describe('notifications', () => {
             })
             await expect(
               query({
-                query: notificationQuery,
+                query: notificationsQuery,
                 variables: {
                   read: false,
                 },
@@ -201,7 +231,7 @@ describe('notifications', () => {
 
             await expect(
               query({
-                query: notificationQuery,
+                query: notificationsQuery,
                 variables: {
                   read: false,
                 },
@@ -225,7 +255,7 @@ describe('notifications', () => {
 
             await expect(
               query({
-                query: notificationQuery,
+                query: notificationsQuery,
                 variables: {
                   read: false,
                 },
@@ -236,15 +266,15 @@ describe('notifications', () => {
       })
 
       beforeEach(async () => {
-        postAuthor = await neode.create(
-          'User',
+        postAuthor = await Factory.build(
+          'user',
           {
             id: 'postAuthor',
             name: 'Mrs Post',
             slug: 'mrs-post',
           },
           {
-            email: 'post-author@example.org',
+            email: 'mrs-post-author@example.org',
             password: '1234',
           },
         )
@@ -264,7 +294,7 @@ describe('notifications', () => {
             'Hey <a class="mention" data-mention-id="you" href="/profile/you/al-capone" target="_blank">@al-capone</a> how do you do?'
           await expect(
             query({
-              query: notificationQuery,
+              query: notificationsQuery,
               variables: {
                 read: false,
               },
@@ -356,7 +386,7 @@ describe('notifications', () => {
             })
             await expect(
               query({
-                query: notificationQuery,
+                query: notificationsQuery,
                 variables: {
                   read: false,
                 },
@@ -385,7 +415,7 @@ describe('notifications', () => {
                     notifications: [{ read: readBefore }],
                   },
                 } = await query({
-                  query: notificationQuery,
+                  query: notificationsQuery,
                 })
                 await updatePostAction()
                 const {
@@ -393,7 +423,7 @@ describe('notifications', () => {
                     notifications: [{ read: readAfter }],
                   },
                 } = await query({
-                  query: notificationQuery,
+                  query: notificationsQuery,
                 })
                 expect(readBefore).toEqual(true)
                 expect(readAfter).toEqual(false)
@@ -407,7 +437,7 @@ describe('notifications', () => {
                     notifications: [{ createdAt: createdAtBefore }],
                   },
                 } = await query({
-                  query: notificationQuery,
+                  query: notificationsQuery,
                 })
                 await updatePostAction()
                 const {
@@ -415,7 +445,7 @@ describe('notifications', () => {
                     notifications: [{ createdAt: createdAtAfter }],
                   },
                 } = await query({
-                  query: notificationQuery,
+                  query: notificationsQuery,
                 })
                 expect(createdAtBefore).toBeTruthy()
                 expect(Date.parse(createdAtBefore)).toEqual(expect.any(Number))
@@ -440,7 +470,7 @@ describe('notifications', () => {
 
             await expect(
               query({
-                query: notificationQuery,
+                query: notificationsQuery,
                 variables: {
                   read: false,
                 },
@@ -465,8 +495,8 @@ describe('notifications', () => {
           beforeEach(async () => {
             commentContent =
               'One mention about me with <a data-mention-id="you" class="mention" href="/profile/you" target="_blank">@al-capone</a>.'
-            commentAuthor = await neode.create(
-              'User',
+            commentAuthor = await Factory.build(
+              'user',
               {
                 id: 'commentAuthor',
                 name: 'Mrs Comment',
@@ -480,15 +510,15 @@ describe('notifications', () => {
           })
 
           it('sends only one notification with reason mentioned_in_comment', async () => {
-            postAuthor = await neode.create(
-              'User',
+            postAuthor = await Factory.build(
+              'user',
               {
                 id: 'MrPostAuthor',
                 name: 'Mr Author',
                 slug: 'mr-author',
               },
               {
-                email: 'post-author@example.org',
+                email: 'mr-post-author@example.org',
                 password: '1234',
               },
             )
@@ -513,7 +543,7 @@ describe('notifications', () => {
 
             await expect(
               query({
-                query: notificationQuery,
+                query: notificationsQuery,
                 variables: {
                   read: false,
                 },
@@ -526,6 +556,7 @@ describe('notifications', () => {
             postContent = 'Content of post where I get mentioned in a comment.'
             postAuthor = notifiedUser
           })
+
           it('sends only one notification with reason commented_on_post, no notification with reason mentioned_in_comment', async () => {
             await createCommentOnPostAction()
             const expected = {
@@ -547,7 +578,7 @@ describe('notifications', () => {
 
             await expect(
               query({
-                query: notificationQuery,
+                query: notificationsQuery,
                 variables: {
                   read: false,
                 },
@@ -561,8 +592,8 @@ describe('notifications', () => {
             await postAuthor.relateTo(notifiedUser, 'blocked')
             commentContent =
               'One mention about me with <a data-mention-id="you" class="mention" href="/profile/you" target="_blank">@al-capone</a>.'
-            commentAuthor = await neode.create(
-              'User',
+            commentAuthor = await Factory.build(
+              'user',
               {
                 id: 'commentAuthor',
                 name: 'Mrs Comment',
@@ -579,7 +610,7 @@ describe('notifications', () => {
             await createCommentOnPostAction()
             await expect(
               query({
-                query: notificationQuery,
+                query: notificationsQuery,
                 variables: {
                   read: false,
                 },
@@ -604,6 +635,192 @@ describe('notifications', () => {
               }),
             )
             expect(publishSpy).toHaveBeenCalledTimes(1)
+          })
+        })
+      })
+    })
+
+    describe('given I file a report on a', () => {
+      let resourceId, reportFiler, reportedUserOrAuthorData, expectedMeAsNotifiedForFilingReport
+      const reasonCategory = 'discrimination_etc'
+      const reasonDescription = 'I am free to be gay !!!'
+      const fileReportAction = async () => {
+        authenticatedUser = await reportFiler.toJson()
+        await mutate({
+          mutation: fileReportMutation,
+          variables: {
+            resourceId,
+            reasonCategory,
+            reasonDescription,
+          },
+        })
+        authenticatedUser = await notifiedUser.toJson()
+      }
+      const setExpectedNotificationOfReportedResource = (resource) => {
+        return expect.objectContaining({
+          data: {
+            notifications: [
+              {
+                createdAt: expect.any(String),
+                read: false,
+                reason: 'filed_report_on_resource',
+                from: {
+                  __typename: 'FiledReport',
+                  reportId: expect.any(String),
+                  reasonCategory: 'discrimination_etc',
+                  reasonDescription: 'I am free to be gay !!!',
+                  resource,
+                },
+              },
+            ],
+          },
+        })
+      }
+
+      beforeEach(async () => {
+        reportFiler = notifiedUser
+        reportedUserOrAuthorData = {
+          userProperties: {
+            id: 'reportedUser',
+            name: 'Mrs Badman',
+            slug: 'mrs-badman',
+          },
+          emailProperties: {
+            email: 'reported-user@example.org',
+            password: '1234',
+          },
+        }
+        expectedMeAsNotifiedForFilingReport = expect.objectContaining({
+          notificationAdded: expect.objectContaining({
+            reason: 'filed_report_on_resource',
+            to: expect.objectContaining({
+              id: 'you',
+            }),
+          }),
+        })
+      })
+
+      describe('user', () => {
+        beforeEach(async () => {
+          await Factory.build(
+            'user',
+            reportedUserOrAuthorData.userProperties,
+            reportedUserOrAuthorData.emailProperties,
+          )
+          resourceId = reportedUserOrAuthorData.userProperties.id
+          await fileReportAction()
+        })
+
+        it('sends me a notification for filing a report on a user', async () => {
+          const expected = setExpectedNotificationOfReportedResource({
+            __typename: 'User',
+            id: 'reportedUser',
+            name: 'Mrs Badman',
+          })
+          const { query } = createTestClient(server)
+          await expect(
+            query({
+              query: notificationsQuery,
+              variables: {
+                read: false,
+              },
+            }),
+          ).resolves.toEqual(expected)
+        })
+
+        it('does publish `NOTIFICATION_ADDED` to authenticated user', async () => {
+          expect(publishSpy).toHaveBeenCalledWith(
+            'NOTIFICATION_ADDED',
+            expectedMeAsNotifiedForFilingReport,
+          )
+        })
+      })
+
+      describe('post or comment', () => {
+        beforeEach(async () => {
+          title = 'My post'
+          postContent = 'My post content.'
+          postAuthor = await Factory.build(
+            'user',
+            reportedUserOrAuthorData.userProperties,
+            reportedUserOrAuthorData.emailProperties,
+          )
+        })
+
+        describe('post', () => {
+          beforeEach(async () => {
+            await createPostAction()
+            resourceId = 'p47'
+            await fileReportAction()
+          })
+
+          it('sends me a notification for filing a report on a post', async () => {
+            const expected = setExpectedNotificationOfReportedResource({
+              __typename: 'Post',
+              id: 'p47',
+              content: postContent,
+            })
+            const { query } = createTestClient(server)
+            await expect(
+              query({
+                query: notificationsQuery,
+                variables: {
+                  read: false,
+                },
+              }),
+            ).resolves.toEqual(expected)
+          })
+
+          it('does publish `NOTIFICATION_ADDED` to authenticated user', async () => {
+            expect(publishSpy).toHaveBeenCalledWith(
+              'NOTIFICATION_ADDED',
+              expectedMeAsNotifiedForFilingReport,
+            )
+          })
+        })
+
+        describe('comment', () => {
+          beforeEach(async () => {
+            commentContent = "Commenter's comment."
+            commentAuthor = await Factory.build(
+              'user',
+              {
+                id: 'commentAuthor',
+                name: 'Mrs Comment',
+                slug: 'mrs-comment',
+              },
+              {
+                email: 'commentauthor@example.org',
+                password: '1234',
+              },
+            )
+            await createCommentOnPostAction()
+            resourceId = 'c47'
+            await fileReportAction()
+          })
+
+          it('sends me a notification for filing a report on a comment', async () => {
+            const expected = setExpectedNotificationOfReportedResource({
+              __typename: 'Comment',
+              id: 'c47',
+              content: commentContent,
+            })
+            const { query } = createTestClient(server)
+            await expect(
+              query({
+                query: notificationsQuery,
+                variables: {
+                  read: false,
+                },
+              }),
+            ).resolves.toEqual(expected)
+          })
+
+          it('does publish `NOTIFICATION_ADDED` to authenticated user', async () => {
+            expect(publishSpy).toHaveBeenCalledWith(
+              'NOTIFICATION_ADDED',
+              expectedMeAsNotifiedForFilingReport,
+            )
           })
         })
       })

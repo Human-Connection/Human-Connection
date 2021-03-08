@@ -1,14 +1,14 @@
 type NOTIFIED {
   id: ID!
-  from: NotificationSource
-  to: User
   createdAt: String!
   updatedAt: String!
-  read: Boolean
-  reason: NotificationReason
+  read: Boolean!
+  reason: NotificationReason!
+  from: NotificationSource!
+  to: User!
 }
 
-union NotificationSource = Post | Comment
+union NotificationSource = Post | Comment | FiledReport
 
 enum NotificationOrdering {
   createdAt_asc
@@ -18,9 +18,10 @@ enum NotificationOrdering {
 }
 
 enum NotificationReason {
+  commented_on_post
+  filed_report_on_resource
   mentioned_in_post
   mentioned_in_comment
-  commented_on_post
 }
 
 type Query {

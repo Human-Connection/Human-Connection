@@ -63,7 +63,7 @@ describe('Notification', () => {
 
     it('renders reason', () => {
       wrapper = Wrapper()
-      expect(wrapper.find('.notification > .description').text()).toEqual(
+      expect(wrapper.find('[data-test="reason-text"]').text()).toEqual(
         'notifications.reason.commented_on_post',
       )
     })
@@ -113,7 +113,7 @@ describe('Notification', () => {
 
     it('renders reason', () => {
       wrapper = Wrapper()
-      expect(wrapper.find('.notification > .description').text()).toEqual(
+      expect(wrapper.find('[data-test="reason-text"]').text()).toEqual(
         'notifications.reason.mentioned_in_post',
       )
     })
@@ -163,10 +163,11 @@ describe('Notification', () => {
 
     it('renders reason', () => {
       wrapper = Wrapper()
-      expect(wrapper.find('.notification > .description').text()).toEqual(
+      expect(wrapper.find('[data-test="reason-text"]').text()).toEqual(
         'notifications.reason.mentioned_in_comment',
       )
     })
+
     it('renders title', () => {
       wrapper = Wrapper()
       expect(wrapper.text()).toContain("It's a post title")
@@ -183,6 +184,69 @@ describe('Notification', () => {
     })
 
     it('has no class "--read"', () => {
+      wrapper = Wrapper()
+      expect(wrapper.classes()).not.toContain('--read')
+    })
+
+    describe('that is read', () => {
+      beforeEach(() => {
+        propsData.notification.read = true
+        wrapper = Wrapper()
+      })
+
+      it('has class "--read"', () => {
+        expect(wrapper.classes()).toContain('--read')
+      })
+    })
+  })
+
+  describe('given a notification about the user has filed a report', () => {
+    beforeEach(() => {
+      propsData.notification = {
+        reason: 'filed_report_on_resource',
+        from: {
+          __typename: 'FiledReport',
+          reportId: 'reportOnUser',
+          reasonCategory: 'discrimination_etc',
+          reasonDescription: 'This user is harassing me with bigoted remarks!',
+          resource: {
+            __typename: 'User',
+            id: 'badWomen',
+            slug: 'mrs.-badwomen',
+            name: 'Mrs. Badwomen',
+          },
+        },
+      }
+    })
+
+    it('renders reason', () => {
+      wrapper = Wrapper()
+      expect(wrapper.find('[data-test="reason-text"]').text()).toEqual(
+        'notifications.reason.filed_report_on_resource.user',
+      )
+    })
+
+    it('renders title', () => {
+      wrapper = Wrapper()
+      expect(wrapper.text()).toContain('Mrs. Badwomen')
+    })
+
+    it('renders the reported users slug', () => {
+      wrapper = Wrapper()
+      expect(wrapper.text()).toContain('@mrs.-badwomen')
+    })
+
+    it('renders the identifier "notifications.filedReport.category"', () => {
+      wrapper = Wrapper()
+      expect(wrapper.text()).toContain('notifications.filedReport.category')
+    })
+
+    it('renders the identifier "notifications.filedReport.description"', () => {
+      wrapper = Wrapper()
+      expect(wrapper.text()).toContain('notifications.filedReport.description')
+    })
+
+    it('has no class "read"', () => {
       wrapper = Wrapper()
       expect(wrapper.classes()).not.toContain('--read')
     })

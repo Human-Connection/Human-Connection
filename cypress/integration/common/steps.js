@@ -388,7 +388,7 @@ Then("I can login successfully with password {string}", password => {
 
 When("open the notification menu and click on the first item", () => {
   cy.get(".notifications-menu").invoke('show').click(); // "invoke('show')" because of the delay for show the menu
-  cy.get(".notification .link")
+  cy.get(".notification .base-card")
     .first()
     .click({
       force: true

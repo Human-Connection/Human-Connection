@@ -1,3 +1,4 @@
+import log from '../../schema/resolvers/helpers/databaseLogger'
 import extractMentionedUsers from './mentions/extractMentionedUsers'
 import { validateNotifyUsers } from '../validation/validationMiddleware'
 import { pubsub, NOTIFICATION_ADDED } from '../../server'
@@ -8,6 +9,8 @@ const publishNotifications = async (...promises) => {
     .flat()
     .forEach((notificationAdded) => pubsub.publish(NOTIFICATION_ADDED, { notificationAdded }))
 }
+
+const debug = require('debug')('human-connection-backend:notificationsMiddleware')
 
 const handleContentDataOfPost = async (resolve, root, args, context, resolveInfo) => {
   const idsOfUsers = extractMentionedUsers(args.content)
@@ -47,6 +50,8 @@ const postAuthorOfComment = async (commentId, { context }) => {
       )
     })
     return postAuthorId.records.map((record) => record.get('authorId'))
+  } catch (error) {
+    debug(error)
   } finally {
     session.close()
   }
@@ -70,13 +75,13 @@ const notifyUsersOfMention = async (label, id, idsOfUsers, reason, context) => {
     }
     case 'mentioned_in_comment': {
       mentionedCypher = `
-      MATCH (postAuthor: User)-[:WROTE]->(post: Post)<-[:COMMENTS]-(comment: Comment { id: $id })<-[:WROTE]-(commenter: User)
-      MATCH (user: User)
-      WHERE user.id in $idsOfUsers
-      AND NOT (user)-[:BLOCKED]-(commenter)
-      AND NOT (user)-[:BLOCKED]-(postAuthor)
-      MERGE (comment)-[notification:NOTIFIED {reason: $reason}]->(user)
-      WITH comment AS resource, notification, user
+        MATCH (postAuthor: User)-[:WROTE]->(post: Post)<-[:COMMENTS]-(comment: Comment { id: $id })<-[:WROTE]-(author: User)
+        MATCH (user: User)
+        WHERE user.id in $idsOfUsers
+        AND NOT (user)-[:BLOCKED]-(author)
+        AND NOT (user)-[:BLOCKED]-(postAuthor)
+        MERGE (comment)-[notification:NOTIFIED {reason: $reason}]->(user)
+        WITH comment AS resource, notification, user
       `
       break
     }
@@ -94,18 +99,19 @@ const notifyUsersOfMention = async (label, id, idsOfUsers, reason, context) => {
   `
   const session = context.driver.session()
   const writeTxResultPromise = session.writeTransaction(async (transaction) => {
-    const notificationTransactionResponse = await transaction.run(mentionedCypher, {
+    const notificationsTransactionResponse = await transaction.run(mentionedCypher, {
       id,
       idsOfUsers,
       reason,
     })
-    return notificationTransactionResponse.records.map((record) => record.get('notification'))
+    log(notificationsTransactionResponse)
+    return notificationsTransactionResponse.records.map((record) => record.get('notification'))
   })
   try {
     const notifications = await writeTxResultPromise
     return notifications
   } catch (error) {
-    throw new Error(error)
+    debug(error)
   } finally {
     session.close()
   }
@@ -116,7 +122,7 @@ const notifyUsersOfComment = async (label, commentId, postAuthorId, reason, cont
   await validateNotifyUsers(label, reason)
   const session = context.driver.session()
   const writeTxResultPromise = await session.writeTransaction(async (transaction) => {
-    const notificationTransactionResponse = await transaction.run(
+    const notificationsTransactionResponse = await transaction.run(
       `
       MATCH (postAuthor:User {id: $postAuthorId})-[:WROTE]->(post:Post)<-[:COMMENTS]-(comment:Comment { id: $commentId })<-[:WROTE]-(commenter:User)
       WHERE NOT (postAuthor)-[:BLOCKED]-(commenter)
@@ -130,11 +136,72 @@ const notifyUsersOfComment = async (label, commentId, postAuthorId, reason, cont
     `,
       { commentId, postAuthorId, reason },
     )
-    return notificationTransactionResponse.records.map((record) => record.get('notification'))
+    log(notificationsTransactionResponse)
+    return notificationsTransactionResponse.records.map((record) => record.get('notification'))
   })
   try {
     const notifications = await writeTxResultPromise
     return notifications
+  } catch (error) {
+    debug(error)
+  } finally {
+    session.close()
+  }
+}
+
+const handleFileReport = async (resolve, root, args, context, resolveInfo) => {
+  const filedReport = await resolve(root, args, context, resolveInfo)
+
+  if (filedReport) {
+    const { reportId } = filedReport
+    const { resourceId } = args
+    await publishNotifications(notifyReportFiler(reportId, resourceId, context))
+  }
+
+  return filedReport
+}
+
+const notifyReportFiler = async (reportId, resourceId, context) => {
+  const { driver, user } = context
+  const session = driver.session()
+  const writeTxResultPromise = await session.writeTransaction(async (transaction) => {
+    const notificationsTransactionResponse = await transaction.run(
+      `
+        MATCH (resource {id: $resourceId})<-[:BELONGS_TO]-(report:Report {id: $reportId})<-[filed:FILED]-(submitter:User {id: $submitterId})
+        WHERE resource: User OR resource: Post OR resource: Comment
+        MERGE (report)-[notification:NOTIFIED {reason: $reason}]->(submitter)
+        ON CREATE SET notification.createdAt = toString(datetime()), notification.updatedAt = notification.createdAt
+        ON MATCH SET notification.updatedAt = toString(datetime())
+        SET notification.read = FALSE
+        WITH notification, submitter,
+          {
+            __typename: "FiledReport",
+            reportId: report.id,
+            createdAt: filed.createdAt,
+            reasonCategory: filed.reasonCategory,
+            reasonDescription: filed.reasonDescription,
+            resource: apoc.map.merge(properties(resource), {
+              __typename: labels(resource)[0]
+            })
+          } AS finalResource
+        RETURN notification {.*, from: finalResource, to: properties(submitter)} 
+      `,
+      {
+        reportId,
+        resourceId,
+        submitterId: user.id,
+        reason: 'filed_report_on_resource',
+      },
+    )
+    log(notificationsTransactionResponse)
+    return notificationsTransactionResponse.records.map((record) => record.get('notification'))
+  })
+  try {
+    const [notification] = await writeTxResultPromise
+    if (notification) return [notification]
+    else throw new Error(`Notification for filing a report could not be send!`)
+  } catch (error) {
+    debug(error)
   } finally {
     session.close()
   }
@@ -146,5 +213,6 @@ export default {
     UpdatePost: handleContentDataOfPost,
     CreateComment: handleContentDataOfComment,
     UpdateComment: handleContentDataOfComment,
+    fileReport: handleFileReport,
   },
 }

@@ -449,7 +449,12 @@
   "notifications": {
     "comment": "Kommentar",
     "content": "Inhalt",
-    "empty": "Bedaure, Du hast momentan keinerlei Benachrichtigungen.",
+    "empty": "Bedaure, du hast momentan keinerlei Benachrichtigungen.",
+    "filedReport": {
+      "category": "Kategorie der Meldung",
+      "description": "Beschreibung",
+      "name": "Gesendete Meldung"
+    },
     "filterLabel": {
       "all": "Alle",
       "read": "Gelesen",
@@ -458,9 +463,14 @@
     "pageLink": "Alle Benachrichtigungen",
     "post": "Beitrag",
     "reason": {
-      "commented_on_post": "Hat Deinen Beitrag kommentiert …",
-      "mentioned_in_comment": "Hat Dich in einem Kommentar erwähnt …",
-      "mentioned_in_post": "Hat Dich in einem Beitrag erwähnt …"
+      "commented_on_post": "Hat deinen Beitrag kommentiert …",
+      "filed_report_on_resource": {
+        "comment": "Du hast einen Kommentar gemeldet …",
+        "post": "Du hast einen Beitrag gemeldet …",
+        "user": "Du hast einen Benutzer gemeldet …"
+      },
+      "mentioned_in_comment": "Hat dich in einem Kommentar erwähnt …",
+      "mentioned_in_post": "Hat dich in einem Beitrag erwähnt …"
     },
     "title": "Benachrichtigungen",
     "user": "Benutzer"

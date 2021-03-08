@@ -450,6 +450,11 @@
     "comment": "Comment",
     "content": "Content",
     "empty": "Sorry, you don't have any notifications at the moment.",
+    "filedReport": {
+      "category": "Report category",
+      "description": "Description",
+      "name": "Filed report"
+    },
     "filterLabel": {
       "all": "All",
       "read": "Read",
@@ -459,6 +464,11 @@
     "post": "Post",
     "reason": {
       "commented_on_post": "Commented on your post …",
+      "filed_report_on_resource": {
+        "comment": "You reported a comment …",
+        "post": "You reported a post …",
+        "user": "You reported a user …"
+      },
       "mentioned_in_comment": "Mentioned you in a comment …",
       "mentioned_in_post": "Mentioned you in a post …"
     },

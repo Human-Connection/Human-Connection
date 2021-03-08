@@ -34,7 +34,7 @@ export default {
         ],
         invalid: [null],
       },
-      reasonDescription: { type: 'string', allow: [null] },
+      reasonDescription: { type: 'string', allow: [null, ''] },
     },
   },
   reviewed: {

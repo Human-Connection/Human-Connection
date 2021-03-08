@@ -10,6 +10,24 @@
           },
           {
             "name": "Comment"
+          },
+          {
+            "name": "FiledReport"
+          }
+        ]
+      },
+      {
+        "kind": "UNION",
+        "name": "ReportedResource",
+        "possibleTypes": [
+          {
+            "name": "User"
+          },
+          {
+            "name": "Post"
+          },
+          {
+            "name": "Comment"
           }
         ]
       }
