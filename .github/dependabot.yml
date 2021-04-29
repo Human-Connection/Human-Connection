@@ -1,0 +1,354 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "04:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: date-fns
+    versions:
+    - 2.16.1
+    - 2.17.0
+    - 2.18.0
+    - 2.19.0
+    - 2.20.0
+    - 2.20.1
+    - 2.20.2
+    - 2.20.3
+    - 2.21.0
+  - dependency-name: cypress
+    versions:
+    - 6.3.0
+    - 6.4.0
+    - 6.5.0
+    - 6.6.0
+    - 6.7.1
+    - 6.8.0
+    - 7.0.0
+    - 7.0.1
+    - 7.1.0
+  - dependency-name: cypress-file-upload
+    versions:
+    - 5.0.2
+    - 5.0.3
+    - 5.0.4
+    - 5.0.5
+  - dependency-name: "@babel/core"
+    versions:
+    - 7.12.10
+    - 7.12.13
+    - 7.12.16
+    - 7.12.17
+    - 7.13.1
+    - 7.13.10
+    - 7.13.13
+    - 7.13.14
+    - 7.13.15
+    - 7.13.8
+  - dependency-name: y18n
+    versions:
+    - 4.0.1
+    - 4.0.2
+  - dependency-name: cypress-cucumber-preprocessor
+    versions:
+    - 4.0.0
+    - 4.0.1
+    - 4.0.3
+  - dependency-name: "@babel/preset-env"
+    versions:
+    - 7.12.11
+    - 7.12.13
+    - 7.12.16
+    - 7.12.17
+    - 7.13.10
+    - 7.13.12
+    - 7.13.5
+    - 7.13.8
+    - 7.13.9
+  - dependency-name: elliptic
+    versions:
+    - 6.5.3
+- package-ecosystem: docker
+  directory: "/webapp"
+  schedule:
+    interval: daily
+    time: "04:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: node
+    versions:
+    - ">= 11.a, < 12"
+  - dependency-name: node
+    versions:
+    - ">= 12.1.pre.alpine.a, < 12.2"
+  - dependency-name: node
+    versions:
+    - 15.10.0.pre.alpine3.10
+    - 15.11.0.pre.alpine3.10
+    - 15.12.0.pre.alpine3.10
+    - 15.13.0.pre.alpine3.10
+    - 15.7.0.pre.alpine3.10
+    - 15.8.0.pre.alpine3.10
+    - 15.9.0.pre.alpine3.10
+- package-ecosystem: docker
+  directory: "/backend"
+  schedule:
+    interval: daily
+    time: "04:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: node
+    versions:
+    - ">= 11.a, < 12"
+  - dependency-name: node
+    versions:
+    - ">= 12.1.pre.alpine.a, < 12.2"
+  - dependency-name: node
+    versions:
+    - 15.10.0.pre.alpine3.10
+    - 15.11.0.pre.alpine3.10
+    - 15.12.0.pre.alpine3.10
+    - 15.13.0.pre.alpine3.10
+    - 15.7.0.pre.alpine3.10
+    - 15.8.0.pre.alpine3.10
+    - 15.9.0.pre.alpine3.10
+- package-ecosystem: docker
+  directory: "/neo4j"
+  schedule:
+    interval: daily
+    time: "04:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: neo4j
+    versions:
+    - 4.2.3.pre.enterprise
+    - 4.2.4.pre.enterprise
+- package-ecosystem: npm
+  directory: "/webapp"
+  schedule:
+    interval: daily
+    time: "04:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: core-js
+    versions:
+    - ">= 3.a, < 4"
+  - dependency-name: prettier
+    versions:
+    - ">= 1.16.a, < 1.17"
+  - dependency-name: apollo-server-express
+    versions:
+    - 2.19.2
+    - 2.20.0
+    - 2.21.0
+    - 2.21.1
+    - 2.21.2
+    - 2.22.0
+    - 2.22.2
+  - dependency-name: apollo-server-core
+    versions:
+    - 2.19.2
+    - 2.20.0
+    - 2.21.0
+    - 2.21.1
+    - 2.21.2
+    - 2.22.1
+    - 2.22.2
+  - dependency-name: "@babel/preset-env"
+    versions:
+    - 7.12.11
+    - 7.12.13
+    - 7.12.16
+    - 7.12.17
+    - 7.13.0
+    - 7.13.10
+    - 7.13.12
+    - 7.13.5
+    - 7.13.8
+    - 7.13.9
+  - dependency-name: nuxt
+    versions:
+    - 2.14.12
+    - 2.15.0
+    - 2.15.1
+    - 2.15.2
+    - 2.15.3
+  - dependency-name: tippy.js
+    versions:
+    - 6.2.7
+    - 6.3.0
+  - dependency-name: "@nuxtjs/sentry"
+    versions:
+    - 5.0.0
+    - 5.0.1
+    - 5.0.2
+  - dependency-name: "@vue/server-test-utils"
+    versions:
+    - 1.1.2
+    - 1.1.3
+  - dependency-name: "@vue/test-utils"
+    versions:
+    - 1.1.2
+    - 1.1.3
+  - dependency-name: tiptap
+    versions:
+    - 1.32.0
+    - 1.32.1
+  - dependency-name: tiptap-extensions
+    versions:
+    - 1.35.0
+    - 1.35.1
+  - dependency-name: eslint-plugin-prettier
+    versions:
+    - 3.3.1
+  - dependency-name: lodash
+    versions:
+    - 4.17.20
+  - dependency-name: elliptic
+    versions:
+    - 6.5.3
+- package-ecosystem: npm
+  directory: "/backend"
+  schedule:
+    interval: daily
+    time: "04:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: aws-sdk
+    versions:
+    - 2.833.0
+    - 2.834.0
+    - 2.835.0
+    - 2.836.0
+    - 2.838.0
+    - 2.839.0
+    - 2.840.0
+    - 2.841.0
+    - 2.842.0
+    - 2.843.0
+    - 2.844.0
+    - 2.845.0
+    - 2.846.0
+    - 2.847.0
+    - 2.848.0
+    - 2.849.0
+    - 2.850.0
+    - 2.851.0
+    - 2.852.0
+    - 2.853.0
+    - 2.854.0
+    - 2.855.0
+    - 2.856.0
+    - 2.857.0
+    - 2.858.0
+    - 2.859.0
+    - 2.860.0
+    - 2.861.0
+    - 2.862.0
+    - 2.863.0
+    - 2.864.0
+    - 2.865.0
+    - 2.866.0
+    - 2.867.0
+    - 2.868.0
+    - 2.869.0
+    - 2.870.0
+    - 2.871.0
+    - 2.873.0
+    - 2.874.0
+    - 2.875.0
+    - 2.876.0
+    - 2.878.0
+    - 2.879.0
+    - 2.880.0
+    - 2.881.0
+    - 2.882.0
+    - 2.883.0
+    - 2.884.0
+    - 2.885.0
+    - 2.886.0
+    - 2.887.0
+    - 2.889.0
+    - 2.890.0
+    - 2.891.0
+    - 2.892.0
+    - 2.893.0
+    - 2.894.0
+  - dependency-name: y18n
+    versions:
+    - 4.0.1
+    - 4.0.2
+  - dependency-name: metascraper-logo
+    versions:
+    - 5.16.16
+    - 5.18.1
+    - 5.18.12
+    - 5.18.2
+    - 5.18.4
+    - 5.18.5
+    - 5.18.6
+    - 5.18.9
+    - 5.20.0
+    - 5.21.0
+    - 5.21.2
+    - 5.21.3
+    - 5.21.5
+  - dependency-name: metascraper-description
+    versions:
+    - 5.16.16
+    - 5.18.1
+    - 5.18.12
+    - 5.18.2
+    - 5.18.4
+    - 5.18.5
+    - 5.18.6
+    - 5.20.0
+    - 5.21.0
+    - 5.21.2
+    - 5.21.3
+    - 5.21.4
+    - 5.21.5
+  - dependency-name: apollo-server-testing
+    versions:
+    - 2.19.2
+    - 2.20.0
+    - 2.21.0
+    - 2.21.1
+    - 2.21.2
+    - 2.22.0
+    - 2.22.1
+    - 2.22.2
+  - dependency-name: nodemailer
+    versions:
+    - 6.4.17
+    - 6.4.18
+    - 6.5.0
+  - dependency-name: sanitize-html
+    versions:
+    - 2.3.2
+  - dependency-name: neo4j-graphql-js
+    versions:
+    - 2.19.1
+  - dependency-name: wait-on
+    versions:
+    - 5.2.1
+  - dependency-name: lodash
+    versions:
+    - 4.17.20
+  - dependency-name: jquery
+    versions:
+    - 3.5.1
+- package-ecosystem: docker
+  directory: "/deployment/legacy-migration/maintenance-worker"
+  schedule:
+    interval: daily
+    time: "04:00"
+  open-pull-requests-limit: 10
+- package-ecosystem: gitsubmodule
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "04:00"
+  open-pull-requests-limit: 10
