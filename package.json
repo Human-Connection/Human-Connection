@@ -26,7 +26,7 @@
     "generate:changelog": "yarn version && auto-changelog"
   },
   "devDependencies": {
-    "@babel/core": "^7.9.0",
+    "@babel/core": "^7.14.6",
     "@babel/preset-env": "^7.9.0",
     "@babel/register": "^7.9.0",
     "auto-changelog": "^1.16.4",
