@@ -254,4 +254,12 @@ Factory.define('socialMedia')
     return neode.create('SocialMedia', buildObject)
   })
 
+Factory.define('organization')
+  .attrs({
+    id: uuid,
+  })
+  .after((buildObject, options) => {
+    return neode.create('Organization', buildObject)
+  })
+
 export default Factory
