@@ -1,6 +1,9 @@
 # Table of contents
 
 * [Introduction](README.md)
+
+      I am Mr. Dibyajyoti Parida , a student of Odisha University of Technolgy and Research . I am a 1st year student .
+      I know about some web technolgy like HTML , CSS , JavaScript , bootstrap and TypeScript . 
 * [Edit this Documentation](edit-this-documentation.md)
 * [Installation](installation.md)
 * [Neo4J](neo4j/README.md)
