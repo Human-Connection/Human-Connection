@@ -358,6 +358,7 @@
     "failure": "Incorrect email address or password.",
     "forgotPassword": "Forgot Password?",
     "hello": "Hello",
+    "hidePassword": "Hide password",
     "login": "Login",
     "logout": "Logout",
     "moreInfo": "What is Human Connection?",
@@ -366,6 +367,7 @@
     "no-account": "Don't have an account?",
     "password": "Your Password",
     "register": "Sign up",
+    "showPassword": "Show password",
     "success": "You are logged in!"
   },
   "maintenance": {

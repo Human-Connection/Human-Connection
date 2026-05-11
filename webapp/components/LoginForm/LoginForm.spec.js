@@ -32,7 +32,7 @@ describe('LoginForm', () => {
       }
       const store = new Vuex.Store(storeMocks)
       mocks = {
-        $t: () => {},
+        $t: (key) => key,
         $toast: {
           success: jest.fn(),
           error: jest.fn(),
@@ -55,6 +55,20 @@ describe('LoginForm', () => {
           email: 'email@example.org',
           password: '1234',
         })
+      })
+    })
+
+    describe('toggle password visibility', () => {
+      it('changes password input type', async () => {
+        const wrapper = Wrapper()
+
+        expect(wrapper.find('input[name="password"]').attributes('type')).toBe('password')
+
+        await wrapper.find('button[name="password-toggle"]').trigger('click')
+        expect(wrapper.find('input[name="password"]').attributes('type')).toBe('text')
+
+        await wrapper.find('button[name="password-toggle"]').trigger('click')
+        expect(wrapper.find('input[name="password"]').attributes('type')).toBe('password')
       })
     })
   })
