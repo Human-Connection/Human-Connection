@@ -126,12 +126,24 @@ describe('AddEmailAddress', () => {
       })
 
       describe('but if another user owns an `EmailAddress` already with that email', () => {
-        it('throws UserInputError because of unique constraints', async () => {
+        it('responds like a successful email change request without disclosing the account', async () => {
           await Factory.build('user', {}, { email: 'new-email@example.org' })
           await expect(mutate({ mutation, variables })).resolves.toMatchObject({
-            data: { AddEmailAddress: null },
-            errors: [{ message: 'A user account with this email already exists.' }],
+            data: {
+              AddEmailAddress: {
+                email: 'new-email@example.org',
+                verifiedAt: null,
+              },
+            },
+            errors: undefined,
           })
+        })
+
+        it('creates no additional `EmailAddress` node', async () => {
+          await Factory.build('user', {}, { email: 'new-email@example.org' })
+          await expect(neode.all('EmailAddress')).resolves.toHaveLength(2)
+          await mutate({ mutation, variables })
+          await expect(neode.all('EmailAddress')).resolves.toHaveLength(2)
         })
       })
     })

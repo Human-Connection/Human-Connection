@@ -18,8 +18,13 @@ export default {
         throw new UserInputError('must be a valid email')
       }
 
-      // check email does not belong to anybody
-      await existingEmailAddress({ args, context })
+      // Do not disclose whether a verified email is owned by another user.
+      const { user: existingUser } = await existingEmailAddress({
+        args,
+        context,
+        throwIfOwned: false,
+      })
+      if (existingUser) return { email: args.email, verifiedAt: null, __skipEmail: true }
 
       const nonce = generateNonce()
       const {
