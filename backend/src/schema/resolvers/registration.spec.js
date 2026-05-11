@@ -108,10 +108,17 @@ describe('Signup', () => {
               await emailAddress.relateTo(user, 'belongsTo')
             })
 
-            it('throws UserInputError error because of unique constraint violation', async () => {
+            it('responds like a successful signup without disclosing the account', async () => {
               await expect(mutate({ mutation, variables })).resolves.toMatchObject({
-                errors: [{ message: 'A user account with this email already exists.' }],
+                data: { Signup: { email: 'someuser@example.org' } },
+                errors: undefined,
               })
+            })
+
+            it('creates no additional `EmailAddress` node', async () => {
+              await expect(neode.all('EmailAddress')).resolves.toHaveLength(2)
+              await mutate({ mutation, variables })
+              await expect(neode.all('EmailAddress')).resolves.toHaveLength(2)
             })
           })
 

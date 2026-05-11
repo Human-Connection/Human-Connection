@@ -44,6 +44,10 @@ if (!hasEmailConfig) {
 
 const sendSignupMail = async (resolve, root, args, context, resolveInfo) => {
   const response = await resolve(root, args, context, resolveInfo)
+  if (response.__skipEmail) {
+    delete response.__skipEmail
+    return response
+  }
   const { email, nonce } = response
   await sendMail(signupTemplate({ email, nonce }))
   delete response.nonce
@@ -60,6 +64,10 @@ const sendPasswordResetMail = async (resolve, root, args, context, resolveInfo) 
 
 const sendEmailVerificationMail = async (resolve, root, args, context, resolveInfo) => {
   const response = await resolve(root, args, context, resolveInfo)
+  if (response.__skipEmail) {
+    delete response.__skipEmail
+    return response
+  }
   const { email, nonce, name } = response
   await sendMail(emailVerificationTemplate({ email, nonce, name }))
   delete response.nonce
