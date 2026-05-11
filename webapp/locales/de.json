@@ -358,6 +358,7 @@
     "failure": "Fehlerhafte E-Mail-Adresse oder Passwort.",
     "forgotPassword": "Passwort vergessen?",
     "hello": "Hallo",
+    "hidePassword": "Passwort verbergen",
     "login": "Anmelden",
     "logout": "Abmelden",
     "moreInfo": "Was ist Human Connection?",
@@ -366,6 +367,7 @@
     "no-account": "Du hast noch kein Benutzerkonto?",
     "password": "Dein Passwort",
     "register": "Benutzerkonto erstellen",
+    "showPassword": "Passwort anzeigen",
     "success": "Du bist eingeloggt!"
   },
   "maintenance": {

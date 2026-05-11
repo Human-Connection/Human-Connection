@@ -20,15 +20,29 @@
           name="email"
           icon="envelope"
         />
-        <ds-input
-          v-model="form.password"
-          :disabled="pending"
-          :placeholder="$t('login.password')"
-          icon="lock"
-          icon-right="question-circle"
-          name="password"
-          type="password"
-        />
+        <div class="password-input-wrapper">
+          <ds-input
+            v-model="form.password"
+            :disabled="pending"
+            :placeholder="$t('login.password')"
+            icon="lock"
+            name="password"
+            :type="passwordInputType"
+          />
+          <base-button
+            class="password-toggle"
+            :aria-label="passwordToggleLabel"
+            :disabled="pending"
+            :icon="passwordToggleIcon"
+            :title="passwordToggleLabel"
+            circle
+            ghost
+            name="password-toggle"
+            size="small"
+            type="button"
+            @click="togglePasswordVisibility"
+          />
+        </div>
         <nuxt-link to="/password-reset/request">
           {{ $t('login.forgotPassword') }}
         </nuxt-link>
@@ -60,14 +74,27 @@ export default {
         email: '',
         password: '',
       },
+      showPassword: false,
     }
   },
   computed: {
     pending() {
       return this.$store.getters['auth/pending']
     },
+    passwordInputType() {
+      return this.showPassword ? 'text' : 'password'
+    },
+    passwordToggleIcon() {
+      return this.showPassword ? 'eye-slash' : 'eye'
+    },
+    passwordToggleLabel() {
+      return this.showPassword ? this.$t('login.hidePassword') : this.$t('login.showPassword')
+    },
   },
   methods: {
+    togglePasswordVisibility() {
+      this.showPassword = !this.showPassword
+    },
     async onSubmit() {
       const { email, password } = this.form
       try {
@@ -93,6 +120,38 @@ export default {
     width: 100%;
     margin-top: $space-large;
     margin-bottom: $space-small;
+  }
+
+  .password-input-wrapper {
+    position: relative;
+
+    .ds-form-item {
+      margin-bottom: 0;
+    }
+
+    .ds-input {
+      padding-right: $input-height;
+    }
+
+    .password-toggle {
+      position: absolute;
+      top: 50%;
+      right: $space-xxx-small;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: $input-height-small;
+      height: $input-height-small;
+      margin: 0;
+      padding: 0;
+      transform: translateY(-50%);
+      color: $text-color-softer;
+
+      &:hover,
+      &:focus {
+        color: $border-color-active;
+      }
+    }
   }
 }
 </style>
