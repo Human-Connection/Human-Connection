@@ -21,8 +21,8 @@ export default async function alreadyExistingMail({ args, context }) {
     })
     const [emailBelongsToUser] = await existingEmailAddressTxPromise
     const { alreadyExistingEmail, user } = emailBelongsToUser || {}
-    if (user) throw new UserInputError('A user account with this email already exists.')
-    return alreadyExistingEmail
+    
+    return { alreadyExistingEmail, user }
   } finally {
     session.close()
   }
