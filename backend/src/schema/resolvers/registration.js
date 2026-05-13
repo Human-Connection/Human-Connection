@@ -12,8 +12,15 @@ export default {
     Signup: async (_parent, args, context) => {
       args.nonce = generateNonce()
       args.email = normalizeEmail(args.email)
-      let emailAddress = await existingEmailAddress({ args, context })
-      if (emailAddress) return emailAddress
+      let emailAddress = await existingEmailAddress({
+        args,
+        context,
+        throwIfBelongsToUser: false,
+      })
+      if (emailAddress) {
+        if (emailAddress.belongsToUser) return { email: args.email }
+        return emailAddress
+      }
       try {
         emailAddress = await neode.create('EmailAddress', args)
         return emailAddress.toJson()
