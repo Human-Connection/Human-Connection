@@ -126,11 +126,15 @@ describe('AddEmailAddress', () => {
       })
 
       describe('but if another user owns an `EmailAddress` already with that email', () => {
-        it('throws UserInputError because of unique constraints', async () => {
+        it('returns a neutral response without disclosing that the account exists', async () => {
           await Factory.build('user', {}, { email: 'new-email@example.org' })
           await expect(mutate({ mutation, variables })).resolves.toMatchObject({
-            data: { AddEmailAddress: null },
-            errors: [{ message: 'A user account with this email already exists.' }],
+            data: {
+              AddEmailAddress: {
+                email: 'new-email@example.org',
+              },
+            },
+            errors: undefined,
           })
         })
       })

@@ -18,8 +18,12 @@ export default {
         throw new UserInputError('must be a valid email')
       }
 
-      // check email does not belong to anybody
-      await existingEmailAddress({ args, context })
+      const emailAddress = await existingEmailAddress({
+        args,
+        context,
+        throwIfBelongsToUser: false,
+      })
+      if (emailAddress && emailAddress.belongsToUser) return { email: args.email }
 
       const nonce = generateNonce()
       const {
