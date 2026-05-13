@@ -19,7 +19,9 @@ export default {
       }
 
       // check email does not belong to anybody
-      await existingEmailAddress({ args, context })
+      const { user } = await existingEmailAddress({ args, context })
+      if (user)
+        throw new UserInputError('A user account with this email already exists.')
 
       const nonce = generateNonce()
       const {
