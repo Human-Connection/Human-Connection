@@ -1,6 +1,6 @@
 import { UserInputError } from 'apollo-server'
 
-export default async function alreadyExistingMail({ args, context }) {
+export default async function alreadyExistingMail({ args, context, throwOnExisting = true }) {
   const session = context.driver.session()
   try {
     const existingEmailAddressTxPromise = session.writeTransaction(async (transaction) => {
@@ -21,8 +21,14 @@ export default async function alreadyExistingMail({ args, context }) {
     })
     const [emailBelongsToUser] = await existingEmailAddressTxPromise
     const { alreadyExistingEmail, user } = emailBelongsToUser || {}
-    if (user) throw new UserInputError('A user account with this email already exists.')
-    return alreadyExistingEmail
+    if (user) {
+      if (throwOnExisting) {
+        throw new UserInputError('A user account with this email already exists.')
+      }
+      // Return null to indicate email belongs to an existing user (caller should handle gracefully)
+      return { alreadyExistingEmail, user, emailTaken: true }
+    }
+    return { alreadyExistingEmail, user: null, emailTaken: false }
   } finally {
     session.close()
   }

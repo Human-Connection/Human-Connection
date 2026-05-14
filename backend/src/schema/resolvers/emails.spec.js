@@ -126,12 +126,11 @@ describe('AddEmailAddress', () => {
       })
 
       describe('but if another user owns an `EmailAddress` already with that email', () => {
-        it('throws UserInputError because of unique constraints', async () => {
+        it('resolves without error (does not leak email existence)', async () => {
           await Factory.build('user', {}, { email: 'new-email@example.org' })
-          await expect(mutate({ mutation, variables })).resolves.toMatchObject({
-            data: { AddEmailAddress: null },
-            errors: [{ message: 'A user account with this email already exists.' }],
-          })
+          const result = await mutate({ mutation, variables })
+          expect(result.errors).toBeUndefined()
+          expect(result.data.AddEmailAddress).toBeNull()
         })
       })
     })
@@ -283,10 +282,10 @@ describe('VerifyEmailAddress', () => {
               await Factory.build('emailAddress', { email: 'to-be-verified@example.org' })
             })
 
-            it('throws UserInputError because of unique constraints', async () => {
+            it('throws a generic error (does not leak email existence)', async () => {
               await expect(mutate({ mutation, variables })).resolves.toMatchObject({
                 data: { VerifyEmailAddress: null },
-                errors: [{ message: 'A user account with this email already exists.' }],
+                errors: [{ message: 'Invalid nonce or no email address found.' }],
               })
             })
           })

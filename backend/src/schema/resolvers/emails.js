@@ -18,8 +18,12 @@ export default {
         throw new UserInputError('must be a valid email')
       }
 
-      // check email does not belong to anybody
-      await existingEmailAddress({ args, context })
+      // check email does not belong to anybody (silently ignore to avoid email existence leak)
+      const emailResult = await existingEmailAddress({ args, context, throwOnExisting: false })
+      if (emailResult.emailTaken) {
+        // Return a generic response without leaking whether the email is registered
+        return null
+      }
 
       const nonce = generateNonce()
       const {
@@ -78,7 +82,7 @@ export default {
         response = txResult[0]
       } catch (e) {
         if (e.code === 'Neo.ClientError.Schema.ConstraintValidationFailed')
-          throw new UserInputError('A user account with this email already exists.')
+          throw new UserInputError('Invalid nonce or no email address found.')
         throw new Error(e)
       } finally {
         session.close()

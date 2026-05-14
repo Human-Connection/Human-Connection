@@ -108,10 +108,10 @@ describe('Signup', () => {
               await emailAddress.relateTo(user, 'belongsTo')
             })
 
-            it('throws UserInputError error because of unique constraint violation', async () => {
-              await expect(mutate({ mutation, variables })).resolves.toMatchObject({
-                errors: [{ message: 'A user account with this email already exists.' }],
-              })
+            it('resolves without error (does not leak email existence)', async () => {
+              const result = await mutate({ mutation, variables })
+              expect(result.errors).toBeUndefined()
+              expect(result.data.Signup).toMatchObject({ email: 'someuser@example.org' })
             })
           })
 
