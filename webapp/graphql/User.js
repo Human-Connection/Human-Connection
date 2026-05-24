@@ -136,6 +136,17 @@ export const markAsReadMutation = (i18n) => {
   `
 }
 
+export const markAllAsReadMutation = () => {
+  return gql`
+    mutation {
+      markAllAsRead {
+        id
+        read
+      }
+    }
+  `
+}
+
 export const notificationAdded = () => {
   return gql`
     ${userFragment}

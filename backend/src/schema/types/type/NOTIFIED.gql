@@ -29,6 +29,7 @@ type Query {
   
 type Mutation {
   markAsRead(id: ID!): NOTIFIED
+  markAllAsRead: [NOTIFIED]
 }
 
 type Subscription {

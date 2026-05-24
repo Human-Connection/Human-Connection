@@ -17,6 +17,14 @@
         <notification-list :notifications="notifications" @markAsRead="markAsRead" />
       </div>
       <div class="notifications-link-container">
+        <a
+          href="#"
+          class="notifications-mark-all-read"
+          data-test="mark-all-notifications-read"
+          @click.prevent="markAllAsRead"
+        >
+          {{ $t('notifications.markAllAsRead') }}
+        </a>
         <nuxt-link :to="{ name: 'notifications' }">
           {{ $t('notifications.pageLink') }}
         </nuxt-link>
@@ -28,7 +36,12 @@
 <script>
 import { mapGetters } from 'vuex'
 import unionBy from 'lodash/unionBy'
-import { notificationQuery, markAsReadMutation, notificationAdded } from '~/graphql/User'
+import {
+  notificationQuery,
+  markAsReadMutation,
+  markAllAsReadMutation,
+  notificationAdded,
+} from '~/graphql/User'
 import CounterIcon from '~/components/_new/generic/CounterIcon/CounterIcon'
 import Dropdown from '~/components/Dropdown'
 import NotificationList from '../NotificationList/NotificationList'
@@ -56,6 +69,19 @@ export default {
           mutation: markAsReadMutation(this.$i18n),
           variables,
         })
+      } catch (err) {
+        this.$toast.error(err.message)
+      }
+    },
+    async markAllAsRead() {
+      try {
+        await this.$apollo.mutate({
+          mutation: markAllAsReadMutation(),
+        })
+        this.notifications = this.notifications.map((notification) => ({
+          ...notification,
+          read: true,
+        }))
       } catch (err) {
         this.$toast.error(err.message)
       }
@@ -128,12 +154,17 @@ export default {
 }
 .notifications-link-container {
   background-color: $background-color-softer-active;
-  text-align: center;
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
   height: $size-height-base;
   padding: $space-x-small;
+  display: flex;
+  justify-content: space-around;
+}
+
+.notifications-mark-all-read {
+  color: $text-color-link-active;
 }
 </style>

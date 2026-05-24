@@ -3,6 +3,14 @@
     <ds-flex class="notifications-page-flex">
       <ds-flex-item :width="{ lg: '85%' }">
         <ds-heading tag="h3">{{ $t('notifications.title') }}</ds-heading>
+        <a
+          class="notifications-mark-all-read"
+          href="#"
+          data-test="mark-all-notifications-read"
+          @click.prevent="markAllNotificationsAsRead"
+        >
+          {{ $t('notifications.markAllAsRead') }}
+        </a>
       </ds-flex-item>
       <ds-flex-item width="110px">
         <client-only>
@@ -23,7 +31,7 @@
 import NotificationsTable from '~/components/NotificationsTable/NotificationsTable'
 import DropdownFilter from '~/components/DropdownFilter/DropdownFilter'
 import PaginationButtons from '~/components/_new/generic/PaginationButtons/PaginationButtons'
-import { notificationQuery, markAsReadMutation } from '~/graphql/User'
+import { notificationQuery, markAsReadMutation, markAllAsReadMutation } from '~/graphql/User'
 
 export default {
   components: {
@@ -71,6 +79,16 @@ export default {
         this.$toast.error(error.message)
       }
     },
+    async markAllNotificationsAsRead() {
+      try {
+        await this.$apollo.mutate({
+          mutation: markAllAsReadMutation(),
+        })
+        this.$apollo.queries.notifications.refresh()
+      } catch (error) {
+        this.$toast.error(error.message)
+      }
+    },
     back() {
       this.offset = Math.max(this.offset - this.pageSize, 0)
     },
@@ -111,5 +129,9 @@ export default {
 <style lang="scss">
 .notifications-page-flex {
   justify-content: space-between;
+}
+
+.notifications-mark-all-read {
+  color: $text-color-link-active;
 }
 </style>
