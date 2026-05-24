@@ -24,6 +24,10 @@ describe('ContentMenu.vue', () => {
       $router: {
         push: jest.fn(),
       },
+      $toast: {
+        success: jest.fn(),
+        error: jest.fn(),
+      },
     }
   })
 
@@ -189,6 +193,21 @@ describe('ContentMenu.vue', () => {
         })
         openModalSpy = jest.spyOn(wrapper.vm, 'openModal')
       })
+      it('copy a link to the comment', async () => {
+        Object.assign(navigator, {
+          clipboard: {
+            writeText: jest.fn().mockResolvedValue(),
+          },
+        })
+        wrapper.setProps({ copyLink: '/post/post42/slug#commentId-comment007' })
+
+        await wrapper.vm.copyResourceLink()
+
+        expect(navigator.clipboard.writeText).toHaveBeenCalledWith(
+          'http://localhost/post/post42/slug#commentId-comment007',
+        )
+        expect(mocks.$toast.success).toHaveBeenCalledWith('comment.menu.copyLinkSuccess')
+      })
       it('edit the comment', () => {
         wrapper
           .findAll('.ds-menu-item')
@@ -204,6 +223,25 @@ describe('ContentMenu.vue', () => {
           .at(0)
           .trigger('click')
         expect(openModalSpy).toHaveBeenCalledWith('confirm', 'delete')
+      })
+    })
+
+    describe('comment link menu item', () => {
+      it('is visible for another user when a copy link is available', () => {
+        const wrapper = openContentMenu({
+          isOwner: false,
+          resourceType: 'comment',
+          copyLink: '/post/post42/slug#commentId-comment007',
+          resource: {
+            id: 'd23a4265-f5f7-4e17-9f86-85f714b4b9f8',
+          },
+        })
+
+        const copyLinkItems = wrapper
+          .findAll('.ds-menu-item')
+          .filter((item) => item.text() === 'comment.menu.copyLink')
+
+        expect(copyLinkItems.length).toBe(1)
       })
     })
 

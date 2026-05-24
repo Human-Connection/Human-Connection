@@ -53,6 +53,9 @@
       "unavailable-placeholder": " ...ten komentarz nie jest już dostępny."
     },
     "menu": {
+      "copyLink": "Kopiuj link",
+      "copyLinkError": "Nie można skopiować linku",
+      "copyLinkSuccess": "Link skopiowany do schowka",
       "delete": "Usuń komentarz",
       "edit": "Edytuj komentarz"
     },

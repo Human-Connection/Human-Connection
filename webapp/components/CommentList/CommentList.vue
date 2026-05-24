@@ -10,6 +10,7 @@
         :key="comment.id"
         :comment="comment"
         :postId="post.id"
+        :postSlug="post.slug"
         @deleteComment="updateCommentList"
         @updateComment="updateCommentList"
         @toggleNewCommentForm="toggleNewCommentForm"

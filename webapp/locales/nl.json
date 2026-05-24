@@ -44,7 +44,14 @@
   },
   "comment": {
     "delete": "Commentaar verwijderen",
-    "edit": "Commentaar bewerken"
+    "edit": "Commentaar bewerken",
+    "menu": {
+      "copyLink": "Link kopiëren",
+      "copyLinkError": "Link kon niet worden gekopieerd",
+      "copyLinkSuccess": "Link gekopieerd naar het klembord",
+      "delete": "Commentaar verwijderen",
+      "edit": "Commentaar bewerken"
+    }
   },
   "common": {
     "category": "Categorie ::: Categorieën",

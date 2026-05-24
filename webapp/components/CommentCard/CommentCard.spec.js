@@ -1,5 +1,6 @@
 import { config, mount } from '@vue/test-utils'
 import CommentCard from './CommentCard.vue'
+import ContentMenu from '~/components/ContentMenu/ContentMenu'
 import Vuex from 'vuex'
 
 const localVue = global.localVue
@@ -18,6 +19,7 @@ describe('CommentCard.vue', () => {
         author: { id: 'some-user' },
       },
       postId: 'post42',
+      postSlug: 'test-post',
     }
     mocks = {
       $t: jest.fn(),
@@ -159,6 +161,12 @@ describe('CommentCard.vue', () => {
       describe('test callbacks', () => {
         beforeEach(() => {
           wrapper = Wrapper()
+        })
+
+        it('passes the comment link to the content menu', () => {
+          expect(wrapper.find(ContentMenu).props('copyLink')).toBe(
+            '/post/post42/test-post#commentId-2',
+          )
         })
 
         describe('deletion of Comment from List by invoking "deleteCommentCallback()"', () => {

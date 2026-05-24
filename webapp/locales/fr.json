@@ -131,6 +131,9 @@
     },
     "edited": "édité",
     "menu": {
+      "copyLink": "Copier le lien",
+      "copyLinkError": "Le lien n'a pas pu être copié",
+      "copyLinkSuccess": "Lien copié dans le presse-papiers",
       "delete": "Supprimer le commentaire",
       "edit": "Modifier le commentaire"
     },
