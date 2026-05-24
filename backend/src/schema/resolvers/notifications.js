@@ -99,6 +99,35 @@ export default {
         session.close()
       }
     },
+    markAllAsRead: async (parent, args, context, resolveInfo) => {
+      const { user: currentUser } = context
+      const session = context.driver.session()
+      const writeTxResultPromise = session.writeTransaction(async (transaction) => {
+        const markNotificationsAsReadTransactionResponse = await transaction.run(
+          `
+            MATCH (resource {deleted: false, disabled: false})-[notification:NOTIFIED {read: FALSE}]->(user:User {id:$id})
+            SET notification.read = TRUE
+            WITH user, notification, resource,
+            [(resource)<-[:WROTE]-(author:User) | author {.*}] AS authors,
+            [(resource)-[:COMMENTS]->(post:Post)<-[:WROTE]-(author:User) | post{.*, author: properties(author)} ] AS posts
+            WITH resource, user, notification, authors, posts,
+            resource {.*, __typename: labels(resource)[0], author: authors[0], post: posts[0]} AS finalResource
+            RETURN notification {.*, from: finalResource, to: properties(user)}
+          `,
+          { id: currentUser.id },
+        )
+        log(markNotificationsAsReadTransactionResponse)
+        return markNotificationsAsReadTransactionResponse.records.map((record) =>
+          record.get('notification'),
+        )
+      })
+      try {
+        const notifications = await writeTxResultPromise
+        return notifications
+      } finally {
+        session.close()
+      }
+    },
   },
   NOTIFIED: {
     id: async (parent) => {

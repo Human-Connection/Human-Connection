@@ -393,4 +393,66 @@ describe('given some notifications', () => {
       })
     })
   })
+
+  describe('markAllAsRead', () => {
+    const markAllAsReadMutation = gql`
+      mutation {
+        markAllAsRead {
+          from {
+            __typename
+            ... on Post {
+              content
+            }
+            ... on Comment {
+              content
+            }
+          }
+          read
+          createdAt
+        }
+      }
+    `
+
+    describe('unauthenticated', () => {
+      it('throws authorization error', async () => {
+        const result = await mutate({
+          mutation: markAllAsReadMutation,
+        })
+        expect(result.errors[0]).toHaveProperty('message', 'Not Authorised!')
+      })
+    })
+
+    describe('authenticated', () => {
+      beforeEach(async () => {
+        authenticatedUser = await user.toJson()
+      })
+
+      it('updates all unread notifications of current user', async () => {
+        const { data, errors } = await mutate({ mutation: markAllAsReadMutation })
+
+        expect(errors).toBeUndefined()
+        expect(data.markAllAsRead).toEqual(
+          expect.arrayContaining([
+            {
+              from: {
+                __typename: 'Comment',
+                content: 'You have been mentioned in a comment',
+              },
+              read: true,
+              createdAt: '2019-08-30T19:33:48.651Z',
+            },
+            {
+              from: {
+                __typename: 'Post',
+                content: 'You have been mentioned in a post',
+              },
+              read: true,
+              createdAt: '2019-08-31T17:33:48.651Z',
+            },
+          ]),
+        )
+        expect(data.markAllAsRead).toHaveLength(2)
+      })
+    })
+  })
 })

@@ -15,6 +15,12 @@ describe('NotificationMenu.vue', () => {
   beforeEach(() => {
     mocks = {
       $t: jest.fn(),
+      $toast: {
+        error: jest.fn((string) => string),
+      },
+      $apollo: {
+        mutate: jest.fn().mockResolvedValue({ data: { markAllAsRead: [] } }),
+      },
     }
     data = () => {
       return {
@@ -143,6 +149,36 @@ describe('NotificationMenu.vue', () => {
       it('renders the counter in red', () => {
         wrapper = Wrapper()
         expect(wrapper.find('.count').classes()).toContain('--danger')
+      })
+
+      describe('markAllAsRead', () => {
+        beforeEach(async () => {
+          wrapper = Wrapper()
+          await wrapper.vm.markAllAsRead()
+        })
+
+        it('calls markAllAsRead mutation', () => {
+          expect(mocks.$apollo.mutate).toHaveBeenCalledTimes(1)
+          expect(mocks.$apollo.mutate.mock.calls[0][0].variables).toBeUndefined()
+        })
+
+        it('marks local notifications as read', () => {
+          expect(wrapper.vm.notifications.every((notification) => notification.read)).toBe(true)
+        })
+
+        describe('error handling', () => {
+          beforeEach(async () => {
+            mocks.$apollo.mutate = jest
+              .fn()
+              .mockRejectedValueOnce({ message: 'Some error message' })
+            wrapper = Wrapper()
+            await wrapper.vm.markAllAsRead()
+          })
+
+          it('shows an error message if there is an error', () => {
+            expect(mocks.$toast.error).toHaveBeenCalledWith('Some error message')
+          })
+        })
       })
     })
   })

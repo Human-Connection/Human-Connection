@@ -91,6 +91,9 @@
     "moreInfo": "Wat is Human Connection?",
     "password": "Uw Wachtwoord"
   },
+  "notifications": {
+    "markAllAsRead": "Alles als gelezen markeren"
+  },
   "post": {
     "moreInfo": {
       "name": "Meer info"

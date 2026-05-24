@@ -395,6 +395,17 @@ When("open the notification menu and click on the first item", () => {
     });
 });
 
+When("I open the notification menu and mark all as read", () => {
+  cy.get(".notifications-menu").invoke('show').click(); // "invoke('show')" because of the delay for show the menu
+  cy.get('[data-test="mark-all-notifications-read"]').click({
+    force: true
+  });
+});
+
+When("I click mark all notifications as read", () => {
+  cy.get('[data-test="mark-all-notifications-read"]').click();
+});
+
 Then("see {int} unread notifications in the top menu", count => {
   cy.get(".notifications-menu").should("contain", count);
 });

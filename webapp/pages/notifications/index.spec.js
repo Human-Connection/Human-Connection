@@ -23,12 +23,12 @@ describe('PostIndex', () => {
         locale: () => 'en',
       },
       $apollo: {
-        mutate: jest.fn().mockResolvedValueOnce({
+        mutate: jest.fn().mockResolvedValue({
           data: { markAsRead: { id: 'notificationSourceId', read: true } },
         }),
         queries: {
           notifications: {
-            refresh: jest.fn().mockResolvedValueOnce(),
+            refresh: jest.fn().mockResolvedValue(),
           },
         },
       },
@@ -114,6 +114,34 @@ describe('PostIndex', () => {
           wrapper
             .find(NotificationsTable)
             .vm.$emit('markNotificationAsRead', 'notificationSourceId')
+        })
+
+        it('shows an error message if there is an error', () => {
+          expect(mocks.$toast.error).toHaveBeenCalledWith('Some error message')
+        })
+      })
+    })
+
+    describe('markAllNotificationsAsRead', () => {
+      beforeEach(async () => {
+        wrapper = Wrapper()
+        await wrapper.find('[data-test="mark-all-notifications-read"]').trigger('click')
+      })
+
+      it('calls markAllAsRead mutation', () => {
+        expect(mocks.$apollo.mutate).toHaveBeenCalledTimes(1)
+        expect(mocks.$apollo.mutate.mock.calls[0][0].variables).toBeUndefined()
+      })
+
+      it('refreshes the notifications', () => {
+        expect(mocks.$apollo.queries.notifications.refresh).toHaveBeenCalledTimes(1)
+      })
+
+      describe('error handling', () => {
+        beforeEach(async () => {
+          mocks.$apollo.mutate = jest.fn().mockRejectedValueOnce({ message: 'Some error message' })
+          wrapper = Wrapper()
+          await wrapper.find('[data-test="mark-all-notifications-read"]').trigger('click')
         })
 
         it('shows an error message if there is an error', () => {

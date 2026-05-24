@@ -455,6 +455,7 @@
       "read": "Gelesen",
       "unread": "Ungelesen"
     },
+    "markAllAsRead": "Alle als gelesen markieren",
     "pageLink": "Alle Benachrichtigungen",
     "post": "Beitrag",
     "reason": {

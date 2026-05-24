@@ -27,3 +27,50 @@ Feature: Notification for a mention
     And the unread counter is removed
     And the notification menu button links to the all notifications page    
 
+  Scenario: Mark all notifications as read from the top menu
+    Given I log in as "Wolle aus Hamburg"
+    And I start to write a new post with the title "Hey Matt" beginning with:
+      """
+      Big shout to our fellow contributor
+      """
+    And mention "@matt-rider" in the text
+    And I select a category
+    And I choose "en" as the language for the post
+    And I click on "Save"
+    And I start to write a new post with the title "Hey Matt Again" beginning with:
+      """
+      Another shout to our fellow contributor
+      """
+    And mention "@matt-rider" in the text
+    And I select a category
+    And I choose "en" as the language for the post
+    And I click on "Save"
+    And I log in as "Matt Rider"
+    And see 2 unread notifications in the top menu
+    When I open the notification menu and mark all as read
+    Then the unread counter is removed
+    And the notification menu button links to the all notifications page
+
+  Scenario: Mark all notifications as read from the all notifications page
+    Given I log in as "Wolle aus Hamburg"
+    And I start to write a new post with the title "Hey Matt" beginning with:
+      """
+      Big shout to our fellow contributor
+      """
+    And mention "@matt-rider" in the text
+    And I select a category
+    And I choose "en" as the language for the post
+    And I click on "Save"
+    And I start to write a new post with the title "Hey Matt Again" beginning with:
+      """
+      Another shout to our fellow contributor
+      """
+    And mention "@matt-rider" in the text
+    And I select a category
+    And I choose "en" as the language for the post
+    And I click on "Save"
+    And I log in as "Matt Rider"
+    And see 2 unread notifications in the top menu
+    And I visit the "notifications" page
+    When I click mark all notifications as read
+    Then the unread counter is removed
