@@ -31,8 +31,9 @@ describe('RelativeDateTime', () => {
       dateTime = '08.03.2017'
     })
 
-    it('translates', () => {
+    it('renders the full date and time for older dates', () => {
       expect(Wrapper().text()).toContain('08/03/2017')
+      expect(Wrapper().text()).toContain('12:00 AM')
     })
   })
 
@@ -52,6 +53,21 @@ describe('RelativeDateTime', () => {
 
       it('translates', () => {
         expect(Wrapper().text()).toContain('today at')
+      })
+
+      describe('and dateTime is older than a week', () => {
+        beforeEach(() => {
+          dateTime = new Date(2017, 7, 3, 12, 34)
+        })
+
+        it('renders the full date and time', () => {
+          expect(Wrapper().text()).toContain('08/03/2017')
+          expect(Wrapper().text()).toContain('12:34 PM')
+        })
+
+        it('adds the full date and time as title', () => {
+          expect(Wrapper().attributes('title')).toEqual('08/03/2017, 12:34 PM')
+        })
       })
     })
 
