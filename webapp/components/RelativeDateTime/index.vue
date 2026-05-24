@@ -1,10 +1,15 @@
 <template>
-  <span>{{ relativeDateTime }}</span>
+  <span :title="absoluteDateTime">{{ relativeDateTime }}</span>
 </template>
 
 <script>
 import { getDateFnsLocale } from '~/locales'
+import differenceInCalendarDays from 'date-fns/differenceInCalendarDays'
+import format from 'date-fns/format'
 import formatRelative from 'date-fns/formatRelative'
+
+const fullDateTimeFormat = 'Pp'
+const maxRelativeFormatDays = 6
 
 export default {
   name: 'HcRelativeDateTime',
@@ -15,8 +20,20 @@ export default {
     },
   },
   computed: {
+    date() {
+      return new Date(this.dateTime)
+    },
+    dateFnsLocale() {
+      return getDateFnsLocale(this)
+    },
+    absoluteDateTime() {
+      return format(this.date, fullDateTimeFormat, { locale: this.dateFnsLocale })
+    },
     relativeDateTime() {
-      return formatRelative(new Date(this.dateTime), new Date(), { locale: getDateFnsLocale(this) })
+      const daysFromToday = Math.abs(differenceInCalendarDays(this.date, new Date()))
+      if (daysFromToday > maxRelativeFormatDays) return this.absoluteDateTime
+
+      return formatRelative(this.date, new Date(), { locale: this.dateFnsLocale })
     },
   },
 }
