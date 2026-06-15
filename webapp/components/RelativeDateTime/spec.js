@@ -1,4 +1,4 @@
-import { shallowMount } from '@vue/test-utils'
+﻿import { shallowMount } from '@vue/test-utils'
 import RelativeDateTime from './'
 
 const localVue = global.localVue
@@ -43,6 +43,11 @@ describe('RelativeDateTime', () => {
 
     it('renders', () => {
       expect(Wrapper().is('span')).toBe(true)
+    })
+
+    it('has fullDateTime title attribute for tooltip', () => {
+      const wrapper = Wrapper()
+      expect(wrapper.attributes('title')).toBeTruthy()
     })
 
     describe("locale == 'en'", () => {
