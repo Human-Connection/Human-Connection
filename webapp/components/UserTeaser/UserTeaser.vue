@@ -11,7 +11,12 @@
           <span class="slug">{{ userSlug }}</span>
           <span v-if="dateTime">{{ userName }}</span>
         </span>
-        <span v-if="dateTime" class="text">
+        <span
+          v-if="dateTime"
+          class="text"
+          :class="{ 'date-time--clickable': dateTimeClickable }"
+          @click="onDateTimeClick"
+        >
           <base-icon name="clock" />
           <hc-relative-date-time :date-time="dateTime" />
           <slot name="dateTime"></slot>
@@ -39,6 +44,7 @@ export default {
     showAvatar: { type: Boolean, default: true },
     dateTime: { type: [Date, String], default: null },
     showPopover: { type: Boolean, default: true },
+    dateTimeClickable: { type: Boolean, default: false },
   },
   computed: {
     ...mapGetters({
@@ -66,6 +72,12 @@ export default {
     },
   },
   methods: {
+    onDateTimeClick(event) {
+      if (!this.dateTimeClickable) return
+      event.stopPropagation()
+      event.preventDefault()
+      this.$emit('click-date')
+    },
     optimisticFollow({ followedByCurrentUser }) {
       const inc = followedByCurrentUser ? 1 : -1
       this.user.followedByCurrentUser = followedByCurrentUser
@@ -121,6 +133,14 @@ export default {
 
     > .ds-text {
       display: inline;
+    }
+
+    &.date-time--clickable {
+      cursor: pointer;
+
+      &:hover {
+        color: $color-primary;
+      }
     }
   }
 }

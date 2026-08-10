@@ -7,7 +7,12 @@
   </base-card>
   <base-card v-else :class="commentClass" :id="anchor">
     <header class="header">
-      <user-teaser :user="comment.author" :date-time="comment.createdAt">
+      <user-teaser
+        :user="comment.author"
+        :date-time="comment.createdAt"
+        date-time-clickable
+        @click-date="setCommentUrl"
+      >
         <template v-if="wasEdited" #dateTime>
           <span>({{ $t('comment.edited') }})</span>
         </template>
@@ -145,6 +150,11 @@ export default {
     },
   },
   methods: {
+    setCommentUrl() {
+      if (window) {
+        window.location.hash = `#${this.anchor}`
+      }
+    },
     checkAnchor(anchor) {
       return `#${this.anchor}` === anchor
     },
