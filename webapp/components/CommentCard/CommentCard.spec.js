@@ -227,6 +227,18 @@ describe('CommentCard.vue', () => {
           ])
         })
       })
+
+      describe('setCommentUrl', () => {
+        beforeEach(() => {
+          wrapper = Wrapper()
+        })
+
+        it('sets window.location.hash to the comment anchor', () => {
+          const anchor = 'commentId-2'
+          wrapper.vm.setCommentUrl()
+          expect(window.location.hash).toBe(`#${anchor}`)
+        })
+      })
     })
   })
 })
