@@ -31,23 +31,33 @@ const updateCommentMutation = gql`
   }
 `
 const createPostMutation = gql`
-  mutation($id: ID, $title: String!, $content: String!, $language: String, $categoryIds: [ID]) {
+  mutation(
+    $id: ID
+    $title: String!
+    $content: String!
+    $language: String
+    $categoryIds: [ID]
+    $slug: String
+  ) {
     CreatePost(
       id: $id
       title: $title
       content: $content
       language: $language
       categoryIds: $categoryIds
+      slug: $slug
     ) {
       id
+      slug
     }
   }
 `
 
 const updatePostMutation = gql`
-  mutation($id: ID!, $title: String!, $content: String!, $categoryIds: [ID]) {
-    UpdatePost(id: $id, title: $title, content: $content, categoryIds: $categoryIds) {
+  mutation($id: ID!, $title: String!, $content: String!, $categoryIds: [ID], $slug: String) {
+    UpdatePost(id: $id, title: $title, content: $content, categoryIds: $categoryIds, slug: $slug) {
       id
+      slug
     }
   }
 `
@@ -72,9 +82,10 @@ const reviewMutation = gql`
 `
 
 const updateUserMutation = gql`
-  mutation($id: ID!, $name: String) {
-    UpdateUser(id: $id, name: $name) {
+  mutation($id: ID!, $name: String, $slug: String) {
+    UpdateUser(id: $id, name: $name, slug: $slug) {
       name
+      slug
     }
   }
 `
@@ -290,6 +301,27 @@ describe('validateCreateComment', () => {
         })
       })
     })
+
+    describe('client-supplied slug', () => {
+      it('rejects invalid characters', async () => {
+        createPostVariables = {
+          ...createPostVariables,
+          categoryIds: ['cat9'],
+          slug: 'Hello World',
+        }
+        await expect(
+          mutate({ mutation: createPostMutation, variables: createPostVariables }),
+        ).resolves.toMatchObject({
+          data: { CreatePost: null },
+          errors: [
+            {
+              message:
+                'Allowed characters are only lowercase letters, numbers, underscores and hyphens.',
+            },
+          ],
+        })
+      })
+    })
   })
 
   describe('validateUpdatePost', () => {
@@ -445,6 +477,63 @@ describe('validateReview', () => {
       await expect(mutate({ mutation: updateUserMutation, variables })).resolves.toMatchObject({
         data: { UpdateUser: null },
         errors: [{ message: 'Username must be at least 3 character long!' }],
+      })
+    })
+
+    it('rejects a slug with invalid characters', async () => {
+      variables = {
+        ...variables,
+        slug: 'mätt',
+      }
+      await expect(mutate({ mutation: updateUserMutation, variables })).resolves.toMatchObject({
+        data: { UpdateUser: null },
+        errors: [
+          {
+            message:
+              'Allowed characters are only lowercase letters, numbers, underscores and hyphens.',
+          },
+        ],
+      })
+    })
+
+    it('normalizes a client-supplied slug to lowercase', async () => {
+      variables = {
+        ...variables,
+        slug: 'John-Doughnut',
+      }
+      await expect(mutate({ mutation: updateUserMutation, variables })).resolves.toMatchObject({
+        data: {
+          UpdateUser: {
+            slug: 'john-doughnut',
+          },
+        },
+      })
+    })
+
+    it('allows keeping the current slug', async () => {
+      const current = await updatingUser.toJson()
+      variables = {
+        ...variables,
+        slug: current.slug,
+      }
+      await expect(mutate({ mutation: updateUserMutation, variables })).resolves.toMatchObject({
+        data: {
+          UpdateUser: {
+            slug: current.slug,
+          },
+        },
+      })
+    })
+
+    it('rejects a slug that belongs to another user', async () => {
+      await Factory.build('user', { slug: 'taken-slug' })
+      variables = {
+        ...variables,
+        slug: 'taken-slug',
+      }
+      await expect(mutate({ mutation: updateUserMutation, variables })).resolves.toMatchObject({
+        data: { UpdateUser: null },
+        errors: [{ message: 'User with this slug already exists!' }],
       })
     })
   })

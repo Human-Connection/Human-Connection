@@ -1,4 +1,5 @@
 import { UserInputError } from 'apollo-server'
+import { assertClientSlug } from '../slugify/assertSlug'
 
 const COMMENT_MIN_LENGTH = 1
 const NO_POST_ERR_MESSAGE = 'Comment cannot be created without a post!'
@@ -46,18 +47,29 @@ const validateUpdateComment = async (resolve, root, args, context, info) => {
   return resolve(root, args, context, info)
 }
 
-const validatePost = async (resolve, root, args, context, info) => {
+const assertPostCategories = (args) => {
   const { categoryIds } = args
   if (!Array.isArray(categoryIds) || !categoryIds.length || categoryIds.length > 3) {
     throw new UserInputError(NO_CATEGORIES_ERR_MESSAGE)
   }
+}
+
+const validatePost = async (resolve, root, args, context, info) => {
+  assertPostCategories(args)
+  await assertClientSlug(args, context, 'Post')
   return resolve(root, args, context, info)
 }
 
 const validateUpdatePost = async (resolve, root, args, context, info) => {
-  const { categoryIds } = args
-  if (typeof categoryIds === 'undefined') return resolve(root, args, context, info)
-  return validatePost(resolve, root, args, context, info)
+  await assertClientSlug(args, context, 'Post', { exceptId: args.id })
+  if (typeof args.categoryIds === 'undefined') return resolve(root, args, context, info)
+  assertPostCategories(args)
+  return resolve(root, args, context, info)
+}
+
+const validateSignupVerification = async (resolve, root, args, context, info) => {
+  await assertClientSlug(args, context, 'User')
+  return resolve(root, args, context, info)
 }
 
 const validateReport = async (resolve, root, args, context, info) => {
@@ -131,6 +143,7 @@ const validateUpdateUser = async (resolve, root, params, context, info) => {
   const { name } = params
   if (typeof name === 'string' && name.trim().length < USERNAME_MIN_LENGTH)
     throw new UserInputError(`Username must be at least ${USERNAME_MIN_LENGTH} character long!`)
+  await assertClientSlug(params, context, 'User', { exceptId: params.id })
   return resolve(root, params, context, info)
 }
 
@@ -141,6 +154,7 @@ export default {
     CreatePost: validatePost,
     UpdatePost: validateUpdatePost,
     UpdateUser: validateUpdateUser,
+    SignupVerification: validateSignupVerification,
     fileReport: validateReport,
     review: validateReview,
   },
