@@ -161,6 +161,50 @@ describe('slugifyMiddleware', () => {
     })
   })
 
+  describe('UpdatePost', () => {
+    const categoryIds = ['cat9']
+    const updatePostMutation = gql`
+      mutation($id: ID!, $title: String!, $content: String!, $categoryIds: [ID]) {
+        UpdatePost(id: $id, title: $title, content: $content, categoryIds: $categoryIds) {
+          slug
+        }
+      }
+    `
+
+    it('does not suffix the slug with -1 when the post already owns it', async () => {
+      await Factory.build(
+        'post',
+        {
+          id: 'post-to-update',
+          title: 'Pre-existing post',
+          slug: 'pre-existing-post',
+          content: 'Original content',
+        },
+        {
+          categoryIds,
+          authorId: authenticatedUser.id,
+        },
+      )
+      await expect(
+        mutate({
+          mutation: updatePostMutation,
+          variables: {
+            id: 'post-to-update',
+            title: 'Pre-existing post',
+            content: 'Updated content',
+            categoryIds,
+          },
+        }),
+      ).resolves.toMatchObject({
+        data: {
+          UpdatePost: {
+            slug: 'pre-existing-post',
+          },
+        },
+      })
+    })
+  })
+
   describe('SignupVerification', () => {
     const mutation = gql`
       mutation(
@@ -264,6 +308,26 @@ describe('slugifyMiddleware', () => {
               ],
             })
           })
+        })
+      })
+
+      it('rejects a client-supplied slug with invalid characters', async () => {
+        await expect(
+          mutate({
+            mutation,
+            variables: {
+              ...variables,
+              slug: 'mätt',
+            },
+          }),
+        ).resolves.toMatchObject({
+          data: { SignupVerification: null },
+          errors: [
+            {
+              message:
+                'Allowed characters are only lowercase letters, numbers, underscores and hyphens.',
+            },
+          ],
         })
       })
     })
