@@ -28,6 +28,26 @@ const contextWithRecords = (records = []) => ({
   },
 })
 
+// Simulates a DB where `ownerId` already owns the requested slug. A query that
+// excludes that id (self-collision guard) returns no rows; any other query
+// reports a collision. This fails if UpdateUser forgets exceptId.
+const contextWhereSlugOwnedBy = (ownerId) => ({
+  driver: {
+    session: () => ({
+      readTransaction: async (work) =>
+        work({
+          run: async (query, params) => {
+            lastQuery = query
+            lastParams = params
+            const excludesOwner = /exceptId/.test(query) && params.exceptId === ownerId
+            return { records: excludesOwner ? [] : [{}] }
+          },
+        }),
+      close: () => {},
+    }),
+  },
+})
+
 const resolve = jest.fn(async (_root, args) => args)
 
 beforeEach(() => {
@@ -209,6 +229,30 @@ describe('validationMiddleware slug hooks', () => {
       const args = { id: 'user-1', slug: 'john-doe' }
       await call('UpdateUser', args)
       expect(lastParams).toEqual({ slug: 'john-doe', exceptId: 'user-1' })
+    })
+
+    it('allows a user to resubmit their own unchanged slug', async () => {
+      const args = { id: 'user-mueller', slug: 'mueller', name: 'Müller' }
+      await validation.Mutation.UpdateUser(
+        resolve,
+        {},
+        args,
+        contextWhereSlugOwnedBy('user-mueller'),
+        {},
+      )
+      expect(resolve).toHaveBeenCalled()
+    })
+
+    it('still rejects a slug that belongs to a different user', async () => {
+      await expect(
+        validation.Mutation.UpdateUser(
+          resolve,
+          {},
+          { id: 'user-other', slug: 'mueller', name: 'Someone Else' },
+          contextWhereSlugOwnedBy('user-mueller'),
+          {},
+        ),
+      ).rejects.toThrow('User with this slug already exists!')
     })
 
     it('rejects umlauts in a client-supplied slug', async () => {
