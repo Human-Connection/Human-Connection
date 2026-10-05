@@ -14,9 +14,6 @@
       <template v-if="post.image" #heroImage>
         <img :src="post.image | proxyApiUrl" class="image" />
       </template>
-      <client-only>
-        <user-teaser :user="post.author" :date-time="post.createdAt" />
-      </client-only>
       <h2 class="title hyphenate-text">{{ post.title }}</h2>
       <!-- TODO: replace editor content with tiptap render view -->
       <!-- eslint-disable vue/no-v-html -->
@@ -56,6 +53,9 @@
           />
         </client-only>
       </footer>
+      <client-only>
+        <user-teaser :user="post.author" :date-time="post.createdAt" />
+      </client-only>
     </base-card>
     <hc-ribbon
       :class="{ '--pinned': isPinned }"

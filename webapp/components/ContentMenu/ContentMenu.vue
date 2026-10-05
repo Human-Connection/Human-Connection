@@ -57,6 +57,7 @@ export default {
         return {}
       },
     },
+    copyLink: { type: String, default: null },
   },
   computed: {
     routes() {
@@ -102,21 +103,33 @@ export default {
         }
       }
 
-      if (this.isOwner && this.resourceType === 'comment') {
-        routes.push({
-          label: this.$t(`comment.menu.edit`),
-          callback: () => {
-            this.$emit('editComment')
-          },
-          icon: 'edit',
-        })
-        routes.push({
-          label: this.$t(`comment.menu.delete`),
-          callback: () => {
-            this.openModal('confirm', 'delete')
-          },
-          icon: 'trash',
-        })
+      if (this.resourceType === 'comment') {
+        if (this.copyLink) {
+          routes.push({
+            label: this.$t(`comment.menu.copyLink`),
+            callback: () => {
+              this.copyResourceLink()
+            },
+            icon: 'link',
+          })
+        }
+
+        if (this.isOwner) {
+          routes.push({
+            label: this.$t(`comment.menu.edit`),
+            callback: () => {
+              this.$emit('editComment')
+            },
+            icon: 'edit',
+          })
+          routes.push({
+            label: this.$t(`comment.menu.delete`),
+            callback: () => {
+              this.openModal('confirm', 'delete')
+            },
+            icon: 'trash',
+          })
+        }
       }
 
       if (!this.isOwner) {
@@ -230,6 +243,44 @@ export default {
           modalData: modalDataName ? this.modalsData[modalDataName] : {},
         },
       })
+    },
+    async copyResourceLink() {
+      try {
+        await this.writeTextToClipboard(this.absoluteCopyLink(this.copyLink))
+        this.$toast.success(this.$t(`comment.menu.copyLinkSuccess`))
+      } catch (err) {
+        this.$toast.error(this.$t(`comment.menu.copyLinkError`))
+      }
+    },
+    absoluteCopyLink(link) {
+      if (/^https?:\/\//.test(link)) return link
+      if (typeof window === 'undefined' || !window.location) return link
+      if (link.startsWith('/')) return `${window.location.origin}${link}`
+
+      return `${window.location.origin}/${link}`
+    },
+    async writeTextToClipboard(text) {
+      if (
+        typeof navigator !== 'undefined' &&
+        navigator.clipboard &&
+        navigator.clipboard.writeText
+      ) {
+        return navigator.clipboard.writeText(text)
+      }
+
+      if (typeof document === 'undefined') throw new Error('Clipboard unavailable')
+
+      const textArea = document.createElement('textarea')
+      textArea.value = text
+      textArea.setAttribute('readonly', '')
+      textArea.style.position = 'absolute'
+      textArea.style.left = '-9999px'
+      document.body.appendChild(textArea)
+      textArea.select()
+      const copied = document.execCommand && document.execCommand('copy')
+      document.body.removeChild(textArea)
+
+      if (!copied) throw new Error('Clipboard unavailable')
     },
   },
 }

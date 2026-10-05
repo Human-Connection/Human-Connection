@@ -22,6 +22,47 @@
           />
         </aside>
       </template>
+      <h2 class="title hyphenate-text">{{ post.title }}</h2>
+      <ds-space margin-bottom="small" />
+      <content-viewer class="content hyphenate-text" :content="post.content" />
+      <!-- eslint-enable vue/no-v-html -->
+      <ds-space margin="xx-large" />
+      <!-- Shout Button -->
+      <div class="post-interaction">
+        <hc-shout-button
+          v-if="post.author"
+          :disabled="isAuthor"
+          :count="post.shoutedCount"
+          :is-shouted="post.shoutedByCurrentUser"
+          :post-id="post.id"
+        />
+      </div>
+      <ds-space margin-top="x-large">
+        <div class="post-interaction">
+          <hc-emotions :post="post" />
+        </div>
+      </ds-space>
+      <!-- Tags -->
+      <div v-if="post.tags && post.tags.length" class="tags">
+        <ds-space margin="xx-small" />
+        <hc-hashtag v-for="tag in sortedTags" :key="tag.id" :id="tag.id" />
+      </div>
+      <ds-space margin-bottom="small" />
+      <!-- Categories -->
+      <div class="categories">
+        <ds-space margin="xx-small" />
+        <hc-category
+          v-for="category in post.categories"
+          :key="category.id"
+          :icon="category.icon"
+          :name="$t(`contribution.category.name.${category.slug}`)"
+        />
+        <!-- Post language -->
+        <ds-tag v-if="post.language" class="category-tag language">
+          <base-icon name="globe" />
+          {{ post.language.toUpperCase() }}
+        </ds-tag>
+      </div>
       <section class="menu">
         <user-teaser :user="post.author" :date-time="post.createdAt">
           <template #dateTime>
@@ -41,52 +82,6 @@
         </client-only>
       </section>
       <ds-space margin-bottom="small" />
-      <h2 class="title hyphenate-text">{{ post.title }}</h2>
-      <ds-space margin-bottom="small" />
-      <content-viewer class="content hyphenate-text" :content="post.content" />
-      <!-- eslint-enable vue/no-v-html -->
-      <ds-space margin="xx-large" />
-      <!-- Categories -->
-      <div class="categories">
-        <ds-space margin="xx-small" />
-        <hc-category
-          v-for="category in post.categories"
-          :key="category.id"
-          :icon="category.icon"
-          :name="$t(`contribution.category.name.${category.slug}`)"
-        />
-        <!-- Post language -->
-        <ds-tag v-if="post.language" class="category-tag language">
-          <base-icon name="globe" />
-          {{ post.language.toUpperCase() }}
-        </ds-tag>
-      </div>
-      <ds-space margin-bottom="small" />
-      <!-- Tags -->
-      <div v-if="post.tags && post.tags.length" class="tags">
-        <ds-space margin="xx-small" />
-        <hc-hashtag v-for="tag in sortedTags" :key="tag.id" :id="tag.id" />
-      </div>
-      <ds-space margin-top="x-large">
-        <ds-flex :gutter="{ lg: 'small' }">
-          <ds-flex-item :width="{ lg: '75%', md: '75%', sm: '75%', base: '100%' }">
-            <hc-emotions :post="post" />
-          </ds-flex-item>
-          <!-- Shout Button -->
-          <ds-flex-item
-            :width="{ lg: '15%', md: '22%', sm: '22%', base: '100%' }"
-            class="shout-button"
-          >
-            <hc-shout-button
-              v-if="post.author"
-              :disabled="isAuthor"
-              :count="post.shoutedCount"
-              :is-shouted="post.shoutedByCurrentUser"
-              :post-id="post.id"
-            />
-          </ds-flex-item>
-        </ds-flex>
-      </ds-space>
       <!-- Comments -->
       <ds-section>
         <comment-list :post="post" @toggleNewCommentForm="toggleNewCommentForm" @reply="reply" />
@@ -293,6 +288,11 @@ export default {
     align-items: center;
   }
 
+  .post-interaction {
+    display: flex;
+    justify-content: center;
+  }
+
   &.--blur-image > .hero-image > .image {
     filter: blur($blur-radius);
   }
@@ -323,9 +323,4 @@ export default {
   }
 }
 
-@media only screen and (max-width: 960px) {
-  .shout-button {
-    float: left;
-  }
-}
 </style>
