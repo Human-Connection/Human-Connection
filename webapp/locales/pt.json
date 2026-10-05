@@ -131,6 +131,9 @@
     },
     "edited": "editado",
     "menu": {
+      "copyLink": "Copiar link",
+      "copyLinkError": "Não foi possível copiar o link",
+      "copyLinkSuccess": "Link copiado para a área de transferência",
       "delete": "Apagar Comentário",
       "edit": "Editar Comentário"
     },

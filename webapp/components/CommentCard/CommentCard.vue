@@ -18,6 +18,7 @@
           placement="bottom-end"
           resource-type="comment"
           :resource="comment"
+          :copy-link="commentLink"
           :modalsData="menuModalsData"
           :is-owner="user.id === comment.author.id"
           @editComment="editComment(true)"
@@ -89,6 +90,10 @@ export default {
       type: String,
       required: true,
     },
+    postSlug: {
+      type: String,
+      default: null,
+    },
   },
   computed: {
     ...mapGetters({
@@ -118,6 +123,15 @@ export default {
       }
 
       return this.comment.content
+    },
+    commentLink() {
+      return `${this.postPath}#${this.anchor}`
+    },
+    postPath() {
+      if (this.$route && this.$route.path) return this.$route.path
+
+      const slug = this.postSlug ? `/${this.postSlug}` : ''
+      return `/post/${this.postId}${slug}`
     },
     menuModalsData() {
       return {

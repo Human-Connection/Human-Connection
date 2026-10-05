@@ -138,6 +138,9 @@
     "edit": "",
     "edited": "",
     "menu": {
+      "copyLink": "",
+      "copyLinkError": "",
+      "copyLinkSuccess": "",
       "delete": "",
       "edit": ""
     },
